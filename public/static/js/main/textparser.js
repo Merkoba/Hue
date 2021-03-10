@@ -10,10 +10,10 @@ Hue.make_textparser_char_regex = function (char, mode = 1) {
   } else if (mode === 2) {
     let regex = `(^|\\s)(${Hue.utilz.escape_special_characters(
       char
-    )}+)(.*[^${Hue.utilz.escape_special_characters(
+    )}+)([\\S\\s]*[^${Hue.utilz.escape_special_characters(
       char
     )}])\\2($|\\s|\\:|\\?|\\!)`
-    return new RegExp(regex, "gms")
+    return new RegExp(regex, "gm")
   }
 }
 
@@ -24,7 +24,7 @@ Hue.setup_textparser_regexes = function () {
   Hue.textparser_regexes["`"] = {}
   Hue.textparser_regexes["`"].regex = Hue.make_textparser_char_regex("`", 2)
   Hue.textparser_regexes["`"].replace_function = function (g1, g2, g3, g4, g5) {
-    return `${g2}<div class='quote'>${Hue.utilz.untab_string(g4)}</div>${g5}`
+    return `${g2}<div class='quote'>${Hue.utilz.untab_string(g4).trim()}</div>${g5}`
   }
 
   Hue.textparser_regexes[">"] = {}
