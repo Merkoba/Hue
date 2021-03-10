@@ -1,31 +1,6 @@
-// Regex generator for character based textparser
-Hue.make_textparser_char_regex = function (char, mode = 1) {
-  if (mode === 1) {
-    let regex = `(^|\\s)(${Hue.utilz.escape_special_characters(
-      char
-    )}+)(?!\\s)(.*[^${Hue.utilz.escape_special_characters(
-      char
-    )}\\s])\\2($|\\s|\\:|\\?|\\!)`
-    return new RegExp(regex, "gm")
-  } else if (mode === 2) {
-    let regex = `(^|\\s)(${Hue.utilz.escape_special_characters(
-      char
-    )}+)([\\S\\s]*[^${Hue.utilz.escape_special_characters(
-      char
-    )}])\\2($|\\s|\\:|\\?|\\!)`
-    return new RegExp(regex, "gm")
-  }
-}
-
 // Makes and prepares the textparser regexes
 Hue.setup_textparser_regexes = function () {
   Hue.textparser_regexes = {}
-
-  Hue.textparser_regexes["`"] = {}
-  Hue.textparser_regexes["`"].regex = Hue.make_textparser_char_regex("`", 2)
-  Hue.textparser_regexes["`"].replace_function = function (g1, g2, g3, g4, g5) {
-    return `${g2}<div class='quote'>${Hue.utilz.untab_string(g4).trim()}</div>${g5}`
-  }
 
   Hue.textparser_regexes[">"] = {}
   Hue.textparser_regexes[">"].regex = new RegExp("(?:^)((?:&gt;)+)(.*)", "gm")
@@ -94,14 +69,13 @@ Hue.parse_text = function (text) {
   )
 
   text = text.replace(
-    Hue.textparser_regexes["`"].regex,
-    Hue.textparser_regexes["`"].replace_function
-  )
-
-  text = text.replace(
     Hue.textparser_regexes[">"].regex,
     Hue.textparser_regexes[">"].replace_function
   )
+
+  if (text.includes("\n")) {
+    text = `<div class='codeblock'>${text}</div>`
+  }
 
   return text
 }
