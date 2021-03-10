@@ -2308,6 +2308,11 @@ pre {
 	cursor: pointer;
 }
 
+.quote {
+	background-color: var(--altcolor_a);
+	padding: 0.25rem;
+}
+
 .codeblock {
 	font-family: monospace;
 	padding: 0.25rem;
