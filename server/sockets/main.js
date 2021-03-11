@@ -59,11 +59,19 @@ module.exports = function (
       }
 
       try {
+        let m = data.server_method_name
+
+        if (!vars.dont_add_spam.includes(m)) {
+          let spam_ans = await handler.add_spam(socket)
+
+          if (!spam_ans) {
+            return false
+          }
+        }
+
         if (!handler.check_data(data)) {
           return false
         }
-
-        let m = data.server_method_name
 
         if (handler.public[m] === undefined) {
           return false
@@ -88,14 +96,6 @@ module.exports = function (
                 return false
               }
             }
-          }
-        }
-
-        if (!vars.dont_add_spam.includes(m)) {
-          let spam_ans = await handler.add_spam(socket)
-
-          if (!spam_ans) {
-            return false
           }
         }
 
