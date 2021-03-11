@@ -575,10 +575,6 @@ Hue.change = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  if (!Hue.app_focused || Hue.screen_locked) {
-    return
-  }
-
   let item
 
   if (args.item) {
@@ -587,6 +583,14 @@ Hue.change = function (args = {}) {
     item = Hue[`loaded_${args.type}`]
   } else {
     item = Hue[`current_${args.type}`]()
+  }
+
+  if (!Hue.app_focused || Hue.screen_locked) {
+    if (args.notify && item.setter !== Hue.username) {
+      Hue.on_activity("media_change")
+    }
+    
+    return
   }
 
   if (args.type === "image") {
@@ -667,10 +671,6 @@ Hue.change = function (args = {}) {
   }
 
   Hue.update_media_history_blinks()
-
-  if (args.notify && item.setter !== Hue.username) {
-    Hue.on_activity("media_change")
-  }
 }
 
 // Sets a media info item with proper information and events
