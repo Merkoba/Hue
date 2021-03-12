@@ -924,7 +924,6 @@ Hue.media_string = function (what) {
 // Load or restart media
 Hue.load_media = function (type, data) {
   Hue.toggle_media({type:type, what:true})
-  Hue.change_media_lock({type:type, what:true})
     
   Hue.change({
     type: type,

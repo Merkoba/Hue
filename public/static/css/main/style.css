@@ -2453,3 +2453,11 @@ pre {
 #main_menu {
 	user-select: none;
 }
+
+#open_url_container {
+	white-space: nowrap;
+}
+
+#open_url_container > div {
+	flex-shrink: 0;
+}

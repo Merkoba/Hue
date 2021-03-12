@@ -372,7 +372,6 @@ Hue.setup_modal_image = function () {
     let item = Hue.loaded_modal_image
     Hue.toggle_media({type:"image", what:true})
     Hue.change({ type: "image", item: item, force: true })
-    Hue.change_media_lock({type:"image", what:true})
     Hue.close_all_modals()
   })
 
@@ -447,10 +446,7 @@ Hue.show_modal_image = function (id = 0) {
     $("#modal_image_subheader").css("display", "none")
   }
 
-  if (
-    (Hue.room_state.image_enabled || Hue.image_locked) &&
-    data !== Hue.loaded_image
-  ) {
+  if (data !== Hue.loaded_image) {
     $("#modal_image_toolbar_load").css("display", "block")
   } else {
     $("#modal_image_toolbar_load").css("display", "none")
