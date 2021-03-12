@@ -89,6 +89,7 @@ body * {
 	flex-direction: row;
 	flex-shrink: 0;
 	overflow: hidden;
+	user-select: none;
 }
 
 .header_side {
@@ -331,6 +332,10 @@ body * {
 	position: relative;
 }
 
+#footer_media_items {
+	user-select: none;
+}
+
 .footer_expanded {
 	height: 10rem;
 }
@@ -381,6 +386,7 @@ body * {
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
 	margin-right: 1rem;
+	user-select: none;
 }
 
 #input {
