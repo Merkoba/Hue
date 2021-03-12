@@ -956,11 +956,11 @@ Hue.run_commands_queue = function (id) {
 
 // Gives feedback on what type of command a command is
 Hue.inspect_command = function (cmd) {
-  if (!cmd.startsWith(Hue.config.commands_prefix)) {
-    cmd = `${Hue.config.commands_prefix}${cmd}`
+  if (cmd.startsWith(Hue.config.commands_prefix)) {
+    cmd = cmd.slice(1)
   }
 
-  let s = cmd
+  let s = Hue.config.commands_prefix + cmd
 
   if (Hue.commands_list.includes(cmd)) {
     s += `: ${Hue.commands[cmd].description}`
