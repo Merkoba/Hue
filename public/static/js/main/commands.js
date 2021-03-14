@@ -793,7 +793,6 @@ Hue.process_message = function (args = {}) {
     message: "",
     to_history: true,
     clr_input: true,
-    callback: false,
     edit_id: false,
     handle_url: true
   }
@@ -818,20 +817,6 @@ Hue.process_message = function (args = {}) {
   } else {
     if (args.message.length === 0) {
       Hue.clear_input()
-
-      if (args.callback) {
-        return args.callback(false)
-      } else {
-        return false
-      }
-    }
-
-    if (num_lines > Hue.config.max_num_newlines) {
-      if (args.callback) {
-        return args.callback(false)
-      } else {
-        return false
-      }
     }
 
     if (args.message.length > Hue.config.max_input_length) {
@@ -850,11 +835,5 @@ Hue.process_message = function (args = {}) {
 
   if (args.clr_input) {
     Hue.clear_input()
-  }
-
-  if (args.callback) {
-    return args.callback(true)
-  } else {
-    return true
   }
 }
