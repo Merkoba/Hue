@@ -271,11 +271,6 @@ Hue.open_url_menu = function (args = {}) {
   Hue.msg_open_url.show()
 }
 
-// Custom chat search to show links
-Hue.show_links = function () {
-  Hue.show_chat_search("http:// https://")
-}
-
 // Replace urls with dummy text
 Hue.remove_urls = function (text) {
   let split = text.split(" ")

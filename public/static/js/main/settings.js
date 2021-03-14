@@ -270,54 +270,6 @@ Hue.set_user_settings_titles = function () {
   }
 }
 
-// Modifies a setting manually instead of using the settings windows
-Hue.modify_setting = function (arg, show_feedback = true, force = false) {
-  let split = arg.split(" ")
-  let setting = split[0]
-
-  if (Hue.user_settings[setting] === undefined) {
-    Hue.feedback("Invalid setting")
-    return false
-  }
-
-  let value = ""
-
-  if (split.length > 1) {
-    value = split.slice(1).join(" ")
-  }
-
-  if (value) {
-    if (value === "true") {
-      value = true
-    } else if (value === "false") {
-      value = false
-    } else if (!isNaN(value)) {
-      value = Number(value)
-    } else {
-      value = value.split("\\n").join("\n")
-    }
-  }
-
-  if (Hue.settings[setting] === value) {
-    if (show_feedback) {
-      Hue.feedback(`Setting "${setting}" is already set to that`)
-    }
-
-    return false
-  }
-
-  let setting_obj = Hue.user_settings[setting]
-
-  Hue.settings[setting] = value
-  Hue.modify_setting_widget(setting)
-  setting_obj.action(false)
-  Hue.save_settings(force)
-
-  if (show_feedback) {
-    Hue.feedback(`Setting "${setting}" succesfully modified`)
-  }
-}
-
 // Apply media percentages and positions
 Hue.prepare_media_settings = function () {
   Hue.apply_media_percentages()

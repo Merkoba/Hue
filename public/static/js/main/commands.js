@@ -8,12 +8,6 @@ Hue.commands = {
     },
     description: `Clears the chat`,
   },
-  "clearinput": {
-    action: (arg, ans) => {
-      Hue.clear_input()
-    },
-    description: `Clears the text input`,
-  },
   "users": {
     action: (arg, ans) => {
       if (arg) {
@@ -33,24 +27,6 @@ Hue.commands = {
       }
     },
     description: `Changes the name of the room`,
-  },
-  "roomnameedit": {
-    action: (arg, ans) => {
-      Hue.room_name_edit()
-      ans.to_history = false
-      ans.clr_input = false
-    },
-    description: `Puts the room name in the input, ready to be edited`,
-  },
-  "played": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.show_played(arg)
-      } else {
-        Hue.show_played()
-      }
-    },
-    description: `Shows the list of songs played. Accepts a filter as an argument`,
   },
   "search": {
     action: (arg, ans) => {
@@ -103,18 +79,6 @@ Hue.commands = {
       Hue.kick(arg)
     },
     description: `Kicks a user out of the room`,
-  },
-  "enablelog": {
-    action: (arg, ans) => {
-      Hue.change_log(true)
-    },
-    description: `Enables logging of the room. Which allows users to see previous messages before they joined`,
-  },
-  "disablelog": {
-    action: (arg, ans) => {
-      Hue.change_log(false)
-    },
-    description: `Disables logging`,
   },
   "clearlog": {
     action: (arg, ans) => {
@@ -222,12 +186,6 @@ Hue.commands = {
     },
     description: `Opens a window to write a whisper to x user. If the argument contains the &gt; character it will use the inline method where the username is whatever is to the left of the &gt; and the message whatever is to the right of it, and send the message directly without using the window`,
   },
-  "whisper2": {
-    action: (arg, ans) => {
-      Hue.process_write_whisper(arg, false)
-    },
-    description: `Same as ${Hue.config.commands_prefix}whisper but it doesn't show feedback when sent through the inline format, for example "${Hue.config.commands_prefix}whisper2 user > message". Useful for making calls to bots without filling your own chat too much`,
-  },
   "systemrestart": {
     action: (arg, ans) => {
       Hue.send_system_restart_signal()
@@ -270,24 +228,6 @@ Hue.commands = {
       }
     },
     description: `Shows chat messages where you were highlighted. Accepts a filter as an argument`,
-  },
-  "lock": {
-    action: (arg, ans) => {
-      Hue.stop_and_lock(false)
-    },
-    description: `Locks all media`,
-  },
-  "unlock": {
-    action: (arg, ans) => {
-      Hue.unlock()
-    },
-    description: `Unlocks all media`,
-  },
-  "stopandlock": {
-    action: (arg, ans) => {
-      Hue.stop_and_lock()
-    },
-    description: `Stops and locks all media`,
   },
   "mainmenu": {
     action: (arg, ans) => {
@@ -409,18 +349,6 @@ Hue.commands = {
     },
     description: `Shows current date`,
   },
-  "js": {
-    action: (arg, ans) => {
-      Hue.execute_javascript(arg)
-    },
-    description: `Executes a javascript operation`,
-  },
-  "js2": {
-    action: (arg, ans) => {
-      Hue.execute_javascript(arg, false)
-    },
-    description: `Executes a javascript operation without showing the result`,
-  },
   "changeimage": {
     action: (arg, ans) => {
       Hue.show_image_picker()
@@ -432,24 +360,6 @@ Hue.commands = {
       Hue.show_tv_picker()
     },
     description: `Opens the window to change the tv`,
-  },
-  "closeall": {
-    action: (arg, ans) => {
-      Hue.close_all_message()
-    },
-    description: `Closes all the modal windows and popups`,
-  },
-  "closeallmodals": {
-    action: (arg, ans) => {
-      Hue.close_all_modals()
-    },
-    description: `Closes all the modal windows`,
-  },
-  "closeallpopups": {
-    action: (arg, ans) => {
-      Hue.close_all_popups()
-    },
-    description: `Closes all the popups`,
   },
   "activityabove": {
     action: (arg, ans) => {
@@ -475,18 +385,6 @@ Hue.commands = {
     },
     description: `Goes to room ID or URL`,
   },
-  "refreshimage": {
-    action: (arg, ans) => {
-      Hue.refresh_image()
-    },
-    description: `Loads the image again`,
-  },
-  "refreshtv": {
-    action: (arg, ans) => {
-      Hue.refresh_tv()
-    },
-    description: `Loads the tv again`,
-  },
   "ping": {
     action: (arg, ans) => {
       Hue.ping_server()
@@ -498,36 +396,6 @@ Hue.commands = {
       Hue.lock_screen()
     },
     description: `Locks the screen`,
-  },
-  "unlockscreen": {
-    action: (arg, ans) => {
-      Hue.unlock_screen()
-    },
-    description: `Unlocks the screen`,
-  },
-  "togglelockscreen": {
-    action: (arg, ans) => {
-      if (Hue.screen_locked) {
-        Hue.unlock_screen()
-      } else {
-        Hue.lock_screen()
-      }
-    },
-    description: `Locks or unlocks the screen`,
-  },
-  "say": {
-    action: (arg, ans) => {
-      Hue.say_command(arg, ans)
-    },
-    description: `Sends a normal chat message. Useful if you want to make a chain of commands that starts with a message`,
-  },
-  "input": {
-    action: (arg, ans) => {
-      Hue.input_command(arg)
-      ans.to_history = false
-      ans.clr_input = false
-    },
-    description: `Adds text to the input`,
   },
   "top": {
     action: (arg, ans) => {
@@ -565,29 +433,11 @@ Hue.commands = {
     },
     description: `Re-connects to the server without leaving`,
   },
-  "modifysetting": {
-    action: (arg, ans) => {
-      Hue.modify_setting(arg)
-    },
-    description: `This can be used to change user settings directly. This requires the internal name of the setting and the value`,
-  },
-  "modifysetting2": {
-    action: (arg, ans) => {
-      Hue.modify_setting(arg, false)
-    },
-    description: `Same as ${Hue.config.commands_prefix}modifysetting but it doesn't show feedback on completion`,
-  },
   "feedback": {
     action: (arg, ans) => {
       Hue.feedback(arg)
     },
     description: `Displays a simple feedback information message for the user`,
-  },
-  "showmsg": {
-    action: (arg, ans) => {
-      Hue.showmsg(arg)
-    },
-    description: `Shows a simple window with a message`,
   },
   "backgroundcolor": {
     action: (arg, ans) => {
@@ -647,30 +497,6 @@ Hue.commands = {
     },
     description: `Displays a list of banned users`,
   },
-  "loadnextimage": {
-    action: (arg, ans) => {
-      Hue.media_load_next("image")
-    },
-    description: `Loads the next image`,
-  },
-  "loadprevimage": {
-    action: (arg, ans) => {
-      Hue.media_load_previous("image")
-    },
-    description: `Loads the previous image`,
-  },
-  "loadnexttv": {
-    action: (arg, ans) => {
-      Hue.media_load_next("tv")
-    },
-    description: `Loads the next tv item`,
-  },
-  "loadprevtv": {
-    action: (arg, ans) => {
-      Hue.media_load_previous("tv")
-    },
-    description: `Loads the previous tv item`,
-  },
   "bio": {
     action: (arg, ans) => {
       if (arg) {
@@ -714,12 +540,6 @@ Hue.commands = {
       }
     },
     description: `Syncs a TV video with another user's video progress`,
-  },
-  "links": {
-    action: (arg, ans) => {
-      Hue.show_links()
-    },
-    description: `Custom chat search to show links`,
   },
   "messageboard": {
     action: (arg, ans) => {
@@ -1044,14 +864,7 @@ Hue.process_message = function (args = {}) {
     let lc_message = args.message.toLowerCase()
     let more_stuff
 
-    if (lc_message.startsWith(`${Hue.config.commands_prefix}js `) || lc_message.startsWith(`${Hue.config.commands_prefix}js2 `)) {
-      more_stuff = lc_message.includes(`${Hue.config.commands_prefix}endjs`)
-    } else if (lc_message.startsWith(`${Hue.config.commands_prefix}input `)) {
-      more_stuff = args.message.includes(`${Hue.config.commands_prefix}endinput`)
-    } else if (
-      lc_message.startsWith(`${Hue.config.commands_prefix}whisper `) ||
-      lc_message.startsWith(`${Hue.config.commands_prefix}whisper2 `)
-    ) {
+    if (lc_message.startsWith(`${Hue.config.commands_prefix}whisper `)) {
       more_stuff = args.message.includes(`${Hue.config.commands_prefix}endwhisper`)
     } else {
       more_stuff = true
@@ -1073,23 +886,7 @@ Hue.process_message = function (args = {}) {
         let sp = ssplit[p]
         let lc_sp = sp.toLowerCase()
 
-        if (cmd_mode === "js") {
-          if (lc_sp === `${Hue.config.commands_prefix}endjs`) {
-            cmds.push(cmd)
-            cmd = ""
-            cmd_mode = "normal"
-          } else {
-            cmd += ` ${sp}`
-          }
-        } else if (cmd_mode === "input") {
-          if (lc_sp === `${Hue.config.commands_prefix}endinput`) {
-            cmds.push(cmd)
-            cmd = ""
-            cmd_mode = "normal"
-          } else {
-            cmd += ` ${sp}`
-          }
-        } else if (cmd_mode === "whisper") {
+        if (cmd_mode === "whisper") {
           if (lc_sp === `${Hue.config.commands_prefix}endwhisper`) {
             cmds.push(cmd)
             cmd = ""
@@ -1101,12 +898,7 @@ Hue.process_message = function (args = {}) {
           if (cmd === "") {
             if (sp !== "&&") {
               cmd = sp
-
-              if (lc_sp === `${Hue.config.commands_prefix}js` || lc_sp === `${Hue.config.commands_prefix}js2`) {
-                cmd_mode = "js"
-              } else if (lc_sp === `${Hue.config.commands_prefix}input`) {
-                cmd_mode = "input"
-              } else if (lc_sp === `${Hue.config.commands_prefix}whisper` || lc_sp === `${Hue.config.commands_prefix}whisper2`) {
+              if (lc_sp === `${Hue.config.commands_prefix}whisper`) {
                 cmd_mode = "whisper"
               }
             }

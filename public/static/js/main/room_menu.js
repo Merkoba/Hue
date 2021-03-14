@@ -2,12 +2,6 @@
 Hue.setup_room_menu = function () {
   Hue.setup_togglers("room_menu")
 
-  $("#admin_log").change(function () {
-    let what = JSON.parse($("#admin_log option:selected").val())
-
-    Hue.change_log(what)
-  })
-
   $("#admin_background_color").change(function () {
     Hue.change_background_color($(this).val())
   })

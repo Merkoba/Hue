@@ -558,11 +558,6 @@ Hue.hide_expand_image = function () {
   Hue.msg_expand_image.close()
 }
 
-// Reloads the image with the same source
-Hue.refresh_image = function () {
-  Hue.change({ type: "image", force: true, play: true, current_source: true })
-}
-
 // Used to change the image
 // Shows the image picker window to input a URL, or upload a file
 Hue.show_image_picker = function () {

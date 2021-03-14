@@ -82,11 +82,6 @@ Hue.change_room_name = function (arg) {
   }
 }
 
-// Put the room name in the input to be edited
-Hue.room_name_edit = function () {
-  Hue.change_input(`/roomname ${Hue.room_name}`)
-}
-
 // Gets the topic
 Hue.get_topic = function () {
   if (Hue.topic) {

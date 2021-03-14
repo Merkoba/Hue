@@ -93,17 +93,6 @@ Hue.hide_media_menu = function () {
   Hue.msg_media_menu.close()
 }
 
-// Stops and locks all media (image, tv)
-Hue.stop_and_lock = function (stop = true) {
-  if (stop) {
-    Hue.stop_media()
-  }
-
-  Hue.change_media_lock({type:"image", what:true})
-  Hue.change_media_lock({type:"tv", what:true})
-  Hue.save_room_state()
-}
-
 Hue.unlock = function () {
   Hue.change_media_lock({type:"image", what:false})
   Hue.change_media_lock({type:"tv", what:false})
@@ -158,64 +147,6 @@ Hue.num_media_elements_visible = function () {
   })
 
   return num
-}
-
-// Locally loads next item of its respective media changed list
-Hue.media_load_next = function (type, just_check = false) {
-  if (Hue[`${type}_changed`].length < 2) {
-    return false
-  }
-
-  let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type}`])
-
-  if (index < 0) {
-    return false
-  }
-
-  if (index >= Hue[`${type}_changed`].length - 1) {
-    return false
-  }
-
-  if (just_check) {
-    return true
-  }
-
-  let item = Hue[`${type}_changed`][index + 1]
-
-  Hue.change({
-    type: type,
-    item: item,
-    force: true
-  })
-
-  Hue.change_media_lock({type:type, what:true})
-}
-
-// Locally loads previous item of its respective media changed list
-Hue.media_load_previous = function (type, just_check = false) {
-  if (Hue[`${type}_changed`].length < 2) {
-    return false
-  }
-
-  let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type}`])
-
-  if (index <= 0) {
-    return false
-  }
-
-  if (just_check) {
-    return true
-  }
-
-  let item = Hue[`${type}_changed`][index - 1]
-
-  Hue.change({
-    type: type,
-    item: item,
-    force: true
-  })
-
-  Hue.change_media_lock({type:type, what:true})
 }
 
 // Updates blinking media history items to reflect which is the current loaded item

@@ -521,16 +521,6 @@ Hue.show_tv_picker = function () {
   })
 }
 
-// Reloads the tv with the same source
-Hue.refresh_tv = function () {
-  Hue.change({
-    type: "tv",
-    force: true,
-    play: true,
-    current_source: true
-  })
-}
-
 // Does the change of tv display percentage
 Hue.do_media_tv_size_change = function (size) {
   if (size === "max") {

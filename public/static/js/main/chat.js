@@ -1582,15 +1582,6 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
   image_preview_el.parent().find(".image_preview_text").eq(0).urlize()
 }
 
-// Sends a chat message through the say command
-Hue.say_command = function (arg, ans) {
-  Hue.process_message({
-    message: arg,
-    to_history: ans.to_history,
-    clr_input: ans.clr_input,
-  })
-}
-
 // Starts chat area scroll events
 Hue.scroll_events = function () {
   $("#chat_area")[0].addEventListener("scroll", function (e) {
