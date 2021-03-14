@@ -72,7 +72,6 @@ Hue.app_focused = false
 Hue.message_unames = ""
 Hue.aura_timeouts = {}
 Hue.mouse_is_down = false
-Hue.commands_queue = {}
 Hue.user_leaving = false
 Hue.admin_activity_filter_string = ""
 Hue.active_modal = false
