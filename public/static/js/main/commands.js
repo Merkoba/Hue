@@ -409,7 +409,7 @@ Hue.commands = {
     },
     description: `Scrolls the chat to the bottom`,
   },
-  "background": {
+  "backgroundimage": {
     action: (arg, ans) => {
       Hue.change_background_image_source(arg)
     },
