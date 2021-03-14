@@ -8,13 +8,11 @@ Hue.setup_room_menu = function () {
 
   $("#admin_background_mode_select").change(function () {
     let what = $("#admin_background_mode_select option:selected").val()
-
     Hue.change_background_mode(what)
   })
 
   $("#admin_background_effect_select").change(function () {
     let what = $("#admin_background_effect_select option:selected").val()
-
     Hue.change_background_effect(what)
   })
 
@@ -31,7 +29,6 @@ Hue.setup_room_menu = function () {
 
   $("#admin_text_color_mode_select").change(function () {
     let what = $("#admin_text_color_mode_select option:selected").val()
-
     Hue.change_text_color_mode(what)
   })
 
