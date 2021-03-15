@@ -86,7 +86,7 @@ Hue.setup_room_menu = function () {
 
   $("#room_menu_more_clear_log").click(function () {
     Hue.show_confirm("Clear Log", `The log are recent messages that are stored for context. 
-      The log is limited to ${Hue.config.max_log_messages} messages.`, function () {
+      The log is limited to ${Hue.config.max_log_messages} messages. This will empty the log`, function () {
       Hue.clear_log()
     })
   })
