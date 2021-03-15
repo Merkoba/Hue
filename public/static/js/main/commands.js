@@ -664,7 +664,6 @@ Hue.execute_command = function (message, ans) {
   let split = message.split(" ")
   let cmd = split[0].toLowerCase()
   let arg = split.slice(1).join(" ")
-  let needs_confirm = false
 
   if (cmd.startsWith(Hue.config.commands_prefix)) {
     cmd = cmd.substring(1)
@@ -674,14 +673,7 @@ Hue.execute_command = function (message, ans) {
     if (!Hue.superuser) {
       Hue.feedback("You don't have permission to run that command")
       return ans
-    } else {
-      needs_confirm = true
     }
-  }
-
-  if (cmd.endsWith("?")) {
-    cmd = cmd.slice(0, -1)
-    needs_confirm = true
   }
 
   if (cmd.length < 2) {
@@ -703,16 +695,7 @@ Hue.execute_command = function (message, ans) {
     }
   }
 
-  if (needs_confirm) {
-    if (confirm(`Are you sure you want to execute ${command}?`)) {
-      Hue.commands[command].action(arg, ans)
-    } else {
-      return ans
-    }
-  } else {
-    Hue.commands[command].action(arg, ans)
-  }
-
+  Hue.commands[command].action(arg, ans)
   return ans
 }
 
