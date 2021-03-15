@@ -613,13 +613,21 @@ Hue.apply_media_info = function (type) {
   }
   
   let container = $(`#media_${type}_info_container`)
-  let custom_title
+  let custom_title = ""
 
   if (type === "tv") {
     Hue.media_info_tv_data = [...arguments]
   } else if (type === "image") {
+    if (item.comment) {
+      custom_title += item.comment
+    }
+
     if (item.type === "upload") {
-      custom_title = `${Hue.utilz.get_size_string(item.size)} upload`
+      if (custom_title) {
+        custom_title += " | "
+      }
+      
+      custom_title += `${Hue.utilz.get_size_string(item.size)} upload`
     }
 
     Hue.media_info_image_data = [...arguments]
