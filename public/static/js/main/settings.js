@@ -241,13 +241,7 @@ Hue.show_settings = function (filter = false) {
 
 // Setup the settings windows
 Hue.setup_settings_windows = function () {
-  Hue.setup_setting_elements()
   Hue.set_user_settings_titles()
-}
-
-// Sets up more settings elements
-Hue.setup_setting_elements = function () {
-  Hue.setup_togglers("settings")
 }
 
 // Setting getter

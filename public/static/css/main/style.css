@@ -712,10 +712,6 @@ a.generic:hover {
 	padding-bottom: 0.8rem;
 }
 
-.toggler_container {
-	display: none;
-}
-
 .Msg-container div {
 	scrollbar-color: var(--altcolor) transparent !important;
 }
@@ -1262,15 +1258,6 @@ select {
 	grid-gap: 1rem;
 }
 
-#user_menu_toggler_main {
-	margin-top: 2rem;
-}
-
-#user_menu_toggle_items {
-	margin-top: 0.5rem;
-	grid-gap: 0.8rem;
-}
-
 .user_menu_icon {
 	margin-right: 0.5rem;
 }
@@ -1585,10 +1572,6 @@ svg.action:hover {
 
 #admin_menu {
 	margin-top: 0.8rem;
-}
-
-#admin_menu .toggler_main_container:last-child .room_menu_toggle_container {
-	margin-bottom: 0;
 }
 
 #admin_activity_container {
@@ -2033,6 +2016,7 @@ a.special_link:hover {
 }
 
 #room_menu_more_container {
+	margin-top: 1rem;
 	grid-gap: 0.8rem;
 }
 
@@ -2040,34 +2024,17 @@ a.special_link:hover {
 	font-size: 1.1rem;
 }
 
-.room_menu_toggle {
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
-}
-
-.room_menu_toggle_container {
-	padding-top: 1rem;
-	padding-bottom: 1rem;
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
-	background-color: var(--altbackground);
-}
-
-.room_menu_section_container {
-	display: grid;
-	grid-gap: 1.6rem;
-	grid-auto-columns: auto;
-	align-items: center;
-}
-
 .room_menu_label {
 	padding-bottom: 0.5rem;
 }
 
-#room_menu_info_topic {
-	margin-top: 0.8rem;
-	padding: 0.5rem;
-	background-color: var(--altbackground);
+#room_menu_theme_container {
+	margin-top: 1.6rem;
+	grid-gap: 1.6rem;
+}
+
+#room_menu_topic_container {
+	margin-top: 1.6rem;
 }
 
 #create_room {

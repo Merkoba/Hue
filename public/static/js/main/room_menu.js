@@ -1,7 +1,5 @@
 // Setups change events for the room menu widgets
 Hue.setup_room_menu = function () {
-  Hue.setup_togglers("room_menu")
-
   $("#admin_background_color").change(function () {
     Hue.change_background_color($(this).val())
   })
@@ -95,13 +93,6 @@ Hue.setup_room_menu = function () {
   $("#admin_background_image").click(function () {
     Hue.open_background_image_select()
   })
-
-  $("#room_menu_preview").click(function () {
-    $('body').addClass("transparent_modals")
-    setTimeout(() => {
-      $('body').removeClass("transparent_modals")
-    }, 2000)
-  })
 }
 
 // Update room menu info
@@ -130,9 +121,11 @@ Hue.config_room_menu = function () {
     Hue.config_admin_room_name()
     Hue.config_admin_topic()
 
-    $("#admin_menu").css("display", "block")
+    $("#room_menu").css("display", "block")
+    $("#main_menu_room_menu").removeClass("inactive")
   } else {
-    $("#admin_menu").css("display", "none")
+    $("#room_menu").css("display", "none")
+    $("#main_menu_room_menu").addClass("inactive")
   }
 }
 

@@ -59,8 +59,6 @@ Hue.start_msg = function () {
       },
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.close_togglers("room_menu")
-        Hue.close_togglers("room_menu_permissions")
         Hue.room_menu_open = false
       }
     })
@@ -70,11 +68,7 @@ Hue.start_msg = function () {
     Object.assign({}, common, titlebar, {
       id: "user_menu",
       clear_editables: false,
-      window_width: "22rem",
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.close_togglers("user_menu")
-      },
+      window_width: "22rem"
     })
   )
 
@@ -290,11 +284,7 @@ Hue.start_msg = function () {
   Hue.msg_settings = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "settings",
-      window_width: "24rem",
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.close_togglers("settings")
-      },
+      window_width: "24rem"
     })
   )
 
@@ -791,59 +781,6 @@ Hue.create_modal = function (args = {}, ptype = "unset") {
   let modal = Msg.factory(args)
   modal.hue_type = ptype
   return modal
-}
-
-// Changes the state of a toggler
-// If enabled, it will show the container and show a -
-// If disabled it will hide the container and show a +
-Hue.set_toggler = function (type, el, action = false) {
-  let container = $(el).next(`.${type}_toggle_container`)
-  let display = container.css("display")
-
-  if (display === "none") {
-    if (action && action !== "open") {
-      return false
-    }
-
-    Hue.close_togglers(type)
-    container.css("display", "block")
-    $(el).html(`- ${$(el).html().trim().substring(2)}`)
-    container
-      .closest(".toggler_main_container")[0]
-      .scrollIntoView({ block: "center" })
-  } else {
-    if (action && action !== "close") {
-      return false
-    }
-
-    container.css("display", "none")
-    $(el).html(`+ ${$(el).html().trim().substring(2)}`)
-  }
-}
-
-// Setups toggler events
-// Togglers are elements that when clicked reveal more elements
-// They can be toggled
-Hue.setup_togglers = function (type) {
-  $(`.${type}_toggle`).each(function () {
-    $(this).click(function () {
-      Hue.set_toggler(type, this)
-    })
-  })
-}
-
-// Opens a toggler
-Hue.open_togglers = function (type) {
-  $(`.${type}_toggle`).each(function () {
-    Hue.set_toggler(type, this, "open")
-  })
-}
-
-// Closes a toggler
-Hue.close_togglers = function (type) {
-  $(`.${type}_toggle`).each(function () {
-    Hue.set_toggler(type, this, "close")
-  })
 }
 
 // Determines what to do after a 'close all modals' trigger

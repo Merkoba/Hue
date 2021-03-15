@@ -303,8 +303,6 @@ Hue.setup_user_menu = function () {
     }
   })
 
-  Hue.setup_togglers("user_menu")
-
   $("#user_menu_username").click(function () {
     Hue.show_change_username()
   })

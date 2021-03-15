@@ -1,99 +1,75 @@
 <script id='template_room_menu' type='text/x-handlebars-template' class='template'>
     <div id='room_menu'>
-        <div id='room_menu_info_name' class='bigger'></div>
-        <div id='room_menu_info_topic'></div>
-        
-        <div id='admin_menu'>
-            <div id='room_menu_main_container_theme' class='toggler_main_container'>
-                <div id='room_menu_toggle_theme' class='toggler room_menu_toggle bold action inline room_menu_category'>+ Theme</div>
+        <div id='room_menu_details_container' class='room_menu_section'>
+            <div id='room_menu_room_name_container'>
+                <div class='room_menu_label'>Name</div>
+                <input type="text" class="setting_input_text" id="admin_room_name">
+            </div>
+                    
+            <div id='room_menu_topic_container'>
+                <div class='small_padding_bottom'>Topic</div>
+                <textarea class='setting_textarea' rows=4 id="admin_topic"></textarea>
+            </div>
+        </div>
 
-                <div class='toggler_container room_menu_toggle_container'>
-                    <div class='room_menu_section_container'>
-                        <div class='room_menu_section'>
-                            <div class='room_menu_label'>Background Color</div>
-                            <input type='color' class='modal_color' id='admin_background_color'>
-                        </div>
-
-                        <div class='room_menu_section'>
-                            <div class='room_menu_label'>Text Color Mode</div>
-                            <select class='modal_select' id='admin_text_color_mode_select'>
-                                <option value="automatic">Automatic</option>
-                                <option value="custom">Custom</option>
-                            </select>
-                        </div>
-
-                        <div id='admin_text_color_container' class='room_menu_section'>
-                            <div class='room_menu_label'>Text Color</div>
-                            <input type='color' class='modal_color' id='admin_text_color'>
-                        </div>
-
-                        <div class='room_menu_section'>
-                            <div class='room_menu_label'>Background Mode</div>
-                            <select class='modal_select' id='admin_background_mode_select'>
-                                <option value="normal">Normal</option>
-                                <option value="tiled">Tiled</option>
-                                <option value="solid">Solid</option>
-                            </select>
-                        </div>
-
-                        <div id='admin_background_effect_container' class='room_menu_section'>
-                            <div class='room_menu_label'>Background Effect</div>
-                            <select class='modal_select' id='admin_background_effect_select'>
-                                <option value="none">None</option>
-                                <option value="blur">Blur</option>
-                                <option value="grayscale">Grayscale</option>
-                                <option value="saturate">Saturate</option>
-                                <option value="brightness">Brightness</option>
-                                <option value="invert">Invert</option>
-                                <option value="zoom">Zoom</option>
-                            </select>
-                        </div>
-
-                        <div id='admin_background_tile_dimensions_container' class='room_menu_section'>
-                            <div class='small_padding_bottom'>Tile Dimensions</div>
-                            <input type='text' class='setting_input_text_small' id='admin_background_tile_dimensions' title='CSS background-size property (width and height). For example 200px 200px, 100px auto, auto 100px, or 100px 200px'>
-                        </div>
-
-                        <div id='admin_background_image_container' class='room_menu_section'>
-                            <img id='admin_background_image' class='small_square_image pointer'>
-                        </div>
-
-                        <div id='room_menu_preview' class='action'>Click To Preview</div>
-                    </div>
-                </div>
+        <div id='room_menu_theme_container' class='room_menu_section grid_column_center'>
+            <div>
+                <div class='room_menu_label'>Background Color</div>
+                <input type='color' class='modal_color' id='admin_background_color'>
             </div>
 
-            <div id='room_menu_main_container_details' class='toggler_main_container'>
-                <div id='room_menu_toggle_details' class='toggler room_menu_toggle bold action inline room_menu_category'>+ Details</div>
-                <div class='toggler_container room_menu_toggle_container'>
-                    <div class='room_menu_section_container'>
-                        <div id='room_menu_room_name_container' class='room_menu_section'>
-                            <div class='room_menu_label'>Room Name</div>
-                            <input type="text" class="setting_input_text" id="admin_room_name">
-                        </div>
-                        
-                        <div id='room_menu_topic_container' class='room_menu_section'>
-                            <div class='small_padding_bottom'>Topic</div>
-                            <textarea class='setting_textarea' rows=4 id="admin_topic"></textarea>
-                        </div>
-                    </div>
-                </div>
+            <div>
+                <div class='room_menu_label'>Text Color Mode</div>
+                <select class='modal_select' id='admin_text_color_mode_select'>
+                    <option value="automatic">Automatic</option>
+                    <option value="custom">Custom</option>
+                </select>
             </div>
 
-            <div id='room_menu_main_container_more' class='toggler_main_container'>
-                <div id='room_menu_toggle_more' class='toggler room_menu_toggle bold action inline room_menu_category'>+ More</div>
-
-                <div class='toggler_container room_menu_toggle_container'>
-                    <div id='room_menu_more_container' class='grid_column_center'>
-                        <div id='room_menu_more_clear_log' class='action'>Clear Log</div>
-                        <div id='room_menu_more_admin_activity' class='action'>Admin Activity</div>
-                        <div id='room_menu_more_admin_list' class='action'>Admin List</div>
-                        <div id='room_menu_more_ban_list' class='action'>Ban List</div>
-                        <div id='room_menu_more_unban_all' class='action'>Unban All</div>
-                        <div id='room_menu_more_clear_message_board' class='action'>Clear Msg Board</div>
-                    </div>
-                </div>
+            <div id='admin_text_color_container'>
+                <div class='room_menu_label'>Text Color</div>
+                <input type='color' class='modal_color' id='admin_text_color'>
             </div>
+
+            <div>
+                <div class='room_menu_label'>Background Mode</div>
+                <select class='modal_select' id='admin_background_mode_select'>
+                    <option value="normal">Normal</option>
+                    <option value="tiled">Tiled</option>
+                    <option value="solid">Solid</option>
+                </select>
+            </div>
+
+            <div id='admin_background_effect_container'>
+                <div class='room_menu_label'>Background Effect</div>
+                <select class='modal_select' id='admin_background_effect_select'>
+                    <option value="none">None</option>
+                    <option value="blur">Blur</option>
+                    <option value="grayscale">Grayscale</option>
+                    <option value="saturate">Saturate</option>
+                    <option value="brightness">Brightness</option>
+                    <option value="invert">Invert</option>
+                    <option value="zoom">Zoom</option>
+                </select>
+            </div>
+
+            <div id='admin_background_tile_dimensions_container'>
+                <div class='small_padding_bottom'>Tile Dimensions</div>
+                <input type='text' class='setting_input_text_small' id='admin_background_tile_dimensions' title='CSS background-size property (width and height). For example 200px 200px, 100px auto, auto 100px, or 100px 200px'>
+            </div>
+
+            <div id='admin_background_image_container'>
+                <img id='admin_background_image' class='small_square_image pointer'>
+            </div>
+        </div>
+
+        <div id='room_menu_more_container' class='room_menu_section grid_column_center'>
+            <div id='room_menu_more_clear_log' class='action'>Clear Log</div>
+            <div id='room_menu_more_admin_activity' class='action'>Admin Activity</div>
+            <div id='room_menu_more_admin_list' class='action'>Admin List</div>
+            <div id='room_menu_more_ban_list' class='action'>Ban List</div>
+            <div id='room_menu_more_unban_all' class='action'>Unban All</div>
+            <div id='room_menu_more_clear_message_board' class='action'>Clear Msg Board</div>
         </div>
     </div>
 </script>
