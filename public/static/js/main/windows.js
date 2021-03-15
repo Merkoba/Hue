@@ -10,7 +10,7 @@ Hue.setup_templates = function () {
 Hue.start_msg = function () {
   let common = {
     clear_editables: true,
-    class: "modal !glowborder",
+    class: "modal",
     show_effect: "none",
     close_effect: "none",
     after_create: function (instance) {
