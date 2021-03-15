@@ -96,10 +96,6 @@ Hue.setup_room_menu = function () {
     Hue.show_create_room()
   })
 
-  $("#room_menu_status").click(function () {
-    Hue.show_room_status()
-  })
-
   $("#admin_background_image").click(function () {
     Hue.open_background_image_select()
   })
@@ -112,8 +108,15 @@ Hue.setup_room_menu = function () {
   })
 }
 
+// Update room menu info
+Hue.update_room_menu_info = function () {
+  $("#room_menu_info_name").text(Hue.room_name)
+  $("#room_menu_info_topic").text(Hue.topic)
+}
+
 // Shows the room menu
 Hue.show_room_menu = function () {
+  Hue.update_room_menu_info()
   Hue.msg_room_menu.show()
 }
 

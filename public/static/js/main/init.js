@@ -120,6 +120,7 @@ Hue.max_fresh_messages = 100
 Hue.fresh_messages_duration = 3000
 Hue.chat_crop_limit = 500
 Hue.userlist_open = false
+Hue.room_menu_open = false
 Hue.old_input_val = ""
 Hue.old_reply_input_val = ""
 Hue.notifications_count = 0

@@ -106,12 +106,6 @@ Hue.commands = {
     },
     description: "Changes the image with a URL",
   },
-  "status": {
-    action: (arg, ans) => {
-      Hue.show_room_status()
-    },
-    description: `Shows the room status window`,
-  },
   "topic": {
     action: (arg, ans) => {
       if (arg) {

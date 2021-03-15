@@ -49,14 +49,6 @@ Hue.save_room_state = function () {
   Hue.save_local_storage(Hue.ls_room_state, room_state_all)
 }
 
-// Shows a window with room details
-Hue.show_room_status = function () {
-  Hue.msg_room_status.show(function () {
-    $("#room_status_name").text(Hue.room_name)
-    $("#room_status_topic").text(Hue.get_topic())
-  })
-}
-
 // Show the room name
 Hue.show_room_name = function () {
   Hue.feedback(`Room: ${Hue.room_name}`)
@@ -128,13 +120,14 @@ Hue.announce_room_name_change = function (data) {
       data.username,
       `${data.username} changed the room name`
     )
+    
     Hue.set_room_name(data.name)
     Hue.update_title()
     Hue.update_input_placeholder()
-  }
 
-  if (Hue.room_status_open) {
-    Hue.show_room_status()
+    if (Hue.room_menu_open) {
+      Hue.update_room_menu_info()
+    }
   }
 }
 
@@ -170,12 +163,13 @@ Hue.announce_topic_change = function (data) {
       data.username,
       `${data.username} changed the topic`
     )
+
     Hue.set_topic_info(data)
     Hue.update_title()
-  }
 
-  if (Hue.room_status_open) {
-    Hue.show_room_status()
+    if (Hue.room_menu_open) {
+      Hue.update_room_menu_info()
+    }
   }
 }
 

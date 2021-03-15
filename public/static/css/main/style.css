@@ -2032,10 +2032,6 @@ a.special_link:hover {
 	margin: auto;
 }
 
-#room_menu {
-	user-select: none;
-}
-
 #room_menu_more_container {
 	grid-gap: 0.8rem;
 }
@@ -2066,6 +2062,14 @@ a.special_link:hover {
 
 .room_menu_label {
 	padding-bottom: 0.5rem;
+}
+
+#room_menu_info_topic {
+	margin-top: 0.8rem;
+}
+
+#room_menu_create_room {
+	margin-top: 1rem;
 }
 
 #create_room {
