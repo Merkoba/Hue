@@ -67,7 +67,9 @@ Hue.setup_room_menu = function () {
   })
 
   $("#room_menu_more_unban_all").click(function () {
-    Hue.needs_confirm("unban_all")
+    Hue.show_confirm("Unban All", `This will unban all the users that are banned from this room`, function () {
+      Hue.unban_all()
+    })
   })
 
   $("#room_menu_more_admin_activity").click(function () {
@@ -83,11 +85,17 @@ Hue.setup_room_menu = function () {
   })
 
   $("#room_menu_more_clear_log").click(function () {
-    Hue.needs_confirm("clear_log")
+    Hue.show_confirm("Clear Log", `The log are recent messages that are stored for context. 
+      The log is limited to ${Hue.config.max_log_messages} messages.`, function () {
+      Hue.clear_log()
+    })
   })
 
   $("#room_menu_more_clear_message_board").click(function () {
-    Hue.needs_confirm("clear_message_board")
+    Hue.show_confirm("Clear Message Board", `The message board is limited to ${Hue.config.max_message_board_posts} posts. 
+    This will remove all message board posts`, function () {
+      Hue.clear_message_board()
+    })
   })
 
   $("#admin_background_image").click(function () {

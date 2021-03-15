@@ -153,6 +153,10 @@ Hue.on_message_board_received = function (data) {
     let item = Hue.make_info_popup_item({icon: "pencil", message: "New message board post", on_click:func})
     Hue.show_popup(Hue.make_info_popup(func), item)
   }
+
+  if (Hue.message_board_open) {
+    Hue.update_last_message_post_checked()
+  }
 }
 
 // Checks if there are new message board posts
