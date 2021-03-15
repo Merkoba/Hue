@@ -742,6 +742,20 @@ a.generic:hover {
 	background-color: #b17fbf !important;
 }
 
+.Msg-overlay {
+	background-color: var(--altcolor_a) !important;
+	color: var(--background_color) !important;
+}
+
+.Msg-window, .overlay_same_color {
+	background-color: var(--background_color) !important;
+	color: var(--font_color) !important;
+}
+
+.Msg-window-inner-x:hover {
+	background-color: var(--altbackground) !important;
+}
+
 .filter_input {
 	top: 0;
 	width: 14rem;
@@ -2317,24 +2331,6 @@ pre {
 
 .redtext {
 	color: rgb(223, 76, 76);
-}
-
-.transparent_modals .Msg-container {
-	opacity: 0;
-}
-
-.Msg-overlay {
-	background-color: var(--altcolor_a) !important;
-	color: var(--background_color) !important;
-}
-
-.Msg-window, .overlay_same_color {
-	background-color: var(--background_color) !important;
-	color: var(--font_color) !important;
-}
-
-.Msg-window-inner-x:hover {
-	background-color: var(--altbackground) !important;
 }
 
 .custom_popup {
