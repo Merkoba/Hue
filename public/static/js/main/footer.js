@@ -49,7 +49,6 @@ Hue.enable_footer_expand = function () {
   }
 
   $("#footer").addClass("footer_expanded")
-  $(`#footer_expand`).find("use").eq(0).attr("href", "#icon_down")
   Hue.after_footer_expand_change()
 }
 
@@ -60,7 +59,6 @@ Hue.disable_footer_expand = function () {
   }
 
   $("#footer").removeClass("footer_expanded")
-  $(`#footer_expand`).find("use").eq(0).attr("href", "#icon_up")
   Hue.after_footer_expand_change()
 }
 
