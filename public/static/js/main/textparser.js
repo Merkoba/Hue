@@ -79,12 +79,3 @@ Hue.parse_text = function (text) {
 
   return text
 }
-
-// Removes unwanted formatting from chat messages
-Hue.remove_parsed_text_from_message = function (message) {
-  message = message.replace(/\[.*?\](.+?)\[\/.*?\]/gm, function (a, b) {
-    return b
-  })
-
-  return message
-}

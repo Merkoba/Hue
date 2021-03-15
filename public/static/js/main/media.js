@@ -626,11 +626,6 @@ Hue.apply_media_info = function (type) {
   }
 
   let info = ""
-
-  if (item.comment) {
-    info = Hue.remove_parsed_text_from_message(item.comment)
-  }
-
   let title = custom_title || item.title || ""
 
   if (title) {
@@ -639,6 +634,8 @@ Hue.apply_media_info = function (type) {
     }
 
     info += title
+  } else if (item.comment) {
+    info = item.comment
   }
 
   if (!info) {
