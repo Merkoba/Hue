@@ -342,10 +342,6 @@ Hue.setup_user_menu = function () {
   $("#user_menu_change_email").click(function () {
     Hue.show_change_email()    
   })
-
-  $("#user_menu_request_notifications").click(function () {
-    Hue.request_desktop_notifications_permission()
-  })
 }
 
 // Updates some user menu elements
