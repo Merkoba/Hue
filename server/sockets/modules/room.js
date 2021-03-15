@@ -197,8 +197,6 @@ module.exports = function (
       modified: Date.now(),
       last_image_change: 0,
       last_tv_change: 0,
-      text_ad_charge: 0,
-      attempting_text_ad: false,
       message_board_posts: info.message_board_posts
     }
 
