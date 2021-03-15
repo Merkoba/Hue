@@ -15,6 +15,10 @@ Hue.setup_main_menu = function () {
   $("#main_menu_commands").click(function () {
     Hue.show_commands()
   })
+
+  $("#main_menu_create_room").click(function () {
+    Hue.show_create_room()
+  })
 }
 
 // Show the main menu

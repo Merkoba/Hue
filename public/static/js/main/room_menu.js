@@ -92,10 +92,6 @@ Hue.setup_room_menu = function () {
     Hue.needs_confirm("clear_message_board")
   })
 
-  $("#room_menu_create_room").click(function () {
-    Hue.show_create_room()
-  })
-
   $("#admin_background_image").click(function () {
     Hue.open_background_image_select()
   })
@@ -111,7 +107,7 @@ Hue.setup_room_menu = function () {
 // Update room menu info
 Hue.update_room_menu_info = function () {
   $("#room_menu_info_name").text(Hue.room_name)
-  $("#room_menu_info_topic").text(Hue.topic)
+  $("#room_menu_info_topic").text(Hue.topic || "No Topic Set")
 }
 
 // Shows the room menu
