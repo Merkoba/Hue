@@ -857,6 +857,7 @@ Hue.set_role = function (rol, config = true) {
   
   if (config) {
     Hue.config_room_menu()
+    Hue.config_main_menu()
   }
 
   $("#user_menu_role").text(`(${Hue.get_pretty_role_name(rol)})`)

@@ -25,3 +25,14 @@ Hue.setup_main_menu = function () {
 Hue.show_main_menu = function () {
   Hue.msg_main_menu.show()
 }
+
+// Configure main menu based on role
+Hue.config_main_menu = function () {
+  if (Hue.is_admin_or_op()) {
+    $("#main_menu_room_menu").css("display", "block")
+  } else {
+    $("#main_menu_room_menu").css("display", "none")
+  }
+
+  Hue.vertical_separator.separate("main_menu")
+}

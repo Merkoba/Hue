@@ -128,12 +128,6 @@ Hue.config_room_menu = function () {
     Hue.config_admin_text_color()
     Hue.config_admin_room_name()
     Hue.config_admin_topic()
-
-    $("#room_menu").css("display", "block")
-    $("#main_menu_room_menu").removeClass("inactive")
-  } else {
-    $("#room_menu").css("display", "none")
-    $("#main_menu_room_menu").addClass("inactive")
   }
 }
 

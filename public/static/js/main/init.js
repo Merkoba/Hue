@@ -273,6 +273,7 @@ Hue.on_join = function (data) {
   Hue.check_firstime()
   Hue.show_joined()
   Hue.config_room_menu()
+  Hue.config_main_menu()
   Hue.check_latest_highlight()
   Hue.init_message_board(data)
   Hue.start_active_media()
