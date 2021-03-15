@@ -105,8 +105,6 @@ module.exports = function (
         }
 
         handler.push_log_message(socket, message)
-
-        handler.charge_ads(socket.hue_room_id)
       }
 
       vars.rooms[socket.hue_room_id].modified = Date.now()

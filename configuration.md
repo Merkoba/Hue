@@ -327,15 +327,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_sockets_per_user"
 >How many active sockets a user can have at the same time. After this limit all incoming socket connections are droppped.
 
-"text_ads_enabled"
->Whether text ads are enabled.
-
-"text_ads_json_location"
->Location of the JSON file containing the ads strings.
-
-"text_ads_threshold"
->On how many chat messages sent to try to provide a text ad.
-
 "activity_bar_interval"
 >How often to check for obsolete items in the top activity bar to remove them.
 

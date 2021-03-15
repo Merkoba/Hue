@@ -1660,21 +1660,6 @@ Hue.check_scrollers = function () {
   }
 }
 
-// Shows a system announcement
-// Used for ads
-Hue.show_announcement = function (data, date = Date.now()) {
-  Hue.public_feedback(data.message, {
-    id: data.id,
-    brk: Hue.get_chat_icon("star"),
-    date: date,
-    preview_image: true,
-    link_title: data.link_title,
-    link_description: data.link_description,
-    link_image: data.link_image,
-    link_url: data.link_url,
-  })
-}
-
 // Scrolls the chat to the top
 Hue.goto_top = function () {
   Hue.scroll_chat_to(0)
@@ -1769,9 +1754,6 @@ Hue.show_log_messages = function (log_messages) {
           data.id = id
           data.date = date
           Hue.setup_tv("show", data)
-        } else if (type === "announcement") {
-          data.id = id
-          Hue.show_announcement(data, date)
         }
       }
     }

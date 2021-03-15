@@ -218,9 +218,6 @@ Hue.server_update_events = {
   message_deleted: (data) => {
     Hue.remove_message_from_chat(data)
   },
-  announcement: (data) => {
-    Hue.show_announcement(data)
-  },
   bio_changed: (data) => {
     Hue.bio_changed(data)
   },

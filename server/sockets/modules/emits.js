@@ -64,38 +64,6 @@ module.exports = function (
     io.emit("update", obj)
   }
 
-  // Sends an announcement to a room
-  // This is used to send ads
-  handler.send_announcement_to_room = function (room_id, message) {
-    handler.process_message_links(message, function (response) {
-      let id = handler.generate_message_id()
-
-      handler.room_emit(room_id, "announcement", {
-        id: id,
-        message: message,
-        link_title: response.title,
-        link_description: response.description,
-        link_image: response.image,
-        link_url: response.url,
-      })
-
-      let message_ = {
-        id: id,
-        type: "announcement",
-        date: Date.now(),
-        data: {
-          message: message,
-          link_title: response.title,
-          link_description: response.description,
-          link_image: response.image,
-          link_url: response.url,
-        },
-      }
-
-      handler.push_log_message(room_id, message_)
-    })
-  }
-
   // Sends system restart signals
   handler.public.system_restart_signal = function (socket, data) {
     if (!socket.hue_superuser) {
