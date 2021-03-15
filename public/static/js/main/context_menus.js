@@ -297,7 +297,7 @@ Hue.start_user_context_menu = function () {
         callback: function (key, opt) {
           let el = this
 
-          Hue.show_confirm("Give Voice Role", "No operator role", function () {
+          Hue.show_confirm("Give Voice Role", "Can interact with users and change media but no operator abilities", function () {
             let arg = el.data("username")
             Hue.change_role(arg, "voice")
           })
@@ -315,7 +315,7 @@ Hue.start_user_context_menu = function () {
         callback: function (key, opt) {
           let el = this
 
-          Hue.show_confirm("Give Op Role", "Give operator role. Gives access to the room menu", function () {
+          Hue.show_confirm("Give Op Role", "Enables access to the room menu and operator commands", function () {
             let arg = el.data("username")
             Hue.change_role(arg, "op")
           })
@@ -333,7 +333,7 @@ Hue.start_user_context_menu = function () {
         callback: function (key, opt) {
           let el = this
 
-          Hue.show_confirm("Give Admin Role", "Operator role and ability to add/remove operators ", function () {
+          Hue.show_confirm("Give Admin Role", "Operator abilities plus can add/remove operators ", function () {
             let arg = el.data("username")
             Hue.change_role(arg, "admin")
           })
