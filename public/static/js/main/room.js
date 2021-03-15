@@ -120,14 +120,10 @@ Hue.announce_room_name_change = function (data) {
       data.username,
       `${data.username} changed the room name`
     )
-    
+
     Hue.set_room_name(data.name)
     Hue.update_title()
     Hue.update_input_placeholder()
-
-    if (Hue.room_menu_open) {
-      Hue.update_room_menu_info()
-    }
   }
 }
 
@@ -166,10 +162,6 @@ Hue.announce_topic_change = function (data) {
 
     Hue.set_topic_info(data)
     Hue.update_title()
-
-    if (Hue.room_menu_open) {
-      Hue.update_room_menu_info()
-    }
   }
 }
 
