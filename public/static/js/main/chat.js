@@ -613,10 +613,13 @@ Hue.add_to_chat = function (args = {}) {
         }
       }
     }
+  }
+  
+  if (is_public && user_id) {
+    Hue.last_chat_user_id = user_id
     
-    if (is_public && user_id) {
+    if (Hue.started) {
       Hue.update_user_activity(user_id)
-      Hue.last_chat_user_id = user_id
     }
   }
 
