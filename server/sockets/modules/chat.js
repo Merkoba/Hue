@@ -228,8 +228,8 @@ module.exports = function (
           message_type === "tv"
         ) {
           if (room[`current_${message_type}_id`] === message_id) {
-            handler[`do_change_${message_type}_source`](socket, {
-              src: "default",
+            handler[`do_change_${message_type}`](socket, {
+              src: "",
               setter: "",
             })
           }

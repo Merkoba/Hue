@@ -96,7 +96,7 @@ module.exports = function (
               if (response.items !== undefined && response.items.length > 0) {
                 data.type = "youtube"
                 data.title = response.items[0].snippet.title
-                handler.do_change_tv_source(socket, data)
+                handler.do_change_tv(socket, data)
               } else {
                 handler.user_emit(socket, "video_not_found", {})
                 return false
@@ -122,7 +122,7 @@ module.exports = function (
         if (info && info[0] === "channel") {
           data.type = "twitch"
           data.title = info[1]
-          handler.do_change_tv_source(socket, data)
+          handler.do_change_tv(socket, data)
         } else {
           handler.user_emit(socket, 'video_not_found', {})
           return false
@@ -152,7 +152,7 @@ module.exports = function (
                 data.title = data.src
               }
 
-              handler.do_change_tv_source(socket, data)
+              handler.do_change_tv(socket, data)
             }
           }
         )
@@ -208,7 +208,7 @@ module.exports = function (
                 handler.user_emit(socket, "cannot_embed_iframe", {})
                 return false
               } else {
-                handler.do_change_tv_source(socket, data)
+                handler.do_change_tv(socket, data)
               }
             })
 
@@ -216,7 +216,7 @@ module.exports = function (
               handler.user_emit(socket, "cannot_embed_iframe", {})
             })
         } else {
-          handler.do_change_tv_source(socket, data)
+          handler.do_change_tv(socket, data)
         }
       }
     } else {
@@ -252,7 +252,7 @@ module.exports = function (
               data.query = data.src
               data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
               data.title = response.items[0].snippet.title
-              handler.do_change_tv_source(socket, data)
+              handler.do_change_tv(socket, data)
               return
             }
 
@@ -270,17 +270,17 @@ module.exports = function (
   }
 
   // Completes tv source changes
-  handler.do_change_tv_source = function (socket, data) {
+  handler.do_change_tv = function (socket, data) {
     let tvinfo = {}
     let date = Date.now()
     let query = data.query || ""
     let comment = data.comment || ""
 
-    tvinfo.tv_type = data.type
-    tvinfo.tv_source = data.src
-    tvinfo.tv_title = vars.he.decode(data.title)
+    tvinfo.tv_type = data.type || ""
+    tvinfo.tv_source = data.src || ""
+    tvinfo.tv_title = vars.he.decode(data.title || "")
     tvinfo.tv_query = query
-    tvinfo.tv_setter = data.setter
+    tvinfo.tv_setter = data.setter || ""
     tvinfo.tv_date = date
     tvinfo.tv_comment = comment
 
