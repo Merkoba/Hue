@@ -41,8 +41,6 @@ Users can create their own room, where they are Admins as default. There's a coo
 
 There are Visited Rooms and Public Rooms lists. Visited Rooms shows the status of rooms you have visited recently, while Public Rooms show rooms that are set to public and have had activity recently.
 
-There is support for non-intrusive text ads which display a custom chat message every x number of posts.
-
 Creating an account is email based. There is no third party auth, except an optional ReCaptcha. This is to retain some autonomy and avoid complexity. After registration, a confirmation link is sent, clicking it is required to activate the account and be able to login. There is a password recovery feature if a valid email is provided. Currently a Mailgun account is required to handle email sending. The username, password, and email can be changed. Email change requires a verification link in the new email address to be clicked.
 
 [Installation](installation.md)
