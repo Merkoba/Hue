@@ -271,7 +271,6 @@ Hue.chat_announce = function (args = {}) {
     public: false,
     comment: "",
     comment_icon: true,
-    comment_onclick: false,
     user_id: false,
     parse_text: false,
     in_log: true,
@@ -374,11 +373,6 @@ Hue.chat_announce = function (args = {}) {
     if (args.username) {
       Hue.setup_whispers_click(comment_el, args.username)
     }
-
-    if (args.comment_onclick) {
-      comment_el.click(args.comment_onclick)
-      comment_el.addClass("special_link")
-    }
   }
 
   let pif = function () {
@@ -448,7 +442,7 @@ Hue.add_to_chat = function (args = {}) {
   let is_public = args.message.data("public")
   let highlighted = args.message.data("highlighted")
   let content_container, message_id
-  
+
   if (mode === "chat") {
     content_container = args.message.find(".chat_content_container").eq(0)
     Hue.chat_content_container_id += 1
@@ -542,10 +536,10 @@ Hue.add_to_chat = function (args = {}) {
       }
     }
   }
-  
+
   if (is_public && user_id) {
     Hue.last_chat_user_id = user_id
-    
+
     if (Hue.started) {
       Hue.update_user_activity(user_id)
     }
