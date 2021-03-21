@@ -418,7 +418,7 @@ Hue.add_chat_announcement = function (args = {}) {
   }
 }
 
-// This is a centralized function to insert all chat or announcement messages into the chat
+// This is a centralized function to insert all messages or announcements into the chat
 Hue.add_to_chat = function (args = {}) {
   let def_args = {
     id: false,
