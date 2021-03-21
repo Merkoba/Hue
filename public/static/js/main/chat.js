@@ -1,5 +1,5 @@
 // This generates all user chat messages inserted into the chat
-Hue.update_chat = function (args = {}) {
+Hue.add_chat_message = function (args = {}) {
   let def_args = {
     id: false,
     user_id: false,
@@ -253,7 +253,7 @@ Hue.update_chat = function (args = {}) {
 }
 
 // This generates all announcements inserted into the chat
-Hue.chat_announce = function (args = {}) {
+Hue.add_chat_announcement = function (args = {}) {
   let def_args = {
     id: false,
     brk: "",
@@ -1166,7 +1166,7 @@ Hue.jump_to_chat_message = function (message_id) {
 
 // What to do after receiving a chat message from the server
 Hue.on_chat_message = function (data) {
-  Hue.update_chat({
+  Hue.add_chat_message({
     id: data.id,
     user_id: data.user_id,
     username: data.username,
@@ -1657,7 +1657,7 @@ Hue.show_log_messages = function (log_messages) {
 
       if (data) {
         if (type === "chat") {
-          Hue.update_chat({
+          Hue.add_chat_message({
             id: id,
             user_id: data.user_id,
             username: data.username,
@@ -1709,7 +1709,7 @@ Hue.feedback = function (message, data = false) {
     obj.brk = `<div class='inline'>${obj.brk}</div>`
   }
 
-  return Hue.chat_announce(obj)
+  return Hue.add_chat_announcement(obj)
 }
 
 // Centralized function to show public announcement messages
@@ -1728,7 +1728,7 @@ Hue.public_feedback = function (message, data = false) {
     obj.brk = `<div class='inline'>${obj.brk}</div>`
   }
 
-  return Hue.chat_announce(obj)
+  return Hue.add_chat_announcement(obj)
 }
 
 // Removes a message above or below a message with a certain ID
