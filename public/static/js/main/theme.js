@@ -79,7 +79,6 @@ Hue.change_background_color = function (color) {
   }
 
   if (color === Hue.background_color) {
-    Hue.feedback("Theme is already set to that")
     return false
   }
 
@@ -243,7 +242,6 @@ Hue.change_text_color = function (color) {
   }
 
   if (color === Hue.text_color) {
-    Hue.feedback("Text color is already set to that")
     return false
   }
 
