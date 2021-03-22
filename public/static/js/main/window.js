@@ -72,8 +72,6 @@ Hue.process_visibility = function () {
 
   if (Hue.app_focused) {
     Hue.on_app_focused()
-  } else {
-    Hue.on_app_unfocused()
   }
 }
 
@@ -84,11 +82,6 @@ Hue.on_app_focused = function () {
   Hue.remove_alert_title()
   Hue.show_fresh_messages()
   Hue.focus_input()
-}
-
-// This runs when the client loses visibility
-Hue.on_app_unfocused = function () {
-  Hue.goto_bottom()
 }
 
 // Starts window resize events

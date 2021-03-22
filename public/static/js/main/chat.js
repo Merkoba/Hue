@@ -1289,8 +1289,8 @@ Hue.do_chat_size_change = function (size) {
 }
 
 // Scrolls the chat to a certain vertical position
-Hue.scroll_chat_to = function (scroll_top) {
-  $("#chat_area").scrollTop(scroll_top)
+Hue.scroll_chat_to = function (scrolltop) {
+  $("#chat_area").scrollTop(scrolltop)
 }
 
 // Scrolls the chat up
@@ -1510,7 +1510,7 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
 // Starts chat area scroll events
 Hue.scroll_events = function () {
   $("#chat_area")[0].addEventListener("scroll", function (e) {
-    Hue.check_scrollers()
+    Hue.scroll_timer()
   })
 }
 
@@ -1598,15 +1598,8 @@ Hue.goto_bottom = function (force = false) {
 
   let $ch = $("#chat_area")
   let max = $ch.prop("scrollHeight") - $ch.innerHeight()
-  let scroll = false
 
-  if (force) {
-    scroll = true
-  } else if (!Hue.chat_scrolled) {
-    scroll = true
-  }
-
-  if (scroll) {
+  if (force || !Hue.chat_scrolled) {
     Hue.scroll_chat_to(max)
   }
 }

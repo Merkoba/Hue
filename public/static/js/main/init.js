@@ -65,6 +65,7 @@ Hue.tv_visible = true
 Hue.modal_image_open = false
 Hue.filter_delay = 350
 Hue.resize_delay = 350
+Hue.scroll_delay = 350
 Hue.wheel_delay = 100
 Hue.wheel_delay_2 = 25
 Hue.emit_queue = []

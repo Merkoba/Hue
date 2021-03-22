@@ -32,6 +32,11 @@ Hue.create_debouncers = function () {
     Hue.on_resize()
   }, Hue.resize_delay)
 
+  // Starts chat area scroll events
+  Hue.scroll_timer = Hue.create_debouncer(function () {
+    Hue.check_scrollers()
+  }, Hue.scroll_delay)
+
   // Debounce timer for chat search filter
   Hue.chat_search_timer = Hue.create_debouncer(function () {
     Hue.show_chat_search($("#chat_search_filter").val())
