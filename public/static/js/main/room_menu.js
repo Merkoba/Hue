@@ -4,32 +4,6 @@ Hue.setup_room_menu = function () {
     Hue.change_background_color($(this).val())
   })
 
-  $("#admin_background_mode_select").change(function () {
-    let what = $("#admin_background_mode_select option:selected").val()
-    Hue.change_background_mode(what)
-  })
-
-  $("#admin_background_effect_select").change(function () {
-    let what = $("#admin_background_effect_select option:selected").val()
-    Hue.change_background_effect(what)
-  })
-
-  $("#admin_background_tile_dimensions").blur(function () {
-    let what = Hue.utilz.clean_string2($(this).val())
-
-    if (what === "") {
-      $("#admin_background_tile_dimensions").val(Hue.background_tile_dimensions)
-      return false
-    }
-
-    Hue.change_background_tile_dimensions(what)
-  })
-
-  $("#admin_text_color_mode_select").change(function () {
-    let what = $("#admin_text_color_mode_select option:selected").val()
-    Hue.change_text_color_mode(what)
-  })
-
   $("#admin_text_color").change(function () {
     Hue.change_text_color($(this).val())
   })
@@ -113,61 +87,11 @@ Hue.show_room_menu = function () {
 Hue.config_room_menu = function () {
   if (Hue.is_admin_or_op()) {
     Hue.config_admin_background_color()
-    Hue.config_admin_background_mode()
-    Hue.config_admin_background_effect()
-    Hue.config_admin_background_tile_dimensions()
     Hue.config_admin_background_image()
-    Hue.config_admin_text_color_mode()
     Hue.config_admin_text_color()
     Hue.config_admin_room_name()
     Hue.config_admin_topic()
   }
-}
-
-// Updates the background widgets in the room menu based on current state
-Hue.config_admin_background_mode = function () {
-  if (!Hue.is_admin_or_op()) {
-    return false
-  }
-
-  $("#admin_background_mode_select")
-    .find("option")
-    .each(function () {
-      if ($(this).val() === Hue.background_mode) {
-        $(this).prop("selected", true)
-      }
-    })
-
-  $("#admin_background_effect_select")
-    .find("option")
-    .each(function () {
-      if ($(this).val() === Hue.background_effect) {
-        $(this).prop("selected", true)
-      }
-    })
-
-  if (Hue.background_mode === "normal") {
-    $("#admin_background_tile_dimensions_container").css("display", "none")
-    $("#admin_background_image_container").css("display", "block")
-    $("#admin_background_effect_container").css("display", "block")
-  } else if (Hue.background_mode === "tiled") {
-    $("#admin_background_tile_dimensions_container").css("display", "block")
-    $("#admin_background_image_container").css("display", "block")
-    $("#admin_background_effect_container").css("display", "block")
-  } else if (Hue.background_mode === "solid") {
-    $("#admin_background_tile_dimensions_container").css("display", "none")
-    $("#admin_background_image_container").css("display", "none")
-    $("#admin_background_effect_container").css("display", "none")
-  }
-}
-
-// Updates background tile dimension widget in the room menu based on current state
-Hue.config_admin_background_tile_dimensions = function () {
-  if (!Hue.is_admin_or_op()) {
-    return false
-  }
-
-  $("#admin_background_tile_dimensions").val(Hue.background_tile_dimensions)
 }
 
 // Updates the background image widget in the room menu based on current state
@@ -185,38 +109,6 @@ Hue.config_admin_background_image = function () {
         Hue.config.default_background_image_url
       )
     }
-  }
-}
-
-// Updates the background effect widget in the room menu based on current state
-Hue.config_admin_background_effect = function () {
-  $("#admin_background_effect_select")
-    .find("option")
-    .each(function () {
-      if ($(this).val() === Hue.background_effect) {
-        $(this).prop("selected", true)
-      }
-    })
-}
-
-// Updates the text color mode widget in the room menu based on current state
-Hue.config_admin_text_color_mode = function () {
-  if (!Hue.is_admin_or_op()) {
-    return false
-  }
-
-  $("#admin_text_color_mode_select")
-    .find("option")
-    .each(function () {
-      if ($(this).val() === Hue.text_color_mode) {
-        $(this).prop("selected", true)
-      }
-    })
-
-  if (Hue.text_color_mode === "custom") {
-    $("#admin_text_color_container").css("display", "block")
-  } else {
-    $("#admin_text_color_container").css("display", "none")
   }
 }
 

@@ -55,35 +55,6 @@ body * {
 	background-position: center center;
 }
 
-.background_image_blur {
-	filter: blur(0.47rem);
-}
-
-.background_image_grayscale {
-	filter: grayscale(100);
-}
-
-.background_image_saturate {
-	filter: saturate(8);
-}
-
-.background_image_brightness {
-	filter: brightness(2.5);
-}
-
-.background_image_invert {
-	filter: invert(1);
-}
-
-.background_image_zoom {
-	transform: scale(2,2);
-}
-
-.background_image_tiled {
-	background-size: var(--bg_tile_dimensions);
-	background-repeat: repeat;
-}
-
 #header {
 	display: flex;
 	flex-direction: row;

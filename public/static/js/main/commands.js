@@ -439,35 +439,11 @@ Hue.commands = {
     },
     description: `Changes the background color to a specified hex color`,
   },
-  "textcolormode": {
-    action: (arg, ans) => {
-      Hue.change_text_color_mode(arg)
-    },
-    description: `Changes the text color mode. Valid modes include automatic, and custom`,
-  },
   "textcolor": {
     action: (arg, ans) => {
       Hue.change_text_color(arg)
     },
     description: `Changes the text color to a specified hex color`,
-  },
-  "backgroundmode": {
-    action: (arg, ans) => {
-      Hue.change_background_mode(arg)
-    },
-    description: `Changes the background mode. Valid modes include normal, tiled, and solid`,
-  },
-  "backgroundeffect": {
-    action: (arg, ans) => {
-      Hue.change_background_effect(arg)
-    },
-    description: `Changes the background effect mode. Valid modes include none and blur`,
-  },
-  "tiledimensions": {
-    action: (arg, ans) => {
-      Hue.change_background_tile_dimensions(arg)
-    },
-    description: `Changes the dimension for tiled backgrounds`,
   },
   "adminactivity": {
     action: (arg, ans) => {

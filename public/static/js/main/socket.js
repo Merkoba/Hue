@@ -139,18 +139,6 @@ Hue.server_update_events = {
   background_image_changed: (data) => {
     Hue.announce_background_image_change(data)
   },
-  background_mode_changed: (data) => {
-    Hue.announce_background_mode_change(data)
-  },
-  background_effect_changed: (data) => {
-    Hue.announce_background_effect_change(data)
-  },
-  background_tile_dimensions_changed: (data) => {
-    Hue.announce_background_tile_dimensions_change(data)
-  },
-  text_color_mode_changed: (data) => {
-    Hue.announce_text_color_mode_change(data)
-  },
   text_color_changed: (data) => {
     Hue.announce_text_color_change(data)
   },

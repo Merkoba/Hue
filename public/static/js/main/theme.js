@@ -2,10 +2,6 @@
 Hue.setup_theme = function (data) {
   Hue.set_background_image(data, false)
   Hue.background_color = data.background_color
-  Hue.background_mode = data.background_mode
-  Hue.background_effect = data.background_effect
-  Hue.background_tile_dimensions = data.background_tile_dimensions
-  Hue.text_color_mode = data.text_color_mode
   Hue.text_color = data.text_color
 }
 
@@ -26,43 +22,7 @@ Hue.set_background_image = function (data, apply = true) {
 
 // Applies the background to all background elements
 Hue.apply_background = function () {
-  let bg_image = Hue.background_image
-  let bg_mode = Hue.background_mode
-  let bg_tile_dimensions = Hue.background_tile_dimensions
-
-  if (Hue.background_image_enabled()) {
-    $(".background_image").css("background-image", `url('${bg_image}')`)
-  } else {
-    $(".background_image").css("background-image", "none")
-  }
-
-  if (bg_mode === "normal") {
-    $(".background_image").each(function () {
-      $(this).removeClass("background_image_tiled")
-    })
-  } else if (bg_mode === "tiled") {
-    $(".background_image").each(function () {
-      $(this).addClass("background_image_tiled")
-    })
-  }
-
-  $(".background_image").each(function () {
-    $(this).removeClass("background_image_none")
-    $(this).removeClass("background_image_blur")
-    $(this).removeClass("background_image_grayscale")
-    $(this).removeClass("background_image_saturate")
-    $(this).removeClass("background_image_brightness")
-    $(this).removeClass("background_image_invert")
-    $(this).removeClass("background_image_zoom")
-  })
-  
-  if (bg_mode !== "solid") {
-    $(".background_image").each(function () {
-      $(this).addClass(`background_image_${Hue.background_effect}`)
-    })
-  }
-
-  document.documentElement.style.setProperty('--bg_tile_dimensions', bg_tile_dimensions)
+  $(".background_image").css("background-image", `url('${Hue.background_image}')`)
 }
 
 // Background color setter
@@ -84,13 +44,7 @@ Hue.apply_theme = function () {
   }
 
   let background_color = theme
-  let font_color
-
-  if (Hue.text_color_mode === "custom") {
-    font_color = Hue.text_color
-  } else {
-    font_color = Hue.colorlib.get_lighter_or_darker(background_color, 0.8)
-  }
+  let font_color = Hue.text_color
 
   let altcolor = Hue.colorlib.get_lighter_or_darker(background_color, 0.2)
   let altcolor_a = Hue.colorlib.rgb_to_rgba(altcolor,  0.7)
@@ -269,174 +223,6 @@ Hue.announce_background_image_change = function (data) {
     `${data.username} changed the background image`
   )
   Hue.set_background_image(data)
-}
-
-// Changes the background mode
-Hue.change_background_mode = function (mode) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
-    return false
-  }
-
-  if (
-    mode !== "normal" &&
-    mode !== "tiled" &&
-    mode !== "solid"
-  ) {
-    Hue.feedback("Invalid background mode")
-    return false
-  }
-
-  if (mode === Hue.background_mode) {
-    Hue.feedback(`Background mode is already ${Hue.background_mode}`)
-    return false
-  }
-
-  Hue.socket_emit("change_background_mode", { mode: mode })
-}
-
-// Announces background mode changes
-Hue.announce_background_mode_change = function (data) {
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} changed the background mode to ${data.mode}`
-  )
-  Hue.set_background_mode(data.mode)
-}
-
-// Changes background tile dimensions
-Hue.change_background_tile_dimensions = function (dimensions) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
-    return false
-  }
-
-  if (dimensions.length > Hue.config.safe_limit_1) {
-    return false
-  }
-
-  dimensions = Hue.utilz.clean_string2(dimensions)
-
-  if (dimensions.length === 0) {
-    return false
-  }
-
-  if (dimensions === Hue.background_tile_dimensions) {
-    return false
-  }
-
-  Hue.socket_emit("change_background_tile_dimensions", {
-    dimensions: dimensions,
-  })
-}
-
-// Announces background tile dimensions changes
-Hue.announce_background_tile_dimensions_change = function (data) {
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} changed the background tile dimensions to ${data.dimensions}`
-  )
-  Hue.set_background_tile_dimensions(data.dimensions)
-  Hue.apply_background()
-}
-
-// Check whether a background image should be enabled,
-// depending on the background mode and settings
-Hue.background_image_enabled = function () {
-  if (Hue.background_mode === "solid") {
-    return false
-  }
-
-  return true
-}
-
-// Changes the background effect
-Hue.change_background_effect = function (effect) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
-    return false
-  }
-
-  if (
-    effect !== "none" &&
-    effect !== "blur" &&
-    effect !== "grayscale" &&
-    effect !== "saturate" &&
-    effect !== "brightness" && 
-    effect !== "invert" &&
-    effect !== "zoom"
-  ) {
-    Hue.feedback("Invalid background effect")
-    return false
-  }
-
-  if (effect === Hue.background_effect) {
-    Hue.feedback(`Background effect is already ${Hue.background_effect}`)
-    return false
-  }
-
-  Hue.socket_emit("change_background_effect", { effect: effect })
-}
-
-// Announces background effect changes
-Hue.announce_background_effect_change = function (data) {
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} changed the background effect to ${data.effect}`
-  )
-  Hue.set_background_effect(data.effect)
-}
-
-// Background mode setter
-Hue.set_background_mode = function (what) {
-  Hue.background_mode = what
-  Hue.config_admin_background_mode()
-  Hue.apply_background()
-}
-
-// Background effect setter
-Hue.set_background_effect = function (what) {
-  Hue.background_effect = what
-  Hue.config_admin_background_effect()
-  Hue.apply_background()
-}
-
-// Background tile dimensions setter
-Hue.set_background_tile_dimensions = function (dimensions) {
-  Hue.background_tile_dimensions = dimensions
-  Hue.config_admin_background_tile_dimensions()
-}
-
-// Changes the text color mode
-Hue.change_text_color_mode = function (mode) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
-    return false
-  }
-
-  if (mode !== "automatic" && mode !== "custom") {
-    Hue.feedback("Invalid text color mode")
-    return false
-  }
-
-  if (mode === Hue.text_color_mode) {
-    Hue.feedback(`Text color mode is already ${Hue.text_color_mode}`)
-    return false
-  }
-
-  Hue.socket_emit("change_text_color_mode", { mode: mode })
-}
-
-// Announces text color mode changes
-Hue.announce_text_color_mode_change = function (data) {
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} changed the text color mode to ${data.mode}`
-  )
-  Hue.set_text_color_mode(data.mode)
-  Hue.apply_theme()
-}
-
-// Text color mode setter
-Hue.set_text_color_mode = function (mode) {
-  Hue.text_color_mode = mode
-  Hue.config_admin_text_color_mode()
 }
 
 // Changes the text color

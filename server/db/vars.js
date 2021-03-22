@@ -47,13 +47,9 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
       log_messages: { type: "object", default: [] },
       admin_log_messages: { type: "object", default: [] },
       background_color: { type: "string", default: "#36393f" },
-      text_color_mode: { type: "string", default: "automatic" },
       text_color: { type: "string", default: "#dcddde" },
       background_image: { type: "string", default: "" },
       background_image_type: { type: "string", default: "hosted" },
-      background_mode: { type: "string", default: "normal" },
-      background_effect: { type: "string", default: "none" },
-      background_tile_dimensions: { type: "string", default: "200px auto" },
       message_board_posts: { type: "object", default: [] },
       modified: { type: "number", default: Date.now() },
     }
