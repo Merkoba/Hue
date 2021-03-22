@@ -1783,6 +1783,7 @@ Hue.remove_messages_after_id = function (id, direction) {
 Hue.setup_chat = function () {
   $("#top_scroller").click(function () {
     Hue.goto_top()
+    Hue.check_scrollers()
   })
 
   $("#activity_up_scroller").click(function () {
