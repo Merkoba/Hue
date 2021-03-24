@@ -39,9 +39,6 @@ Hue.server_update_events = {
   log_changed: (data) => {
     Hue.announce_log_change(data)
   },
-  log_cleared: (data) => {
-    Hue.announce_log_cleared(data)
-  },
   user_role_changed: (data) => {
     Hue.announce_role_change(data)
   },
@@ -220,9 +217,6 @@ Hue.server_update_events = {
   },
   message_board_post_deleted: (data) => {
     Hue.remove_message_board_post(data)
-  },
-  message_board_cleared: (data) => {
-    Hue.on_message_board_cleared(data)
   },
   audio_clip_changed: (data) => {
     Hue.audio_clip_changed(data)
