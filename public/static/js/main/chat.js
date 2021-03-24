@@ -1522,7 +1522,11 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
 // Starts chat area scroll events
 Hue.scroll_events = function () {
   $("#chat_area")[0].addEventListener("scroll", function (e) {
-    Hue.scroll_timer()
+    if (!Hue.chat_scrolled) {
+      Hue.check_scrollers()
+    } else {
+      Hue.scroll_timer()
+    }
   })
 }
 
