@@ -58,20 +58,6 @@ Hue.setup_room_menu = function () {
     Hue.request_ban_list()
   })
 
-  $("#room_menu_more_clear_log").click(function () {
-    Hue.show_confirm("Clear Log", `The log are recent messages that are stored for context. 
-      The log is limited to ${Hue.config.max_log_messages} messages. This will empty the log`, function () {
-      Hue.clear_log()
-    })
-  })
-
-  $("#room_menu_more_clear_message_board").click(function () {
-    Hue.show_confirm("Clear Message Board", `The message board is limited to ${Hue.config.max_message_board_posts} posts. 
-    This will remove all message board posts`, function () {
-      Hue.clear_message_board()
-    })
-  })
-
   $("#admin_background_image").click(function () {
     Hue.open_background_image_select()
   })

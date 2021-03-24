@@ -109,24 +109,4 @@ module.exports = function (
       }
     }
   }
-
-  // Deletes all message board posts
-  handler.public.clear_message_board = async function (socket, data) {
-    if (
-      !handler.is_admin_or_op(socket) &&
-      !socket.hue_superuser
-    ) {
-      return false
-    }
-
-    let room = vars.rooms[socket.hue_room_id]
-
-    room.message_board_posts = []
-    db_manager.update_room(socket.hue_room_id, {
-      message_board_posts: room.message_board_posts,
-    })
-    handler.room_emit(socket, "message_board_cleared", {
-      username: socket.hue_username,
-    })
-  }
 }

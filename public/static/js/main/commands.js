@@ -2,12 +2,6 @@
 // Used to populate the commands list
 // Actions for each command are declared here
 Hue.commands = {
-  "clear": {
-    action: (arg, ans) => {
-      Hue.clear_room()
-    },
-    description: `Clears the chat`,
-  },
   "users": {
     action: (arg, ans) => {
       if (arg) {
@@ -79,12 +73,6 @@ Hue.commands = {
       Hue.kick(arg)
     },
     description: `Kicks a user out of the room`,
-  },
-  "clearlog": {
-    action: (arg, ans) => {
-      Hue.clear_log("all")
-    },
-    description: `Removes all messages from the log and resets client state for all the users in the room`,
   },
   "tv": {
     action: (arg, ans) => {
@@ -516,12 +504,6 @@ Hue.commands = {
       Hue.show_message_board(arg)
     },
     description: `Opens the message board. Accepts a filter as an argument`,
-  },
-  "clearmessageboard": {
-    action: (arg, ans) => {
-      Hue.clear_message_board()
-    },
-    description: `Deletes all message board posts`,
   },
   "chatsize": {
     action: (arg, ans) => {

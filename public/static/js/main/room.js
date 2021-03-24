@@ -91,28 +91,6 @@ Hue.show_topic = function () {
   Hue.feedback(topic, obj)
 }
 
-// Clears the chat and resets media change state
-// Re-makes initial media setups for current media
-Hue.clear_room = function () {
-  Hue.clear_chat()
-
-  let first_image = (Hue.image_changed = Hue.image_changed.slice(-1)[0])
-  let first_tv = (Hue.tv_changed = Hue.tv_changed.slice(-1)[0])
-
-  Hue.loaded_image = {}
-  Hue.loaded_tv = {}
-
-  Hue.image_changed = []
-  Hue.tv_changed = []
-
-  Hue.setup_image("show", first_image)
-  Hue.setup_tv("show", first_tv)
-
-  Hue.change({ type: "image" })
-  Hue.change({ type: "tv" })
-  Hue.goto_bottom(true)
-}
-
 // Announces room name changes
 Hue.announce_room_name_change = function (data) {
   if (data.name !== Hue.room_name) {
@@ -174,42 +152,6 @@ Hue.set_topic_info = function (data) {
 
   Hue.topic = data.topic
   Hue.config_admin_topic()
-}
-
-// Clears the log
-Hue.clear_log = function (type = "all", id = false) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
-    return false
-  }
-
-  if (!Hue.utilz.clear_log_types.includes(type)) {
-    Hue.feedback(
-      `Invalid type. Available types are: ${Hue.utilz.clear_log_types.join(
-        ", "
-      )}`
-    )
-    return false
-  }
-
-  if (type === "above" || type === "below") {
-    if (!id) {
-      Hue.feedback("A message ID needs to be provided for this operation")
-      return false
-    }
-  }
-
-  Hue.socket_emit("clear_log", { type: type, id: id })
-}
-
-// Announces that the log was cleared
-Hue.announce_log_cleared = function (data) {
-  if (data.type === "all") {
-    Hue.clear_room()
-  } else if (data.type === "above" || data.type === "below") {
-    Hue.remove_messages_after_id(data.id, data.type)
-  }
-
-  Hue.show_room_notification(data.username, `${data.username} cleared the log`)
 }
 
 // Requests the admin activity list from the server
