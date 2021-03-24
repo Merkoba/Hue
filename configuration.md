@@ -150,12 +150,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "upload_spam_slice"
 >The higher this number is, the slower it adds spam on file upload
 
-"small_keyboard_scroll"
->The amount scrolled in pixels for a small, normal, scroll. By using shift + up or shift + down.
-
-"big_keyboard_scroll"
->The amount scrolled in pixels for a bigger scroll. By using pageUp or pageDown.
-
 "youtube_enabled"
 >Whether Youtube features are enabled.
 

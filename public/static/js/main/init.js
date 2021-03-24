@@ -134,6 +134,7 @@ Hue.top_scroller_visible = false
 Hue.bottom_scroller_visible = false
 Hue.timeago_delay = 20000
 Hue.do_update_activity_bar = true
+Hue.small_keyboard_scroll = 100
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

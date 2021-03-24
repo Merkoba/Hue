@@ -264,6 +264,7 @@ Hue.activate_key_detection = function () {
         Hue.submit_input()
       } else {
         Hue.goto_bottom(true)
+        Hue.check_scrollers()
       }
 
       e.preventDefault()
@@ -277,7 +278,7 @@ Hue.activate_key_detection = function () {
         Hue.input_history_change("up")
         e.preventDefault()
       } else if (e.ctrlKey) {
-        Hue.scroll_up(Hue.config.small_keyboard_scroll)
+        Hue.scroll_up(Hue.small_keyboard_scroll)
         e.preventDefault()
       } else {
         Hue.edit_last_message()
@@ -293,33 +294,11 @@ Hue.activate_key_detection = function () {
         Hue.input_history_change("down")
         e.preventDefault()
       } else if (e.ctrlKey) {
-        Hue.scroll_down(Hue.config.small_keyboard_scroll)
+        Hue.scroll_down(Hue.small_keyboard_scroll)
         e.preventDefault()
-      } else {
-        Hue.goto_bottom(true)
       }
 
       return
-    } else if (e.key === "PageUp") {
-      Hue.scroll_up(Hue.config.big_keyboard_scroll)
-      e.preventDefault()
-      return
-    } else if (e.key === "PageDown") {
-      Hue.scroll_down(Hue.config.big_keyboard_scroll)
-      e.preventDefault()
-      return
-    } else if (e.key === "Home") {
-      if (e.ctrlKey) {
-        Hue.goto_top(false)
-        e.preventDefault()
-        return
-      }
-    } else if (e.key === "End") {
-      if (e.ctrlKey) {
-        Hue.goto_bottom(true)
-        e.preventDefault()
-        return
-      }
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {
         if (Hue.footer_expanded) {
