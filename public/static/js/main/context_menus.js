@@ -42,17 +42,23 @@ Hue.start_chat_menu_context_menu = function () {
         name: "Reply",
         callback: function (key, opt) {
           let el = $(this)
-            .closest(".chat_content_container")
+            .closest(".reply_message_container")
             .eq(0)
-            .find(".chat_content")
+            .find(".reply_message")
             .get(0)
           Hue.start_reply(el)
         },
         visible: function (key, opt) {
           let message = $(this).closest(".message")
+          let mode = message.data("mode")
 
-          if (message.data("mode") === "chat") {
+          if (mode === "chat") {
             return true
+          } else if (mode === "announcement") {
+            let type = message.data("type")
+            if (type === "image_change" || type === "tv_change") {
+              return true
+            }
           }
 
           return false

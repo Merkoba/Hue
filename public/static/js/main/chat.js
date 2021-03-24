@@ -30,8 +30,8 @@ Hue.add_chat_message = function (args = {}) {
   args.message = Hue.replace_message_vars(args.id, args.message)
 
   let message_classes = "message chat_message"
-  let container_classes = "chat_content_container chat_menu_button_main"
-  let content_classes = "chat_content dynamic_title"
+  let container_classes = "chat_content_container chat_menu_button_main reply_message_container"
+  let content_classes = "chat_content dynamic_title reply_message"
   let d = args.date ? args.date : Date.now()
   let nd = Hue.utilz.nice_date(d)
   let pi
@@ -277,9 +277,9 @@ Hue.add_chat_announcement = function (args = {}) {
   args = Object.assign(def_args, args)
 
   let message_classes = "message announcement"
-  let container_classes = "announcement_content_container chat_menu_button_main"
+  let container_classes = "announcement_content_container chat_menu_button_main reply_message_container"
   let split_classes = "announcement_content_split dynamic_title"
-  let content_classes = "announcement_content"
+  let content_classes = "announcement_content reply_message"
   let brk_classes = "brk announcement_brk"
 
   let container_id = " "
@@ -562,6 +562,15 @@ Hue.start_chat_mouse_events = function () {
     }
   })
 
+  $(".chat_area").on("mouseup", ".announcement_content_container", function (e) {
+    if (e.button === 1) {
+      if (Hue.start_reply(e.target)) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+  })
+
   $(".chat_area").on("click", ".chat_reply_username", function () {
     Hue.show_profile($(this).text())
   })
@@ -589,16 +598,11 @@ Hue.start_reply = function (target) {
     return false
   }
 
-  let uname = $(target).closest(".chat_message").data("uname")
+  let message = $(target).closest(".message")
+  let text = Hue.remove_urls(Hue.utilz.clean_string2($(target).text()))
+  let uname = message.data("uname")
 
-  let text = $(target)
-    .closest(".chat_content_container")
-    .find(".chat_content").eq(0)
-    .text()
-
-  text = Hue.remove_urls(Hue.utilz.clean_string2(text))
-
-  if (!uname || !text) {
+  if (!text || !uname) {
     return false
   }
 
