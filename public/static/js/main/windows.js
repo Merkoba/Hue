@@ -108,7 +108,6 @@ Hue.start_msg = function () {
       after_close: function (instance) {
         common.after_close(instance)
         Hue.clear_modal_image_info()
-        Hue.msg_image_picker.close()
         Hue.modal_image_open = false
       },
     })

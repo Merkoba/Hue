@@ -65,14 +65,16 @@ Hue.setup_image = function (mode, odata = {}) {
   data.info_html += `<div>${data.nice_date}</div>`
   data.info_html += `<div class='modal_image_timeago'></div>`
 
-  if (data.type === "upload") {
-    data.message = "Uploaded image"
-  } else if (data.type === "link") {
-    data.message = "Linked image"
+  if (data.comment) {
+    data.message = data.comment
   }
 
-  if (data.comment) {
-    data.message += ` (${data.comment})`
+  if (!data.message) {
+    if (data.type === "upload") {
+      data.message = "Uploaded image"
+    } else if (data.type === "link") {
+      data.message = "Linked image"
+    }
   }
 
   data.onclick = function () {
@@ -362,10 +364,6 @@ Hue.setup_modal_image = function () {
     } else {
       Hue.msg_modal_image.close()
     }
-  })
-
-  $("#modal_image_header_info").click(function () {
-    Hue.show_image_picker()
   })
 
   $("#modal_image_arrow_prev").click(function (e) {
