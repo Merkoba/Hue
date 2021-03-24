@@ -64,7 +64,7 @@ Hue.setup_image = function (mode, odata = {}) {
   data.info += ` | ${data.nice_date}`
   data.info_html += `<div>${data.nice_date}</div>`
   data.info_html += `<div class='modal_image_timeago'></div>`
-  data.message = "Changed the Image"
+  data.message = "Changed the image"
 
   data.onclick = function () {
     Hue.show_modal_image(data.id)

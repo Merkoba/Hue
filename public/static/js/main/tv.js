@@ -32,7 +32,7 @@ Hue.setup_tv = function (mode, odata = {}) {
     data.title = data.source
   }
 
-  data.message = `Changed the TV to ${Hue.utilz.conditional_quotes(data.title)}`
+  data.message = `Changed the tv to ${Hue.utilz.conditional_quotes(data.title)}`
 
   if (data.type === "youtube") {
     let time = Hue.utilz.get_youtube_time(data.source)
