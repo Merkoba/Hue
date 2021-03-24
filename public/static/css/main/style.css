@@ -408,6 +408,7 @@ body * {
 	background-color: var(--altbackground_a);
 	color: var(--font_color);
 	flex-grow: 1;
+	flex-basis: 50%;
 }
 
 .chat_message {
