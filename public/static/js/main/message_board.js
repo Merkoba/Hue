@@ -132,7 +132,11 @@ Hue.show_message_board = function (filter = false) {
 }
 
 // Submits a message board post
-Hue.submit_message_board_post = function () {  
+Hue.submit_message_board_post = function () {
+  if (!Hue.is_admin_or_op()) {
+    return false
+  }
+
   let message = Hue.utilz.remove_multiple_empty_lines($("#message_board_post_textarea").val()).trim()
 
   if (!message || message.length > Hue.config.max_message_board_post_length) {
@@ -208,8 +212,10 @@ Hue.update_last_message_post_checked = function () {
 Hue.check_message_board_permissions = function () {
   if (Hue.is_admin_or_op(Hue.role)) {
     $("#message_board_container").addClass("message_board_container_admin")
+    $("#message_board_input").css("display", "block")
   } else {
     $("#message_board_container").removeClass("message_board_container_admin")
+    $("#message_board_input").css("display", "none")
   }
 }
 
