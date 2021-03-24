@@ -247,10 +247,6 @@ body * {
 	justify-content: center;
 }
 
-.chat_area_clone .chat_timeago {
-	display: none;
-}
-
 #media {
 	display: flex;
 	width: 100%;
