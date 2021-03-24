@@ -454,7 +454,7 @@ body * {
 	animation: spin 1s linear infinite;
 }
 
-.chat_uname_container {
+.chat_message_top {
 	display: flex;
 	flex-shrink: 1;
 	flex-grow: 0;
@@ -463,18 +463,18 @@ body * {
 	align-items: center;
 }
 
-.chat_timeago {
-	margin-left: 0.5rem;
-	opacity: 0.8;
-	font-size: 0.85rem;
-	white-space: nowrap;
-}
-
 .chat_uname {
 	cursor: pointer;
 	white-space: nowrap;
 	display: inline-block;
 	font-weight: bold;
+}
+
+.chat_timeago {
+	margin-left: 0.5rem;
+	opacity: 0.8;
+	font-size: 0.85rem;
+	white-space: nowrap;
 }
 
 .chat_container {

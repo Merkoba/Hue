@@ -126,7 +126,7 @@ Hue.add_chat_message = function (args = {}) {
             </div>
         </div>
         <div class='chat_right_side'>
-            <div class='chat_uname_container'>
+            <div class='chat_message_top'>
                 <div class='chat_uname action'></div>
                 <div class='chat_timeago'></div>
             </div>
@@ -329,8 +329,20 @@ Hue.add_chat_announcement = function (args = {}) {
     content_classes += " action"
   }
 
+
   if (args.username) {
     brk_classes += " action"
+  }
+
+  let use_top = args.type === "image_change" || args.type === "tv_change"
+  let announcement_top = ""
+
+  if (use_top) {
+    announcement_top = `
+    <div class='chat_message_top'>
+      <div class='chat_uname'></div>
+      <div class='chat_timeago'></div>
+    </div>`
   }
 
   let s = `
@@ -343,6 +355,7 @@ Hue.add_chat_announcement = function (args = {}) {
                 </svg>
             </div>
             <div class='${split_classes}'>
+                ${announcement_top}
                 <div class='${content_classes}'></div>
                 ${comment}
             </div>
@@ -354,6 +367,13 @@ Hue.add_chat_announcement = function (args = {}) {
   let comment_el = fmessage.find(".announcement_comment_inner").eq(0)
   let split = fmessage.find(".announcement_content_split").eq(0)
   let brk = fmessage.find(".brk").eq(0)
+
+  if (use_top) {
+    let username = fmessage.find(".chat_uname").eq(0)
+    let date = fmessage.find(".chat_timeago").eq(0)
+    username.text(args.username)
+    date.text(Hue.utilz.timeago(args.date))
+  }
 
   split.attr("title", t)
   split.data("otitle", t)
