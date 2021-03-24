@@ -62,12 +62,6 @@ Hue.commands = {
     },
     description: `Unbans a user from the room`,
   },
-  "unbanall": {
-    action: (arg, ans) => {
-      Hue.unban_all()
-    },
-    description: `Removes all bans`,
-  },
   "kick": {
     action: (arg, ans) => {
       Hue.kick(arg)

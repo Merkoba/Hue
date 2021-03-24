@@ -40,12 +40,6 @@ Hue.setup_room_menu = function () {
     }
   })
 
-  $("#room_menu_more_unban_all").click(function () {
-    Hue.show_confirm("Unban All", `This will unban all the users that are banned from this room`, function () {
-      Hue.unban_all()
-    })
-  })
-
   $("#room_menu_more_admin_activity").click(function () {
     Hue.request_admin_activity()
   })

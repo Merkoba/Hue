@@ -295,32 +295,6 @@ module.exports = function (
     handler.push_admin_log_message(socket, `unbanned "${data.username}"`)
   }
 
-  // Unbans all banned users
-  handler.public.unban_all = async function (socket, data) {
-    if (!handler.is_admin_or_op(socket)) {
-      return false
-    }
-
-    let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
-      { bans: 1 }
-    )
-
-    if (info.bans.length > 0) {
-      info.bans = []
-
-      db_manager.update_room(info._id, { bans: info.bans })
-
-      handler.room_emit(socket, "all_users_unbanned", {
-        username: socket.hue_username,
-      })
-
-      handler.push_admin_log_message(socket, "unbanned all banned users")
-    } else {
-      handler.user_emit(socket, "nothing_to_unban", {})
-    }
-  }
-
   // Checks if socket is admin or op
   handler.is_admin_or_op = function (socket) {
     return socket.hue_role === "admin" || socket.hue_role === "op"

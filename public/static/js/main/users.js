@@ -895,15 +895,6 @@ Hue.unban = function (uname) {
   }
 }
 
-// Unbans all banned users
-Hue.unban_all = function () {
-  if (!Hue.is_admin_or_op(Hue.role)) {
-    return false
-  }
-
-  Hue.socket_emit("unban_all", {})
-}
-
 // Shows a window with the number of users banned
 Hue.receive_ban_count = function (data) {
   let s
@@ -969,17 +960,9 @@ Hue.announce_unban = function (data) {
   }
 }
 
-// Announces that all banned users were unbanned
-Hue.announce_unban_all = function (data) {
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} unbanned all banned users`
-  )
-}
-
 // Checks if a user already has a certain role
 Hue.is_already = function (who, what) {
-  Hue.feedback(`${who} already has ${what}`)
+  Hue.showmsg(`${who} already has ${what}`)
 }
 
 // Checks if a role is that of an admin or an operator

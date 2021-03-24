@@ -51,9 +51,6 @@ Hue.server_update_events = {
   user_unbanned: (data) => {
     Hue.announce_unban(data)
   },
-  all_users_unbanned: (data) => {
-    Hue.announce_unban_all(data)
-  },
   receive_ban_count: (data) => {
     Hue.receive_ban_count(data)
   },
