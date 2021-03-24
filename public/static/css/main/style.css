@@ -461,6 +461,7 @@ body * {
 	flex-grow: 0;
 	font-size: 1rem;
 	flex-direction: row;
+	align-items: center;
 }
 
 .chat_uname {

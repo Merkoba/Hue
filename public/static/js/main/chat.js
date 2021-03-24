@@ -267,7 +267,6 @@ Hue.add_chat_announcement = function (args = {}) {
     info1: "",
     info2: "",
     username: false,
-    open_profile: false,
     public: false,
     comment: "",
     user_id: false,
@@ -300,7 +299,7 @@ Hue.add_chat_announcement = function (args = {}) {
   let d = args.date ? args.date : Date.now()
   let t = args.title ? args.title : Hue.utilz.nice_date(d)
 
-  if (args.onclick || (args.username && args.open_profile)) {
+  if (args.onclick) {
     content_classes += " action"
   }
 
@@ -365,13 +364,7 @@ Hue.add_chat_announcement = function (args = {}) {
 
   if (args.onclick) {
     content.on("click", args.onclick)
-  } else if (args.username && args.open_profile) {
-    content.on("click", pif)
-    brk.on("click", pif)
-  }
-
-  if (args.username) {
-    brk.on("click", pif)
+    brk.on("click", args.onclick)
   }
 
   fmessage.data("id", args.id)
