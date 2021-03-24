@@ -32,7 +32,7 @@ Hue.setup_tv = function (mode, odata = {}) {
     data.title = data.source
   }
 
-  data.message = Hue.utilz.conditional_quotes(data.title)
+  data.message = data.title
 
   if (data.comment) {
     data.message += ` (${data.comment})`

@@ -565,14 +565,6 @@ const Utilz = function () {
 		return input_types.includes(type)
 	}
 
-	utilz.conditional_quotes = function (s) {
-		if (!s.includes(" ") && utilz.is_url(s)) {
-			return s
-		} else {
-			return `"${s}"`
-		}
-	}
-
 	utilz.get_limited_string = function (s, n) {
 		let title
 

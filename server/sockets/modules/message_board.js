@@ -10,6 +10,10 @@ module.exports = function (
 ) {
   // Handles message board posting
   handler.public.message_board_post = async function (socket, data) {
+    if (!handler.is_admin_or_op(socket)) {
+      return false
+    }
+    
     if (!data.message) {
       return false
     }
