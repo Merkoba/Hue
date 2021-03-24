@@ -1522,7 +1522,11 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
 // Starts chat area scroll events
 Hue.scroll_events = function () {
   $("#chat_area")[0].addEventListener("scroll", function (e) {
-    Hue.scroll_timer()
+    if (!Hue.chat_scrolled) {
+      Hue.check_scrollers()
+    } else {
+      Hue.scroll_timer()
+    }
   })
 }
 
@@ -1573,18 +1577,18 @@ Hue.hide_bottom_scroller = function () {
 }
 
 // Updates scrollers state based on scroll position
-Hue.check_scrollers = function () {
+Hue.check_scrollers = function (threshold = 5) {
   let area = $("#chat_area")
   let scrolltop = area.scrollTop()
 
   let max = area.prop("scrollHeight") - area.innerHeight()
   let diff = max - scrolltop
 
-  if (diff < 5) {
+  if (diff < threshold) {
     Hue.hide_top_scroller()
     Hue.hide_bottom_scroller()
   } else {
-    if (scrolltop < 5) {
+    if (scrolltop < threshold) {
       Hue.hide_top_scroller()
     } else {
       Hue.show_top_scroller()
