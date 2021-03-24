@@ -340,7 +340,7 @@ Hue.add_chat_announcement = function (args = {}) {
   if (use_top) {
     announcement_top = `
     <div class='chat_message_top'>
-      <div class='chat_uname'></div>
+      <div class='chat_uname action'></div>
       <div class='chat_timeago'></div>
     </div>`
   }
