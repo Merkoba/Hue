@@ -34,6 +34,10 @@ Hue.setup_tv = function (mode, odata = {}) {
 
   data.message = Hue.utilz.conditional_quotes(data.title)
 
+  if (data.comment) {
+    data.message += ` (${data.comment})`
+  }
+
   if (data.type === "youtube") {
     let time = Hue.utilz.get_youtube_time(data.source)
 
@@ -100,7 +104,6 @@ Hue.announce_tv = function (data) {
     date: data.date,
     type: data.type,
     username: data.setter,
-    comment: data.comment,
     type: "tv_change",
     user_id: data.user_id,
     in_log: data.in_log,

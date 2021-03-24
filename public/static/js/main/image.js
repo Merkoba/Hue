@@ -71,6 +71,10 @@ Hue.setup_image = function (mode, odata = {}) {
     data.message = "Linked image"
   }
 
+  if (data.comment) {
+    data.message += ` (${data.comment})`
+  }
+
   data.onclick = function () {
     Hue.show_modal_image(data.id)
   }
@@ -107,7 +111,6 @@ Hue.announce_image = function (data) {
     username: data.setter,
     title: data.info,
     onclick: data.onclick,
-    comment: data.comment,
     type: "image_change",
     user_id: data.user_id,
     in_log: data.in_log,

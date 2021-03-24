@@ -268,7 +268,6 @@ Hue.add_chat_announcement = function (args = {}) {
     info2: "",
     username: false,
     public: false,
-    comment: "",
     user_id: false,
     parse_text: false,
     in_log: true,
@@ -350,17 +349,7 @@ Hue.add_chat_announcement = function (args = {}) {
   split.data("otitle", t)
   split.data("date", d)
 
-  let txt = args.message
-
-  if (args.comment) {
-    txt += ` (${args.comment})`
-  }
-
-  content.text(txt).urlize()
-
-  let pif = function () {
-    Hue.show_profile(args.username)
-  }
+  content.text(args.message).urlize()
 
   if (args.onclick) {
     content.on("click", args.onclick)
