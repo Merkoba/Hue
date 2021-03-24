@@ -518,11 +518,6 @@ body * {
 	flex-grow: 1;
 }
 
-.announcement_comment_icon {
-	margin-right: 0.5rem;
-	align-self: flex-start;
-}
-
 .brk {
 	flex-shrink: 0;
 	flex-grow: 0;

@@ -270,7 +270,6 @@ Hue.add_chat_announcement = function (args = {}) {
     open_profile: false,
     public: false,
     comment: "",
-    comment_icon: true,
     user_id: false,
     parse_text: false,
     in_log: true,
@@ -301,34 +300,9 @@ Hue.add_chat_announcement = function (args = {}) {
   let d = args.date ? args.date : Date.now()
   let t = args.title ? args.title : Hue.utilz.nice_date(d)
 
-  let comment = ""
-
-  if (args.comment) {
-    let cls = "announcement_comment"
-
-    if (args.username && args.username !== Hue.username) {
-      if (!highlighted && Hue.check_highlights(args.comment)) {
-        cls += " highlighted_message"
-        highlighted = true
-      }
-    }
-
-    let c = Hue.parse_text(Hue.utilz.make_html_safe(args.comment))
-
-    if (args.comment_icon) {
-      comment = `<div class='${cls}'><div class='announcement_comment_inner flex_row_center'>
-      <svg class='announcement_comment_icon chat_icon'><use href='#icon_comment'></svg>${c}</div></div>`
-    } else {
-      comment = `<div class='${cls}'><div class='announcement_comment_inner flex_row_center'>${c}</div></div>`
-    }
-  } else {
-    comment = `<div class='announcement_comment'></div>`
-  }
-
   if (args.onclick || (args.username && args.open_profile)) {
     content_classes += " action"
   }
-
 
   if (args.username) {
     brk_classes += " action"
@@ -357,14 +331,12 @@ Hue.add_chat_announcement = function (args = {}) {
             <div class='${split_classes}'>
                 ${announcement_top}
                 <div class='${content_classes}'></div>
-                ${comment}
             </div>
         </div>
     </div>`
 
   let fmessage = $(s)
   let content = fmessage.find(".announcement_content").eq(0)
-  let comment_el = fmessage.find(".announcement_comment_inner").eq(0)
   let split = fmessage.find(".announcement_content_split").eq(0)
   let brk = fmessage.find(".brk").eq(0)
 
@@ -379,21 +351,13 @@ Hue.add_chat_announcement = function (args = {}) {
   split.data("otitle", t)
   split.data("date", d)
 
-  if (args.parse_text) {
-    content
-      .html(Hue.parse_text(Hue.utilz.make_html_safe(args.message)))
-      .urlize()
-  } else {
-    content.text(args.message).urlize()
-  }
+  let txt = args.message
 
   if (args.comment) {
-    comment_el.urlize()
-
-    if (args.username) {
-      Hue.setup_whispers_click(comment_el, args.username)
-    }
+    txt += ` (${args.comment})`
   }
+
+  content.text(txt).urlize()
 
   let pif = function () {
     Hue.show_profile(args.username)
