@@ -1571,7 +1571,6 @@ Hue.check_scrollers = function () {
   if (diff < 5) {
     Hue.hide_top_scroller()
     Hue.hide_bottom_scroller()
-    $("#scroller_info").html("0%")
   } else {
     if (scrolltop < 5) {
       Hue.hide_top_scroller()
@@ -1581,7 +1580,6 @@ Hue.check_scrollers = function () {
 
     Hue.show_bottom_scroller()
     let info = `${Hue.get_scrolled_percent()}%`
-    $("#scroller_info").html(info)
   }
 }
 
