@@ -4,4 +4,4 @@ Hue allows real time communication while watching, or listening to media.
 
 [Screenshots](screenshots.md) |
 [Installation](installation.md) |
-[Configuration](configuration.md) |
+[Configuration](configuration.md)
