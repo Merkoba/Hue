@@ -1687,61 +1687,6 @@ Hue.public_feedback = function (message, data = false) {
   return Hue.add_chat_announcement(obj)
 }
 
-// Removes a message above or below a message with a certain ID
-Hue.remove_messages_after_id = function (id, direction) {
-  let index = false
-
-  $($("#chat_area .chat_content_container").get().reverse()).each(function () {
-    if ($(this).data("id") === id) {
-      let container_index = $(this).index()
-      let message = $(this).closest(".message")
-
-      if (
-        $(this).closest(".chat_container").find(".chat_content_container")
-        .length > 1
-      ) {
-        if (direction === "above") {
-          message
-            .find(".chat_content_container")
-            .slice(0, container_index)
-            .remove()
-        } else if (direction === "below") {
-          message
-            .find(".chat_content_container")
-            .slice(container_index + 1)
-            .remove()
-        }
-      }
-
-      index = message.index()
-      return false
-    }
-  })
-
-  if (index === false) {
-    $($("#chat_area > .announcement").get().reverse()).each(function () {
-      if ($(this).data("id") === id) {
-        index = $(this).index()
-        return false
-      }
-    })
-  }
-
-  if (index === false) {
-    return false
-  }
-
-  if (direction === "above") {
-    $("#chat_area > .message").slice(0, index).remove()
-  } else if (direction === "below") {
-    $("#chat_area > .message")
-      .slice(index + 1)
-      .remove()
-  }
-
-  Hue.goto_bottom(true)
-}
-
 // Setups some chat configs
 Hue.setup_chat = function () {
   $("#top_scroller").click(function () {
