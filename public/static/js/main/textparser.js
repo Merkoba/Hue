@@ -52,7 +52,7 @@ Hue.setup_textparser_regexes = function () {
 }
 
 // Passes text through all textparser regexes doing the appropiate replacements
-Hue.parse_text = function (text) {
+Hue.parse_text = function (text, checklines = true) {
   text = text.replace(
     Hue.textparser_regexes["whisper_link"].regex,
     Hue.textparser_regexes["whisper_link"].replace_function
@@ -73,7 +73,7 @@ Hue.parse_text = function (text) {
     Hue.textparser_regexes[">"].replace_function
   )
 
-  if (text.includes("\n")) {
+  if (checklines && text.includes("\n")) {
     text = `<div class='codeblock'>${text}</div>`
   }
 
