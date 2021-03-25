@@ -33,15 +33,6 @@ Hue.setup_footer = function () {
   Hue.horizontal_separator_no_margin.separate("footer_media_items")
 }
 
-// Enables or disables footer expand
-Hue.toggle_footer_expand = function () {
-  if (Hue.footer_expanded) {
-    Hue.disable_footer_expand()
-  } else {
-    Hue.enable_footer_expand()
-  }
-}
-
 // Enabled footer expand
 Hue.enable_footer_expand = function () {
   if (Hue.footer_expanded) {

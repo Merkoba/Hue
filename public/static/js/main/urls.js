@@ -85,19 +85,6 @@ Hue.goto_url = function (u, mode = "tab", encode = false) {
   }
 }
 
-// Opens a new tab with a search query on a specified search engine
-Hue.search_on = function (site, q) {
-  q = encodeURIComponent(q)
-
-  if (site === "google") {
-    Hue.goto_url(`https://www.google.com/search?q=${q}`)
-  } else if (site === "soundcloud") {
-    Hue.goto_url(`https://soundcloud.com/search?q=${q}`)
-  } else if (site === "youtube") {
-    Hue.goto_url(`https://www.youtube.com/results?search_query=${q}`)
-  }
-}
-
 // Handle URLS
 Hue.handle_url = function (text) {
   if (text) {

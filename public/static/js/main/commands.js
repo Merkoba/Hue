@@ -692,11 +692,6 @@ Hue.show_commands = function (filter = "") {
   })
 }
 
-// Checks if a string, in any alphabetical order, matches a command
-Hue.command_sorted_equals = function (str, what) {
-  return str === Hue.commands_list_sorted[what]
-}
-
 // Gets the most similar command from a string
 Hue.get_closest_command = function (cmd) {
   let highest_num = 0

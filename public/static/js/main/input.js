@@ -1,9 +1,3 @@
-// Determines if the input is scrolled or not
-Hue.input_is_scrolled = function () {
-  let el = $("#input")[0]
-  return el.clientHeight < el.scrollHeight
-}
-
 // On input change
 Hue.on_input_change = function () {
   let input = $("#input")[0]
@@ -74,20 +68,6 @@ Hue.clear_input = function () {
   Hue.old_input_val = ""
 }
 
-// Appends to the input
-Hue.add_to_input = function (what) {
-  Hue.change_input(`${Hue.get_input() + what}`)
-}
-
-// Inserts text on current caret position
-Hue.insert_to_input = function (what) {
-  let el = $("#input")[0]
-  let [start, end] = [el.selectionStart, el.selectionEnd]
-  let part1 = el.value.substring(0, start)
-  let part2 = el.value.substring(end, el.value.length)
-  Hue.change_input(`${part1}${what}${part2}`)
-}
-
 // Changes the input
 Hue.change_input = function (s, to_end = true, focus = true) {
   $("#input").val(s)
@@ -118,22 +98,6 @@ Hue.blur_input = function () {
 // Moves the input's caret to the end
 Hue.input_to_end = function () {
   $("#input")[0].scrollLeft = $("#input")[0].scrollWidth
-}
-
-// Appends a linebreak to the input
-Hue.add_linebreak_to_input = function () {
-  if (!Hue.get_input().trim()) {
-    return false
-  }
-
-  Hue.insert_to_input("\n")
-  Hue.scroll_input_to_bottom()
-}
-
-// Scrolls input to bottom when it's overflowed
-Hue.scroll_input_to_bottom = function () {
-  let input = $("#input")[0]
-  input.scrollTop = input.scrollHeight
 }
 
 // Does a submit action from the input

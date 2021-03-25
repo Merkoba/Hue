@@ -4,13 +4,6 @@ Hue.reload_client = function () {
   window.location = window.location
 }
 
-// Reloads the client with a delay
-Hue.delay_reload_client = function (delay) {
-  setTimeout(function () {
-    Hue.reload_client()
-  }, delay)
-}
-
 // Reconnect asynchronously
 Hue.refresh_client = function () {
   if (Hue.connecting || Hue.room_locked || Hue.socket.connected) {

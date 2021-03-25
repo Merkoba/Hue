@@ -269,12 +269,3 @@ Hue.show_ban_list = function (data) {
     Hue.ban_list_open = true
   })
 }
-
-// Opens the room menu and opens a specific section
-Hue.open_room_menu_section = function (name) {
-  Hue.msg_room_menu.show(function () {
-    setTimeout(function () {
-      $(`#room_menu_toggle_${name}`).click()
-    }, 200)
-  })
-}

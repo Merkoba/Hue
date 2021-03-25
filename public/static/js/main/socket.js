@@ -358,11 +358,6 @@ Hue.on_disconnect = function () {
   }, 5000)
 }
 
-// Disconnects the user's socket
-Hue.disconnect_socket = function () {
-  Hue.socket.close()
-}
-
 // Some stats in socket i/o
 Hue.start_socket_stats = function () {
   setInterval(() => {

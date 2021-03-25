@@ -149,34 +149,6 @@ Hue.replace_property_in_userlist_by_username = function (
   }
 }
 
-// Replaces a property of a user by user_id
-Hue.replace_property_in_userlist_by_user_id = function (
-  user_id,
-  prop,
-  new_value,
-  update = true
-) {
-  let changed = false
-  let user
-
-  for (let i = 0; i < Hue.userlist.length; i++) {
-    if (Hue.userlist[i].user_id === user_id) {
-      Hue.userlist[i][prop] = new_value
-      user = Hue.userlist[i]
-      changed = true
-      break
-    }
-  }
-
-  if (update && changed) {
-    Hue.update_userlist(prop)
-
-    if (Hue.open_profile_username === user.username) {
-      Hue.show_profile(user.username)
-    }
-  }
-}
-
 // Gets the role of a user by username
 Hue.get_role = function (uname) {
   for (let i = 0; i < Hue.userlist.length; i++) {

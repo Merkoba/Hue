@@ -206,15 +206,6 @@ Hue.call_setting_actions = function (save = true) {
   }
 }
 
-// Confirm if the user wants to reset the settings
-Hue.confirm_reset_settings = function () {
-  if (
-    confirm("Are you sure you want to reset the settings to their initial state?")
-  ) {
-    Hue.reset_settings()
-  }
-}
-
 // Reset the settings of a certain type
 Hue.reset_settings = function (empty = true) {
   if (empty) {
@@ -272,18 +263,4 @@ Hue.set_user_settings_titles = function () {
 Hue.prepare_media_settings = function () {
   Hue.apply_media_percentages()
   Hue.apply_media_positions()
-}
-
-// Makes a setting invisible
-Hue.hide_setting = function (name) {
-  $(`#settings_${name}`)
-    .closest(".settings_item")
-    .css("display", "none").addClass("hidden_setting")
-}
-
-// Makes a setting visible
-Hue.unhide_setting = function (name) {
-  $(`#settings_${name}`)
-    .closest(".settings_item")
-    .css("display", "block").removeClass("hidden_setting")
 }

@@ -40,11 +40,6 @@ Hue.do_save_local_storage = function () {
   Hue.local_storage_to_save = {}
 }
 
-// Remove a localStorage object
-Hue.remove_local_storage = function (ls_name) {
-  localStorage.removeItem(ls_name)
-}
-
 // Setups localStorage events
 Hue.setup_local_storage = function () {
   window.addEventListener(

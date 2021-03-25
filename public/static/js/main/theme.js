@@ -263,8 +263,3 @@ Hue.set_text_color = function (color) {
   Hue.text_color = color
   Hue.config_admin_text_color()
 }
-
-// Change CSS variables
-Hue.change_css_variable = function (name, value) {
-  document.documentElement.style.setProperty(`--${name}`, value)
-}

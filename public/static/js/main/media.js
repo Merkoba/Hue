@@ -88,17 +88,6 @@ Hue.show_media_menu = function () {
   Hue.msg_media_menu.show()
 }
 
-// Hides the media menu
-Hue.hide_media_menu = function () {
-  Hue.msg_media_menu.close()
-}
-
-Hue.unlock = function () {
-  Hue.change_media_lock({type:"image", what:false})
-  Hue.change_media_lock({type:"tv", what:false})
-  Hue.save_room_state()
-}
-
 // Initial change for current media
 Hue.start_active_media = function () {
   Hue.change({
@@ -234,25 +223,6 @@ Hue.get_media_object_from_init_data = function (type) {
 Hue.hide_media = function () {
   Hue.stop_tv()
   $("#media").css("display", "none")
-}
-
-// Hides media items if visible
-Hue.hide_media_items = function () {
-  if (Hue.tv_visible) {
-    Hue.toggle_media({type:"tv", what:false})
-  }
-
-  if (Hue.image_visible) {
-    Hue.toggle_media({type:"image", what:false})
-  }
-}
-
-// If both are not visible it makes them visible
-Hue.show_media_items = function () {
-  if (!Hue.tv_visible && !Hue.image_visible) {
-    Hue.toggle_media({type:"tv", what:true})
-    Hue.toggle_media({type:"image", what:true})
-  }
 }
 
 // Setups media modes from initial data
@@ -778,11 +748,6 @@ Hue.swap_media_layout = function () {
   Hue.room_state.media_layout = Hue.room_state.media_layout === "row" ? "column" : "row"
   Hue.save_room_state()
   Hue.change_media_layout()
-}
-
-// Stop all media
-Hue.stop_media = function () {
-  Hue.stop_tv()
 }
 
 // Swaps media

@@ -576,24 +576,9 @@ Hue.after_modal_close = function (instance) {
   Hue.reset_modal_filter(instance)
 }
 
-// Gets all Msg modal instances
-Hue.get_modal_instances = function () {
-  return Hue.msg_main_menu.higher_instances()
-}
-
 // Gets all Msg popup instances
 Hue.get_popup_instances = function () {
   return Hue.msg_main_menu.lower_instances()
-}
-
-// Gets all Msg instances
-Hue.get_all_msg_instances = function () {
-  return Hue.msg_main_menu.instances()
-}
-
-// Checks if any Msg instance is open
-Hue.any_msg_open = function () {
-  return Hue.msg_main_menu.any_open()
 }
 
 // Checks if any Msg modal instance is open
@@ -601,23 +586,9 @@ Hue.any_modal_open = function () {
   return Hue.msg_main_menu.any_higher_open()
 }
 
-// Checks if any Msg popup instance is open
-Hue.any_popup_open = function () {
-  return Hue.msg_main_menu.any_lower_open()
-}
-
 // Gets the highest open Msg modal
 Hue.get_highest_modal = function () {
   return Hue.msg_main_menu.highest_instance()
-}
-
-// Closes all Msg instances
-Hue.close_all_msg = function (callback = false) {
-  if (callback) {
-    Hue.msg_main_menu.close_all(callback)
-  } else {
-    Hue.msg_main_menu.close_all()
-  }
 }
 
 // Closes all Msg modal instances
@@ -793,21 +764,6 @@ Hue.process_msg_close_button = function (button) {
   } else if (container.hasClass("Msg-container-popup")) {
     Hue.close_all_popups()
   }
-}
-
-// Function to apply the defined toggles between windows
-Hue.process_window_toggle = function (data) {
-  let highest = Hue.msg_main_menu.highest_instance()
-  let current = highest.options.id
-  let next_func = data[current]
-
-  if (!current || !next_func) {
-    return false
-  }
-
-  Hue[`msg_${current}`].close(function () {
-    next_func()
-  })
 }
 
 // Makes action popups like for file upload progress

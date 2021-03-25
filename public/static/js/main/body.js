@@ -19,4 +19,16 @@ Hue.start_body_events = function () {
   $("body").mouseleave(function () {
     Hue.mouse_is_down = false
   })
+
+  $("#profile_image_picker").on("change", function () {
+    Hue.profile_image_selected(this)
+  })
+
+  $("#background_image_input").on("change", function () {
+    Hue.background_image_selected(this)
+  })
+
+  $("#audio_clip_picker").on("change", function () {
+    Hue.audio_clip_selected(this)
+  })
 }

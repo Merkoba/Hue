@@ -107,15 +107,3 @@ Hue.update_activity_bar_image = function (id, src) {
       }
     })
 }
-
-// Updates the username of an activity bar item
-Hue.update_activity_bar_username = function (id, uname) {
-  $("#activity_bar_inner")
-  .find(".activity_bar_item")
-  .each(function () {
-    if ($(this).data("user_id") === id) {
-      $(this).find(".activity_bar_text").eq(0).text(uname)
-      return false
-    }
-  }) 
-}
