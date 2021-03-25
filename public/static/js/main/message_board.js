@@ -1,10 +1,10 @@
 // Setups the message board
 Hue.setup_message_board = function () {
-  $("#message_board_post_icon").click(function () {
+  $("#message_board_post_icon").on("click", function () {
     Hue.create_message_board_post()
   })
 
-  $("#message_board_post_button").click(function () {
+  $("#message_board_post_button").on("click", function () {
     Hue.submit_message_board_post()
   })
 
@@ -38,7 +38,7 @@ Hue.setup_message_board = function () {
     }
   )
 
-  $("#message_board_publish").click(function () {
+  $("#message_board_publish").on("click", function () {
     Hue.submit_message_board_post()
   })
 }

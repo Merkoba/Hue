@@ -3,24 +3,24 @@ Hue.setup_footer = function () {
   let media = ["image", "tv"]
 
   for (let type of media) {
-    $(`#footer_${type}_label`).click(function () {
+    $(`#footer_${type}_label`).on("click", function () {
       Hue[`show_${type}_picker`]()
     })
 
-    $(`#footer_${type}_toggler`).click(function () {
+    $(`#footer_${type}_toggler`).on("click", function () {
       Hue.toggle_media({type:type, feedback:true})
     })
 
-    $(`#footer_${type}_lock`).click(function () {
+    $(`#footer_${type}_lock`).on("click", function () {
       Hue.change_media_lock({type:type, feedback:true})
     })
   }
 
-  $("#footer_highlights").click(function () {
+  $("#footer_highlights").on("click", function () {
     Hue.show_highlights()
   })
 
-  $("#footer_search").click(function () {
+  $("#footer_search").on("click", function () {
     Hue.show_chat_search()
   })
 

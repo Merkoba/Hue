@@ -8,7 +8,7 @@ Hue.create_room = function (data) {
 // Shows the Create Room window
 Hue.show_create_room = function () {
   Hue.msg_info2.show(["Create Room", Hue.template_create_room()], function () {
-    $("#create_room_done").click(function () {
+    $("#create_room_done").on("click", function () {
       Hue.create_room_submit()
     })
 
@@ -41,12 +41,12 @@ Hue.show_open_room = function (id) {
   Hue.msg_info2.show(
     ["Open Room", Hue.template_open_room({ id: id })],
     function () {
-      $("#open_room_here").click(function () {
+      $("#open_room_here").on("click", function () {
         Hue.goto_url(id)
         Hue.msg_info2.close()
       })
 
-      $("#open_room_new_tab").click(function () {
+      $("#open_room_new_tab").on("click", function () {
         Hue.goto_url(id, "tab")
         Hue.msg_info2.close()
       })

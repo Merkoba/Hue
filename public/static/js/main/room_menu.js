@@ -40,19 +40,19 @@ Hue.setup_room_menu = function () {
     }
   })
 
-  $("#room_menu_more_admin_activity").click(function () {
+  $("#room_menu_more_admin_activity").on("click", function () {
     Hue.request_admin_activity()
   })
 
-  $("#room_menu_more_admin_list").click(function () {
+  $("#room_menu_more_admin_list").on("click", function () {
     Hue.request_admin_list()
   })
 
-  $("#room_menu_more_ban_list").click(function () {
+  $("#room_menu_more_ban_list").on("click", function () {
     Hue.request_ban_list()
   })
 
-  $("#admin_background_image").click(function () {
+  $("#admin_background_image").on("click", function () {
     Hue.open_background_image_select()
   })
 }

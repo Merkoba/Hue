@@ -68,7 +68,18 @@ Hue.start_msg = function () {
     Object.assign({}, common, titlebar, {
       id: "user_menu",
       clear_editables: false,
-      window_width: "22rem"
+      window_width: "22rem",
+      after_show: function (instance) {
+        common.after_show(instance)
+        Hue.user_menu_open = true
+      },
+      after_close: function (instance) {
+        common.after_close(instance)
+        Hue.user_menu_open = false
+        if (Hue.user_menu_audio) {
+          Hue.user_menu_audio.pause()
+        }
+      }
     })
   )
 

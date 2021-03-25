@@ -143,11 +143,11 @@ Hue.make_safe = function (args = {}) {
 
 // Setups the confirm window
 Hue.setup_confirm = function () {
-  $("#confirm_button_confirm").click(function () {
+  $("#confirm_button_confirm").on("click", function () {
     Hue.on_confirm()
   })
 
-  $("#confirm_button_cancel").click(function () {
+  $("#confirm_button_cancel").on("click", function () {
     Hue.msg_confirm.close()
   })
 }

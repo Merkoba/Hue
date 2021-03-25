@@ -578,7 +578,7 @@ Hue.start_chat_mouse_events = function () {
 
 // Setup reply
 Hue.setup_reply = function () {
-  $("#reply_submit").click(function () {
+  $("#reply_submit").on("click", function () {
     Hue.submit_reply()
   })
 
@@ -1376,17 +1376,9 @@ Hue.make_link_preview = function (args = {}) {
 Hue.setup_link_preview = function (fmessage, link_url) {
   let link_preview_el = fmessage.find(".link_preview").eq(0)
   let link_preview_image = link_preview_el.find(".link_preview_image").eq(0)
-  let link_preview_title = link_preview_el.find(".link_preview_title").eq(0)
-
-  let f = function () {
-    Hue.open_url_menu({
-      source: link_url,
-      title: link_preview_title.text()
-    })
-  }
 
   if (link_preview_image.length > 0) {
-    link_preview_image.click(function (e) {
+    link_preview_image.on("click", function (e) {
       e.stopPropagation()
       Hue.expand_image($(this).attr("src").replace(".gifv", ".gif"))
     })
@@ -1445,7 +1437,7 @@ Hue.make_image_preview = function (message) {
 Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
   let image_preview_el = fmessage.find(".image_preview").eq(0)
 
-  image_preview_el.click(function () {
+  image_preview_el.on("click", function () {
     Hue.open_url_menu({
       source: image_preview_src_original
     })
@@ -1461,7 +1453,7 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
     Hue.goto_bottom()
   })
 
-  image_preview_image.click(function (e) {
+  image_preview_image.on("click", function (e) {
     e.stopPropagation()
     Hue.expand_image(image_preview_src_original.replace(".gifv", ".gif"))
   })
@@ -1689,21 +1681,21 @@ Hue.public_feedback = function (message, data = false) {
 
 // Setups some chat configs
 Hue.setup_chat = function () {
-  $("#top_scroller").click(function () {
+  $("#top_scroller").on("click", function () {
     Hue.goto_top()
     Hue.check_scrollers()
   })
 
-  $("#activity_up_scroller").click(function () {
+  $("#activity_up_scroller").on("click", function () {
     Hue.activity_above()
   })
 
-  $("#bottom_scroller").click(function () {
+  $("#bottom_scroller").on("click", function () {
     Hue.goto_bottom(true)
     Hue.check_scrollers()
   })
 
-  $("#activity_down_scroller").click(function () {
+  $("#activity_down_scroller").on("click", function () {
     Hue.activity_below()
   })
 }

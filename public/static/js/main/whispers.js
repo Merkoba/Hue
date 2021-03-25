@@ -255,7 +255,7 @@ Hue.show_whisper = function (data) {
 
     if (data.type === "user") {
       button_el.html(button_html)
-      button_el.click(button_func)
+      button_el.on("click", button_func)
     } else {
       button_el.css("display", "none")
     }
@@ -347,7 +347,7 @@ Hue.setup_whispers_click = function (content, username) {
   $(content)
     .find(".whisper_link")
     .each(function () {
-      $(this).click(function () {
+      $(this).on("click", function () {
         Hue.process_write_whisper(
           `${username} > ${$(this).data("whisper")}`,
           false
@@ -358,7 +358,7 @@ Hue.setup_whispers_click = function (content, username) {
 
 // Setups the message window
 Hue.setup_message_window = function () {
-  $("#write_message_send_button").click(function () {
+  $("#write_message_send_button").on("click", function () {
     Hue.send_popup_message()
   })
 
@@ -391,7 +391,7 @@ Hue.push_whisper = function (message, on_click, read) {
     content.text(`${message} (unread)`)
   }
 
-  content.click(function () {
+  content.on("click", function () {
     on_click()
   })
 

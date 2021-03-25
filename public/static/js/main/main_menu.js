@@ -1,22 +1,22 @@
 // Setup main menu
 Hue.setup_main_menu = function () {
-  $("#main_menu_user_menu").click(function () {
+  $("#main_menu_user_menu").on("click", function () {
     Hue.show_user_menu()
   })
 
-  $("#main_menu_room_menu").click(function () {
+  $("#main_menu_room_menu").on("click", function () {
     Hue.show_room_menu()
   })
 
-  $("#main_menu_media_menu").click(function () {
+  $("#main_menu_media_menu").on("click", function () {
     Hue.show_media_menu()
   })
 
-  $("#main_menu_commands").click(function () {
+  $("#main_menu_commands").on("click", function () {
     Hue.show_commands()
   })
 
-  $("#main_menu_create_room").click(function () {
+  $("#main_menu_create_room").on("click", function () {
     Hue.show_create_room()
   })
 }

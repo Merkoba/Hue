@@ -81,7 +81,7 @@ Hue.push_notification = function (icon, message, on_click = false) {
   content.data("date", d)
 
   if (on_click) {
-    content.click(function () {
+    content.on("click", function () {
       on_click()
     })
   }

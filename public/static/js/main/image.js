@@ -358,7 +358,7 @@ Hue.setup_modal_image = function () {
 
   $("#Msg-window-modal_image")[0].addEventListener("wheel", f)
 
-  $("#modal_image_container").click(function () {
+  $("#modal_image_container").on("click", function () {
     if ($("#modal_image_container").hasClass("expanded_modal_image")) {
       Hue.restore_modal_image()
     } else {
@@ -366,22 +366,22 @@ Hue.setup_modal_image = function () {
     }
   })
 
-  $("#modal_image_arrow_prev").click(function (e) {
+  $("#modal_image_arrow_prev").on("click", function (e) {
     Hue.modal_image_prev_click()
   })
 
-  $("#modal_image_arrow_next").click(function (e) {
+  $("#modal_image_arrow_next").on("click", function (e) {
     Hue.modal_image_next_click()
   })
 
-  $("#modal_image_toolbar_load").click(function (e) {
+  $("#modal_image_toolbar_load").on("click", function (e) {
     let item = Hue.loaded_modal_image
     Hue.toggle_media({type:"image", what:true})
     Hue.change({ type: "image", item: item, force: true })
     Hue.close_all_modals()
   })
 
-  $("#modal_image_toolbar_change").click(function (e) {
+  $("#modal_image_toolbar_change").on("click", function (e) {
     Hue.show_confirm("Change Image", "This will change it for everyone", function () {
       let item = Hue.loaded_modal_image
       Hue.change_image_source(item.source)
@@ -389,7 +389,7 @@ Hue.setup_modal_image = function () {
     })
   })
 
-  $("#modal_image_toolbar_expand").click(function (e) {
+  $("#modal_image_toolbar_expand").on("click", function (e) {
     if ($("#modal_image_container").hasClass("expanded_modal_image")) {
       Hue.restore_modal_image()
     } else {
@@ -545,7 +545,7 @@ Hue.setup_expand_image = function () {
     $("#expand_image_error").css("display", "block")
   })
 
-  $("#expand_image_container").click(function () {
+  $("#expand_image_container").on("click", function () {
     Hue.hide_expand_image()
   })
 }
@@ -597,7 +597,7 @@ Hue.show_image_upload_comment = function (file, type) {
     $("#Msg-titlebar-image_upload_comment").attr("title", file.name)
 
     Hue.msg_image_upload_comment.show(function () {
-      $("#image_upload_comment_submit").click(function () {
+      $("#image_upload_comment_submit").on("click", function () {
         Hue.process_image_upload_comment()
       })
 

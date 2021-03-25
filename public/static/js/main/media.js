@@ -1,10 +1,10 @@
 // Setups media
 Hue.setup_media = function () {
-  $("#media_image_frame").click(function () {
+  $("#media_image_frame").on("click", function () {
     Hue.show_modal_image()
   })
 
-  $("#media_image_error").click(function () {
+  $("#media_image_error").on("click", function () {
     Hue.show_modal_image()
   })
 }
@@ -314,19 +314,19 @@ Hue.prepend_to_media_history = function (message_id) {
 
 // Additional media menu configurations
 Hue.setup_media_menu = function () {
-  $("#media_menu_image_icon").click(function () {
+  $("#media_menu_image_icon").on("click", function () {
     Hue.show_image_picker()
   })
 
-  $("#media_menu_tv_icon").click(function () {
+  $("#media_menu_tv_icon").on("click", function () {
     Hue.show_tv_picker()
   })
 
-  $("#media_menu_swap").click(function () {
+  $("#media_menu_swap").on("click", function () {
     Hue.swap_media()
   })
 
-  $("#media_menu_rotate").click(function () {
+  $("#media_menu_rotate").on("click", function () {
     Hue.rotate_media()
   })
 
@@ -340,7 +340,7 @@ Hue.setup_media_menu = function () {
     Hue.do_chat_size_change(size)
   })
 
-  $("#media_menu_defaults").click(function () {
+  $("#media_menu_defaults").on("click", function () {
     Hue.apply_media_defaults()
     Hue.close_all_modals()
   })
@@ -380,15 +380,15 @@ Hue.setup_media_pickers = function () {
     Hue.horizontal_separator.separate($(`#${type}_picker_options`)[0])
   }
 
-  $("#image_picker_upload").click(function () {
+  $("#image_picker_upload").on("click", function () {
     Hue.msg_image_picker.close()
   })
 
-  $("#image_picker_submit").click(function () {
+  $("#image_picker_submit").on("click", function () {
     Hue.image_picker_submit()
   })
 
-  $("#tv_picker_reload").click(function () {
+  $("#tv_picker_reload").on("click", function () {
     if (Hue.loaded_tv) {
       Hue.load_media("tv", Hue.loaded_tv)
     }
@@ -396,7 +396,7 @@ Hue.setup_media_pickers = function () {
     Hue.close_all_modals()
   })
 
-  $("#tv_picker_submit").click(function () {
+  $("#tv_picker_submit").on("click", function () {
     Hue.tv_picker_submit()
   })
 }

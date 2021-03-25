@@ -580,7 +580,7 @@ Hue.set_default_tv_size = function () {
 
 // Setup for the tv iframe
 Hue.setup_iframe_video = function () {
-  $("#media_iframe_poster").click(function () {
+  $("#media_iframe_poster").on("click", function () {
     Hue.play_tv()
   })
 }

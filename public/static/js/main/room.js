@@ -223,7 +223,7 @@ Hue.show_admin_list = function (data) {
       .eq(0)
       .text(`(${Hue.get_pretty_role_name(user.role)})`)
 
-    h.click(function () {
+    h.on("click", function () {
       Hue.show_profile(user.username)
     })
 
@@ -256,7 +256,7 @@ Hue.show_ban_list = function (data) {
 
     h.find(".ban_list_username").eq(0).text(user.username)
 
-    h.click(function () {
+    h.on("click", function () {
       Hue.show_confirm(`Unban ${user.username}`, "", function () {
         Hue.unban(user.username)
       })

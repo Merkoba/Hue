@@ -63,7 +63,7 @@ jQuery.fn.urlize = function (stop_propagation = true) {
       $(obj)
         .find(".stop_propagation")
         .each(function () {
-          $(this).click(function (e) {
+          $(this).on("click", function (e) {
             e.stopPropagation()
           })
         })
@@ -119,11 +119,11 @@ Hue.setup_drag_events = function () {
     Hue.handle_url(e.dataTransfer.getData("text/plain").trim())
   })
 
-  $("#handle_url_chat").click(function () {
+  $("#handle_url_chat").on("click", function () {
     Hue.handle_url_chat()
   })
 
-  $("#handle_url_image").click(function () {
+  $("#handle_url_image").on("click", function () {
     Hue.change_image_source(
       Hue.handled_url_input,
       false,
@@ -132,7 +132,7 @@ Hue.setup_drag_events = function () {
     Hue.close_all_modals()
   })
 
-  $("#handle_url_tv").click(function () {
+  $("#handle_url_tv").on("click", function () {
     Hue.change_tv_source(Hue.handled_url_input, false, Hue.handled_url_comment)
     Hue.close_all_modals()
   })
@@ -176,27 +176,27 @@ Hue.check_handle_url_options = function (text) {
 
 // Setups the Open URL picker window
 Hue.setup_open_url = function () {
-  $("#open_url_menu_open").click(function () {
+  $("#open_url_menu_open").on("click", function () {
     Hue.goto_url(Hue.open_url_source)
     Hue.close_all_modals()
   })
 
-  $("#open_url_menu_copy").click(function () {
+  $("#open_url_menu_copy").on("click", function () {
     Hue.copy_string(Hue.open_url_source)
     Hue.close_all_modals()
   })
 
-  $("#open_url_menu_copy_title").click(function () {
+  $("#open_url_menu_copy_title").on("click", function () {
     Hue.copy_string(Hue.open_url_title)
     Hue.close_all_modals()
   })
 
-  $("#open_url_menu_load").click(function () {
+  $("#open_url_menu_load").on("click", function () {
     Hue.load_media(Hue.open_url_media_type, Hue.open_url_data)
     Hue.close_all_modals()
   })
 
-  $("#open_url_menu_change").click(function () {
+  $("#open_url_menu_change").on("click", function () {
     Hue.show_confirm(`Change ${Hue.media_string(Hue.open_url_media_type)}`, 
     "This will change it for everyone", function () {
       Hue[`change_${Hue.open_url_media_type}_source`](Hue.open_url_data.source)

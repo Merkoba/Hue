@@ -8,27 +8,27 @@ Hue.start_body_events = function () {
     $(this).attr("title", new_title)
   })
 
-  $("body").mousedown(function () {
+  $("body").on("mousedown", function () {
     Hue.mouse_is_down = true
   })
 
-  $("body").mouseup(function (e) {
+  $("body").on("mouseup", function (e) {
     Hue.mouse_is_down = false
   })
 
-  $("body").mouseleave(function () {
+  $("body").on("mouseleave", function () {
     Hue.mouse_is_down = false
   })
 
   $("#profile_image_picker").on("change", function () {
-    Hue.profile_image_selected(this)
+    Hue.profile_image_selected(this.files[0])
   })
 
   $("#background_image_input").on("change", function () {
-    Hue.background_image_selected(this)
+    Hue.background_image_selected(this.files[0])
   })
 
   $("#audio_clip_picker").on("change", function () {
-    Hue.audio_clip_selected(this)
+    Hue.audio_clip_selected(this.files[0])
   })
 }

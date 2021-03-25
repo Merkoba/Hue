@@ -550,11 +550,11 @@ Hue.setup_profile_image = function (pi) {
 
 // Setups user profile windows
 Hue.setup_show_profile = function () {
-  $("#show_profile_whisper").click(function () {
+  $("#show_profile_whisper").on("click", function () {
     Hue.write_popup_message([Hue.open_profile_username])
   })
 
-  $("#show_profile_sync_tv").click(function () {
+  $("#show_profile_sync_tv").on("click", function () {
     Hue.sync_tv(Hue.open_profile_username)
     Hue.msg_profile.close()
   })
@@ -565,19 +565,19 @@ Hue.setup_show_profile = function () {
     }
   })
 
-  $("#show_profile_search").click(function () {
+  $("#show_profile_search").on("click", function () {
     Hue.show_chat_search(Hue.open_profile_username)
   })
 
-  $("#show_profile_hearts_icon").click(function () {
+  $("#show_profile_hearts_icon").on("click", function () {
     Hue.send_badge(Hue.open_profile_username, "heart")
   })
 
-  $("#show_profile_skulls_icon").click(function () {
+  $("#show_profile_skulls_icon").on("click", function () {
     Hue.send_badge(Hue.open_profile_username, "skull")
   })
 
-  $("#show_profile_image").click(function () {
+  $("#show_profile_image").on("click", function () {
     if (Hue.profile_audio) {
       Hue.stop_profile_audio()
     } else {

@@ -18,7 +18,7 @@ Hue.setup_lockscreen = function () {
     Hue.lockscreen_peek_active = false
   })
 
-  $("#lockscreen_principal").click(function () {
+  $("#lockscreen_principal").on("click", function () {
     Hue.unlock_screen()
   })
 }

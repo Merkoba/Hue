@@ -234,7 +234,7 @@ Hue.show_settings = function (filter = false) {
 Hue.setup_settings_windows = function () {
   Hue.set_user_settings_titles()
 
-  $("#settings_request_notifications").click(function () {
+  $("#settings_request_notifications").on("click", function () {
     Hue.request_desktop_notifications_permission()
   })
 }

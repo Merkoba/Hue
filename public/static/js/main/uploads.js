@@ -11,6 +11,14 @@ Hue.start_dropzone = function () {
   })
 
   Hue.dropzone.on("addedfile", function (file) {
+    if (Hue.room_menu_open) {
+      Hue.background_image_selected(file)
+      return
+    } else if (Hue.user_menu_open) {
+      Hue.profile_image_selected(file)
+      return
+    }
+
     Hue.focus_input()
 
     if (Hue.dropzone.files.length > 1) {
@@ -34,7 +42,6 @@ Hue.start_dropzone = function () {
     }
 
     Hue.dropzone.files = []
-
     Hue.show_image_upload_comment(file, "image_upload")
   })
 }

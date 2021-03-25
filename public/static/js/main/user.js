@@ -177,7 +177,7 @@ Hue.show_change_username = function () {
     $("#change_username_input").val(Hue.username)
     $("#change_username_input").focus()
 
-    $("#change_username_submit").click(function () {
+    $("#change_username_submit").on("click", function () {
       Hue.submit_change_username()
     })
 
@@ -212,7 +212,7 @@ Hue.show_change_password = function () {
   Hue.msg_info2.show(["Change Password", s], function () {
     $("#change_password_input").focus()
 
-    $("#change_password_submit").click(function () {
+    $("#change_password_submit").on("click", function () {
       Hue.submit_change_password()
     })
 
@@ -242,7 +242,7 @@ Hue.show_change_email = function () {
   Hue.msg_info2.show(["Change Email", s], function () {
     $("#change_email_input").focus()
 
-    $("#change_email_submit").click(function () {
+    $("#change_email_submit").on("click", function () {
       Hue.submit_change_email()
     })
 
@@ -303,43 +303,43 @@ Hue.setup_user_menu = function () {
     }
   })
 
-  $("#user_menu_username").click(function () {
+  $("#user_menu_username").on("click", function () {
     Hue.show_change_username()
   })
 
-  $("#user_menu_profile_image").click(function () {
+  $("#user_menu_profile_image").on("click", function () {
     Hue.open_profile_image_picker()
   })
 
-  $("#user_menu_audio_clip").click(function () {
-    if (Hue.get_user_by_username("mad").audio_clip) {
+  $("#user_menu_audio_clip").on("click", function () {
+    if (Hue.get_user_by_username(Hue.username).audio_clip) {
       Hue.show_audio_clip_menu()
     } else {
       Hue.select_audio_clip()
     }
   })
 
-  $("#user_menu_details").click(function () {
+  $("#user_menu_details").on("click", function () {
     Hue.show_details()
   })
 
-  $("#user_menu_logout").click(function () {
+  $("#user_menu_logout").on("click", function () {
     Hue.needs_confirm("logout")
   })
 
-  $("#user_menu_settings").click(function () {
+  $("#user_menu_settings").on("click", function () {
     Hue.show_settings()
   })
 
-  $("#user_menu_change_username").click(function () {
+  $("#user_menu_change_username").on("click", function () {
     Hue.show_change_username()    
   })
 
-  $("#user_menu_change_password").click(function () {
+  $("#user_menu_change_password").on("click", function () {
     Hue.show_change_password()    
   })
 
-  $("#user_menu_change_email").click(function () {
+  $("#user_menu_change_email").on("click", function () {
     Hue.show_change_email()    
   })
 }
@@ -377,12 +377,12 @@ Hue.verify_email = function (code) {
 
 // Opens the profile image picker to change the profile image
 Hue.open_profile_image_picker = function () {
-  $("#profile_image_picker").click()
+  $("#profile_image_picker").trigger("click")
 }
 
 // Setups the profile image circular cropper
 Hue.setup_profile_image_cropper = function () {
-  $("#profile_image_cropper_upload").click(function () {
+  $("#profile_image_cropper_upload").on("click", function () {
     Hue.profile_image_cropper
       .croppie("result", {
         type: "blob",
@@ -409,7 +409,7 @@ Hue.setup_profile_image_cropper = function () {
       })
   })
 
-  $("#profile_image_cropper_change").click(function () {
+  $("#profile_image_cropper_change").on("click", function () {
     Hue.open_profile_image_picker()
   })
 
@@ -424,39 +424,41 @@ Hue.reset_profile_image_cropper = function () {
 }
 
 // This is executed after a profile image has been selected in the file dialog
-Hue.profile_image_selected = function (input) {
-  if (input.files && input.files[0]) {
-    let reader = new FileReader()
+Hue.profile_image_selected = function (file) {
+  if (!file) {
+    return false
+  }
 
-    reader.onload = function (e) {
-      Hue.reset_profile_image_cropper()
+  let reader = new FileReader()
 
-      Hue.msg_profile_image_cropper.show(function () {
-        $("#profile_image_picker").closest("form").get(0).reset()
+  reader.onload = function (e) {
+    Hue.reset_profile_image_cropper()
 
-        Hue.profile_image_cropper = $("#profile_image_cropper").croppie({
-          viewport: {
-            width: 200,
-            height: 200,
-            type: "circle",
-          },
-          boundary: { width: 350, height: 350 },
+    Hue.msg_profile_image_cropper.show(function () {
+      $("#profile_image_picker").closest("form").get(0).reset()
+
+      Hue.profile_image_cropper = $("#profile_image_cropper").croppie({
+        viewport: {
+          width: 200,
+          height: 200,
+          type: "circle",
+        },
+        boundary: { width: 350, height: 350 },
+      })
+
+      Hue.profile_image_cropper
+        .croppie("bind", {
+          url: e.target.result,
+          points: [],
         })
 
-        Hue.profile_image_cropper
-          .croppie("bind", {
-            url: e.target.result,
-            points: [],
-          })
-
-          .then(function () {
-            Hue.profile_image_cropper.croppie("setZoom", 0)
-          })
-      })
-    }
-
-    reader.readAsDataURL(input.files[0])
+        .then(function () {
+          Hue.profile_image_cropper.croppie("setZoom", 0)
+        })
+    })
   }
+
+  reader.readAsDataURL(file)
 }
 
 // Feedback that the user is not an operator
@@ -503,16 +505,22 @@ Hue.show_others_disconnected = function (data) {
 // Shows some options for the audio clip
 Hue.show_audio_clip_menu = function () {
   Hue.msg_info2.show(["Audio Clip", Hue.template_audio_clip_menu()], function () {
-    $("#upload_audio_clip").click(function () {
+    $("#upload_audio_clip").on("click", function () {
       Hue.select_audio_clip()
       Hue.msg_info2.close()
     })
 
-    $("#remove_audio_clip").click(function () {
+    $("#remove_audio_clip").on("click", function () {
       Hue.needs_confirm_2(function () {
         Hue.socket_emit("remove_audio_clip", {})
         Hue.msg_info2.close()
       })
+    })
+
+    $("#play_audio_clip").on("click", function () {
+      Hue.user_menu_audio = document.createElement("audio")
+      Hue.user_menu_audio.src = Hue.get_user_by_username(Hue.username).audio_clip
+      Hue.user_menu_audio.play()
     })
 
     Hue.horizontal_separator.separate("background_image_select_container")
@@ -521,12 +529,15 @@ Hue.show_audio_clip_menu = function () {
 
 // Opens the file picker to choose an audio clip
 Hue.select_audio_clip = function () {
-  $("#audio_clip_picker").click()
+  $("#audio_clip_picker").trigger("click")
 }
 
 // When an audio clip gets selected from the file picker
-Hue.audio_clip_selected = function (input) {
-  let file = input.files[0]
+Hue.audio_clip_selected = function (file) {
+  if (!file) {
+    return false
+  }
+
   let size = file.size / 1024
 
   if (size > Hue.config.max_audio_clip_size) {

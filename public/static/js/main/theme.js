@@ -100,11 +100,11 @@ Hue.open_background_image_select = function () {
     "Change Background Image",
     Hue.template_background_image_select(),
   ], function () {
-    $("#background_image_select_url").click(function () {
+    $("#background_image_select_url").on("click", function () {
       Hue.open_background_image_input()
     })
 
-    $("#background_image_select_upload").click(function () {
+    $("#background_image_select_upload").on("click", function () {
       Hue.open_background_image_picker()
     })
   })
@@ -116,7 +116,7 @@ Hue.open_background_image_select = function () {
 Hue.open_background_image_picker = function () {
   Hue.msg_info2.close()
 
-  $("#background_image_input").click()
+  $("#background_image_input").trigger("click")
 }
 
 // If a URL source is chosen as the method to change the background image
@@ -125,7 +125,7 @@ Hue.open_background_image_input = function () {
   Hue.msg_info2.show(
     ["Change Background Image", Hue.template_background_image_input()],
     function () {
-      $("#background_image_input_submit").click(function () {
+      $("#background_image_input_submit").on("click", function () {
         Hue.background_image_input_action()
       })
 
@@ -145,12 +145,15 @@ Hue.background_image_input_action = function () {
 }
 
 // On background image selected for upload
-Hue.background_image_selected = function (input) {
+Hue.background_image_selected = function (file) {
+  if (!file) {
+    return false
+  }
+
   if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
-  let file = input.files[0]
   let size = file.size / 1024
 
   $("#background_image_input").closest("form").get(0).reset()
