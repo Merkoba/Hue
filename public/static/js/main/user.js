@@ -312,7 +312,7 @@ Hue.setup_user_menu = function () {
   })
 
   $("#user_menu_audio_clip").on("click", function () {
-    if (Hue.get_user_by_username(Hue.username).audio_clip) {
+    if (Hue.get_user_profile().audio_clip) {
       Hue.show_audio_clip_menu()
     } else {
       Hue.select_audio_clip()
@@ -519,7 +519,7 @@ Hue.show_audio_clip_menu = function () {
 
     $("#play_audio_clip").on("click", function () {
       Hue.user_menu_audio = document.createElement("audio")
-      Hue.user_menu_audio.src = Hue.get_user_by_username(Hue.username).audio_clip
+      Hue.user_menu_audio.src = Hue.get_user_profile().audio_clip
       Hue.user_menu_audio.play()
     })
 
@@ -546,4 +546,9 @@ Hue.audio_clip_selected = function (file) {
   }
 
   Hue.upload_file({ file: file, action: "audio_clip_upload" })
+}
+
+// Get the user profile
+Hue.get_user_profile = function () {
+  return Hue.get_user_by_username(Hue.username)
 }
