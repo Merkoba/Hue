@@ -15,7 +15,9 @@ Hue.start_msg = function () {
     close_effect: "none",
     before_show: function (instance) {
       if (Hue.screen_locked) {
-        if (instance.options.id !== "lockscreen") return false
+        if (instance.options.id !== "lockscreen") {
+          return false
+        }
       }
     },
     after_show: function (instance) {
