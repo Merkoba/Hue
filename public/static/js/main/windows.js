@@ -13,9 +13,6 @@ Hue.start_msg = function () {
     class: "modal",
     show_effect: "none",
     close_effect: "none",
-    after_create: function (instance) {
-      Hue.after_modal_create(instance)
-    },
     before_show: function (instance) {
       if (Hue.screen_locked) {
         if (instance.options.id !== "lockscreen") return false
@@ -555,9 +552,6 @@ Hue.reset_modal_filter = function (instance) {
     }
   }
 }
-
-// This is called after a modal is created
-Hue.after_modal_create = function (instance) {}
 
 // This is called after a modal is shown
 Hue.after_modal_show = function (instance) {

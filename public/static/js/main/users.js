@@ -966,7 +966,7 @@ Hue.annex = function (rol = "admin") {
 }
 
 // Superuser command to send a system broadcast
-Hue.system_broadcast = function (rol = "admin") {
+Hue.system_broadcast = function () {
   Hue.write_popup_message([], "system_broadcast")
 }
 

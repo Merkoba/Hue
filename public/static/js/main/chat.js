@@ -223,7 +223,7 @@ Hue.add_chat_message = function (args = {}) {
   }
 
   if (link_preview) {
-    Hue.setup_link_preview(fmessage, args.link_url)
+    Hue.setup_link_preview(fmessage)
   }
 
   Hue.setup_whispers_click(fmessage, args.username)
@@ -1373,7 +1373,7 @@ Hue.make_link_preview = function (args = {}) {
 }
 
 // Setups link preview elements
-Hue.setup_link_preview = function (fmessage, link_url) {
+Hue.setup_link_preview = function (fmessage) {
   let link_preview_el = fmessage.find(".link_preview").eq(0)
   let link_preview_image = link_preview_el.find(".link_preview_image").eq(0)
 
