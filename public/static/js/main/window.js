@@ -95,7 +95,7 @@ Hue.resize_events = function () {
 Hue.on_resize = function () {
   Hue.fix_frames()
   Hue.resize_activity_bar()
-  Hue.check_scrollers(100)
+  Hue.check_scrollers(250)
   Hue.goto_bottom()
 }
 
