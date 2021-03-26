@@ -211,10 +211,8 @@ Hue.update_last_message_post_checked = function () {
 // Checks if the user can delete posts in the message board
 Hue.check_message_board_permissions = function () {
   if (Hue.is_admin_or_op(Hue.role)) {
-    $("#message_board_container").addClass("message_board_container_admin")
     $("#message_board_input").css("display", "block")
   } else {
-    $("#message_board_container").removeClass("message_board_container_admin")
     $("#message_board_input").css("display", "none")
   }
 }
