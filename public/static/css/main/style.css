@@ -1916,6 +1916,7 @@ a.special_link:hover {
 	color: var(--font_color);
 	text-align: center;
 	border-color: var(--altcolor_a);
+	resize: none;
 }
 
 #reply_input {
