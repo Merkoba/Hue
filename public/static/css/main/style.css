@@ -861,7 +861,6 @@ select {
 	color: #222222;
 	font-family: var(--app_font_family) !important;
 	border: 0.06rem solid currentColor;
-	font-size: 1rem;
 }
 
 #modal_image_error,
@@ -1916,6 +1915,7 @@ a.special_link:hover {
 	color: var(--font_color);
 	text-align: center;
 	border-color: var(--altcolor_a);
+	font-size: 1rem;
 	resize: none;
 }
 
