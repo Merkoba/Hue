@@ -99,7 +99,7 @@ Hue.on_highlight = function () {
     Hue.show_highlight_desktop_notification()
   }
 
-  if (Hue.highlights_open) {
+  if (Hue.msg_highlights.is_open()) {
     Hue.show_highlights($("#highlights_filter").val())
   }
 }

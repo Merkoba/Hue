@@ -51,15 +51,7 @@ Hue.start_msg = function () {
   Hue.msg_room_menu = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "room_menu",
-      window_width: "22rem",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.room_menu_open = true
-      },
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.room_menu_open = false
-      }
+      window_width: "22rem"
     })
   )
 
@@ -68,13 +60,8 @@ Hue.start_msg = function () {
       id: "user_menu",
       clear_editables: false,
       window_width: "22rem",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.user_menu_open = true
-      },
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.user_menu_open = false
         if (Hue.user_menu_audio) {
           Hue.user_menu_audio.pause()
         }
@@ -86,15 +73,7 @@ Hue.start_msg = function () {
     Object.assign({}, common, titlebar, {
       id: "userlist",
       window_min_width: "22rem",
-      window_max_width: "45rem",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.userlist_open = true
-      },
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.userlist_open = false
-      },
+      window_max_width: "45rem"
     })
   )
 
@@ -113,12 +92,10 @@ Hue.start_msg = function () {
       after_show: function (instance) {
         common.after_show(instance)
         Hue.restore_modal_image()
-        Hue.modal_image_open = true
       },
       after_close: function (instance) {
         common.after_close(instance)
         Hue.clear_modal_image_info()
-        Hue.modal_image_open = false
       },
     })
   )
@@ -187,16 +164,11 @@ Hue.start_msg = function () {
     Object.assign({}, common, {
       id: "image_picker",
       window_width: "24rem",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.image_picker_open = true
-      },
       after_close: function (instance) {
         common.after_close(instance)
         $("#image_source_picker_input").val("")
         $("#image_source_picker_input_comment").val("")
         Hue.reset_media_history_filter("image")
-        Hue.image_picker_open = false
       },
     })
   )
@@ -205,16 +177,11 @@ Hue.start_msg = function () {
     Object.assign({}, common, {
       id: "tv_picker",
       window_width: "24rem",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.tv_picker_open = true
-      },
       after_close: function (instance) {
         common.after_close(instance)
         $("#tv_source_picker_input").val("")
         $("#tv_source_picker_input_comment").val("")
         Hue.reset_media_history_filter("tv")
-        Hue.tv_picker_open = false
       },
     })
   )
@@ -222,15 +189,7 @@ Hue.start_msg = function () {
   Hue.msg_media_menu = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "media_menu",
-      window_width: "22rem",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.media_menu_open = true
-      },
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.media_menu_open = false
-      },
+      window_width: "22rem"
     })
   )
 
@@ -266,14 +225,9 @@ Hue.start_msg = function () {
     Object.assign({}, common, titlebar, {
       id: "highlights",
       window_width: "30rem",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.highlights_open = true
-      },
       after_close: function (instance) {
         common.after_close(instance)
         Hue.reset_highlights_filter()
-        Hue.highlights_open = false
       },
     })
   )
@@ -314,16 +268,11 @@ Hue.start_msg = function () {
   Hue.msg_image_upload_comment = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "image_upload_comment",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.image_upload_comment_open = true
-      },
       after_close: function (instance) {
         common.after_close(instance)
         $("#image_upload_comment_input").val("")
         Hue.image_upload_comment_file = false
         Hue.image_upload_comment_type = false
-        Hue.image_upload_comment_open = false
       },
     })
   )
@@ -345,15 +294,7 @@ Hue.start_msg = function () {
 
   Hue.msg_handle_url = Msg.factory(
     Object.assign({}, common, titlebar, {
-      id: "handle_url",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.handle_url_open = true
-      },
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.handle_url_open = false
-      },
+      id: "handle_url"
     })
   )
 
@@ -367,15 +308,7 @@ Hue.start_msg = function () {
   Hue.msg_details = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "details",
-      window_width: "22rem",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.details_open = true
-      },
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.details_open = false
-      },
+      window_width: "22rem"
     })
   )
 
@@ -396,15 +329,7 @@ Hue.start_msg = function () {
   Hue.msg_message_board = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "message_board",
-      window_width: "30rem",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.message_board_open = true
-      },
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.message_board_open = false
-      },
+      window_width: "30rem"
     })
   )
 
@@ -420,15 +345,7 @@ Hue.start_msg = function () {
 
   Hue.msg_confirm = Msg.factory(
     Object.assign({}, common, titlebar, {
-      id: "confirm",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.confirm_open = true
-      },
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.confirm_open = false
-      },
+      id: "confirm"
     })
   )
 

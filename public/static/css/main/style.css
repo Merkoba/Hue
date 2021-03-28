@@ -30,7 +30,7 @@ html {
 }
 
 body * {
-	scrollbar-width: thin !important;
+	scrollbar-width: none !important;
 }
 
 #main_container {
@@ -201,7 +201,6 @@ body * {
 	overflow-y: auto;
 	max-width: 100%;
 	max-height: 100%;
-	scrollbar-width: none !important;
 }
 
 .chat_area {
@@ -669,14 +668,6 @@ a.generic:hover {
 
 .setting_title3 {
 	padding-bottom: 0.8rem;
-}
-
-.Msg-container div {
-	scrollbar-color: var(--altcolor) transparent !important;
-}
-
-.Msg-container ::-webkit-scrollbar-thumb {
-	background-color: var(--altcolor) !important;
 }
 
 .Msg-content {
@@ -1893,7 +1884,7 @@ a.special_link:hover {
 }
 
 ::-webkit-scrollbar {
-	width: 0.47rem !important;
+	width: 0 !important;
 }
 
 ::-webkit-scrollbar-track-piece {

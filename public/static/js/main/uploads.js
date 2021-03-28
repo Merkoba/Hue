@@ -11,10 +11,10 @@ Hue.start_dropzone = function () {
   })
 
   Hue.dropzone.on("addedfile", function (file) {
-    if (Hue.room_menu_open) {
+    if (Hue.msg_room_menu.is_open()) {
       Hue.background_image_selected(file)
       return
-    } else if (Hue.user_menu_open) {
+    } else if (Hue.msg_user_menu.is_open()) {
       Hue.profile_image_selected(file)
       return
     }

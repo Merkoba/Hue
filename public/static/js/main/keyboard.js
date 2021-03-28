@@ -18,7 +18,7 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.image_picker_open) {
+      if (Hue.msg_image_picker.is_open()) {
         if (Hue.msg_image_picker.is_highest()) {
           if (e.key === "Enter") {
             Hue.image_picker_submit()
@@ -32,7 +32,7 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.tv_picker_open) {
+      if (Hue.msg_tv_picker.is_open()) {
         if (Hue.msg_tv_picker.is_highest()) {
           if (e.key === "Enter") {
             Hue.tv_picker_submit()
@@ -46,7 +46,7 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.image_upload_comment_open) {
+      if (Hue.msg_image_upload_comment.is_open()) {
         if (Hue.msg_image_upload_comment.is_highest()) {
           if (e.key === "Enter") {
             Hue.process_image_upload_comment()
@@ -104,7 +104,7 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.modal_image_open) {
+      if (Hue.msg_modal_image.is_open()) {
         if (Hue.msg_modal_image.is_highest()) {
           if (e.key === "ArrowLeft") {
             Hue.modal_image_prev_click()
@@ -173,7 +173,7 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.handle_url_open) {
+      if (Hue.msg_handle_url.is_open()) {
         if (Hue.msg_handle_url.is_highest()) {
           if (e.key === "Enter") {
             Hue.handle_url_chat()
@@ -193,7 +193,7 @@ Hue.activate_key_detection = function () {
         return
       }
 
-      if (Hue.confirm_open) {
+      if (Hue.msg_confirm.is_open()) {
         if (Hue.msg_confirm.is_highest()) {
           if (e.key === "Enter" && !e.shiftKey) {
             Hue.on_confirm()

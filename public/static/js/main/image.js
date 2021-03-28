@@ -622,11 +622,9 @@ Hue.setup_image_upload_comment = function () {
 // Submits the upload image comment window
 // Uploads the file and the optional comment
 Hue.process_image_upload_comment = function () {
-  if (!Hue.image_upload_comment_open) {
+  if (!Hue.msg_image_upload_comment.is_open()) {
     return false
   }
-
-  Hue.image_upload_comment_open = false
 
   let file = Hue.image_upload_comment_file
   let type = Hue.image_upload_comment_type

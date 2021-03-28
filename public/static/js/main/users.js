@@ -231,7 +231,7 @@ Hue.update_userlist = function (prop = "") {
     if (prop) {
       uchange = false
 
-      if (prop === "username" || prop === "profile_image") {
+      if (prop === "username" || prop === "profile_image" || prop === "role") {
         uchange = true
       }
     }
@@ -486,7 +486,7 @@ Hue.announce_new_username = function (data) {
 
     Hue.update_input_placeholder()
 
-    if (Hue.details_open) {
+    if (Hue.msg_details.is_open()) {
       Hue.show_details()
     }
   } else {
@@ -815,10 +815,6 @@ Hue.announce_role_change = function (data) {
 
   if (Hue.admin_list_open) {
     Hue.request_admin_list()
-  }
-
-  if (Hue.userlist_open) {
-    Hue.update_userlist_window()
   }
 }
 
