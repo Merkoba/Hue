@@ -2222,6 +2222,10 @@ pre {
 	margin-top: 0.3rem;
 }
 
+.message_board_container_admin .message_board_delete {
+	display: inline-block;
+}
+
 .message_board_item {
 	position: relative;
 	width: 100%;
