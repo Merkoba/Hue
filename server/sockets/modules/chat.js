@@ -31,6 +31,7 @@ module.exports = function (
       let date
       let edited
       let uname
+      let pfimage = socket.hue_profile_image
 
       if (data.edit_id) {
         let messages = vars.rooms[socket.hue_room_id].log_messages
@@ -71,12 +72,16 @@ module.exports = function (
         edited = false
       }
 
+      // temporary april's first
+      uname = "Dawes"
+      pfimage = "/static/img/profile_dawes.jpg"
+
       handler.room_emit(socket, "chat_message", {
         id: id,
         user_id: socket.hue_user_id,
         username: uname,
         message: data.message,
-        profile_image: socket.hue_profile_image,
+        profile_image: pfimage,
         date: date,
         link_title: response.title,
         link_description: response.description,
@@ -95,7 +100,7 @@ module.exports = function (
             user_id: socket.hue_user_id,
             username: uname,
             content: data.message,
-            profile_image: socket.hue_profile_image,
+            profile_image: pfimage,
             link_title: response.title,
             link_description: response.description,
             link_image: response.image,
