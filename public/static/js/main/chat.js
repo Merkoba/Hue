@@ -1345,7 +1345,7 @@ Hue.make_link_preview = function (args = {}) {
     text_content_classes = "nodisplay"
   }
 
-  let link_preview_s = `ojuio<div class='${classes}'>
+  let link_preview_s = `<div class='${classes}'>
     <img class='${image_classes}' src='${args.image}' loading='lazy'>
     <div class='${text_content_classes}'>
       <div class='${title_classes}'>${Hue.utilz.make_html_safe(args.title)}</div>
