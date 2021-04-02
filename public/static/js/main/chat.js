@@ -1322,52 +1322,42 @@ Hue.make_link_preview = function (args = {}) {
   let ans = {}
   ans.link_preview = false
 
-  let link_preview_classes = args.image ?
+  let classes = args.image ?
     "link_preview link_preview_with_image" :
     "link_preview link_preview_no_image"
-  let link_preview_image_classes = args.image ?
+  let image_classes = args.image ?
     "link_preview_image" :
     "nodisplay"
-  let link_preview_title_classes = args.title ?
+  let title_classes = args.title ?
     "link_preview_title" :
     "nodisplay"
-  let link_preview_description_classes = args.description ?
+  let description_classes = args.description ?
     "link_preview_description" :
     "nodisplay"
 
-  let link_preview_text_content_classes = "link_preview_text_content"
+  let text_content_classes = "link_preview_text_content"
 
   if (args.title && args.description) {
-    link_preview_text_content_classes += " link_preview_text_content_full"
+    text_content_classes += " link_preview_text_content_full"
   }
 
   if (!args.title && !args.description) {
-    link_preview_text_content_classes = "nodisplay"
+    text_content_classes = "nodisplay"
   }
 
-  let link_preview_s = `<div class='${link_preview_classes}'>
-        <img class='${link_preview_image_classes}' src='${
-    args.image
-  }' loading='lazy'>
-        <div class='${link_preview_text_content_classes}'>
-            <div class='${link_preview_title_classes}'>${Hue.utilz.make_html_safe(
-    args.title
-  )}</div>
-            <div class='${link_preview_description_classes}'>${Hue.utilz.make_html_safe(
-    args.description
-  )}</div>
-        </div>
-    </div>`
+  let link_preview_s = `ojuio<div class='${classes}'>
+    <img class='${image_classes}' src='${args.image}' loading='lazy'>
+    <div class='${text_content_classes}'>
+      <div class='${title_classes}'>${Hue.utilz.make_html_safe(args.title)}</div>
+      <div class='${description_classes}'>${Hue.utilz.make_html_safe(args.description)}</div>
+    </div>
+  </div>`
 
-  if (link_preview_s) {
-    ans.link_preview = link_preview_s
-
-    let text = Hue.parse_text(Hue.utilz.make_html_safe(args.message))
-    let stext = `<div class='link_preview_text'>${text}</div>`
-
-    ans.link_preview_text = text
-    ans.link_preview = stext + ans.link_preview
-  }
+  ans.link_preview = link_preview_s
+  let text = Hue.parse_text(Hue.utilz.make_html_safe(args.message))
+  let stext = `<div class='link_preview_text'>${text}</div>`
+  ans.link_preview_text = text
+  ans.link_preview = stext + ans.link_preview
 
   return ans
 }
