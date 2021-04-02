@@ -72,10 +72,6 @@ module.exports = function (
         edited = false
       }
 
-      // temporary april's first
-      uname = "Dawes"
-      pfimage = "/static/img/profile_dawes.jpg"
-
       handler.room_emit(socket, "chat_message", {
         id: id,
         user_id: socket.hue_user_id,

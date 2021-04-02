@@ -43,19 +43,6 @@ Hue.user_settings = {
       }
     },
   },
-  warn_before_closing: {
-    widget_type: "checkbox",
-    description: `Show a confirmation message in some cases when the client is going to be closed or refreshed`,
-    action: (save = true) => {
-      Hue.settings.warn_before_closing = $(`#settings_warn_before_closing`).prop(
-        "checked"
-      )
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   show_image_previews: {
     widget_type: "checkbox",
     description: `Whether to show image previews on certain chat image links`,

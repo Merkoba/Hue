@@ -98,16 +98,3 @@ Hue.on_resize = function () {
   Hue.check_scrollers(250)
   Hue.goto_bottom()
 }
-
-// Setup events for application close or refresh
-Hue.setup_before_unload = function () {
-  window.onbeforeunload = function (e) {
-    if (
-      Hue.connected &&
-      !Hue.user_leaving &&
-      Hue.get_setting("warn_before_closing")
-    ) {
-      return "Are you sure?"
-    }
-  }
-}

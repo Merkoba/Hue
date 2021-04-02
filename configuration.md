@@ -207,9 +207,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_open_whispers_automatically"
 >Whether popup messages will open automatically when arrived by default.
 
-"settings_default_warn_before_closing"
-> Default setting of whether it should warn before closing the application/tab.
-
 "settings_default_show_image_previews"
 >Whether image links get a preview on the chat area by default. This only works with certain links, including direct Imgur links.
 

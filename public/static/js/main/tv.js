@@ -77,8 +77,6 @@ Hue.setup_tv = function (mode, odata = {}) {
   }
 
   if (mode === "change") {
-    let bypass_lock = data.user_id === Hue.user_id
-
     if (mode === "change") {
       if (Hue.tv_locked) {
         $("#footer_lock_tv_icon").addClass("blinking")
@@ -86,8 +84,7 @@ Hue.setup_tv = function (mode, odata = {}) {
 
       Hue.change({
         type: "tv",
-        force: true,
-        bypass_lock: bypass_lock
+        force: true
       })
     }
   }

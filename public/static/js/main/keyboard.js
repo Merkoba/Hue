@@ -6,6 +6,10 @@ Hue.activate_key_detection = function () {
     }
 
     if (e.key === "Tab") {
+      if (e.ctrlKey) {
+        return
+      }
+      
       e.preventDefault()
     }
 
@@ -233,17 +237,11 @@ Hue.activate_key_detection = function () {
       return
     }
 
-    let focus = true
-
     if (e.key === "Control") {
-      focus = false
-    } else if (e.ctrlKey && window.getSelection().toString() !== "") {
-      focus = false
+      return
     }
 
-    if (focus) {
-      Hue.focus_input()
-    }
+    Hue.focus_input()
 
     if (e.key === "Enter") {
       let val = Hue.get_input()

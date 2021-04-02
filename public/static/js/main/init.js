@@ -180,7 +180,6 @@ Hue.init = function () {
   Hue.setup_message_window()
   Hue.setup_autocomplete()
   Hue.setup_fonts()
-  Hue.setup_before_unload()
   Hue.setup_iframe_video()
   Hue.show_console_message()
   Hue.setup_expand_image()
