@@ -529,13 +529,7 @@ Hue.do_media_tv_size_change = function (size) {
     size = Hue.config.room_state_default_tv_display_percentage
   }
 
-  size = Hue.utilz.round2(size, 5)
-
-  if (size < Hue.config.media_min_percentage) {
-    size = Hue.config.media_min_percentage
-  } else if (size > Hue.config.media_max_percentage) {
-    size = Hue.config.media_max_percentage
-  }
+  size = Hue.limit_media_percentage(Hue.utilz.round2(size, 5))
 
   Hue.room_state.tv_display_percentage = size
   Hue.save_room_state()

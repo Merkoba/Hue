@@ -16,10 +16,21 @@ Hue.after_push_media_change = function (type, data) {
   }
 }
 
+// Get min or max media percentage
+Hue.limit_media_percentage = function (size) {
+  if (size < Hue.config.media_min_percentage) {
+    size = Hue.config.media_min_percentage
+  } else if (size > Hue.config.media_max_percentage) {
+    size = Hue.config.media_max_percentage
+  }
+
+  return size
+}
+
 // Applies percentages changes to the chat and media elements based on current state
 Hue.apply_media_percentages = function () {
   let mode = Hue.room_state.media_layout
-  let p1 = Hue.room_state.tv_display_percentage
+  let p1 = Hue.limit_media_percentage(Hue.room_state.tv_display_percentage)
   let p2 = 100 - p1
 
   if (mode === "column") {
@@ -34,7 +45,7 @@ Hue.apply_media_percentages = function () {
     $("#media_image").css("height", "100%")
   }
 
-  let c1 = Hue.room_state.chat_display_percentage
+  let c1 = Hue.limit_media_percentage(Hue.room_state.chat_display_percentage)
   let c2 = 100 - c1
 
   $("#chat_main").css("width", `${c1}%`)
