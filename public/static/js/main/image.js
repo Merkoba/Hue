@@ -479,35 +479,8 @@ Hue.start_image_events = function () {
     Hue.after_image_load()
   })
 
-  $("#media_image_frame")[0].addEventListener("wheel", function (e) {
-    Hue.on_image_scroll(e)
-  })
-
   $("#media_image_frame").height(0)
   $("#media_image_frame").width(0)
-}
-
-// When mouse scrolling over the media image
-Hue.on_image_scroll = function (e) {
-  if (!Hue.room_state.image_enabled || !Hue.room_state.tv_enabled) {
-    return false
-  }
-    
-  let direction = e.deltaY > 0 ? "down" : "up"
-
-  if (direction === "up") {
-    if (Hue.room_state.tv_display_position === "bottom") {
-      Hue.image_scroll_action("decrease")
-    } else {
-      Hue.image_scroll_action("increase")
-    }
-  } else {
-    if (Hue.room_state.tv_display_position === "top") {
-      Hue.image_scroll_action("decrease")
-    } else {
-      Hue.image_scroll_action("increase")
-    }
-  }
 }
 
 // Scroll decrease action on image
