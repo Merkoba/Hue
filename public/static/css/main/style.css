@@ -1711,6 +1711,7 @@ a.special_link:hover {
 .link_preview_title {
 	overflow-wrap: break-word;
 	word-break: break-word;
+	font-weight: bold;
 }
 
 .link_preview_image {
