@@ -325,14 +325,6 @@ Hue.prepend_to_media_history = function (message_id) {
 
 // Additional media menu configurations
 Hue.setup_media_menu = function () {
-  $("#media_menu_image_icon").on("click", function () {
-    Hue.show_image_picker()
-  })
-
-  $("#media_menu_tv_icon").on("click", function () {
-    Hue.show_tv_picker()
-  })
-
   $("#media_menu_swap").on("click", function () {
     Hue.swap_media()
   })
