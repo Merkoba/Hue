@@ -483,15 +483,6 @@ Hue.start_image_events = function () {
   $("#media_image_frame").width(0)
 }
 
-// Scroll decrease action on image
-Hue.image_scroll_action = function (action) {
-  if (action === "increase") {
-    Hue.decrease_tv_percentage()
-  } else {
-    Hue.increase_tv_percentage()
-  }
-}
-
 // This runs after an image successfully loads
 Hue.after_image_load = function (ok = true) {
   Hue.apply_media_info("image")
