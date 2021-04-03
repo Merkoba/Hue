@@ -231,7 +231,6 @@ Hue.add_chat_message = function (args = {}) {
   let message_id = Hue.add_to_chat({
     id: args.id,
     message: fmessage,
-    save: true,
     just_edited: args.just_edited,
   }).message_id
 
@@ -389,7 +388,6 @@ Hue.add_to_chat = function (args = {}) {
   let def_args = {
     id: false,
     message: false,
-    notify: true,
     just_edited: false
   }
 
