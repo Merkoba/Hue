@@ -9,7 +9,7 @@ Hue.activate_key_detection = function () {
       if (e.ctrlKey) {
         return
       }
-      
+
       e.preventDefault()
     }
 
@@ -237,7 +237,7 @@ Hue.activate_key_detection = function () {
       return
     }
 
-    if (e.key === "Control") {
+    if (e.key === "Control" || e.ctrlKey) {
       return
     }
 
