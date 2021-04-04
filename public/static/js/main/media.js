@@ -18,10 +18,10 @@ Hue.after_push_media_change = function (type, data) {
 
 // Get min or max media percentage
 Hue.limit_media_percentage = function (size) {
-  if (size < Hue.config.media_min_percentage) {
-    size = Hue.config.media_min_percentage
-  } else if (size > Hue.config.media_max_percentage) {
-    size = Hue.config.media_max_percentage
+  if (size < Hue.media_min_percentage) {
+    size = Hue.media_min_percentage
+  } else if (size > Hue.media_max_percentage) {
+    size = Hue.media_max_percentage
   }
 
   return size
@@ -854,7 +854,7 @@ Hue.apply_media_defaults = function () {
 Hue.create_media_percentages = function () {
   let html = ""
 
-  for (let p=Hue.config.media_min_percentage; p<=Hue.config.media_max_percentage; p+=5) {
+  for (let p=Hue.media_min_percentage; p<=Hue.media_max_percentage; p+=10) {
     html += `<option value='${p}'>${p}%</option>`
   }
 

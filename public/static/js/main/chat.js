@@ -1238,9 +1238,9 @@ Hue.clear_chat = function () {
 // Changes the chat display size
 Hue.do_chat_size_change = function (size) {
   if (size === "max") {
-    size = Hue.config.media_max_percentage
+    size = Hue.media_max_percentage
   } else if (size === "min") {
-    size = Hue.config.media_min_percentage
+    size = Hue.media_min_percentage
   } else if (size === "default") {
     size = Hue.config.room_state_default_chat_display_percentage
   }
