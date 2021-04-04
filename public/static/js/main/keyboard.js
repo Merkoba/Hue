@@ -267,6 +267,10 @@ Hue.activate_key_detection = function () {
 
       e.preventDefault()
       return
+    } else if (e.key === "PageUp") {
+      Hue.scroll_up(Hue.chat_scroll_page)
+    } else if (e.key === "PageDown") {
+      Hue.scroll_down(Hue.chat_scroll_page)
     } else if (e.key === "ArrowUp") {
       if (Hue.footer_expanded) {
         return false
@@ -274,9 +278,6 @@ Hue.activate_key_detection = function () {
 
       if (e.shiftKey) {
         Hue.input_history_change("up")
-        e.preventDefault()
-      } else if (e.ctrlKey) {
-        Hue.scroll_up(Hue.small_keyboard_scroll)
         e.preventDefault()
       } else {
         Hue.edit_last_message()
@@ -290,9 +291,6 @@ Hue.activate_key_detection = function () {
       
       if (e.shiftKey) {
         Hue.input_history_change("down")
-        e.preventDefault()
-      } else if (e.ctrlKey) {
-        Hue.scroll_down(Hue.small_keyboard_scroll)
         e.preventDefault()
       }
 

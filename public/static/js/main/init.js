@@ -124,7 +124,7 @@ Hue.top_scroller_visible = false
 Hue.bottom_scroller_visible = false
 Hue.timeago_delay = 20000
 Hue.do_update_activity_bar = true
-Hue.small_keyboard_scroll = 100
+Hue.chat_scroll_page = 200
 Hue.media_min_percentage = 10,
 Hue.media_max_percentage = 90,
 

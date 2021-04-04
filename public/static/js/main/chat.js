@@ -1266,16 +1266,7 @@ Hue.scroll_up = function (n) {
 
 // Scrolls the chat down
 Hue.scroll_down = function (n) {
-  let $ch = $("#chat_area")
-  let max = $ch.prop("scrollHeight") - $ch.innerHeight()
-  let diff
-
-  if (max - $ch.scrollTop < n) {
-    diff = max + 10
-  } else {
-    diff = $ch.scrollTop() + n
-  }
-
+  let diff = $("#chat_area").scrollTop() + n
   Hue.scroll_chat_to(diff)
   return diff
 }
