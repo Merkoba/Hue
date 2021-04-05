@@ -612,6 +612,13 @@ Hue.start_reply = function (target) {
 Hue.show_reply = function (username, text) {
   $("#reply_text").val(text)
 
+  let input = Hue.get_input().trim()
+
+  if (input) {
+    Hue.clear_input()
+    $("#reply_input").val(input)
+  }
+
   Hue.old_reply_input_val = ""
   Hue.msg_reply.set_title(`Re: ${username}`)
 
