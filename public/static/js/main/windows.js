@@ -349,6 +349,21 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_draw_image = Msg.factory(
+    Object.assign({}, common, titlebar,{
+      id: "draw_image",
+      close_on_overlay_click: false,
+      after_show: function(instance){
+        common.after_show(instance)
+        Hue.draw_image_open = true
+      },
+      after_close: function(instance){
+        common.after_close(instance)
+        Hue.draw_image_open = false
+      }
+    })
+  )
+
   // Set the templates
 
   Hue.msg_profile.set(
@@ -389,6 +404,7 @@ Hue.start_msg = function () {
   Hue.msg_profile_image_cropper.set(Hue.template_profile_image_cropper())
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
+  Hue.msg_draw_image.set(Hue.template_draw_image())
 
   Hue.msg_info.create()
   Hue.msg_info2.create()
@@ -413,6 +429,7 @@ Hue.start_msg = function () {
   Hue.msg_message_board.set_title("Message Board")
   Hue.msg_profile_image_cropper.set_title("Crop A Circle")
   Hue.msg_confirm.set_title("Confirm Action")
+  Hue.msg_draw_image.set_title("Draw an Image")
 }
 
 // Sets all info window variables to false

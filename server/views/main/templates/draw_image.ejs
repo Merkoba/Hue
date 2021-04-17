@@ -1,0 +1,39 @@
+<script id='template_draw_image' type='text/x-handlebars-template' class='template'>
+  <div id='draw_image_main'>
+    <div class='unselectable' id='draw_image_controls'>
+      <div id='draw_image_mode_select_pencil' class='action modal_icon_container' onclick='Hue.set_draw_image_mode_input("pencil")'>
+        <svg class='other_icon'><use href='#icon_pencil' title='Pencil'></svg>
+
+        <div id='draw_image_pencil_controls'>
+          <input type='color' id='draw_image_pencil_color'>
+
+          <select id='draw_image_pencil_size'>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+      </div>
+      <div id='draw_image_mode_select_bucket' class='action modal_icon_container' onclick='Hue.set_draw_image_mode_input("bucket")'>
+        <svg class='other_icon'><use href='#icon_adjust' title='Bucket'></svg>
+        <input type='color' id='draw_image_bucket_color'>
+      </div>
+    </div>
+
+    <canvas id='draw_image_area' class='draw_canvas' width='800px' height='600px' tabindex=1></canvas>
+
+    <div id='draw_image_buttons' class='flex_row_center generic_horizontal_separator'>
+      <div id='draw_image_undo' class='bigger action'>Undo</div>
+      <div id='draw_image_redo' class='bigger action'>Redo</div>
+      <div id='draw_image_clear' class='bigger action'>Clear</div>
+      <div id='draw_image_upload' class='bigger action'>Upload</div>
+    </div>
+  </div>
+</script>

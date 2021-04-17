@@ -544,6 +544,12 @@ Hue.commands = {
       Hue.apply_media_defaults()
     },
     description: `Restore media defaults`,
+  },
+  "draw": {
+    action: (arg, ans) => {
+      Hue.msg_draw_image.show()
+    },
+    description: `Open drawing window`,
   }
 }
 

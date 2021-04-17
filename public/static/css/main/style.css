@@ -1473,6 +1473,10 @@ svg.action:hover {
 	padding: 0.5rem;
 }
 
+.modal_icon_selected {
+	box-shadow: 0 0 2px currentColor
+}
+
 .sp-palette {
 	max-width: 3.82rem !important;
 }
@@ -2380,4 +2384,36 @@ pre {
 
 #open_url_container > div {
 	flex-shrink: 0;
+}
+
+#draw_image_area {
+	cursor: crosshair;
+	width: 800px;
+	height: 600px;
+	background-color: white;
+}
+
+#draw_image_controls {
+	margin-bottom: 1rem;
+}
+
+#draw_image_pencil_controls {
+	margin-left: 0.8rem;
+}
+
+#draw_image_pencil_size {
+	margin-left: 0.5rem;
+}
+
+#draw_image_buttons {
+	margin-top: 1rem;
+	user-select: none;
+}
+
+#draw_image_mode_select_bucket {
+	margin-left: 1.6rem;
+}
+
+#draw_image_bucket_color {
+	margin-left: 0.8rem;
 }

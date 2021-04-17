@@ -385,7 +385,12 @@ Hue.setup_media_pickers = function () {
   $("#image_picker_upload").on("click", function () {
     Hue.msg_image_picker.close()
   })
-
+  
+  $("#image_picker_draw").on("click", function () {
+    Hue.msg_image_picker.close()
+    Hue.msg_draw_image.show()
+  })
+  
   $("#image_picker_submit").on("click", function () {
     Hue.image_picker_submit()
   })

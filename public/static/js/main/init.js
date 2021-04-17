@@ -208,6 +208,7 @@ Hue.init = function () {
   Hue.start_modal_filters()
   Hue.setup_confirm()
   Hue.start_timeago()
+  Hue.setup_draw_image()
   
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
