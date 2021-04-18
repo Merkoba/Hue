@@ -1,15 +1,12 @@
 <%- include('doctype.ejs'); %>
 
 <html>
-
 	<head>
-
 		<title><%-vars.login_title%></title>
 
 		<%- include('pages_imports.ejs'); %>
 
 		<script>
-
 			function validate_form() {
 				if (msg_info.is_open()) {
 					return false
@@ -49,29 +46,18 @@
 
 				return true
 			}
-
 		</script>
-
 	</head>
 
 	<body>
-
 		<div class='main'>
-
 			<form method="post" action="/login" name="login" onsubmit="return validate_form()">
-
 				<input type="text" placeholder="Email" name="email" id="login_email">
-
 				<div class="spacer4"></div>
-
 				<input type="password" placeholder="Password" name="password" id="login_password">
-
 				<div class="spacer4"></div>
-
 				<input type='hidden' name='fromurl' value="<%-vars.fromurl%>">
-
 				<input id="btn_login" type="submit" value="Login">
-
 			</form>	
 
 			<div class="spacer1"></div>
@@ -85,14 +71,11 @@
 		</div>
 
 		<script>
-
 			$("#login_email").focus()
 
 			if(form_email && form_email !== "undefined") {
 				$("#login_email").val(form_email)
 			}
-
 		</script>
-
 	</body>
 </html>
