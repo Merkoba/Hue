@@ -2391,6 +2391,7 @@ pre {
 	width: 800px;
 	height: 600px;
 	background-color: white;
+	outline: none;
 }
 
 #draw_image_controls {

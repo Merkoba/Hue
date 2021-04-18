@@ -117,7 +117,7 @@ Hue.setup_draw_image = function () {
     Hue.draw_image_just_entered = true
   })
 
-  $("#draw_image_area").click(function (e) {
+  $("#draw_image_area").on("click", function (e) {
     if (Hue.draw_image_mode === "bucket") {
       let result = Hue.draw_image_bucket_fill(e.offsetX, e.offsetY)
 
@@ -128,27 +128,27 @@ Hue.setup_draw_image = function () {
     }
   })
 
-  $("#draw_image_mode_select_pencil").click(function () {
+  $("#draw_image_mode_select_pencil").on("click", function () {
     Hue.set_draw_image_mode_input("pencil")
   })
 
-  $("#draw_image_mode_select_bucket").click(function () {
+  $("#draw_image_mode_select_bucket").on("click", function () {
     Hue.set_draw_image_mode_input("bucket")
   })
 
-  $("#draw_image_undo").click(function () {
+  $("#draw_image_undo").on("click", function () {
     Hue.draw_image_undo()
   })
 
-  $("#draw_image_redo").click(function () {
+  $("#draw_image_redo").on("click", function () {
     Hue.draw_image_redo()
   })
 
-  $("#draw_image_clear").click(function () {
+  $("#draw_image_clear").on("click", function () {
     Hue.needs_confirm("clear_draw_image_func")
   })
 
-  $("#draw_image_upload").click(function () {
+  $("#draw_image_upload").on("click", function () {
     Hue.upload_draw_image()
   })
   
@@ -172,7 +172,7 @@ Hue.draw_image_prepare_settings = function () {
 
   $("#draw_image_pencil_color").val(Hue.draw_image_pencil_color)
 
-  $("#draw_image_pencil_color").click(function () {
+  $("#draw_image_pencil_color").on("click", function () {
     Hue.set_draw_image_mode_input("pencil")
   })
 
@@ -182,7 +182,7 @@ Hue.draw_image_prepare_settings = function () {
 
   $("#draw_image_bucket_color").val(Hue.draw_image_bucket_color)
 
-  $("#draw_image_bucket_color").click(function () {
+  $("#draw_image_bucket_color").on("click", function () {
     Hue.set_draw_image_mode_input("bucket")
   })
 
