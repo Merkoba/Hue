@@ -410,7 +410,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
               if (ans === "done") {
                 m = encodeURIComponent(
-                  `Account verification link sent to ${email}\nYou must verify the email to be able to login\nEmail might take a couple of minutes to arrive`
+                  `Account verification link sent to ${email}`
                 )
                 res.redirect(`/message?message=${m}`)
               } else {
@@ -521,7 +521,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
         if (result) {
           if (result === "done") {
             m = encodeURIComponent(
-              `If an email matched we will send a password reset link to ${email}\nEmail might take a couple of minutes to arrive`
+              `If an email matched we will send a password reset link to ${email}`
             )
             res.redirect(`/message?message=${m}`)
           } else if (result === "limit") {
@@ -537,7 +537,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
           }
         } else {
           m = encodeURIComponent(
-            `If an email matched we will send a password reset link to ${email}\nEmail might take a couple of minutes to arrive`
+            `If an email matched we will send a password reset link to ${email}`
           )
           res.redirect(`/message?message=${m}`)
         }
@@ -669,10 +669,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   router.get("/message", check_url, function (req, res, next) {
     let c = {}
     c.vars = {}
-    c.vars.message2 = decodeURIComponent(req.query.message).replace(
-      /\n/g,
-      "<br>"
-    )
+    c.vars.message2 = decodeURIComponent(req.query.message)
     res.render("message", c)
   })
 
