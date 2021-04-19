@@ -1370,6 +1370,8 @@ Hue.setup_link_preview = function (fmessage) {
     })
 
     link_preview_image.on("error", function () {
+      link_preview_image.css("display", "none")
+      link_preview_el.removeClass("link_preview_with_image")
       Hue.goto_bottom()
     })
   }
