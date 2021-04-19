@@ -127,6 +127,10 @@ Hue.do_update_activity_bar = true
 Hue.chat_scroll_page = 200
 Hue.media_min_percentage = 10,
 Hue.media_max_percentage = 90,
+Hue.draw_image_just_entered = false
+Hue.draw_image_num_strokes_save = 500
+Hue.draw_image_max_levels = 200
+Hue.draw_image_open = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
