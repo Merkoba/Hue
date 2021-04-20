@@ -1720,7 +1720,7 @@ Hue.activity_notification = function () {
 
 // Get last chat message or announcement date
 Hue.get_last_message_date = function () {
-  let a = $("#chat_area .chat_content").last().data("date")
-  let b = $("#chat_area .media_announcement").last().data("date")
+  let a = $("#chat_area .chat_content").last().data("date") || 0
+  let b = $("#chat_area .media_announcement").last().data("date") || 0
   return Math.max(a, b)
 }

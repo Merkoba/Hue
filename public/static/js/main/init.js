@@ -305,8 +305,9 @@ Hue.at_startup = function () {
   if (Hue.connections === 1) {
     Hue.make_main_container_visible()
   } else {
-    let d = Hue.get_last_message_date()
-    if (d > Hue.last_message_date) {
+    let d1 = Hue.last_message_date
+    let d2 = Hue.get_last_message_date()
+    if (d2 > d1) {
       Hue.on_activity("message")
     }
   }
