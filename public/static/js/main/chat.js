@@ -274,8 +274,14 @@ Hue.add_chat_announcement = function (args = {}) {
   }
 
   args = Object.assign(def_args, args)
+  let is_media = args.type === "image_change" || args.type === "tv_change"
 
   let message_classes = "message announcement"
+  
+  if (is_media) {
+    message_classes += " media_announcement"
+  }
+
   let container_classes = "announcement_content_container chat_menu_button_main reply_message_container"
   let split_classes = "announcement_content_split dynamic_title"
   let content_classes = "announcement_content reply_message"
@@ -305,10 +311,9 @@ Hue.add_chat_announcement = function (args = {}) {
     brk_classes += " action"
   }
 
-  let use_top = args.type === "image_change" || args.type === "tv_change"
   let announcement_top = ""
 
-  if (use_top) {
+  if (is_media) {
     announcement_top = `
     <div class='chat_message_top announcement_top'>
       <div class='chat_uname action'></div>
@@ -337,7 +342,7 @@ Hue.add_chat_announcement = function (args = {}) {
   let split = fmessage.find(".announcement_content_split").eq(0)
   let brk = fmessage.find(".brk").eq(0)
 
-  if (use_top) {
+  if (is_media) {
     let username = fmessage.find(".chat_uname").eq(0)
     let date = fmessage.find(".chat_timeago").eq(0)
     username.text(args.username)
@@ -1711,4 +1716,11 @@ Hue.activity_notification = function () {
   if (!Hue.app_focused) {
     Hue.show_activity_desktop_notification()
   }
+}
+
+// Get last chat message or announcement date
+Hue.get_last_message_date = function () {
+  let a = $("#chat_area .chat_content").last().data("date")
+  let b = $("#chat_area .media_announcement").last().data("date")
+  return Math.max(a, b)
 }

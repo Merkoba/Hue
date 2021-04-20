@@ -131,6 +131,7 @@ Hue.draw_image_just_entered = false
 Hue.draw_image_num_strokes_save = 500
 Hue.draw_image_max_levels = 200
 Hue.draw_image_open = false
+Hue.last_message_date = 0
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -303,5 +304,10 @@ Hue.at_startup = function () {
 
   if (Hue.connections === 1) {
     Hue.make_main_container_visible()
+  } else {
+    let d = Hue.get_last_message_date()
+    if (d > Hue.last_message_date) {
+      Hue.on_activity("message")
+    }
   }
 }
