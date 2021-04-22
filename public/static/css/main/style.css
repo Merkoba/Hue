@@ -2043,6 +2043,7 @@ a.special_link:hover {
 
 .media_picker_options {
 	margin-bottom: 1rem;
+	user-select: none;
 }
 
 #user_menu {
