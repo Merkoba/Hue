@@ -112,14 +112,8 @@ Hue.reset_highlights_filter = function () {
 
 // Show and/or filters highlights window
 Hue.show_highlights = function (filter = false) {
-  if (filter) {
-    filter = filter.trim()
-  }
-
-  let sfilter = filter ? filter : ""
-
   $("#highlights_container").html("")
-  $("#highlights_filter").val(sfilter)
+  $("#highlights_filter").val(filter ? filter : "")
 
   let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
 
