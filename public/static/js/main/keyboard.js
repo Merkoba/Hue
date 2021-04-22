@@ -238,7 +238,9 @@ Hue.activate_key_detection = function () {
     }
 
     if (e.key === "Control" || e.ctrlKey) {
-      return
+      if (e.key !== "v") {
+        return
+      }
     }
 
     Hue.focus_input()
