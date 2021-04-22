@@ -123,15 +123,23 @@ Hue.show_highlights = function (filter = false) {
 
   if (filter) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
-    let words = lc_value.split(" ").filter((x) => x.trim() !== "")
 
     clone = clone.filter(function () {
       if (!$(this).data("highlighted")) {
         return false
       }
-
+      
       let text = $(this).text().toLowerCase()
-      return words.some((word) => text.includes(word))
+      let text_cmp = text.includes(lc_value)
+      
+      let source_cmp = false
+      let media_source = $(this).data("media_source")
+      
+      if (media_source) {
+        source_cmp = media_source.includes(lc_value)
+      }
+
+      return text_cmp || source_cmp
     })
   } else {
     clone = clone.filter(function () {
