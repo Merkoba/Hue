@@ -128,8 +128,6 @@ Hue.push_tv_changed = function (data) {
       Hue.tv_changed.length - Hue.config.media_changed_crop_limit
     )
   }
-
-  Hue.after_push_media_change("tv", data)
 }
 
 // Stops all defined tv players

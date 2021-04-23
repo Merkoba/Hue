@@ -87,7 +87,6 @@ Hue.image_upload_comment_type = false
 Hue.just_tabbed = false
 Hue.userlist_mode = "normal"
 Hue.usercount = 0
-Hue.show_media_history_type = ""
 Hue.first_media_change = false
 Hue.calc_round_places = 10
 Hue.typing_delay = 100

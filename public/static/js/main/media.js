@@ -9,13 +9,6 @@ Hue.setup_media = function () {
   })
 }
 
-// What to do after pushing a new media changed item
-Hue.after_push_media_change = function (type, data) {
-  if (Hue.show_media_history_type) {
-    Hue.prepend_to_media_history(data.message_id)
-  }
-}
-
 // Get min or max media percentage
 Hue.limit_media_percentage = function (size) {
   if (size < Hue.media_min_percentage) {
@@ -149,33 +142,6 @@ Hue.num_media_elements_visible = function () {
   return num
 }
 
-// Updates blinking media history items to reflect which is the current loaded item
-Hue.update_media_history_blinks = function () {
-  if (!Hue.started || !Hue.show_media_history_type) {
-    return false
-  }
-
-  let type = Hue.show_media_history_type
-  let loaded = Hue[`loaded_${type}`]
-
-  $(`#${type}_history_container`)
-    .find(".message")
-    .each(function () {
-      $(this).removeClass("blinking_2")
-    })
-
-  if (!loaded) {
-    $(`#${type}_history_container`)
-      .find(".message")
-      .first()
-      .addClass("blinking_2")
-  } else {
-    $(`#${type}_history_container .message_id_${loaded.message_id}`)
-      .eq(0)
-      .addClass("blinking_2")
-  }
-}
-
 // Tries to separate a comment from a URL when using change media commands
 // The proper way is to use '/image url > comment'
 // But if the > is ommitted it will still try to determine what each part is
@@ -256,7 +222,6 @@ Hue.media_visibility_and_locks = function () {
 Hue.reset_media_history_filter = function (type) {
   $(`#${type}_history_filter`).val("")
   $(`#${type}_history_container`).html("")
-  Hue.show_media_history_type = false
 }
 
 // Shows and/or filters media history of a certain type
@@ -296,31 +261,6 @@ Hue.show_media_history = function (type, filter = false) {
   }
 
   clone.appendTo(`#${type}_history_container`)
-  Hue.show_media_history_type = type
-  Hue.update_media_history_blinks()
-}
-
-// Prepends media history items if the window is open
-// This is used to update the windows on media changes
-Hue.prepend_to_media_history = function (message_id) {
-  if (!Hue.started || !Hue.show_media_history_type) {
-    return false
-  }
-
-  let type = Hue.show_media_history_type
-  let el = $(`#chat_area > .message_id_${message_id}`).eq(0)
-  let filter = $(`#${type}_history_filter`).val()
-
-  if (filter) {
-    let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
-    let text = el.text().toLowerCase()
-
-    if (text.includes(lc_value)) {
-      $(`#${type}_history_container`).prepend(el)
-    }
-  } else {
-    $(`#${type}_history_container`).prepend(el)
-  }
 }
 
 // Additional media menu configurations
@@ -576,8 +516,6 @@ Hue.change = function (args = {}) {
   } else {
     return false
   }
-
-  Hue.update_media_history_blinks()
 }
 
 // Sets a media info item with proper information and events

@@ -128,8 +128,6 @@ Hue.push_image_changed = function (data) {
       Hue.image_changed.length - Hue.config.media_changed_crop_limit
     )
   }
-
-  Hue.after_push_media_change("image", data)
 }
 
 // Returns the current room image
