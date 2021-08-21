@@ -1680,6 +1680,7 @@ Hue.setup_chat = function () {
   })
 
   $("#bottom_scroller").on("click", function () {
+    Hue.editing_message = false
     Hue.goto_bottom(true)
     Hue.check_scrollers()
   })
