@@ -822,7 +822,6 @@ Hue.stop_edit_message = function () {
   Hue.editing_message = false
   Hue.editing_message_container = false
   Hue.editing_message_area = false
-  Hue.goto_bottom()
 }
 
 // Submits a chat message edit
@@ -1680,7 +1679,7 @@ Hue.setup_chat = function () {
   })
 
   $("#bottom_scroller").on("click", function () {
-    Hue.editing_message = false
+    Hue.stop_edit_message()
     Hue.goto_bottom(true)
     Hue.check_scrollers()
   })
