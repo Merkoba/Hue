@@ -227,22 +227,6 @@ const Utilz = function () {
 		}
 	}
 
-	utilz.get_twitch_id = function (url) {
-		let match = url.match(/.*twitch\.tv(?:\/videos)?\/(\w+)/)
-
-		if (match) {
-			if (match[0].includes('twitch.tv/videos/')) {
-				return ["video", match[1]]
-			} else if (match[0].includes("clips.twitch.tv")) {
-				return false
-			} else {
-				return ["channel", match[1]]
-			}
-		} else {
-			return false
-		}
-	}
-
 	utilz.object_to_array = function (obj) {
 		return Object.keys(obj).map(function (key) {
 			return obj[key]

@@ -138,10 +138,6 @@ Hue.youtube_loading = false
 Hue.youtube_loaded = false
 Hue.youtube_video_player_requested = false
 Hue.youtube_video_player_request = false
-Hue.twitch_loading = false
-Hue.twitch_loaded = false
-Hue.twitch_video_player_requested = false
-Hue.twitch_video_player_request = false
 Hue.media_info_image_data = []
 Hue.media_info_tv_data = []
 
