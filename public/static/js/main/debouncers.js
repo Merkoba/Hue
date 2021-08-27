@@ -77,4 +77,9 @@ Hue.create_debouncers = function () {
   Hue.settings_filter_timer = Hue.create_debouncer(function () {
     Hue.show_settings($("#settings_filter").val())
   }, Hue.filter_delay)
+
+  // Debounce timer for userlist update
+  Hue.update_userlist = Hue.create_debouncer(function (prop) {
+    Hue.do_update_userlist(prop)
+  }, Hue.update_userlist_delay)  
 }

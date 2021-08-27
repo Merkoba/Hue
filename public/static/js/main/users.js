@@ -217,7 +217,7 @@ Hue.get_user_by_user_id = function (id) {
 
 // Handles a user list update
 // Rebuilds the HTML of the user list window
-Hue.update_userlist = function (prop = "") {
+Hue.do_update_userlist = function (prop = "") {
   Hue.userlist.sort(Hue.compare_userlist)
   Hue.usernames = []
 

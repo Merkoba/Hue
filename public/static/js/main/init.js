@@ -131,6 +131,7 @@ Hue.draw_image_num_strokes_save = 500
 Hue.draw_image_max_levels = 200
 Hue.draw_image_open = false
 Hue.last_message_date = 0
+Hue.update_userlist_delay = 2000
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
