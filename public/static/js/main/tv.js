@@ -140,10 +140,6 @@ Hue.stop_tv = function (hard_stop = true) {
     Hue.twitch_video_player.pause()
   }
 
-  if (Hue.soundcloud_video_player) {
-    Hue.soundcloud_video_player.pause()
-  }
-
   if ($("#media_video").length > 0) {
     $("#media_video")[0].pause()
 
@@ -171,10 +167,6 @@ Hue.play_tv = function () {
   } else if (Hue.current_tv().type === "twitch") {
     if (Hue.twitch_video_player) {
       Hue.twitch_video_player.play()
-    }
-  } else if (Hue.current_tv().type === "soundcloud") {
-    if (Hue.soundcloud_video_player) {
-      Hue.soundcloud_video_player.play()
     }
   } else if (Hue.current_tv().type === "video") {
     if ($("#media_video").length > 0) {
@@ -254,25 +246,6 @@ Hue.show_twitch_video = function (play = true) {
   }
 
   Hue.after_show_tv(play)
-}
-
-// Loads a Soundcloud video
-Hue.show_soundcloud_video = function (play = true) {
-  let item = Hue.loaded_tv
-  Hue.before_show_tv(item)
-
-  Hue.soundcloud_video_player.load(item.source, {
-    auto_play: false,
-    single_active: false,
-    show_artwork: true,
-    callback: function () {
-      if (play) {
-        Hue.soundcloud_video_player.play()
-      }
-    },
-  })
-
-  Hue.after_show_tv()
 }
 
 // Loads a <video> video
@@ -398,14 +371,6 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
       if (Hue.utilz.get_twitch_id(src) && !Hue.config.twitch_enabled) {
         if (feedback) {
           Hue.feedback("Twitch support is not enabled")
-        }
-
-        return false
-      }
-    } else if (src.includes("soundcloud.com")) {
-      if (!Hue.config.soundcloud_enabled) {
-        if (feedback) {
-          Hue.feedback("Soundcloud support is not enabled")
         }
 
         return false

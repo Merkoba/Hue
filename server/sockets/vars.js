@@ -15,16 +15,10 @@ module.exports = function (
   vars.fetch = require("node-fetch")
   vars.mongo = require("mongodb")
   vars.jwt = require("jsonwebtoken")
-  vars.soundcloud = require("node-soundcloud")
   vars.image_dimensions = require("image-size")
   vars.cheerio = require("cheerio")
   vars.redis = require("redis")
   vars.he = require("he")
-
-  vars.soundcloud.init({
-    id: `${sconfig.soundcloud_id}`,
-    secret: `${sconfig.soundcloud_secret}`,
-  })
 
   vars.root_path = vars.path.join(__dirname, "../../")
   vars.images_root = vars.path.join(vars.root_path, config.images_directory)

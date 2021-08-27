@@ -20,7 +20,6 @@
 		"bcrypt": "~5.0.0",
 		"mailgun-js": "~0.22.0",
 		"winston": "~3.3.3",
-		"node-soundcloud": "~0.0.6",
 		"image-size": "~0.8.3",
 		"cheerio": "~1.0.0-rc.3",
 		"redis": "~3.0.2",

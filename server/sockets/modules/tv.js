@@ -128,35 +128,8 @@ module.exports = function (
           return false
         }
       }
-      
-      else if (data.src.includes("soundcloud.com")) {
-        data.src = data.src.split("#t=")[0]
 
-        if (!config.soundcloud_enabled) {
-          return false
-        }
-
-        vars.soundcloud.get(
-          `/resolve?url=${encodeURIComponent(data.src)}`,
-          function (err, track) {
-            if (err) {
-              handler.user_emit(socket, "video_not_found", {})
-              logger.log_error(err)
-              return false
-            } else {
-              data.type = "soundcloud"
-
-              data.title = track.title ? track.title : track.username
-
-              if (!data.title) {
-                data.title = data.src
-              }
-
-              handler.do_change_tv(socket, data)
-            }
-          }
-        )
-      } else {
+      else {
         let extension = utilz.get_extension(data.src).toLowerCase()
 
         if (extension) {
