@@ -58,6 +58,7 @@
 	"max_profile_image_size": 1111,
 	"max_audio_clip_size": 5555,
 	"youtube_enabled": true,
+	"twitch_enabled": true,
 	"imgur_enabled": true,
 	"iframes_enabled": true,
 	"antispam_banTime": 60,

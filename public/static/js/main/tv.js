@@ -136,6 +136,10 @@ Hue.stop_tv = function (hard_stop = true) {
     Hue.youtube_video_player.pauseVideo()
   }
 
+  if (Hue.twitch_video_player) {
+    Hue.twitch_video_player.pause()
+  }
+
   if ($("#media_video").length > 0) {
     $("#media_video")[0].pause()
 
@@ -159,6 +163,10 @@ Hue.play_tv = function () {
   if (Hue.current_tv().type === "youtube") {
     if (Hue.youtube_video_player) {
       Hue.youtube_video_player.playVideo()
+    }
+  } else if (Hue.current_tv().type === "twitch") {
+    if (Hue.twitch_video_player) {
+      Hue.twitch_video_player.play()
     }
   } else if (Hue.current_tv().type === "video") {
     if ($("#media_video").length > 0) {
@@ -214,6 +222,30 @@ Hue.show_youtube_video = function (play = true) {
   }
 
   Hue.after_show_tv()
+}
+
+// Loads a Twitch video
+Hue.show_twitch_video = function (play = true) {
+  let item = Hue.loaded_tv
+  Hue.before_show_tv(item)
+  let id = Hue.utilz.get_twitch_id(item.source)
+
+  if (id[0] === "video") {
+    Hue.twitch_video_player.setVideoSource(item.source)
+  } else if (id[0] === "channel") {
+    Hue.twitch_video_player.setChannel(id[1])
+  } else {
+    return false
+  }
+
+  if (play) {
+    Hue.twitch_video_player.play()
+  } else {
+    clearTimeout(Hue.play_twitch_video_player_timeout)
+    Hue.twitch_video_player.pause()
+  }
+
+  Hue.after_show_tv(play)
 }
 
 // Loads a <video> video
@@ -331,6 +363,14 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
       if (Hue.utilz.get_youtube_id(src) && !Hue.config.youtube_enabled) {
         if (feedback) {
           Hue.feedback("YouTube support is not enabled")
+        }
+
+        return false
+      }
+    } else if (src.includes("twitch.tv")) {
+      if (Hue.utilz.get_twitch_id(src) && !Hue.config.twitch_enabled) {
+        if (feedback) {
+          Hue.feedback("Twitch support is not enabled")
         }
 
         return false

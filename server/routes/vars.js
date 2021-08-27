@@ -29,6 +29,7 @@ module.exports = function (c, config) {
   c.vars.default_title = config.default_title
   c.vars.default_topic = config.default_topic
   c.vars.youtube_enabled = config.youtube_enabled
+  c.vars.twitch_enabled = config.twitch_enabled
   c.vars.imgur_enabled = config.imgur_enabled
   c.vars.iframes_enabled = config.iframes_enabled
   c.vars.min_password_length = config.min_password_length

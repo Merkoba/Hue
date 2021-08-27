@@ -82,10 +82,73 @@ Hue.request_media = function (player, args) {
 
   if (player === "youtube_video_player") {
     Hue.load_youtube()
+  } else if (player === "twitch_video_player") {
+    Hue.start_twitch()
   }
 }
 
 // Function to add a frame info after creating a player
 Hue.add_media_info = function (container_id) {
   $(`#${container_id}`).append(Hue.get_media_info_html("tv"))
+}
+
+// Loads Twitch script and creates player
+Hue.start_twitch = async function () {
+  if (Hue.twitch_loaded) {
+    if (Hue.twitch_video_player_requested && Hue.twitch_video_player === undefined) {
+      Hue.create_twitch_video_player()
+    }
+
+    return false
+  }
+
+  if (Hue.twitch_loading) {
+    return false
+  }
+
+  Hue.twitch_loading = true
+
+  await Hue.load_script("https://player.twitch.tv/js/embed/v1.js")
+
+  Hue.twitch_loaded = true
+
+  if (Hue.twitch_video_player_requested) {
+    Hue.create_twitch_video_player()
+  }
+}
+
+// Creates the tv Twitch player
+Hue.create_twitch_video_player = function () {
+  Hue.twitch_video_player_requested = false
+
+  let c = Hue.current_tv()
+  let channel = "dummy"
+
+  if (c.type === "twitch") {
+    channel = Hue.utilz.get_twitch_id(c.source)[1]
+  }
+
+  try {
+    let twch_video_player = new Twitch.Player("media_twitch_video_container", {
+      width: 640,
+      height: 360,
+      autoplay: false,
+      channel: channel
+    })
+
+    twch_video_player.addEventListener(Twitch.Player.READY, () => {
+      Hue.twitch_video_player = twch_video_player
+
+      let iframe = $("#media_twitch_video_container").find("iframe").eq(0)
+      iframe.attr("id", "media_twitch_video").addClass("video_frame")
+      Hue.add_media_info("media_twitch_video_container")
+
+      if (Hue.twitch_video_player_request) {
+        Hue.change(Hue.twitch_video_player_request)
+        Hue.twitch_video_player_request = false
+      }
+    })
+  } catch (err) {
+    console.error("Twitch failed to load")
+  }
 }

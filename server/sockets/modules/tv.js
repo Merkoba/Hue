@@ -112,6 +112,23 @@ module.exports = function (
         }
       } 
 
+      else if(data.src.includes("twitch.tv")) {
+        if(!config.twitch_enabled) {
+            return false
+        }
+
+        let info = utilz.get_twitch_id(data.src)
+
+        if (info && info[0] === "channel") {
+          data.type = "twitch"
+          data.title = info[1]
+          handler.do_change_tv(socket, data)
+        } else {
+          handler.user_emit(socket, 'video_not_found', {})
+          return false
+        }
+      }
+
       else {
         let extension = utilz.get_extension(data.src).toLowerCase()
 
