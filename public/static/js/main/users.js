@@ -108,7 +108,6 @@ Hue.add_to_userlist = function (args = {}) {
   })
 
   Hue.update_userlist()
-
   return true
 }
 
