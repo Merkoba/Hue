@@ -70,6 +70,61 @@ Hue.on_youtube_video_player_ready = function () {
   }
 }
 
+// Loads the Soundcloud script and creates players
+Hue.start_soundcloud = async function () {
+  if (Hue.soundcloud_loaded) {
+    if (
+      Hue.soundcloud_video_player_requested &&
+      Hue.soundcloud_video_player === undefined
+    ) {
+      Hue.create_soundcloud_video_player()
+    }
+  }
+
+  if (Hue.soundcloud_loading) {
+    return false
+  }
+
+  Hue.soundcloud_loading = true
+
+  await Hue.load_script("https://w.soundcloud.com/player/api.js")
+
+  Hue.soundcloud_loaded = true
+
+  if (Hue.soundcloud_video_player_requested) {
+    Hue.create_soundcloud_video_player()
+  }
+}
+
+// Creates the tv Soundcloud player
+Hue.create_soundcloud_video_player = function () {
+  Hue.soundcloud_video_player_requested = false
+
+  try {
+    let src =
+      "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536"
+
+    $("#media_soundcloud_video_container")
+      .html(`<iframe width="640px" height="360px"
+        id='media_soundcloud_video' class='video_frame' src='${src}'></iframe>`)
+
+    Hue.add_media_info("media_soundcloud_video_container")
+
+    let _soundcloud_video_player = SC.Widget("media_soundcloud_video")
+
+    _soundcloud_video_player.bind(SC.Widget.Events.READY, function () {
+      Hue.soundcloud_video_player = _soundcloud_video_player
+
+      if (Hue.soundcloud_video_player_request) {
+        Hue.change(Hue.soundcloud_video_player_request)
+        Hue.soundcloud_video_player_request = false
+      }
+    })
+  } catch (err) {
+    console.error("Soundcloud failed to load")
+  }
+}
+
 // Centralized function to request media player creation
 // For instance, if there's a YouTube tv change,
 // if the YouTube player is not created, this function gets triggered
@@ -84,6 +139,8 @@ Hue.request_media = function (player, args) {
     Hue.load_youtube()
   } else if (player === "twitch_video_player") {
     Hue.start_twitch()
+  } else if (player === "soundcloud_video_player") {
+    Hue.start_soundcloud()
   }
 }
 

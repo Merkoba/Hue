@@ -59,6 +59,7 @@
 	"max_audio_clip_size": 5555,
 	"youtube_enabled": true,
 	"twitch_enabled": true,
+	"soundcloud_enabled": true,
 	"imgur_enabled": true,
 	"iframes_enabled": true,
 	"antispam_banTime": 60,

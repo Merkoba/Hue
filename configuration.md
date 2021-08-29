@@ -34,7 +34,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >The title for the default tv.
 
 "default_tv_type"
->The type of the default_tv_source, either "video", "youtube", "twitch", or "iframe".
+>The type of the default_tv_source, either "video", "youtube", "twitch", "soundcloud" or "iframe".
 
 "default_profile_image_url"
 >The location of the default profile image.
@@ -155,6 +155,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "twitch_enabled"
 >Whether Twitch features are enabled.
+
+"soundcloud_enabled"
+>Whether Soundcloud features are enabled.
 
 "imgur_enabled"
 >Whether Imgur features are enabled.
@@ -381,6 +384,12 @@ For example "/" in "/somecommand"
 
 "recaptcha_key"
 >Public google recaptcha key.
+
+"soundcloud_id"
+>Soundcloud API ID.
+
+"recaptcha_secret_key"
+>Soundcloud API Secret.
 
 "recaptcha_secret_key"
 >Secret google recaptcha key.

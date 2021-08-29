@@ -128,8 +128,23 @@ module.exports = function (
           return false
         }
       }
+      
+      else if (data.src.includes("soundcloud.com")) {
+        data.src = data.src.split("#t=")[0]
 
-      else {
+        if (!config.soundcloud_enabled) {
+          return false
+        }
+
+        data.type = "soundcloud"
+        data.title = data.src.replace(/^https?:\/\/soundcloud.com\//, "")
+
+        if (!data.title) {
+          data.title = data.src
+        }
+
+        handler.do_change_tv(socket, data)
+      } else {
         let extension = utilz.get_extension(data.src).toLowerCase()
 
         if (extension) {
