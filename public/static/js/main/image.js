@@ -439,9 +439,9 @@ Hue.show_modal_image = function (id = 0) {
 
   Hue.horizontal_separator.separate("modal_image_header_info")
 
-  if (data.comment) {
+  if (data.comment || data.query) {
     $("#modal_image_subheader").html(
-      Hue.parse_text(Hue.utilz.make_html_safe(data.comment))
+      Hue.parse_text(Hue.utilz.make_html_safe(data.comment || data.query))
     )
     $("#modal_image_subheader").css("display", "block")
     Hue.setup_whispers_click($("#modal_image_subheader"), data.setter)
