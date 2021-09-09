@@ -48,7 +48,7 @@ Hue.add_post_to_message_board = function (post) {
   let item = $(`
     <div class='message_board_item modal_item'>
         <div class='message_board_top'>
-          <div class='message_board_username'></div>
+          <div class='message_board_username action'></div>
           <div class='message_board_date'></div>
         </div>
         <div class='message_board_text dynamic_title'></div>
