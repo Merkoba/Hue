@@ -91,10 +91,6 @@ Hue.on_highlight = function () {
     return false
   }
 
-  if (!Hue.app_focused || Hue.screen_locked) {
-    Hue.alert_title(2)
-  }
-
   if (!Hue.app_focused) {
     Hue.show_highlight_desktop_notification()
   }
@@ -102,6 +98,8 @@ Hue.on_highlight = function () {
   if (Hue.msg_highlights.is_open()) {
     Hue.show_highlights($("#highlights_filter").val())
   }
+
+  Hue.on_activity("highlight")
 }
 
 // Resets highlights filter data

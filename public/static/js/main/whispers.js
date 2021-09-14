@@ -210,6 +210,7 @@ Hue.whisper_received = function (data) {
   
   if (open) {
     Hue.show_whisper(data)
+    Hue.on_activity("whisper")
   } else {
     Hue.show_popup(Hue.make_info_popup(func), item)
   }
