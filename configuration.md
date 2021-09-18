@@ -180,8 +180,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "anti_spam_ban_duration"
 >How much time in minutes a user is banned from the system after being detected as a spammer by the automatic spam detection system.
 
-"anti_spam_heartbeat"
->Checks connections every x ms to unban an reduce levels.
+"anti_spam_check_delay"
+>Checks connections every x ms to unban and reduce levels.
 
 "session_cookie_max_age"
 >The amount of time a session cookie is valid. This cookie determines if a user needs to login again when entering.

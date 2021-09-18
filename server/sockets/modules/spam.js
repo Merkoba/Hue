@@ -32,7 +32,7 @@ module.exports = function (
         }
       }
       handler.files_timeout_action()
-    }, config.anti_spam_heartbeat)
+    }, config.anti_spam_check_delay)
   }
 
   // What to do on each anti spam iteration
