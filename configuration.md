@@ -156,9 +156,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_video_size_bytes"
 >Maximum video size allowed in Bytes.
 
-"upload_spam_slice"
->The higher this number is, the slower it adds spam on file upload
-
 "youtube_enabled"
 >Whether Youtube features are enabled.
 
@@ -182,6 +179,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "anti_spam_check_delay"
 >Checks connections every x ms to unban and reduce levels.
+
+"upload_spam_charge"
+>The higher this number is, the slower it adds spam on file upload.
 
 "session_cookie_max_age"
 >The amount of time a session cookie is valid. This cookie determines if a user needs to login again when entering.

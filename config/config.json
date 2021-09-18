@@ -134,7 +134,6 @@
 	"max_message_board_posts": 100,
 	"max_message_board_post_length": 2000,
 	"max_audio_clip_duration": 30000,
-	"upload_spam_slice": 650,
 	"system_username": "El Systema",
 	"commands_prefix": "/",
 	"quote_max_length": 100
