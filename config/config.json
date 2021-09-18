@@ -116,7 +116,6 @@
 	"max_sockets_per_user": 100,
 	"activity_bar_interval": 10000,
 	"max_activity_bar_items": 20,
-	"default_favicon_color": "rgb(192,109,207)",
 	"redis_max_link_age": 604800000,
 	"link_fetch_timeout": 10000,
 	"link_max_title_length": 280,
