@@ -61,6 +61,7 @@ module.exports = function (
       vars.files[key] = Object.assign({}, vars.files_struct, data)
       file = vars.files[key]
       file.data = []
+      file.spam_charge = 0
     }
 
     if (file.cancelled) {
@@ -72,6 +73,7 @@ module.exports = function (
     file.data.push(data.data)
     file.slice++
     file.received += data.data.length
+    file.spam_charge += data.data.length
 
     let fsize = file.received / 1024
 
@@ -95,16 +97,13 @@ module.exports = function (
       }
     }
 
-    let spsize = Math.floor(fsize / config.upload_spam_slice)
-
-    if (file.spsize !== spsize) {
+    if (file.spam_charge > config.upload_spam_charge) {
+      file.spam_charge = 0
       let spam_ans = await handler.add_spam(socket)
 
       if (!spam_ans) {
         return false
       }
-
-      file.spsize = spsize
     }
 
     file.updated = Date.now()

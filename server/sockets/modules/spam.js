@@ -63,7 +63,7 @@ module.exports = function (
       user.level += 1
   
       if (user.level >= config.anti_spam_max_limit) {
-        handler.anti_spam_ban(user)
+        handler.anti_spam_ban(socket)
         handler.anti_spam_kick(socket)
       }
 
