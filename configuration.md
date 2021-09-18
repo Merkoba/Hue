@@ -24,6 +24,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "public_images_location"
 >The public root of images. For example a public_images_location of /img/ would send public image urls as /img/image.jpg, which would reside in public/img/. Needs a slash at the end.
 
+"public_videos_location"
+>The public root of videos. For example a public_videos_location of /img/ would send public image urls as /img/image.jpg, which would reside in public/img/. Needs a slash at the end.
+
 "default_image_source"
 >Default source for the image for new rooms or when "/image default" is issued.
 
@@ -147,6 +150,12 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_profile_image_size"
 >Maximum image size allowed for profile images.
 
+"max_video_size"
+>Maximum video size allowed in KB. This is checked both in the client and server. If the video is bigger it won't be uploaded.
+
+"max_video_size_bytes"
+>Maximum video size allowed in Bytes.
+
 "upload_spam_slice"
 >The higher this number is, the slower it adds spam on file upload
 
@@ -197,6 +206,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "max_stored_images"
 >The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted.
+
+"max_stored_videos"
+>The amount of most recent videos to have stored in a room. Each room has an array of videos stored, when the array's length surpasses this number, the oldest image in it will get deleted.
 
 "settings_default_highlight_current_username"
 >Whether current username triggers a highlight by default.

@@ -70,9 +70,9 @@ Hue.setup_image = function (mode, odata = {}) {
   }
 
   if (!data.message) {
-    if (data.type === "upload") {
+    if (data.size) {
       data.message = "Uploaded image"
-    } else if (data.type === "link") {
+    } else {
       data.message = "Linked image"
     }
   }

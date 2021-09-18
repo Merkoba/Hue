@@ -8,6 +8,48 @@ module.exports = function (
   utilz,
   logger
 ) {
+
+  // Handles sliced image uploads
+  handler.upload_tv_video = function (socket, data) {
+    if (data.video_file === undefined) {
+      return false
+    }
+
+    if (data.extension === undefined) {
+      return false
+    }
+
+    let size = data.video_file.byteLength / 1024
+
+    if (size === 0 || size > config.max_tv_video_size) {
+      return false
+    }
+
+    let file_name = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(
+      0,
+      1000
+    )}.${data.extension}`
+
+    vars.fs.writeFile(
+      vars.videos_root + "/" + file_name,
+      data.video_file,
+      function (err, data2) {
+        if (err) {
+          handler.user_emit(socket, "upload_error", {})
+        } else {
+          let obj = {}
+
+          obj.src = file_name
+          obj.setter = socket.hue_username
+          obj.size = size
+          obj.type = "upload"
+          obj.comment = data.comment
+          handler.do_change_tv(socket, obj)
+        }
+      }
+    )
+  }
+
   // Handles tv source changes
   handler.public.change_tv_source = async function (socket, data) {
     if (data.src === undefined) {
@@ -259,50 +301,101 @@ module.exports = function (
 
   // Completes tv source changes
   handler.do_change_tv = function (socket, data) {
-    let tvinfo = {}
+    let room_id, user_id
+
+    if (typeof socket === "object") {
+      room_id = socket.hue_room_id
+      user_id = socket.hue_user_id
+    } else {
+      room_id = socket
+      user_id = "none"
+    }
+
+    let tv_source
     let date = Date.now()
-    let query = data.query || ""
     let comment = data.comment || ""
+    let size = data.size || 0
+    let tv_title = data.title || ""
 
-    tvinfo.tv_type = data.type || ""
-    tvinfo.tv_source = data.src || ""
-    tvinfo.tv_title = vars.he.decode(data.title || "")
-    tvinfo.tv_query = query
-    tvinfo.tv_setter = data.setter || ""
-    tvinfo.tv_date = date
-    tvinfo.tv_comment = comment
+    if (data.query === undefined) {
+      data.query = ""
+    }
 
-    let user_id = socket.hue_user_id
-
-    if (!tvinfo.tv_setter) {
+    if (!data.setter) {
       user_id = ""
     }
 
     let tv_id = handler.generate_message_id()
-    let room = vars.rooms[socket.hue_room_id]
+    let room = vars.rooms[room_id]
 
-    db_manager.update_room(socket.hue_room_id, {
-      tv_id: tv_id,
-      tv_user_id: user_id,
-      tv_type: tvinfo.tv_type,
-      tv_source: tvinfo.tv_source,
-      tv_title: tvinfo.tv_title,
-      tv_setter: tvinfo.tv_setter,
-      tv_date: tvinfo.tv_date,
-      tv_query: tvinfo.tv_query,
-      tv_comment: tvinfo.tv_comment,
-    })
+    if (vars.tv_link_types.includes(data.type)) {
+      tv_source = data.src
 
-    handler.room_emit(socket, "tv_source_changed", {
+      db_manager.update_room(room_id, {
+        tv_id: tv_id,
+        tv_user_id: user_id,
+        tv_source: tv_source,
+        tv_setter: data.setter,
+        tv_title: tv_title,
+        tv_size: size,
+        tv_date: date,
+        tv_type: data.type,
+        tv_query: data.query,
+        tv_comment: comment,
+      })
+    } else if (data.type === "upload") {
+      tv_source = config.public_videos_location + data.src
+      room.stored_videos.unshift(data.src)
+
+      let spliced = false
+
+      if (room.stored_videos.length > config.max_stored_videos) {
+        spliced = room.stored_videos.splice(
+          config.max_stored_videos,
+          room.stored_videos.length
+        )
+      }
+
+      db_manager.update_room(room_id, {
+        tv_id: tv_id,
+        tv_user_id: user_id,
+        tv_source: tv_source,
+        tv_setter: data.setter,
+        tv_title: tv_title,
+        tv_size: size,
+        tv_date: date,
+        stored_videos: room.stored_videos,
+        tv_type: data.type,
+        tv_query: data.query,
+        tv_comment: comment,
+      })
+
+      if (spliced) {
+        for (let file_name of spliced) {
+          vars.fs.unlink(`${vars.videos_root}/${file_name}`, function (
+            err
+          ) {})
+        }
+      }
+    } else {
+      return false
+    }
+
+    if (tv_source === undefined) {
+      return false
+    }
+
+    handler.room_emit(room_id, "tv_source_changed", {
       id: tv_id,
       user_id: user_id,
-      type: tvinfo.tv_type,
-      source: tvinfo.tv_source,
-      title: tvinfo.tv_title,
-      setter: tvinfo.tv_setter,
-      date: tvinfo.tv_date,
-      query: tvinfo.tv_query,
-      comment: tvinfo.tv_comment,
+      source: tv_source,
+      setter: data.setter,
+      title: tv_title,
+      size: size,
+      date: date,
+      type: data.type,
+      query: data.query,
+      comment: comment,
     })
 
     let message = {
@@ -311,23 +404,24 @@ module.exports = function (
       date: date,
       data: {
         user_id: user_id,
-        type: tvinfo.tv_type,
-        source: tvinfo.tv_source,
-        title: tvinfo.tv_title,
-        setter: tvinfo.tv_setter,
-        query: tvinfo.tv_query,
-        comment: tvinfo.tv_comment,
-      },
+        comment: comment,
+        source: tv_source,
+        setter: data.setter,
+        title: tv_title,        
+        size: size,
+        type: data.type,
+        query: data.query,
+      }
     }
 
     handler.push_log_message(socket, message)
 
     room.current_tv_id = tv_id
     room.current_tv_user_id = user_id
-    room.current_tv_source = tvinfo.tv_source
-    room.current_tv_query = tvinfo.tv_query
+    room.current_tv_source = tv_source
+    room.current_tv_query = data.query
     room.last_tv_change = Date.now()
-    room.modified = Date.now()
+    room.modified = Date.now()    
   }
 
   // Receives a request to ask another user for their tv video progress

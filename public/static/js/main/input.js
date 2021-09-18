@@ -41,7 +41,7 @@ Hue.setup_input = function () {
       let item = items[index]
 
       if (item.kind === "file") {
-        Hue.dropzone.addFile(item.getAsFile())
+        Hue.dropzone_image.addFile(item.getAsFile())
         return
       }
     }

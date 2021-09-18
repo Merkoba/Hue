@@ -43,6 +43,12 @@ module.exports = function (
             return false
           }
         }
+      } else if (data.action.includes("video")) {
+        if (data.action === "tv_video_upload") {
+          if (!utilz.video_extensions.includes(ext)) {
+            return false
+          }
+        }
       }
 
       if (data.comment) {
@@ -79,6 +85,11 @@ module.exports = function (
       }
     } else if (file.action === "audio_clip_upload") {
       if (fsize > config.max_audio_clip_size) {
+        delete vars.files[key]
+        return false
+      }
+    } else if (file.action === "tv_video_upload") {
+      if (fsize > config.max_tv_video_size) {
         delete vars.files[key]
         return false
       }
@@ -122,6 +133,12 @@ module.exports = function (
         handler.upload_audio_clip(socket, {
           audio_file: full_file,
           extension: file.extension,
+        })
+      } else if (data.action === "tv_video_upload") {
+        handler.upload_tv_video(socket, {
+          video_file: full_file,
+          extension: file.extension,
+          comment: file.comment,
         })
       }
 

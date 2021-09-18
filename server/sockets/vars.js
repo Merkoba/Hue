@@ -22,6 +22,7 @@ module.exports = function (
 
   vars.root_path = vars.path.join(__dirname, "../../")
   vars.images_root = vars.path.join(vars.root_path, config.images_directory)
+  vars.videos_root = vars.path.join(vars.root_path, config.videos_directory)
   vars.audio_root = vars.path.join(vars.root_path, config.audio_directory)
   vars.roles = ["admin", "op", "voice"]
   vars.media_types = ["image", "tv"]
@@ -29,6 +30,7 @@ module.exports = function (
     log_messages: 0,
     admin_log_messages: 0,
     stored_images: 0,
+    stored_videos: 0
   }
   vars.redis_client_ready = false
   vars.redis_client = vars.redis.createClient()
@@ -94,6 +96,8 @@ module.exports = function (
     args.headers["user-agent"] = "Mozilla/5.0"
     return vars.fetch(url, args)
   }
+
+  vars.tv_link_types = ["youtube", "twitch", "soundcloud", "video", "iframe"]
 
   vars.exiting = false
 }

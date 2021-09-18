@@ -277,6 +277,18 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_tv_upload_comment = Msg.factory(
+    Object.assign({}, common, titlebar, {
+      id: "tv_upload_comment",
+      after_close: function (instance) {
+        common.after_close(instance)
+        $("#tv_upload_comment_input").val("")
+        Hue.tv_upload_comment_file = false
+        Hue.tv_upload_comment_type = false
+      },
+    })
+  )  
+
   Hue.msg_reply = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "reply",
@@ -396,6 +408,7 @@ Hue.start_msg = function () {
   Hue.msg_admin_activity.set(Hue.template_admin_activity())
   Hue.msg_expand_image.set(Hue.template_expand_image())
   Hue.msg_image_upload_comment.set(Hue.template_image_upload_comment())
+  Hue.msg_tv_upload_comment.set(Hue.template_tv_upload_comment())
   Hue.msg_reply.set(Hue.template_reply())
   Hue.msg_handle_url.set(Hue.template_handle_url())
   Hue.msg_open_url.set(Hue.template_open_url())
@@ -421,6 +434,7 @@ Hue.start_msg = function () {
   Hue.msg_media_menu.set_title("Media Menu")
   Hue.msg_admin_activity.set_title("Admin Activity")
   Hue.msg_image_upload_comment.set_title("Add a Comment")
+  Hue.msg_tv_upload_comment.set_title("Add a Comment")
   Hue.msg_reply.set_title("Write a Reply")
   Hue.msg_details.set_title("User Details")
   Hue.msg_notifications.set_title("Notifications")

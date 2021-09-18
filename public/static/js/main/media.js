@@ -346,6 +346,10 @@ Hue.setup_media_pickers = function () {
   $("#tv_picker_submit").on("click", function () {
     Hue.tv_picker_submit()
   })
+
+  $("#tv_picker_upload").on("click", function () {
+    Hue.msg_tv_picker.close()
+  })  
 }
 
 // Updates the dimensions of a specified element
@@ -530,9 +534,13 @@ Hue.apply_media_info = function (type) {
   let custom_title
 
   if (type === "tv") {
+    if (item.size) {
+      custom_title = `${Hue.utilz.get_size_string(item.size)} upload`
+    }
+
     Hue.media_info_tv_data = [...arguments]
   } else if (type === "image") {
-    if (item.type === "upload") {
+    if (item.size) {
       custom_title = `${Hue.utilz.get_size_string(item.size)} upload`
     }
 

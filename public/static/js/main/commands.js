@@ -309,7 +309,7 @@ Hue.commands = {
   },
   "stoptv": {
     action: (arg, ans) => {
-      Hue.stop_tv(false)
+      Hue.stop_tv()
     },
     description: `Stops the tv`,
   },

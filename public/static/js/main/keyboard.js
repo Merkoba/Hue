@@ -59,6 +59,15 @@ Hue.activate_key_detection = function () {
         }
       }
 
+      if (Hue.msg_tv_upload_comment.is_open()) {
+        if (Hue.msg_tv_upload_comment.is_highest()) {
+          if (e.key === "Enter") {
+            Hue.process_tv_upload_comment()
+            e.preventDefault()
+          }
+        }
+      }      
+
       if (Hue.open_room_open) {
         if (Hue.msg_info2.is_highest()) {
           if (e.key === "Enter") {

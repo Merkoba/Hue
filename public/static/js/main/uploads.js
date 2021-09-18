@@ -1,49 +1,89 @@
 // Starts Dropzone events for file drag and drop events
 // This also handles normal uploads by clicking the Upload button
 Hue.start_dropzone = function () {
+  let image_types = "image/jpeg,image/png,image/gif,image/webp,image/bmp"
+  let video_types = "video/mp4,video/webm"
+
   Hue.dropzone = new Dropzone("body", {
     url: "/",
     maxFiles: 1,
     maxFilesize: Hue.config.max_image_size / 1024,
     autoProcessQueue: false,
-    clickable: "#image_picker_upload, #image_upload_comment_change",
-    acceptedFiles: "image/jpeg,image/png,image/gif,image/webp,image/bmp",
+    clickable: "#image_picker_upload, #image_upload_comment_change, #tv_picker_upload",
+    acceptedFiles: image_types + video_types
   })
-
+  
   Hue.dropzone.on("addedfile", function (file) {
-    if (Hue.msg_room_menu.is_open()) {
-      Hue.background_image_selected(file)
-      return
-    } else if (Hue.msg_user_menu.is_open()) {
-      Hue.profile_image_selected(file)
-      return
+    if (image_types.includes(file.type)) {
+      Hue.upload_image(file)
+    } else if (video_types.includes(file.type)) {
+      Hue.upload_video(file)
     }
-
-    Hue.focus_input()
-
-    if (Hue.dropzone.files.length > 1) {
-      Hue.dropzone.files = []
-      return false
-    }
-
-    let size = file.size / 1024
-
-    if (size > Hue.config.max_image_size) {
-      Hue.dropzone.files = []
-      Hue.feedback("File is too big")
-      return false
-    }
-
-    let ext = file.name.split(".").pop(-1).toLowerCase()
-
-    if (!Hue.utilz.image_extensions.includes(ext)) {
-      Hue.dropzone.files = []
-      return false
-    }
-
-    Hue.dropzone.files = []
-    Hue.show_image_upload_comment(file, "image_upload")
   })
+}
+
+// Handle generic image upload
+Hue.upload_image = function (file) {
+  if (Hue.msg_room_menu.is_open()) {
+    Hue.background_image_selected(file)
+    return
+  } else if (Hue.msg_user_menu.is_open()) {
+    Hue.profile_image_selected(file)
+    return
+  }
+
+  Hue.focus_input()
+
+  if (Hue.dropzone.files.length > 1) {
+    Hue.dropzone.files = []
+    return false
+  }
+
+  let size = file.size / 1024
+
+  if (size > Hue.config.max_image_size) {
+    Hue.dropzone.files = []
+    Hue.feedback("File is too big")
+    return false
+  }
+
+  let ext = file.name.split(".").pop(-1).toLowerCase()
+
+  if (!Hue.utilz.image_extensions.includes(ext)) {
+    Hue.dropzone.files = []
+    return false
+  }
+
+  Hue.dropzone.files = []
+  Hue.show_image_upload_comment(file, "image_upload")
+}
+
+// Handle generic video upload
+Hue.upload_video = function (file) {
+  Hue.focus_input()
+
+  if (Hue.dropzone.files.length > 1) {
+    Hue.dropzone.files = []
+    return false
+  }
+
+  let size = file.size / 1024
+
+  if (size > Hue.config.max_tv_video_size) {
+    Hue.dropzone.files = []
+    Hue.feedback("File is too big")
+    return false
+  }
+
+  let ext = file.name.split(".").pop(-1).toLowerCase()
+
+  if (!Hue.utilz.video_extensions.includes(ext)) {
+    Hue.dropzone.files = []
+    return false
+  }
+
+  Hue.dropzone.files = []
+  Hue.show_tv_upload_comment(file, "tv_video_upload")
 }
 
 // Creates a file reader for files

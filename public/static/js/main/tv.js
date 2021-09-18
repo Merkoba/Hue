@@ -3,13 +3,14 @@
 // This is the entry function for tv objects to get registered, announced, and be ready for use
 Hue.setup_tv = function (mode, odata = {}) {
   let data = {}
-
+  
   data.id = odata.id
   data.user_id = odata.user_id
   data.type = odata.type
   data.source = odata.source
   data.title = odata.title
   data.setter = odata.setter
+  data.size = odata.size
   data.date = odata.date
   data.query = odata.query
   data.comment = odata.comment
@@ -17,6 +18,10 @@ Hue.setup_tv = function (mode, odata = {}) {
     Hue.utilz.nice_date(data.date) :
     Hue.utilz.nice_date()
   data.in_log = odata.in_log === undefined ? true : odata.in_log
+
+  if (data.type === "upload") {
+    data.type = "video"
+  }
 
   if (!data.setter) {
     data.setter = Hue.config.system_username
@@ -28,14 +33,35 @@ Hue.setup_tv = function (mode, odata = {}) {
     data.title = Hue.config.default_tv_title
   }
 
-  if (!data.title) {
-    data.title = data.source
+  if (data.source.startsWith("/")) {
+    data.source = window.location.origin + data.source
+  } else if (data.source.startsWith(window.location.origin)) {
+    if (!data.size) {
+      for (let video of Hue.videos_changed) {
+        if (video.source === data.source) {
+          data.type = video.type
+          data.size = video.size
+          break
+        }
+      }
+    }
   }
 
-  data.message = data.title
+  if (data.title) {
+    data.message = data.title
+    if (data.comment) {
+      data.message += ` (${data.comment})`
+    }    
+  } else if (data.comment) {
+    data.message = data.comment
+  }
 
-  if (data.comment) {
-    data.message += ` (${data.comment})`
+  if (!data.message) {
+    if (data.size) {
+      data.message = "Uploaded video"
+    } else {
+      data.message = "Linked video"
+    }
   }
 
   if (data.type === "youtube") {
@@ -131,7 +157,7 @@ Hue.push_tv_changed = function (data) {
 }
 
 // Stops all defined tv players
-Hue.stop_tv = function (hard_stop = true) {
+Hue.stop_tv = function () {
   if (Hue.youtube_video_player) {
     Hue.youtube_video_player.pauseVideo()
   }
@@ -146,15 +172,6 @@ Hue.stop_tv = function (hard_stop = true) {
 
   if ($("#media_video").length > 0) {
     $("#media_video")[0].pause()
-
-    if (hard_stop) {
-      $("#media_video")[0].src = ""
-    }
-  }
-
-  if (hard_stop) {
-    $("#media_iframe_video").attr("src", "")
-    $("#media_iframe_poster").css("display", "block")
   }
 }
 
@@ -276,7 +293,7 @@ Hue.show_soundcloud_video = function (play = true) {
 }
 
 // Loads a <video> video
-Hue.show_video_video = async function (play = true) {
+Hue.show_video_video = function (play = true) {
   let item = Hue.loaded_tv
 
   if ($("#media_video").length === 0) {
@@ -693,4 +710,55 @@ Hue.receive_tv_progress = function (data) {
     $("#media_video")[0].currentTime = data.progress
     $("#media_video")[0].play()
   }
+}
+
+// Shows the window to add a comment to a video upload
+Hue.show_tv_upload_comment = function (file, type) {
+  $("#tv_upload_comment_image_feedback").css("display", "none")
+
+  let reader = new FileReader()
+
+  reader.onload = function (e) {
+    Hue.tv_upload_comment_file = file
+    Hue.tv_upload_comment_type = type
+
+    Hue.msg_tv_upload_comment.set_title(
+      `${Hue.utilz.slice_string_end(
+        file.name,
+        20
+      )} (${Hue.utilz.get_size_string(file.size, 2)})`
+    )
+
+    $("#Msg-titlebar-tv_upload_comment").attr("title", file.name)
+
+    Hue.msg_tv_upload_comment.show(function () {
+      $("#tv_upload_comment_submit").on("click", function () {
+        Hue.process_tv_upload_comment()
+      })
+
+      $("#tv_upload_comment_input").focus()
+      Hue.scroll_modal_to_bottom("tv_upload_comment")
+    })
+  }
+
+  reader.readAsDataURL(file)
+}
+
+// Submits the upload tv comment window
+// Uploads the file and the optional comment
+Hue.process_tv_upload_comment = function () {
+  if (!Hue.msg_tv_upload_comment.is_open()) {
+    return false
+  }
+
+  let file = Hue.tv_upload_comment_file
+  let type = Hue.tv_upload_comment_type
+  let comment = Hue.utilz.clean_string2($("#tv_upload_comment_input").val())
+
+  if (comment.length > Hue.config.max_media_comment_length) {
+    return false
+  }
+
+  Hue.upload_file({ file: file, action: type, comment: comment })
+  Hue.msg_tv_upload_comment.close()
 }

@@ -24,6 +24,7 @@ module.exports = function (c, config) {
   c.vars.max_media_source_length = config.max_media_source_length
   c.vars.max_title_length = config.max_title_length
   c.vars.max_image_size = config.max_image_size
+  c.vars.max_tv_video_size = config.max_tv_video_size
   c.vars.topic_separator = config.topic_separator
   c.vars.title_separator = config.title_separator
   c.vars.default_title = config.default_title

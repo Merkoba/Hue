@@ -2401,3 +2401,7 @@ pre {
 #draw_image_bucket_color {
 	margin-left: 0.8rem;
 }
+
+.upload_comment_input {
+	margin-bottom: 1rem;
+}
