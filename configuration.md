@@ -357,9 +357,13 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "system_username"
 >Reserved username for system messages.
 
+"max_displayed_url"
+>Max length of urls in chat.
+
 "commands_prefix"
-The character before commands.
-For example "/" in "/somecommand"
+>The character before commands.
+
+>For example "/" in "/somecommand"
 
 
 ## The following reside in config.secret.json

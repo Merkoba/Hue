@@ -133,5 +133,6 @@
 	"max_audio_clip_duration": 30000,
 	"system_username": "El Systema",
 	"commands_prefix": "/",
-	"quote_max_length": 100
+	"quote_max_length": 100,
+	"max_displayed_url": 60
 }

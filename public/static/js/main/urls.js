@@ -46,7 +46,7 @@ jQuery.fn.urlize = function (stop_propagation = true) {
           "g"
         )
         let u = matches[i]
-        let max = Hue.max_displayed_url
+        let max = Hue.config.max_displayed_url
 
         if (u.length > max) {
           u = `${u.substring(0, max)}...`

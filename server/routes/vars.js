@@ -78,4 +78,5 @@ module.exports = function (c, config) {
   c.vars.create_room_cooldown = config.create_room_cooldown
   c.vars.quote_max_length = config.quote_max_length
   c.vars.max_log_messages = config.max_log_messages
+  c.vars.max_displayed_url = config.max_displayed_url
 }

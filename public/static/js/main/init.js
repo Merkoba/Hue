@@ -106,7 +106,6 @@ Hue.favicon_mode = 0
 Hue.screen_locked = false
 Hue.num_socket_in = 0
 Hue.num_socket_out = 0
-Hue.max_displayed_url = 70
 Hue.media_info_max_length = 60
 Hue.image_locked = false
 Hue.tv_locked = false
