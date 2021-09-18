@@ -17,26 +17,27 @@ module.exports = function (
   // Starts a timeout to check spam on sockets
   handler.anti_spam_timeout = function () {
     setTimeout(function () {
-      for (let key in handler.anti_spam_users) {
-        let user = handler.anti_spam_users[key]
-        if (user.banned) {
-          if (Date.now() > user.banned_until) {
-            user.banned = false
-            user.banned_until = 0
-            user.level = 0
-          }
-        } else {
-          if (user.level > 0) {
-            user.level -= 1
-          }
-        }
-      }
       handler.files_timeout_action()
     }, config.anti_spam_check_delay)
   }
 
   // What to do on each anti spam iteration
   handler.files_timeout_action = function () {
+    for (let key in handler.anti_spam_users) {
+      let user = handler.anti_spam_users[key]
+      if (user.banned) {
+        if (Date.now() > user.banned_until) {
+          user.banned = false
+          user.banned_until = 0
+          user.level = 0
+        }
+      } else {
+        if (user.level > 0) {
+          user.level -= 1
+        }
+      }
+    }
+
     handler.anti_spam_timeout()
   }  
 
