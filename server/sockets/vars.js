@@ -11,7 +11,6 @@ module.exports = function (
   // Initial declarations
   vars.fs = require("fs")
   vars.path = require("path")
-  vars.SocketAntiSpam = require("socket-anti-spam")
   vars.fetch = require("node-fetch")
   vars.mongo = require("mongodb")
   vars.jwt = require("jsonwebtoken")
@@ -61,22 +60,6 @@ module.exports = function (
   }
 
   vars.default_role = "voice"
-
-  // Configure the anti-spam system
-  vars.anti_spam = new vars.SocketAntiSpam({
-    banTime: config.antispam_banTime, // Ban time in minutes
-    kickThreshold: config.antispam_kickThreshold, // User gets kicked after this many spam score
-    kickTimesBeforeBan: config.antispam_kickTimesBeforeBan, // User gets banned after this many kicks
-    banning: config.antispam_banning, // Uses temp IP banning after kickTimesBeforeBan
-    heartBeatStale: config.antispam_heartBeatStale, // Removes a heartbeat after this many seconds
-    heartBeatCheck: config.antispam_heartBeatCheck, // Checks a heartbeat per this many seconds
-  })
-
-  vars.anti_spam.event.on("ban", function (socket, data) {
-    socket.hue_kicked = true
-    socket.hue_info1 = "the anti-spam system"
-    handler.get_out(socket)
-  })
 
   // Dont check if user has joined with these functions
   vars.dont_check_joined = ["join_room"]

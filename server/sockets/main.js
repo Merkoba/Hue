@@ -29,6 +29,9 @@ module.exports = function (
     require(`./modules/${module}`)(handler, vars, ...arguments)
   }
 
+  // Start the anti-spam system
+  vars.anti_spam = handler.start_anti_spam()  
+
   // Start socker handler
   io.on("connection", async function (socket) {
     if (!socket) {

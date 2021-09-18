@@ -174,23 +174,14 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "iframes_enabled"
 >Whether embedded iframes are enabled.
 
-"antispam_banTime"
+"anti_spam_max_limit"
+>The bigger the number the more the anti-spam system tolerates.
+
+"anti_spam_ban_duration"
 >How much time in minutes a user is banned from the system after being detected as a spammer by the automatic spam detection system.
 
-"antispam_kickThreshold"
->User gets kicked after this many spam score
-
-"antispam_kickTimesBeforeBan"
->User gets banned after this many kicks
-
-"antispam_banning"
->Uses temp IP banning after kickTimesBeforeBan
-
-"antispam_heartBeatStale"
->Removes a heartbeat after this many seconds
-
-"antispam_heartBeatCheck"
->Checks a heartbeat per this many seconds
+"anti_spam_heartbeat"
+>Checks connections every x ms to unban an reduce levels.
 
 "session_cookie_max_age"
 >The amount of time a session cookie is valid. This cookie determines if a user needs to login again when entering.

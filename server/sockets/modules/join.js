@@ -9,7 +9,7 @@ module.exports = function (
   logger
 ) {
   // Sets initial hue_* variables on connection
-  handler.connection = function (socket) {
+  handler.connection = async function (socket) {
     socket.hue_pinged = false
     socket.hue_kicked = false
     socket.hue_banned = false
@@ -21,6 +21,7 @@ module.exports = function (
     socket.hue_typing_counter = 0
     socket.hue_activity_counter = 0
     socket.hue_last_badge_date = Date.now()
+    await handler.add_spam(socket)
   }
 
   // Attempts to join a room
@@ -97,6 +98,7 @@ module.exports = function (
       )
 
       if (!ans.valid) {
+        handler.anti_spam_ban(socket)
         return handler.do_disconnect(socket)
       }
 
