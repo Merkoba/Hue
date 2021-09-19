@@ -194,6 +194,7 @@ Hue.init = function () {
   Hue.setup_local_storage()
   Hue.setup_lockscreen()
   Hue.setup_image_upload_comment()
+  Hue.setup_tv_upload_comment()
   Hue.setup_drag_events()
   Hue.setup_open_url()
   Hue.setup_media_pickers()

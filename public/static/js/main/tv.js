@@ -714,13 +714,16 @@ Hue.receive_tv_progress = function (data) {
 
 // Shows the window to add a comment to a video upload
 Hue.show_tv_upload_comment = function (file, type) {
-  $("#tv_upload_comment_image_feedback").css("display", "none")
+  $("#tv_upload_comment_video_feedback").css("display", "none")
+  $("#tv_upload_comment_video_preview").css("display", "inline-block")
 
   let reader = new FileReader()
 
   reader.onload = function (e) {
     Hue.tv_upload_comment_file = file
     Hue.tv_upload_comment_type = type
+
+    $("#tv_upload_comment_video_preview").attr("src", e.target.result)
 
     Hue.msg_tv_upload_comment.set_title(
       `${Hue.utilz.slice_string_end(
@@ -761,4 +764,13 @@ Hue.process_tv_upload_comment = function () {
 
   Hue.upload_file({ file: file, action: type, comment: comment })
   Hue.msg_tv_upload_comment.close()
+}
+
+// Setups the upload tv comment window
+Hue.setup_tv_upload_comment = function () {
+  let video = $("#tv_upload_comment_video_preview")
+  video.on("error", function () {
+    $(this).css("display", "none")
+    $("#tv_upload_comment_video_feedback").css("display", "inline")
+  })
 }
