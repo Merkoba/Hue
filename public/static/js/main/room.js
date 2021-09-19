@@ -22,7 +22,8 @@ Hue.get_room_state = function () {
     "tv_display_percentage",
     "tv_display_position",
     "media_layout",
-    "last_message_board_post"
+    "last_message_board_post",
+    "main_layout"
   ]
 
   for (let setting of settings) {
