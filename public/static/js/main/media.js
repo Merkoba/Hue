@@ -708,10 +708,13 @@ Hue.change_media_layout = function (mode = false) {
 }
 
 // Apply default media layout
-Hue.set_default_media_layout = function () {
+Hue.set_default_media_layout = function (apply = true) {
   Hue.room_state.media_layout = Hue.config.room_state_default_media_layout
-  Hue.save_room_state()
-  Hue.change_media_layout()
+
+  if (apply) {
+    Hue.save_room_state()
+    Hue.change_media_layout()
+  }
 }
 
 // Switches between row and column media layout mode
@@ -731,10 +734,13 @@ Hue.swap_media = function () {
 }
 
 // Default image and tv position
-Hue.set_default_tv_position = function () {
+Hue.set_default_tv_position = function (apply = true) {
   Hue.room_state.tv_display_position = Hue.config.room_state_default_tv_display_position
-  Hue.save_room_state()
-  Hue.apply_media_positions()
+  
+  if (apply) {
+    Hue.save_room_state()
+    Hue.apply_media_positions()
+  }
 }
 
 // Rotates media
@@ -813,11 +819,15 @@ Hue.get_media_item = function (type, id) {
 
 // Apply media defaults
 Hue.apply_media_defaults = function () {
-  Hue.set_default_chat_size()
-  Hue.set_default_tv_size()
-  Hue.set_default_media_layout()
-  Hue.set_default_tv_position()
-  Hue.set_default_main_layout()
+  Hue.set_default_chat_size(false)
+  Hue.set_default_tv_size(false)
+  Hue.set_default_media_layout(false)
+  Hue.set_default_tv_position(false)
+  Hue.set_default_main_layout(false)
+
+  Hue.save_room_state()
+  Hue.change_media_layout()
+  Hue.apply_media_positions()
   Hue.refresh_media_menu()
 }
 
@@ -845,8 +855,11 @@ Hue.change_main_layout = function () {
 }
 
 // Set default main layout row|column
-Hue.set_default_main_layout = function () {
+Hue.set_default_main_layout = function (apply = true) {
   Hue.room_state.main_layout = Hue.config.room_state_default_main_layout
-  Hue.save_room_state()
-  Hue.apply_media_percentages()  
+
+  if (apply) {
+    Hue.save_room_state()
+    Hue.apply_media_percentages()
+  }
 }
