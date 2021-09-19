@@ -41,9 +41,22 @@ Hue.apply_media_percentages = function () {
   let c1 = Hue.limit_media_percentage(Hue.room_state.chat_display_percentage)
   let c2 = 100 - c1
 
-  $("#chat_main").css("width", `${c1}%`)
-  $("#media").css("width", `${c2}%`)
+  if (Hue.room_state.main_layout === "column") {
+    $("#main_rows_container").css("flex-direction", "column-reverse")
+    $("#chat_main").css("height", `${c1}%`)
+    $("#media").css("height", `${c2}%`)
+    $("#chat_main").css("width", "100%")
+    $("#media").css("width", "100%") 
+  } else {
+    $("#main_rows_container").css("flex-direction", "row")
+    $("#chat_main").css("width", `${c1}%`)
+    $("#media").css("width", `${c2}%`)
+    $("#chat_main").css("height", "100%")
+    $("#media").css("height", "100%")    
+  }
+
   Hue.fix_frames()
+  Hue.goto_bottom(true)
 }
 
 // Applies the image and tv positions based on current state
@@ -273,6 +286,10 @@ Hue.setup_media_menu = function () {
     Hue.rotate_media()
   })
 
+  $("#media_menu_revolve").on("click", function () {
+    Hue.change_main_layout()
+  })   
+
   $("#media_menu_tv_size").on("change", function () {
     let size = $("#media_menu_tv_size option:selected").val()
     Hue.do_media_tv_size_change(size)
@@ -285,7 +302,7 @@ Hue.setup_media_menu = function () {
 
   $("#media_menu_defaults").on("click", function () {
     Hue.apply_media_defaults()
-  })
+  }) 
 }
 
 // Format local sources that start with slash
@@ -800,6 +817,7 @@ Hue.apply_media_defaults = function () {
   Hue.set_default_tv_size()
   Hue.set_default_media_layout()
   Hue.set_default_tv_position()
+  Hue.set_default_main_layout()
   Hue.refresh_media_menu()
 }
 
@@ -812,4 +830,23 @@ Hue.create_media_percentages = function () {
   }
 
   return html
+}
+
+// Change the main layout row|column
+Hue.change_main_layout = function () {
+  if (Hue.room_state.main_layout === "row") {
+    Hue.room_state.main_layout = "column"   
+  } else {
+    Hue.room_state.main_layout = "row" 
+  }
+
+  Hue.save_room_state()
+  Hue.apply_media_percentages()
+}
+
+// Set default main layout row|column
+Hue.set_default_main_layout = function () {
+  Hue.room_state.main_layout = Hue.config.room_state_default_main_layout
+  Hue.save_room_state()
+  Hue.apply_media_percentages()  
 }
