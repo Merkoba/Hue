@@ -1934,13 +1934,11 @@ a.special_link:hover {
 .horizontal_separator {
 	background: linear-gradient(to right, transparent, currentColor 10%, currentColor 90%, transparent);
 	width: 2px;
-	height: 0;
 }
 
 .vertical_separator {
 	background: linear-gradient(to right, transparent, currentColor 10%, currentColor 90%, transparent);
 	height: 2px;
-	width: 0;
 }
 
 #footer .horizontal_separator {
