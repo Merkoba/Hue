@@ -18,6 +18,8 @@ Hue.start_dropzone = function () {
       Hue.upload_image(file)
     } else if (video_types.includes(file.type)) {
       Hue.upload_video(file)
+    } else {
+      Hue.dropzone.files = []
     }
   })
 }
