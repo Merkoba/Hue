@@ -838,7 +838,7 @@ Hue.ban = function (uname) {
 
   if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
     if (uname === Hue.username) {
-      Hue.feedback("You can't ban yourself")
+      Hue.showmsg("You can't ban yourself")
       return false
     }
 
@@ -883,7 +883,7 @@ Hue.kick = function (uname) {
 
   if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
     if (uname === Hue.username) {
-      Hue.feedback("You can't kick yourself")
+      Hue.showmsg("You can't kick yourself")
       return false
     }
 
