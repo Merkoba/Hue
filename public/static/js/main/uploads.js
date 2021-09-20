@@ -19,6 +19,7 @@ Hue.start_dropzone = function () {
     } else if (video_types.includes(file.type)) {
       Hue.upload_video(file)
     } else {
+      Hue.checkmsg("Invalid format")
       Hue.dropzone.files = []
     }
   })
