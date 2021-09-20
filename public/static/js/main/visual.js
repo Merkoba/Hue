@@ -5,11 +5,13 @@ Hue.setup_separators = function () {
   Hue.horizontal_separator = Separator.factory({
     mode: "horizontal",
     class: "separator horizontal_separator",
+    html: ""
   })
 
   Hue.horizontal_separator_no_margin = Separator.factory({
     mode: "horizontal",
     class: "separator horizontal_separator",
+    html: "",
     margin_left: 0,
     margin_right: 0
   })
