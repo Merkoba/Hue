@@ -1928,8 +1928,17 @@ a.special_link:hover {
 }
 
 .separator {
-	border: 1px solid currentColor;
 	opacity: 0.25;
+}
+
+.horizontal_separator {
+	background: linear-gradient(to right, transparent, currentColor 10%, currentColor 90%, transparent);
+	width: 2px;
+}
+
+.vertical_separator {
+	background: linear-gradient(to right, transparent, currentColor 10%, currentColor 90%, transparent);
+	height: 2px;
 }
 
 .horizontal_separator div {
