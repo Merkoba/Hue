@@ -34,5 +34,5 @@ Hue.config_main_menu = function () {
     $("#main_menu_room_menu").css("display", "none")
   }
 
-  Hue.vertical_separator.separate("main_menu")
+  Hue.vertical_separator($("#main_menu")[0])
 }

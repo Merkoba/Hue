@@ -374,7 +374,7 @@ Hue.setup_profile_image_cropper = function () {
     Hue.open_profile_image_picker()
   })
 
-  Hue.horizontal_separator.separate("profile_image_cropper_buttons")
+  Hue.horizontal_separator($("#profile_image_cropper_buttons")[0])
 }
 
 // Resets the profile image cropper to default state
@@ -484,7 +484,7 @@ Hue.show_audio_clip_menu = function () {
       Hue.user_menu_audio.play()
     })
 
-    Hue.horizontal_separator.separate("background_image_select_container")
+    Hue.horizontal_separator($("#background_image_select_container")[0])
   })
 }
 

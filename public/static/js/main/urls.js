@@ -171,7 +171,7 @@ Hue.check_handle_url_options = function (text) {
     $("#handle_url_tv").css("display", "none")
   }
 
-  Hue.horizontal_separator.separate("handle_url_container")
+  Hue.horizontal_separator($("#handle_url_container")[0])
 }
 
 // Setups the Open URL picker window
@@ -244,7 +244,7 @@ Hue.open_url_menu = function (args = {}) {
     $("#open_url_menu_change").css("display", "none")
   }
 
-  Hue.horizontal_separator.separate("open_url_container")
+  Hue.horizontal_separator($("#open_url_container")[0])
   Hue.open_url_source = args.source
   Hue.open_url_data = args.data
   Hue.open_url_media_type = args.media_type

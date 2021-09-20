@@ -326,7 +326,7 @@ Hue.show_media_source = function (what) {
 // More media picker configurations
 Hue.setup_media_pickers = function () {
   for (let type of Hue.utilz.media_types) {
-    Hue.horizontal_separator.separate($(`#${type}_picker_options`)[0])
+    Hue.horizontal_separator($(`#${type}_picker_options`)[0])
   }
 
   $("#image_picker_upload").on("click", function () {

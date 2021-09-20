@@ -1,39 +1,48 @@
-// Creates a Separator instance
-// This is used to apply horizontal separations between items
-// It takes into account un-displayed items to separate properly
-Hue.setup_separators = function () {
-  Hue.horizontal_separator = Separator.factory({
-    mode: "horizontal",
-    class: "separator horizontal_separator",
-    html: ""
+// Applies separation to generic horizontal separator classes
+Hue.setup_generic_separators = function () {
+  $(".generic_horizontal_separator").each(function () {
+    Hue.horizontal_separator(this)
+  })/
+
+  $(".generic_vertical_separator").each(function () {
+    Hue.vertical_separator(this)
+  })
+}
+
+Hue.horizontal_separator = function (el) {
+  $(el).find(".separator").each(function () {
+    $(this).remove()
   })
 
-  Hue.horizontal_separator_no_margin = Separator.factory({
-    mode: "horizontal",
-    class: "separator horizontal_separator",
-    html: "",
-    margin_left: 0,
-    margin_right: 0
+  let elems = $(el).find(">:not(:last)").filter(function(){
+    if($(this).css("display") !== "none")
+      return $(this)
   })
 
-  Hue.vertical_separator = Separator.factory({
-    mode: "vertical",
-    class: "separator vertical_separator",
-    html: "",
-    width: "100%",
-    margin_top: "1.6rem",
-    margin_bottom: "1.6rem",
+  elems.after("<div class='separator horizontal_separator'></div>");
+}
+
+Hue.vertical_separator = function (el) {
+  $(el).find(".separator").each(function () {
+    $(this).remove()
   })
+    
+  let elems = $(el).find(">:not(:last)").filter(function(){
+    if($(this).css("display") !== "none")
+      return $(this)
+  })
+
+  elems.after("<div class='separator vertical_separator'></div>");
 }
 
 // Applies separation to generic horizontal separator classes
 Hue.setup_generic_separators = function () {
   $(".generic_horizontal_separator").each(function () {
-    Hue.horizontal_separator.separate(this)
+    Hue.horizontal_separator(this)
   })
 
   $(".generic_vertical_separator").each(function () {
-    Hue.vertical_separator.separate(this)
+    Hue.vertical_separator(this)
   })
 }
 

@@ -156,7 +156,6 @@ Hue.init = function () {
   Hue.load_date_1 = Date.now()
 
   Hue.create_debouncers()
-  Hue.setup_separators()
   Hue.setup_textparser_regexes()
   Hue.activate_key_detection()
   Hue.setup_templates()

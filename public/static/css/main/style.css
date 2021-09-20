@@ -330,6 +330,10 @@ body * {
 	justify-content: center;
 }
 
+#footer .separator {
+	height: 1em;
+}
+
 .panel_icon {
 	cursor: pointer;
 	flex-shrink: 1;
@@ -1929,16 +1933,24 @@ a.special_link:hover {
 
 .separator {
 	opacity: 0.25;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .horizontal_separator {
 	background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
 	width: 2px;
+	height: 1em;
+	margin-left: 1.6rem;
+	margin-right: 1.6rem;	
 }
 
 .vertical_separator {
 	background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
 	height: 2px;
+	margin-top: 1.6rem;
+	margin-bottom: 1.6rem;
 }
 
 #footer .horizontal_separator {

@@ -108,7 +108,7 @@ Hue.open_background_image_select = function () {
       Hue.open_background_image_picker()
     })
   })
-  Hue.horizontal_separator.separate("background_image_select_container")
+  Hue.horizontal_separator($("#background_image_select_container")[0])
 }
 
 // If upload is chosen as the method to change the background image
