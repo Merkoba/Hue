@@ -1123,11 +1123,12 @@ select {
 }
 
 .setting_textarea {
-	width: 90%;
+	width: 100%;
 	resize: none;
 	font-size: 1rem;
 	text-align: center;
 	overflow-x: hidden;
+	box-sizing: border-box;
 }
 
 .setting_textarea2 {
@@ -1147,9 +1148,10 @@ select {
 }
 
 .setting_input_text {
-	width: 90%;
+	width: 100%;
 	font-size: 1rem;
 	text-align: center;
+	box-sizing: border-box;
 }
 
 .setting_input_text_small {
@@ -1178,6 +1180,7 @@ select {
 	font-size: 1rem;
 	text-align: center;
 	overflow-x: hidden;
+	box-sizing: border-box;
 }
 
 @keyframes fadein {
