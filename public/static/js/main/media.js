@@ -319,6 +319,7 @@ Hue.get_proper_media_url = function (type) {
 // Show the current source of a given media type
 Hue.show_media_source = function (what) {
   let source = Hue.get_proper_media_url(what)
+  let s = Hue.media_string(what)
   Hue.checkmsg(`${s} Source: ${source}`)
 }
 
