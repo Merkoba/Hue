@@ -14,25 +14,25 @@ Hue.horizontal_separator = function (el) {
     $(this).remove()
   })
 
-  let elems = $(el).find(">:not(:last)").filter(function(){
+  let elems = $(el).find(">").filter(function(){
     if($(this).css("display") !== "none")
       return $(this)
   })
 
-  elems.after("<div class='separator horizontal_separator'></div>");
+  elems.not(":last").after("<div class='separator horizontal_separator'></div>");
 }
 
 Hue.vertical_separator = function (el) {
   $(el).find(".separator").each(function () {
     $(this).remove()
   })
-    
-  let elems = $(el).find(">:not(:last)").filter(function(){
+
+  let elems = $(el).find(">").filter(function(){
     if($(this).css("display") !== "none")
       return $(this)
   })
 
-  elems.after("<div class='separator vertical_separator'></div>");
+  elems.not(":last").after("<div class='separator vertical_separator'></div>");
 }
 
 // Applies separation to generic horizontal separator classes
