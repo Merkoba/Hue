@@ -43,7 +43,7 @@ Hue.upload_image = function (file) {
 
   if (size > Hue.config.max_image_size) {
     Hue.dropzone.files = []
-    Hue.feedback("File is too big")
+    Hue.checkmsg("File is too big")
     return false
   }
 
@@ -71,7 +71,7 @@ Hue.upload_video = function (file) {
 
   if (size > Hue.config.max_tv_video_size) {
     Hue.dropzone.files = []
-    Hue.feedback("File is too big")
+    Hue.checkmsg("File is too big")
     return false
   }
 
@@ -315,5 +315,5 @@ Hue.upload_ended = function (data) {
 
 // Shows an error message on file upload failure
 Hue.show_upload_error = function () {
-  Hue.feedback("The file could not be uploaded")
+  Hue.checkmsg("The file could not be uploaded")
 }

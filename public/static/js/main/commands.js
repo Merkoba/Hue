@@ -411,7 +411,7 @@ Hue.commands = {
   },
   "feedback": {
     action: (arg, ans) => {
-      Hue.feedback(arg)
+      Hue.checkmsg(arg)
     },
     description: `Displays a simple feedback information message for the user`,
   },
@@ -629,13 +629,13 @@ Hue.execute_command = function (message, ans) {
 
   if (Hue.superuser_commands.includes(cmd)) {
     if (!Hue.superuser) {
-      Hue.feedback("You don't have permission to run that command")
+      Hue.checkmsg("You don't have permission to run that command")
       return ans
     }
   }
 
   if (cmd.length < 2) {
-    Hue.feedback("Invalid empty command")
+    Hue.checkmsg("Invalid empty command")
     return ans
   }
 
@@ -648,7 +648,7 @@ Hue.execute_command = function (message, ans) {
     if (closest_command) {
       command = closest_command
     } else {
-      Hue.feedback(`Invalid command "${cmd}"`)
+      Hue.checkmsg(`Invalid command "${cmd}"`)
       return ans
     }
   }
@@ -671,7 +671,7 @@ Hue.inspect_command = function (cmd) {
     s += ` is not a valid command`
   }
 
-  Hue.feedback(s)
+  Hue.checkmsg(s)
 }
 
 // Show the Commands window

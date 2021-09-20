@@ -52,7 +52,7 @@ Hue.save_room_state = function () {
 
 // Show the room name
 Hue.show_room_name = function () {
-  Hue.feedback(`Room: ${Hue.room_name}`)
+  Hue.checkmsg(`Room: ${Hue.room_name}`)
 }
 
 // Change the name of the room
@@ -66,7 +66,7 @@ Hue.change_room_name = function (arg) {
   )
 
   if (arg === Hue.room_name) {
-    Hue.feedback("That's already the room name")
+    Hue.checkmsg("That's already the room name")
     return
   }
 
@@ -87,9 +87,7 @@ Hue.get_topic = function () {
 // Shows the topic
 Hue.show_topic = function () {
   let topic = `Topic: ${Hue.get_topic()}`
-  let obj = {}
-
-  Hue.feedback(topic, obj)
+  Hue.checkmsg(topic)
 }
 
 // Announces room name changes
@@ -126,7 +124,7 @@ Hue.change_topic = function (dtopic) {
     if (Hue.topic !== dtopic) {
       Hue.socket_emit("change_topic", { topic: dtopic })
     } else {
-      Hue.feedback("Topic is already set to that")
+      Hue.checkmsg("Topic is already set to that")
     }
   }
 }

@@ -5,7 +5,7 @@ Hue.request_desktop_notifications_permission = function () {
   }
 
   if (Hue.has_desktop_notifications_permission()) {
-    Hue.showmsg("Desktop Notifications are already enabled")
+    Hue.checkmsg("Desktop Notifications are already enabled")
     return false
   }
 

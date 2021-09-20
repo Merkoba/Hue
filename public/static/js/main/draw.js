@@ -68,7 +68,7 @@ Hue.canvas_redraw = function (args = {}) {
 // Opens the draw image window
 Hue.open_draw_image = function () {
   if (!Hue.can_image) {
-    Hue.feedback("You don't have permission to draw images")
+    Hue.checkmsg("You don't have permission to draw images")
     return false
   }
 

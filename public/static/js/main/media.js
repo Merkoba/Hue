@@ -319,18 +319,7 @@ Hue.get_proper_media_url = function (type) {
 // Show the current source of a given media type
 Hue.show_media_source = function (what) {
   let source = Hue.get_proper_media_url(what)
-  let current = Hue[`current_${what}`]()
-  let setter = current.setter
-  let date = current.nice_date
-  let s = Hue.media_string(what)
-
-  if (setter !== "") {
-    Hue.feedback(`${s} Source: ${source}`, {
-      title: `Setter: ${setter} | ${date} | ${Hue.utilz.nice_date()}`,
-    })
-  } else {
-    Hue.feedback(`${s} Source: ${source}`)
-  }
+  Hue.checkmsg(`${s} Source: ${source}`)
 }
 
 // More media picker configurations

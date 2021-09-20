@@ -13,7 +13,7 @@ Hue.copy_string = function (s) {
 
 // Feedback that an error occurred
 Hue.error_occurred = function () {
-  Hue.feedback("An error occurred")
+  Hue.checkmsg("An error occurred")
 }
 
 // Wrapper to show a confirmation dialog before running a function

@@ -374,7 +374,7 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
 
   if (comment.length > Hue.config.max_media_comment_length) {
     if (feedback) {
-      Hue.feedback("Comment is too long")
+      Hue.checkmsg("Comment is too long")
     }
 
     return false
@@ -396,7 +396,7 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
 
   if (src === Hue.current_tv().source || src === Hue.current_tv().query) {
     if (feedback) {
-      Hue.feedback("TV is already set to that")
+      Hue.checkmsg("TV is already set to that")
     }
 
     return false
@@ -406,7 +406,7 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
     if (src.includes("youtube.com") || src.includes("youtu.be")) {
       if (Hue.utilz.get_youtube_id(src) && !Hue.config.youtube_enabled) {
         if (feedback) {
-          Hue.feedback("YouTube support is not enabled")
+          Hue.checkmsg("YouTube support is not enabled")
         }
 
         return false
@@ -414,7 +414,7 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
     } else if (src.includes("twitch.tv")) {
       if (Hue.utilz.get_twitch_id(src) && !Hue.config.twitch_enabled) {
         if (feedback) {
-          Hue.feedback("Twitch support is not enabled")
+          Hue.checkmsg("Twitch support is not enabled")
         }
 
         return false
@@ -422,7 +422,7 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
     } else if (src.includes("soundcloud.com")) {
       if (!Hue.config.soundcloud_enabled) {
         if (feedback) {
-          Hue.feedback("Soundcloud support is not enabled")
+          Hue.checkmsg("Soundcloud support is not enabled")
         }
 
         return false
@@ -438,13 +438,13 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
           // OK
         } else if (Hue.utilz.image_extensions.includes(extension)) {
           if (feedback) {
-            Hue.feedback("That doesn't seem to be a video")
+            Hue.checkmsg("That doesn't seem to be a video")
           }
 
           return false
         } else if (!Hue.config.iframes_enabled) {
           if (feedback) {
-            Hue.feedback("IFrame support is not enabled")
+            Hue.checkmsg("IFrame support is not enabled")
           }
 
           return false
@@ -452,7 +452,7 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
       } else {
         if (!Hue.config.iframes_enabled) {
           if (feedback) {
-            Hue.feedback("IFrame support is not enabled")
+            Hue.checkmsg("IFrame support is not enabled")
           }
 
           return false

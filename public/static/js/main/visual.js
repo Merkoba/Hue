@@ -178,9 +178,18 @@ Hue.showmsg = function (s) {
   Hue.msg_info.show(s)
 }
 
+// Simple window for messages
+Hue.checkmsg = function (s) {
+  if (Hue.modal_open) {
+    Hue.showmsg(s)
+  } else {
+    Hue.feedback(s)
+  }
+}
+
 // Shows feedback with the current date in the nice date format
 Hue.show_current_date = function () {
-  Hue.feedback(Hue.utilz.nice_date())
+  Hue.checkmsg(Hue.utilz.nice_date())
 }
 
 // Start timeago checks

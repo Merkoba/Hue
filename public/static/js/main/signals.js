@@ -22,7 +22,7 @@ Hue.ping_server = function () {
 // Calculates how much time the pong response took to arrive
 Hue.pong_received = function (data) {
   let nice_time = Hue.utilz.nice_time(Date.now(), data.date)
-  Hue.feedback(`Pong: ${nice_time}`)
+  Hue.checkmsg(`Pong: ${nice_time}`)
 }
 
 // Only for superusers

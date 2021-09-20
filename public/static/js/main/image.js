@@ -173,7 +173,7 @@ Hue.change_image_source = function (src, just_check = false, comment = "") {
 
   if (comment.length > Hue.config.max_media_comment_length) {
     if (feedback) {
-      Hue.feedback("Comment is too long")
+      Hue.checkmsg("Comment is too long")
     }
 
     return false
@@ -195,7 +195,7 @@ Hue.change_image_source = function (src, just_check = false, comment = "") {
 
   if (src === Hue.current_image().source || src === Hue.current_image().query) {
     if (feedback) {
-      Hue.feedback("Image is already set to that")
+      Hue.checkmsg("Image is already set to that")
     }
 
     return false
@@ -205,7 +205,7 @@ Hue.change_image_source = function (src, just_check = false, comment = "") {
 
     if (!extension || !Hue.utilz.image_extensions.includes(extension)) {
       if (feedback) {
-        Hue.feedback("That doesn't seem to be an image")
+        Hue.checkmsg("That doesn't seem to be an image")
       }
 
       return false
@@ -213,7 +213,7 @@ Hue.change_image_source = function (src, just_check = false, comment = "") {
   } else {
     if (src.length > Hue.config.safe_limit_1) {
       if (feedback) {
-        Hue.feedback("Query is too long")
+        Hue.checkmsg("Query is too long")
       }
 
       return false
@@ -221,7 +221,7 @@ Hue.change_image_source = function (src, just_check = false, comment = "") {
 
     if (!Hue.config.imgur_enabled) {
       if (feedback) {
-        Hue.feedback("Imgur support is not enabled")
+        Hue.checkmsg("Imgur support is not enabled")
       }
 
       return false

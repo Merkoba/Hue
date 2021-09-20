@@ -52,57 +52,57 @@ Hue.server_update_events = {
     Hue.receive_ban_count(data)
   },
   nothing_to_unban: (data) => {
-    Hue.feedback("There was nothing to unban")
+    Hue.checkmsg("There was nothing to unban")
   },
   nothing_to_clear: (data) => {
-    Hue.feedback("There was nothing to clear")
+    Hue.checkmsg("There was nothing to clear")
   },
   forbidden_user: (data) => {
     Hue.forbidden_user()
   },
   nothing_was_found: (data) => {
-    Hue.feedback("Nothing was found")
+    Hue.checkmsg("Nothing was found")
   },
   user_not_found: (data) => {
-    Hue.feedback("User doesn't exist")
+    Hue.checkmsg("User doesn't exist")
   },
   user_not_in_room: (data) => {
     Hue.user_not_in_room()
   },
   no_ops_to_remove: (data) => {
-    Hue.feedback("There were no ops to remove")
+    Hue.checkmsg("There were no ops to remove")
   },
   no_voices_to_reset: (data) => {
-    Hue.feedback("There were no voices to reset")
+    Hue.checkmsg("There were no voices to reset")
   },
   no_ops_to_reset: (data) => {
-    Hue.feedback("There were no ops to reset")
+    Hue.checkmsg("There were no ops to reset")
   },
   is_already: (data) => {
     Hue.is_already(data.who, data.what)
   },
   user_already_banned: (data) => {
-    Hue.showmsg("User is already banned")
+    Hue.checkmsg("User is already banned")
   },
   user_already_unbanned: (data) => {
-    Hue.showmsg("User is already unbanned")
+    Hue.checkmsg("User is already unbanned")
   },
   image_not_found: (data) => {
-    Hue.feedback("The image couldn't be found")
+    Hue.checkmsg("The image couldn't be found")
   },
   song_not_found: (data) => {
-    Hue.feedback("The song couldn't be found")
+    Hue.checkmsg("The song couldn't be found")
   },
   video_not_found: (data) => {
-    Hue.feedback("The video couldn't be found")
+    Hue.checkmsg("The video couldn't be found")
   },
   image_cooldown_wait: (data) => {
-    Hue.feedback(
+    Hue.checkmsg(
       "The image was changed recently. You must wait a while before changing it again"
     )
   },
   tv_cooldown_wait: (data) => {
-    Hue.feedback(
+    Hue.checkmsg(
       "The tv was changed recently. You must wait a while before changing it again"
     )
   },
@@ -113,10 +113,10 @@ Hue.server_update_events = {
     Hue.goto_url(data.location)
   },
   username_already_exists: (data) => {
-    Hue.feedback(`${data.username} already exists`)
+    Hue.checkmsg(`${data.username} already exists`)
   },
   email_already_exists: (data) => {
-    Hue.feedback(`${data.email} already exists`)
+    Hue.checkmsg(`${data.email} already exists`)
   },
   new_username: (data) => {
     Hue.announce_new_username(data)
@@ -155,23 +155,23 @@ Hue.server_update_events = {
     Hue.error_occurred()
   },
   email_change_code_sent: (data) => {
-    Hue.feedback(
+    Hue.checkmsg(
       `Verification code sent. Use the command sent to ${data.email}. Email might take a couple of minutes to arrive`
     )
   },
   email_change_code_not_sent: (data) => {
-    Hue.feedback(
+    Hue.checkmsg(
       `Verification code not sent yet. Use ${Hue.config.commands_prefix}changeemail [new_email] to get a verification code`
     )
   },
   email_change_wait: (data) => {
-    Hue.feedback(`You must wait a while before changing the email again`)
+    Hue.checkmsg(`You must wait a while before changing the email again`)
   },
   email_change_wrong_code: (data) => {
-    Hue.feedback(`Code supplied didn't match`)
+    Hue.checkmsg(`Code supplied didn't match`)
   },
   email_change_expired_code: (data) => {
-    Hue.feedback(`Code supplied has expired`)
+    Hue.checkmsg(`Code supplied has expired`)
   },
   create_room_wait: (data) => {
     Hue.create_room_cooldown_message()
@@ -180,13 +180,13 @@ Hue.server_update_events = {
     Hue.pong_received(data)
   },
   cannot_embed_iframe: (data) => {
-    Hue.feedback("That website cannot be embedded")
+    Hue.checkmsg("That website cannot be embedded")
   },
   same_image: (data) => {
-    Hue.feedback("Image is already set to that")
+    Hue.checkmsg("Image is already set to that")
   },
   same_tv: (data) => {
-    Hue.feedback("TV is already set to that")
+    Hue.checkmsg("TV is already set to that")
   },
   receive_admin_activity: (data) => {
     Hue.show_admin_activity(data.messages)
@@ -222,7 +222,7 @@ Hue.server_update_events = {
     Hue.audio_clip_changed(data)
   },
   done: (data) => {
-    Hue.feedback("Done")
+    Hue.checkmsg("Done")
   },
 }
 

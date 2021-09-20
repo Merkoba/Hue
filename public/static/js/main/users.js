@@ -464,7 +464,7 @@ Hue.user_disconnect = function (data) {
 // Announces that the operation cannot be applied to a certain user
 // This is usually because the user's role is not low enough
 Hue.forbidden_user = function () {
-  Hue.showmsg("That operation is forbidden on that user")
+  Hue.checkmsg("That operation is forbidden on that user")
 }
 
 // Announces username changes
@@ -505,9 +505,9 @@ Hue.announce_new_username = function (data) {
 // Returns feedback on wether a user is in the room or not
 Hue.user_not_in_room = function (uname) {
   if (uname) {
-    Hue.feedback(`${uname} is not in the room`)
+    Hue.checkmsg(`${uname} is not in the room`)
   } else {
-    Hue.feedback("User is not in the room")
+    Hue.checkmsg("User is not in the room")
   }
 }
 
@@ -778,7 +778,7 @@ Hue.change_role = function (username, role) {
 
   if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
     if (username === Hue.username) {
-      Hue.showmsg("You can't assign a role to yourself")
+      Hue.checkmsg("You can't assign a role to yourself")
       return false
     }
 
@@ -788,7 +788,7 @@ Hue.change_role = function (username, role) {
     }
 
     if (!Hue.roles.includes(role)) {
-      Hue.feedback("Invalid role")
+      Hue.checkmsg("Invalid role")
       return false
     }
 
@@ -838,7 +838,7 @@ Hue.ban = function (uname) {
 
   if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
     if (uname === Hue.username) {
-      Hue.showmsg("You can't ban yourself")
+      Hue.checkmsg("You can't ban yourself")
       return false
     }
 
@@ -854,7 +854,7 @@ Hue.unban = function (uname) {
 
   if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
     if (uname === Hue.username) {
-      Hue.feedback("You can't unban yourself")
+      Hue.checkmsg("You can't unban yourself")
       return false
     }
 
@@ -872,7 +872,7 @@ Hue.receive_ban_count = function (data) {
     s = `There are ${data.count} users banned`
   }
 
-  Hue.showmsg(s)
+  Hue.checkmsg(s)
 }
 
 // Kicks a user
@@ -883,7 +883,7 @@ Hue.kick = function (uname) {
 
   if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
     if (uname === Hue.username) {
-      Hue.showmsg("You can't kick yourself")
+      Hue.checkmsg("You can't kick yourself")
       return false
     }
 
@@ -929,7 +929,7 @@ Hue.announce_unban = function (data) {
 
 // Checks if a user already has a certain role
 Hue.is_already = function (who, what) {
-  Hue.showmsg(`${who} already has ${what}`)
+  Hue.checkmsg(`${who} already has ${what}`)
 }
 
 // Checks if a role is that of an admin or an operator
@@ -953,7 +953,7 @@ Hue.is_admin_or_op = function (rol = false) {
 // Superuser command to change to any role
 Hue.annex = function (rol = "admin") {
   if (!Hue.roles.includes(rol)) {
-    Hue.feedback("Invalid role")
+    Hue.checkmsg("Invalid role")
     return false
   }
 
@@ -973,14 +973,14 @@ Hue.setup_badges = function () {
 // This has a cooldown
 Hue.send_badge = function (username, type) {
   if (username === Hue.username) {
-    Hue.showmsg("You can't give a badge to yourself")
+    Hue.checkmsg("You can't give a badge to yourself")
     return false
   }
   
   if (Hue.send_badge_disabled) {
     let n = Hue.utilz.round2(Hue.config.send_badge_cooldown / 1000, 1)
     let s = n === 1 ? "1 second" : `${n} seconds`
-    Hue.showmsg(`You can send a badge every ${s}`)
+    Hue.checkmsg(`You can send a badge every ${s}`)
     return false
   }
 
@@ -1173,12 +1173,12 @@ Hue.modusername = function (arg) {
   }
 
   if (new_uname.length > Hue.config.max_username_length) {
-    Hue.feedback("Username is too long")
+    Hue.checkmsg("Username is too long")
     return false
   }
 
   if (Hue.utilz.clean_username(new_uname) !== new_uname) {
-    Hue.feedback("Username contains invalid characters")
+    Hue.checkmsg("Username contains invalid characters")
     return false
   }
 

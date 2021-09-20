@@ -4,119 +4,86 @@ Hue.logout = function () {
 }
 
 // Changes the user's username
-Hue.change_username = function (uname, show_feedback = true) {
+Hue.change_username = function (uname) {
   if (Hue.utilz.clean_username(uname) !== uname) {
-    if (show_feedback) {
-      Hue.feedback("Username contains invalid characters")
-    }
-
+    Hue.checkmsg("Username contains invalid characters")
     return false
   }
 
   if (uname.length === 0) {
-    if (show_feedback) {
-      Hue.feedback("Username can't be empty")
-    }
-
+    Hue.checkmsg("Username can't be empty")
     return false
   }
 
   if (uname.length > Hue.config.max_username_length) {
-    if (show_feedback) {
-      Hue.feedback("Username is too long")
-    }
-
+    Hue.checkmsg("Username is too long")
     return false
   }
 
   if (uname === Hue.username) {
-    if (show_feedback) {
-      Hue.feedback("That's already your username")
-    }
-
+    Hue.checkmsg("That's already your username")
     return false
   }
 
   Hue.socket_emit("change_username", { username: uname })
-
   return true
 }
 
 // Changes the user's password
-Hue.change_password = function (passwd, show_feedback = true) {
+Hue.change_password = function (passwd) {
   if (passwd.length < Hue.config.min_password_length) {
-    if (show_feedback) {
-      Hue.feedback(
-        `Password is too short. It must be at least ${Hue.config.min_password_length} characters long`
-      )
-    }
-
+    Hue.checkmsg(
+      `Password is too short. It must be at least ${Hue.config.min_password_length} characters long`
+    )
     return false
   }
 
   if (passwd.length > Hue.config.max_password_length) {
-    if (show_feedback) {
-      Hue.feedback("Password is too long")
-    }
-
+    Hue.checkmsg("Password is too long")
     return false
   }
 
   Hue.socket_emit("change_password", { password: passwd })
-
   return true
 }
 
 // Feedback on password change
 Hue.password_changed = function (data) {
-  Hue.feedback(
+  Hue.checkmsg(
     `Password succesfully changed. To force other clients connected to your account to disconnect you can use ${Hue.config.commands_prefix}disconnectothers`
   )
 }
 
 // Changes the user's email
-Hue.change_email = function (email, show_feedback = true) {
+Hue.change_email = function (email) {
   if (Hue.utilz.clean_string5(email) !== email) {
-    if (show_feedback) {
-      Hue.feedback("Invalid email address")
-    }
-
+    Hue.checkmsg("Invalid email address")
     return false
   }
 
   if (email.length === 0) {
-    if (show_feedback) {
-      Hue.feedback("Username can't be empty")
-    }
-
+    Hue.checkmsg("Username can't be empty")
     return false
   }
 
   if (!email.includes("@")) {
-    if (show_feedback) {
-      Hue.feedback("Invalid email address")
-    }
-
+    Hue.checkmsg("Invalid email address")
     return false
   }
 
   if (email.length > Hue.config.max_email_length) {
-    if (show_feedback) {
-      Hue.feedback("Email is too long")
-    }
-
+    Hue.checkmsg("Email is too long")
     return false
   }
 
   Hue.socket_emit("change_email", { email: email })
-
   return true
 }
 
 // Feedback on email change
 Hue.email_changed = function (data) {
   Hue.set_email(data.email)
-  Hue.feedback(`Email succesfully changed to ${data.email}`)
+  Hue.checkmsg(`Email succesfully changed to ${data.email}`)
 }
 
 // Changes the user's bio
@@ -190,14 +157,12 @@ Hue.submit_change_username = function () {
   let uname = $("#change_username_input").val().trim()
 
   if (uname === Hue.username) {
-    Hue.showmsg("That's already the username")
+    Hue.checkmsg("That's already the username")
     return
   }
 
-  if (Hue.change_username(uname, false)) {
+  if (Hue.change_username(uname)) {
     Hue.msg_info2.close()
-  } else {
-    Hue.showmsg("Invalid username")
   }
 }
 
@@ -224,10 +189,8 @@ Hue.show_change_password = function () {
 Hue.submit_change_password = function () {
   let uname = $("#change_password_input").val().trim()
 
-  if (Hue.change_password(uname, false)) {
+  if (Hue.change_password(uname)) {
     Hue.msg_info2.close()
-  } else {
-    Hue.showmsg("Invalid password")
   }
 }
 
@@ -254,10 +217,8 @@ Hue.show_change_email = function () {
 Hue.submit_change_email = function () {
   let uname = $("#change_email_input").val().trim()
 
-  if (Hue.change_email(uname, false)) {
+  if (Hue.change_email(uname)) {
     Hue.msg_info2.close()
-  } else {
-    Hue.showmsg("Invalid email")
   }
 }
 
@@ -358,17 +319,17 @@ Hue.show_user_menu = function () {
 // Send the code to verify email change
 Hue.verify_email = function (code) {
   if (Hue.utilz.clean_string5(code) !== code) {
-    Hue.feedback("Invalid code")
+    Hue.checkmsg("Invalid code")
     return
   }
 
   if (code.length === 0) {
-    Hue.feedback("Empty code")
+    Hue.checkmsg("Empty code")
     return
   }
 
   if (code.length > Hue.config.email_change_code_max_length) {
-    Hue.feedback("Invalid code")
+    Hue.checkmsg("Invalid code")
     return
   }
 
@@ -463,7 +424,7 @@ Hue.profile_image_selected = function (file) {
 
 // Feedback that the user is not an operator
 Hue.not_an_op = function () {
-  Hue.feedback("You are not a room operator")
+  Hue.checkmsg("You are not a room operator")
 }
 
 // Checks if the user is joining for the first time
@@ -480,7 +441,7 @@ Hue.check_firstime = function () {
 
 // Shows a feedback message upon joining the room
 Hue.show_joined = function () {
-  Hue.feedback(`You joined ${Hue.room_name}`, {})
+  Hue.checkmsg(`You joined ${Hue.room_name}`)
   Hue.show_topic()
 }
 
@@ -499,7 +460,7 @@ Hue.show_others_disconnected = function (data) {
     s = `${data.amount} clients were disconnected`
   }
 
-  Hue.feedback(s)
+  Hue.checkmsg(s)
 }
 
 // Shows some options for the audio clip
@@ -541,7 +502,7 @@ Hue.audio_clip_selected = function (file) {
   let size = file.size / 1024
 
   if (size > Hue.config.max_audio_clip_size) {
-    Hue.showmsg("File is too big")
+    Hue.checkmsg("File is too big")
     return false
   }
 

@@ -28,7 +28,7 @@ Hue.process_write_whisper = function (arg, show = true) {
 
       Hue.send_inline_whisper(arg2, show)
     } else if (matches.length > 1) {
-      Hue.feedback(
+      Hue.checkmsg(
         `Multiple usernames matched. Use the proper > syntax. For example ${Hue.config.commands_prefix}whisper bob > hi`
       )
       return false

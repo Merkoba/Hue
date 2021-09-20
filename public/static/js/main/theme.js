@@ -74,7 +74,7 @@ Hue.change_background_color = function (color) {
   }
 
   if (!Hue.utilz.validate_hex(color)) {
-    Hue.feedback("Not a valid hex color value")
+    Hue.checkmsg("Not a valid hex color value")
     return false
   }
 
@@ -159,7 +159,7 @@ Hue.background_image_selected = function (file) {
   $("#background_image_input").closest("form").get(0).reset()
 
   if (size > Hue.config.max_image_size) {
-    Hue.showmsg("File is too big")
+    Hue.checkmsg("File is too big")
     return false
   }
 
@@ -189,7 +189,7 @@ Hue.change_background_image_source = function (src) {
     src = src.replace(/\.gifv/g, ".gif")
 
     if (src === Hue.background_image) {
-      Hue.feedback("Background image is already set to that")
+      Hue.checkmsg("Background image is already set to that")
       return false
     }
 
@@ -208,7 +208,7 @@ Hue.change_background_image_source = function (src) {
     }
   } else {
     if (Hue.background_image === Hue.config.default_background_image_url) {
-      Hue.feedback("Background image is already set to that")
+      Hue.checkmsg("Background image is already set to that")
       return false
     }
   }
@@ -240,7 +240,7 @@ Hue.change_text_color = function (color) {
   }
 
   if (!Hue.utilz.validate_hex(color)) {
-    Hue.feedback("Not a valid hex color value")
+    Hue.checkmsg("Not a valid hex color value")
     return false
   }
 
