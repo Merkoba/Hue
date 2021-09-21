@@ -1745,6 +1745,11 @@ a.special_link:hover {
 	margin-top: 0.8rem;
 }
 
+.media_container .vertical_separator {
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+
 .media_history_container .announcement_content_split {
 	align-items: center;
 }
@@ -1947,8 +1952,6 @@ a.special_link:hover {
 	background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
 	height: 2px;
 	width: 100%;
-	margin-top: 1.5rem;
-	margin-bottom: 1.5rem;
 }
 
 #footer .horizontal_separator {
@@ -2373,6 +2376,11 @@ pre {
 
 #main_menu {
 	user-select: none;
+}
+
+#main_menu .vertical_separator {
+	margin-top: 1.5rem !important;
+	margin-bottom: 1.5rem !important;
 }
 
 #open_url_container {

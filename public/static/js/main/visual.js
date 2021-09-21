@@ -9,7 +9,7 @@ Hue.setup_generic_separators = function () {
   })
 }
 
-Hue.apply_separator = function (el, cls) {
+Hue.apply_separator = function (el, cls, start, end) {
   $(el).find(".separator").each(function () {
     $(this).remove()
   })
@@ -19,15 +19,24 @@ Hue.apply_separator = function (el, cls) {
       return $(this)
   })
 
-  elems.not(":last").after(`<div class='separator ${cls}'></div>`);
+  if (!start && !end) {
+    elems.not(":last").after(`<div class='separator ${cls}'></div>`)
+  } else if (start && !end) {
+    elems.before(`<div class='separator ${cls}'></div>`)
+  } else if (!start && end) {
+    elems.after(`<div class='separator ${cls}'></div>`)
+  } else if (start && end) {
+    elems.after(`<div class='separator ${cls}'></div>`)
+    elems.eq(0).before(`<div class='separator ${cls}'></div>`)
+  }
 }
 
-Hue.horizontal_separator = function (el) {
-  Hue.apply_separator(el, "horizontal_separator")
+Hue.horizontal_separator = function (el, start = false, end = false) {
+  Hue.apply_separator(el, "horizontal_separator", start, end)
 }
 
-Hue.vertical_separator = function (el) {
-  Hue.apply_separator(el, "vertical_separator")
+Hue.vertical_separator = function (el, start = false, end = false) {
+  Hue.apply_separator(el, "vertical_separator", start, end)
 }
 
 // Applies separation to generic horizontal separator classes
