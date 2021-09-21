@@ -17,7 +17,8 @@ Hue.start_dropzone = function () {
 
   
   Hue.dropzone.on("addedfile", function (file) {
-    let ext = file.type.split("/").slice(-1)[0]
+    let ext = file.name.split(".").slice(-1)[0]
+    
     if (Hue.utilz.image_extensions.includes(ext)) {
       Hue.upload_image(file)
     } else if (Hue.utilz.video_extensions.includes(ext) || Hue.utilz.audio_extensions.includes(ext)) {
