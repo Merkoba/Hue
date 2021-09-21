@@ -1933,9 +1933,6 @@ a.special_link:hover {
 
 .separator {
 	opacity: 0.25;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }
 
 .horizontal_separator {
@@ -1949,8 +1946,9 @@ a.special_link:hover {
 .vertical_separator {
 	background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
 	height: 2px;
-	margin-top: 1.6rem;
-	margin-bottom: 1.6rem;
+	width: 100%;
+	margin-top: 1.5rem;
+	margin-bottom: 1.5rem;
 }
 
 #footer .horizontal_separator {
