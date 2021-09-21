@@ -45,7 +45,7 @@ module.exports = function (
         }
       } else if (data.action.includes("video")) {
         if (data.action === "tv_video_upload") {
-          if (!utilz.video_extensions.includes(ext)) {
+          if (!utilz.video_extensions.includes(ext) && !utilz.audio_extensions.includes(ext)) {
             return false
           }
         }

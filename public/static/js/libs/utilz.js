@@ -783,6 +783,7 @@ const Utilz = function () {
 
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
+	utilz.video_types = ["video/mp4", "video/webm"]
 	utilz.audio_extensions = ["mp3", "ogg", "wav", "flac"]
 	utilz.audio_types = ["audio/mpeg", "audio/ogg", "audio/wav", "audio/flac"]
 	utilz.image_extensions = ["jpg", "jpeg", "png", "gif", "webp", "bmp"]

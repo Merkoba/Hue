@@ -1,22 +1,26 @@
 // Starts Dropzone events for file drag and drop events
 // This also handles normal uploads by clicking the Upload button
 Hue.start_dropzone = function () {
-  let image_types = "image/jpeg,image/png,image/gif,image/webp,image/bmp"
-  let video_types = "video/mp4,video/webm"
-
+  let types = []
+  types = types.concat(Hue.utilz.image_types)
+  types = types.concat(Hue.utilz.video_types)
+  types = types.concat(Hue.utilz.audio_types)
+  
   Hue.dropzone = new Dropzone("body", {
     url: "/",
     maxFiles: 1,
     maxFilesize: Hue.config.max_image_size / 1024,
     autoProcessQueue: false,
     clickable: "#image_picker_upload, #image_upload_comment_change, #tv_picker_upload, #tv_upload_comment_change",
-    acceptedFiles: image_types + video_types
+    acceptedFiles: types.join(",")
   })
+
   
   Hue.dropzone.on("addedfile", function (file) {
-    if (image_types.includes(file.type)) {
+    let ext = file.type.split("/").slice(-1)[0]
+    if (Hue.utilz.image_extensions.includes(ext)) {
       Hue.upload_image(file)
-    } else if (video_types.includes(file.type)) {
+    } else if (Hue.utilz.video_extensions.includes(ext) || Hue.utilz.audio_extensions.includes(ext)) {
       Hue.upload_video(file)
     } else {
       Hue.checkmsg("Invalid format")
@@ -80,7 +84,7 @@ Hue.upload_video = function (file) {
 
   let ext = file.name.split(".").pop(-1).toLowerCase()
 
-  if (!Hue.utilz.video_extensions.includes(ext)) {
+  if (!Hue.utilz.video_extensions.includes(ext) && !Hue.utilz.audio_extensions.includes(ext)) {
     Hue.dropzone.files = []
     return false
   }
