@@ -1942,8 +1942,8 @@ a.special_link:hover {
 	background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
 	width: 2px;
 	height: 1em;
-	margin-left: 1.6rem;
-	margin-right: 1.6rem;	
+	margin-left: 1rem;
+	margin-right: 1rem;	
 }
 
 .vertical_separator {
