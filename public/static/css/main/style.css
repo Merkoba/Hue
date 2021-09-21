@@ -1941,7 +1941,7 @@ a.special_link:hover {
 }
 
 .horizontal_separator {
-	background: currentColor;
+	background-color: currentColor;
 	width: 2px;
 	height: 1em;
 	margin-left: 1rem;
