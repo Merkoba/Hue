@@ -1949,7 +1949,7 @@ a.special_link:hover {
 }
 
 .vertical_separator {
-	background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
+	background: currentColor;
 	height: 2px;
 	width: 100%;
 }
