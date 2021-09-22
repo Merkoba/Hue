@@ -9,6 +9,7 @@ Hue.setup_generic_separators = function () {
   })
 }
 
+// Remove & add vertical or horizontal separators
 Hue.apply_separator = function (el, cls, start, end) {
   $(el).find(".separator").each(function () {
     $(this).remove()
@@ -31,10 +32,12 @@ Hue.apply_separator = function (el, cls, start, end) {
   }
 }
 
+// Add horizontal separators
 Hue.horizontal_separator = function (el, start = false, end = false) {
   Hue.apply_separator(el, "horizontal_separator", start, end)
 }
 
+// Add vertical separators
 Hue.vertical_separator = function (el, start = false, end = false) {
   Hue.apply_separator(el, "vertical_separator", start, end)
 }
