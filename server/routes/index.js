@@ -340,6 +340,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
         return false
       }
 
+      console.info("Fetching Recaptcha...")
       fetch("https://www.google.com/recaptcha/api/siteverify", {
         method: "POST",
         body: `secret=${sconfig.recaptcha_secret_key}&response=${recaptcha_response}&remoteip=${remote_ip}`,

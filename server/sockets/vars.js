@@ -75,12 +75,12 @@ module.exports = function (
   vars.check_locked = ["create_room"]
 
   vars.fetch_2 = function (url, args = {}) {
+    console.info(`Fetching ${url} ...`)
     args.headers = args.headers || {}
     args.headers["user-agent"] = "Mozilla/5.0"
     return vars.fetch(url, args)
   }
 
   vars.tv_link_types = ["youtube", "twitch", "soundcloud", "video", "iframe"]
-
   vars.exiting = false
 }
