@@ -119,7 +119,6 @@ body * {
 .activity_bar_item {
 	display: flex;
 	flex-direction: row;
-	max-width: 6rem;
 	cursor: pointer;
 	align-items: center;
 }
@@ -134,7 +133,6 @@ body * {
 
 .activity_bar_text {
 	white-space: nowrap;
-	overflow: hidden;
 	margin-left: 0.5rem;
 	transition: text-shadow 500ms;
 	font-size: var(--panel_font_size);

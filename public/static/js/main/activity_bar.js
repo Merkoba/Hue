@@ -55,7 +55,7 @@ Hue.update_activity_bar = function (check = false) {
     })
 
     img_el.data("user_id", user.user_id)
-    text_el.text(user.username)
+    text_el.text(user.username.slice(0, Hue.config.max_activity_username_length))
     h.data("user_id", user.user_id)
     h.data("uname", user.username)
     $("#activity_bar_inner").append(h)

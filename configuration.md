@@ -365,6 +365,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 >For example "/" in "/somecommand"
 
+"max_activity_username_length"
+>How wide usernames on the activity bar can be.
+
 
 ## The following reside in config.secret.json
 

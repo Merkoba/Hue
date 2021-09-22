@@ -135,5 +135,6 @@
 	"system_username": "El Systema",
 	"commands_prefix": "/",
 	"quote_max_length": 100,
-	"max_displayed_url": 60
+	"max_displayed_url": 60,
+	"max_activity_username_length": 8
 }
