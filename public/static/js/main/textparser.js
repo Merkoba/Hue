@@ -52,7 +52,7 @@ Hue.setup_textparser_regexes = function () {
 }
 
 // Passes text through all textparser regexes doing the appropiate replacements
-Hue.parse_text = function (text, checklines = true) {
+Hue.parse_text = function (text) {
   text = text.replace(
     Hue.textparser_regexes["whisper_link"].regex,
     Hue.textparser_regexes["whisper_link"].replace_function
