@@ -1666,6 +1666,10 @@ Hue.public_feedback = function (message, data = false) {
     obj.brk = `<div class='inline'>${obj.brk}</div>`
   }
 
+  if (Hue.check_highlights(message)) {
+    obj.highlight = true
+  }
+
   return Hue.add_chat_announcement(obj)
 }
 
