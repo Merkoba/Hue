@@ -73,9 +73,5 @@ Hue.parse_text = function (text, checklines = true) {
     Hue.textparser_regexes[">"].replace_function
   )
 
-  if (checklines && text.includes("\n")) {
-    text = `<div class='codeblock'>${text}</div>`
-  }
-
   return text
 }

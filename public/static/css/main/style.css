@@ -2253,11 +2253,6 @@ pre {
 	padding: 0.25rem;
 }
 
-.codeblock {
-	font-family: monospace;
-	font-size: 0.95rem;
-}
-
 .expanded_modal_image {
 	overflow: auto !important;
 	justify-content: initial !important;
