@@ -315,7 +315,7 @@ module.exports = function (
     let date = Date.now()
     let comment = data.comment || ""
     let size = data.size || 0
-    let tv_title = data.title || ""
+    let tv_title = vars.he.decode(data.title) || ""
 
     if (data.query === undefined) {
       data.query = ""
