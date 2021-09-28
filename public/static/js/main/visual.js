@@ -11,7 +11,7 @@ Hue.setup_generic_separators = function () {
 
 // Remove & add vertical or horizontal separators
 Hue.apply_separator = function (el, cls, start, end) {
-  $(el).find(".separator").each(function () {
+  $(el).find("> .separator").each(function () {
     $(this).remove()
   })
 
