@@ -134,7 +134,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
   // Check file using the query and fields
   function check_file_query (original, query, fields) {
-    let obj = Object.assign({}, original)
     let firstkey = Object.keys(query)[0]
 
     if (firstkey === "$or") {
@@ -144,7 +143,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         let valid = true
 
         for (let key in group) {
-          if (obj[key] !== group[key]) {
+          if (original[key] !== group[key]) {
             valid = false
           }
         }
@@ -159,12 +158,13 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       }
     } else {
       for (let key in query) {
-        if (obj[key] !== query[key]) {
+        if (original[key] !== query[key]) {
           return false
         }
       }     
     }
 
+    let obj = Object.assign({}, original)
     let fieldkeys = Object.keys(fields)
 
     if (fieldkeys.length > 0) {
