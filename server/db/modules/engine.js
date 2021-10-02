@@ -4,14 +4,17 @@ const root_path = path.join(__dirname, "../../../")
 const cache = {}
 
 module.exports = function (manager, vars, config, sconfig, utilz, logger) {
+  // Get the full file path
   function get_file_path (type, fname) {
     return path.join(root_path, `${config.db_store_path}/${type}/${fname}`)
   }
 
+  // Get the full dir path
   function get_dir_path (type, fname) {
     return path.join(root_path, `${config.db_store_path}/${type}`)
   }
 
+  // Write to a file considering the cache
   function write_file (path, json) {
     if (cache[path] === undefined) {
       cache[path] = {timeout: undefined, json: {}, last_write: 0}
@@ -29,12 +32,14 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     }
   } 
 
+  // Do the write file operation
   function do_write_file (path) {
     console.info(`Writing: ${path.split("/").slice(-2).join("/")}`)
     cache[path].last_write = Date.now()
     fs.writeFile(path, JSON.stringify(cache[path].json), "utf8", function () {})
   }  
 
+  // Find one result
   manager.find_one = function (type, query, fields) {
     return new Promise((resolve, reject) => {
       if (query.id !== undefined) {
@@ -74,6 +79,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
+  // Find multiple results based on a list of ids
   manager.find_multiple = function (type, ids, fields) {
     return new Promise(async (resolve, reject) => {
       let objs = []
@@ -89,6 +95,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
+  // Check if the file matches
   function check_file (path, query, fields) {
     return new Promise((resolve, reject) => {
       if (cache[path] && cache[path].json) {
@@ -125,6 +132,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }  
 
+  // Check file using the query and fields
   function check_file_query (original, query, fields) {
     let obj = Object.assign({}, original)
     let firstkey = Object.keys(query)[0]
@@ -189,6 +197,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     return obj    
   }
 
+  // Insert a new file in the proper directory
   manager.insert_one = function (type, obj) {
     return new Promise((resolve, reject) => {
       if (obj.id === undefined) {
@@ -200,6 +209,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
+  // Update properties of one file
   manager.update_one = function (type, query, fields) {
     return new Promise((resolve, reject) => {
       manager.find_one(type, query, {})
@@ -215,6 +225,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
+  // Delete one file
   manager.delete_one = function (type, id) {
     return new Promise((resolve, reject) => {
       if (id) {

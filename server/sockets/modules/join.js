@@ -40,6 +40,11 @@ module.exports = function (
 
     if (data.alternative) {
       socket.hue_login_method = "alternative"
+      
+      if (!data.username || !data.password) {
+        return handler.do_disconnect(socket)
+      }
+
       data.username = data.username.trim()
       data.password = data.password.trim()
 
@@ -91,12 +96,13 @@ module.exports = function (
 
     if (data.alternative) {
       let ans = await db_manager.check_password(
+        data.username,
         data.password,
         user_fields
       )
 
       if (!ans.valid) {
-        handler.anti_spam_ban(socket)
+        handler.anti_spam_ban(socket, 2)
         return handler.do_disconnect(socket)
       }
 
