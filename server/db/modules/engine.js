@@ -25,11 +25,10 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     if (Date.now() - cache[path].last_write > 10000) {
       delay = 0
     }
-    
-    cache[path].last_write = Date.now()
-
+     
     cache[path].timeout = setTimeout(() => {
       console.info(`Writing: ${path}`)
+      cache[path].last_write = Date.now()
       fs.writeFile(path, cache[path].content, "utf8", function () {})
     }, delay)
   } 
