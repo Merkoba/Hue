@@ -12,8 +12,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       })   
 
       .catch(err => {
-        reject(err)
-        logger.log_error(err)
+        resolve(false)
         return
       })
     })
@@ -35,8 +34,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       })   
 
       .catch(err => {
-        reject(err)
-        logger.log_error(err)
+        resolve([])
         return
       })
     })
@@ -64,26 +62,25 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.create_user = function (info) {
     return new Promise((resolve, reject) => {
       manager.get_user(
-        { username: info.username }, 
-        { username: 1 }, false)
+      { username: info.username }, { username: 1 })
 
-        .then((euser) => {
-          if (euser) {
-            resolve("error")
-            return
-          }
-        })
-
-        .catch(err => {
-          reject(err)
-          logger.log_error(err)
+      .then(euser => {
+        if (euser) {
+          resolve("error")
           return
-        })
+        }
+      })
+
+      .catch(err => {
+        reject(err)
+        logger.log_error(err)
+        return
+      })
 
       vars.bcrypt
         .hash(info.password, config.encryption_cost)
 
-        .then((hash) => {
+        .then(hash => {
           let user = {}
 
           user = {
@@ -94,7 +91,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           }
 
           manager.user_fill_defaults(user)
-
           user.version = vars.users_version
 
           manager.insert_one("users", user)

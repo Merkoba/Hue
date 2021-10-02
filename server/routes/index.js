@@ -252,6 +252,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
           req.session.destroy(function () {})
 
           let m = encodeURIComponent("Wrong username or password")
+          let form_username = encodeURIComponent(username)
           res.redirect(`/login?message=${m}&form_username=${form_username}`)
         }
       })
@@ -375,7 +376,6 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       )
 
       .then((user) => {
-        console.log(user)
         if (!user) {
           db_manager
             .create_user({

@@ -12,8 +12,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       })
 
       .catch(err => {
-        reject(err)
-        logger.log_error(err)
+        resolve(false)
         return
       })
     })
@@ -35,8 +34,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       })   
 
       .catch(err => {
-        reject(err)
-        logger.log_error(err)
+        resolve([])
         return
       })
     })

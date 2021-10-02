@@ -43,63 +43,49 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         check_file(path, query, fields)
         
         .then(obj => {
-          resolve(obj)
-          keep_going = false
-          return
+          if (obj) {
+            resolve(obj)
+          } else {
+            reject("Nothing found")
+          }
         })
 
         .catch(err => {
-          // 
+          reject("Nothing found")
         })    
-        
-        return
       }
-      
-      fs.readdir(get_dir_path(type), function (err, fnames) {
-        let keep_going = true
 
+      fs.readdir(get_dir_path(type), async function (err, fnames) {
         for (let fname of fnames) {
-          if (!keep_going) {
-            return
-          }
-
           let path = get_file_path(type, fname)
 
-          check_file(path, query, fields)
-        
-          .then(obj => {
-            resolve(obj)
-            keep_going = false
-            return
-          })
-
-          .catch(err => {
-            // 
-          })            
+          try {
+            let obj = await check_file(path, query, fields)
+            if (obj) {
+              resolve(obj)
+              return
+            }
+          } catch (err) {}
         }
+
+        reject("Nothing found")
+        return
       })
     })
   }
 
   manager.find_multiple = function (type, ids, fields) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       let objs = []
       
       for (let i=0; i<ids.length; i++) {
-        manager.find_one(type, {id: ids[i]}, fields)
-  
-        .then(obj => {
+        try {
+          let obj = await manager.find_one(type, {id: ids[i]}, fields)
           objs.push(obj)
-          if (i >= ids.length - 1) {
-            resolve(objs)
-            return
-          }
-        })
-  
-        .catch(err => {
-          // 
-        }) 
+        } catch (err) {}
       }
+      
+      resolve(objs)
     })
   }
 
