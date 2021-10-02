@@ -57,6 +57,12 @@ Hue.setup_tv = function (mode, odata = {}) {
   }
 
   if (!data.message) {
+    if (data.query) {
+      data.message = data.query
+    }    
+  }  
+
+  if (!data.message) {
     if (data.size) {
       data.message = "Uploaded video"
     } else {
