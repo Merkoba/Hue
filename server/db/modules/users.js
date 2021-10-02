@@ -2,33 +2,11 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Finds a user with the given query and fields to be fetched
   manager.get_user = function (query, fields, verified = true) {
     return new Promise((resolve, reject) => {
-      if (Object.keys(fields).length > 0) {
-        let has_zero = false
-
-        for (let key in fields) {
-          if (fields[key] === 0) {
-            has_zero = true
-            break
-          }
-        }
-
-        if (!has_zero) {
-          fields.version = 1
-        }
-      }
-
-      if (verified) {
-        query.verified = true
-      }
-
       manager.find_one("users", query, fields)
 
       .then(user => {
-        if (user.version !== vars.users_version) {
-          manager.user_fill_defaults(user)
-          user.version = vars.users_version
-        }
-        
+        manager.user_fill_defaults(user)
+        user.version = vars.users_version
         resolve(user)
         return
       })   
@@ -40,6 +18,29 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       })
     })
   }
+
+  // Finds users with the given query and fields to be fetched
+  manager.get_users = function (ids, fields, verified = true) {
+    return new Promise((resolve, reject) => {
+      manager.find_multiple("users", ids, fields)
+
+      .then(users => {
+        for (let user of users) {
+          manager.user_fill_defaults(user)
+          user.version = vars.users_version
+        }
+        
+        resolve(users)
+        return
+      })   
+
+      .catch(err => {
+        reject(err)
+        logger.log_error(err)
+        return
+      })
+    })
+  }  
 
   // Fills undefined user properties
   // Or properties that don't meet the specified type
@@ -63,8 +64,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.create_user = function (info) {
     return new Promise((resolve, reject) => {
       manager.get_user(
-        { username: info.username, 
-          email: info.email }, 
+        {$or: [{ username: info.username }, { email: info.email }] }, 
         { username: 1 }, false)
 
         .then((euser) => {

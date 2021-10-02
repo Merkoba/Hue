@@ -384,9 +384,8 @@ module.exports = function (
       return false
     }
 
-    let users = await db_manager.get_user(
-      { id: { $in: ids } },
-      { username: 1 }
+    let users = await db_manager.get_users(
+      ids, { username: 1 }
     )
 
     if (users.length === 0) {
@@ -413,6 +412,7 @@ module.exports = function (
       { id: socket.hue_room_id },
       { bans: 1 }
     )
+    
     let ids = []
 
     for (let id of info.bans) {
@@ -424,9 +424,8 @@ module.exports = function (
       return false
     }
 
-    let users = await db_manager.get_user(
-      { id: { $in: ids } },
-      { username: 1 }
+    let users = await db_manager.get_users(
+      ids, { username: 1 }
     )
 
     if (users.length === 0) {

@@ -392,7 +392,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     db_manager
       .get_user(
-        { username: username, email: email },
+        {$or: [{ username: username }, { email: email }]},
         { username: 1 },
         false
       )
@@ -616,18 +616,12 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     db_manager
       .get_user(
-        { id: id },
-        { password_reset_code: 1, password_reset_link_date: 1 }
+        { id: id, password_reset_code: code },
+        { password_reset_link_date: 1 }
       )
 
-      .then(user => {
+      .then((user) => {
         let m
-
-        if (user.password_reset_code !== code) {
-          m = encodeURIComponent("The link has expired")
-          res.redirect(`/message?message=${m}`)
-          return
-        }
 
         if (user) {
           if (

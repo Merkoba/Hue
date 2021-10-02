@@ -42,13 +42,13 @@ function create_files (what) {
   for (let line of lines) {
     let obj = JSON.parse(line)
     
-    if (obj.id === "main") {
+    if (obj._id === "main") {
       obj.id = "main"
     } else {
       obj.id = generate_id(what)
     }
 
-    delete obj.id
+    delete obj._id
 
     fs.writeFileSync(`./store/${what}/${obj.id}`, JSON.stringify(obj), "utf8")
   }  

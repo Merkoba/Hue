@@ -2,30 +2,35 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Finds a room with the given query and fields to be fetched
   manager.get_room = function (query, fields, verified = true) {
     return new Promise((resolve, reject) => {
-      if (Object.keys(fields).length > 0) {
-        let has_zero = false
-
-        for (let key in fields) {
-          if (fields[key] === 0) {
-            has_zero = true
-            break
-          }
-        }
-
-        if (!has_zero) {
-          fields.version = 1
-        }
-      }
-
       manager.find_one("rooms", query, fields)
 
       .then(room => {
-        if (room.version !== vars.rooms_version) {
+        manager.room_fill_defaults(room)
+        room.version = vars.rooms_version
+        resolve(room)
+        return
+      })
+
+      .catch(err => {
+        reject(err)
+        logger.log_error(err)
+        return
+      })
+    })
+  }
+
+  // Finds rooms with the given query and fields to be fetched
+  manager.get_rooms = function (query, fields, verified = true) {
+    return new Promise((resolve, reject) => {
+      manager.find_multiple("rooms", query, fields)
+
+      .then(rooms => {
+        for (let room of rooms) {
           manager.room_fill_defaults(room)
           room.version = vars.rooms_version
         }
         
-        resolve(room)
+        resolve(rooms)
         return
       })   
 
@@ -35,7 +40,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         return
       })
     })
-  }
+  }  
 
   // Fills undefined room properties
   // Or properties that don't meet the specified type
