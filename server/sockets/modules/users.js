@@ -451,7 +451,6 @@ module.exports = function (
       user.username = socket.hue_username
       user.role = socket.hue_role
       user.profile_image = socket.hue_profile_image
-      user.email = socket.hue_email
       user.bio = socket.hue_bio
       user.hearts = socket.hue_hearts
       user.skulls = socket.hue_skulls

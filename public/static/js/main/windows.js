@@ -459,7 +459,6 @@ Hue.info2_vars_to_false = function () {
   Hue.ban_list_open = false
   Hue.change_user_username_open = false
   Hue.change_user_password_open = false
-  Hue.change_user_email_open = false
 }
 
 // Starts automatic modal filters

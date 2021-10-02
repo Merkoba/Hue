@@ -20,8 +20,6 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
   // Apply the limiter to these routes
   app.use("/change_password/", limiter);
-  app.use("/recover/", limiter);
-  app.use("/verify/", limiter);
   app.use("/login/", limiter);
   app.use("/register/", limiter);
   app.get("/", limiter);

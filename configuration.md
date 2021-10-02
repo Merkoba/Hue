@@ -92,12 +92,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_max_password_length"
 >Same as max_max_username_length but for passwords.
 
-"max_email_length"
->Maximum length for email addresses.
-
-"max_max_email_length"
->Same as max_max_username_length but for emails.
-
 "password_reset_limit"
 >How long a user must wait to perform another password reset.
 
@@ -176,9 +170,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "encryption_cost"
 >This is used for the password hashing. A cost of 12 are 4096 salt rounds. The more rounds, the more secure the hash is, but it takes longer to process.
 
-"mail_enabled"
->Whether a mailgun account is to be used for mail delivery, for example for password resets. If this is enabled, the "Forgot Password" link will appear in the login page.
-
 "max_url_length"
 >Url lengths beyond this are ignored by the system. This is to avoid triggering actions on urls that are likely wrong or meant as an attack.
 
@@ -245,26 +236,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_typing_inactivity"
 >After the last typing signal has being received, it will stop showing the typing status after this amount of time.
 
-"max_verification_time"
->How much time a verification link will be active after registration. If it's not used before this it won't work.
-
-"delivery_email"
->Email address from where system emails are sent.
-
-"delivery_email_name"
->Name used on system emails.
-
 "media_changed_crop_limit"
 >How many items are stored in images_changed and tv_changed.
-
-"email_change_limit"
->How long a user must wait to perform another email verification.
-
-"email_change_expiration"
->How long an email verification code will be valid.
-
-"email_change_code_max_length"
->Arbitrary long length to consider email verification codes.
 
 "create_room_cooldown"
 >How long a user must wait to create another room.
@@ -361,6 +334,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_activity_username_length"
 >How wide usernames on the activity bar can be.
 
+"db_store_path"
+>Where the database of users and rooms reside.
+
 
 ## The following reside in config.secret.json
 
@@ -369,12 +345,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "session_secret"
 >Used for express-session security. Change it to anything you want.
-
-"mailgun_api_key"
->An api key from mailgun.com to enable mail delivery, used for password resets.
-
-"mailgun_domain"
->The domain registered in mailgun.com
 
 "jwt_secret"
 >Secret key for the jwt system when logging in.

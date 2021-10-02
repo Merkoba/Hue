@@ -1,6 +1,6 @@
 module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Finds a room with the given query and fields to be fetched
-  manager.get_room = function (query, fields, verified = true) {
+  manager.get_room = function (query, fields) {
     return new Promise((resolve, reject) => {
       manager.find_one("rooms", query, fields)
 
@@ -20,7 +20,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Finds rooms with the given query and fields to be fetched
-  manager.get_rooms = function (query, fields, verified = true) {
+  manager.get_rooms = function (query, fields) {
     return new Promise((resolve, reject) => {
       manager.find_multiple("rooms", query, fields)
 

@@ -30,19 +30,7 @@
 				<input type="password" placeholder="Password" name="password" id="register_password">
 				<div class="spacer4"></div>
 				<input type="password" placeholder="Password Again" id="register_password2">
-				<div class="spacer4"></div>
-				<div>Email verification is required to login</div>
-				<div class="spacer4"></div>
-				<input type="text" placeholder="Email" name="email" id="register_email">
 
-				<div id="email_taken">
-					<div class="spacer3"></div>
-					<div class="error">Email is already taken</div>
-				</div>
-
-				<div class="spacer4"></div>
-
-				<input type="text" placeholder="Email Again" id="register_email2">
 				<div class="spacer4"></div>
 
 				<% if(vars.recaptcha_enabled) {%>
@@ -73,23 +61,15 @@
 					return false
 				}
 
-				if ($("#email_taken").css("display") !== "none") {
-					return false
-				}
-
 				if (recaptcha_enabled && !recaptcha_checked) {
 					return false
 				}
 
 				$("#register_username").val($("#register_username").val().trim())
-				$("#register_email").val($("#register_email").val().trim())
-				$("#register_email2").val($("#register_email2").val().trim())
 
 				let username = $("#register_username").val()
 				let password = $("#register_password").val()
 				let password2 = $("#register_password2").val()
-				let email = $("#register_email").val()
-				let email2 = $("#register_email2").val()
 
 				if (username.length === 0) {
 					set_message("Username can't be empty")
@@ -98,11 +78,6 @@
 
 				if (password.length === 0) {
 					set_message("Password can't be empty")
-					return false
-				}
-
-				if (email.length === 0) {
-					set_message("Email can't be empty")
 					return false
 				}
 
@@ -136,33 +111,12 @@
 					return false
 				}
 
-				if (email !== email2) {
-					set_message("The emails don't match")
-					return false
-				}
-
-				if (email.indexOf('@') === -1) {
-					set_message("Invalid email address")
-					return false
-				}
-
-				if (email.length > max_email_length) {
-					set_message("Email is too long")
-					return false
-				}
-
-				if (email !== utilz.clean_string5(email)) {
-					set_message("Invalid email address")
-					return false
-				}
-
 				$("#btn_register").prop("disabled", true)
 
 				return true
 			}
 
 			let current_username = ""
-			let current_email = ""
 
 			$("#register_username").on("input", on_username_input)
 
@@ -183,25 +137,6 @@
 				current_username = uname
 			}
 
-			$("#register_email").on("input", on_email_input)
-
-			function on_email_input() {
-				let email = $("#register_email").val().trim()
-
-				if (email === current_email) {
-					return
-				}
-
-				$("#email_taken").css("display", "none")
-
-				if (email.length > max_email_length) {
-					email = email.substring(0, max_email_length)
-					$("#register_email").val(email)
-				}
-
-				current_email = email
-			}
-
 			function recaptcha_callback() {
 				recaptcha_checked = true
 			}
@@ -210,12 +145,6 @@
 				$("#register_username").val(form_username)
 				on_username_input()
 			}
-
-			if (form_email && form_email !== "undefined") {
-				$("#register_email").val(form_email)
-				on_email_input()
-			}
-
 		</script>
 	</body>
 
