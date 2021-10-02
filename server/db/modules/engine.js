@@ -10,7 +10,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Get the full dir path
-  function get_dir_path (type, fname) {
+  function get_dir_path (type) {
     return path.join(root_path, `${config.db_store_path}/${type}`)
   }
 
@@ -30,14 +30,14 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         do_write_file(path)
       }, 2000)
     }
-  } 
+  }
 
   // Do the write file operation
   function do_write_file (path) {
     console.info(`Writing: ${path.split("/").slice(-2).join("/")}`)
     cache[path].last_write = Date.now()
     fs.writeFile(path, JSON.stringify(cache[path].json), "utf8", function () {})
-  }  
+  }
 
   // Find one result
   manager.find_one = function (type, query, fields) {
@@ -46,7 +46,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         let path = get_file_path(type, query.id)
 
         check_file(path, query, fields)
-        
+
         .then(obj => {
           if (obj) {
             resolve(obj)
@@ -57,7 +57,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
         .catch(err => {
           reject("Nothing found")
-        })    
+        })
       }
 
       fs.readdir(get_dir_path(type), async function (err, fnames) {
@@ -83,14 +83,14 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.find_multiple = function (type, ids, fields) {
     return new Promise(async (resolve, reject) => {
       let objs = []
-      
+
       for (let i=0; i<ids.length; i++) {
         try {
           let obj = await manager.find_one(type, {id: ids[i]}, fields)
           objs.push(obj)
         } catch (err) {}
       }
-      
+
       resolve(objs)
     })
   }
@@ -130,7 +130,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         }
       })
     })
-  }  
+  }
 
   // Check file using the query and fields
   function check_file_query (original, query, fields) {
@@ -161,7 +161,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         if (original[key] !== query[key]) {
           return false
         }
-      }     
+      }
     }
 
     let obj = Object.assign({}, original)
@@ -170,7 +170,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     if (fieldkeys.length > 0) {
       let mode = ""
       let first_field = fields[fieldkeys[0]]
-      
+
       if (first_field === 1) {
         mode = "include"
       } else if (first_field === 0) {
@@ -192,9 +192,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           }
         }
       }
-    } 
+    }
 
-    return obj    
+    return obj
   }
 
   // Insert a new file in the proper directory
