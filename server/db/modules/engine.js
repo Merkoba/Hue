@@ -85,19 +85,21 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     return new Promise((resolve, reject) => {
       let objs = []
       
-      for (let id of ids) {
-        manager.find_one(type, {id: id}, fields)
+      for (let i=0; i<ids.length; i++) {
+        manager.find_one(type, {id: ids[i]}, fields)
   
         .then(obj => {
           objs.push(obj)
+          if (i >= ids.length - 1) {
+            resolve(objs)
+            return
+          }
         })
   
         .catch(err => {
           // 
         }) 
       }
-
-      resolve(objs)      
     })
   }
 
