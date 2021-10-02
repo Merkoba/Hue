@@ -1,8 +1,7 @@
-module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
+module.exports = function (vars, manager, config, sconfig, utilz, logger) {
   // Initial declarations
   vars.fs = require("fs")
   vars.path = require("path")
-  vars.mongo = require("mongodb")
   vars.bcrypt = require("bcrypt")
   vars.mailgun = require("mailgun-js")({
     apiKey: sconfig.mailgun_api_key,

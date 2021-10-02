@@ -190,7 +190,7 @@ module.exports = function (
           return false
         }
 
-        let id = userinfo._id.toString()
+        let id = userinfo.id
         let current_role = info.keys[id] || vars.default_role
         message_username = userinfo.username
 

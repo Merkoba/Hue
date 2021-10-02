@@ -175,7 +175,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       res.redirect(`/login?fromurl=${fromurl}`)
     } else {
       db_manager
-        .get_user({ _id: req.session.user_id }, { password_date: 1 })
+        .get_user({ id: req.session.user_id }, { password_date: 1 })
 
         .then((user) => {
           if (!user || req.session.password_date !== user.password_date) {
@@ -242,7 +242,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
       .then((ans) => {
         if (ans.valid) {
-          req.session.user_id = ans.user._id.toString()
+          req.session.user_id = ans.user.id
           req.session.password_date = ans.user.password_date
 
           if (fromurl === undefined || fromurl === "" || fromurl === "/login") {
@@ -453,7 +453,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     db_manager
       .get_user(
-        { _id: id, verification_code: code, verified: false },
+        { id: id, verification_code: code, verified: false },
         { registration_date: 1 }
       )
 
@@ -464,7 +464,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
             config.max_verification_time
           ) {
             db_manager
-              .update_user(user._id, { verified: true })
+              .update_user(user.id, { verified: true })
 
               .then((ans) => {
                 let m = encodeURIComponent("Account successfully verified")
@@ -567,7 +567,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     db_manager
       .get_user(
-        { _id: id, password_reset_code: code },
+        { id: id, password_reset_code: code },
         { password_reset_link_date: 1 }
       )
 
@@ -616,7 +616,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     db_manager
       .get_user(
-        { _id: id, password_reset_code: code },
+        { id: id, password_reset_code: code },
         { password_reset_link_date: 1 }
       )
 
@@ -639,7 +639,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
             }
 
             db_manager
-              .update_user(user._id, {
+              .update_user(user.id, {
                 password: password,
                 password_reset_link_date: 0,
                 password_date: Date.now(),

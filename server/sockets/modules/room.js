@@ -87,7 +87,7 @@ module.exports = function (
         username: socket.hue_username,
       })
 
-      db_manager.update_room(info._id, {
+      db_manager.update_room(info.id, {
         name: info.name,
       })
 
@@ -103,7 +103,7 @@ module.exports = function (
   // Creates initial room objects
   handler.create_room_object = function (info) {
     let obj = {
-      _id: info._id.toString(),
+      id: info.id,
       activity: false,
       log_messages: info.log_messages,
       admin_log_messages: info.admin_log_messages,

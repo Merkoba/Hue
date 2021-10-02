@@ -54,9 +54,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_video_url"
 >Image to show to video element when there's no video image loaded.
 
-"mongodb_path"
->The path to the MongoDB database. The name can be anything as long as the port is correct.
-
 "topic_separator"
 >Separator used between topic sections. Used when using /topicadd, which adds a new piece of topic at the end of the current topic. Also used when calculating the removal of these topic sections.
 

@@ -33,10 +33,6 @@ To have a fully working system, as it is intended, getting all the API keys (You
 
 Put the files in the directory you want it work and call "npm install". That should install all necessary packages. 
 
-You will also need MongoDB installed in your computer, and the mongod daemon running.
-
->systemctl start mongod
-
 There is no need to create database tables, all of that is done automatically.
 
 Redis is now required, to store link metadata in database 10. Install and setup Redis.
@@ -50,8 +46,6 @@ Using pm2 is suggested to control the Node process. PM2 will likely use the user
 That's an example of starting it with the user "node" in a production environment.
 
 If you ever need to access the MongoDB database:
-
->sudo mongo
 
 >use hue
 

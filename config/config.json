@@ -19,7 +19,6 @@
 	"default_background_image_url": "/static/_img/default_background_image.jpg",
 	"background_image_loading_url": "/static/_img/image_loading.jpg",
 	"default_video_url": "/static/_img/default_video_frame.jpg",
-	"mongodb_path": "mongodb://localhost:27017/hue",
 	"topic_separator": " | ",
 	"title_separator": " - ",
 	"default_title": "Hue | Chat room with images and tv",
