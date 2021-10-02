@@ -1,7 +1,17 @@
 const fs = require("fs")
+const path = require("path")
 const cache = {}
+const root_path = path.join(__dirname, "../../../")
 
 module.exports = function (manager, vars, config, sconfig, utilz, logger) {
+  manager.get_file_path = function (type, fname) {
+    return path.join(root_path, `${config.db_store_path}/${type}/${fname}`)
+  }
+
+  manager.get_dir_path = function (type, fname) {
+    return path.join(root_path, `${config.db_store_path}/${type}`)
+  }  
+
   manager.write_file = function (path, content) {
     if (cache[path] === undefined) {
       cache[path] = {timeout: undefined, content: undefined, last_write: 0}
@@ -27,7 +37,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.find_one = function (type, query, fields) {
     return new Promise((resolve, reject) => {
       if (query.id !== undefined) {
-        let path = `${config.db_store_path}/${type}/${query.id}`
+        let path = manager.get_file_path(type, query.id)
 
         manager.check_file(path, query, fields)
         
@@ -43,8 +53,8 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         
         return
       }
-
-      fs.readdir(`${config.db_store_path}/${type}`, function (err, fnames) {
+      
+      fs.readdir(manager.get_dir_path(type), function (err, fnames) {
         let keep_going = true
 
         for (let fname of fnames) {
@@ -52,7 +62,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             return
           }
 
-          let path = `${config.db_store_path}/${type}/${fname}`
+          let path = manager.get_file_path(type, fname)
 
           manager.check_file(path, query, fields)
         
@@ -148,7 +158,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         obj.id = `${Math.round(new Date() / 1000)}_${utilz.get_random_string(4)}`
       }
 
-      manager.write_file(`${config.db_store_path}/${type}/${obj.id}`, JSON.stringify(obj))
+      manager.write_file(manager.get_file_path(type, obj.id), JSON.stringify(obj))
       resolve(obj)
     })
   }
@@ -162,7 +172,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           obj[key] = fields[key]
         }
 
-        manager.write_file(`${config.db_store_path}/${type}/${obj.id}`, JSON.stringify(obj))
+        manager.write_file(manager.get_file_path(type, obj.id), JSON.stringify(obj))
         resolve("Ok")
       })
     })
@@ -171,7 +181,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.delete_one = function (type, id) {
     return new Promise((resolve, reject) => {
       if (id) {
-        fs.unlink(`${config.db_store_path}/${type}/${id}`)
+        fs.unlink(manager.get_file_path(type, id))
         resolve("Ok")
         return
       } else {

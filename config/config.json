@@ -1,9 +1,9 @@
 {
-	"db_name": "hue",
 	"https_enabled": true,
 	"site_root": "https://hue.merkoba.com/",
 	"main_room_id": "main",
 	"default_main_room_name": "Hue",
+	"db_store_path": "/server/db/store",
 	"images_directory": "public/static/img",
 	"videos_directory": "public/static/video",
 	"audio_directory": "public/static/audio",

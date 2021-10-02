@@ -1,3 +1,6 @@
+// Run this in the DB directory
+// which should be outside the project's root
+
 const fs = require("fs")
 
 function get_random_int (min, max, exclude = undefined) {
@@ -29,7 +32,7 @@ function get_random_string (n) {
 }
 
 function generate_id(what) {
-  return get_random_string(4) + counter
+  return `${Math.round(new Date() / 1000)}_${get_random_string(4)}`
 }
 
 function create_files (what) {
@@ -51,7 +54,5 @@ function create_files (what) {
   }  
 }
 
-var counter = 0
 create_files("users")
-counter = 0
 create_files("rooms")
