@@ -2,7 +2,6 @@
 
 Requirements:
 - Node 10+
-- MongoDB 3+
 - Redis 3+
 
 Configuration is done in user_config.json and user_config.secret.json files placed in the config directory. You must create these files. If they are not going to be used, create empty json objects like {}, or error messages will be shown at startup.
@@ -44,14 +43,6 @@ Using pm2 is suggested to control the Node process. PM2 will likely use the user
 >su - node -c "pm2 start hue/server/www --env production"
 
 That's an example of starting it with the user "node" in a production environment.
-
-If you ever need to access the MongoDB database:
-
->use hue
-
-If you want to remove it to start fresh:
-
->db.dropDatabase()
 
 Build the client js and css files:
 

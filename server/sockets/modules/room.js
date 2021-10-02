@@ -75,7 +75,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
+      { id: socket.hue_room_id },
       { name: 1 }
     )
 

@@ -38,7 +38,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
+      { id: socket.hue_room_id },
       { keys: 1 }
     )
     let userinfo = await db_manager.get_user(
@@ -181,7 +181,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
+      { id: socket.hue_room_id },
       { bans: 1, keys: 1 }
     )
     let userinfo = await db_manager.get_user(
@@ -257,7 +257,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
+      { id: socket.hue_room_id },
       { bans: 1, keys: 1 }
     )
     let userinfo = await db_manager.get_user(
@@ -364,7 +364,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
+      { id: socket.hue_room_id },
       { keys: 1 }
     )
     let roles = {}
@@ -385,7 +385,7 @@ module.exports = function (
     }
 
     let users = await db_manager.get_user(
-      { _id: { $in: ids } },
+      { id: { $in: ids } },
       { username: 1 }
     )
 
@@ -410,7 +410,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
+      { id: socket.hue_room_id },
       { bans: 1 }
     )
     let ids = []
@@ -425,7 +425,7 @@ module.exports = function (
     }
 
     let users = await db_manager.get_user(
-      { _id: { $in: ids } },
+      { id: { $in: ids } },
       { username: 1 }
     )
 

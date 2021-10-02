@@ -230,7 +230,7 @@ module.exports = function (
   // Completes profile image changes
   handler.do_change_profile_image = async function (socket, file_name) {
     let userinfo = await db_manager.get_user(
-      { _id: socket.hue_user_id },
+      { id: socket.hue_user_id },
       { profile_image: 1, profile_image_version: 1 }
     )
     let new_ver = userinfo.profile_image_version + 1
@@ -300,7 +300,7 @@ module.exports = function (
   // Completes audio clip changes
   handler.do_change_audio_clip = async function (socket, file_name) {
     let userinfo = await db_manager.get_user(
-      { _id: socket.hue_user_id },
+      { id: socket.hue_user_id },
       { audio_clip: 1, audio_clip_version: 1 }
     )
     let new_ver = userinfo.audio_clip_version + 1

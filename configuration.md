@@ -2,10 +2,6 @@
 
 Refer to [config.json](config/config.json) and [config.secret.json](config/config.secret.json) to check defaults.
 
-
-"db_name"
->The database name Mongo will use. The database is created automatically at first launch. This setting allows trying different contexts by just changing the name, which is good for development and other cases.
-
 "https_enabled"
 >Defaults to true for security reasons. If deployed in a non-https environment set it to false. In order for it to be really enabled the Node environment must be set to production. If true, some non https media will be blocked. It's recommended to setup a full https site to conform to current standards. Check out Let's Encrypt.
 
@@ -112,7 +108,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >Max length for room names.
 
 "max_room_id_length"
->Arbitrary big number to avoid big urls from being considered as valid room ids. Mongo ids are approximately 24 chars in length as for 2017.
+>Arbitrary big number to avoid big urls from being considered as valid room ids.
 
 "rooms_loop_interval"
 >The interval in milliseconds for the loop that saves iterates through a rooms object which is updated through chat activity and saves it to the database. This loops is to avoid saving data, like log messages, to the database on every message.

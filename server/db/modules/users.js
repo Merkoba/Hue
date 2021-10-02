@@ -17,6 +17,10 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         }
       }
 
+      if (verified) {
+        query.verified = true
+      }
+
       manager.find_one("users", query, fields)
 
       .then(user => {

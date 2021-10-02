@@ -74,7 +74,7 @@ module.exports = function (
 
       if (item.id === data.id) {
         let info = await db_manager.get_room(
-          { _id: socket.hue_room_id },
+          { id: socket.hue_room_id },
           { keys: 1 }
         )
         
