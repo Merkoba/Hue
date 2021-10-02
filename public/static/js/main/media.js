@@ -574,7 +574,7 @@ Hue.apply_media_info = function (type) {
     if (item.query) {
       info = item.query
     } else if (item.source) {
-      info = item.source
+      info = "Linked image"
     }
   }
 
