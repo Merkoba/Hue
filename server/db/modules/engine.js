@@ -10,7 +10,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
   function get_dir_path (type, fname) {
     return path.join(root_path, `${config.db_store_path}/${type}`)
-  }  
+  }
 
   function write_file (path, content) {
     if (cache[path] === undefined) {
@@ -20,18 +20,20 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     clearTimeout(cache[path].timeout)
     cache[path].content = content
 
-    let delay = 3000
-
     if (Date.now() - cache[path].last_write > 10000) {
-      delay = 0
+      do_write_file(path)
+    } else {
+      cache[path].timeout = setTimeout(() => {
+        do_write_file(path)
+      }, 2000)
     }
-     
-    cache[path].timeout = setTimeout(() => {
-      console.info(`Writing: ${path}`)
-      cache[path].last_write = Date.now()
-      fs.writeFile(path, cache[path].content, "utf8", function () {})
-    }, delay)
   } 
+
+  function do_write_file (path) {
+    console.info(`Writing: ${path}`)
+    cache[path].last_write = Date.now()
+    fs.writeFile(path, cache[path].content, "utf8", function () {})
+  }  
 
   manager.find_one = function (type, query, fields) {
     return new Promise((resolve, reject) => {
