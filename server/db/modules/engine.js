@@ -30,7 +30,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   } 
 
   function do_write_file (path) {
-    console.info(`Writing: ${path}`)
+    console.info(`Writing: ${path.split("/").slice(-2).join("/")}`)
     cache[path].last_write = Date.now()
     fs.writeFile(path, cache[path].content, "utf8", function () {})
   }  
