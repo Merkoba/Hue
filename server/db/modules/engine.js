@@ -1,18 +1,18 @@
 const fs = require("fs")
 const path = require("path")
-const cache = {}
 const root_path = path.join(__dirname, "../../../")
+const cache = {}
 
 module.exports = function (manager, vars, config, sconfig, utilz, logger) {
-  manager.get_file_path = function (type, fname) {
+  function get_file_path (type, fname) {
     return path.join(root_path, `${config.db_store_path}/${type}/${fname}`)
   }
 
-  manager.get_dir_path = function (type, fname) {
+  function get_dir_path (type, fname) {
     return path.join(root_path, `${config.db_store_path}/${type}`)
   }  
 
-  manager.write_file = function (path, content) {
+  function write_file (path, content) {
     if (cache[path] === undefined) {
       cache[path] = {timeout: undefined, content: undefined, last_write: 0}
     }
@@ -36,9 +36,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.find_one = function (type, query, fields) {
     return new Promise((resolve, reject) => {
       if (query.id !== undefined) {
-        let path = manager.get_file_path(type, query.id)
+        let path = get_file_path(type, query.id)
 
-        manager.check_file(path, query, fields)
+        check_file(path, query, fields)
         
         .then(obj => {
           resolve(obj)
@@ -53,7 +53,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         return
       }
       
-      fs.readdir(manager.get_dir_path(type), function (err, fnames) {
+      fs.readdir(get_dir_path(type), function (err, fnames) {
         let keep_going = true
 
         for (let fname of fnames) {
@@ -61,9 +61,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             return
           }
 
-          let path = manager.get_file_path(type, fname)
+          let path = get_file_path(type, fname)
 
-          manager.check_file(path, query, fields)
+          check_file(path, query, fields)
         
           .then(obj => {
             resolve(obj)
@@ -79,10 +79,10 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
-  manager.check_file = function (path, query, fields) {
+  function check_file (path, query, fields) {
     return new Promise((resolve, reject) => {
       if (cache[path] && cache[path].content) {
-        let obj = manager.check_file_query(cache[path].content, query, fields)
+        let obj = check_file_query(cache[path].content, query, fields)
         if (obj) {
           resolve(obj)
           return
@@ -93,7 +93,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       }
 
       fs.readFile(path, "utf8", function (err, text) {
-        let obj = manager.check_file_query(text, query, fields)
+        let obj = check_file_query(text, query, fields)
         if (obj) {
           resolve(obj)
           return
@@ -105,7 +105,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }  
 
-  manager.check_file_query = function (text, query, fields) {
+  function check_file_query (text, query, fields) {
     let obj = {}
 
     try {
@@ -157,7 +157,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         obj.id = `${Math.round(new Date() / 1000)}_${utilz.get_random_string(4)}`
       }
 
-      manager.write_file(manager.get_file_path(type, obj.id), JSON.stringify(obj))
+      write_file(get_file_path(type, obj.id), JSON.stringify(obj))
       resolve(obj)
     })
   }
@@ -171,7 +171,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           obj[key] = fields[key]
         }
 
-        manager.write_file(manager.get_file_path(type, obj.id), JSON.stringify(obj))
+        write_file(get_file_path(type, obj.id), JSON.stringify(obj))
         resolve("Ok")
       })
     })
@@ -180,7 +180,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.delete_one = function (type, id) {
     return new Promise((resolve, reject) => {
       if (id) {
-        fs.unlink(manager.get_file_path(type, id))
+        fs.unlink(get_file_path(type, id))
         resolve("Ok")
         return
       } else {
