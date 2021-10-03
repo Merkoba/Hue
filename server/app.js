@@ -59,7 +59,6 @@ module.exports = function (db, db_manager, config, sconfig, utilz) {
 
   if (app.get("env") === "production" && config.https_enabled) {
     app.set("trust proxy", 1)
-    sess.cookie.secure = true
   }
 
   app.use(session(sess))
