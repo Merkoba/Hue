@@ -12,7 +12,6 @@ module.exports = function (
   vars.fs = require("fs")
   vars.path = require("path")
   vars.fetch = require("node-fetch")
-  vars.mongo = require("mongodb")
   vars.jwt = require("jsonwebtoken")
   vars.image_dimensions = require("image-size")
   vars.cheerio = require("cheerio")

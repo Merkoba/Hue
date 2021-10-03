@@ -1,25 +1,12 @@
-module.exports = function (db, db_manager, config, sconfig, utilz) {
+module.exports = function (db_manager, config, sconfig, utilz) {
   const express = require("express")
   const session = require("express-session")
   const path = require("path")
-  const bodyParser = require("body-parser")
   const routes = require("./routes/index")(db_manager, config, sconfig, utilz)
-  const MongoDBStore = require("connect-mongodb-session")(session)
-  const rateLimit = require("express-rate-limit");
-
-  const mongo_store = new MongoDBStore({
-    uri: config.mongodb_path,
-    collection: "sessions_1",
-  })
-
-  mongo_store.on("connected", function () {
-    mongo_store.client
-  })
-
-  mongo_store.on("error", function (error) {
-    assert.ifError(error)
-    assert.ok(false)
-  })
+  const rateLimit = require("express-rate-limit")
+  const redis = require("redis")
+  const RedisStore = require("connect-redis")(session)
+  const redisClient = redis.createClient()
 
   let app = express()
 
@@ -33,8 +20,6 @@ module.exports = function (db, db_manager, config, sconfig, utilz) {
 
   // Apply the limiter to these routes
   app.use("/change_password/", limiter);
-  app.use("/recover/", limiter);
-  app.use("/verify/", limiter);
   app.use("/login/", limiter);
   app.use("/register/", limiter);
   app.get("/", limiter);
@@ -43,17 +28,9 @@ module.exports = function (db, db_manager, config, sconfig, utilz) {
   app.set("views", path.join(__dirname, "views"))
   app.set("view engine", "ejs")
 
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: false }))
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: false }))
   app.use(express.static(path.join(__dirname, "../public")))
-
-  let sess = {
-    secret: sconfig.session_secret,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false, maxAge: config.session_cookie_max_age },
-    store: mongo_store,
-  }
 
   console.info(`ENV: ${app.get("env")}`)
 
@@ -61,7 +38,16 @@ module.exports = function (db, db_manager, config, sconfig, utilz) {
     app.set("trust proxy", 1)
   }
 
-  app.use(session(sess))
+  app.use(
+    session({
+      store: new RedisStore({ client: redisClient }),
+      saveUninitialized: false,
+      secret: sconfig.session_secret,
+      resave: false,
+    })
+  )
+
+  // app.use(session(sess))
   app.use("/", routes)
 
   app.use(function (req, res, next) {

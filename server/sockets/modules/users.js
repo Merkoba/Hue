@@ -38,7 +38,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
+      { id: socket.hue_room_id },
       { keys: 1 }
     )
     let userinfo = await db_manager.get_user(
@@ -51,7 +51,7 @@ module.exports = function (
       return false
     }
 
-    let id = userinfo._id.toString()
+    let id = userinfo.id
     let current_role = info.keys[id] || vars.default_role
 
     if (!socket.hue_superuser) {
@@ -99,7 +99,7 @@ module.exports = function (
 
     info.keys[id] = data.role
 
-    db_manager.update_room(info._id, { keys: info.keys })
+    db_manager.update_room(info.id, { keys: info.keys })
 
     handler.room_emit(socket, "user_role_changed", {
       username1: socket.hue_username,
@@ -181,7 +181,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
+      { id: socket.hue_room_id },
       { bans: 1, keys: 1 }
     )
     let userinfo = await db_manager.get_user(
@@ -194,7 +194,7 @@ module.exports = function (
       return false
     }
 
-    let id = userinfo._id.toString()
+    let id = userinfo.id
     let current_role = info.keys[id] || vars.default_role
 
     if (
@@ -235,7 +235,7 @@ module.exports = function (
 
     info.bans.push(id)
     delete info.keys[id]
-    db_manager.update_room(info._id, { bans: info.bans, keys: info.keys })
+    db_manager.update_room(info.id, { bans: info.bans, keys: info.keys })
   }
 
   // Handles user unbans
@@ -257,7 +257,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
+      { id: socket.hue_room_id },
       { bans: 1, keys: 1 }
     )
     let userinfo = await db_manager.get_user(
@@ -270,7 +270,7 @@ module.exports = function (
       return false
     }
 
-    let id = userinfo._id.toString()
+    let id = userinfo.id
 
     if (!info.bans.includes(id)) {
       handler.user_emit(socket, "user_already_unbanned", {})
@@ -285,7 +285,7 @@ module.exports = function (
       }
     }
 
-    db_manager.update_room(info._id, { bans: info.bans })
+    db_manager.update_room(info.id, { bans: info.bans })
 
     handler.room_emit(socket, "user_unbanned", {
       username1: socket.hue_username,
@@ -364,7 +364,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
+      { id: socket.hue_room_id },
       { keys: 1 }
     )
     let roles = {}
@@ -384,9 +384,8 @@ module.exports = function (
       return false
     }
 
-    let users = await db_manager.get_user(
-      { _id: { $in: ids } },
-      { username: 1 }
+    let users = await db_manager.get_users(
+      ids, { username: 1 }
     )
 
     if (users.length === 0) {
@@ -397,7 +396,7 @@ module.exports = function (
     let list = []
 
     for (let user of users) {
-      list.push({ username: user.username, role: roles[user._id] })
+      list.push({ username: user.username, role: roles[user.id] })
     }
 
     handler.user_emit(socket, "receive_admin_list", { list: list })
@@ -410,9 +409,10 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
+      { id: socket.hue_room_id },
       { bans: 1 }
     )
+    
     let ids = []
 
     for (let id of info.bans) {
@@ -424,9 +424,8 @@ module.exports = function (
       return false
     }
 
-    let users = await db_manager.get_user(
-      { _id: { $in: ids } },
-      { username: 1 }
+    let users = await db_manager.get_users(
+      ids, { username: 1 }
     )
 
     if (users.length === 0) {
@@ -452,7 +451,6 @@ module.exports = function (
       user.username = socket.hue_username
       user.role = socket.hue_role
       user.profile_image = socket.hue_profile_image
-      user.email = socket.hue_email
       user.bio = socket.hue_bio
       user.hearts = socket.hue_hearts
       user.skulls = socket.hue_skulls
@@ -563,13 +561,13 @@ module.exports = function (
     }
 
     let done = await db_manager.change_username(
-      userinfo._id,
+      userinfo.id,
       data.new
     )
   
     if (done) {
       handler.modify_socket_properties(
-        userinfo._id.toString(),
+        userinfo.id,
         { hue_username: data.new },
         {
           method: "new_username",

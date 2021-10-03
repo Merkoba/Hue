@@ -115,17 +115,11 @@ Hue.server_update_events = {
   username_already_exists: (data) => {
     Hue.checkmsg(`${data.username} already exists`)
   },
-  email_already_exists: (data) => {
-    Hue.checkmsg(`${data.email} already exists`)
-  },
   new_username: (data) => {
     Hue.announce_new_username(data)
   },
   password_changed: (data) => {
     Hue.password_changed(data)
-  },
-  email_changed: (data) => {
-    Hue.email_changed(data)
   },
   background_color_changed: (data) => {
     Hue.announce_background_color_change(data)
@@ -153,25 +147,6 @@ Hue.server_update_events = {
   },
   error_occurred: (data) => {
     Hue.error_occurred()
-  },
-  email_change_code_sent: (data) => {
-    Hue.checkmsg(
-      `Verification code sent. Use the command sent to ${data.email}. Email might take a couple of minutes to arrive`
-    )
-  },
-  email_change_code_not_sent: (data) => {
-    Hue.checkmsg(
-      `Verification code not sent yet. Use ${Hue.config.commands_prefix}changeemail [new_email] to get a verification code`
-    )
-  },
-  email_change_wait: (data) => {
-    Hue.checkmsg(`You must wait a while before changing the email again`)
-  },
-  email_change_wrong_code: (data) => {
-    Hue.checkmsg(`Code supplied didn't match`)
-  },
-  email_change_expired_code: (data) => {
-    Hue.checkmsg(`Code supplied has expired`)
   },
   create_room_wait: (data) => {
     Hue.create_room_cooldown_message()

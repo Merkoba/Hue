@@ -12,13 +12,13 @@
 					return false
 				}
 
-				$("#login_email").val($("#login_email").val().trim())
+				$("#login_username").val($("#login_username").val().trim())
 
-				let email = $("#login_email").val()
+				let username = $("#login_username").val()
 				let password = $("#login_password").val()
 
-				if (email.length === 0) {
-					set_message("Email can't be empty")
+				if (username.length === 0) {
+					set_message("Username can't be empty")
 					return false
 				}
 
@@ -27,18 +27,13 @@
 					return false
 				}
 
-				if (email.length > max_max_email_length) {
-					set_message("Email is too long")
+				if (username.length > max_max_username_length) {
+					set_message("Username is too long")
 					return false
 				}
 
 				if (password.length > max_max_password_length) {
 					set_message("Password is too long")
-					return false
-				}
-
-				if (email.indexOf('@') === -1 || email.indexOf(' ') !== -1) {
-					set_message("Invalid email address")
 					return false
 				}
 
@@ -52,7 +47,7 @@
 	<body>
 		<div class='main'>
 			<form method="post" action="/login" name="login" onsubmit="return validate_form()">
-				<input type="text" placeholder="Email" name="email" id="login_email">
+				<input type="text" placeholder="Username" name="username" id="login_username">
 				<div class="spacer4"></div>
 				<input type="password" placeholder="Password" name="password" id="login_password">
 				<div class="spacer4"></div>
@@ -62,8 +57,6 @@
 
 			<div class="spacer1"></div>
 
-			<a href="/recover" id="password_reset_link"'>Forgot Password</a>
-			<div class="spacer2"></div>
 			<a href="/register">Register</a>
 
 			<div class="spacer1"></div>
@@ -71,10 +64,10 @@
 		</div>
 
 		<script>
-			$("#login_email").focus()
+			$("#login_username").trigger("focus")
 
-			if(form_email && form_email !== "undefined") {
-				$("#login_email").val(form_email)
+			if(form_username && form_username !== "undefined") {
+				$("#login_username").val(form_username)
 			}
 		</script>
 	</body>
