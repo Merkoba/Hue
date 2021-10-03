@@ -112,7 +112,7 @@ Hue.write_popup_message = function (unames = [], type = "user") {
   Hue.message_type = type
 
   Hue.msg_message.show(function () {
-    $("#write_message_area").focus()
+    $("#write_message_area").trigger("focus")
 
     if (type === "user") {
       Hue.show_message_feedback("Click titlebar to add more users")

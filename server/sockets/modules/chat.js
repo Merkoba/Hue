@@ -177,11 +177,11 @@ module.exports = function (
         }
 
         let info = await db_manager.get_room(
-          { _id: socket.hue_room_id },
+          { id: socket.hue_room_id },
           { keys: 1 }
         )
         let userinfo = await db_manager.get_user(
-          { _id: message.data.user_id },
+          { id: message.data.user_id },
           { username: 1 }
         )
 
@@ -190,7 +190,7 @@ module.exports = function (
           return false
         }
 
-        let id = userinfo._id.toString()
+        let id = userinfo.id
         let current_role = info.keys[id] || vars.default_role
         message_username = userinfo.username
 

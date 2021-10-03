@@ -36,6 +36,6 @@ module.exports = function (
       return
     }
 
-    handler.user_emit(socket, "room_created", { id: ans._id.toString() })
+    handler.user_emit(socket, "room_created", { id: ans.id })
   }
 }

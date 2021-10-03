@@ -129,7 +129,7 @@ Hue.open_background_image_input = function () {
         Hue.background_image_input_action()
       })
 
-      $("#background_image_input_text").focus()
+      $("#background_image_input_text").trigger("focus")
       Hue.background_image_input_open = true
     }
   )

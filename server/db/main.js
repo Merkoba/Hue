@@ -1,4 +1,4 @@
-module.exports = function (db, config, sconfig, utilz, logger) {
+module.exports = function (config, sconfig, utilz, logger) {
   // Main object
   const manager = {}
 

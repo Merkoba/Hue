@@ -28,13 +28,13 @@ module.exports = function (
 
         if (room.activity) {
           if (room.log_messages_modified) {
-            db_manager.push_log_messages(room._id, room.log_messages)
+            db_manager.push_log_messages(room.id, room.log_messages)
             room.log_messages_modified = false
           }
 
           if (room.admin_log_messages_modified) {
             db_manager.push_admin_log_messages(
-              room._id,
+              room.id,
               room.admin_log_messages
             )
             room.admin_log_messages_modified = false

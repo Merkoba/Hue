@@ -127,7 +127,7 @@ Hue.show_message_board = function (filter = false) {
       $("#message_board_filter").val(filter)
       Hue.do_modal_filter()
     } else {
-      $("#message_board_post_textarea").focus()
+      $("#message_board_post_textarea").trigger("focus")
     }
   })
 }

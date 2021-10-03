@@ -42,7 +42,6 @@ Hue.admin_list_open = false
 Hue.ban_list_open = false
 Hue.change_user_username_open = false
 Hue.change_user_password_open = false
-Hue.change_user_email_open = false
 Hue.writing_reply = false
 Hue.modal_open = false
 Hue.commands_list_sorted = {}
@@ -74,7 +73,7 @@ Hue.active_modal = false
 Hue.activity_list = []
 Hue.editing_message = false
 Hue.editing_message_container = false
-Hue.editing_message_area = false
+Hue.editing_message_area = $("<div></div>")[0]
 Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 250
 Hue.sending_whisper = false
@@ -255,7 +254,6 @@ Hue.on_join = function (data) {
 
   Hue.setup_commands()
   Hue.set_username(data.username)
-  Hue.set_email(data.email)
   Hue.set_bio(data.bio)
   Hue.setup_profile_image(data.profile_image)
   Hue.generate_favicon(Hue.alert_mode)
