@@ -36,7 +36,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   function do_write_file (path) {
     console.info(`Writing: ${path.split("/").slice(-2).join("/")}`)
     cache[path].last_write = Date.now()
-    fs.writeFile(path, JSON.stringify(cache[path].json), "utf8", function () {})
+    fs.writeFile(path, JSON.stringify(cache[path].json), "utf8", err => {
+      logger.log_error(err)
+    })
   }
 
   // Find one result
@@ -60,7 +62,13 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         })
       }
 
-      fs.readdir(get_dir_path(type), async function (err, fnames) {
+      fs.readdir(get_dir_path(type), async (err, fnames) => {
+        if (err) {
+          logger.log_error(err)
+          reject("Nothing found")
+          return
+        }
+
         for (let fname of fnames) {
           let path = get_file_path(type, fname)
 
@@ -109,7 +117,13 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         }
       }
 
-      fs.readFile(path, "utf8", function (err, text) {
+      fs.readFile(path, "utf8", (err, text) => {
+        if (err) {
+          logger.log_error(err)
+          reject("Nothing found")
+          return
+        }
+
         let jsn = {}
 
         try {
@@ -123,10 +137,8 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
         if (obj) {
           resolve(obj)
-          return
         } else {
           reject("Nothing found")
-          return
         }
       })
     })
@@ -229,12 +241,17 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.delete_one = function (type, id) {
     return new Promise((resolve, reject) => {
       if (id) {
-        fs.unlink(get_file_path(type, id))
-        resolve("Ok")
-        return
+        fs.unlink(get_file_path(type, id), err => {
+          if (err) {
+            logger.log_error(err)
+            reject("Did not delete")
+            return
+          }
+
+          resolve("Ok")
+        })
       } else {
         reject("Invalid ID")
-        return
       }
     })
   }
