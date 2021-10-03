@@ -80,7 +80,7 @@ module.exports = function (
   }
 
   // Ban a user from connecting
-  handler.anti_spam_ban = function (socket) {
+  handler.anti_spam_ban = function (socket, minutes = config.anti_spam_ban_duration) {
     let ip = handler.get_ip_address(socket)
     let user = handler.anti_spam_users[ip]
     
@@ -89,7 +89,7 @@ module.exports = function (
     }
 
     user.banned = true
-    user.banned_until = Date.now() + (config.anti_spam_ban_duration * 1000 * 60)
+    user.banned_until = Date.now() + (minutes * 1000 * 60)
     logger.log_error(`IP banned: ${ip}`)
   }
 

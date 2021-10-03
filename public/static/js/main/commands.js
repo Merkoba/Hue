@@ -108,30 +108,6 @@ Hue.commands = {
     },
     description: `Shows Commands`,
   },
-  "changeusername": {
-    action: (arg, ans) => {
-      Hue.change_username(arg)
-    },
-    description: `Changes the account username`,
-  },
-  "changepassword": {
-    action: (arg, ans) => {
-      Hue.change_password(arg)
-    },
-    description: `Changes the account password`,
-  },
-  "changeemail": {
-    action: (arg, ans) => {
-      Hue.change_email(arg)
-    },
-    description: `Changes the account email`,
-  },
-  "verifyemail": {
-    action: (arg, ans) => {
-      Hue.verify_email(arg)
-    },
-    description: `Used to verify an email email with a received code`,
-  },
   "details": {
     action: (arg, ans) => {
       Hue.show_details()

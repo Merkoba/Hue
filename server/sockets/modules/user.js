@@ -76,90 +76,6 @@ module.exports = function (
     handler.user_emit(socket, "password_changed", { password: data.password })
   }
 
-  // Changes emails
-  handler.public.change_email = async function (socket, data) {
-    if (data.email === undefined) {
-      return false
-    }
-
-    if (!data.email.includes("@") || data.email.includes(" ")) {
-      return false
-    }
-
-    if (data.email.length > config.max_email_length) {
-      return false
-    }
-
-    if (utilz.clean_string5(data.email) !== data.email) {
-      return false
-    }
-
-    let ans = await db_manager.change_email(socket.hue_user_id, data.email)
-
-    if (ans.message === "error") {
-      handler.user_emit(socket, "error_occurred", {})
-      return
-    } else if (ans.message === "duplicate") {
-      handler.user_emit(socket, "email_already_exists", { email: data.email })
-      return
-    } else if (ans.message === "wait") {
-      handler.user_emit(socket, "email_change_wait", {})
-      return
-    } else if (ans.message === "sent_code") {
-      handler.user_emit(socket, "email_change_code_sent", {
-        email: data.email,
-      })
-      return
-    }
-  }
-
-  // Handles email verification codes
-  handler.public.verify_email = async function (socket, data) {
-    if (utilz.clean_string5(data.code) !== data.code) {
-      return false
-    }
-
-    if (data.code.length === 0) {
-      return false
-    }
-
-    if (data.code.length > config.email_change_code_max_length) {
-      return false
-    }
-
-    let ans = await db_manager.change_email(
-      socket.hue_user_id,
-      data.email,
-      data.code
-    )
-
-    if (ans.message === "error") {
-      handler.user_emit(socket, "error_occurred", {})
-      return
-    } else if (ans.message === "duplicate") {
-      handler.user_emit(socket, "email_already_exists", { email: data.email })
-      return
-    } else if (ans.message === "not_sent") {
-      handler.user_emit(socket, "email_change_code_not_sent", {
-        email: data.email,
-      })
-      return
-    } else if (ans.message === "wrong_code") {
-      handler.user_emit(socket, "email_change_wrong_code", {
-        email: data.email,
-      })
-      return
-    } else if (ans.message === "expired_code") {
-      handler.user_emit(socket, "email_change_expired_code", {
-        email: data.email,
-      })
-      return
-    } else if (ans.message === "changed") {
-      handler.modify_socket_properties(socket.hue_user_id, { hue_email: data.email })
-      handler.user_emit(socket, "email_changed", { email: ans.email })
-    }
-  }
-
   // Handles bio changes
   handler.public.change_bio = async function (socket, data) {
     if (data.bio.length > config.max_bio_length) {
@@ -230,7 +146,7 @@ module.exports = function (
   // Completes profile image changes
   handler.do_change_profile_image = async function (socket, file_name) {
     let userinfo = await db_manager.get_user(
-      { _id: socket.hue_user_id },
+      { id: socket.hue_user_id },
       { profile_image: 1, profile_image_version: 1 }
     )
     let new_ver = userinfo.profile_image_version + 1
@@ -300,7 +216,7 @@ module.exports = function (
   // Completes audio clip changes
   handler.do_change_audio_clip = async function (socket, file_name) {
     let userinfo = await db_manager.get_user(
-      { _id: socket.hue_user_id },
+      { id: socket.hue_user_id },
       { audio_clip: 1, audio_clip_version: 1 }
     )
     let new_ver = userinfo.audio_clip_version + 1

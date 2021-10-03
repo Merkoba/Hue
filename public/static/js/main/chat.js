@@ -628,7 +628,7 @@ Hue.show_reply = function (username, text) {
   Hue.msg_reply.set_title(`Re: ${username}`)
 
   Hue.msg_reply.show(function () {
-    $("#reply_input").focus()
+    $("#reply_input").trigger("focus")
   })
 
   Hue.reply_username = username
@@ -788,7 +788,7 @@ Hue.edit_message = function (container) {
   Hue.editing_message_area = area
   Hue.editing_original_message = $(container).data("original_message")
 
-  $(area).val(Hue.editing_original_message).focus()
+  $(area).val(Hue.editing_original_message).trigger("focus")
 
   setTimeout(function () {
     area.setSelectionRange(area.value.length, area.value.length)
@@ -821,7 +821,7 @@ Hue.stop_edit_message = function () {
   $(Hue.editing_message_container).css("display", "flex")
   Hue.editing_message = false
   Hue.editing_message_container = false
-  Hue.editing_message_area = false
+  Hue.editing_message_area = $("<div></div>")[0]
 }
 
 // Submits a chat message edit

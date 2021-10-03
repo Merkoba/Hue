@@ -2068,6 +2068,12 @@ a.special_link:hover {
 	margin-top: 1rem;
 }
 
+.details_inputbox {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
 .show_message_reply_with_spacing {
 	margin-bottom: 0.4rem;
 }

@@ -94,7 +94,7 @@ Hue.handle_url = function (text) {
     Hue.handled_url_input = text
     Hue.handled_url_comment = ""
     Hue.msg_handle_url.show(function () {
-      $("#handle_url_comment").focus()
+      $("#handle_url_comment").trigger("focus")
     })
   }
 }

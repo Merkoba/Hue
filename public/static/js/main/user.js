@@ -30,20 +30,29 @@ Hue.change_username = function (uname) {
 }
 
 // Changes the user's password
-Hue.change_password = function (passwd) {
-  if (passwd.length < Hue.config.min_password_length) {
+Hue.change_password = function (p1, p2) {
+  if (!p1 || !p2) {
+    return false
+  }
+
+  if (p1 !== p2) {
+    Hue.checkmsg("Passwords don't match")    
+    return false
+  }
+
+  if (p1.length < Hue.config.min_password_length) {
     Hue.checkmsg(
       `Password is too short. It must be at least ${Hue.config.min_password_length} characters long`
     )
     return false
   }
 
-  if (passwd.length > Hue.config.max_password_length) {
+  if (p1.length > Hue.config.max_password_length) {
     Hue.checkmsg("Password is too long")
     return false
   }
 
-  Hue.socket_emit("change_password", { password: passwd })
+  Hue.socket_emit("change_password", { password: p1 })
   return true
 }
 
@@ -52,38 +61,6 @@ Hue.password_changed = function (data) {
   Hue.checkmsg(
     `Password succesfully changed. To force other clients connected to your account to disconnect you can use ${Hue.config.commands_prefix}disconnectothers`
   )
-}
-
-// Changes the user's email
-Hue.change_email = function (email) {
-  if (Hue.utilz.clean_string5(email) !== email) {
-    Hue.checkmsg("Invalid email address")
-    return false
-  }
-
-  if (email.length === 0) {
-    Hue.checkmsg("Username can't be empty")
-    return false
-  }
-
-  if (!email.includes("@")) {
-    Hue.checkmsg("Invalid email address")
-    return false
-  }
-
-  if (email.length > Hue.config.max_email_length) {
-    Hue.checkmsg("Email is too long")
-    return false
-  }
-
-  Hue.socket_emit("change_email", { email: email })
-  return true
-}
-
-// Feedback on email change
-Hue.email_changed = function (data) {
-  Hue.set_email(data.email)
-  Hue.checkmsg(`Email succesfully changed to ${data.email}`)
 }
 
 // Changes the user's bio
@@ -112,7 +89,6 @@ Hue.change_bio = function (value) {
 // Setups the user details window
 Hue.build_details = function () {
   $("#details_username").text(Hue.username)
-  $("#details_email").text(Hue.user_email)
 
   let s = `<div>${Hue.utilz.nice_date(Hue.user_reg_date)}</div>
     </div>(${Hue.utilz.timeago(Hue.user_reg_date)})</div>`
@@ -142,7 +118,7 @@ Hue.show_change_username = function () {
 
   Hue.msg_info2.show(["Change Username", s], function () {
     $("#change_username_input").val(Hue.username)
-    $("#change_username_input").focus()
+    $("#change_username_input").trigger("focus")
 
     $("#change_username_submit").on("click", function () {
       Hue.submit_change_username()
@@ -169,13 +145,16 @@ Hue.submit_change_username = function () {
 // Shows the change password form
 Hue.show_change_password = function () {
   let s = `
-    <input type='password' placeholder='New Password' id='change_password_input' class='nice_input_2'>
+    <div class="details_inputbox">
+      <input type='password' placeholder='New Password' id='change_password_input_1' class='nice_input_2'>
+      <input type='password' placeholder='Password Again' id='change_password_input_2' class='nice_input_2'>
+    </div>
     <div class='flex_row_center'>
         <div class='action bigger details_change_submit' id='change_password_submit'>Change</div>
     </div>`
 
   Hue.msg_info2.show(["Change Password", s], function () {
-    $("#change_password_input").focus()
+    $("#change_password_input_1").trigger("focus")
 
     $("#change_password_submit").on("click", function () {
       Hue.submit_change_password()
@@ -187,37 +166,10 @@ Hue.show_change_password = function () {
 
 // Submits the change password form
 Hue.submit_change_password = function () {
-  let uname = $("#change_password_input").val().trim()
+  let p1 = $("#change_password_input_1").val().trim()
+  let p2 = $("#change_password_input_2").val().trim()
 
-  if (Hue.change_password(uname)) {
-    Hue.msg_info2.close()
-  }
-}
-
-// Shows the change email form
-Hue.show_change_email = function () {
-  let s = `
-    <input type='text' placeholder='New Email' id='change_email_input' class='nice_input_2'>
-    <div class='flex_row_center'>
-        <div class='action bigger details_change_submit' id='change_email_submit'>Change</div>
-    </div>`
-
-  Hue.msg_info2.show(["Change Email", s], function () {
-    $("#change_email_input").focus()
-
-    $("#change_email_submit").on("click", function () {
-      Hue.submit_change_email()
-    })
-
-    Hue.change_user_email_open = true
-  })
-}
-
-// Submits the change email form
-Hue.submit_change_email = function () {
-  let uname = $("#change_email_input").val().trim()
-
-  if (Hue.change_email(uname)) {
+  if (Hue.change_password(p1, p2)) {
     Hue.msg_info2.close()
   }
 }
@@ -227,11 +179,6 @@ Hue.set_username = function (uname) {
   Hue.username = uname
   Hue.generate_mentions_regex()
   $("#user_menu_username").text(Hue.username)
-}
-
-// Email setter
-Hue.set_email = function (email) {
-  Hue.user_email = email
 }
 
 // Bio setter
@@ -262,10 +209,6 @@ Hue.setup_user_menu = function () {
     } else {
       $(this).val(value)
     }
-  })
-
-  $("#user_menu_username").on("click", function () {
-    Hue.show_change_username()
   })
 
   $("#user_menu_profile_image").on("click", function () {
@@ -299,10 +242,6 @@ Hue.setup_user_menu = function () {
   $("#user_menu_change_password").on("click", function () {
     Hue.show_change_password()    
   })
-
-  $("#user_menu_change_email").on("click", function () {
-    Hue.show_change_email()    
-  })
 }
 
 // Updates some user menu elements
@@ -314,26 +253,6 @@ Hue.update_user_menu = function () {
 // Shows the user menu
 Hue.show_user_menu = function () {
   Hue.msg_user_menu.show()
-}
-
-// Send the code to verify email change
-Hue.verify_email = function (code) {
-  if (Hue.utilz.clean_string5(code) !== code) {
-    Hue.checkmsg("Invalid code")
-    return
-  }
-
-  if (code.length === 0) {
-    Hue.checkmsg("Empty code")
-    return
-  }
-
-  if (code.length > Hue.config.email_change_code_max_length) {
-    Hue.checkmsg("Invalid code")
-    return
-  }
-
-  Hue.socket_emit("verify_email", { code: code })
 }
 
 // Opens the profile image picker to change the profile image

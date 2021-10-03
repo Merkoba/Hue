@@ -167,7 +167,7 @@ module.exports = function (
     vars.fs.writeFile(
       vars.images_root + "/" + file_name,
       data.image_file,
-      function (err, data2) {
+      function (err) {
         if (err) {
           handler.user_emit(socket, "upload_error", {})
         } else {
@@ -178,8 +178,13 @@ module.exports = function (
           obj.size = size
           obj.type = "upload"
           obj.comment = data.comment
-
-          handler.do_change_image(socket, obj)
+          
+          try {
+            handler.do_change_image(socket, obj)
+          } catch (err) {
+            logger.log_error(err)
+            handler.user_emit(socket, "upload_error", {})
+          }
         }
       }
     )

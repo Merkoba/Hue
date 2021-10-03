@@ -33,7 +33,7 @@ module.exports = function (
     vars.fs.writeFile(
       vars.videos_root + "/" + file_name,
       data.video_file,
-      function (err, data2) {
+      function (err) {
         if (err) {
           handler.user_emit(socket, "upload_error", {})
         } else {
@@ -44,7 +44,12 @@ module.exports = function (
           obj.size = size
           obj.type = "upload"
           obj.comment = data.comment
-          handler.do_change_tv(socket, obj)
+          try {
+            handler.do_change_tv(socket, obj)
+          } catch (err) {
+            logger.log_error(err)
+            handler.user_emit(socket, "upload_error", {})
+          }
         }
       }
     )
@@ -315,7 +320,11 @@ module.exports = function (
     let date = Date.now()
     let comment = data.comment || ""
     let size = data.size || 0
-    let tv_title = vars.he.decode(data.title) || ""
+    let tv_title = ""
+
+    if (data.title) {
+      tv_title = vars.he.decode(data.title)
+    }
 
     if (data.query === undefined) {
       data.query = ""

@@ -175,17 +175,6 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.change_user_email_open) {
-        if (Hue.msg_info2.is_highest()) {
-          if (e.key === "Enter" && !e.shiftKey) {
-            Hue.submit_change_email()
-            e.preventDefault()
-          }
-
-          return
-        }
-      }
-
       if (Hue.msg_handle_url.is_open()) {
         if (Hue.msg_handle_url.is_highest()) {
           if (e.key === "Enter") {

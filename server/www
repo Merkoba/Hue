@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-const fs = require('fs')
-const path = require('path')
+const fs = require("fs")
+const path = require("path")
 
 function normalizePort(val) {
 	let port = parseInt(val, 10)
@@ -16,10 +16,10 @@ function normalizePort(val) {
 	return false
 }
 
-const config_path = path.join(__dirname, '../config/config.json')
-const user_config_path = path.join(__dirname, '../config/user_config.json')
-const sconfig_path = path.join(__dirname, '../config/config.secret.json')
-const user_sconfig_path = path.join(__dirname, '../config/user_config.secret.json')
+const config_path = path.join(__dirname, "../config/config.json")
+const user_config_path = path.join(__dirname, "../config/user_config.json")
+const sconfig_path = path.join(__dirname, "../config/config.secret.json")
+const user_sconfig_path = path.join(__dirname, "../config/user_config.secret.json")
 const config = {}
 const sconfig = {}
 const config_check_delay = 5000
@@ -27,18 +27,18 @@ const config_check_delay = 5000
 let config_mtime = ""
 
 function build_config() {
-	let xconfig = JSON.parse(fs.readFileSync(config_path, 'utf8'))
-	let xsconfig = JSON.parse(fs.readFileSync(sconfig_path, 'utf8'))
+	let xconfig = JSON.parse(fs.readFileSync(config_path, "utf8"))
+	let xsconfig = JSON.parse(fs.readFileSync(sconfig_path, "utf8"))
 
 	try {
-		let user_config = JSON.parse(fs.readFileSync(user_config_path, 'utf8'))
+		let user_config = JSON.parse(fs.readFileSync(user_config_path, "utf8"))
 		Object.assign(xconfig, user_config)
 	} catch (err) {
 		console.error(err)
 	}
 
 	try {
-		let user_sconfig = JSON.parse(fs.readFileSync(user_sconfig_path, 'utf8'))
+		let user_sconfig = JSON.parse(fs.readFileSync(user_sconfig_path, "utf8"))
 		Object.assign(xsconfig, user_sconfig)
 	} catch (err) {
 		console.error(err)
@@ -85,130 +85,114 @@ const port = normalizePort(process.env.PORT || "3210")
 build_config()
 start_config_check()
 
-const mongo = require('mongodb')
-const winston = require('winston')
+const winston = require("winston")
 
-mongo.connect(config.mongodb_path, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true
-}, function (err, client) {
-	if (err) {
-		console.error(err)
+const logger = winston.createLogger({
+	format: winston.format.simple(),
+	transports: [
+		new winston.transports.File({
+			filename: path.join(__dirname, "../logs/error.log"),
+			level: "error",
+			timestamp: (new Date()).toLocaleTimeString()
+		})
+	]
+})
+
+if (logger.log_error !== undefined) {
+	console.error("logger.log_error is reserved")
+}
+
+logger.log_error = function (msg) {
+	if (process.env.NODE_ENV === "development") {
+		console.error(msg)
+	}
+
+	if (msg instanceof Error) {
+		msg = JSON.stringify(msg.stack, null, 2).replace(/\\n/g, "\r\n")
+	}
+
+	msg = `${new Date().toLocaleString()}\r\n${msg}`
+
+	logger.log({
+		level: "error",
+		message: msg
+	})
+}
+
+const utilz = require("../public/static/js/libs/utilz.js")()
+const db_manager = require("./db/main.js")(config, sconfig, utilz, logger)
+const app = require("./app")(db_manager, config, sconfig, utilz)
+const debug = require("debug")("hue:server")
+const http = require("http")
+
+app.set("port", port)
+
+const server = http.createServer(app)
+
+server.on("error", on_error)
+server.on("listening", on_listening)
+
+const io = require("socket.io")(server, {
+	pingTimeout: 60000
+})
+
+server.listen(port)
+
+const sockets_api = {}
+
+require("./sockets/main")(io, db_manager, config, sconfig, utilz, logger, sockets_api)
+
+function on_error(error) {
+	if (error.syscall !== "listen") {
+		throw error
+	}
+
+	let bind = typeof port === "string" ?
+		"Pipe " + port :
+		"Port " + port
+
+	switch (error.code) {
+		case "EACCES":
+			console.error(bind + " requires elevated privileges")
+			process.exit(1)
+			break
+
+		case "EADDRINUSE":
+			console.error(bind + " is already in use")
+			process.exit(1)
+			break
+
+		default:
+			throw error
+	}
+}
+
+function on_listening() {
+	let addr = server.address()
+
+	let bind = typeof addr === "string" ?
+		"pipe " + addr :
+		"port " + addr.port
+
+	debug("Listening on " + bind)
+}
+
+function do_shutdown() {
+	sockets_api.vars.exiting = true
+	sockets_api.handler.rooms_timeout_action()
+
+	io.httpServer.close()
+	io.close()
+
+	server.close(function () {
+		process.exit(0)
+	})
+}
+
+process.on("SIGINT", function () {
+	if (process.env.NODE_ENV === "development") {
+		process.exit(0);
 	} else {
-		const db = client.db(config.db_name)
-
-		const logger = winston.createLogger({
-			format: winston.format.simple(),
-			transports: [
-				new winston.transports.File({
-					filename: path.join(__dirname, "../logs/error.log"),
-					level: "error",
-					timestamp: (new Date()).toLocaleTimeString()
-				})
-			]
-		})
-
-		if (logger.log_error !== undefined) {
-			console.error("logger.log_error is reserved")
-		}
-
-		logger.log_error = function (msg) {
-			if (process.env.NODE_ENV === "development") {
-				console.error(msg)
-			}
-
-			if (msg instanceof Error) {
-				msg = JSON.stringify(msg.stack, null, 2).replace(/\\n/g, "\r\n")
-			}
-
-			msg = `${new Date().toLocaleString()}\r\n${msg}`
-
-			logger.log({
-				level: "error",
-				message: msg
-			})
-		}
-
-		const utilz = require('../public/static/js/libs/utilz.js')()
-		const db_manager = require('./db/main.js')(db, config, sconfig, utilz, logger)
-		const app = require('./app')(db, db_manager, config, sconfig, utilz)
-		const debug = require('debug')('hue:server')
-		const http = require('http')
-
-		app.set('port', port)
-
-		const server = http.createServer(app)
-
-		server.on('error', on_error)
-		server.on('listening', on_listening)
-
-		const io = require('socket.io')(server, {
-			pingTimeout: 60000
-		})
-
-		server.listen(port)
-
-		const sockets_api = {}
-
-		require('./sockets/main')(io, db_manager, config, sconfig, utilz, logger, sockets_api)
-
-		function on_error(error) {
-			if (error.syscall !== 'listen') {
-				throw error
-			}
-
-			let bind = typeof port === 'string' ?
-				'Pipe ' + port :
-				'Port ' + port
-
-			switch (error.code) {
-				case 'EACCES':
-					console.error(bind + ' requires elevated privileges')
-					process.exit(1)
-					break
-
-				case 'EADDRINUSE':
-					console.error(bind + ' is already in use')
-					process.exit(1)
-					break
-
-				default:
-					throw error
-			}
-		}
-
-		function on_listening() {
-			let addr = server.address()
-
-			let bind = typeof addr === 'string' ?
-				'pipe ' + addr :
-				'port ' + addr.port
-
-			debug('Listening on ' + bind)
-		}
-
-		function do_shutdown() {
-			sockets_api.vars.exiting = true
-			sockets_api.handler.rooms_timeout_action()
-
-			io.httpServer.close()
-			io.close()
-
-			server.close(function () {
-				process.exit(0)
-			})
-		}
-
-		process.on('SIGINT', function () {
-			if (process.env.NODE_ENV === "development") {
-				process.exit(0);
-			} else {
-				do_shutdown()
-			}
-		})
-
-		// process.on('SIGINT', function () {
-		// 	do_shutdown()
-		// })
+		do_shutdown()
 	}
 })

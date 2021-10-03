@@ -26,7 +26,7 @@ Hue.setup_footer = function () {
 
   $("#footer_items").on("click", function(e) {
     if (e.target === this) {
-      $("#input").focus()
+      $("#input").trigger("focus")
     }
   })
 
