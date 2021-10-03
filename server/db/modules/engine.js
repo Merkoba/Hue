@@ -37,7 +37,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     console.info(`Writing: ${path.split("/").slice(-2).join("/")}`)
     cache[path].last_write = Date.now()
     fs.writeFile(path, JSON.stringify(cache[path].json), "utf8", err => {
-      logger.log_error(err)
+      if (err) {
+        logger.log_error(err)
+      }
     })
   }
 
