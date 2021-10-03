@@ -12,7 +12,7 @@ Hue.show_create_room = function () {
       Hue.create_room_submit()
     })
 
-    $("#create_room_name").focus()
+    $("#create_room_name").trigger("focus")
     Hue.create_room_open = true
   })
 }

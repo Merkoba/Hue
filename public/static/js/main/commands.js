@@ -108,18 +108,6 @@ Hue.commands = {
     },
     description: `Shows Commands`,
   },
-  "changeusername": {
-    action: (arg, ans) => {
-      Hue.change_username(arg)
-    },
-    description: `Changes the account username`,
-  },
-  "changepassword": {
-    action: (arg, ans) => {
-      Hue.change_password(arg)
-    },
-    description: `Changes the account password`,
-  },
   "details": {
     action: (arg, ans) => {
       Hue.show_details()

@@ -7,7 +7,7 @@ const msg_info = Msg.factory({
 })
 
 function msg_info_after_close(instance) {
-	$("form").eq(0).find("input").eq(0).focus()
+	$("form").eq(0).find("input").eq(0).trigger("focus")
 }
 
 function set_message(s) {

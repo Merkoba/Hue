@@ -132,13 +132,13 @@ Hue.do_media_picker_input_cycle = function (type) {
   }
 
   if (document.activeElement === $(`#${type}_source_picker_input`)[0]) {
-    $(`#${type}_source_picker_input_comment`).focus()
+    $(`#${type}_source_picker_input_comment`).trigger("focus")
   } else if (
     document.activeElement === $("#image_source_picker_input_comment")[0]
   ) {
-    $(`#${type}_source_picker_input`).focus()
+    $(`#${type}_source_picker_input`).trigger("focus")
   } else {
-    $(`#${type}_source_picker_input`).focus()
+    $(`#${type}_source_picker_input`).trigger("focus")
   }
 }
 

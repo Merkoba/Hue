@@ -30,20 +30,29 @@ Hue.change_username = function (uname) {
 }
 
 // Changes the user's password
-Hue.change_password = function (passwd) {
-  if (passwd.length < Hue.config.min_password_length) {
+Hue.change_password = function (p1, p2) {
+  if (!p1 || !p2) {
+    return false
+  }
+
+  if (p1 !== p2) {
+    Hue.checkmsg("Passwords don't match")    
+    return false
+  }
+
+  if (p1.length < Hue.config.min_password_length) {
     Hue.checkmsg(
       `Password is too short. It must be at least ${Hue.config.min_password_length} characters long`
     )
     return false
   }
 
-  if (passwd.length > Hue.config.max_password_length) {
+  if (p1.length > Hue.config.max_password_length) {
     Hue.checkmsg("Password is too long")
     return false
   }
 
-  Hue.socket_emit("change_password", { password: passwd })
+  Hue.socket_emit("change_password", { password: p1 })
   return true
 }
 
@@ -109,7 +118,7 @@ Hue.show_change_username = function () {
 
   Hue.msg_info2.show(["Change Username", s], function () {
     $("#change_username_input").val(Hue.username)
-    $("#change_username_input").focus()
+    $("#change_username_input").trigger("focus")
 
     $("#change_username_submit").on("click", function () {
       Hue.submit_change_username()
@@ -136,13 +145,16 @@ Hue.submit_change_username = function () {
 // Shows the change password form
 Hue.show_change_password = function () {
   let s = `
-    <input type='password' placeholder='New Password' id='change_password_input' class='nice_input_2'>
+    <div class="details_inputbox">
+      <input type='password' placeholder='New Password' id='change_password_input_1' class='nice_input_2'>
+      <input type='password' placeholder='Password Again' id='change_password_input_2' class='nice_input_2'>
+    </div>
     <div class='flex_row_center'>
         <div class='action bigger details_change_submit' id='change_password_submit'>Change</div>
     </div>`
 
   Hue.msg_info2.show(["Change Password", s], function () {
-    $("#change_password_input").focus()
+    $("#change_password_input_1").trigger("focus")
 
     $("#change_password_submit").on("click", function () {
       Hue.submit_change_password()
@@ -154,9 +166,10 @@ Hue.show_change_password = function () {
 
 // Submits the change password form
 Hue.submit_change_password = function () {
-  let uname = $("#change_password_input").val().trim()
+  let p1 = $("#change_password_input_1").val().trim()
+  let p2 = $("#change_password_input_2").val().trim()
 
-  if (Hue.change_password(uname)) {
+  if (Hue.change_password(p1, p2)) {
     Hue.msg_info2.close()
   }
 }
@@ -196,10 +209,6 @@ Hue.setup_user_menu = function () {
     } else {
       $(this).val(value)
     }
-  })
-
-  $("#user_menu_username").on("click", function () {
-    Hue.show_change_username()
   })
 
   $("#user_menu_profile_image").on("click", function () {

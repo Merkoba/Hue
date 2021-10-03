@@ -479,7 +479,7 @@ Hue.focus_modal_filter = function (instance) {
     .eq(0)
 
   if (filter.length) {
-    filter.focus()
+    filter.trigger("focus")
   }
 }
 
