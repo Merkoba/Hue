@@ -31,10 +31,6 @@ function get_random_string (n) {
   return text
 }
 
-function generate_id(what) {
-  return `${Math.round(new Date() / 1000)}_${get_random_string(4)}`
-}
-
 function create_files (what) {
   let text_file = fs.readFileSync(`${what}.txt`, "utf8").trim()
   let lines = text_file.split("\n").filter(x => x.trim() != "")
@@ -45,7 +41,7 @@ function create_files (what) {
     if (obj._id === "main") {
       obj.id = "main"
     } else {
-      obj.id = generate_id(what)
+      obj.id = obj._id.valueOf()["$oid"]
     }
 
     delete obj._id
