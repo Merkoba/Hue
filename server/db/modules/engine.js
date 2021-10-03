@@ -23,12 +23,12 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     clearTimeout(cache[path].timeout)
     cache[path].json = json
 
-    if (Date.now() - cache[path].last_write > 10000) {
+    if (Date.now() - cache[path].last_write > config.db_write_file_timeout_limit) {
       do_write_file(path)
     } else {
       cache[path].timeout = setTimeout(() => {
         do_write_file(path)
-      }, 2000)
+      }, config.db_write_file_timeout)
     }
   }
 
