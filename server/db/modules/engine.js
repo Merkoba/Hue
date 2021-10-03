@@ -121,7 +121,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
       fs.readFile(path, "utf8", (err, text) => {
         if (err) {
-          logger.log_error(err)
           reject("Nothing found")
           return
         }
