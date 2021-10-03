@@ -40,14 +40,19 @@ module.exports = function (
 
     if (data.alternative) {
       socket.hue_login_method = "alternative"
-      data.email = data.email.trim()
-      data.password = data.password.trim()
-
-      if (data.email === undefined || data.password === undefined) {
+      
+      if (!data.username || !data.password) {
         return handler.do_disconnect(socket)
       }
 
-      if (data.email > config.max_max_email_length) {
+      data.username = data.username.trim()
+      data.password = data.password.trim()
+
+      if (data.username === undefined || data.password === undefined) {
+        return handler.do_disconnect(socket)
+      }
+
+      if (data.username > config.max_max_username_length) {
         return handler.do_disconnect(socket)
       }
 
@@ -78,7 +83,6 @@ module.exports = function (
     }
 
     let user_fields = {
-      email: 1,
       username: 1,
       profile_image: 1,
       profile_image_version: 1,
@@ -92,21 +96,21 @@ module.exports = function (
 
     if (data.alternative) {
       let ans = await db_manager.check_password(
-        data.email,
+        data.username,
         data.password,
         user_fields
       )
 
       if (!ans.valid) {
-        handler.anti_spam_ban(socket)
+        handler.anti_spam_ban(socket, 2)
         return handler.do_disconnect(socket)
       }
 
       let userinfo = ans.user
 
-      socket.hue_user_id = userinfo._id.toString()
+      socket.hue_user_id = userinfo.id
 
-      let info = await db_manager.get_room({ _id: data.room_id }, room_fields)
+      let info = await db_manager.get_room({ id: data.room_id }, room_fields)
 
       if (!info) {
         return handler.do_disconnect(socket)
@@ -133,7 +137,7 @@ module.exports = function (
           socket.hue_user_id = data.user_id
 
           let info = await db_manager.get_room(
-            { _id: data.room_id },
+            { id: data.room_id },
             room_fields
           )
 
@@ -142,7 +146,7 @@ module.exports = function (
           }
 
           let userinfo = await db_manager.get_user(
-            { _id: socket.hue_user_id },
+            { id: socket.hue_user_id },
             user_fields
           )
 
@@ -158,8 +162,7 @@ module.exports = function (
 
   // Does a room join after successful authentication
   handler.do_join = async function (socket, info, userinfo, data) {
-    socket.hue_room_id = info._id.toString()
-    socket.hue_email = userinfo.email
+    socket.hue_room_id = info.id
     socket.hue_bio = userinfo.bio
     socket.hue_hearts = userinfo.hearts
     socket.hue_skulls = userinfo.skulls
@@ -175,7 +178,7 @@ module.exports = function (
       return handler.do_disconnect(socket)
     }
 
-    if (sconfig.superuser_emails.includes(userinfo.email)) {
+    if (sconfig.superuser_usernames.includes(userinfo.username)) {
       socket.hue_superuser = true
     }
 
@@ -234,7 +237,7 @@ module.exports = function (
       let key = Object.keys(vars.filtered_fields)[0]
 
       if (info[key] === undefined) {
-        info = await db_manager.get_room({ _id: socket.hue_room_id }, {})
+        info = await db_manager.get_room({ id: socket.hue_room_id }, {})
       }
 
       vars.rooms[socket.hue_room_id] = handler.create_room_object(info)
@@ -295,7 +298,6 @@ module.exports = function (
       background_color: info.background_color,
       background_image: background_image,
       text_color: info.text_color,
-      email: utilz.conceal_email(socket.hue_email),
       bio: socket.hue_bio,
       superuser:socket.hue_superuser,
       reg_date: userinfo.registration_date,

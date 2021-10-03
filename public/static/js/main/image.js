@@ -70,6 +70,12 @@ Hue.setup_image = function (mode, odata = {}) {
   }
 
   if (!data.message) {
+    if (data.query) {
+      data.message = data.query
+    }    
+  }
+
+  if (!data.message) {
     if (data.size) {
       data.message = "Uploaded image"
     } else {
@@ -529,7 +535,7 @@ Hue.hide_expand_image = function () {
 // Shows the image picker window to input a URL, or upload a file
 Hue.show_image_picker = function () {
   Hue.msg_image_picker.show(function () {
-    $("#image_source_picker_input").focus()
+    $("#image_source_picker_input").trigger("focus")
     Hue.show_media_history("image")
     Hue.vertical_separator($("#image_history_container")[0], true, false)
     Hue.scroll_modal_to_top("image_picker")
@@ -563,7 +569,7 @@ Hue.show_image_upload_comment = function (file, type) {
         Hue.process_image_upload_comment()
       })
 
-      $("#image_upload_comment_input").focus()
+      $("#image_upload_comment_input").trigger("focus")
       Hue.scroll_modal_to_bottom("image_upload_comment")
     })
   }

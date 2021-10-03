@@ -57,6 +57,12 @@ Hue.setup_tv = function (mode, odata = {}) {
   }
 
   if (!data.message) {
+    if (data.query) {
+      data.message = data.query
+    }    
+  }  
+
+  if (!data.message) {
     if (data.size) {
       data.message = "Uploaded video"
     } else {
@@ -528,7 +534,7 @@ Hue.change_tv_visibility = function (play = false) {
 // Shows the tv picker window to input a URL
 Hue.show_tv_picker = function () {
   Hue.msg_tv_picker.show(function () {
-    $("#tv_source_picker_input").focus()
+    $("#tv_source_picker_input").trigger("focus")
     Hue.show_media_history("tv")
     Hue.vertical_separator($("#tv_history_container")[0], true, false)
     Hue.scroll_modal_to_top("tv_picker")
@@ -740,7 +746,7 @@ Hue.show_tv_upload_comment = function (file, type) {
         Hue.process_tv_upload_comment()
       })
 
-      $("#tv_upload_comment_input").focus()
+      $("#tv_upload_comment_input").trigger("focus")
       Hue.scroll_modal_to_bottom("tv_upload_comment")
     })
   }

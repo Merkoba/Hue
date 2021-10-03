@@ -2,10 +2,6 @@
 
 Refer to [config.json](config/config.json) and [config.secret.json](config/config.secret.json) to check defaults.
 
-
-"db_name"
->The database name Mongo will use. The database is created automatically at first launch. This setting allows trying different contexts by just changing the name, which is good for development and other cases.
-
 "https_enabled"
 >Defaults to true for security reasons. If deployed in a non-https environment set it to false. In order for it to be really enabled the Node environment must be set to production. If true, some non https media will be blocked. It's recommended to setup a full https site to conform to current standards. Check out Let's Encrypt.
 
@@ -54,9 +50,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_video_url"
 >Image to show to video element when there's no video image loaded.
 
-"mongodb_path"
->The path to the MongoDB database. The name can be anything as long as the port is correct.
-
 "topic_separator"
 >Separator used between topic sections. Used when using /topicadd, which adds a new piece of topic at the end of the current topic. Also used when calculating the removal of these topic sections.
 
@@ -99,12 +92,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_max_password_length"
 >Same as max_max_username_length but for passwords.
 
-"max_email_length"
->Maximum length for email addresses.
-
-"max_max_email_length"
->Same as max_max_username_length but for emails.
-
 "password_reset_limit"
 >How long a user must wait to perform another password reset.
 
@@ -115,7 +102,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >Max length for room names.
 
 "max_room_id_length"
->Arbitrary big number to avoid big urls from being considered as valid room ids. Mongo ids are approximately 24 chars in length as for 2017.
+>Arbitrary big number to avoid big urls from being considered as valid room ids.
 
 "rooms_loop_interval"
 >The interval in milliseconds for the loop that saves iterates through a rooms object which is updated through chat activity and saves it to the database. This loops is to avoid saving data, like log messages, to the database on every message.
@@ -183,9 +170,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "encryption_cost"
 >This is used for the password hashing. A cost of 12 are 4096 salt rounds. The more rounds, the more secure the hash is, but it takes longer to process.
 
-"mail_enabled"
->Whether a mailgun account is to be used for mail delivery, for example for password resets. If this is enabled, the "Forgot Password" link will appear in the login page.
-
 "max_url_length"
 >Url lengths beyond this are ignored by the system. This is to avoid triggering actions on urls that are likely wrong or meant as an attack.
 
@@ -252,26 +236,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_typing_inactivity"
 >After the last typing signal has being received, it will stop showing the typing status after this amount of time.
 
-"max_verification_time"
->How much time a verification link will be active after registration. If it's not used before this it won't work.
-
-"delivery_email"
->Email address from where system emails are sent.
-
-"delivery_email_name"
->Name used on system emails.
-
 "media_changed_crop_limit"
 >How many items are stored in images_changed and tv_changed.
-
-"email_change_limit"
->How long a user must wait to perform another email verification.
-
-"email_change_expiration"
->How long an email verification code will be valid.
-
-"email_change_code_max_length"
->Arbitrary long length to consider email verification codes.
 
 "create_room_cooldown"
 >How long a user must wait to create another room.
@@ -368,6 +334,15 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_activity_username_length"
 >How wide usernames on the activity bar can be.
 
+"db_store_path"
+>Where the database of users and rooms reside.
+
+"db_write_file_timeout"
+>Timeout for DB write file cache.
+
+"db_write_file_timeout_limit"
+>Max time without saving a file after a write call.
+
 
 ## The following reside in config.secret.json
 
@@ -376,12 +351,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "session_secret"
 >Used for express-session security. Change it to anything you want.
-
-"mailgun_api_key"
->An api key from mailgun.com to enable mail delivery, used for password resets.
-
-"mailgun_domain"
->The domain registered in mailgun.com
 
 "jwt_secret"
 >Secret key for the jwt system when logging in.

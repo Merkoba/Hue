@@ -87,12 +87,12 @@ Hue.focus_input = function () {
     return false
   }
 
-  $("#input").focus()
+  $("#input").trigger("focus")
 }
 
 // Removes focus on the input
 Hue.blur_input = function () {
-  $("#input").blur()
+  $("#input").trigger("blur")
 }
 
 // Moves the input's caret to the end
