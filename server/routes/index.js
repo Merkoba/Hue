@@ -175,7 +175,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       res.redirect(`/login?fromurl=${fromurl}`)
     } else {
       db_manager
-        .get_user({ id: req.session.user_id }, { password_date: 1 })
+        .get_user(["id", req.session.user_id], { password_date: 1 })
 
         .then((user) => {
           if (!user || req.session.password_date !== user.password_date) {
@@ -372,7 +372,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     db_manager
       .get_user(
-        { username: username }, { username: 1 }
+        ["username", username], { username: 1 }
       )
 
       .then((user) => {

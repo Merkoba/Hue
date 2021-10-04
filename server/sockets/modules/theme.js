@@ -147,7 +147,7 @@ module.exports = function (
   // Completes background image changes
   handler.do_change_background_image = async function (socket, fname, type) {
     let info = await db_manager.get_room(
-      { id: socket.hue_room_id },
+      ["id", socket.hue_room_id],
       { background_image: 1, background_image_type: 1 }
     )
     let image_url

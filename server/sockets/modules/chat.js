@@ -177,11 +177,11 @@ module.exports = function (
         }
 
         let info = await db_manager.get_room(
-          { id: socket.hue_room_id },
+          ["id", socket.hue_room_id],
           { keys: 1 }
         )
         let userinfo = await db_manager.get_user(
-          { id: message.data.user_id },
+          ["id", message.data.user_id],
           { username: 1 }
         )
 
