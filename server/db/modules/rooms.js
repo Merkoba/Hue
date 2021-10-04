@@ -18,7 +18,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
-  // Finds rooms with the given query and fields to be fetched
+  // Finds rooms with the given ids and fields to be fetched
   manager.get_rooms = function (ids, fields) {
     return new Promise((resolve, reject) => {
       manager.find_multiple("rooms", ids, fields)
