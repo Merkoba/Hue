@@ -147,6 +147,10 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
   // Check file using the query and fields
   function check_file_query (original, query, fields) {
+    if (!query || query.length !== 2 || !query[0] || query[1] === undefined) {
+      return false
+    }
+
     if (original[query[0]] !== query[1]) {
       return false
     }
