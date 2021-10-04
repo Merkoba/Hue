@@ -46,9 +46,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Find one result
   manager.find_one = function (type, query, fields) {
     return new Promise((resolve, reject) => {
-      if (query.id !== undefined) {
-        let path = get_file_path(type, query.id)
-
+      if (query[0] === "id") {
+        let path = get_file_path(type, query[1])
+        
         check_file(path, query, fields)
 
         .then(obj => {
@@ -94,9 +94,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     return new Promise(async (resolve, reject) => {
       let objs = []
 
-      for (let i=0; i<ids.length; i++) {
+      for (let id of ids) {
         try {
-          let obj = await manager.find_one(type, {id: ids[i]}, fields)
+          let obj = await manager.find_one(type, ["id", id], fields)
           objs.push(obj)
         } catch (err) {}
       }
@@ -147,34 +147,8 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
   // Check file using the query and fields
   function check_file_query (original, query, fields) {
-    let firstkey = Object.keys(query)[0]
-
-    if (firstkey === "$or") {
-      let num_valid = 0
-
-      for (let group of query[firstkey]) {
-        let valid = true
-
-        for (let key in group) {
-          if (original[key] !== group[key]) {
-            valid = false
-          }
-        }
-
-        if (valid) {
-          num_valid += 1
-        }
-      }
-
-      if (num_valid === 0) {
-        return false
-      }
-    } else {
-      for (let key in query) {
-        if (original[key] !== query[key]) {
-          return false
-        }
-      }
+    if (original[query[0]] !== query[1]) {
+      return false
     }
 
     let obj = Object.assign({}, original)
@@ -235,25 +209,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         write_file(get_file_path(type, obj.id), obj)
         resolve("Ok")
       })
-    })
-  }
-
-  // Delete one file
-  manager.delete_one = function (type, id) {
-    return new Promise((resolve, reject) => {
-      if (id) {
-        fs.unlink(get_file_path(type, id), err => {
-          if (err) {
-            logger.log_error(err)
-            reject("Did not delete")
-            return
-          }
-
-          resolve("Ok")
-        })
-      } else {
-        reject("Invalid ID")
-      }
     })
   }
 }

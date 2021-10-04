@@ -38,11 +38,11 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { id: socket.hue_room_id },
+      ["id", socket.hue_room_id],
       { keys: 1 }
     )
     let userinfo = await db_manager.get_user(
-      { username: data.username },
+      ["username", data.username],
       { username: 1 }
     )
 
@@ -181,11 +181,11 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { id: socket.hue_room_id },
+      ["id", socket.hue_room_id],
       { bans: 1, keys: 1 }
     )
     let userinfo = await db_manager.get_user(
-      { username: data.username },
+      ["username", data.username],
       { username: 1 }
     )
 
@@ -257,11 +257,11 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { id: socket.hue_room_id },
+      ["id", socket.hue_room_id],
       { bans: 1, keys: 1 }
     )
     let userinfo = await db_manager.get_user(
-      { username: data.username },
+      ["username", data.username],
       { username: 1 }
     )
 
@@ -364,7 +364,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { id: socket.hue_room_id },
+      ["id", socket.hue_room_id],
       { keys: 1 }
     )
     let roles = {}
@@ -409,7 +409,7 @@ module.exports = function (
     }
 
     let info = await db_manager.get_room(
-      { id: socket.hue_room_id },
+      ["id", socket.hue_room_id],
       { bans: 1 }
     )
     
@@ -551,7 +551,7 @@ module.exports = function (
     }
 
     let userinfo = await db_manager.get_user(
-      { username: data.original },
+      ["username", data.original],
       { username: 1 }
     )
 

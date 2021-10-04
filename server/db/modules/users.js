@@ -62,7 +62,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.create_user = function (info) {
     return new Promise((resolve, reject) => {
       manager.get_user(
-      { username: info.username }, { username: 1 })
+        ["username", info.username], { username: 1 })
 
       .then(euser => {
         if (euser) {
@@ -135,7 +135,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
               return
             }
 
-            manager.update_one("users", { id: id }, fields)
+            manager.update_one("users", ["id", id], fields)
 
             .then(ans => {
               resolve(true)
@@ -165,7 +165,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           return
         }
 
-        manager.update_one("users", { id: id }, fields)
+        manager.update_one("users", ["id", id], fields)
 
         .then(ans => {
           resolve(true)
@@ -190,7 +190,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       Object.assign(fields, { password: 1 })
 
       manager
-        .get_user({ username: username }, fields)
+        .get_user(["username", username], fields)
 
         .then((user) => {
           if (!user) {
@@ -230,7 +230,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       }
 
       manager
-        .get_user({ id: id }, { username: 1 })
+        .get_user(["id", id], { username: 1 })
 
         .then((user) => {
           if (!user) {
@@ -238,7 +238,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             return
           } else {
             manager
-              .get_user({ username: username }, { username: 1 })
+              .get_user(["username", username], { username: 1 })
 
               .then((user2) => {
                 if (user2) {

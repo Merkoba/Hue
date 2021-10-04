@@ -95,7 +95,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.user_create_room = function (data, force = false) {
     return new Promise((resolve, reject) => {
       manager
-        .get_user({ id: data.user_id }, { create_room_date: 1 })
+        .get_user(["id", data.user_id], { create_room_date: 1 })
 
         .then((user) => {
           if (!force) {
@@ -155,7 +155,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         return
       }
 
-      manager.update_one("rooms", { id: id }, fields)
+      manager.update_one("rooms", ["id", id], fields)
 
       .then(ans => {
         resolve(true)
@@ -174,7 +174,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.push_log_messages = function (id, messages) {
     return new Promise((resolve, reject) => {
       manager
-        .get_room({ id: id }, { log_messages: 1 })
+        .get_room(["id", id], { log_messages: 1 })
 
         .then((room) => {
           room.log_messages = messages
@@ -210,7 +210,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.push_admin_log_messages = function (id, messages) {
     return new Promise((resolve, reject) => {
       manager
-        .get_room({ id: id }, { admin_log_messages: 1 })
+        .get_room(["id", id], { admin_log_messages: 1 })
 
         .then((room) => {
           room.admin_log_messages = messages

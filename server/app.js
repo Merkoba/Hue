@@ -44,6 +44,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       saveUninitialized: false,
       secret: sconfig.session_secret,
       resave: false,
+      cookie: { maxAge: config.session_cookie_max_age }
     })
   )
 
