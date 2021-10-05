@@ -115,6 +115,7 @@ Hue.init_message_board = function (data) {
   }
 
   Hue.check_last_message_board_post()
+  Hue.vertical_separator($("#message_board_container")[0])
 }
 
 // Shows the message board
@@ -162,6 +163,8 @@ Hue.on_message_board_received = function (data) {
   if (Hue.msg_message_board.is_open()) {
     Hue.update_last_message_post_checked()
   }
+
+  Hue.vertical_separator($("#message_board_container")[0])
 }
 
 // Checks if there are new message board posts
