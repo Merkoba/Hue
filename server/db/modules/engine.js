@@ -15,7 +15,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     return path.join(root_path, `${config.db_store_path}/${type}`)
   }
 
-  // Write to a file considering the cache
+  // Write to a file
   function write_file (path) {    
     clearTimeout(cache[path].timeout)
 
@@ -243,9 +243,12 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
+  // Fill unexisting keys with defaults
+  // Also remove obsolete keys
   manager.fill_defaults = function (type, obj) {
     let schema = vars[`${type}_schema`]()
 
+    // Fill defaults
     for (let key in schema) {
       let item = schema[key]
 
