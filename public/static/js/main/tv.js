@@ -536,7 +536,6 @@ Hue.show_tv_picker = function () {
   Hue.msg_tv_picker.show(function () {
     $("#tv_source_picker_input").trigger("focus")
     Hue.show_media_history("tv")
-    Hue.vertical_separator($("#tv_history_container")[0], true, false)
     Hue.scroll_modal_to_top("tv_picker")
   })
 }

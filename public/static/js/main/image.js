@@ -537,7 +537,6 @@ Hue.show_image_picker = function () {
   Hue.msg_image_picker.show(function () {
     $("#image_source_picker_input").trigger("focus")
     Hue.show_media_history("image")
-    Hue.vertical_separator($("#image_history_container")[0], true, false)
     Hue.scroll_modal_to_top("image_picker")
   })
 }
