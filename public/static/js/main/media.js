@@ -279,7 +279,7 @@ Hue.show_media_history = function (type, filter = "") {
   }
 
   clone.appendTo(`#${type}_history_container`)
-  Hue.vertical_separator($(`#${type}_history_container`)[0], true, false)
+  Hue.vertical_separator($(`#${type}_history_container`)[0])
 }
 
 // Additional media menu configurations
