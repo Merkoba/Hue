@@ -526,6 +526,12 @@ Hue.commands = {
       Hue.msg_draw_image.show()
     },
     description: `Open drawing window`,
+  },
+  "clear": {
+    action: (arg, ans) => {
+      Hue.add_chat_spacer()
+    },
+    description: `Clear the chat`,
   }
 }
 
