@@ -238,7 +238,7 @@ Hue.reset_media_history_filter = function (type) {
 }
 
 // Shows and/or filters media history of a certain type
-Hue.show_media_history = function (type, filter = false) {
+Hue.show_media_history = function (type, filter = "") {
   $(`#${type}_history_container`).html("")
   $(`#${type}_history_filter`).val(filter ? filter : "")
 
@@ -248,7 +248,7 @@ Hue.show_media_history = function (type, filter = false) {
     $(this).removeAttr("id")
   })
 
-  if (filter) {
+  if (filter.trim()) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
 
     clone = clone.filter(function () {
@@ -259,6 +259,11 @@ Hue.show_media_history = function (type, filter = false) {
       }
 
       let text = $(this).text().toLowerCase()
+
+      if (!text) {
+        return false
+      }
+
       return text.includes(lc_value)
     })
   } else {
@@ -274,6 +279,7 @@ Hue.show_media_history = function (type, filter = false) {
   }
 
   clone.appendTo(`#${type}_history_container`)
+  Hue.vertical_separator($(`#${type}_history_container`)[0], true, false)
 }
 
 // Additional media menu configurations

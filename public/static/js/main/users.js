@@ -383,7 +383,7 @@ Hue.user_is_controllable = function (user) {
 }
 
 // Shows the user list window
-Hue.show_userlist_window = function (mode = "normal", filter = false) {
+Hue.show_userlist_window = function (mode = "normal", filter = "") {
   Hue.userlist_mode = mode
 
   if (mode === "normal") {
@@ -395,7 +395,7 @@ Hue.show_userlist_window = function (mode = "normal", filter = false) {
   Hue.update_userlist_window()
 
   Hue.msg_userlist.show(function () {
-    if (filter) {
+    if (filter.trim()) {
       $("#userlist_filter").val(filter)
       Hue.do_modal_filter()
     }

@@ -5,11 +5,11 @@ Hue.reset_chat_search_filter = function () {
 }
 
 // Shows the chat search window
-Hue.show_chat_search = function (filter = false) {
+Hue.show_chat_search = function (filter = "") {
   $("#chat_search_container").html("")
   $("#chat_search_filter").val(filter ? filter : "")
 
-  if (filter) {
+  if (filter.trim()) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
     let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
 
@@ -19,6 +19,11 @@ Hue.show_chat_search = function (filter = false) {
 
     clone = clone.filter(function () {
       let text = $(this).text().toLowerCase()
+
+      if (!text) {
+        return false
+      }
+
       let text_cmp = text.includes(lc_value)
       
       let source_cmp = false

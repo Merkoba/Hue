@@ -673,7 +673,7 @@ Hue.show_commands = function (filter = "") {
       Hue.do_modal_filter_timer()
     })
 
-    if (filter) {
+    if (filter.trim()) {
       $("#commands_filter").val(filter)
       Hue.do_modal_filter()
     }

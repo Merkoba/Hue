@@ -106,9 +106,9 @@ Hue.push_notification = function (icon, message, on_click = false) {
 }
 
 // Shows information about the recent info popups
-Hue.show_notifications = function (filter = false) {
+Hue.show_notifications = function (filter = "") {
   Hue.msg_notifications.show(function () {
-    if (filter) {
+    if (filter.trim()) {
       $("#notifications_filter").val(filter)
       Hue.do_modal_filter()
     }
