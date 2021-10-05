@@ -129,10 +129,8 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         
         if (obj) {
           resolve(obj)
-          return
         } else {
           reject("Nothing found")
-          return
         }
       } else {
         fs.readFile(path, "utf8", (err, text) => {
