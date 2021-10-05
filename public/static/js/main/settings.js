@@ -208,9 +208,9 @@ Hue.reset_settings = function (empty = true) {
 }
 
 // Show the settings window
-Hue.show_settings = function (filter = false) {
+Hue.show_settings = function (filter = "") {
   Hue.msg_settings.show(function () {
-    if (filter) {
+    if (filter.trim()) {
       $("#settings_filter").val(filter)
       Hue.do_modal_filter()
     }

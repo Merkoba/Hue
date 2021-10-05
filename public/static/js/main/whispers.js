@@ -415,9 +415,9 @@ Hue.push_whisper = function (message, on_click, read) {
 }
 
 // Shows information about the recent whispers
-Hue.show_whispers = function (filter = false) {
+Hue.show_whispers = function (filter = "") {
   Hue.msg_whispers.show(function () {
-    if (filter) {
+    if (filter.trim()) {
       $("#whispers_filter").val(filter)
       Hue.do_modal_filter()
     }

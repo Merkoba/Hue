@@ -109,7 +109,7 @@ Hue.reset_highlights_filter = function () {
 }
 
 // Show and/or filters highlights window
-Hue.show_highlights = function (filter = false) {
+Hue.show_highlights = function (filter = "") {
   $("#highlights_container").html("")
   $("#highlights_filter").val(filter ? filter : "")
 
@@ -119,7 +119,7 @@ Hue.show_highlights = function (filter = false) {
     $(this).removeAttr("id")
   })
 
-  if (filter) {
+  if (filter.trim()) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
 
     clone = clone.filter(function () {
@@ -128,6 +128,11 @@ Hue.show_highlights = function (filter = false) {
       }
       
       let text = $(this).text().toLowerCase()
+
+      if (!text) {
+        return false
+      }
+
       let text_cmp = text.includes(lc_value)
       
       let source_cmp = false

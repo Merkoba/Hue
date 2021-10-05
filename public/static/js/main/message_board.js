@@ -118,12 +118,12 @@ Hue.init_message_board = function (data) {
 }
 
 // Shows the message board
-Hue.show_message_board = function (filter = false) {
+Hue.show_message_board = function (filter = "") {
   Hue.msg_message_board.show(function () {
     Hue.update_last_message_post_checked()
     Hue.check_last_message_board_post()
 
-    if (filter) {
+    if (filter.trim()) {
       $("#message_board_filter").val(filter)
       Hue.do_modal_filter()
     } else {
