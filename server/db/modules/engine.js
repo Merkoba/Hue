@@ -1,6 +1,5 @@
 const fs = require("fs")
 const path = require("path")
-const { add_command } = require("redis")
 const root_path = path.join(__dirname, "../../../")
 const cache = {}
 
