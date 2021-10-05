@@ -15,13 +15,12 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Write to a file considering the cache
-  function write_file (path, json) {
-    if (cache[path] === undefined) {
-      cache[path] = {timeout: undefined, json: {}, last_write: 0}
+  function write_file (path, obj) {
+    if (!cache[path]) {
+      add_to_cache(path, obj)
     }
-
+    
     clearTimeout(cache[path].timeout)
-    cache[path].json = json
 
     if (Date.now() - cache[path].last_write > config.db_write_file_timeout_limit) {
       do_write_file(path)
@@ -32,11 +31,29 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     }
   }
 
+  // Add to memory cache
+  function add_to_cache (path, obj) {
+    if (cache[path] === undefined) {
+      cache[path] = {timeout: undefined, obj: {}, last_write: 0}
+    }
+
+    cache[path].obj = obj
+  }
+
+  // Check object schema version
+  function check_version (type, path, obj) {
+    if (obj.version !== vars[`${type}_version`]) {
+      manager.fill_defaults(type, obj)
+      obj.version = vars[`${type}_version`]
+      write_file (path, obj)
+    }
+  }
+
   // Do the write file operation
   function do_write_file (path) {
     console.info(`Writing: ${path.split("/").slice(-2).join("/")}`)
     cache[path].last_write = Date.now()
-    fs.writeFile(path, JSON.stringify(cache[path].json), "utf8", err => {
+    fs.writeFile(path, JSON.stringify(cache[path].obj), "utf8", err => {
       if (err) {
         logger.log_error(err)
       }
@@ -49,7 +66,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       if (query[0] === "id") {
         let path = get_file_path(type, query[1])
         
-        check_file(path, query, fields)
+        check_file(type, path, query, fields)
 
         .then(obj => {
           if (obj) {
@@ -72,10 +89,14 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         }
 
         for (let fname of fnames) {
+          if (fname.startsWith(".")) {
+            continue
+          }
+
           let path = get_file_path(type, fname)
 
           try {
-            let obj = await check_file(path, query, fields)
+            let obj = await check_file(type, path, query, fields)
             if (obj) {
               resolve(obj)
               return
@@ -106,10 +127,11 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Check if the file matches
-  function check_file (path, query, fields) {
+  function check_file (type, path, query, fields) {
     return new Promise((resolve, reject) => {
-      if (cache[path] && cache[path].json) {
-        let obj = check_file_query(cache[path].json, query, fields)
+      if (cache[path] && cache[path].obj) {
+        let obj = check_file_query(cache[path].obj, query, fields)
+        
         if (obj) {
           resolve(obj)
           return
@@ -125,16 +147,19 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           return
         }
 
-        let jsn = {}
+        let original = {}
 
         try {
-          jsn = JSON.parse(text)
+          original = JSON.parse(text)
         } catch (err) {
           reject("Nothing found")
           return
         }
 
-        let obj = check_file_query(jsn, query, fields)
+        add_to_cache(path, original)
+        check_version(type, path, original)
+
+        let obj = check_file_query(original, query, fields)
 
         if (obj) {
           resolve(obj)
@@ -155,7 +180,10 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       return false
     }
 
+    // Don't delete from the original
+    // As it should remain complete
     let obj = Object.assign({}, original)
+
     let fieldkeys = Object.keys(fields)
 
     if (fieldkeys.length > 0) {
@@ -191,7 +219,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Insert a new file in the proper directory
   manager.insert_one = function (type, obj) {
     return new Promise((resolve, reject) => {
-      if (obj.id === undefined) {
+      if (!obj.id) {
         obj.id = `${Math.round(new Date() / 1000)}_${utilz.get_random_string(4)}`
       }
 
@@ -215,4 +243,27 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       })
     })
   }
+
+  manager.fill_defaults = function (type, obj) {
+    let schema = vars[`${type}_schema`]()
+
+    for (let key in schema) {
+      let item = schema[key]
+
+      if (item.skip) {
+        continue
+      }
+
+      if (typeof obj[key] !== item.type) {
+        obj[key] = item.default
+      }
+    }
+
+    // Remove unused keys (careful)
+    for (let key in obj) {
+      if (schema[key] === undefined) {
+        delete obj[key]
+      }
+    }
+  }  
 }

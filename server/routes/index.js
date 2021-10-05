@@ -211,7 +211,9 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     c.vars = {}
 
     c.vars.fromurl = req.query.fromurl || ""
+    c.vars.form_username = decodeURIComponent(req.query.form_username)
     c.vars.message = decodeURIComponent(req.query.message)
+    c.vars.max_max_username_length = config.max_max_username_length
     c.vars.max_max_password_length = config.max_max_password_length
     c.vars.login_title = config.login_title
 

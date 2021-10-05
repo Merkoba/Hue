@@ -9,13 +9,14 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
 
   // Room and User versions
   // These must be increased by 1 when the schema changes
-  vars.rooms_version = 84
-  vars.users_version = 49
+  vars.rooms_version = 85
+  vars.users_version = 50
 
   // Room schema definition
   // This is used to check types and fill defaults
   vars.rooms_schema = function () {
     return {
+      id: { type: "string", default: "" },
       name: { type: "string", default: "No Name" },
       topic: { type: "string", default: "" },
       keys: { type: "object", default: {} },
@@ -49,6 +50,7 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       background_image_type: { type: "string", default: "hosted" },
       message_board_posts: { type: "object", default: [] },
       modified: { type: "number", default: Date.now() },
+      version: { type: "number", default: 0 }
     }
   }
 
@@ -56,6 +58,7 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
   // This is used to check types and fill defaults
   vars.users_schema = function () {
     return {
+      id: { type: "string", default: "" },
       username: { type: "string", default: "", skip: true },
       password: { type: "string", default: "", skip: true },
       password_date: { type: "number", default: 0 },
@@ -72,6 +75,7 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       audio_clip: { type: "string", default: "" },
       audio_clip_version: { type: "number", default: 0 },
       modified: { type: "number", default: Date.now() },
+      version: { type: "number", default: 0 }
     }
   } 
 }
