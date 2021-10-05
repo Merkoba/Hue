@@ -96,7 +96,7 @@ module.exports = function (
 
     handler.modify_socket_properties(socket.hue_user_id, { hue_bio: data.bio })
 
-    await db_manager.update_user(socket.hue_user_id, {
+    db_manager.update_user(socket.hue_user_id, {
       bio: socket.hue_bio,
     })
 
@@ -162,7 +162,7 @@ module.exports = function (
       )
     }
 
-    await db_manager.update_user(socket.hue_user_id, {
+    db_manager.update_user(socket.hue_user_id, {
       profile_image: file_name,
       profile_image_version: new_ver,
     })
@@ -238,7 +238,7 @@ module.exports = function (
       audio_clip_url = config.public_audio_location + fver
     }
 
-    await db_manager.update_user(socket.hue_user_id, {
+    db_manager.update_user(socket.hue_user_id, {
       audio_clip: file_name,
       audio_clip_version: new_ver,
     })

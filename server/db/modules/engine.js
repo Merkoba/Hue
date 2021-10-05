@@ -2,6 +2,8 @@ const fs = require("fs")
 const path = require("path")
 const root_path = path.join(__dirname, "../../../")
 const cache = {}
+const update_calls = []
+let update_calling = false
 
 module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Get the full file path
@@ -222,22 +224,14 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
-  // Update properties of one file
   manager.update_one = function (type, query, fields) {
-    return new Promise((resolve, reject) => {
-      manager.find_one(type, query, {})
-
-      .then(obj => {
-        for (let key in fields) {
-          obj[key] = fields[key]
-        }
-
-        let path = get_file_path(type, obj.id)
-        cache[path].obj = obj
-        write_file(path)
-        resolve("Ok")
-      })
-    })
+    let call = {type: type, query: query, fields: fields}
+    
+    update_calls.push(call)
+    
+    if (!update_calling) {
+      do_update_call()
+    }
   }
 
   // Fill unexisting keys with defaults
@@ -264,5 +258,47 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         delete obj[key]
       }
     }
+  }
+
+  function do_update_call () {
+    if (update_calls.length > 0) {
+      let call = update_calls.shift()
+      
+      update_calling = true
+      do_update_one(call)
+      
+      .then(ans => {
+        update_calling = false
+        do_update_call()
+      })
+
+      .catch(err => {
+        update_calling = false
+        logger.log_error(err)
+        do_update_call()
+      })
+    }
   }  
+
+  // Update properties of one file
+  function do_update_one (call) {
+    return new Promise((resolve, reject) => {
+      manager.find_one(call.type, call.query, {})
+  
+      .then(obj => {
+        for (let key in call.fields) {
+          obj[key] = call.fields[key]
+        }
+  
+        let path = get_file_path(call.type, obj.id)
+        cache[path].obj = obj
+        write_file(path)
+        resolve("Ok")
+      })
+
+      .catch(err => {
+        resolve("Not updated")
+      })
+    })
+  } 
 }

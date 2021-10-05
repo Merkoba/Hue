@@ -525,7 +525,7 @@ module.exports = function (
       socc.hue_last_badge_date = Date.now()
     }
 
-    await db_manager.update_user(first_socket.hue_user_id, prop2)
+    db_manager.update_user(first_socket.hue_user_id, prop2)
   }
 
   // Superuser function to change a user's username

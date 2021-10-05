@@ -6,12 +6,10 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
       .then(user => {
         resolve(user)
-        return
       })   
 
       .catch(err => {
         resolve(false)
-        return
       })
     })
   }
@@ -23,12 +21,10 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
       .then(users => {
         resolve(users)
-        return
       })   
 
       .catch(err => {
         resolve([])
-        return
       })
     })
   }  
@@ -84,7 +80,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         .catch(err => {
           reject(err)
           logger.log_error(err)
-          return
         })
     })
   }
@@ -110,19 +105,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             }
 
             manager.update_one("users", ["id", id], fields)
-
-            .then(ans => {
-              resolve(true)
-              return
-            })
-
-            .catch(err => {
-              reject(err)
-              logger.log_error(err)
-              return
-            })
-
-            return
           })
 
           .catch(err => {
@@ -140,19 +122,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         }
 
         manager.update_one("users", ["id", id], fields)
-
-        .then(ans => {
-          resolve(true)
-          return
-        })
-
-        .catch(err => {
-          reject(err)
-          logger.log_error(err)
-          return
-        })
-
-        return
       }
     })
   }
@@ -189,7 +158,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         .catch(err => {
           reject(err)
           logger.log_error(err)
-          return
         })
     })
   }
@@ -219,17 +187,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
                   resolve(false)
                   return
                 } else {
-                  manager
-                    .update_user(id, {
-                      username: username,
-                    })
-
-                    .catch(err => {
-                      reject(err)
-                      logger.log_error(err)
-                      return
-                    })
-
+                  manager.update_user(id, { username: username })
                   resolve(true)
                   return
                 }
@@ -246,7 +204,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         .catch(err => {
           reject(err)
           logger.log_error(err)
-          return
         })
     })
   }
