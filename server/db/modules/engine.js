@@ -1,5 +1,6 @@
 const fs = require("fs")
 const path = require("path")
+const { add_command } = require("redis")
 const root_path = path.join(__dirname, "../../../")
 const cache = {}
 
@@ -15,11 +16,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Write to a file considering the cache
-  function write_file (path, obj) {
-    if (!cache[path]) {
-      add_to_cache(path, obj)
-    }
-    
+  function write_file (path) {    
     clearTimeout(cache[path].timeout)
 
     if (Date.now() - cache[path].last_write > config.db_write_file_timeout_limit) {
@@ -223,7 +220,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         obj.id = `${Math.round(new Date() / 1000)}_${utilz.get_random_string(4)}`
       }
 
-      write_file(get_file_path(type, obj.id), obj)
+      let path = get_file_path(type, obj.id)
+      add_to_cache(path, obj)
+      write_file(path)
       resolve(obj)
     })
   }
@@ -238,7 +237,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           obj[key] = fields[key]
         }
 
-        write_file(get_file_path(type, obj.id), obj)
+        let path = get_file_path(type, obj.id)
+        cache[path].obj = obj
+        write_file(path)
         resolve("Ok")
       })
     })
