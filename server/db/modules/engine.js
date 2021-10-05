@@ -31,10 +31,8 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Add to memory cache
   function add_to_cache (path, obj) {
     if (cache[path] === undefined) {
-      cache[path] = {timeout: undefined, obj: {}, last_write: 0}
+      cache[path] = {timeout: undefined, obj: {}, last_write: 0, obj: obj}
     }
-
-    cache[path].obj = obj
   }
 
   // Check object schema version
@@ -136,34 +134,34 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           reject("Nothing found")
           return
         }
+      } else {
+        fs.readFile(path, "utf8", (err, text) => {
+          if (err) {
+            reject("Nothing found")
+            return
+          }
+  
+          let original = {}
+  
+          try {
+            original = JSON.parse(text)
+          } catch (err) {
+            reject("Nothing found")
+            return
+          }
+  
+          add_to_cache(path, original)
+          check_version(type, path, original)
+  
+          let obj = check_file_query(original, query, fields)
+  
+          if (obj) {
+            resolve(obj)
+          } else {
+            reject("Nothing found")
+          }
+        })
       }
-
-      fs.readFile(path, "utf8", (err, text) => {
-        if (err) {
-          reject("Nothing found")
-          return
-        }
-
-        let original = {}
-
-        try {
-          original = JSON.parse(text)
-        } catch (err) {
-          reject("Nothing found")
-          return
-        }
-
-        add_to_cache(path, original)
-        check_version(type, path, original)
-
-        let obj = check_file_query(original, query, fields)
-
-        if (obj) {
-          resolve(obj)
-        } else {
-          reject("Nothing found")
-        }
-      })
     })
   }
 
