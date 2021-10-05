@@ -224,6 +224,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
+  // Add call to the update queue
   manager.update_one = function (type, query, fields) {
     let call = {type: type, query: query, fields: fields}
     
@@ -260,6 +261,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     }
   }
 
+  // Process next update queue item
   function do_update_call () {
     if (update_calls.length > 0) {
       let call = update_calls.shift()
