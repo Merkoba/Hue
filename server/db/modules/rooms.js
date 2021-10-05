@@ -11,7 +11,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
       .catch(err => {
         resolve(false)
-        return
       })
     })
   }
@@ -28,7 +27,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
       .catch(err => {
         resolve([])
-        return
       })
     })
   }  
@@ -61,7 +59,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       .catch(err => {
         reject(err)
         logger.log_error(err)
-        return
       })
     })
   }
@@ -87,17 +84,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             .create_room(data)
 
             .then((ans) => {
-              manager
-                .update_user(data.user_id, {
-                  create_room_date: Date.now(),
-                })
-
-                .catch(err => {
-                  reject(err)
-                  logger.log_error(err)
-                  return
-                })
-
+              manager.update_user(data.user_id, { create_room_date: Date.now() })
               resolve(ans)
               return
             })
@@ -112,37 +99,23 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         .catch(err => {
           reject(err)
           logger.log_error(err)
-          return
         })
     })
   }
 
   // Updates a room
   manager.update_room = function (id, fields) {
-    return new Promise((resolve, reject) => {
-      fields.modified = Date.now()
+    fields.modified = Date.now()
 
-      let check = manager.validate_room(fields)
+    let check = manager.validate_room(fields)
 
-      if (!check.passed) {
-        console.error(check.message)
-        resolve(false)
-        return
-      }
+    if (!check.passed) {
+      console.error(check.message)
+      return false
+    }
 
-      manager.update_one("rooms", ["id", id], fields)
-
-      .then(ans => {
-        resolve(true)
-        return
-      })
-
-      .catch(err => {
-        reject(err)
-        logger.log_error(err)
-        return
-      })
-    })
+    manager.update_one("rooms", ["id", id], fields)
+    return true
   }
 
   // Updates log messages
@@ -160,15 +133,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             )
           }
 
-          manager
-            .update_room(id, { log_messages: room.log_messages })
-
-            .catch(err => {
-              reject(err)
-              logger.log_error(err)
-              return
-            })
-
+          manager.update_room(id, { log_messages: room.log_messages })
           resolve(true)
           return
         })
@@ -176,7 +141,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         .catch(err => {
           reject(err)
           logger.log_error(err)
-          return
         })
     })
   }
@@ -196,15 +160,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             )
           }
 
-          manager
-            .update_room(id, { admin_log_messages: room.admin_log_messages })
-
-            .catch(err => {
-              reject(err)
-              logger.log_error(err)
-              return
-            })
-
+          manager.update_room(id, { admin_log_messages: room.admin_log_messages })
           resolve(true)
           return
         })
@@ -212,7 +168,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         .catch(err => {
           reject(err)
           logger.log_error(err)
-          return
         })
     })
   }

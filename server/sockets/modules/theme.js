@@ -172,7 +172,7 @@ module.exports = function (
       type = "hosted"
     }
 
-    await db_manager.update_room(socket.hue_room_id, {
+    db_manager.update_room(socket.hue_room_id, {
       background_image: fname,
       background_image_type: type,
     })
