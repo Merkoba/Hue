@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const fs = require("fs")
 const path = require("path")
+const tar = require("tar")
 
 function normalizePort(val) {
 	let port = parseInt(val, 10)
@@ -80,10 +81,26 @@ function start_config_check() {
 	}, config_check_delay)
 }
 
+function create_db_backup() {
+	let store_path = path.join(__dirname, `../${config.db_store_path}`)
+
+	tar.c({
+			gzip: true,
+			file: `${store_path}/backups/${parseInt(Date.now() / 1000)}.tar.gz`
+		},
+		[`${store_path}/users`, `${store_path}/rooms`]
+	).then(res => {
+		console.info("DB Backup created")
+	}). catch(err => {
+		console.error(err)
+	})
+}
+
 const port = normalizePort(process.env.PORT || "3210")
 
 build_config()
 start_config_check()
+create_db_backup()
 
 const winston = require("winston")
 

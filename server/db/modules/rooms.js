@@ -5,8 +5,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       manager.find_one("rooms", query, fields)
 
       .then(room => {
-        manager.room_fill_defaults(room)
-        room.version = vars.rooms_version
         resolve(room)
         return
       })
@@ -24,11 +22,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       manager.find_multiple("rooms", ids, fields)
 
       .then(rooms => {
-        for (let room of rooms) {
-          manager.room_fill_defaults(room)
-          room.version = vars.rooms_version
-        }
-        
         resolve(rooms)
         return
       })   
@@ -40,30 +33,13 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }  
 
-  // Fills undefined room properties
-  // Or properties that don't meet the specified type
-  manager.room_fill_defaults = function (room) {
-    let schema = vars.rooms_schema()
-
-    for (let key in schema) {
-      let item = schema[key]
-
-      if (item.skip) {
-        continue
-      }
-
-      if (typeof room[key] !== item.type) {
-        room[key] = item.default
-      }
-    }
-  }
-
   // Creates a room
   manager.create_room = function (data) {
     return new Promise((resolve, reject) => {
       let room = {}
 
-      manager.room_fill_defaults(room)
+      manager.fill_defaults("rooms", room)
+      room.version = vars.rooms_version
 
       if (data.id !== undefined) {
         room.id = data.id
@@ -74,8 +50,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       }
 
       room.name = data.name !== undefined ? data.name : "No Name"
-      room.version = vars.rooms_version
-
+      
       manager.insert_one("rooms", room)
       
       .then(ans => {

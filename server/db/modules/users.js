@@ -5,8 +5,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       manager.find_one("users", query, fields)
 
       .then(user => {
-        manager.user_fill_defaults(user)
-        user.version = vars.users_version
         resolve(user)
         return
       })   
@@ -24,11 +22,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       manager.find_multiple("users", ids, fields)
 
       .then(users => {
-        for (let user of users) {
-          manager.user_fill_defaults(user)
-          user.version = vars.users_version
-        }
-        
         resolve(users)
         return
       })   
@@ -39,24 +32,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       })
     })
   }  
-
-  // Fills undefined user properties
-  // Or properties that don't meet the specified type
-  manager.user_fill_defaults = function (user) {
-    let schema = vars.users_schema()
-
-    for (let key in schema) {
-      let item = schema[key]
-
-      if (item.skip) {
-        continue
-      }
-
-      if (typeof user[key] !== item.type) {
-        user[key] = item.default
-      }
-    }
-  }
 
   // Creates a user
   manager.create_user = function (info) {
@@ -90,9 +65,8 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             registration_date: Date.now(),
           }
 
-          manager.user_fill_defaults(user)
+          manager.fill_defaults("users", user)
           user.version = vars.users_version
-
           manager.insert_one("users", user)
 
           .then(result => {
