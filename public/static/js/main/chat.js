@@ -1730,3 +1730,15 @@ Hue.get_last_message_date = function () {
   let b = $("#chat_area .media_announcement").last().data("date") || 0
   return Math.max(a, b)
 }
+
+// Clear the chat by adding a spacer
+Hue.add_chat_spacer = function () {
+  $(".clear_spacer").each(function () {
+    $(this).remove()
+  })
+
+  let spacer = $("<div class='message clear_spacer'></div>")
+
+  $("#chat_area").append(spacer)
+  Hue.goto_bottom(true)
+}
