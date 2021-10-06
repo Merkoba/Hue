@@ -310,7 +310,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
     for (let key in fields) {
       if (key === "id") {
-        let s = `[${type}] validation failed on '${key}'. Property is read-only`
+        let s = `[${type}] Validation failed on '${key}'. Property is read-only`
         return { passed: false, message: s }
       }
 
@@ -321,11 +321,11 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         let type = typeof data
 
         if (type !== item.type) {
-          let s = `Room validation failed on '${key}'. Expected type '${item.type}', got type '${type}'`
+          let s = `[${type}] Validation failed on '${key}'. Expected type '${item.type}', got type '${type}'`
           return { passed: false, message: s }
         }
       } else {
-        let s = `Room validation failed on '${key}'. It does not exist in the database`
+        let s = `[${type}] Validation failed on '${key}'. It does not exist in the database`
         return { passed: false, message: s }
       }
     }
