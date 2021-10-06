@@ -23,13 +23,13 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       .then(rooms => {
         resolve(rooms)
         return
-      })   
+      })
 
       .catch(err => {
         resolve([])
       })
     })
-  }  
+  }
 
   // Creates a room
   manager.create_room = function (data) {
@@ -48,9 +48,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       }
 
       room.name = data.name !== undefined ? data.name : "No Name"
-      
+
       manager.insert_one("rooms", room)
-      
+
       .then(ans => {
         resolve(room)
         return
@@ -107,7 +107,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.update_room = function (id, fields) {
     fields.modified = Date.now()
 
-    let check = manager.validate_room(fields)
+    let check = manager.validate_schema("rooms", fields)
 
     if (!check.passed) {
       console.error(check.message)
@@ -170,29 +170,5 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           logger.log_error(err)
         })
     })
-  }
-
-  // Checks fields types against the room schema types
-  manager.validate_room = function (fields) {
-    let schema = vars.rooms_schema()
-
-    for (let key in fields) {
-      let item = schema[key]
-      let data = fields[key]
-
-      if (item) {
-        let type = typeof data
-
-        if (type !== item.type) {
-          let s = `Room validation failed on ${key}. Expected type ${item.type}, got type ${type}`
-          return { passed: false, message: s }
-        }
-      } else {
-        let s = `Room validation failed on ${key}. It does not exist in the database`
-        return { passed: false, message: s }
-      }
-    }
-
-    return { passed: true, message: "ok" }
   }
 }
