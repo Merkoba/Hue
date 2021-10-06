@@ -8,13 +8,23 @@ module.exports = function (
   utilz,
   logger
 ) {
+
+  // Superuser change role
+  handler.public.annex = function (socket, data) {
+    if (!socket.hue_superuser) {
+      handler.anti_spam_ban(socket)
+      return false
+    }
+
+    handler.public.change_role(socket, data)
+  }
+
   // Handles role changes
   handler.public.change_role = async function (socket, data) {
-    if (
-      !socket.hue_superuser &&
-      !handler.is_admin_or_op(socket)
-    ) {
-      return false
+    if (!socket.hue_superuser) {
+      if (!handler.is_admin_or_op(socket)) {
+        return false
+      }
     }
 
     if (data.username === undefined) {
