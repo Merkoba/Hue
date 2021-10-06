@@ -68,12 +68,15 @@ module.exports = function (
       return false
     }
 
-    db_manager.update_user(socket.hue_user_id, {
-      password: data.password,
-      password_date: Date.now(),
+    db_manager.change_user_password(socket.hue_user_id, data.password)
+
+    .then(ans => {
+      handler.user_emit(socket, "password_changed", {})
     })
 
-    handler.user_emit(socket, "password_changed", { password: data.password })
+    .catch(err => {
+      logger.log_error(err)
+    })
   }
 
   // Handles bio changes

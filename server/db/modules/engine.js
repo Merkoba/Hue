@@ -309,7 +309,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     let schema = vars[`${type}_schema`]()
 
     for (let key in fields) {
-      if (key === "id") {
+      if (key === "id" || key === "password") {
         let s = `[${type}] Validation failed on '${key}'. Property is read-only`
         return { passed: false, message: s }
       }

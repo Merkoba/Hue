@@ -122,8 +122,6 @@ Hue.replace_tabbed = function (element, word) {
 
     info.tabbed_start = pos - result.length
     info.tabbed_end = pos
-
-    Hue.just_tabbed = true
   }
 }
 
@@ -148,8 +146,6 @@ Hue.setup_autocomplete = function () {
     "keydown",
     "textarea, input[type='text'], input[type='search']",
     function (e) {
-      Hue.just_tabbed = false
-
       if (e.key === "Tab") {
         let value = $(this).val()
 
