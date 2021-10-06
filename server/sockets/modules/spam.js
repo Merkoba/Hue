@@ -65,7 +65,6 @@ module.exports = function (
   
       if (user.level >= config.anti_spam_max_limit) {
         handler.anti_spam_ban(socket)
-        handler.anti_spam_kick(socket)
       }
 
       return resolve("ok")
@@ -91,6 +90,7 @@ module.exports = function (
     user.banned = true
     user.banned_until = Date.now() + (minutes * 1000 * 60)
     logger.log_error(`IP banned: ${ip}`)
+    handler.anti_spam_kick(socket)
   }
 
   // Get ip address

@@ -1185,6 +1185,34 @@ Hue.modusername = function (arg) {
   Hue.socket_emit("modusername", {original:original_uname, new:new_uname})
 }
 
+// Superuser command to change a user's password
+Hue.modpassword = function (arg) {
+  let split = arg.split(" ").filter(x => x !== "")
+
+  if (split.length !== 2) {
+    return false
+  }
+
+  let username = split[0]
+  let password = split[1]
+
+  if (password.length < Hue.config.min_password_length) {
+    Hue.checkmsg(
+      `Password is too short. It must be at least ${Hue.config.min_password_length} characters long`
+    )
+
+    return false
+  }
+
+  if (password.length > Hue.config.max_password_length) {
+    Hue.checkmsg("Password is too long")
+    return false
+  }
+
+  Hue.socket_emit("modpassword", { username: username, password: password })
+  return true
+}
+
 // Updates user activity to current date
 Hue.update_user_activity = function (user_id) {
   let user = Hue.get_user_by_user_id(user_id)
