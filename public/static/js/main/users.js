@@ -957,7 +957,7 @@ Hue.annex = function (rol = "admin") {
     return false
   }
 
-  Hue.socket_emit("change_role", { username: Hue.username, role: rol })
+  Hue.socket_emit("annex", { username: Hue.username, role: rol })
 }
 
 // Superuser command to send a system broadcast

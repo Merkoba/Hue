@@ -12,6 +12,7 @@ module.exports = function (
   handler.public.whisper = function (socket, data) {
     if (data.type === "system_broadcast") {
       if (!socket.hue_superuser) {
+        handler.anti_spam_ban(socket)
         return false
       }
     }
