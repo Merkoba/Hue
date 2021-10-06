@@ -92,12 +92,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_max_password_length"
 >Same as max_max_username_length but for passwords.
 
-"password_reset_limit"
->How long a user must wait to perform another password reset.
-
-"password_reset_expiration"
->How long a reset password link will be valid.
-
 "max_room_name_length"
 >Max length for room names.
 

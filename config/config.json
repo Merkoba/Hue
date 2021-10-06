@@ -40,8 +40,6 @@
 	"min_password_length": 3,
 	"max_password_length": 200,
 	"max_max_password_length": 2000,
-	"password_reset_limit": 1200000,
-	"password_reset_expiration": 86400000,
 	"max_room_name_length": 100,
 	"max_room_id_length": 100,
 	"max_log_messages": 250,

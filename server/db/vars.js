@@ -10,7 +10,7 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
   // Room and User versions
   // These must be increased by 1 when the schema changes
   vars.rooms_version = 85
-  vars.users_version = 50
+  vars.users_version = 51
 
   // Room schema definition
   // This is used to check types and fill defaults
@@ -62,9 +62,6 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       username: { type: "string", default: "", skip: true },
       password: { type: "string", default: "", skip: true },
       password_date: { type: "number", default: 0 },
-      password_reset_code: { type: "string", default: "" },
-      password_reset_date: { type: "number", default: 0 },
-      password_reset_link_date: { type: "number", default: 0 },
       profile_image: { type: "string", default: "" },
       profile_image_version: { type: "number", default: 0 },
       registration_date: { type: "number", default: 0 },
