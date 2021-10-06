@@ -104,7 +104,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       vars.bcrypt.hash(password, config.encryption_cost)
       
       .then(hash => {
-        manager.update_one("users", ["id", id], { password: hash, password_date: Date.now(),})
+        manager.update_one("users", ["id", id], { password: hash, password_date: Date.now() })
         resolve("ok")
         return
       })
