@@ -171,6 +171,14 @@ Hue.commands = {
     },
     description: `(Only for superusers) Used to change a user's username`,
   },
+  "modpassword": {
+    action: (arg, ans) => {
+      if (arg) {
+        Hue.modpassword(arg)
+      }
+    },
+    description: `(Only for superusers) Used to change a user's password`,
+  },  
   "highlights": {
     action: (arg, ans) => {
       if (arg) {
@@ -543,6 +551,7 @@ Hue.setup_commands = function () {
     "systembroadcast",
     "systemrestart",
     "modusername",
+    "modpassword",
     "annex"
   ]
 

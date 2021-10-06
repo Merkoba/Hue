@@ -67,6 +67,7 @@ module.exports = function (
   // Sends system restart signals
   handler.public.system_restart_signal = function (socket, data) {
     if (!socket.hue_superuser) {
+      handler.anti_spam_ban(socket)
       return false
     }
 

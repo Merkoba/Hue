@@ -41,6 +41,7 @@ module.exports = function (
       ["id", socket.hue_room_id],
       { keys: 1 }
     )
+
     let userinfo = await db_manager.get_user(
       ["username", data.username],
       { username: 1 }
@@ -184,6 +185,7 @@ module.exports = function (
       ["id", socket.hue_room_id],
       { bans: 1, keys: 1 }
     )
+
     let userinfo = await db_manager.get_user(
       ["username", data.username],
       { username: 1 }
@@ -260,6 +262,7 @@ module.exports = function (
       ["id", socket.hue_room_id],
       { bans: 1, keys: 1 }
     )
+
     let userinfo = await db_manager.get_user(
       ["username", data.username],
       { username: 1 }
@@ -367,6 +370,7 @@ module.exports = function (
       ["id", socket.hue_room_id],
       { keys: 1 }
     )
+
     let roles = {}
     let ids = []
 
@@ -531,6 +535,7 @@ module.exports = function (
   // Superuser function to change a user's username
   handler.public.modusername = async function (socket, data) {
     if (!socket.hue_superuser) {
+      handler.anti_spam_ban(socket)
       return false
     }
 
@@ -584,5 +589,26 @@ module.exports = function (
         username: data.new,
       })
     }
+  }
+
+  // Superuser function to change a user's username
+  handler.public.modpassword = async function (socket, data) {
+    if (!socket.hue_superuser) {
+      handler.anti_spam_ban(socket)
+      return false
+    }
+
+    let userinfo = await db_manager.get_user(
+      ["username", data.username],
+      { username: 1 }
+    )
+
+    if (!userinfo) {
+      handler.user_emit(socket, "user_not_found", {})
+      return false
+    }
+
+    db_manager.change_user_password(userinfo.id, data.password)
+    handler.user_emit(socket, "done", {})
   }
 }
