@@ -124,24 +124,6 @@ Hue.remove_item_from_media_changed = function (type, id) {
   Hue[`${type}_changed`] = Hue[`${type}_changed`].filter((x) => x.id !== id)
 }
 
-// Tabs between media source and comment input on open pickers
-// This is done because tab is disabled to avoid focus problems
-Hue.do_media_picker_input_cycle = function (type) {
-  if (Hue.just_tabbed) {
-    return false
-  }
-
-  if (document.activeElement === $(`#${type}_source_picker_input`)[0]) {
-    $(`#${type}_source_picker_input_comment`).trigger("focus")
-  } else if (
-    document.activeElement === $("#image_source_picker_input_comment")[0]
-  ) {
-    $(`#${type}_source_picker_input`).trigger("focus")
-  } else {
-    $(`#${type}_source_picker_input`).trigger("focus")
-  }
-}
-
 // Checks how many elements (image, tv) are visible in the media section
 Hue.num_media_elements_visible = function () {
   let num = 0

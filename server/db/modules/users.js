@@ -86,29 +86,34 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
   // Updates the user
   manager.update_user = function (id, fields) {
-    return new Promise(async (resolve, reject) => {
-      fields.modified = Date.now()
+    fields.modified = Date.now()
 
-      if (fields.password !== undefined) {
-        try {
-          let hash = await vars.bcrypt.hash(fields.password, config.encryption_cost)
-          fields.password = hash
-        } catch (err) {
-          console.error(check.message)
-          resolve(false)
-          return
-        }
-      }
+    let check = manager.validate_schema("users", fields)
 
-      let check = manager.validate_schema("users", fields)
+    if (!check.passed) {
+      console.error(check.message)
+      return
+    }
 
-      if (!check.passed) {
-        console.error(check.message)
-        resolve(false)
+    manager.update_one("users", ["id", id], fields)
+  }
+
+  // Dedicated function to change user password
+  manager.change_user_password = function (id, password) {
+    return new Promise((resolve, reject) => {
+      vars.bcrypt.hash(password, config.encryption_cost)
+      
+      .then(hash => {
+        manager.update_one("users", ["id", id], { password: hash, password_date: Date.now(),})
+        resolve("ok")
         return
-      }
+      })
 
-      manager.update_one("users", ["id", id], fields)
+      .catch(err => {
+        reject(err)
+        logger.log_error(err)
+        return
+      })
     })
   }
 

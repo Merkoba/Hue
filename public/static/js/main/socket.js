@@ -119,7 +119,7 @@ Hue.server_update_events = {
     Hue.announce_new_username(data)
   },
   password_changed: (data) => {
-    Hue.password_changed(data)
+    Hue.password_changed()
   },
   background_color_changed: (data) => {
     Hue.announce_background_color_change(data)

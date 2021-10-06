@@ -6,11 +6,20 @@ Hue.activate_key_detection = function () {
     }
 
     if (e.key === "Tab") {
-      if (e.ctrlKey) {
-        return
-      }
+      if (
+        Hue.modal_open &&
+        Hue.change_user_password_open ||
+        Hue.msg_tv_picker.is_open() ||
+        Hue.msg_image_picker.is_open()
+      ) {
+        // Continue
+      } else {
+        if (e.ctrlKey) {
+          return
+        }
 
-      e.preventDefault()
+        e.preventDefault()
+      }
     }
 
     if (Hue.modal_open) {
@@ -27,9 +36,6 @@ Hue.activate_key_detection = function () {
           if (e.key === "Enter") {
             Hue.image_picker_submit()
             e.preventDefault()
-          } else if (e.key === "Tab") {
-            Hue.do_media_picker_input_cycle("image")
-            e.preventDefault()
           }
 
           return
@@ -40,9 +46,6 @@ Hue.activate_key_detection = function () {
         if (Hue.msg_tv_picker.is_highest()) {
           if (e.key === "Enter") {
             Hue.tv_picker_submit()
-            e.preventDefault()
-          } else if (e.key === "Tab") {
-            Hue.do_media_picker_input_cycle("tv")
             e.preventDefault()
           }
 

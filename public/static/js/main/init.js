@@ -85,7 +85,6 @@ Hue.image_upload_comment_file = false
 Hue.image_upload_comment_type = false
 Hue.tv_upload_comment_file = false
 Hue.tv_upload_comment_type = false
-Hue.just_tabbed = false
 Hue.userlist_mode = "normal"
 Hue.usercount = 0
 Hue.first_media_change = false
