@@ -17,7 +17,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Write to a file
-  function write_file (path) {    
+  function write_file (path) {
     clearTimeout(cache[path].timeout)
 
     if (Date.now() - cache[path].last_write > config.db_write_file_timeout_limit) {
@@ -61,7 +61,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     return new Promise((resolve, reject) => {
       if (query[0] === "id") {
         let path = get_file_path(type, query[1])
-        
+
         check_file(type, path, query, fields)
 
         .then(obj => {
@@ -82,14 +82,14 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             reject("Nothing found")
             return
           }
-  
+
           for (let fname of fnames) {
             if (fname.startsWith(".")) {
               continue
             }
-  
+
             let path = get_file_path(type, fname)
-  
+
             try {
               let obj = await check_file(type, path, query, fields)
               if (obj) {
@@ -98,7 +98,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
               }
             } catch (err) {}
           }
-  
+
           reject("Nothing found")
           return
         })
@@ -127,7 +127,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     return new Promise((resolve, reject) => {
       if (cache[path] && cache[path].obj) {
         let obj = check_file_query(cache[path].obj, query, fields)
-        
+
         if (obj) {
           resolve(obj)
         } else {
@@ -139,21 +139,21 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             reject("Nothing found")
             return
           }
-  
+
           let original = {}
-  
+
           try {
             original = JSON.parse(text)
           } catch (err) {
             reject("Nothing found")
             return
           }
-  
+
           add_to_cache(path, original)
           check_version(type, path, original)
-  
+
           let obj = check_file_query(original, query, fields)
-  
+
           if (obj) {
             resolve(obj)
           } else {
@@ -227,9 +227,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Add call to the update queue
   manager.update_one = function (type, query, fields) {
     let call = {type: type, query: query, fields: fields}
-    
+
     update_calls.push(call)
-    
+
     if (!update_calling) {
       do_update_call()
     }
@@ -265,10 +265,10 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   function do_update_call () {
     if (update_calls.length > 0) {
       let call = update_calls.shift()
-      
+
       update_calling = true
       do_update_one(call)
-      
+
       .then(ans => {
         update_calling = false
         do_update_call()
@@ -280,18 +280,18 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         do_update_call()
       })
     }
-  }  
+  }
 
   // Update properties of one file
   function do_update_one (call) {
     return new Promise((resolve, reject) => {
       manager.find_one(call.type, call.query, {})
-  
+
       .then(obj => {
         for (let key in call.fields) {
           obj[key] = call.fields[key]
         }
-  
+
         let path = get_file_path(call.type, obj.id)
         cache[path].obj = obj
         write_file(path)
@@ -302,5 +302,34 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         resolve("Not updated")
       })
     })
-  } 
+  }
+
+  // Check field types against a schema
+  manager.validate_schema = function (type, fields) {
+    let schema = vars[`${type}_schema`]()
+
+    for (let key in fields) {
+      if (key === "id") {
+        let s = `[${type}] validation failed on '${key}'. Property is read-only`
+        return { passed: false, message: s }
+      }
+
+      let item = schema[key]
+      let data = fields[key]
+
+      if (item) {
+        let type = typeof data
+
+        if (type !== item.type) {
+          let s = `Room validation failed on '${key}'. Expected type '${item.type}', got type '${type}'`
+          return { passed: false, message: s }
+        }
+      } else {
+        let s = `Room validation failed on '${key}'. It does not exist in the database`
+        return { passed: false, message: s }
+      }
+    }
+
+    return { passed: true, message: "ok" }
+  }
 }

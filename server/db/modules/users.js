@@ -6,7 +6,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
       .then(user => {
         resolve(user)
-      })   
+      })
 
       .catch(err => {
         resolve(false)
@@ -21,13 +21,13 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
       .then(users => {
         resolve(users)
-      })   
+      })
 
       .catch(err => {
         resolve([])
       })
     })
-  }  
+  }
 
   // Creates a user
   manager.create_user = function (info) {
@@ -86,43 +86,29 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
   // Updates the user
   manager.update_user = function (id, fields) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       fields.modified = Date.now()
 
       if (fields.password !== undefined) {
-        vars.bcrypt
-          .hash(fields.password, config.encryption_cost)
-
-          .then((hash) => {
-            fields.password = hash
-
-            let check = manager.validate_user(fields)
-
-            if (!check.passed) {
-              console.error(check.message)
-              resolve(false)
-              return
-            }
-
-            manager.update_one("users", ["id", id], fields)
-          })
-
-          .catch(err => {
-            reject(err)
-            logger.log_error(err)
-            return
-          })
-      } else {
-        let check = manager.validate_user(fields)
-
-        if (!check.passed) {
+        try {
+          let hash = await vars.bcrypt.hash(fields.password, config.encryption_cost)
+          fields.password = hash
+        } catch (err) {
           console.error(check.message)
           resolve(false)
           return
         }
-
-        manager.update_one("users", ["id", id], fields)
       }
+
+      let check = manager.validate_schema("users", fields)
+
+      if (!check.passed) {
+        console.error(check.message)
+        resolve(false)
+        return
+      }
+
+      manager.update_one("users", ["id", id], fields)
     })
   }
 
@@ -206,26 +192,5 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           logger.log_error(err)
         })
     })
-  }
-
-  // Checks fields types against the user schema types
-  manager.validate_user = function (fields) {
-    let schema = vars.users_schema()
-    
-    for (let key in fields) {
-      let item = schema[key]
-      let data = fields[key]
-
-      if (item) {
-        let type = typeof data
-
-        if (type !== item.type) {
-          let s = `User validation failed on ${key}. Expected type ${item.type}, got type ${type}`
-          return { passed: false, message: s }
-        }
-      }
-    }
-
-    return { passed: true, message: "ok" }
   }
 }
