@@ -159,13 +159,21 @@ module.exports = function (
       return false
     }
 
-    let file_name = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(
+    let file_name = `${Date.now()}_${utilz.get_random_int(
       0,
       1000
     )}.${data.extension}`
 
+    let container = vars.path.join(vars.images_root, socket.hue_room_id)
+
+    if (!vars.fs.existsSync(container)) {
+      vars.fs.mkdirSync(container)
+    }    
+
+    let path = vars.path.join(container, file_name)
+
     vars.fs.writeFile(
-      vars.images_root + "/" + file_name,
+      path,
       data.image_file,
       function (err) {
         if (err) {
@@ -202,7 +210,6 @@ module.exports = function (
       user_id = "none"
     }
 
-    let image_source
     let date = Date.now()
     let comment = data.comment || ""
     let size = data.size || 0
@@ -223,12 +230,10 @@ module.exports = function (
     let room = vars.rooms[room_id]
 
     if (data.type === "link") {
-      image_source = data.src
-
       db_manager.update_room(room_id, {
         image_id: image_id,
         image_user_id: user_id,
-        image_source: image_source,
+        image_source: data.src,
         image_setter: data.setter,
         image_size: size,
         image_date: date,
@@ -237,7 +242,6 @@ module.exports = function (
         image_comment: comment,
       })
     } else if (data.type === "upload") {
-      image_source = config.public_images_location + data.src
       room.stored_images.unshift(data.src)
 
       let spliced = false
@@ -252,7 +256,7 @@ module.exports = function (
       db_manager.update_room(room_id, {
         image_id: image_id,
         image_user_id: user_id,
-        image_source: image_source,
+        image_source: data.src,
         image_setter: data.setter,
         image_size: size,
         image_date: date,
@@ -273,14 +277,10 @@ module.exports = function (
       return false
     }
 
-    if (image_source === undefined) {
-      return false
-    }
-
     handler.room_emit(room_id, "image_source_changed", {
       id: image_id,
       user_id: user_id,
-      source: image_source,
+      source: data.src,
       setter: data.setter,
       size: size,
       date: date,
@@ -296,7 +296,7 @@ module.exports = function (
       data: {
         user_id: user_id,
         comment: comment,
-        source: image_source,
+        source: data.src,
         setter: data.setter,
         size: size,
         type: data.type,
@@ -308,7 +308,7 @@ module.exports = function (
 
     room.current_image_id = image_id
     room.current_image_user_id = user_id
-    room.current_image_source = image_source
+    room.current_image_source = data.src
     room.current_image_query = data.query
     room.last_image_change = Date.now()
     room.modified = Date.now()

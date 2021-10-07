@@ -244,7 +244,8 @@ Hue.setup_user_menu = function () {
 
 // Updates some user menu elements
 Hue.update_user_menu = function () {
-  $("#user_menu_profile_image").attr("src", Hue.profile_image)
+  let src = `${Hue.config.public_images_location}profiles/${Hue.profile_image}`
+  $("#user_menu_profile_image").attr("src", src)
   $("#user_menu_bio_textarea").val(Hue.bio)
 }
 
@@ -397,7 +398,8 @@ Hue.show_audio_clip_menu = function () {
 
     $("#play_audio_clip").on("click", function () {
       Hue.user_menu_audio = document.createElement("audio")
-      Hue.user_menu_audio.src = Hue.get_user_profile().audio_clip
+      let src = Hue.config.public_audio_location + Hue.get_user_profile().audio_clip
+      Hue.user_menu_audio.src = src
       Hue.user_menu_audio.play()
     })
 

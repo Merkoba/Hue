@@ -91,19 +91,27 @@ module.exports = function (
       return false
     }
 
-    let fname = `bg_${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(
+    let file_name = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(
       0,
       1000
     )}.${data.extension}`
+    
+    let container = vars.path.join(vars.images_root, "backgrounds")
+
+    if (!vars.fs.existsSync(container)) {
+      vars.fs.mkdirSync(container)
+    }
+
+    let path = vars.path.join(container, file_name) 
 
     vars.fs.writeFile(
-      vars.images_root + "/" + fname,
+      path,
       data.image_file,
       function (err, data) {
         if (err) {
           handler.user_emit(socket, "upload_error", {})
         } else {
-          handler.do_change_background_image(socket, fname, "hosted")
+          handler.do_change_background_image(socket, file_name, "hosted")
         }
       }
     )
@@ -145,18 +153,11 @@ module.exports = function (
   }
 
   // Completes background image changes
-  handler.do_change_background_image = async function (socket, fname, type) {
+  handler.do_change_background_image = async function (socket, file_name, type) {
     let info = await db_manager.get_room(
       ["id", socket.hue_room_id],
       { background_image: 1, background_image_type: 1 }
     )
-    let image_url
-
-    if (type === "hosted") {
-      image_url = config.public_images_location + fname
-    } else {
-      image_url = fname
-    }
 
     let to_delete = false
 
@@ -166,20 +167,20 @@ module.exports = function (
       }
     }
 
-    if (fname === "default") {
-      fname = ""
-      image_url = ""
+    if (file_name === "default") {
+      file_name = ""
       type = "hosted"
     }
 
     db_manager.update_room(socket.hue_room_id, {
-      background_image: fname,
+      background_image: file_name,
       background_image_type: type,
     })
+    
 
     handler.room_emit(socket, "background_image_changed", {
       username: socket.hue_username,
-      background_image: image_url
+      background_image: file_name
     })
 
     if (to_delete) {

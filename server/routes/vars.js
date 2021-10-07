@@ -77,5 +77,8 @@ module.exports = function (c, config) {
   c.vars.quote_max_length = config.quote_max_length
   c.vars.max_log_messages = config.max_log_messages
   c.vars.max_displayed_url = config.max_displayed_url
-  c.vars.max_activity_username_length = config.max_activity_username_length
+  c.vars.max_activity_username_length = config.max_activity_username_length,
+  c.vars.public_images_location = config.public_images_location,
+  c.vars.public_videos_location = config.public_videos_location,
+  c.vars.public_audio_location = config.public_audio_location
 }

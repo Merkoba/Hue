@@ -39,7 +39,7 @@ Hue.add_chat_message = function (args = {}) {
   if (args.prof_image === "" || args.prof_image === undefined) {
     pi = Hue.config.default_profile_image_url
   } else {
-    pi = args.prof_image
+    pi = `${Hue.config.public_images_location}profiles/${args.prof_image}`
   }
 
   let image_preview = false
@@ -174,7 +174,6 @@ Hue.add_chat_message = function (args = {}) {
 
   let huname = fmessage.find(".chat_uname").eq(0)
   huname.text(args.username)
-  huname.data("prof_image", pi)
 
   let htimeago = fmessage.find(".chat_timeago").eq(0)
   htimeago.text(Hue.utilz.timeago(d))
@@ -204,6 +203,7 @@ Hue.add_chat_message = function (args = {}) {
   fmessage.data("highlighted", highlighted)
   fmessage.data("uname", args.username)
   fmessage.data("mode", "chat")
+  fmessage.data("prof_image", args.prof_image)
 
   let chat_content_container = fmessage.find(".chat_content_container").eq(0)
   let chat_content = fmessage.find(".chat_content").eq(0)
@@ -532,18 +532,20 @@ Hue.add_to_chat = function (args = {}) {
 Hue.start_chat_mouse_events = function () {
   $(".chat_area").on("click", ".chat_uname", function () {
     let m = $(this).closest(".message")
+
     Hue.show_profile(
       m.data("uname"),
-      $(this).data("prof_image"),
+      m.data("prof_image"),
       m.data("user_id")
     )
   })
 
   $(".chat_area").on("click", ".chat_profile_image", function () {
     let m = $(this).closest(".message")
+    
     Hue.show_profile(
       m.data("uname"),
-      $(this).attr("src"),
+      m.data("prof_image"),
       m.data("user_id")
     )
   })

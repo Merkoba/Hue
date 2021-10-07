@@ -7,8 +7,8 @@ let update_calling = false
 
 module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Get the full file path
-  function get_file_path (type, fname) {
-    return path.join(root_path, `${config.db_store_path}/${type}/${fname}`)
+  function get_file_path (type, file_name) {
+    return path.join(root_path, `${config.db_store_path}/${type}/${file_name}`)
   }
 
   // Get the full dir path
@@ -76,19 +76,19 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           reject("Nothing found")
         })
       } else {
-        fs.readdir(get_dir_path(type), async (err, fnames) => {
+        fs.readdir(get_dir_path(type), async (err, file_names) => {
           if (err) {
             logger.log_error(err)
             reject("Nothing found")
             return
           }
 
-          for (let fname of fnames) {
-            if (fname.startsWith(".")) {
+          for (let file_name of file_names) {
+            if (file_name.startsWith(".")) {
               continue
             }
 
-            let path = get_file_path(type, fname)
+            let path = get_file_path(type, file_name)
 
             try {
               let obj = await check_file(type, path, query, fields)

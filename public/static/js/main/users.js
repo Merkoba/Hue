@@ -588,10 +588,12 @@ Hue.setup_show_profile = function () {
 // Stars the profile audio
 Hue.play_profile_audio = function () {
   let clip = Hue.open_profile_user.audio_clip
-
+  
   if (!clip) {
     return
   }
+  
+  clip = Hue.config.public_audio_location + clip
 
   if (Hue.profile_audio) {
     Hue.stop_profile_audio()
@@ -651,10 +653,10 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   Hue.open_profile_username = username
   
   if (profile_image) {
-    pi = profile_image
+    pi = `${Hue.config.public_images_location}profiles/${profile_image}`
   } else {
     if (user && user.profile_image) {
-      pi = user.profile_image
+      pi = `${Hue.config.public_images_location}profiles/${user.profile_image}`
     } else {
       pi = Hue.config.default_profile_image_url
     }
@@ -739,9 +741,11 @@ Hue.profile_image_changed = function (data) {
     return false
   }
 
+  let src = `${Hue.config.public_images_location}profiles/${data.profile_image}`
+
   if (data.user_id === Hue.user_id) {
     Hue.profile_image = data.profile_image
-    $("#user_menu_profile_image").attr("src", Hue.profile_image)
+    $("#user_menu_profile_image").attr("src", src)
   }
 
   Hue.update_user_profile_image(data.user_id, data.profile_image)
@@ -751,7 +755,7 @@ Hue.profile_image_changed = function (data) {
     `${user.username} changed their profile image`
   )
 
-  Hue.update_activity_bar_image(data.user_id, data.profile_image)
+  Hue.update_activity_bar_image(data.user_id, src)
 }
 
 // When any user changes their bio
