@@ -132,10 +132,10 @@ module.exports = function (
     }
 
     let file_name = `${socket.hue_user_id}.png`
-    let container = vars.path.join(vars.images_root, "profiles")
+    let container = vars.path.join(vars.images_root, "profile")
 
     if (!vars.fs.existsSync(container)) {
-      vars.fs.mkdirSync(container)
+      vars.fs.mkdirSync(container, { recursive: true })
     }    
 
     let path = vars.path.join(container, file_name)    
@@ -204,8 +204,8 @@ module.exports = function (
     let container = vars.audio_root
 
     if (!vars.fs.existsSync(container)) {
-      vars.fs.mkdirSync(container)
-    }    
+      vars.fs.mkdirSync(container, { recursive: true })
+    }
 
     let path = vars.path.join(container, file_name)     
 

@@ -164,10 +164,10 @@ module.exports = function (
       1000
     )}.${data.extension}`
 
-    let container = vars.path.join(vars.images_root, socket.hue_room_id)
+    let container = vars.path.join(vars.images_root, "room", socket.hue_room_id)
 
     if (!vars.fs.existsSync(container)) {
-      vars.fs.mkdirSync(container)
+      vars.fs.mkdirSync(container, { recursive: true })
     }    
 
     let path = vars.path.join(container, file_name)

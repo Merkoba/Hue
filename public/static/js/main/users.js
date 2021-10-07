@@ -269,7 +269,7 @@ Hue.update_userlist_window = function () {
     let pi
 
     if (item.profile_image) {
-      pi = `${Hue.config.public_images_location}profiles/${item.profile_image}`
+      pi = `${Hue.config.public_images_location}profile/${item.profile_image}`
     } else {
       pi = Hue.config.default_profile_image_url
     }    
@@ -661,10 +661,10 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   Hue.open_profile_username = username
   
   if (profile_image) {
-    pi = `${Hue.config.public_images_location}profiles/${profile_image}`
+    pi = `${Hue.config.public_images_location}profile/${profile_image}`
   } else {
     if (user && user.profile_image) {
-      pi = `${Hue.config.public_images_location}profiles/${user.profile_image}`
+      pi = `${Hue.config.public_images_location}profile/${user.profile_image}`
     } else {
       pi = Hue.config.default_profile_image_url
     }
@@ -749,7 +749,7 @@ Hue.profile_image_changed = function (data) {
     return false
   }
 
-  let src = `${Hue.config.public_images_location}profiles/${data.profile_image}`
+  let src = `${Hue.config.public_images_location}profile/${data.profile_image}`
 
   if (data.user_id === Hue.user_id) {
     Hue.profile_image = data.profile_image

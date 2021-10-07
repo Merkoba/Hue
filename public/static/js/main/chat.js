@@ -39,7 +39,7 @@ Hue.add_chat_message = function (args = {}) {
   if (args.prof_image === "" || args.prof_image === undefined) {
     pi = Hue.config.default_profile_image_url
   } else {
-    pi = `${Hue.config.public_images_location}profiles/${args.prof_image}`
+    pi = `${Hue.config.public_images_location}profile/${args.prof_image}`
   }
 
   let image_preview = false

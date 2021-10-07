@@ -244,7 +244,7 @@ Hue.setup_user_menu = function () {
 
 // Updates some user menu elements
 Hue.update_user_menu = function () {
-  let src = `${Hue.config.public_images_location}profiles/${Hue.profile_image}`
+  let src = `${Hue.config.public_images_location}profile/${Hue.profile_image}`
   $("#user_menu_profile_image").attr("src", src)
   $("#user_menu_bio_textarea").val(Hue.bio)
 }
