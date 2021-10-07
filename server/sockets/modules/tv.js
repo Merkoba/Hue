@@ -9,7 +9,7 @@ module.exports = function (
   logger
 ) {
 
-  // Handles sliced image uploads
+  // Handles sliced video uploads
   handler.upload_tv_video = function (socket, data) {
     if (data.video_file === undefined) {
       return false
@@ -25,13 +25,21 @@ module.exports = function (
       return false
     }
 
-    let file_name = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(
+    let file_name = `${Date.now()}_${utilz.get_random_int(
       0,
       1000
     )}.${data.extension}`
 
+    let container = vars.path.join(vars.videos_root, socket.hue_room_id)
+
+    if (!vars.fs.existsSync(container)) {
+      vars.fs.mkdirSync(container)
+    }    
+
+    let path = vars.path.join(container, file_name)
+
     vars.fs.writeFile(
-      vars.videos_root + "/" + file_name,
+      path,
       data.video_file,
       function (err) {
         if (err) {
@@ -316,7 +324,6 @@ module.exports = function (
       user_id = "none"
     }
 
-    let tv_source
     let date = Date.now()
     let comment = data.comment || ""
     let size = data.size || 0
@@ -338,12 +345,10 @@ module.exports = function (
     let room = vars.rooms[room_id]
 
     if (vars.tv_link_types.includes(data.type)) {
-      tv_source = data.src
-
       db_manager.update_room(room_id, {
         tv_id: tv_id,
         tv_user_id: user_id,
-        tv_source: tv_source,
+        tv_source: data.src,
         tv_setter: data.setter,
         tv_title: tv_title,
         tv_size: size,
@@ -353,9 +358,7 @@ module.exports = function (
         tv_comment: comment,
       })
     } else if (data.type === "upload") {
-      tv_source = config.public_videos_location + data.src
       room.stored_videos.unshift(data.src)
-
       let spliced = false
 
       if (room.stored_videos.length > config.max_stored_videos) {
@@ -368,7 +371,7 @@ module.exports = function (
       db_manager.update_room(room_id, {
         tv_id: tv_id,
         tv_user_id: user_id,
-        tv_source: tv_source,
+        tv_source: data.src,
         tv_setter: data.setter,
         tv_title: tv_title,
         tv_size: size,
@@ -390,14 +393,10 @@ module.exports = function (
       return false
     }
 
-    if (tv_source === undefined) {
-      return false
-    }
-
     handler.room_emit(room_id, "tv_source_changed", {
       id: tv_id,
       user_id: user_id,
-      source: tv_source,
+      source: data.src,
       setter: data.setter,
       title: tv_title,
       size: size,
@@ -414,7 +413,7 @@ module.exports = function (
       data: {
         user_id: user_id,
         comment: comment,
-        source: tv_source,
+        source: data.src,
         setter: data.setter,
         title: tv_title,        
         size: size,
@@ -427,7 +426,7 @@ module.exports = function (
 
     room.current_tv_id = tv_id
     room.current_tv_user_id = user_id
-    room.current_tv_source = tv_source
+    room.current_tv_source = data.src
     room.current_tv_query = data.query
     room.last_tv_change = Date.now()
     room.modified = Date.now()    

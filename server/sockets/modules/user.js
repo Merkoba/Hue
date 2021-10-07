@@ -131,10 +131,17 @@ module.exports = function (
       return false
     }
 
-    let file_name = `profile_${socket.hue_user_id}.png`
+    let file_name = `${socket.hue_user_id}.png`
+    let container = vars.path.join(vars.images_root, "profiles")
+
+    if (!vars.fs.existsSync(container)) {
+      vars.fs.mkdirSync(container)
+    }    
+
+    let path = vars.path.join(container, file_name)    
 
     vars.fs.writeFile(
-      vars.images_root + "/" + file_name,
+      path,
       data.image_file,
       function (err, data) {
         if (err) {
@@ -153,10 +160,7 @@ module.exports = function (
       { profile_image: 1, profile_image_version: 1 }
     )
     let new_ver = userinfo.profile_image_version + 1
-    let fver = `${file_name}?ver=${new_ver}`
-    let image_url
-
-    image_url = config.public_images_location + fver
+    let imagever = `${file_name}?ver=${new_ver}`
 
     if (userinfo.profile_image && userinfo.profile_image !== file_name) {
       vars.fs.unlink(
@@ -172,12 +176,12 @@ module.exports = function (
 
     handler.modify_socket_properties(
       socket.hue_user_id,
-      { hue_profile_image: image_url },
+      { hue_profile_image: file_name },
       {
         method: "profile_image_changed",
         data: {
           user_id: socket.hue_user_id,
-          profile_image: image_url,
+          profile_image: imagever,
         },
       }
     )
@@ -196,10 +200,17 @@ module.exports = function (
       return false
     }
 
-    let file_name = `audio_clip_${socket.hue_user_id}.${data.extension}`
+    let file_name = `${socket.hue_user_id}.${data.extension}`
+    let container = vars.audio_root
+
+    if (!vars.fs.existsSync(container)) {
+      vars.fs.mkdirSync(container)
+    }    
+
+    let path = vars.path.join(container, file_name)     
 
     vars.fs.writeFile(
-      vars.audio_root + "/" + file_name,
+      path,
       data.audio_file,
       function (err, data) {
         if (err) {
@@ -235,11 +246,7 @@ module.exports = function (
     }
 
     let audio_clip_url = ""
-
-    if (file_name) {
-      let fver = `${file_name}?ver=${new_ver}`
-      audio_clip_url = config.public_audio_location + fver
-    }
+    let audiover = `${file_name}?ver=${new_ver}`
 
     db_manager.update_user(socket.hue_user_id, {
       audio_clip: file_name,
@@ -248,12 +255,12 @@ module.exports = function (
 
     handler.modify_socket_properties(
       socket.hue_user_id,
-      { hue_audio_clip: audio_clip_url },
+      { hue_audio_clip: file_name },
       {
         method: "audio_clip_changed",
         data: {
           username: socket.hue_username,
-          audio_clip: audio_clip_url,
+          audio_clip: audiover
         },
       }
     )

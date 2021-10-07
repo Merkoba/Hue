@@ -14,6 +14,11 @@ Hue.setup_tv = function (mode, odata = {}) {
   data.date = odata.date
   data.query = odata.query
   data.comment = odata.comment
+
+  if (!data.source.startsWith("http")) {
+    data.source = `${Hue.config.public_videos_location}${Hue.room_id}/${data.source}`
+  }  
+
   data.nice_date = data.date ?
     Hue.utilz.nice_date(data.date) :
     Hue.utilz.nice_date()
