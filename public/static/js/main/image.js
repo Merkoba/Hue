@@ -15,7 +15,7 @@ Hue.setup_image = function (mode, odata = {}) {
   data.comment = odata.comment
   data.in_log = odata.in_log === undefined ? true : odata.in_log
 
-  if (!data.source.startsWith("http")) {
+  if (data.type === "upload") {
     data.source = `${Hue.config.public_images_location}${Hue.room_id}/${data.source}`
   }
 

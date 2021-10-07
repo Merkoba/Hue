@@ -15,7 +15,7 @@ Hue.setup_tv = function (mode, odata = {}) {
   data.query = odata.query
   data.comment = odata.comment
 
-  if (!data.source.startsWith("http")) {
+  if (data.type === "upload") {
     data.source = `${Hue.config.public_videos_location}${Hue.room_id}/${data.source}`
   }  
 
