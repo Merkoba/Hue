@@ -85,5 +85,6 @@ function fix_rooms () {
     fs.writeFileSync(upath, JSON.stringify(obj), "utf-8")
   }
 }
-  
+
+fix_users()
 fix_rooms()
