@@ -32,7 +32,7 @@ for (let file of files) {
 }
 
 function copy_profiles () {
-  let profiles_dir = path.join(__dirname, "img/profiles")
+  let profiles_dir = path.join(__dirname, "img/profile")
 
   if (!fs.existsSync(profiles_dir)) {
     fs.mkdirSync(profiles_dir)
@@ -45,7 +45,7 @@ function copy_profiles () {
 }
 
 function copy_backgrounds () {
-  let backgrounds_dir = path.join(__dirname, "img/backgrounds")
+  let backgrounds_dir = path.join(__dirname, "img/background")
 
   if (!fs.existsSync(backgrounds_dir)) {
     fs.mkdirSync(backgrounds_dir)
@@ -59,7 +59,7 @@ function copy_backgrounds () {
 
 function copy_rooms () {
   for (let id in rooms) {
-    let room_dir = path.join(__dirname, `img/${id}`)
+    let room_dir = path.join(__dirname, `img/room/${id}`)
 
     if (!fs.existsSync(room_dir)) {
       fs.mkdirSync(room_dir)

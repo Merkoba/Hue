@@ -25,7 +25,7 @@ for (let file of files) {
 
 function copy_rooms () {
   for (let id in rooms) {
-    let room_dir = path.join(__dirname, `video/${id}`)
+    let room_dir = path.join(__dirname, `video/room/${id}`)
 
     if (!fs.existsSync(room_dir)) {
       fs.mkdirSync(room_dir)
