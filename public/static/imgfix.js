@@ -72,6 +72,6 @@ function copy_rooms () {
   } 
 }
 
-// copy_profiles()
-// copy_backgrounds()
+copy_profiles()
+copy_backgrounds()
 copy_rooms()
