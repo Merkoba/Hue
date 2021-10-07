@@ -36,6 +36,8 @@ Hue.add_chat_message = function (args = {}) {
   let nd = Hue.utilz.nice_date(d)
   let pi
 
+  console.log(args.prof_image)
+
   if (args.prof_image === "" || args.prof_image === undefined) {
     pi = Hue.config.default_profile_image_url
   } else {
@@ -542,7 +544,7 @@ Hue.start_chat_mouse_events = function () {
 
   $(".chat_area").on("click", ".chat_profile_image", function () {
     let m = $(this).closest(".message")
-    
+
     Hue.show_profile(
       m.data("uname"),
       m.data("prof_image"),
