@@ -180,7 +180,8 @@ module.exports = function (
 
     handler.room_emit(socket, "background_image_changed", {
       username: socket.hue_username,
-      background_image: file_name
+      background_image: file_name,
+      background_image_type: type
     })
 
     if (to_delete) {

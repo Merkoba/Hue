@@ -286,6 +286,7 @@ module.exports = function (
       profile_image: socket.hue_profile_image,
       background_color: info.background_color,
       background_image: info.background_image,
+      background_image_type: info.background_image_type,
       text_color: info.text_color,
       bio: socket.hue_bio,
       superuser:socket.hue_superuser,
