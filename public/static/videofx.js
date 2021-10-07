@@ -6,7 +6,7 @@ const files = fs.readdirSync("video")
 let rooms = {}
 
 for (let file of files) {
-  if (fs.lstatSync(path.join(vide_path, file)).isDirectory()) {
+  if (fs.lstatSync(path.join(video_path, file)).isDirectory()) {
     continue
   }
 
