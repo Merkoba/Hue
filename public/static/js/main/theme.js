@@ -8,7 +8,11 @@ Hue.setup_theme = function (data) {
 // Sets an applies background images from data
 Hue.set_background_image = function (data, apply = true) {
   if (data.background_image !== "") {
-    Hue.background_image = `${Hue.config.public_images_location}background/${data.background_image}`
+    if (data.background_image_type === "hosted") {
+      Hue.background_image = `${Hue.config.public_images_location}background/${data.background_image}`
+    } else {
+      Hue.background_image = data.background_image
+    }
   } else {
     Hue.background_image = Hue.config.default_background_image_url
   }
