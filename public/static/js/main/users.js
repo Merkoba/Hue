@@ -265,13 +265,21 @@ Hue.update_userlist_window = function () {
 
   for (let i = 0; i < Hue.userlist.length; i++) {
     let item = Hue.userlist[i]
+    
+    let pi
+
+    if (item.profile_image) {
+      pi = `${Hue.config.public_images_location}profiles/${item.profile_image}`
+    } else {
+      pi = Hue.config.default_profile_image_url
+    }    
 
     let h = $(`
         <div class='modal_item userlist_item action'>
             <div class='userlist_column flex_column_center'>
                 <div>
                     <div class='userlist_item_profile_image_container round_image_container actionbox'>
-                        <img class='userlist_item_profile_image profile_image' src='${item.profile_image}' loading='lazy'>
+                        <img class='userlist_item_profile_image profile_image' src='${pi}' loading='lazy'>
                     </div>
                     <div class='userlist_item_details_container'>
                         <div class='userlist_item_username'></div>
@@ -592,7 +600,7 @@ Hue.play_profile_audio = function () {
   if (!clip) {
     return
   }
-  
+
   clip = Hue.config.public_audio_location + clip
 
   if (Hue.profile_audio) {
