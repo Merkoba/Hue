@@ -70,7 +70,7 @@ function fix_rooms () {
     let videos = []
 
     for (let video of obj.stored_videos) {
-      let new_source = video.replace("/static/img/", "")
+      let new_source = video.replace("/static/video/", "")
       
       if (new_source.startsWith(`${obj.id}_`)) {
         new_source = new_source.split("_").slice(1).join("_")

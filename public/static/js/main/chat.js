@@ -36,8 +36,6 @@ Hue.add_chat_message = function (args = {}) {
   let nd = Hue.utilz.nice_date(d)
   let pi
 
-  console.log(args.prof_image)
-
   if (args.prof_image === "" || args.prof_image === undefined) {
     pi = Hue.config.default_profile_image_url
   } else {
