@@ -717,25 +717,27 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   $("#show_profile_user").data("username", username)
 
   $("#show_profile_info").html("")
-  let show_info = false
-  
+
   if (user) {
     let item = document.createElement("div")
     let nicedate = Hue.utilz.nice_date(user.date_joined)
     let timeago = Hue.utilz.timeago(user.date_joined)
     item.textContent = `Got Online: ${timeago}`
-    item.title = `${nicedate} | ID: ${user.user_id}`
+    item.title = nicedate
     $("#show_profile_info").append(item)
-    show_info = true
   }
 
-  if (show_info) {
-    $("#show_profile_info").css("display", "grid")
-    $("#profile_info_separator").css("display", "block")
-  } else {
-    $("#show_profile_info").css("display", "none")
-    $("#profile_info_separator").css("display", "none")
+  let id
+
+  if (user_id) {
+    id = user_id
+  } else if (user) {
+    id = user.user_id
   }
+
+  let item = document.createElement("div")
+  item.textContent = `ID: ${id}`
+  $("#show_profile_info").append(item)
   
   Hue.horizontal_separator($("#show_profile_badges")[0])
   Hue.msg_profile.show()
