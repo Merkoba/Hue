@@ -422,22 +422,6 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
 
         return false
       }
-    } else if (src.includes("twitch.tv")) {
-      if (Hue.utilz.get_twitch_id(src) && !Hue.config.twitch_enabled) {
-        if (feedback) {
-          Hue.checkmsg("Twitch support is not enabled")
-        }
-
-        return false
-      }
-    } else if (src.includes("soundcloud.com")) {
-      if (!Hue.config.soundcloud_enabled) {
-        if (feedback) {
-          Hue.checkmsg("Soundcloud support is not enabled")
-        }
-
-        return false
-      }
     } else {
       let extension = Hue.utilz.get_extension(src).toLowerCase()
 

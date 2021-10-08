@@ -134,12 +134,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "youtube_enabled"
 >Whether Youtube features are enabled.
 
-"twitch_enabled"
->Whether Twitch features are enabled.
-
-"soundcloud_enabled"
->Whether Soundcloud features are enabled.
-
 "imgur_enabled"
 >Whether Imgur features are enabled.
 
