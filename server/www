@@ -100,7 +100,6 @@ const port = normalizePort(process.env.PORT || "3210")
 
 build_config()
 start_config_check()
-create_db_backup()
 
 const winston = require("winston")
 
@@ -213,3 +212,5 @@ process.on("SIGINT", function () {
 		do_shutdown()
 	}
 })
+
+create_db_backup()
