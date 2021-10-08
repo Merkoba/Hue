@@ -168,10 +168,6 @@ module.exports = function (
       } 
 
       else if(data.src.includes("twitch.tv")) {
-        if(!config.twitch_enabled) {
-            return false
-        }
-
         let info = utilz.get_twitch_id(data.src)
 
         if (info && info[0] === "channel") {
@@ -186,11 +182,6 @@ module.exports = function (
       
       else if (data.src.includes("soundcloud.com")) {
         data.src = data.src.split("#t=")[0]
-
-        if (!config.soundcloud_enabled) {
-          return false
-        }
-
         data.type = "soundcloud"
         data.title = data.src.replace(/^https?:\/\/soundcloud.com\//, "")
 
