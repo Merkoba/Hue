@@ -1,8 +1,6 @@
 # Installation
 
-Requirements:
-- Node 10+
-- Redis 3+
+`git clone --depth 1 https://github.com/Merkoba/Hue`
 
 Configuration is done in user_config.json and user_config.secret.json files placed in the config directory.
 
