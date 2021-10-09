@@ -14,6 +14,12 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_main_room_name"
 >The default name of the main room. Just like any room, this can be changed later.
 
+"default_room_background_color"
+>The initial background color for new rooms
+
+"default_room_font_color"
+>The initial font color for new rooms
+
 "images_directory"
 >The directory where uploaded images will be stored.
 
@@ -108,7 +114,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >Amount of time for file upload to be inactive for it to be considered expired.
 
 "upload_slice_size"
->The sice of file slices to be uploaded.
+>The size of file slices to be uploaded.
 
 "max_media_source_length"
 >Maximum length of a media source urls.
@@ -261,7 +267,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >How much it should wait in milliseconds before tv can be changed again after last change.
 
 "max_sockets_per_user"
->How many active sockets a user can have at the same time. After this limit all incoming socket connections are droppped.
+>How many active sockets a user can have at the same time. After this limit all incoming socket connections are dropped.
 
 "activity_bar_interval"
 >How often to check for obsolete items in the top activity bar to remove them.
@@ -330,12 +336,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "db_write_file_timeout_limit"
 >Max time without saving a file after a write call.
-
-"default_room_background_color"
->The initial background color for new rooms
-
-"default_room_font_color"
->The initial font color for new rooms
 
 
 ## config.secret.json
