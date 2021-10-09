@@ -143,7 +143,7 @@ let main_room_path = path.join(__dirname, "../", `${config.db_store_path}/rooms/
 
 // If it doesn't exist then create a minimal room object
 if (!fs.existsSync(main_room_path)) {
-	let obj = {id: config.main_room_id}
+	let obj = {id: config.main_room_id, name: config.default_main_room_name}
 	fs.writeFileSync(main_room_path, JSON.stringify(obj), "utf-8")
 	console.info("Main room created")
 }
