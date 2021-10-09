@@ -361,8 +361,10 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 ## Join Flags
 
-"alternative"
->Meant to be used for bots or similar, to connect without using the normal login portal. Failure to authenticate will result in a temporary ban to avoid abuse.
+"alternative" (boolean)
+>Meant to be used for bots or similar, to connect without using the normal login portal.
+ 
+>Failure to authenticate will result in a temporary ban to avoid abuse.
 
-"no_message_log"
+"no_message_log" (boolean)
 >If true, the server will not send the message log on join, which can save some bandwidth.
