@@ -338,7 +338,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >The initial font color for new rooms
 
 
-## The following reside in config.secret.json
+## config.secret.json
 
 "youtube_api_key"
 >The Youtube v3 Api key used to fetch video information from urls or to search for videos by search terms using /tv.
@@ -357,3 +357,12 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "imgur_client_id"
 >Imgur client id.
+
+
+## Join Flags
+
+"alternative"
+>Meant to be used for bots or similar, to connect without using the normal login portal. Failure to authenticate will result in a temporary ban to avoid abuse.
+
+"no_message_log"
+>If true, the server will not send the message log on join, which can save some bandwidth.
