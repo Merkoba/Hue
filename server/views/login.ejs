@@ -5,10 +5,21 @@
 		<title><%-vars.login_title%></title>
 
 		<%- include('pages_imports.ejs'); %>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
 
 		<script>
+			let recaptcha_checked = false
+
+			function recaptcha_callback() {
+				recaptcha_checked = true
+			}			
+
 			function validate_form() {
 				if (msg_info.is_open()) {
+					return false
+				}
+
+				if (recaptcha_enabled && !recaptcha_checked) {
 					return false
 				}
 
@@ -47,11 +58,20 @@
 	<body>
 		<div class='main'>
 			<form method="post" action="/login" name="login" onsubmit="return validate_form()">
+				<input type='hidden' name='fromurl' value="<%-vars.fromurl%>">
 				<input type="text" placeholder="Username" name="username" id="login_username">
 				<div class="spacer4"></div>
 				<input type="password" placeholder="Password" name="password" id="login_password">
+				
 				<div class="spacer4"></div>
-				<input type='hidden' name='fromurl' value="<%-vars.fromurl%>">
+
+				<% if(vars.recaptcha_enabled) {%>
+
+				<div class="g-recaptcha" data-sitekey="<%-vars.recaptcha_key%>" data-callback="recaptcha_callback"></div>
+				<div class="spacer4"></div>
+				
+				<%}%>
+
 				<input id="btn_login" type="submit" value="Login">
 			</form>	
 

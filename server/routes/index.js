@@ -216,6 +216,12 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     c.vars.max_max_username_length = config.max_max_username_length
     c.vars.max_max_password_length = config.max_max_password_length
     c.vars.login_title = config.login_title
+    c.vars.recaptcha_enabled = config.recaptcha_enabled
+    c.vars.form_username = decodeURIComponent(req.query.form_username)
+
+    if (config.recaptcha_enabled) {
+      c.vars.recaptcha_key = sconfig.recaptcha_key
+    }
 
     res.render("login", c)
   })
@@ -224,7 +230,6 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   router.post("/login", function (req, res, next) {
     let username = req.body.username
     let password = req.body.password
-    let fromurl = decodeURIComponent(req.body.fromurl)
 
     if (username.length === 0 || username.length > config.max_max_username_length) {
       return false
@@ -237,32 +242,46 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       return false
     }
 
-    db_manager
-      .check_password(username, password, { password_date: true })
-
-      .then((ans) => {
-        if (ans.valid) {
-          req.session.user_id = ans.user.id
-          req.session.password_date = ans.user.password_date
-
-          if (fromurl === undefined || fromurl === "" || fromurl === "/login") {
-            res.redirect("/")
-          } else {
-            res.redirect(fromurl)
-          }
-        } else {
-          req.session.destroy(function () {})
-
-          let m = encodeURIComponent("Wrong username or password")
-          let form_username = encodeURIComponent(username)
-          res.redirect(`/login?message=${m}&form_username=${form_username}`)
-        }
+    if (config.recaptcha_enabled) {
+      check_captcha(req, res, function () {
+        do_login(req, res, next)
       })
-
-      .catch((err) => {
-        console.error(err)
-      })
+    } else {
+      do_login(req, res, next)
+    }
   })
+
+  // Do the login check
+  function do_login (req, res, next) {
+    let username = req.body.username
+    let password = req.body.password
+    let fromurl = decodeURIComponent(req.body.fromurl)    
+
+    db_manager.check_password(username, password, { password_date: true })
+
+    .then((ans) => {
+      if (ans.valid) {
+        req.session.user_id = ans.user.id
+        req.session.password_date = ans.user.password_date
+
+        if (fromurl === undefined || fromurl === "" || fromurl === "/login") {
+          res.redirect("/")
+        } else {
+          res.redirect(fromurl)
+        }
+      } else {
+        req.session.destroy(function () {})
+
+        let m = encodeURIComponent("Wrong username or password")
+        let form_username = encodeURIComponent(username)
+        res.redirect(`/login?message=${m}&form_username=${form_username}`)
+      }
+    })
+
+    .catch((err) => {
+      console.error(err)
+    })
+  }
 
   // Register GET
   router.get("/register", check_url, function (req, res, next) {
@@ -312,50 +331,54 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     }
 
     if (config.recaptcha_enabled) {
-      let recaptcha_response = req.body["g-recaptcha-response"]
-      let remote_ip =
-        req.headers["x-forwarded-for"] || req.connection.remoteAddress
-
-      if (
-        recaptcha_response === undefined ||
-        recaptcha_response === "" ||
-        recaptcha_response === null
-      ) {
-        return false
-      }
-
-      console.info("Fetching Recaptcha...")
-      fetch("https://www.google.com/recaptcha/api/siteverify", {
-        method: "POST",
-        body: `secret=${sconfig.recaptcha_secret_key}&response=${recaptcha_response}&remoteip=${remote_ip}`,
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-        },
+      check_captcha(req, res, function () {
+        do_register(req, res, next)
       })
-        .then((res) => res.json())
-
-        .then((json) => {
-          if (json.success) {
-            do_register(req, res, next)
-          } else {
-            let m = encodeURIComponent(
-              `There was a problem verifying you're not a robot`
-            )
-            res.redirect(`/message?message=${m}`)
-          }
-        })
-
-        .catch((err) => {
-          let m = encodeURIComponent(
-            `There was a problem verifying you're not a robot`
-          )
-          res.redirect(`/message?message=${m}`)
-          console.error(err)
-        })
     } else {
       do_register(req, res, next)
     }
   })
+
+  // Check captcha and run a callback
+  function check_captcha (req, res, callback) {
+    let recaptcha_response = req.body["g-recaptcha-response"]
+    let remote_ip =
+      req.headers["x-forwarded-for"] || req.connection.remoteAddress
+
+    if (
+      recaptcha_response === undefined ||
+      recaptcha_response === "" ||
+      recaptcha_response === null
+    ) {
+      return false
+    }
+
+    console.info("Fetching Recaptcha...")
+    fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      body: `secret=${sconfig.recaptcha_secret_key}&response=${recaptcha_response}&remoteip=${remote_ip}`,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+      },
+    })
+
+    .then((res) => res.json())
+
+    .then((json) => {
+      if (json.success) {
+        callback()
+      } else {
+        let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
+        res.redirect(`/message?message=${m}`)
+      }
+    })
+
+    .catch((err) => {
+      let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
+      res.redirect(`/message?message=${m}`)
+      console.error(err)
+    })    
+  }
 
   // Helper function
   function already_exists(res, username) {
