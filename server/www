@@ -137,6 +137,17 @@ logger.log_error = function (msg) {
 
 const utilz = require("../public/static/js/libs/utilz.js")()
 const db_manager = require("./db/main.js")(config, sconfig, utilz, logger)
+
+// Check if main room exists
+let main_room_path = path.join(__dirname, "../", `${config.db_store_path}/rooms/${config.main_room_id}`)
+
+// If it doesn't exist then create a minimal room object
+if (!fs.existsSync(main_room_path)) {
+	let obj = {id: config.main_room_id}
+	fs.writeFileSync(main_room_path, JSON.stringify(obj), "utf-8")
+	console.info("Main room created")
+}
+
 const app = require("./app")(db_manager, config, sconfig, utilz)
 const debug = require("debug")("hue:server")
 const http = require("http")
