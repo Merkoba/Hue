@@ -31,18 +31,18 @@ function build_config() {
 	let xconfig = JSON.parse(fs.readFileSync(config_path, "utf8"))
 	let xsconfig = JSON.parse(fs.readFileSync(sconfig_path, "utf8"))
 
-	try {
+	if (fs.existsSync(user_config_path)) {
 		let user_config = JSON.parse(fs.readFileSync(user_config_path, "utf8"))
 		Object.assign(xconfig, user_config)
-	} catch (err) {
-		console.error(err)
+	} else {
+		console.info("No user config file found")
 	}
 
-	try {
+	if (fs.existsSync(user_sconfig_path)) {
 		let user_sconfig = JSON.parse(fs.readFileSync(user_sconfig_path, "utf8"))
 		Object.assign(xsconfig, user_sconfig)
-	} catch (err) {
-		console.error(err)
+	} else {
+		console.info("No user secret config file found")
 	}
 
 	Object.keys(config).forEach(function(key) {
