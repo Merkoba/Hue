@@ -12,6 +12,8 @@ Most of the defaults in user_config.json can be left as is.
 
 Most of the necessary configuration is set in user_config.secret.json, like api keys and secret strings.
 
+Not all configurations need to be declared in the user configs, just the ones you want to override.
+
 Example of how to use user_config.json:
 
 ```javascript
