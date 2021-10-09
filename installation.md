@@ -60,6 +60,6 @@ That's an example of starting it with the user "node" in a production environmen
 
 After a git pull with new changes it might be necessary to `bundle_all` again if frontend files changed.
 
-If some ejs files or config files were changed it's not necessary to restart the server, since it checks automatically and reloads live.
+If some ejs files or config files were changed it's not necessary to restart the server, since it checks automatically and reloads live. The terminal output will show messages when these get rebuilt.
 
 If other backend files changed then it's necessary to restart the server.
