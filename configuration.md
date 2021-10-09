@@ -15,10 +15,10 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >The default name of the main room. Just like any room, this can be changed later.
 
 "default_room_background_color"
->The initial background color for new rooms
+>The initial background color for new rooms.
 
 "default_room_font_color"
->The initial font color for new rooms
+>The initial font color for new rooms.
 
 "images_directory"
 >The directory where uploaded images will be stored.
