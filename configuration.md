@@ -346,12 +346,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "recaptcha_key"
 >Public google recaptcha key.
 
-"soundcloud_id"
->Soundcloud API ID.
-
-"recaptcha_secret_key"
->Soundcloud API Secret.
-
 "recaptcha_secret_key"
 >Secret google recaptcha key.
 
