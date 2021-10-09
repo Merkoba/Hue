@@ -4,9 +4,11 @@ Requirements:
 - Node 10+
 - Redis 3+
 
-Configuration is done in user_config.json and user_config.secret.json files placed in the config directory. You must create these files. If they are not going to be used, create empty json objects like {}, or error messages will be shown at startup.
+Configuration is done in user_config.json and user_config.secret.json files placed in the config directory.
 
-Editing those files overrides settings in the default configuration files. The point of having separate files is so the default config files can be changed during an update while the user config files remain intact.
+Editing those files overrides settings in the default configuration files. 
+
+The point of having separate files is so the default config files can be changed during an update while the user config files remain intact.
 
 Example of how to use user_config.json:
 
@@ -26,15 +28,21 @@ Example of how to use user_config.secret.json:
 }
 ```
 
-The admin's username must go in superuser_usernames in user_config.secret.json. It's used to take over control of the main room. The main room is created on first join, with no roles. To get admin on the room use /annex.
+The admin's username must go in superuser_usernames in user_config.secret.json
 
-To have a fully working system, as it is intended, getting all the API keys (YouTube, Imgur) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled": false) A Google Recaptcha key is necessary to enable captcha verification on registration, though captcha support can be disabled ("recaptcha_enabled": false). Set API keys in user_config.secret.json.
+The main room is created at startup if it doesn't exist. 
 
-Put the files in the directory you want it work and call "npm install". That should install all necessary packages. 
+To get admin rights on the room use /annex after joining it.
 
-There is no need to create database tables, all of that is done automatically.
+To have a fully working system, as it is intended, getting all the API keys (YouTube, Imgur) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled": false) A Google Recaptcha key is necessary to enable captcha verification on registration, though captcha support can be disabled ("recaptcha_enabled": false). Set API keys in user_config.secret.json
 
-Redis is now required, to store link metadata in database 10. Install and setup Redis.
+Call "npm install" to install node dependencies.
+
+Install redis.
+
+Go to utils/ and run `bundle_all` to create the frontend files.
+
+Try running the server with `node server/www`
 
 To run it properly in production you will have to configure Apache or some other webserver to use a reverse proxy. A sample vhost configuration for Apache (apache_vhost.conf) is included. For using https, LetsEncrypt is suggested.
 
@@ -44,8 +52,10 @@ Using pm2 is suggested to control the Node process. PM2 will likely use the user
 
 That's an example of starting it with the user "node" in a production environment.
 
-Build the client js and css files:
+### Updates
 
->cd utils
+After a git pull with new changes it might be necessary to `bundle_all` again if frontend files changed.
 
->./bundle_all
+If some ejs files or config files were changed it's not necessary to restart the server, since it checks automatically and reloads live.
+
+If other backend files changed then it's necessary to restart the server.
