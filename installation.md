@@ -8,6 +8,10 @@ Editing those files overrides settings in the default configuration files.
 
 The point of having separate files is so the default config files can be changed during an update while the user config files remain intact.
 
+Most of the defaults in user_config.json can be left as is.
+
+Most of the necessary configuration is set in user_config.secret.json, like api keys and secret strings.
+
 Example of how to use user_config.json:
 
 ```javascript
@@ -34,9 +38,9 @@ To get admin rights on the room use /annex after joining it.
 
 To have a fully working system, as it is intended, getting all the API keys (YouTube, Imgur) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled": false) A Google Recaptcha key is necessary to enable captcha verification on registration, though captcha support can be disabled ("recaptcha_enabled": false). Set API keys in user_config.secret.json
 
-Call "npm install" to install node dependencies.
+Run "npm install" to install node dependencies.
 
-Install redis.
+Install Redis, which is used for sessions and some data cache.
 
 Go to utils/ and run `bundle_all` to create the frontend files.
 
