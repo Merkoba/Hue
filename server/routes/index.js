@@ -115,7 +115,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     view_mtime = get_view_mtime()
     config_mtime = config.mtime
-    console.info(`View Built - ${Date.now()}`)
+    utilz.loginfo("View built")
   }
 
   function walkdir(dir, callback) {

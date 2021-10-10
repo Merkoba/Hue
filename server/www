@@ -3,6 +3,8 @@ const fs = require("fs")
 const path = require("path")
 const tar = require("tar")
 
+const utilz = require("../public/static/js/libs/utilz.js")()
+
 function normalizePort(val) {
 	let port = parseInt(val, 10)
 
@@ -35,14 +37,14 @@ function build_config() {
 		let user_config = JSON.parse(fs.readFileSync(user_config_path, "utf8"))
 		Object.assign(xconfig, user_config)
 	} else {
-		console.info("No user config file found")
+		utilz.loginfo("No user config file found")
 	}
 
 	if (fs.existsSync(user_sconfig_path)) {
 		let user_sconfig = JSON.parse(fs.readFileSync(user_sconfig_path, "utf8"))
 		Object.assign(xsconfig, user_sconfig)
 	} else {
-		console.info("No user secret config file found")
+		utilz.loginfo("No user secret config file found")
 	}
 
 	Object.keys(config).forEach(function(key) {
@@ -59,7 +61,7 @@ function build_config() {
 
 	config.mtime = Date.now()
 	config_mtime = get_config_mtime()
-	console.info(`Config Built - ${Date.now()}`)
+	utilz.loginfo("Config built")
 }
 
 function get_config_mtime() {
@@ -90,7 +92,7 @@ function create_db_backup() {
 		},
 		[`${store_path}/users`, `${store_path}/rooms`]
 	).then(res => {
-		console.info("DB Backup created")
+		utilz.loginfo("DB backup created")
 	}).catch(err => {
 		console.error(err)
 	})
@@ -135,7 +137,6 @@ logger.log_error = function (msg) {
 	})
 }
 
-const utilz = require("../public/static/js/libs/utilz.js")()
 const db_manager = require("./db/main.js")(config, sconfig, utilz, logger)
 
 // Check if main room exists
@@ -145,7 +146,7 @@ let main_room_path = path.join(__dirname, "../", `${config.db_store_path}/rooms/
 if (!fs.existsSync(main_room_path)) {
 	let obj = {id: config.main_room_id, name: config.default_main_room_name}
 	fs.writeFileSync(main_room_path, JSON.stringify(obj), "utf-8")
-	console.info("Main room created")
+	utilz.loginfo("Main room created")
 }
 
 const app = require("./app")(db_manager, config, sconfig, utilz)

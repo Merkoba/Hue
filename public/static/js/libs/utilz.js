@@ -749,6 +749,26 @@ const Utilz = function () {
 		return s
 	}
 
+	utilz.fillpad = function (s, n, c) {
+		while (s.length < n) {
+			s = c + s
+		}
+
+		return s
+	}
+
+	utilz.get_time = function () {
+		let today = new Date()
+		let hours = utilz.fillpad(today.getHours().toString(), 2, "0")
+		let minutes = utilz.fillpad(today.getMinutes().toString(), 2, "0")
+		let seconds = utilz.fillpad(today.getSeconds().toString(), 2, "0")
+		return `${hours}:${minutes}:${seconds}`
+	}
+
+	utilz.loginfo = function (s) {
+		console.info(`[${utilz.get_time()}] ${s}`)
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]
