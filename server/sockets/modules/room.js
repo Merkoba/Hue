@@ -110,7 +110,6 @@ module.exports = function (
       log_messages_modified: false,
       admin_log_messages_modified: false,
       userlist: {},
-      stored_images: info.stored_images,
       current_image_id: info.image_id,
       current_image_user_id: info.image_user_id,
       current_image_source: info.image_source,

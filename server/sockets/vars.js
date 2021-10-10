@@ -26,9 +26,7 @@ module.exports = function (
   vars.media_types = ["image", "tv"]
   vars.filtered_fields = {
     log_messages: 0,
-    admin_log_messages: 0,
-    stored_images: 0,
-    stored_videos: 0
+    admin_log_messages: 0
   }
   vars.redis_client_ready = false
   vars.redis_client = vars.redis.createClient()
