@@ -159,4 +159,9 @@ module.exports = function (
       file.cancelled = true
     }
   }
+
+  // Get file name
+  handler.generate_file_name = function (extension) {
+    return `${Date.now()}_${utilz.random_sequence(3)}.${extension}`
+  }
 }
