@@ -32,7 +32,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   app.use(express.urlencoded({ extended: false }))
   app.use(express.static(path.join(__dirname, "../public")))
 
-  console.info(`ENV: ${app.get("env")}`)
+  utilz.loginfo(`ENV: ${app.get("env")}`)
 
   if (app.get("env") === "production" && config.https_enabled) {
     app.set("trust proxy", 1)
