@@ -114,7 +114,6 @@ module.exports = function (
       current_image_user_id: info.image_user_id,
       current_image_source: info.image_source,
       current_image_query: info.image_query,
-      stored_videos: info.stored_videos,
       current_tv_id: info.tv_id,
       current_tv_user_id: info.tv_user_id,
       current_tv_source: info.tv_source,
