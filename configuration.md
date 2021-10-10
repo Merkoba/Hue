@@ -168,10 +168,10 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >Url lengths beyond this are ignored by the system. This is to avoid triggering actions on urls that are likely wrong or meant as an attack.
 
 "max_stored_images"
->The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted.
+>The amount of most recent images to have stored in a room.
 
 "max_stored_videos"
->The amount of most recent videos to have stored in a room. Each room has an array of videos stored, when the array's length surpasses this number, the oldest image in it will get deleted.
+>The amount of most recent videos to have stored in a room.
 
 "settings_default_highlight_current_username"
 >Whether current username triggers a highlight by default.

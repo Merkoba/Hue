@@ -333,56 +333,19 @@ module.exports = function (
     }
 
     let tv_id = handler.generate_message_id()
-    let room = vars.rooms[room_id]
 
-    if (vars.tv_link_types.includes(data.type)) {
-      db_manager.update_room(room_id, {
-        tv_id: tv_id,
-        tv_user_id: user_id,
-        tv_source: data.src,
-        tv_setter: data.setter,
-        tv_title: tv_title,
-        tv_size: size,
-        tv_date: date,
-        tv_type: data.type,
-        tv_query: data.query,
-        tv_comment: comment,
-      })
-    } else if (data.type === "upload") {
-      room.stored_videos.unshift(data.src)
-      let spliced = false
-
-      if (room.stored_videos.length > config.max_stored_videos) {
-        spliced = room.stored_videos.splice(
-          config.max_stored_videos,
-          room.stored_videos.length
-        )
-      }
-
-      db_manager.update_room(room_id, {
-        tv_id: tv_id,
-        tv_user_id: user_id,
-        tv_source: data.src,
-        tv_setter: data.setter,
-        tv_title: tv_title,
-        tv_size: size,
-        tv_date: date,
-        stored_videos: room.stored_videos,
-        tv_type: data.type,
-        tv_query: data.query,
-        tv_comment: comment,
-      })
-
-      if (spliced) {
-        for (let file_name of spliced) {
-          vars.fs.unlink(`${vars.videos_root}/${file_name}`, function (
-            err
-          ) {})
-        }
-      }
-    } else {
-      return false
-    }
+    db_manager.update_room(room_id, {
+      tv_id: tv_id,
+      tv_user_id: user_id,
+      tv_source: data.src,
+      tv_setter: data.setter,
+      tv_title: tv_title,
+      tv_size: size,
+      tv_date: date,
+      tv_type: data.type,
+      tv_query: data.query,
+      tv_comment: comment,
+    })    
 
     handler.room_emit(room_id, "tv_source_changed", {
       id: tv_id,
@@ -415,12 +378,41 @@ module.exports = function (
 
     handler.push_log_message(socket, message)
 
+    let room = vars.rooms[room_id]
     room.current_tv_id = tv_id
     room.current_tv_user_id = user_id
     room.current_tv_source = data.src
     room.current_tv_query = data.query
     room.last_tv_change = Date.now()
-    room.modified = Date.now()    
+    room.modified = Date.now()   
+    
+    // Remove left over files
+    if (data.type === "upload") {
+      let container = vars.path.join(vars.videos_root, "room", socket.hue_room_id)
+
+      vars.fs.readdir(container, function (err, files) {
+        try {
+          if (err) {
+            logger.log_error(err)
+            return false
+          }
+
+          files.sort().reverse()
+
+          for (let file of files.slice(config.max_stored_videos)) {
+            let path = vars.path.join(container, file)
+
+            vars.fs.unlink(path, function (err) {
+              if (err) {
+                logger.log_error(err)
+              }
+            })
+          }
+        } catch (err) {
+          logger.log_error(err)
+        }
+      })
+    }    
   }
 
   // Receives a request to ask another user for their tv video progress

@@ -227,55 +227,18 @@ module.exports = function (
     }
 
     let image_id = handler.generate_message_id()
-    let room = vars.rooms[room_id]
 
-    if (data.type === "link") {
-      db_manager.update_room(room_id, {
-        image_id: image_id,
-        image_user_id: user_id,
-        image_source: data.src,
-        image_setter: data.setter,
-        image_size: size,
-        image_date: date,
-        image_type: data.type,
-        image_query: data.query,
-        image_comment: comment,
-      })
-    } else if (data.type === "upload") {
-      room.stored_images.unshift(data.src)
-
-      let spliced = false
-
-      if (room.stored_images.length > config.max_stored_images) {
-        spliced = room.stored_images.splice(
-          config.max_stored_images,
-          room.stored_images.length
-        )
-      }
-
-      db_manager.update_room(room_id, {
-        image_id: image_id,
-        image_user_id: user_id,
-        image_source: data.src,
-        image_setter: data.setter,
-        image_size: size,
-        image_date: date,
-        stored_images: room.stored_images,
-        image_type: data.type,
-        image_query: data.query,
-        image_comment: comment,
-      })
-
-      if (spliced) {
-        for (let file_name of spliced) {
-          vars.fs.unlink(`${vars.images_root}/${file_name}`, function (
-            err
-          ) {})
-        }
-      }
-    } else {
-      return false
-    }
+    db_manager.update_room(room_id, {
+      image_id: image_id,
+      image_user_id: user_id,
+      image_source: data.src,
+      image_setter: data.setter,
+      image_size: size,
+      image_date: date,
+      image_type: data.type,
+      image_query: data.query,
+      image_comment: comment,
+    })
 
     handler.room_emit(room_id, "image_source_changed", {
       id: image_id,
@@ -306,12 +269,41 @@ module.exports = function (
 
     handler.push_log_message(socket, message)
 
+    let room = vars.rooms[room_id]
     room.current_image_id = image_id
     room.current_image_user_id = user_id
     room.current_image_source = data.src
     room.current_image_query = data.query
     room.last_image_change = Date.now()
     room.modified = Date.now()
+
+    // Remove left over files
+    if (data.type === "upload") {
+      let container = vars.path.join(vars.images_root, "room", socket.hue_room_id)
+
+      vars.fs.readdir(container, function (err, files) {
+        try {
+          if (err) {
+            logger.log_error(err)
+            return false
+          }
+  
+          files.sort().reverse()
+  
+          for (let file of files.slice(config.max_stored_images)) {
+            let path = vars.path.join(container, file)
+  
+            vars.fs.unlink(path, function (err) {
+              if (err) {
+                logger.log_error(err)
+              }
+            })
+          }
+        } catch (err) {
+          logger.log_error(err)
+        }
+      })
+    }
   }
 
   // Returns an image mime type by checking the extension
