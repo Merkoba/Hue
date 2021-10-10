@@ -47,7 +47,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
   // Do the write file operation
   function do_write_file (path) {
-    console.info(`Writing: ${path.split("/").slice(-2).join("/")}`)
+    utilz.loginfo(`Writing: ${path.split("/").slice(-2).join("/")}`)
     cache[path].last_write = Date.now()
     fs.writeFile(path, JSON.stringify(cache[path].obj), "utf8", err => {
       if (err) {

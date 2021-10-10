@@ -766,7 +766,11 @@ const Utilz = function () {
 	}
 
 	utilz.loginfo = function (s) {
-		console.info(`[${utilz.get_time()}] ${s}`)
+		try {
+			console.info(`[${utilz.get_time()}] ${s}`)
+		} catch (err) {
+			console.error(err)
+		}
 	}
 
 	utilz.media_types = ["image", "tv"]
