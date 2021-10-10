@@ -42,7 +42,7 @@ Hue.show_open_room = function (id) {
     ["Open Room", Hue.template_open_room({ id: id })],
     function () {
       $("#open_room_here").on("click", function () {
-        Hue.goto_url(id)
+        Hue.goto_url(id, "same")
         Hue.msg_info2.close()
       })
 
