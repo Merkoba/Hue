@@ -110,7 +110,7 @@ Hue.server_update_events = {
     Hue.on_room_created(data)
   },
   redirect: (data) => {
-    Hue.goto_url(data.location)
+    Hue.goto_url(data.location, "same")
   },
   username_already_exists: (data) => {
     Hue.checkmsg(`${data.username} already exists`)

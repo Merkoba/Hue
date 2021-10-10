@@ -1,6 +1,6 @@
 // Logs out the user
 Hue.logout = function () {
-  Hue.goto_url("/logout")
+  Hue.goto_url("/logout", "same")
 }
 
 // Changes the user's username

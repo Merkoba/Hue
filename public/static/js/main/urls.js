@@ -72,11 +72,7 @@ jQuery.fn.urlize = function (stop_propagation = true) {
 }
 
 // Goes to a url
-Hue.goto_url = function (u, mode = "tab", encode = false) {
-  if (encode) {
-    u = encodeURIComponent(u)
-  }
-
+Hue.goto_url = function (u, mode) {
   if (mode === "tab") {
     window.open(u, "_blank")
   } else {
@@ -177,7 +173,7 @@ Hue.check_handle_url_options = function (text) {
 // Setups the Open URL picker window
 Hue.setup_open_url = function () {
   $("#open_url_menu_open").on("click", function () {
-    Hue.goto_url(Hue.open_url_source)
+    Hue.goto_url(Hue.open_url_source, "tab")
     Hue.close_all_modals()
   })
 
