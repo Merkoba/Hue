@@ -750,7 +750,9 @@ const Utilz = function () {
 	}
 
 	utilz.fillpad = function (s, n, c) {
-		while (s.length < n) {
+		let olen = s.length
+
+		for (let i=0; i<(n - olen); i++) {
 			s = c + s
 		}
 
