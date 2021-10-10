@@ -72,12 +72,12 @@ jQuery.fn.urlize = function (stop_propagation = true) {
 }
 
 // Goes to a url
-Hue.goto_url = function (u, mode) {
+Hue.goto_url = function (url, mode) {
   if (mode === "tab") {
-    window.open(u, "_blank")
+    window.open(url, "_blank")
   } else {
     Hue.user_leaving = true
-    window.location = u
+    window.location = url
   }
 }
 
