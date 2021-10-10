@@ -25,11 +25,7 @@ module.exports = function (
       return false
     }
 
-    let file_name = `${Date.now()}_${utilz.get_random_int(
-      0,
-      1000
-    )}.${data.extension}`
-
+    let file_name = handler.generate_file_name(data.extension)
     let container = vars.path.join(vars.videos_root, "room", socket.hue_room_id)
 
     if (!vars.fs.existsSync(container)) {
