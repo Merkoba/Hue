@@ -9,7 +9,6 @@ Hue.user_join = function (data) {
     bio: data.bio,
     hearts: data.hearts,
     skulls: data.skulls,
-    audioclip: data.audioclip,
     audioclip_version: data.audioclip_version
   })
 
@@ -72,7 +71,6 @@ Hue.add_to_userlist = function (args = {}) {
     bio: "",
     hearts: 0,
     skulls: 0,
-    audioclip: false,
     audioclip_version: false,
     last_activity: 0
   }
@@ -107,7 +105,6 @@ Hue.add_to_userlist = function (args = {}) {
     bio: args.bio,
     hearts: args.hearts,
     skulls: args.skulls,
-    audioclip: args.audioclip,
     audioclip_version: args.audioclip_version,
     last_activity: args.last_activity
   })
@@ -591,14 +588,7 @@ Hue.setup_show_profile = function () {
 
 // Stars the profile audio
 Hue.play_profile_audio = function () {
-  let clip = Hue.open_profile_user.audioclip
-  
-  if (!clip) {
-    return
-  }
-
-  let ver = `?ver=${Hue.open_profile_user.audioclip_version}`
-  clip = Hue.config.public_audioclip_location + clip + ver
+  let clip = Hue.get_audioclip(Hue.open_profile_user.user_id)
 
   if (Hue.profile_audio) {
     Hue.stop_profile_audio()
@@ -1234,6 +1224,18 @@ Hue.get_profilepic = function (user_id) {
   
   if (user) {
     pi += `?ver=${user.profilepic_version}`
+  }
+
+  return pi
+}
+
+// Get audioclip path
+Hue.get_audioclip = function (user_id) {
+  let pi = Hue.config.public_audioclip_location + user_id + ".mp3"
+  let user = Hue.get_user_by_user_id(user_id)
+  
+  if (user) {
+    pi += `?ver=${user.audioclip_version}`
   }
 
   return pi
