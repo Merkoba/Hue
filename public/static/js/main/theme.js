@@ -102,7 +102,7 @@ Hue.announce_background_color_change = function (data) {
 // Picker window to select how to change the background image
 Hue.open_background_select = function () {
   Hue.msg_info2.show([
-    "Change Background Image",
+    "Change Background",
     Hue.template_background_select(),
   ], function () {
     $("#background_select_url").on("click", function () {
@@ -128,7 +128,7 @@ Hue.open_background_picker = function () {
 // this window is opened
 Hue.open_background_input = function () {
   Hue.msg_info2.show(
-    ["Change Background Image", Hue.template_background_input()],
+    ["Change Background", Hue.template_background_input()],
     function () {
       $("#background_input_submit").on("click", function () {
         Hue.background_input_action()

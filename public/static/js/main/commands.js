@@ -369,11 +369,11 @@ Hue.commands = {
     },
     description: `Scrolls the chat to the bottom`,
   },
-  "backgroundimage": {
+  "background": {
     action: (arg, ans) => {
       Hue.change_background_source(arg)
     },
-    description: `Changes the background image to a specified URL`,
+    description: `Changes the background to a specified URL`,
   },
   "whatis": {
     action: (arg, ans) => {
