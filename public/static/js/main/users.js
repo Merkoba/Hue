@@ -267,15 +267,8 @@ Hue.update_userlist_window = function () {
 
   for (let i = 0; i < Hue.userlist.length; i++) {
     let item = Hue.userlist[i]
+    let pi = Hue.get_profilepic(item.user_id)
     
-    let pi
-
-    if (item.profilepic) {
-      pi = `${Hue.config.public_image_location}profile/${item.profilepic}`
-    } else {
-      pi = Hue.config.default_profilepic_url
-    }    
-
     let h = $(`
         <div class='modal_item userlist_item action'>
             <div class='userlist_column flex_column_center'>
