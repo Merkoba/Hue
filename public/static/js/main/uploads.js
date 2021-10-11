@@ -77,7 +77,7 @@ Hue.upload_video = function (file) {
 
   let size = file.size / 1024
 
-  if (size > Hue.config.max_tv_video_size) {
+  if (size > Hue.config.max_tv_size) {
     Hue.dropzone.files = []
     Hue.checkmsg("File is too big")
     return false

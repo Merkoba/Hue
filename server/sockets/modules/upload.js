@@ -91,7 +91,7 @@ module.exports = function (
         return false
       }
     } else if (file.action === "tv_upload") {
-      if (fsize > config.max_tv_video_size) {
+      if (fsize > config.max_tv_size) {
         delete vars.files[key]
         return false
       }
