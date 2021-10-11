@@ -35,16 +35,16 @@ Hue.update_activity_bar = function (check = false) {
   Hue.clear_activity_bar_items()
 
   for (let user of activity_list) {
-    if (user.profile_image) {
-      pi = Hue.config.public_profilepic_location + user.profile_image
+    if (user.profilepic) {
+      pi = Hue.config.public_profilepic_location + user.profilepic
     } else {
-      pi = Hue.config.default_profile_image_url
+      pi = Hue.config.default_profilepic_url
     }
 
     let h = $(`
       <div class='activity_bar_item'>
           <div class='activity_bar_image_container round_image_container'>
-              <img class='activity_bar_image profile_image' src='${pi}' loading='lazy'>
+              <img class='activity_bar_image profilepic' src='${pi}' loading='lazy'>
           </div>
           <div class='activity_bar_text'></div>
       </div>`)
@@ -53,8 +53,8 @@ Hue.update_activity_bar = function (check = false) {
     let img_el = h.find(".activity_bar_image").eq(0)
 
     img_el.on("error", function () {
-      if ($(this).attr("src") !== Hue.config.default_profile_image_url) {
-        $(this).attr("src", Hue.config.default_profile_image_url)
+      if ($(this).attr("src") !== Hue.config.default_profilepic_url) {
+        $(this).attr("src", Hue.config.default_profilepic_url)
       }
     })
 

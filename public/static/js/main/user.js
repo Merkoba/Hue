@@ -187,9 +187,9 @@ Hue.set_bio = function (bio) {
 
 // Setups the user menu
 Hue.setup_user_menu = function () {
-  $("#user_menu_profile_image").on("error", function () {
-    if ($(this).attr("src") !== Hue.config.default_profile_image_url) {
-      $(this).attr("src", Hue.config.default_profile_image_url)
+  $("#user_menu_profilepic").on("error", function () {
+    if ($(this).attr("src") !== Hue.config.default_profilepic_url) {
+      $(this).attr("src", Hue.config.default_profilepic_url)
     }
   })
 
@@ -209,8 +209,8 @@ Hue.setup_user_menu = function () {
     }
   })
 
-  $("#user_menu_profile_image").on("click", function () {
-    Hue.open_profile_image_picker()
+  $("#user_menu_profilepic").on("click", function () {
+    Hue.open_profilepic_picker()
   })
 
   $("#user_menu_audioclip").on("click", function () {
@@ -244,8 +244,8 @@ Hue.setup_user_menu = function () {
 
 // Updates some user menu elements
 Hue.update_user_menu = function () {
-  let src = Hue.config.public_profilepic_location + Hue.profile_image
-  $("#user_menu_profile_image").attr("src", src)
+  let src = Hue.config.public_profilepic_location + Hue.profilepic
+  $("#user_menu_profilepic").attr("src", src)
   $("#user_menu_bio_textarea").val(Hue.bio)
 }
 
@@ -255,19 +255,19 @@ Hue.show_user_menu = function () {
 }
 
 // Opens the profile image picker to change the profile image
-Hue.open_profile_image_picker = function () {
-  $("#profile_image_picker").trigger("click")
+Hue.open_profilepic_picker = function () {
+  $("#profilepic_picker").trigger("click")
 }
 
 // Setups the profile image circular cropper
-Hue.setup_profile_image_cropper = function () {
-  $("#profile_image_cropper_upload").on("click", function () {
-    Hue.profile_image_cropper
+Hue.setup_profilepic_cropper = function () {
+  $("#profilepic_cropper_upload").on("click", function () {
+    Hue.profilepic_cropper
       .croppie("result", {
         type: "blob",
         size: {
-          width: Hue.config.profile_image_diameter,
-          height: Hue.config.profile_image_diameter,
+          width: Hue.config.profilepic_diameter,
+          height: Hue.config.profilepic_diameter,
         },
         format: "png",
         circle: true,
@@ -275,35 +275,35 @@ Hue.setup_profile_image_cropper = function () {
       })
 
       .then(function (blob) {
-        $("#user_menu_profile_image").attr(
+        $("#user_menu_profilepic").attr(
           "src",
-          Hue.config.profile_image_loading_url
+          Hue.config.profilepic_loading_url
         )
         Hue.upload_file({
           file: blob,
-          action: "profile_image_upload",
+          action: "profilepic_upload",
           name: "profile.png",
         })
-        Hue.msg_profile_image_cropper.close()
+        Hue.msg_profilepic_cropper.close()
       })
   })
 
-  $("#profile_image_cropper_change").on("click", function () {
-    Hue.open_profile_image_picker()
+  $("#profilepic_cropper_change").on("click", function () {
+    Hue.open_profilepic_picker()
   })
 
-  Hue.horizontal_separator($("#profile_image_cropper_buttons")[0])
+  Hue.horizontal_separator($("#profilepic_cropper_buttons")[0])
 }
 
 // Resets the profile image cropper to default state
-Hue.reset_profile_image_cropper = function () {
-  if (Hue.profile_image_cropper && Hue.profile_image_cropper.croppie) {
-    Hue.profile_image_cropper.croppie("destroy")
+Hue.reset_profilepic_cropper = function () {
+  if (Hue.profilepic_cropper && Hue.profilepic_cropper.croppie) {
+    Hue.profilepic_cropper.croppie("destroy")
   }
 }
 
 // This is executed after a profile image has been selected in the file dialog
-Hue.profile_image_selected = function (file) {
+Hue.profilepic_selected = function (file) {
   if (!file) {
     return false
   }
@@ -311,12 +311,12 @@ Hue.profile_image_selected = function (file) {
   let reader = new FileReader()
 
   reader.onload = function (e) {
-    Hue.reset_profile_image_cropper()
+    Hue.reset_profilepic_cropper()
 
-    Hue.msg_profile_image_cropper.show(function () {
-      $("#profile_image_picker").closest("form").get(0).reset()
+    Hue.msg_profilepic_cropper.show(function () {
+      $("#profilepic_picker").closest("form").get(0).reset()
 
-      Hue.profile_image_cropper = $("#profile_image_cropper").croppie({
+      Hue.profilepic_cropper = $("#profilepic_cropper").croppie({
         viewport: {
           width: 200,
           height: 200,
@@ -325,14 +325,14 @@ Hue.profile_image_selected = function (file) {
         boundary: { width: 350, height: 350 },
       })
 
-      Hue.profile_image_cropper
+      Hue.profilepic_cropper
         .croppie("bind", {
           url: e.target.result,
           points: [],
         })
 
         .then(function () {
-          Hue.profile_image_cropper.croppie("setZoom", 0)
+          Hue.profilepic_cropper.croppie("setZoom", 0)
         })
     })
   }

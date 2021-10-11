@@ -31,7 +31,7 @@ module.exports = function (
       let date
       let edited
       let uname
-      let pfimage = socket.hue_profile_image
+      let pfimage = socket.hue_profilepic
 
       if (data.edit_id) {
         let messages = vars.rooms[socket.hue_room_id].log_messages
@@ -77,7 +77,7 @@ module.exports = function (
         user_id: socket.hue_user_id,
         username: uname,
         message: data.message,
-        profile_image: pfimage,
+        profilepic: pfimage,
         date: date,
         link_title: response.title,
         link_description: response.description,
@@ -96,7 +96,7 @@ module.exports = function (
             user_id: socket.hue_user_id,
             username: uname,
             content: data.message,
-            profile_image: pfimage,
+            profilepic: pfimage,
             link_title: response.title,
             link_description: response.description,
             link_image: response.image,

@@ -116,9 +116,9 @@ Hue.start_msg = function () {
       after_close: function (instance) {
         common.after_close(instance)
         $("#show_profile_username").text("Loading")
-        $("#show_profile_image").attr(
+        $("#show_profilepic").attr(
           "src",
-          Hue.config.profile_image_loading_url
+          Hue.config.profilepic_loading_url
         )
         Hue.open_profile_username = false
         Hue.open_profile_user = false
@@ -345,12 +345,12 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_profile_image_cropper = Msg.factory(
+  Hue.msg_profilepic_cropper = Msg.factory(
     Object.assign({}, common, titlebar, {
-      id: "profile_image_cropper",
+      id: "profilepic_cropper",
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.reset_profile_image_cropper()
+        Hue.reset_profilepic_cropper()
       },
     })
   )
@@ -380,7 +380,7 @@ Hue.start_msg = function () {
 
   Hue.msg_profile.set(
     Hue.template_profile({
-      profile_image: Hue.config.profile_image_loading_url
+      profilepic: Hue.config.profilepic_loading_url
     })
   )
   
@@ -414,7 +414,7 @@ Hue.start_msg = function () {
   Hue.msg_open_url.set(Hue.template_open_url())
   Hue.msg_details.set(Hue.template_details())
   Hue.msg_message_board.set(Hue.template_message_board())
-  Hue.msg_profile_image_cropper.set(Hue.template_profile_image_cropper())
+  Hue.msg_profilepic_cropper.set(Hue.template_profilepic_cropper())
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_draw_image.set(Hue.template_draw_image())
@@ -441,7 +441,7 @@ Hue.start_msg = function () {
   Hue.msg_whispers.set_title("Whispers")
   Hue.msg_handle_url.set_title("Drag n' Drop")
   Hue.msg_message_board.set_title("Message Board")
-  Hue.msg_profile_image_cropper.set_title("Crop A Circle")
+  Hue.msg_profilepic_cropper.set_title("Crop A Circle")
   Hue.msg_confirm.set_title("Confirm Action")
   Hue.msg_draw_image.set_title("Draw an Image")
 }

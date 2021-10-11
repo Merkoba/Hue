@@ -155,19 +155,7 @@ module.exports = function (
 
   // Completes profile image changes
   handler.do_change_profilepic = async function (socket, file_name) {
-    let userinfo = await db_manager.get_user(
-      ["id", socket.hue_user_id],
-      { profilepic: 1, profilepic_version: 1 }
-    )
     let new_ver = userinfo.profilepic_version + 1
-    let imagever = `${file_name}?ver=${new_ver}`
-
-    if (userinfo.profilepic && userinfo.profilepic !== file_name) {
-      vars.fs.unlink(
-        `${vars.image_root}/${userinfo.profilepic}`,
-        function (err) {}
-      )
-    }
 
     db_manager.update_user(socket.hue_user_id, {
       profilepic: file_name,
@@ -182,7 +170,8 @@ module.exports = function (
         data: {
           user_id: socket.hue_user_id,
           profilepic: imagever,
-        },
+          profilepic_version: new_ver,
+        }
       }
     )
   }
@@ -233,7 +222,7 @@ module.exports = function (
 
     db_manager.update_user(socket.hue_user_id, {
       audioclip: file_name,
-      audioclip_version: new_ver,
+      audioclip_version: new_ver
     })
 
     handler.modify_socket_properties(
@@ -242,10 +231,10 @@ module.exports = function (
       {
         method: "audioclip_changed",
         data: {
-          username: socket.hue_username,
+          user_id: socket.hue_user_id,
           audioclip: file_name,
           audioclip_version: new_ver
-        },
+        }
       }
     )
   }
