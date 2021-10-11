@@ -8,57 +8,6 @@ module.exports = function (
   utilz,
   logger
 ) {
-
-  // Handles sliced video uploads
-  handler.upload_tv_video = function (socket, data) {
-    if (data.video_file === undefined) {
-      return false
-    }
-
-    if (data.extension === undefined) {
-      return false
-    }
-
-    let size = data.video_file.byteLength / 1024
-
-    if (size === 0 || size > config.max_tv_video_size) {
-      return false
-    }
-
-    let file_name = handler.generate_file_name(data.extension)
-    let container = vars.path.join(vars.videos_root, "room", socket.hue_room_id)
-
-    if (!vars.fs.existsSync(container)) {
-      vars.fs.mkdirSync(container, { recursive: true })
-    }    
-
-    let path = vars.path.join(container, file_name)
-
-    vars.fs.writeFile(
-      path,
-      data.video_file,
-      function (err) {
-        if (err) {
-          handler.user_emit(socket, "upload_error", {})
-        } else {
-          let obj = {}
-
-          obj.src = file_name
-          obj.setter = socket.hue_username
-          obj.size = size
-          obj.type = "upload"
-          obj.comment = data.comment
-          try {
-            handler.do_change_tv(socket, obj)
-          } catch (err) {
-            logger.log_error(err)
-            handler.user_emit(socket, "upload_error", {})
-          }
-        }
-      }
-    )
-  }
-
   // Handles tv source changes
   handler.public.change_tv_source = async function (socket, data) {
     if (data.src === undefined) {
@@ -147,7 +96,7 @@ module.exports = function (
               if (response.items !== undefined && response.items.length > 0) {
                 data.type = "youtube"
                 data.title = response.items[0].snippet.title
-                handler.do_change_tv(socket, data)
+                handler.do_change_media(socket, data, "tv")
               } else {
                 handler.user_emit(socket, "video_not_found", {})
                 return false
@@ -169,7 +118,7 @@ module.exports = function (
         if (info && info[0] === "channel") {
           data.type = "twitch"
           data.title = info[1]
-          handler.do_change_tv(socket, data)
+          handler.do_change_media(socket, data, "tv")
         } else {
           handler.user_emit(socket, 'video_not_found', {})
           return false
@@ -185,7 +134,7 @@ module.exports = function (
           data.title = data.src
         }
 
-        handler.do_change_tv(socket, data)
+        handler.do_change_media(socket, data, "tv")
       } else {
         let extension = utilz.get_extension(data.src).toLowerCase()
 
@@ -238,7 +187,7 @@ module.exports = function (
                 handler.user_emit(socket, "cannot_embed_iframe", {})
                 return false
               } else {
-                handler.do_change_tv(socket, data)
+                handler.do_change_media(socket, data, "tv")
               }
             })
 
@@ -246,7 +195,7 @@ module.exports = function (
               handler.user_emit(socket, "cannot_embed_iframe", {})
             })
         } else {
-          handler.do_change_tv(socket, data)
+          handler.do_change_media(socket, data, "tv")
         }
       }
     } else {
@@ -282,7 +231,7 @@ module.exports = function (
               data.query = data.src
               data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
               data.title = response.items[0].snippet.title
-              handler.do_change_tv(socket, data)
+              handler.do_change_media(socket, data, "tv")
               return
             }
 
@@ -297,118 +246,6 @@ module.exports = function (
           logger.log_error(err)
         })
     }
-  }
-
-  // Completes tv source changes
-  handler.do_change_tv = function (socket, data) {
-    let room_id, user_id
-
-    if (typeof socket === "object") {
-      room_id = socket.hue_room_id
-      user_id = socket.hue_user_id
-    } else {
-      room_id = socket
-      user_id = "none"
-    }
-
-    let date = Date.now()
-    let comment = data.comment || ""
-    let size = data.size || 0
-    let tv_title = ""
-
-    if (data.title) {
-      tv_title = vars.he.decode(data.title)
-    }
-
-    if (data.query === undefined) {
-      data.query = ""
-    }
-
-    if (!data.setter) {
-      user_id = ""
-    }
-
-    let tv_id = handler.generate_message_id()
-
-    db_manager.update_room(room_id, {
-      tv_id: tv_id,
-      tv_user_id: user_id,
-      tv_source: data.src,
-      tv_setter: data.setter,
-      tv_title: tv_title,
-      tv_size: size,
-      tv_date: date,
-      tv_type: data.type,
-      tv_query: data.query,
-      tv_comment: comment,
-    })    
-
-    handler.room_emit(room_id, "tv_source_changed", {
-      id: tv_id,
-      user_id: user_id,
-      source: data.src,
-      setter: data.setter,
-      title: tv_title,
-      size: size,
-      date: date,
-      type: data.type,
-      query: data.query,
-      comment: comment,
-    })
-
-    let message = {
-      id: tv_id,
-      type: "tv",
-      date: date,
-      data: {
-        user_id: user_id,
-        comment: comment,
-        source: data.src,
-        setter: data.setter,
-        title: tv_title,        
-        size: size,
-        type: data.type,
-        query: data.query,
-      }
-    }
-
-    handler.push_log_message(socket, message)
-
-    let room = vars.rooms[room_id]
-    room.current_tv_id = tv_id
-    room.current_tv_user_id = user_id
-    room.current_tv_source = data.src
-    room.current_tv_query = data.query
-    room.last_tv_change = Date.now()
-    room.modified = Date.now()   
-    
-    // Remove left over files
-    if (data.type === "upload") {
-      let container = vars.path.join(vars.videos_root, "room", socket.hue_room_id)
-
-      vars.fs.readdir(container, function (err, files) {
-        try {
-          if (err) {
-            logger.log_error(err)
-            return false
-          }
-
-          files.sort().reverse()
-
-          for (let file of files.slice(config.max_stored_videos)) {
-            let path = vars.path.join(container, file)
-
-            vars.fs.unlink(path, function (err) {
-              if (err) {
-                logger.log_error(err)
-              }
-            })
-          }
-        } catch (err) {
-          logger.log_error(err)
-        }
-      })
-    }    
   }
 
   // Receives a request to ask another user for their tv video progress
