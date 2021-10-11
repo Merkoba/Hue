@@ -28,7 +28,7 @@ module.exports = function (
       let ext = data.name.split(".").pop(-1).toLowerCase()
 
       if (data.action.includes("image")) {
-        if (data.action === "profile_image_upload") {
+        if (data.action === "profilepic_upload") {
           if (ext !== "png") {
             return false
           }
@@ -38,7 +38,7 @@ module.exports = function (
           }
         }
       } else if (data.action.includes("audio")) {
-        if (data.action === "audio_clip_upload") {
+        if (data.action === "audioclip_upload") {
           if (!utilz.audio_extensions.includes(ext)) {
             return false
           }
@@ -79,14 +79,14 @@ module.exports = function (
 
     if (
       file.action === "image_upload" ||
-      file.action === "background_image_upload"
+      file.action === "background_upload"
     ) {
       if (fsize > config.max_image_size) {
         delete vars.files[key]
         return false
       }
-    } else if (file.action === "audio_clip_upload") {
-      if (fsize > config.max_audio_clip_size) {
+    } else if (file.action === "audioclip_upload") {
+      if (fsize > config.max_audioclip_size) {
         delete vars.files[key]
         return false
       }
@@ -125,17 +125,17 @@ module.exports = function (
           extension: file.extension,
           comment: file.comment,
         }, "tv")
-      } else if (data.action === "profile_image_upload") {
-        handler.upload_profile_image(socket, {
+      } else if (data.action === "profilepic_upload") {
+        handler.upload_profilepic(socket, {
           image_file: full_file,
         })
-      } else if (data.action === "background_image_upload") {
-        handler.upload_background_image(socket, {
+      } else if (data.action === "background_upload") {
+        handler.upload_background(socket, {
           image_file: full_file,
           extension: file.extension,
         })
-      } else if (data.action === "audio_clip_upload") {
-        handler.upload_audio_clip(socket, {
+      } else if (data.action === "audioclip_upload") {
+        handler.upload_audioclip(socket, {
           audio_file: full_file,
           extension: file.extension,
         })

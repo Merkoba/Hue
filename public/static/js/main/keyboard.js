@@ -87,10 +87,10 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.background_image_input_open) {
+      if (Hue.background_input_open) {
         if (Hue.msg_info2.is_highest()) {
           if (e.key === "Enter") {
-            Hue.background_image_input_action()
+            Hue.background_input_action()
             e.preventDefault()
           }
 

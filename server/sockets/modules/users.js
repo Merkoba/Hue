@@ -330,7 +330,8 @@ module.exports = function (
         bio: item.bio,
         hearts: item.hearts,
         skulls: item.skulls,
-        audio_clip: item.audio_clip,
+        audioclip: item.audioclip,
+        audioclip_version: item.audioclip_version,
       })
     }
 
@@ -468,7 +469,8 @@ module.exports = function (
       user.bio = socket.hue_bio
       user.hearts = socket.hue_hearts
       user.skulls = socket.hue_skulls
-      user.audio_clip = socket.hue_audio_clip
+      user.audioclip = socket.hue_audioclip
+      user.audioclip_version = socket.hue_audioclip_version
 
       if (first) {
         user.date_joined = Date.now()

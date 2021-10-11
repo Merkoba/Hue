@@ -9,7 +9,7 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
 
   // Room and User versions
   // These must be increased by 1 when the schema changes
-  vars.rooms_version = 87
+  vars.rooms_version = 88
   vars.users_version = 51
 
   // Room schema definition
@@ -45,8 +45,9 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       admin_log_messages: { type: "object", default: [] },
       background_color: { type: "string", default: config.default_room_background_color },
       text_color: { type: "string", default: config.default_room_font_color },
-      background_image: { type: "string", default: "" },
-      background_image_type: { type: "string", default: "hosted" },
+      background: { type: "string", default: "" },
+      background_type: { type: "string", default: "hosted" },
+      background_version: { type: "number", default: 0 },
       message_board_posts: { type: "object", default: [] },
       modified: { type: "number", default: Date.now() },
       version: { type: "number", default: 0 }
@@ -61,15 +62,15 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       username: { type: "string", default: "", skip: true },
       password: { type: "string", default: "", skip: true },
       password_date: { type: "number", default: 0 },
-      profile_image: { type: "string", default: "" },
-      profile_image_version: { type: "number", default: 0 },
+      profilepic: { type: "string", default: "" },
+      profilepic_version: { type: "number", default: 0 },
       registration_date: { type: "number", default: 0 },
       create_room_date: { type: "number", default: 0 },
       bio: { type: "string", default: "" },
       hearts: { type: "number", default: 0 },
       skulls: { type: "number", default: 0 },
-      audio_clip: { type: "string", default: "" },
-      audio_clip_version: { type: "number", default: 0 },
+      audioclip: { type: "string", default: "" },
+      audioclip_version: { type: "number", default: 0 },
       modified: { type: "number", default: Date.now() },
       version: { type: "number", default: 0 }
     }

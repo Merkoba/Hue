@@ -19,9 +19,11 @@ module.exports = function (
   vars.he = require("he")
 
   vars.root_path = vars.path.join(__dirname, "../../")
-  vars.images_root = vars.path.join(vars.root_path, config.images_directory)
-  vars.videos_root = vars.path.join(vars.root_path, config.videos_directory)
-  vars.audio_root = vars.path.join(vars.root_path, config.audio_directory)
+  vars.image_root = vars.path.join(vars.root_path, config.image_directory)
+  vars.tv_root = vars.path.join(vars.root_path, config.tv_directory)
+  vars.background_root = vars.path.join(vars.root_path, config.background_directory)
+  vars.profilepic_root = vars.path.join(vars.root_path, config.profilepic_directory)
+  vars.audioclip_root = vars.path.join(vars.root_path, config.audioclip_directory)
   vars.roles = ["admin", "op", "voice"]
   vars.media_types = ["image", "tv"]
   vars.filtered_fields = {

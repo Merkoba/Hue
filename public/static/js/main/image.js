@@ -2,7 +2,6 @@
 // This handles image objects received live from the server or from logged messages
 // This is the entry function for image objects to get registered, announced, and be ready for use
 Hue.setup_image = function (mode, odata = {}) {
-  console.log(odata)
   let data = {}
 
   data.id = odata.id
@@ -17,7 +16,7 @@ Hue.setup_image = function (mode, odata = {}) {
   data.in_log = odata.in_log === undefined ? true : odata.in_log
 
   if (data.type === "upload") {
-    data.source = `${Hue.config.public_images_location}room/${Hue.room_id}/${data.source}`
+    data.source = `${Hue.config.public_image_location}${Hue.room_id}/${data.source}`
   }
 
   data.nice_date = data.date

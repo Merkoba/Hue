@@ -1,23 +1,24 @@
 // Setups theme and background variables from initial data
 Hue.setup_theme = function (data) {
-  Hue.set_background_image(data, false)
+  Hue.set_background(data, false)
   Hue.background_color = data.background_color
   Hue.text_color = data.text_color
 }
 
 // Sets an applies background images from data
-Hue.set_background_image = function (data, apply = true) {
-  if (data.background_image !== "") {
-    if (data.background_image_type === "hosted") {
-      Hue.background_image = `${Hue.config.public_images_location}background/${data.background_image}`
+Hue.set_background = function (data, apply = true) {
+  if (data.background !== "") {
+    if (data.background_type === "hosted") {
+      let ver = `?ver=${data.background_version}`
+      Hue.background = Hue.config.public_background_location + data.background + ver
     } else {
-      Hue.background_image = data.background_image
+      Hue.background = data.background
     }
   } else {
-    Hue.background_image = Hue.config.default_background_image_url
+    Hue.background = Hue.config.default_background_url
   }
 
-  Hue.config_admin_background_image()
+  Hue.config_admin_background()
 
   if (apply) {
     Hue.apply_background()
@@ -26,7 +27,7 @@ Hue.set_background_image = function (data, apply = true) {
 
 // Applies the background to all background elements
 Hue.apply_background = function () {
-  $(".background_image").css("background-image", `url('${Hue.background_image}')`)
+  $(".background").css("background-image", `url('${Hue.background}')`)
 }
 
 // Background color setter
@@ -99,57 +100,57 @@ Hue.announce_background_color_change = function (data) {
 }
 
 // Picker window to select how to change the background image
-Hue.open_background_image_select = function () {
+Hue.open_background_select = function () {
   Hue.msg_info2.show([
     "Change Background Image",
-    Hue.template_background_image_select(),
+    Hue.template_background_select(),
   ], function () {
-    $("#background_image_select_url").on("click", function () {
-      Hue.open_background_image_input()
+    $("#background_select_url").on("click", function () {
+      Hue.open_background_input()
     })
 
-    $("#background_image_select_upload").on("click", function () {
-      Hue.open_background_image_picker()
+    $("#background_select_upload").on("click", function () {
+      Hue.open_background_picker()
     })
   })
-  Hue.horizontal_separator($("#background_image_select_container")[0])
+  Hue.horizontal_separator($("#background_select_container")[0])
 }
 
 // If upload is chosen as the method to change the background image
 // the file dialog is opened
-Hue.open_background_image_picker = function () {
+Hue.open_background_picker = function () {
   Hue.msg_info2.close()
 
-  $("#background_image_input").trigger("click")
+  $("#background_input").trigger("click")
 }
 
 // If a URL source is chosen as the method to change the background image
 // this window is opened
-Hue.open_background_image_input = function () {
+Hue.open_background_input = function () {
   Hue.msg_info2.show(
-    ["Change Background Image", Hue.template_background_image_input()],
+    ["Change Background Image", Hue.template_background_input()],
     function () {
-      $("#background_image_input_submit").on("click", function () {
-        Hue.background_image_input_action()
+      $("#background_input_submit").on("click", function () {
+        Hue.background_input_action()
       })
 
-      $("#background_image_input_text").trigger("focus")
-      Hue.background_image_input_open = true
+      $("#background_input_text").trigger("focus")
+      Hue.background_input_open = true
     }
   )
 }
 
 // On background image source input change
-Hue.background_image_input_action = function () {
-  let src = $("#background_image_input_text").val().trim()
+Hue.background_input_action = function () {
+  let src = $("#background_input_text").val().trim()
 
-  if (Hue.change_background_image_source(src)) {
+  if (Hue.change_background_source(src)) {
     Hue.msg_info2.close()
   }
 }
 
 // On background image selected for upload
-Hue.background_image_selected = function (file) {
+Hue.background_selected = function (file) {
   if (!file) {
     return false
   }
@@ -160,23 +161,23 @@ Hue.background_image_selected = function (file) {
 
   let size = file.size / 1024
 
-  $("#background_image_input").closest("form").get(0).reset()
+  $("#background_input").closest("form").get(0).reset()
 
   if (size > Hue.config.max_image_size) {
     Hue.checkmsg("File is too big")
     return false
   }
 
-  $("#admin_background_image").attr(
+  $("#admin_background").attr(
     "src",
-    Hue.config.background_image_loading_url
+    Hue.config.background_loading_url
   )
 
-  Hue.upload_file({ file: file, action: "background_image_upload" })
+  Hue.upload_file({ file: file, action: "background_upload" })
 }
 
 // Change the background image with a URL
-Hue.change_background_image_source = function (src) {
+Hue.change_background_source = function (src) {
   if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
@@ -192,7 +193,7 @@ Hue.change_background_image_source = function (src) {
 
     src = src.replace(/\.gifv/g, ".gif")
 
-    if (src === Hue.background_image) {
+    if (src === Hue.background) {
       Hue.checkmsg("Background image is already set to that")
       return false
     }
@@ -211,25 +212,25 @@ Hue.change_background_image_source = function (src) {
       return false
     }
   } else {
-    if (Hue.background_image === Hue.config.default_background_image_url) {
+    if (Hue.background === Hue.config.default_background_url) {
       Hue.checkmsg("Background image is already set to that")
       return false
     }
   }
 
-  Hue.socket_emit("change_background_image_source", { src: src })
+  Hue.socket_emit("change_background_source", { src: src })
 
   return true
 }
 
 // Announces background image changes
-Hue.announce_background_image_change = function (data) {
+Hue.announce_background_change = function (data) {
   Hue.show_room_notification(
     data.username,
     `${data.username} changed the background image`
   )
 
-  Hue.set_background_image(data)
+  Hue.set_background(data)
 }
 
 // Changes the text color

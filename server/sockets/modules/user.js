@@ -110,7 +110,7 @@ module.exports = function (
   }
 
   // Handles uploaded profile images
-  handler.upload_profile_image = function (socket, data) {
+  handler.upload_profilepic = function (socket, data) {
     if (data.image_file === undefined) {
       return false
     }
@@ -118,21 +118,21 @@ module.exports = function (
     let dimensions = vars.image_dimensions(data.image_file)
 
     if (
-      dimensions.width !== config.profile_image_diameter ||
-      dimensions.height !== config.profile_image_diameter
+      dimensions.width !== config.profilepic_diameter ||
+      dimensions.height !== config.profilepic_diameter
     ) {
       return false
     }
 
     let size = data.image_file.byteLength / 1024
 
-    if (size === 0 || size > config.max_profile_image_size) {
+    if (size === 0 || size > config.max_profilepic_size) {
       handler.user_emit(socket, "upload_error", {})
       return false
     }
 
     let file_name = `${socket.hue_user_id}.png`
-    let container = vars.path.join(vars.images_root, "profile")
+    let container = vars.profilepic_root
 
     if (!vars.fs.existsSync(container)) {
       vars.fs.mkdirSync(container, { recursive: true })
@@ -147,61 +147,61 @@ module.exports = function (
         if (err) {
           handler.user_emit(socket, "upload_error", {})
         } else {
-          handler.do_change_profile_image(socket, file_name)
+          handler.do_change_profilepic(socket, file_name)
         }
       }
     )
   }
 
   // Completes profile image changes
-  handler.do_change_profile_image = async function (socket, file_name) {
+  handler.do_change_profilepic = async function (socket, file_name) {
     let userinfo = await db_manager.get_user(
       ["id", socket.hue_user_id],
-      { profile_image: 1, profile_image_version: 1 }
+      { profilepic: 1, profilepic_version: 1 }
     )
-    let new_ver = userinfo.profile_image_version + 1
+    let new_ver = userinfo.profilepic_version + 1
     let imagever = `${file_name}?ver=${new_ver}`
 
-    if (userinfo.profile_image && userinfo.profile_image !== file_name) {
+    if (userinfo.profilepic && userinfo.profilepic !== file_name) {
       vars.fs.unlink(
-        `${vars.images_root}/${userinfo.profile_image}`,
+        `${vars.image_root}/${userinfo.profilepic}`,
         function (err) {}
       )
     }
 
     db_manager.update_user(socket.hue_user_id, {
-      profile_image: file_name,
-      profile_image_version: new_ver,
+      profilepic: file_name,
+      profilepic_version: new_ver,
     })
 
     handler.modify_socket_properties(
       socket.hue_user_id,
-      { hue_profile_image: file_name },
+      { hue_profilepic: file_name },
       {
-        method: "profile_image_changed",
+        method: "profilepic_changed",
         data: {
           user_id: socket.hue_user_id,
-          profile_image: imagever,
+          profilepic: imagever,
         },
       }
     )
   }
 
   // Handles uploaded audio clips
-  handler.upload_audio_clip = function (socket, data) {
+  handler.upload_audioclip = function (socket, data) {
     if (data.audio_file === undefined) {
       return false
     }
 
     let size = data.audio_file.byteLength / 1024
 
-    if (size === 0 || size > config.max_audio_clip_size) {
+    if (size === 0 || size > config.max_audioclip_size) {
       handler.user_emit(socket, "upload_error", {})
       return false
     }
 
     let file_name = `${socket.hue_user_id}.${data.extension}`
-    let container = vars.audio_root
+    let container = vars.audioclip_root
 
     if (!vars.fs.existsSync(container)) {
       vars.fs.mkdirSync(container, { recursive: true })
@@ -216,51 +216,35 @@ module.exports = function (
         if (err) {
           handler.user_emit(socket, "upload_error", {})
         } else {
-          handler.do_change_audio_clip(socket, file_name)
+          handler.do_change_audioclip(socket, file_name)
         }
       }
     )
   }
 
   // Remove the audio clip
-  handler.public.remove_audio_clip = function (socket, data) {
-    handler.do_change_audio_clip(socket, "")
+  handler.public.remove_audioclip = function (socket, data) {
+    handler.do_change_audioclip(socket, "")
   }
 
   // Completes audio clip changes
-  handler.do_change_audio_clip = async function (socket, file_name) {
-    let userinfo = await db_manager.get_user(
-      ["id", socket.hue_user_id],
-      { audio_clip: 1, audio_clip_version: 1 }
-    )
-    let new_ver = userinfo.audio_clip_version + 1
-
-    if (userinfo.audio_clip && userinfo.audio_clip !== file_name) {
-      vars.fs.unlink(`${vars.audio_root}/${userinfo.audio_clip}`, function (
-        err
-      ) {})
-    } else {
-      if (!file_name) {
-        return false
-      }
-    }
-
-    let audio_clip_url = ""
-    let audiover = `${file_name}?ver=${new_ver}`
+  handler.do_change_audioclip = async function (socket, file_name) {
+    let new_ver = (socket.hue_audioclip_version || 0) + 1
 
     db_manager.update_user(socket.hue_user_id, {
-      audio_clip: file_name,
-      audio_clip_version: new_ver,
+      audioclip: file_name,
+      audioclip_version: new_ver,
     })
 
     handler.modify_socket_properties(
       socket.hue_user_id,
-      { hue_audio_clip: file_name },
+      { hue_audioclip: file_name, hue_audioclip_version: new_ver },
       {
-        method: "audio_clip_changed",
+        method: "audioclip_changed",
         data: {
           username: socket.hue_username,
-          audio_clip: audiover
+          audioclip: file_name,
+          audioclip_version: new_ver
         },
       }
     )

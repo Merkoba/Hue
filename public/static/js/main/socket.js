@@ -124,8 +124,8 @@ Hue.server_update_events = {
   background_color_changed: (data) => {
     Hue.announce_background_color_change(data)
   },
-  background_image_changed: (data) => {
-    Hue.announce_background_image_change(data)
+  background_changed: (data) => {
+    Hue.announce_background_change(data)
   },
   text_color_changed: (data) => {
     Hue.announce_text_color_change(data)
@@ -193,8 +193,8 @@ Hue.server_update_events = {
   message_board_post_deleted: (data) => {
     Hue.remove_message_board_post(data)
   },
-  audio_clip_changed: (data) => {
-    Hue.audio_clip_changed(data)
+  audioclip_changed: (data) => {
+    Hue.audioclip_changed(data)
   },
   done: (data) => {
     Hue.checkmsg("Done")

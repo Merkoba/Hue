@@ -20,14 +20,14 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_room_font_color"
 >The initial font color for new rooms.
 
-"images_directory"
+"image_directory"
 >The directory where uploaded images will be stored.
 
-"public_images_location"
->The public root of images. For example a public_images_location of /img/ would send public image urls as /img/image.jpg, which would reside in public/img/. Needs a slash at the end.
+"public_image_location"
+>The public root of images. For example a public_image_location of /img/ would send public image urls as /img/image.jpg, which would reside in public/img/. Needs a slash at the end.
 
-"public_videos_location"
->The public root of videos. For example a public_videos_location of /img/ would send public image urls as /img/image.jpg, which would reside in public/img/. Needs a slash at the end.
+"public_tv_location"
+>The public root of videos. For example a public_tv_location of /img/ would send public image urls as /img/image.jpg, which would reside in public/img/. Needs a slash at the end.
 
 "default_image_source"
 >Default source for the image for new rooms or when "/image default" is issued.
@@ -41,16 +41,16 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_tv_type"
 >The type of the default_tv_source, either "video", "youtube", "twitch", "soundcloud" or "iframe".
 
-"default_profile_image_url"
+"default_profilepic_url"
 >The location of the default profile image.
 
-"profile_image_loading_url"
+"profilepic_loading_url"
 >The location of the loading image when the profile image is changing.
 
-"default_background_image_url"
+"default_background_url"
 >The location of the default background image.
 
-"background_image_loading_url"
+"background_loading_url"
 >The location of the loading image when the background image is changing.
 
 "default_video_url"
@@ -131,7 +131,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_image_size"
 >Maximum image size allowed in KB. This is checked both in the client and server. If the image is bigger it won't be uploaded.
 
-"max_profile_image_size"
+"max_profilepic_size"
 >Maximum image size allowed for profile images.
 
 "max_video_size"
@@ -167,10 +167,10 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_url_length"
 >Url lengths beyond this are ignored by the system. This is to avoid triggering actions on urls that are likely wrong or meant as an attack.
 
-"max_stored_images"
+"max_stored_image"
 >The amount of most recent images to have stored in a room.
 
-"max_stored_videos"
+"max_stored_tv"
 >The amount of most recent videos to have stored in a room.
 
 "settings_default_highlight_current_username"
@@ -254,7 +254,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "data_items_max_number_length"
 >Used to check number data.
 
-"profile_image_diameter"
+"profilepic_diameter"
 >The diameter of the cropped profile image selected by the user.
 
 "max_num_newlines"

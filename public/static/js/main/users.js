@@ -9,7 +9,8 @@ Hue.user_join = function (data) {
     bio: data.bio,
     hearts: data.hearts,
     skulls: data.skulls,
-    audio_clip: data.audio_clip,
+    audioclip: data.audioclip,
+    audioclip_version: data.audioclip_version
   })
 
   if(data.username !== Hue.username) {
@@ -71,7 +72,8 @@ Hue.add_to_userlist = function (args = {}) {
     bio: "",
     hearts: 0,
     skulls: 0,
-    audio_clip: false,
+    audioclip: false,
+    audioclip_version: false,
     last_activity: 0
   }
 
@@ -86,7 +88,8 @@ Hue.add_to_userlist = function (args = {}) {
       Hue.userlist[i].bio = args.bio
       Hue.userlist[i].hearts = args.hearts
       Hue.userlist[i].skulls = args.skulls
-      Hue.userlist[i].audio_clip = args.audio_clip
+      Hue.userlist[i].audioclip = args.audioclip
+      Hue.userlist[i].audioclip_version = args.audioclip_version
       Hue.userlist[i].last_activity = args.last_activity
 
       Hue.update_userlist()
@@ -103,7 +106,8 @@ Hue.add_to_userlist = function (args = {}) {
     bio: args.bio,
     hearts: args.hearts,
     skulls: args.skulls,
-    audio_clip: args.audio_clip,
+    audioclip: args.audioclip,
+    audioclip_version: args.audioclip_version,
     last_activity: args.last_activity
   })
 
@@ -269,7 +273,7 @@ Hue.update_userlist_window = function () {
     let pi
 
     if (item.profile_image) {
-      pi = `${Hue.config.public_images_location}profile/${item.profile_image}`
+      pi = `${Hue.config.public_image_location}profile/${item.profile_image}`
     } else {
       pi = Hue.config.default_profile_image_url
     }    
@@ -595,13 +599,14 @@ Hue.setup_show_profile = function () {
 
 // Stars the profile audio
 Hue.play_profile_audio = function () {
-  let clip = Hue.open_profile_user.audio_clip
+  let clip = Hue.open_profile_user.audioclip
   
   if (!clip) {
     return
   }
 
-  clip = Hue.config.public_audio_location + clip
+  let ver = `?ver=${Hue.open_profile_user.audioclip_version}`
+  clip = Hue.config.public_audioclip_location + clip + ver
 
   if (Hue.profile_audio) {
     Hue.stop_profile_audio()
@@ -661,10 +666,10 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   Hue.open_profile_username = username
   
   if (profile_image) {
-    pi = `${Hue.config.public_images_location}profile/${profile_image}`
+    pi = Hue.config.public_profilepic_location + profile_image
   } else {
     if (user && user.profile_image) {
-      pi = `${Hue.config.public_images_location}profile/${user.profile_image}`
+      pi = Hue.config.public_profilepic_location + user.profile_image
     } else {
       pi = Hue.config.default_profile_image_url
     }
@@ -691,7 +696,7 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     Hue.set_skulls_counter(skulls)
   }
 
-  if (user && user.audio_clip) {
+  if (user && user.audioclip) {
     $("#show_profile_image_container").addClass("action4")
   } else {
     $("#show_profile_image_container").removeClass("action4")
@@ -751,7 +756,7 @@ Hue.profile_image_changed = function (data) {
     return false
   }
 
-  let src = `${Hue.config.public_images_location}profile/${data.profile_image}`
+  let src = `${Hue.config.public_image_location}profile/${data.profile_image}`
 
   if (data.user_id === Hue.user_id) {
     Hue.profile_image = data.profile_image
@@ -1134,19 +1139,26 @@ Hue.push_to_all_usernames = function (username) {
 }
 
 // When a user changes the audio audio clip
-Hue.audio_clip_changed = function (data) {
+Hue.audioclip_changed = function (data) {
   Hue.replace_property_in_userlist_by_username(
     data.username,
-    "audio_clip",
-    data.audio_clip,
+    "audioclip",
+    data.audioclip,
     false
   )
+
+  Hue.replace_property_in_userlist_by_username(
+    data.username,
+    "audioclip_version",
+    data.audioclip_version,
+    false
+  )  
 
   if (data.username === Hue.open_profile_username) {
     Hue.show_profile(data.username)
   }
 
-  if (data.audio_clip) {
+  if (data.audioclip) {
     Hue.show_room_notification(
       data.username,
       `${data.username} changed their audio clip`

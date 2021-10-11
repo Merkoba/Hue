@@ -5,7 +5,7 @@ Hue.add_chat_message = function (args = {}) {
     user_id: false,
     username: "",
     message: "",
-    prof_image: "",
+    profilepic: "",
     date: false,
     brk: false,
     public: true,
@@ -36,10 +36,10 @@ Hue.add_chat_message = function (args = {}) {
   let nd = Hue.utilz.nice_date(d)
   let pi
 
-  if (args.prof_image === "" || args.prof_image === undefined) {
+  if (args.profilepic === "" || args.profilepic === undefined) {
     pi = Hue.config.default_profile_image_url
   } else {
-    pi = `${Hue.config.public_images_location}profile/${args.prof_image}`
+    pi = Hue.config.public_profilepic_location + args.profilepic
   }
 
   let image_preview = false
@@ -203,7 +203,7 @@ Hue.add_chat_message = function (args = {}) {
   fmessage.data("highlighted", highlighted)
   fmessage.data("uname", args.username)
   fmessage.data("mode", "chat")
-  fmessage.data("prof_image", args.prof_image)
+  fmessage.data("profilepic", args.profilepic)
 
   let chat_content_container = fmessage.find(".chat_content_container").eq(0)
   let chat_content = fmessage.find(".chat_content").eq(0)
@@ -535,7 +535,7 @@ Hue.start_chat_mouse_events = function () {
 
     Hue.show_profile(
       m.data("uname"),
-      m.data("prof_image"),
+      m.data("profilepic"),
       m.data("user_id")
     )
   })
@@ -545,7 +545,7 @@ Hue.start_chat_mouse_events = function () {
 
     Hue.show_profile(
       m.data("uname"),
-      m.data("prof_image"),
+      m.data("profilepic"),
       m.data("user_id")
     )
   })
@@ -1152,7 +1152,7 @@ Hue.on_chat_message = function (data) {
     user_id: data.user_id,
     username: data.username,
     message: data.message,
-    prof_image: data.profile_image,
+    profilepic: data.profile_image,
     date: data.date,
     link_title: data.link_title,
     link_description: data.link_description,
@@ -1602,7 +1602,7 @@ Hue.show_log_messages = function (log_messages) {
             user_id: data.user_id,
             username: data.username,
             message: data.content,
-            prof_image: data.profile_image,
+            profilepic: data.profile_image,
             link_title: data.link_title,
             link_description: data.link_description,
             link_image: data.link_image,

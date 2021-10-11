@@ -25,22 +25,12 @@ module.exports = function (
 
     let size = data.file.byteLength / 1024
 
-    let mtype, root
-
-    if (type === "image") {
-      mtype = "image"
-      root = vars.images_root
-    } else if(type === "tv") {
-      mtype = "video"
-      root = vars.videos_root
-    }
-
-    if (size === 0 || size > config[`max_${mtype}_size`]) {
+    if (size === 0 || size > config[`max_${type}_size`]) {
       return false
     }
 
     let file_name = handler.generate_media_file_name(data.extension)
-    let container = vars.path.join(root, "room", socket.hue_room_id)
+    let container = vars.path.join(vars[`${type}_root`], socket.hue_room_id)
 
     if (!vars.fs.existsSync(container)) {
       vars.fs.mkdirSync(container, { recursive: true })
@@ -162,17 +152,7 @@ module.exports = function (
 
     // Remove left over files
     if (data.type === "upload") {
-      let root, max_stored
-
-      if (type === "image") {
-        root = vars.images_root
-        max_stored = config.max_stored_images
-      } else if (type === "tv") {
-        root = vars.videos_root
-        max_stored = config.max_stored_videos
-      }
-
-      let container = vars.path.join(root, "room", socket.hue_room_id)
+      let container = vars.path.join(vars[`${type}_root`], socket.hue_room_id)
 
       vars.fs.readdir(container, function (err, files) {
         try {
@@ -183,7 +163,7 @@ module.exports = function (
 
           files.sort().reverse()
 
-          for (let file of files.slice(max_stored)) {
+          for (let file of files.slice(config[`max_stored_${type}`])) {
             let path = vars.path.join(container, file)
 
             vars.fs.unlink(path, function (err) {

@@ -24,11 +24,11 @@ Hue.start_body_events = function () {
     Hue.profile_image_selected(this.files[0])
   })
 
-  $("#background_image_input").on("change", function () {
-    Hue.background_image_selected(this.files[0])
+  $("#background_input").on("change", function () {
+    Hue.background_selected(this.files[0])
   })
 
-  $("#audio_clip_picker").on("change", function () {
-    Hue.audio_clip_selected(this.files[0])
+  $("#audioclip_picker").on("change", function () {
+    Hue.audioclip_selected(this.files[0])
   })
 }
