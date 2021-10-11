@@ -219,18 +219,16 @@ module.exports = function (
     let new_ver = (socket.hue_audioclip_version || 0) + 1
 
     db_manager.update_user(socket.hue_user_id, {
-      audioclip: file_name,
       audioclip_version: new_ver
     })
 
     handler.modify_socket_properties(
       socket.hue_user_id,
-      { hue_audioclip: file_name, hue_audioclip_version: new_ver },
+      { hue_audioclip_version: new_ver },
       {
         method: "audioclip_changed",
         data: {
           user_id: socket.hue_user_id,
-          audioclip: file_name,
           audioclip_version: new_ver
         }
       }

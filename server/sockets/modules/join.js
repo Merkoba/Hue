@@ -89,8 +89,7 @@ module.exports = function (
       bio: 1,
       hearts: 1,
       skulls: 1,
-      audioclip: 1,
-      audioclip_version: 1,
+      audioclip_version: 1
     }
 
     if (data.alternative) {
@@ -199,7 +198,6 @@ module.exports = function (
     }
 
     socket.hue_profilepic_version = userinfo.profilepic_version
-    socket.hue_audioclip = userinfo.audioclip
     socket.hue_audioclip_version = userinfo.audioclip_version
 
     if (vars.rooms[socket.hue_room_id] === undefined) {
@@ -294,7 +292,6 @@ module.exports = function (
         bio: socket.hue_bio,
         hearts: socket.hue_hearts,
         skulls: socket.hue_skulls,
-        audioclip: socket.hue_audioclip,
         audioclip_version: socket.hue_audioclip_version,
         date_joined: Date.now()
       })

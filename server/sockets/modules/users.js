@@ -330,7 +330,6 @@ module.exports = function (
         bio: item.bio,
         hearts: item.hearts,
         skulls: item.skulls,
-        audioclip: item.audioclip,
         audioclip_version: item.audioclip_version,
       })
     }

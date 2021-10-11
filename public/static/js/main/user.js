@@ -398,7 +398,8 @@ Hue.show_audioclip_menu = function () {
 
     $("#play_audioclip").on("click", function () {
       Hue.user_menu_audio = document.createElement("audio")
-      let src = Hue.config.public_audioclip_location + Hue.get_user_profile().audioclip
+      let user = Hue.get_user_profile().audioclip
+      let src = Hue.get_audioclip(user.user_id)
       Hue.user_menu_audio.src = src
       Hue.user_menu_audio.play()
     })

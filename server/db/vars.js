@@ -68,7 +68,6 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       bio: { type: "string", default: "" },
       hearts: { type: "number", default: 0 },
       skulls: { type: "number", default: 0 },
-      audioclip: { type: "string", default: "" },
       audioclip_version: { type: "number", default: 0 },
       modified: { type: "number", default: Date.now() },
       version: { type: "number", default: 0 }
