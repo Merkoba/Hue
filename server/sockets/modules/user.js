@@ -155,22 +155,20 @@ module.exports = function (
 
   // Completes profile image changes
   handler.do_change_profilepic = async function (socket, file_name) {
-    let new_ver = userinfo.profilepic_version + 1
+    let new_ver = (socket.hue_profilepic_version || 0) + 1
 
     db_manager.update_user(socket.hue_user_id, {
-      profilepic: file_name,
-      profilepic_version: new_ver,
+      profilepic_version: new_ver
     })
 
     handler.modify_socket_properties(
       socket.hue_user_id,
-      { hue_profilepic: file_name },
+      { hue_profilepic_version: new_ver },
       {
         method: "profilepic_changed",
         data: {
           user_id: socket.hue_user_id,
-          profilepic: imagever,
-          profilepic_version: new_ver,
+          profilepic_version: new_ver
         }
       }
     )

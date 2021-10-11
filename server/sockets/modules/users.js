@@ -324,7 +324,7 @@ module.exports = function (
         user_id: item.user_id,
         username: item.username,
         role: item.role,
-        profilepic: item.profilepic,
+        profilepic_version: item.profilepic_version,
         last_activity: 0,
         date_joined: item.date_joined,
         bio: item.bio,
