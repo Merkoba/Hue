@@ -9,7 +9,7 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
 
   // Room and User versions
   // These must be increased by 1 when the schema changes
-  vars.rooms_version = 86
+  vars.rooms_version = 87
   vars.users_version = 51
 
   // Room schema definition
@@ -23,15 +23,15 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       image_id: { type: "string", default: "" },
       image_user_id: { type: "string", default: "" },
       image_source: { type: "string", default: "" },
+      image_title: { type: "string", default: "" },
       image_setter: { type: "string", default: "" },
       image_size: { type: "number", default: 0 },
       image_date: { type: "number", default: 0 },
       image_query: { type: "string", default: "" },
-      image_type: { type: "string", default: "link" },
       image_comment: { type: "string", default: "" },
+      image_type: { type: "string", default: "link" },
       tv_id: { type: "string", default: "" },
       tv_user_id: { type: "string", default: "" },
-      tv_type: { type: "string", default: "tv" },
       tv_source: { type: "string", default: "" },
       tv_title: { type: "string", default: "" },
       tv_setter: { type: "string", default: "" },
@@ -39,6 +39,7 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       tv_date: { type: "number", default: 0 },
       tv_query: { type: "string", default: "" },
       tv_comment: { type: "string", default: "" },
+      tv_type: { type: "string", default: "tv" },
       bans: { type: "object", default: [] },
       log_messages: { type: "object", default: [] },
       admin_log_messages: { type: "object", default: [] },

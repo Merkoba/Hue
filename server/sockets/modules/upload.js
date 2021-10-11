@@ -44,7 +44,7 @@ module.exports = function (
           }
         }
       } else if (data.action.includes("video")) {
-        if (data.action === "tv_video_upload") {
+        if (data.action === "tv_upload") {
           if (!utilz.video_extensions.includes(ext) && !utilz.audio_extensions.includes(ext)) {
             return false
           }
@@ -90,7 +90,7 @@ module.exports = function (
         delete vars.files[key]
         return false
       }
-    } else if (file.action === "tv_video_upload") {
+    } else if (file.action === "tv_upload") {
       if (fsize > config.max_tv_video_size) {
         delete vars.files[key]
         return false
@@ -114,11 +114,17 @@ module.exports = function (
       let full_file = Buffer.concat(file.data)
 
       if (data.action === "image_upload") {
-        handler.upload_image(socket, {
-          image_file: full_file,
+        handler.upload_media(socket, {
+          file: full_file,
           extension: file.extension,
           comment: file.comment,
-        })
+        }, "image")
+      } else if (data.action === "tv_upload") {
+        handler.upload_media(socket, {
+          file: full_file,
+          extension: file.extension,
+          comment: file.comment,
+        }, "tv")
       } else if (data.action === "profile_image_upload") {
         handler.upload_profile_image(socket, {
           image_file: full_file,
@@ -132,12 +138,6 @@ module.exports = function (
         handler.upload_audio_clip(socket, {
           audio_file: full_file,
           extension: file.extension,
-        })
-      } else if (data.action === "tv_video_upload") {
-        handler.upload_tv_video(socket, {
-          video_file: full_file,
-          extension: file.extension,
-          comment: file.comment,
         })
       }
 
@@ -158,10 +158,5 @@ module.exports = function (
     if (file) {
       file.cancelled = true
     }
-  }
-
-  // Get file name
-  handler.generate_file_name = function (extension) {
-    return `${Date.now()}_${utilz.random_sequence(3)}.${extension}`
   }
 }

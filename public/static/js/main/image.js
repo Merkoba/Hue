@@ -2,6 +2,7 @@
 // This handles image objects received live from the server or from logged messages
 // This is the entry function for image objects to get registered, announced, and be ready for use
 Hue.setup_image = function (mode, odata = {}) {
+  console.log(odata)
   let data = {}
 
   data.id = odata.id

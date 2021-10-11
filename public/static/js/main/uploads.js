@@ -91,7 +91,7 @@ Hue.upload_video = function (file) {
   }
 
   Hue.dropzone.files = []
-  Hue.show_tv_upload_comment(file, "tv_video_upload")
+  Hue.show_tv_upload_comment(file, "tv_upload")
 }
 
 // Creates a file reader for files
