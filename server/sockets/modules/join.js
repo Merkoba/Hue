@@ -84,7 +84,6 @@ module.exports = function (
 
     let user_fields = {
       username: 1,
-      profilepic: 1,
       profilepic_version: 1,
       registration_date: 1,
       bio: 1,
@@ -199,7 +198,6 @@ module.exports = function (
       return false
     }
 
-    socket.hue_profilepic = userinfo.profilepic
     socket.hue_profilepic_version = userinfo.profilepic_version
     socket.hue_audioclip = userinfo.audioclip
     socket.hue_audioclip_version = userinfo.audioclip_version
@@ -265,8 +263,7 @@ module.exports = function (
       tv_setter: info.tv_setter,
       tv_date: info.tv_date,
       tv_query: info.tv_query,
-      profilepic: socket.hue_profilepic,
-      profilepic_version: socket.hue_profilepic_version,
+      profilepic_version: userinfo.profilepic_version,
       background_color: info.background_color,
       background: info.background,
       background_type: info.background_type,
@@ -293,7 +290,7 @@ module.exports = function (
         user_id: socket.hue_user_id,
         username: socket.hue_username,
         role: socket.hue_role,
-        profilepic: socket.hue_profilepic,
+        profilepic_version: socket.hue_profilepic_version,
         bio: socket.hue_bio,
         hearts: socket.hue_hearts,
         skulls: socket.hue_skulls,

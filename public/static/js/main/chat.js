@@ -5,7 +5,6 @@ Hue.add_chat_message = function (args = {}) {
     user_id: false,
     username: "",
     message: "",
-    profilepic: "",
     date: false,
     brk: false,
     public: true,
@@ -34,14 +33,7 @@ Hue.add_chat_message = function (args = {}) {
   let content_classes = "chat_content dynamic_title reply_message"
   let d = args.date ? args.date : Date.now()
   let nd = Hue.utilz.nice_date(d)
-  let pi
-
-  if (args.profilepic === "" || args.profilepic === undefined) {
-    pi = Hue.config.default_profilepic_url
-  } else {
-    pi = Hue.config.public_profilepic_location + args.profilepic
-  }
-
+  let pi = Hue.get_profilepic(args.user_id)
   let image_preview = false
   let image_preview_src_original = false
   let image_preview_text = false
@@ -1152,7 +1144,6 @@ Hue.on_chat_message = function (data) {
     user_id: data.user_id,
     username: data.username,
     message: data.message,
-    profilepic: data.profilepic,
     date: data.date,
     link_title: data.link_title,
     link_description: data.link_description,
@@ -1602,7 +1593,6 @@ Hue.show_log_messages = function (log_messages) {
             user_id: data.user_id,
             username: data.username,
             message: data.content,
-            profilepic: data.profilepic,
             link_title: data.link_title,
             link_description: data.link_description,
             link_image: data.link_image,

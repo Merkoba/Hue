@@ -35,11 +35,7 @@ Hue.update_activity_bar = function (check = false) {
   Hue.clear_activity_bar_items()
 
   for (let user of activity_list) {
-    if (user.profilepic) {
-      pi = Hue.config.public_profilepic_location + user.profilepic
-    } else {
-      pi = Hue.config.default_profilepic_url
-    }
+    let pi = Hue.get_profilepic(user.user_id)
 
     let h = $(`
       <div class='activity_bar_item'>
@@ -102,6 +98,7 @@ Hue.clear_activity_bar_items = function () {
 
 // Updates the profile image of an item in the activity bar
 Hue.update_activity_bar_image = function (id, src) {
+  console.log(src)
   $("#activity_bar_inner")
     .find(".activity_bar_item")
     .each(function () {

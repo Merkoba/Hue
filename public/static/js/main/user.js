@@ -244,7 +244,7 @@ Hue.setup_user_menu = function () {
 
 // Updates some user menu elements
 Hue.update_user_menu = function () {
-  let src = Hue.config.public_profilepic_location + Hue.profilepic
+  let src = Hue.get_profilepic(Hue.user_id)
   $("#user_menu_profilepic").attr("src", src)
   $("#user_menu_bio_textarea").val(Hue.bio)
 }
@@ -415,6 +415,13 @@ Hue.select_audioclip = function () {
 // When an audio clip gets selected from the file picker
 Hue.audioclip_selected = function (file) {
   if (!file) {
+    return false
+  }
+
+  let ext = file.name.split(".").pop(-1).toLowerCase()
+
+  if (ext !== "mp3") {
+    Hue.checkmsg("Only mp3 format is allowed")
     return false
   }
 

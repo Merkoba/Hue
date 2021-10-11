@@ -4,7 +4,7 @@ Hue.user_join = function (data) {
     user_id: data.user_id,
     username: data.username,
     role: data.role,
-    profilepic: data.profilepic,
+    profilepic_version: data.profilepic_version,
     date_joined: data.date_joined,
     bio: data.bio,
     hearts: data.hearts,
@@ -67,7 +67,7 @@ Hue.add_to_userlist = function (args = {}) {
     user_id: false,
     username: false,
     role: false,
-    profilepic: false,
+    profilepic_version: false,
     date_joined: false,
     bio: "",
     hearts: 0,
@@ -85,6 +85,7 @@ Hue.add_to_userlist = function (args = {}) {
       Hue.userlist[i].username = args.username
       Hue.userlist[i].role = args.role
       Hue.userlist[i].profilepic = args.profilepic
+      Hue.userlist[i].profilepic_version = args.profilepic_version
       Hue.userlist[i].bio = args.bio
       Hue.userlist[i].hearts = args.hearts
       Hue.userlist[i].skulls = args.skulls
@@ -101,7 +102,7 @@ Hue.add_to_userlist = function (args = {}) {
     user_id: args.user_id,
     username: args.username,
     role: args.role,
-    profilepic: args.profilepic,
+    profilepic_version: args.profilepic_version,
     date_joined: args.date_joined,
     bio: args.bio,
     hearts: args.hearts,
@@ -442,12 +443,12 @@ Hue.sort_userlist_by_username = function (a, b) {
 }
 
 // Updates the profile image of a user in the userlist
-Hue.update_user_profilepic = function (id, pi) {
+Hue.update_user_profilepic = function (id, version) {
   for (let i = 0; i < Hue.userlist.length; i++) {
     let user = Hue.userlist[i]
 
     if (user.user_id === id) {
-      Hue.userlist[i].profilepic = pi
+      Hue.userlist[i].profilepic_version = version
       return
     }
   }
@@ -550,15 +551,6 @@ Hue.get_matching_usernames = function (s) {
   return matches
 }
 
-// Setups the profile image
-Hue.setup_profilepic = function (pi) {
-  if (pi === "") {
-    Hue.profilepic = Hue.config.default_profilepic_url
-  } else {
-    Hue.profilepic = pi
-  }
-}
-
 // Setups user profile windows
 Hue.setup_show_profile = function () {
   $("#show_profile_whisper").on("click", function () {
@@ -632,12 +624,18 @@ Hue.stop_profile_audio = function () {
 
 // Shows a user's profile window
 Hue.show_profile = function (username, profilepic = false, user_id = false) {
-  let pi
+  let id
   let role = "Offline"
   let bio = ""
   let hearts = 0
   let skulls = 0
   let user = false
+
+  if (user_id) {
+    id = user_id
+  } else if (user) {
+    id = user.user_id
+  }  
 
   if (username) {
     user = Hue.get_user_by_username(username)
@@ -664,16 +662,7 @@ Hue.show_profile = function (username, profilepic = false, user_id = false) {
   }
   
   Hue.open_profile_username = username
-  
-  if (profilepic) {
-    pi = Hue.config.public_profilepic_location + profilepic
-  } else {
-    if (user && user.profilepic) {
-      pi = Hue.config.public_profilepic_location + user.profilepic
-    } else {
-      pi = Hue.config.default_profilepic_url
-    }
-  }
+  let pi = Hue.get_profilepic(id)
 
   $("#show_profile_username").text(username)
   $("#show_profile_role").text(`(${role})`)
@@ -732,14 +721,6 @@ Hue.show_profile = function (username, profilepic = false, user_id = false) {
     $("#show_profile_info").append(item)
   }
 
-  let id
-
-  if (user_id) {
-    id = user_id
-  } else if (user) {
-    id = user.user_id
-  }
-
   let item = document.createElement("div")
   item.textContent = `ID: ${id}`
   $("#show_profile_info").append(item)
@@ -756,14 +737,12 @@ Hue.profilepic_changed = function (data) {
     return false
   }
 
-  let src = `${Hue.config.public_image_location}profile/${data.profilepic}`
+  Hue.update_user_profilepic(data.user_id, data.profilepic_version)
+  let src = Hue.get_profilepic(data.user_id)
 
   if (data.user_id === Hue.user_id) {
-    Hue.profilepic = data.profilepic
     $("#user_menu_profilepic").attr("src", src)
   }
-
-  Hue.update_user_profilepic(data.user_id, data.profilepic)
 
   Hue.show_room_notification(
     user.username,
@@ -1246,4 +1225,16 @@ Hue.update_user_activity = function (user_id) {
   let user = Hue.get_user_by_user_id(user_id)
   user.last_activity = Date.now()
   Hue.do_update_activity_bar = true
+}
+
+// Get a profilepic path
+Hue.get_profilepic = function (user_id) {
+  let pi = Hue.config.public_profilepic_location + user_id + ".png"
+  let user = Hue.get_user_by_user_id(user_id)
+  
+  if (user) {
+    pi += `?ver=${user.profilepic_version}`
+  }
+
+  return pi
 }

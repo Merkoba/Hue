@@ -37,17 +37,13 @@ module.exports = function (
             return false
           }
         }
-      } else if (data.action.includes("audio")) {
-        if (data.action === "audioclip_upload") {
-          if (!utilz.audio_extensions.includes(ext)) {
-            return false
-          }
+      } else if (data.action === "tv_upload") {
+        if (!utilz.video_extensions.includes(ext) && !utilz.audio_extensions.includes(ext)) {
+          return false
         }
-      } else if (data.action.includes("video")) {
-        if (data.action === "tv_upload") {
-          if (!utilz.video_extensions.includes(ext) && !utilz.audio_extensions.includes(ext)) {
-            return false
-          }
+      } else if (data.action === "audioclip_upload") {
+        if (ext !== "mp3") {
+          return false
         }
       }
 
