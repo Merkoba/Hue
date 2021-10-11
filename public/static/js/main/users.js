@@ -569,19 +569,11 @@ Hue.setup_show_profile = function () {
   $("#show_profile_skulls_icon").on("click", function () {
     Hue.send_badge(Hue.open_profile_username, "skull")
   })
-
-  $("#show_profilepic").on("click", function () {
-    if (Hue.profile_audio) {
-      Hue.stop_profile_audio()
-    } else {
-      Hue.play_profile_audio()
-    }
-  })
 }
 
 // Stars the profile audio
 Hue.play_profile_audio = function () {
-  let clip = Hue.get_audioclip(Hue.open_profile_user.user_id)
+  let clip = Hue.get_audioclip(Hue.open_profile_user_id)
 
   if (Hue.profile_audio) {
     Hue.stop_profile_audio()
@@ -618,7 +610,7 @@ Hue.show_profile = function (username, profilepic = false, user_id = false) {
     id = user_id
   } else if (user) {
     id = user.user_id
-  }  
+  }
 
   if (username) {
     user = Hue.get_user_by_username(username)
@@ -644,6 +636,7 @@ Hue.show_profile = function (username, profilepic = false, user_id = false) {
     $("#show_profile_details").css("display", "none")
   }
   
+  Hue.open_profile_user_id = id
   Hue.open_profile_username = username
   let pi = Hue.get_profilepic(id)
 
@@ -666,12 +659,6 @@ Hue.show_profile = function (username, profilepic = false, user_id = false) {
 
     Hue.set_hearts_counter(hearts)
     Hue.set_skulls_counter(skulls)
-  }
-
-  if (user && user.audioclip_version > 0) {
-    $("#show_profilepic_container").addClass("action4")
-  } else {
-    $("#show_profilepic_container").removeClass("action4")
   }
 
   if (Hue.room_state["tv_enabled"] 
@@ -709,7 +696,10 @@ Hue.show_profile = function (username, profilepic = false, user_id = false) {
   $("#show_profile_info").append(item)
   
   Hue.horizontal_separator($("#show_profile_badges")[0])
-  Hue.msg_profile.show()
+
+  Hue.msg_profile.show(function () {
+    Hue.play_profile_audio()
+  })
 }
 
 // Announces a user's profile image change
