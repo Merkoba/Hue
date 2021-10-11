@@ -4,7 +4,7 @@ Hue.user_join = function (data) {
     user_id: data.user_id,
     username: data.username,
     role: data.role,
-    profile_image: data.profile_image,
+    profilepic: data.profilepic,
     date_joined: data.date_joined,
     bio: data.bio,
     hearts: data.hearts,
@@ -25,26 +25,26 @@ Hue.user_join = function (data) {
     Hue.do_update_activity_bar = true
   }
 
-  Hue.remove_offline_profile_images(data.user_id)
+  Hue.remove_offline_profilepics(data.user_id)
 }
 
 // Removes the online effect to a user's profile images
-Hue.remove_offline_profile_images = function (user_id) {
+Hue.remove_offline_profilepics = function (user_id) {
   $("#chat_area .message").each(function () {
     if ($(this).data("user_id") === user_id) {
-      $(this).find(".chat_profile_image_container").each(function () {
-        $(this).removeClass("profile_image_offline")
+      $(this).find(".chat_profilepic_container").each(function () {
+        $(this).removeClass("profilepic_offline")
       })
     }
   })
 }
 
 // Add the online effect to a user's profile images
-Hue.add_offline_profile_images = function (user_id) {
+Hue.add_offline_profilepics = function (user_id) {
   $("#chat_area .message").each(function () {
     if ($(this).data("user_id") === user_id) {
-      $(this).find(".chat_profile_image_container").each(function () {
-        $(this).addClass("profile_image_offline")
+      $(this).find(".chat_profilepic_container").each(function () {
+        $(this).addClass("profilepic_offline")
       })
     }
   })
@@ -67,7 +67,7 @@ Hue.add_to_userlist = function (args = {}) {
     user_id: false,
     username: false,
     role: false,
-    profile_image: false,
+    profilepic: false,
     date_joined: false,
     bio: "",
     hearts: 0,
@@ -84,7 +84,7 @@ Hue.add_to_userlist = function (args = {}) {
       Hue.userlist[i].user_id = args.user_id
       Hue.userlist[i].username = args.username
       Hue.userlist[i].role = args.role
-      Hue.userlist[i].profile_image = args.profile_image
+      Hue.userlist[i].profilepic = args.profilepic
       Hue.userlist[i].bio = args.bio
       Hue.userlist[i].hearts = args.hearts
       Hue.userlist[i].skulls = args.skulls
@@ -101,7 +101,7 @@ Hue.add_to_userlist = function (args = {}) {
     user_id: args.user_id,
     username: args.username,
     role: args.role,
-    profile_image: args.profile_image,
+    profilepic: args.profilepic,
     date_joined: args.date_joined,
     bio: args.bio,
     hearts: args.hearts,
@@ -234,7 +234,7 @@ Hue.do_update_userlist = function (prop = "") {
     if (prop) {
       uchange = false
 
-      if (prop === "username" || prop === "profile_image" || prop === "role") {
+      if (prop === "username" || prop === "profilepic" || prop === "role") {
         uchange = true
       }
     }
@@ -272,18 +272,18 @@ Hue.update_userlist_window = function () {
     
     let pi
 
-    if (item.profile_image) {
-      pi = `${Hue.config.public_image_location}profile/${item.profile_image}`
+    if (item.profilepic) {
+      pi = `${Hue.config.public_image_location}profile/${item.profilepic}`
     } else {
-      pi = Hue.config.default_profile_image_url
+      pi = Hue.config.default_profilepic_url
     }    
 
     let h = $(`
         <div class='modal_item userlist_item action'>
             <div class='userlist_column flex_column_center'>
                 <div>
-                    <div class='userlist_item_profile_image_container round_image_container actionbox'>
-                        <img class='userlist_item_profile_image profile_image' src='${pi}' loading='lazy'>
+                    <div class='userlist_item_profilepic_container round_image_container actionbox'>
+                        <img class='userlist_item_profilepic profilepic' src='${pi}' loading='lazy'>
                     </div>
                     <div class='userlist_item_details_container'>
                         <div class='userlist_item_username'></div>
@@ -293,11 +293,11 @@ Hue.update_userlist_window = function () {
             </div>
         </div>`)
 
-    let image = h.find(".userlist_item_profile_image").eq(0)
+    let image = h.find(".userlist_item_profilepic").eq(0)
 
     image.on("error", function (e) {
-      if ($(this).attr("src") !== Hue.config.default_profile_image_url) {
-        $(this).attr("src", Hue.config.default_profile_image_url)
+      if ($(this).attr("src") !== Hue.config.default_profilepic_url) {
+        $(this).attr("src", Hue.config.default_profilepic_url)
       }
     })
 
@@ -442,12 +442,12 @@ Hue.sort_userlist_by_username = function (a, b) {
 }
 
 // Updates the profile image of a user in the userlist
-Hue.update_user_profile_image = function (id, pi) {
+Hue.update_user_profilepic = function (id, pi) {
   for (let i = 0; i < Hue.userlist.length; i++) {
     let user = Hue.userlist[i]
 
     if (user.user_id === id) {
-      Hue.userlist[i].profile_image = pi
+      Hue.userlist[i].profilepic = pi
       return
     }
   }
@@ -466,11 +466,11 @@ Hue.user_disconnect = function (data) {
   }
 
   if (Hue.open_profile_username === data.username) {
-    Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
+    Hue.show_profile(data.username, $("#show_profilepic").attr("src"))
   }
 
   Hue.do_update_activity_bar = true
-  Hue.add_offline_profile_images(data.user_id)
+  Hue.add_offline_profilepics(data.user_id)
 }
 
 // Announces that the operation cannot be applied to a certain user
@@ -551,11 +551,11 @@ Hue.get_matching_usernames = function (s) {
 }
 
 // Setups the profile image
-Hue.setup_profile_image = function (pi) {
+Hue.setup_profilepic = function (pi) {
   if (pi === "") {
-    Hue.profile_image = Hue.config.default_profile_image_url
+    Hue.profilepic = Hue.config.default_profilepic_url
   } else {
-    Hue.profile_image = pi
+    Hue.profilepic = pi
   }
 }
 
@@ -570,9 +570,9 @@ Hue.setup_show_profile = function () {
     Hue.msg_profile.close()
   })
 
-  $("#show_profile_image").on("error", function () {
-    if ($(this).attr("src") !== Hue.config.default_profile_image_url) {
-      $(this).attr("src", Hue.config.default_profile_image_url)
+  $("#show_profilepic").on("error", function () {
+    if ($(this).attr("src") !== Hue.config.default_profilepic_url) {
+      $(this).attr("src", Hue.config.default_profilepic_url)
     }
   })
 
@@ -588,7 +588,7 @@ Hue.setup_show_profile = function () {
     Hue.send_badge(Hue.open_profile_username, "skull")
   })
 
-  $("#show_profile_image").on("click", function () {
+  $("#show_profilepic").on("click", function () {
     if (Hue.profile_audio) {
       Hue.stop_profile_audio()
     } else {
@@ -631,7 +631,7 @@ Hue.stop_profile_audio = function () {
 }
 
 // Shows a user's profile window
-Hue.show_profile = function (username, profile_image = false, user_id = false) {
+Hue.show_profile = function (username, profilepic = false, user_id = false) {
   let pi
   let role = "Offline"
   let bio = ""
@@ -665,13 +665,13 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   
   Hue.open_profile_username = username
   
-  if (profile_image) {
-    pi = Hue.config.public_profilepic_location + profile_image
+  if (profilepic) {
+    pi = Hue.config.public_profilepic_location + profilepic
   } else {
-    if (user && user.profile_image) {
-      pi = Hue.config.public_profilepic_location + user.profile_image
+    if (user && user.profilepic) {
+      pi = Hue.config.public_profilepic_location + user.profilepic
     } else {
-      pi = Hue.config.default_profile_image_url
+      pi = Hue.config.default_profilepic_url
     }
   }
 
@@ -681,7 +681,7 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     .html(Hue.utilz.make_html_safe(bio).replace(/\n+/g, " <br> "))
     .urlize()
 
-  $("#show_profile_image").attr("src", pi)
+  $("#show_profilepic").attr("src", pi)
 
   if (!Hue.usernames.includes(username)) {
     $("#show_profile_whisper").css("display", "none")
@@ -697,9 +697,9 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   }
 
   if (user && user.audioclip) {
-    $("#show_profile_image_container").addClass("action4")
+    $("#show_profilepic_container").addClass("action4")
   } else {
-    $("#show_profile_image_container").removeClass("action4")
+    $("#show_profilepic_container").removeClass("action4")
   }
 
   if (Hue.room_state["tv_enabled"] 
@@ -749,21 +749,21 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
 }
 
 // Announces a user's profile image change
-Hue.profile_image_changed = function (data) {
+Hue.profilepic_changed = function (data) {
   let user = Hue.get_user_by_user_id(data.user_id)
 
   if (!user) {
     return false
   }
 
-  let src = `${Hue.config.public_image_location}profile/${data.profile_image}`
+  let src = `${Hue.config.public_image_location}profile/${data.profilepic}`
 
   if (data.user_id === Hue.user_id) {
-    Hue.profile_image = data.profile_image
-    $("#user_menu_profile_image").attr("src", src)
+    Hue.profilepic = data.profilepic
+    $("#user_menu_profilepic").attr("src", src)
   }
 
-  Hue.update_user_profile_image(data.user_id, data.profile_image)
+  Hue.update_user_profilepic(data.user_id, data.profilepic)
 
   Hue.show_room_notification(
     user.username,
@@ -1056,19 +1056,19 @@ Hue.on_badge_received = function (data) {
     let message = Hue.get_last_chat_message_by_username(data.username)
 
     if (message) {
-      let profile_image_container = $(message)
-        .find(".chat_profile_image_container")
+      let profilepic_container = $(message)
+        .find(".chat_profilepic_container")
         .eq(0)
-      Hue.change_profile_image_badge(profile_image_container, data.type)
+      Hue.change_profilepic_badge(profilepic_container, data.type)
     }
   }
 }
 
 // Changes the profile image of a user receiving a badge
-Hue.change_profile_image_badge = function (profile_image_container, type) {
-  Hue.remove_badge_icons(profile_image_container)
-  profile_image_container.addClass(`${type}_badge`)
-  profile_image_container.addClass("profile_image_badge")
+Hue.change_profilepic_badge = function (profilepic_container, type) {
+  Hue.remove_badge_icons(profilepic_container)
+  profilepic_container.addClass(`${type}_badge`)
+  profilepic_container.addClass("profilepic_badge")
 
   let icon
 
@@ -1078,13 +1078,13 @@ Hue.change_profile_image_badge = function (profile_image_container, type) {
     icon = "skull"
   }
 
-  profile_image_container.append(
-    `<svg class='other_icon profile_image_badge_icon ${type}_badge'>
+  profilepic_container.append(
+    `<svg class='other_icon profilepic_badge_icon ${type}_badge'>
       <use href='#icon_${icon}'>
     </svg>`
   )
 
-  let number = profile_image_container.data("badge_feedback_number")
+  let number = profilepic_container.data("badge_feedback_number")
 
   if (!number) {
     number = 1
@@ -1092,25 +1092,25 @@ Hue.change_profile_image_badge = function (profile_image_container, type) {
     number += 1
   }
 
-  profile_image_container.data("badge_feedback_number", number)
+  profilepic_container.data("badge_feedback_number", number)
 
   setTimeout(function () {
-    let number_2 = profile_image_container.data("badge_feedback_number")
+    let number_2 = profilepic_container.data("badge_feedback_number")
 
     if (number !== number_2) {
       return false
     }
 
-    Hue.remove_badge_icons(profile_image_container)
+    Hue.remove_badge_icons(profilepic_container)
   }, Hue.config.badge_feedback_duration)
 }
 
 // Removes badge icons from profile image container
-Hue.remove_badge_icons = function (profile_image_container) {
-  profile_image_container.removeClass("heart_badge")
-  profile_image_container.removeClass("skull_badge")
-  profile_image_container.removeClass(`profile_image_badge`)
-  profile_image_container.find(".profile_image_badge_icon").each(function () {
+Hue.remove_badge_icons = function (profilepic_container) {
+  profilepic_container.removeClass("heart_badge")
+  profilepic_container.removeClass("skull_badge")
+  profilepic_container.removeClass(`profilepic_badge`)
+  profilepic_container.find(".profilepic_badge_icon").each(function () {
     $(this).remove()
   })
 }
@@ -1140,28 +1140,30 @@ Hue.push_to_all_usernames = function (username) {
 
 // When a user changes the audio audio clip
 Hue.audioclip_changed = function (data) {
-  Hue.replace_property_in_userlist_by_username(
-    data.username,
+  let user = Hue.get_user_by_user_id(data.user_id)
+
+  Hue.replace_property_in_userlist_by_id(
+    data.user_id,
     "audioclip",
     data.audioclip,
     false
   )
 
-  Hue.replace_property_in_userlist_by_username(
-    data.username,
+  Hue.replace_property_in_userlist_by_id(
+    data.user_id,
     "audioclip_version",
     data.audioclip_version,
     false
   )  
 
-  if (data.username === Hue.open_profile_username) {
+  if (data.user_id === Hue.open_profile_user.user_id) {
     Hue.show_profile(data.username)
   }
 
   if (data.audioclip) {
     Hue.show_room_notification(
       data.username,
-      `${data.username} changed their audio clip`
+      `${user.username} changed their audio clip`
     )
   }
 }

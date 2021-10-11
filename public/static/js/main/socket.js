@@ -21,8 +21,8 @@ Hue.server_update_events = {
   tv_source_changed: (data) => {
     Hue.setup_tv("change", data)
   },
-  profile_image_changed: (data) => {
-    Hue.profile_image_changed(data)
+  profilepic_changed: (data) => {
+    Hue.profilepic_changed(data)
   },
   user_joined: (data) => {
     Hue.user_join(data)

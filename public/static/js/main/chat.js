@@ -37,7 +37,7 @@ Hue.add_chat_message = function (args = {}) {
   let pi
 
   if (args.profilepic === "" || args.profilepic === undefined) {
-    pi = Hue.config.default_profile_image_url
+    pi = Hue.config.default_profilepic_url
   } else {
     pi = Hue.config.public_profilepic_location + args.profilepic
   }
@@ -112,17 +112,17 @@ Hue.add_chat_message = function (args = {}) {
     title = `${args.id.slice(-3)} | ${title}`
   }
 
-  let profile_image_classes = "chat_profile_image_container round_image_container action4 profile_image"
+  let profilepic_classes = "chat_profilepic_container round_image_container action4 profilepic"
 
   if (!Hue.user_is_online_by_user_id(args.user_id)) {
-    profile_image_classes += " profile_image_offline"
+    profilepic_classes += " profilepic_offline"
   }
 
   let s = `
     <div class='${message_classes}'>
         <div class='chat_left_side'>
-            <div class='${profile_image_classes}'>
-                <img class='chat_profile_image profile_image' src='${pi}' loading='lazy'>
+            <div class='${profilepic_classes}'>
+                <img class='chat_profilepic profilepic' src='${pi}' loading='lazy'>
             </div>
         </div>
         <div class='chat_right_side'>
@@ -179,11 +179,11 @@ Hue.add_chat_message = function (args = {}) {
   htimeago.text(Hue.utilz.timeago(d))
 
   fmessage
-    .find(".chat_profile_image")
+    .find(".chat_profilepic")
     .eq(0)
     .on("error", function () {
-      if ($(this).attr("src") !== Hue.config.default_profile_image_url) {
-        $(this).attr("src", Hue.config.default_profile_image_url)
+      if ($(this).attr("src") !== Hue.config.default_profilepic_url) {
+        $(this).attr("src", Hue.config.default_profilepic_url)
       }
     })
 
@@ -540,7 +540,7 @@ Hue.start_chat_mouse_events = function () {
     )
   })
 
-  $(".chat_area").on("click", ".chat_profile_image", function () {
+  $(".chat_area").on("click", ".chat_profilepic", function () {
     let m = $(this).closest(".message")
 
     Hue.show_profile(
@@ -1084,7 +1084,7 @@ Hue.add_aura = function (id) {
   let message = Hue.get_last_chat_message_by_user_id(id)
 
   if (message) {
-    $(message).find(".chat_profile_image_container").eq(0).addClass("aura")
+    $(message).find(".chat_profilepic_container").eq(0).addClass("aura")
   }
 
   let activity_bar_item = Hue.get_activity_bar_item_by_user_id(id)
@@ -1102,7 +1102,7 @@ Hue.remove_aura = function (id) {
   clearTimeout(Hue.aura_timeouts[id])
 
   let aura = "aura"
-  let cls = ".chat_profile_image_container.aura"
+  let cls = ".chat_profilepic_container.aura"
 
   $(cls).each(function () {
     let message = $(this).closest(".chat_message")
@@ -1152,7 +1152,7 @@ Hue.on_chat_message = function (data) {
     user_id: data.user_id,
     username: data.username,
     message: data.message,
-    profilepic: data.profile_image,
+    profilepic: data.profilepic,
     date: data.date,
     link_title: data.link_title,
     link_description: data.link_description,
@@ -1602,7 +1602,7 @@ Hue.show_log_messages = function (log_messages) {
             user_id: data.user_id,
             username: data.username,
             message: data.content,
-            profilepic: data.profile_image,
+            profilepic: data.profilepic,
             link_title: data.link_title,
             link_description: data.link_description,
             link_image: data.link_image,

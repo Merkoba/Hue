@@ -324,7 +324,7 @@ module.exports = function (
         user_id: item.user_id,
         username: item.username,
         role: item.role,
-        profile_image: item.profile_image,
+        profilepic: item.profilepic,
         last_activity: 0,
         date_joined: item.date_joined,
         bio: item.bio,
@@ -465,7 +465,8 @@ module.exports = function (
       user.user_id = socket.hue_user_id
       user.username = socket.hue_username
       user.role = socket.hue_role
-      user.profile_image = socket.hue_profile_image
+      user.profilepic = socket.hue_profilepic
+      user.profilepic_version = socket.hue_profilepic_version
       user.bio = socket.hue_bio
       user.hearts = socket.hue_hearts
       user.skulls = socket.hue_skulls

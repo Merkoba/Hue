@@ -3,7 +3,7 @@
 	--panel_font_size: 1rem;
 	--icon_size: 1.4rem;
 	--app_font_family: imported_font, sans-serif;
-	--profile_image_size: 2rem;
+	--profilepic_size: 2rem;
 	--tab_size: 1.6rem;
 	--chat_side_spacing: 0.8rem;
 }
@@ -429,25 +429,25 @@ body * {
 	flex-shrink: 1;
 }
 
-.chat_profile_image_container {
-	min-width: var(--profile_image_size);
-	max-width: var(--profile_image_size);
-	min-height: var(--profile_image_size);
-	max-height: var(--profile_image_size);
+.chat_profilepic_container {
+	min-width: var(--profilepic_size);
+	max-width: var(--profilepic_size);
+	min-height: var(--profilepic_size);
+	max-height: var(--profilepic_size);
 	margin-top: 0;
 	top: 2.5rem;
 }
 
-#chat_area .profile_image_offline {
+#chat_area .profilepic_offline {
 	opacity: 0.6;
 }
 
-.chat_profile_image {
+.chat_profilepic {
 	width: 99%;
 	cursor: pointer;
 }
 
-.chat_profile_image_container.aura,
+.chat_profilepic_container.aura,
 .activity_bar_image_container.aura {
 	animation: spin 1s linear infinite;
 }
@@ -524,8 +524,8 @@ body * {
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
-	min-width: var(--profile_image_size);
-	max-width: var(--profile_image_size);
+	min-width: var(--profilepic_size);
+	max-width: var(--profilepic_size);
 }
 
 a.generic:link,
@@ -625,15 +625,15 @@ a.generic:hover {
 	cursor: pointer;
 }
 
-.userlist_item_profile_image_container {
-	min-width: var(--profile_image_size);
-	max-width: var(--profile_image_size);
-	min-height: var(--profile_image_size);
-	max-height: var(--profile_image_size);
+.userlist_item_profilepic_container {
+	min-width: var(--profilepic_size);
+	max-width: var(--profilepic_size);
+	min-height: var(--profilepic_size);
+	max-height: var(--profilepic_size);
 	margin-top: 0.2rem;
 }
 
-.userlist_item_profile_image {
+.userlist_item_profilepic {
 	width: 99%;
 	cursor: pointer;
 }
@@ -991,38 +991,38 @@ select {
 	padding: 2rem;
 }
 
-.big_profile_image_container {
+.big_profilepic_container {
 	min-width: 11.76rem;
 	max-width: 11.76rem;
 	min-height: 11.76rem;
 	max-height: 11.76rem;
 }
 
-.big_profile_image {
+.big_profilepic {
 	width: 99%;
 }
 
-.bigger_profile_image_container {
+.bigger_profilepic_container {
 	min-width: 17.65rem;
 	max-width: 17.65rem;
 	min-height: 17.65rem;
 	max-height: 17.65rem;
 }
 
-.bigger_profile_image {
+.bigger_profilepic {
 	width: 99%;
 }
 
-#profile_image_picker {
+#profilepic_picker {
 	display: none;
 }
 
-#profile_image_cropper {
+#profilepic_cropper {
 	width: 23.53rem;
 	height: 23.53rem;
 }
 
-#profile_image_cropper_buttons {
+#profilepic_cropper_buttons {
 	padding-top: 0.5rem;
 	display: flex;
 	flex-direction: row;
@@ -1030,7 +1030,7 @@ select {
 	justify-content: center;
 }
 
-.profile_image_cropper_button {
+.profilepic_cropper_button {
 	font-size: 1.2rem;
 }
 
@@ -1203,7 +1203,7 @@ select {
 	display: inline-block;
 }
 
-#user_menu_profile_image_container {
+#user_menu_profilepic_container {
 	margin-bottom: 2rem;
 }
 
@@ -2116,11 +2116,11 @@ pre {
 	background-color: black;
 }
 
-#chat_area .profile_image_badge>.chat_profile_image {
+#chat_area .profilepic_badge>.chat_profilepic {
 	display: none
 }
 
-#chat_area .profile_image_badge>.profile_image_badge_icon {
+#chat_area .profilepic_badge>.profilepic_badge_icon {
 	box-shadow: none;
 }
 
