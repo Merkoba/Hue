@@ -268,7 +268,7 @@ Hue.update_userlist_window = function () {
   for (let i = 0; i < Hue.userlist.length; i++) {
     let item = Hue.userlist[i]
     let pi = Hue.get_profilepic(item.user_id)
-    
+
     let h = $(`
         <div class='modal_item userlist_item action'>
             <div class='userlist_column flex_column_center'>
@@ -668,7 +668,7 @@ Hue.show_profile = function (username, profilepic = false, user_id = false) {
     Hue.set_skulls_counter(skulls)
   }
 
-  if (user && user.audioclip) {
+  if (user && user.audioclip_version > 0) {
     $("#show_profilepic_container").addClass("action4")
   } else {
     $("#show_profilepic_container").removeClass("action4")
