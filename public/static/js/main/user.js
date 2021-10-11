@@ -213,11 +213,11 @@ Hue.setup_user_menu = function () {
     Hue.open_profile_image_picker()
   })
 
-  $("#user_menu_audio_clip").on("click", function () {
-    if (Hue.get_user_profile().audio_clip) {
-      Hue.show_audio_clip_menu()
+  $("#user_menu_audioclip").on("click", function () {
+    if (Hue.get_user_profile().audioclip) {
+      Hue.show_audioclip_menu()
     } else {
-      Hue.select_audio_clip()
+      Hue.select_audioclip()
     }
   })
 
@@ -244,7 +244,7 @@ Hue.setup_user_menu = function () {
 
 // Updates some user menu elements
 Hue.update_user_menu = function () {
-  let src = `${Hue.config.public_images_location}profile/${Hue.profile_image}`
+  let src = Hue.config.public_profilepic_location + Hue.profile_image
   $("#user_menu_profile_image").attr("src", src)
   $("#user_menu_bio_textarea").val(Hue.bio)
 }
@@ -382,50 +382,50 @@ Hue.show_others_disconnected = function (data) {
 }
 
 // Shows some options for the audio clip
-Hue.show_audio_clip_menu = function () {
-  Hue.msg_info2.show(["Audio Clip", Hue.template_audio_clip_menu()], function () {
-    $("#upload_audio_clip").on("click", function () {
-      Hue.select_audio_clip()
+Hue.show_audioclip_menu = function () {
+  Hue.msg_info2.show(["Audio Clip", Hue.template_audioclip_menu()], function () {
+    $("#upload_audioclip").on("click", function () {
+      Hue.select_audioclip()
       Hue.msg_info2.close()
     })
 
-    $("#remove_audio_clip").on("click", function () {
+    $("#remove_audioclip").on("click", function () {
       Hue.needs_confirm_2(function () {
-        Hue.socket_emit("remove_audio_clip", {})
+        Hue.socket_emit("remove_audioclip", {})
         Hue.msg_info2.close()
       })
     })
 
-    $("#play_audio_clip").on("click", function () {
+    $("#play_audioclip").on("click", function () {
       Hue.user_menu_audio = document.createElement("audio")
-      let src = Hue.config.public_audio_location + Hue.get_user_profile().audio_clip
+      let src = Hue.config.public_audioclip_location + Hue.get_user_profile().audioclip
       Hue.user_menu_audio.src = src
       Hue.user_menu_audio.play()
     })
 
-    Hue.horizontal_separator($("#background_image_select_container")[0])
+    Hue.horizontal_separator($("#background_select_container")[0])
   })
 }
 
 // Opens the file picker to choose an audio clip
-Hue.select_audio_clip = function () {
-  $("#audio_clip_picker").trigger("click")
+Hue.select_audioclip = function () {
+  $("#audioclip_picker").trigger("click")
 }
 
 // When an audio clip gets selected from the file picker
-Hue.audio_clip_selected = function (file) {
+Hue.audioclip_selected = function (file) {
   if (!file) {
     return false
   }
 
   let size = file.size / 1024
 
-  if (size > Hue.config.max_audio_clip_size) {
+  if (size > Hue.config.max_audioclip_size) {
     Hue.checkmsg("File is too big")
     return false
   }
 
-  Hue.upload_file({ file: file, action: "audio_clip_upload" })
+  Hue.upload_file({ file: file, action: "audioclip_upload" })
 }
 
 // Get the user profile

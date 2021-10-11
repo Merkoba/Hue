@@ -36,7 +36,7 @@ Hue.update_activity_bar = function (check = false) {
 
   for (let user of activity_list) {
     if (user.profile_image) {
-      pi = `${Hue.config.public_images_location}profile/${user.profile_image}`
+      pi = Hue.config.public_profilepic_location + user.profile_image
     } else {
       pi = Hue.config.default_profile_image_url
     }

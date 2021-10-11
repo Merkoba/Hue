@@ -75,7 +75,7 @@ module.exports = function (
   }
 
   // Handles uploaded background images
-  handler.upload_background_image = function (socket, data) {
+  handler.upload_background = function (socket, data) {
     if (data.image_file === undefined) {
       return false
     }
@@ -91,18 +91,14 @@ module.exports = function (
       return false
     }
 
-    let file_name = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(
-      0,
-      1000
-    )}.${data.extension}`
-    
-    let container = vars.path.join(vars.images_root, "background")
+    let file_name = `${socket.hue_room_id}.${data.extension}`
+    let container = vars.background_root
 
     if (!vars.fs.existsSync(container)) {
       vars.fs.mkdirSync(container, { recursive: true })
     }
 
-    let path = vars.path.join(container, file_name) 
+    let path = vars.path.join(container, file_name)
 
     vars.fs.writeFile(
       path,
@@ -111,14 +107,14 @@ module.exports = function (
         if (err) {
           handler.user_emit(socket, "upload_error", {})
         } else {
-          handler.do_change_background_image(socket, file_name, "hosted")
+          handler.do_change_background(socket, file_name, "hosted")
         }
       }
     )
   }
 
   // Handles background image source changes
-  handler.public.change_background_image_source = function (socket, data) {
+  handler.public.change_background_source = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
       return false
     }
@@ -149,44 +145,36 @@ module.exports = function (
       }
     }
 
-    handler.do_change_background_image(socket, data.src, "external")
+    handler.do_change_background(socket, data.src, "external")
   }
 
   // Completes background image changes
-  handler.do_change_background_image = async function (socket, file_name, type) {
-    let info = await db_manager.get_room(
-      ["id", socket.hue_room_id],
-      { background_image: 1, background_image_type: 1 }
-    )
-
-    let to_delete = false
-
-    if (info.background_image !== "") {
-      if (info.background_image_type === "hosted") {
-        to_delete = info.background_image
-      }
+  handler.do_change_background = async function (socket, file_name, type) {
+    let obj = {
+      background: file_name,
+      background_type: type,
     }
 
-    if (file_name === "default") {
-      file_name = ""
-      type = "hosted"
-    }
+    let new_ver = 0
 
-    db_manager.update_room(socket.hue_room_id, {
-      background_image: file_name,
-      background_image_type: type,
-    })
+    if (type === "hosted") {
+      let info = await db_manager.get_room(
+        ["id", socket.hue_room_id],
+        { background_version: 1 }
+      )
+
+      new_ver = (info.background_version || 0) + 1
+      obj.background_version = new_ver
+    }
     
+    db_manager.update_room(socket.hue_room_id, obj)
 
-    handler.room_emit(socket, "background_image_changed", {
+    handler.room_emit(socket, "background_changed", {
       username: socket.hue_username,
-      background_image: file_name,
-      background_image_type: type
+      background: file_name,
+      background_type: type,
+      background_version: new_ver
     })
-
-    if (to_delete) {
-      vars.fs.unlink(`${vars.images_root}/${to_delete}`, function (err) {})
-    }
 
     handler.push_admin_log_message(socket, "changed the background image")
   }

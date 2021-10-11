@@ -16,7 +16,7 @@ Hue.setup_tv = function (mode, odata = {}) {
   data.comment = odata.comment
 
   if (data.type === "upload") {
-    data.source = `${Hue.config.public_videos_location}room/${Hue.room_id}/${data.source}`
+    data.source = `${Hue.config.public_tv_location}${Hue.room_id}/${data.source}`
   }  
 
   data.nice_date = data.date ?
@@ -42,7 +42,7 @@ Hue.setup_tv = function (mode, odata = {}) {
     data.source = window.location.origin + data.source
   } else if (data.source.startsWith(window.location.origin)) {
     if (!data.size) {
-      for (let video of Hue.videos_changed) {
+      for (let video of Hue.tv_changed) {
         if (video.source === data.source) {
           data.type = video.type
           data.size = video.size

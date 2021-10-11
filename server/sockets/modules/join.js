@@ -90,8 +90,8 @@ module.exports = function (
       bio: 1,
       hearts: 1,
       skulls: 1,
-      audio_clip: 1,
-      audio_clip_version: 1,
+      audioclip: 1,
+      audioclip_version: 1,
     }
 
     if (data.alternative) {
@@ -199,28 +199,9 @@ module.exports = function (
       return false
     }
 
-    if (userinfo.profile_image === "") {
-      socket.hue_profile_image = ""
-    } else {
-      socket.hue_profile_image = userinfo.profile_image
-    }
-
-    if (
-      socket.hue_profile_image &&
-      !socket.hue_profile_image.includes("?ver=")
-    ) {
-      socket.hue_profile_image += `?ver=${userinfo.profile_image_version}`
-    }
-
-    if (userinfo.audio_clip === "") {
-      socket.hue_audio_clip = ""
-    } else {
-      socket.hue_audio_clip = userinfo.audio_clip
-    }
-
-    if (socket.hue_audio_clip && !socket.hue_audio_clip.includes("?ver=")) {
-      socket.hue_audio_clip += `?ver=${userinfo.audio_clip_version}`
-    }
+    socket.hue_profile_image = userinfo.profile_image
+    socket.hue_audioclip = userinfo.audioclip
+    socket.hue_audioclip_version = userinfo.audioclip_version
 
     if (vars.rooms[socket.hue_room_id] === undefined) {
       let key = Object.keys(vars.filtered_fields)[0]
@@ -256,14 +237,14 @@ module.exports = function (
     socket.hue_joining = false
     socket.hue_joined = true
 
+    let userlist = handler.prepare_userlist(handler.get_userlist(socket.hue_room_id))
+
     let user_data = {
       room_locked: false,
       room_name: info.name,
       username: socket.hue_username,
       topic: info.topic,
-      userlist: handler.prepare_userlist(
-        handler.get_userlist(socket.hue_room_id)
-      ),
+      userlist: userlist,
       role: socket.hue_role,
       image_id: info.image_id,
       image_user_id: info.image_user_id,
@@ -285,8 +266,9 @@ module.exports = function (
       tv_query: info.tv_query,
       profile_image: socket.hue_profile_image,
       background_color: info.background_color,
-      background_image: info.background_image,
-      background_image_type: info.background_image_type,
+      background: info.background,
+      background_type: info.background_type,
+      background_version: info.background_version,
       text_color: info.text_color,
       bio: socket.hue_bio,
       superuser:socket.hue_superuser,
@@ -313,8 +295,9 @@ module.exports = function (
         bio: socket.hue_bio,
         hearts: socket.hue_hearts,
         skulls: socket.hue_skulls,
-        audio_clip: socket.hue_audio_clip,
-        date_joined: Date.now(),
+        audioclip: socket.hue_audioclip,
+        audioclip_version: socket.hue_audioclip_version,
+        date_joined: Date.now()
       })
     }
   }

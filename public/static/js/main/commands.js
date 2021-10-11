@@ -371,7 +371,7 @@ Hue.commands = {
   },
   "backgroundimage": {
     action: (arg, ans) => {
-      Hue.change_background_image_source(arg)
+      Hue.change_background_source(arg)
     },
     description: `Changes the background image to a specified URL`,
   },

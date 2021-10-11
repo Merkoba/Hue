@@ -34,9 +34,9 @@ Hue.setup_room_menu = function () {
     }
   })
 
-  $("#admin_background_image").on("error", function () {
-    if ($(this).attr("src") !== Hue.config.background_image_loading_url) {
-      $(this).attr("src", Hue.config.background_image_loading_url)
+  $("#admin_background").on("error", function () {
+    if ($(this).attr("src") !== Hue.config.background_loading_url) {
+      $(this).attr("src", Hue.config.background_loading_url)
     }
   })
 
@@ -52,8 +52,8 @@ Hue.setup_room_menu = function () {
     Hue.request_ban_list()
   })
 
-  $("#admin_background_image").on("click", function () {
-    Hue.open_background_image_select()
+  $("#admin_background").on("click", function () {
+    Hue.open_background_select()
   })
 }
 
@@ -67,7 +67,7 @@ Hue.show_room_menu = function () {
 Hue.config_room_menu = function () {
   if (Hue.is_admin_or_op()) {
     Hue.config_admin_background_color()
-    Hue.config_admin_background_image()
+    Hue.config_admin_background()
     Hue.config_admin_text_color()
     Hue.config_admin_room_name()
     Hue.config_admin_topic()
@@ -75,18 +75,18 @@ Hue.config_room_menu = function () {
 }
 
 // Updates the background image widget in the room menu based on current state
-Hue.config_admin_background_image = function () {
+Hue.config_admin_background = function () {
   if (!Hue.is_admin_or_op()) {
     return false
   }
 
-  if (Hue.background_image !== $("#admin_background_image").attr("src")) {
-    if (Hue.background_image !== "") {
-      $("#admin_background_image").attr("src", Hue.background_image)
+  if (Hue.background !== $("#admin_background").attr("src")) {
+    if (Hue.background !== "") {
+      $("#admin_background").attr("src", Hue.background)
     } else {
-      $("#admin_background_image").attr(
+      $("#admin_background").attr(
         "src",
-        Hue.config.default_background_image_url
+        Hue.config.default_background_url
       )
     }
   }

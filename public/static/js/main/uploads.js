@@ -33,10 +33,10 @@ Hue.start_dropzone = function () {
 // Handle generic image upload
 Hue.upload_image = function (file) {
   if (Hue.msg_room_menu.is_open()) {
-    Hue.background_image_selected(file)
+    Hue.background_selected(file)
     return
   } else if (Hue.msg_user_menu.is_open()) {
-    Hue.profile_image_selected(file)
+    Hue.profilepic_selected(file)
     return
   }
 
@@ -147,11 +147,11 @@ Hue.upload_file = function (args = {}) {
     args.file.hue_data.comment = args.comment
   }
 
-  if (args.file.hue_data.action === "background_image_upload") {
+  if (args.file.hue_data.action === "background_upload") {
     for (let d in Hue.files) {
       let f = Hue.files[d]
 
-      if (f.hue_data.action === "background_image_upload") {
+      if (f.hue_data.action === "background_upload") {
         Hue.cancel_file_upload(d, false)
       }
     }
@@ -223,8 +223,8 @@ Hue.cancel_file_upload = function (date, check = true) {
   Hue.change_upload_status(file, "Cancelled", true)
 
   if (check) {
-    if (file.hue_data.action === "background_image_upload") {
-      Hue.config_admin_background_image()
+    if (file.hue_data.action === "background_upload") {
+      Hue.config_admin_background()
     }
   }
 
@@ -271,11 +271,11 @@ Hue.get_file_action_name = function (action) {
 
   if (action === "image_upload") {
     s = "image"
-  } else if (action === "profile_image_upload") {
+  } else if (action === "profilepic_upload") {
     s = "profile image"
-  } else if (action === "background_image_upload") {
+  } else if (action === "background_upload") {
     s = "background image"
-  } else if (action === "audio_clip_upload") {
+  } else if (action === "audioclip_upload") {
     s = "audio clip"
   }
 

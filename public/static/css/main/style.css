@@ -43,7 +43,7 @@ body * {
 	pointer-events: none;
 }
 
-.background_image {
+.background {
 	position: fixed;
 	left: 0;
 	right: 0;
@@ -2022,7 +2022,7 @@ a.special_link:hover {
 	margin-bottom: 1rem;
 }
 
-#background_image_input_text {
+#background_input_text {
 	margin-bottom: 1rem;
 }
 
