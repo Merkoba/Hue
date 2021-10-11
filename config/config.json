@@ -54,7 +54,7 @@
 	"max_media_comment_length": 200,
 	"max_title_length": 280,
 	"max_image_size": 55555,
-	"max_tv_video_size": 55555,
+	"max_tv_size": 55555,
 	"max_profile_image_size": 1111,
 	"max_audio_clip_size": 5555,
 	"youtube_enabled": true,
