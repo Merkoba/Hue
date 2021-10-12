@@ -195,8 +195,6 @@ Hue.add_chat_message = function (args = {}) {
   fmessage.data("highlighted", highlighted)
   fmessage.data("uname", args.username)
   fmessage.data("mode", "chat")
-  fmessage.data("profilepic", args.profilepic)
-
   let chat_content_container = fmessage.find(".chat_content_container").eq(0)
   let chat_content = fmessage.find(".chat_content").eq(0)
 
@@ -527,7 +525,6 @@ Hue.start_chat_mouse_events = function () {
 
     Hue.show_profile(
       m.data("uname"),
-      m.data("profilepic"),
       m.data("user_id")
     )
   })
@@ -537,7 +534,6 @@ Hue.start_chat_mouse_events = function () {
 
     Hue.show_profile(
       m.data("uname"),
-      m.data("profilepic"),
       m.data("user_id")
     )
   })
