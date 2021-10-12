@@ -16,7 +16,7 @@ Hue.setup_image = function (mode, odata = {}) {
   data.in_log = odata.in_log === undefined ? true : odata.in_log
 
   if (data.type === "upload") {
-    data.source = `${Hue.config.public_image_location}${Hue.room_id}/${data.source}`
+    data.source = `${Hue.config.public_media_directory}/room/${Hue.room_id}/image/${data.source}`
   }
 
   data.nice_date = data.date

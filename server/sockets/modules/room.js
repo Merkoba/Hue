@@ -213,8 +213,8 @@ module.exports = function (
       return false
     }
 
-    let file_name = `${socket.hue_room_id}.${data.extension}`
-    let container = vars.background_root
+    let file_name = `background.${data.extension}`
+    let container = vars.path.join(vars.media_root, "room", socket.hue_room_id)
 
     if (!vars.fs.existsSync(container)) {
       vars.fs.mkdirSync(container, { recursive: true })
@@ -302,17 +302,17 @@ module.exports = function (
 
     // Remove left over files
     if (type === "hosted") {
-      vars.fs.readdir(vars.background_root, function (err, files) {
+      let container = vars.path.join(vars.media_root, "room", socket.hue_room_id)
+
+      vars.fs.readdir(container, function (err, files) {
         try {
           if (err) {
             logger.log_error(err)
             return false
           }
 
-          let s = socket.hue_room_id + "."
-
           for (let file of files) {
-            if (file.startsWith(s) && file !== file_name) {
+            if (file.startsWith("background") && file !== file_name) {
               let path = vars.path.join(vars.background_root, file)
 
               vars.fs.unlink(path, function (err) {

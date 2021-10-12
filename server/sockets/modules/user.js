@@ -131,8 +131,8 @@ module.exports = function (
       return false
     }
 
-    let file_name = `${socket.hue_user_id}.png`
-    let container = vars.profilepic_root
+    let file_name = "profilepic.png"
+    let container = vars.path.join(vars.media_root, "user", socket.hue_user_id)
 
     if (!vars.fs.existsSync(container)) {
       vars.fs.mkdirSync(container, { recursive: true })
@@ -187,8 +187,8 @@ module.exports = function (
       return false
     }
 
-    let file_name = `${socket.hue_user_id}.${data.extension}`
-    let container = vars.audioclip_root
+    let file_name = "audioclip.mp3"
+    let container = vars.path.join(vars.media_root, "user", socket.hue_user_id)
 
     if (!vars.fs.existsSync(container)) {
       vars.fs.mkdirSync(container, { recursive: true })

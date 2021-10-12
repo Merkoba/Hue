@@ -6,19 +6,8 @@
 	"default_room_background_color": "#36393f",
 	"default_room_font_color": "#eeeeec",
 	"db_store_path": "/server/db/store",
-
-	"image_directory": "public/static/image",
-	"tv_directory": "public/static/tv",
-	"background_directory": "public/static/background/",
-	"profilepic_directory": "public/static/profilepic/",
-	"audioclip_directory": "public/static/audioclip",
-
-	"public_image_location": "/static/image/",
-	"public_tv_location": "/static/tv/",
-	"public_background_location": "/static/background/",
-	"public_profilepic_location": "/static/profilepic/",
-	"public_audioclip_location": "/static/audioclip/",
-
+	"media_directory": "public/static",
+	"public_media_directory": "/static",
 	"default_tv_source": "https://youtu.be/N-G2U0zHqpY",
 	"default_tv_title": "Grand Dad Metropolis",
 	"default_tv_type": "youtube",
@@ -74,7 +63,6 @@
 	"session_cookie_max_age": 987654321000,
 	"encryption_cost": 12,
 	"max_url_length": 1000,
-
 	"settings_default_highlight_current_username": true,
 	"settings_default_case_insensitive_username_highlights": true,
 	"settings_default_open_whispers_automatically": true,
@@ -82,7 +70,6 @@
 	"settings_default_show_link_previews": true,
 	"settings_default_show_highlight_notifications": true,
 	"settings_default_show_activity_notifications": true,
-
 	"room_state_default_image_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_last_highlight_date": 0,
@@ -92,7 +79,6 @@
 	"room_state_default_media_layout": "column",
 	"room_state_default_main_layout": "row",
 	"room_state_default_last_message_board_post": 0,
-
 	"jwt_expiration": 30000,
 	"max_jwt_token_length": 300,
 	"max_user_id_length": 100,
@@ -102,12 +88,10 @@
 	"create_room_cooldown": 300000,
 	"recaptcha_enabled": true,
 	"socket_emit_throttle": 10,
-	
 	"safe_limit_1": 100,
 	"safe_limit_2": 500,
 	"safe_limit_3": 1000,
 	"safe_limit_4": 200,
-
 	"data_max_items": 20,
 	"data_items_max_string_length": 5000,
 	"data_items_max_number_length": 20,

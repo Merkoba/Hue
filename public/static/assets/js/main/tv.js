@@ -16,7 +16,7 @@ Hue.setup_tv = function (mode, odata = {}) {
   data.comment = odata.comment
 
   if (data.type === "upload") {
-    data.source = `${Hue.config.public_tv_location}${Hue.room_id}/${data.source}`
+    data.source = `${Hue.config.public_media_directory}/room/${Hue.room_id}/tv/${data.source}`
   }  
 
   data.nice_date = data.date ?

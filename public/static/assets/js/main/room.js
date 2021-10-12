@@ -281,7 +281,8 @@ Hue.set_background = function (data, apply = true) {
   if (data.background !== "") {
     if (data.background_type === "hosted") {
       let ver = `?ver=${data.background_version}`
-      Hue.background = Hue.config.public_background_location + data.background + ver
+      let bg = data.background + ver
+      Hue.background = `${Hue.config.public_media_directory}/room/${Hue.room_id}/${bg}`
     } else {
       Hue.background = data.background
     }
@@ -296,9 +297,22 @@ Hue.set_background = function (data, apply = true) {
   }
 }
 
+// Setups background
+Hue.setup_background = function () {
+  $(".background").each(function () {
+    $(this).on("error", function () {
+      if ($(this).attr("src") !== Hue.config.default_background_url) {
+        $(this).attr("src", Hue.config.default_background_url)
+      }    
+    })
+  })
+}
+
 // Applies the background to all background elements
 Hue.apply_background = function () {
-  $(".background").css("background-image", `url('${Hue.background}')`)
+  $(".background").each(function () {
+    $(this).attr("src", Hue.background)
+  })
 }
 
 // Background color setter

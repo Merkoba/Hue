@@ -743,12 +743,11 @@ Hue.start_media_info = function () {
   $("#media_image_container").append(Hue.get_media_info_html("image"))
 
   $("#media").on("click", ".media_info_username", function () {
-    let username = $(this).closest(".media_info").data("item").setter
+    let username = $(this).closest(".media_info_container").data("item").setter
     Hue.show_profile(username)
   })
 
   $("#media").on("click", ".media_info_details", function () {
-    z = this
     let media_info = $(this).closest(".media_info_container")
     let item = media_info.data("item")
     let type = media_info.data("type")

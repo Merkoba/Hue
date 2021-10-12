@@ -30,7 +30,7 @@ module.exports = function (
     }
 
     let file_name = handler.generate_media_file_name(data.extension)
-    let container = vars.path.join(vars[`${type}_root`], socket.hue_room_id)
+    let container = vars.path.join(vars.media_root, "room", socket.hue_room_id, type)
 
     if (!vars.fs.existsSync(container)) {
       vars.fs.mkdirSync(container, { recursive: true })
@@ -152,7 +152,7 @@ module.exports = function (
 
     // Remove left over files
     if (data.type === "upload") {
-      let container = vars.path.join(vars[`${type}_root`], socket.hue_room_id)
+      let container = vars.path.join(vars.media_root, "room", socket.hue_room_id, type)
 
       vars.fs.readdir(container, function (err, files) {
         try {

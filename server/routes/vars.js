@@ -74,10 +74,6 @@ module.exports = function (c, config) {
   c.vars.quote_max_length = config.quote_max_length
   c.vars.max_log_messages = config.max_log_messages
   c.vars.max_displayed_url = config.max_displayed_url
-  c.vars.max_activity_username_length = config.max_activity_username_length,
-  c.vars.public_image_location = config.public_image_location,
-  c.vars.public_tv_location = config.public_tv_location,
-  c.vars.public_background_location = config.public_background_location
-  c.vars.public_profilepic_location = config.public_profilepic_location
-  c.vars.public_audioclip_location = config.public_audioclip_location
+  c.vars.max_activity_username_length = config.max_activity_username_length
+  c.vars.public_media_directory = config.public_media_directory
 }
