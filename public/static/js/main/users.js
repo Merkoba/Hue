@@ -82,12 +82,10 @@ Hue.add_to_userlist = function (args = {}) {
       Hue.userlist[i].user_id = args.user_id
       Hue.userlist[i].username = args.username
       Hue.userlist[i].role = args.role
-      Hue.userlist[i].profilepic = args.profilepic
       Hue.userlist[i].profilepic_version = args.profilepic_version
       Hue.userlist[i].bio = args.bio
       Hue.userlist[i].hearts = args.hearts
       Hue.userlist[i].skulls = args.skulls
-      Hue.userlist[i].audioclip = args.audioclip
       Hue.userlist[i].audioclip_version = args.audioclip_version
       Hue.userlist[i].last_activity = args.last_activity
 

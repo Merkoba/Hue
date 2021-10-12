@@ -464,12 +464,10 @@ module.exports = function (
       user.user_id = socket.hue_user_id
       user.username = socket.hue_username
       user.role = socket.hue_role
-      user.profilepic = socket.hue_profilepic
       user.profilepic_version = socket.hue_profilepic_version
       user.bio = socket.hue_bio
       user.hearts = socket.hue_hearts
       user.skulls = socket.hue_skulls
-      user.audioclip = socket.hue_audioclip
       user.audioclip_version = socket.hue_audioclip_version
 
       if (first) {
