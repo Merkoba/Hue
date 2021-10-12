@@ -177,5 +177,33 @@ module.exports = function (
     })
 
     handler.push_admin_log_message(socket, "changed the background image")
+
+    // Remove left over files
+    if (type === "hosted") {
+      vars.fs.readdir(vars.background_root, function (err, files) {
+        try {
+          if (err) {
+            logger.log_error(err)
+            return false
+          }
+
+          let s = socket.hue_room_id + "."
+
+          for (let file of files) {
+            if (file.startsWith(s) && file !== file_name) {
+              let path = vars.path.join(vars.background_root, file)
+
+              vars.fs.unlink(path, function (err) {
+                if (err) {
+                  logger.log_error(err)
+                }
+              })            
+            }
+          }
+        } catch (err) {
+          logger.log_error(err)
+        }
+      })
+    }
   }
 }
