@@ -11,6 +11,12 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "main_room_id"
 >The name of the main room. This is the room that will be joined when going to the root url. This room is created automatically when first joined.
 
+"media_directory"
+>Internal path to were media files (user & rooms images etc) are stored.
+
+"public_media_directory"
+>Public location to access the media files.
+
 "default_main_room_name"
 >The default name of the main room. Just like any room, this can be changed later.
 
