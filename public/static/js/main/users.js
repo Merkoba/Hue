@@ -13,7 +13,7 @@ Hue.user_join = function (data) {
   })
 
   if(data.username !== Hue.username) {
-      Hue.on_activity("join")
+    Hue.on_activity("join")
   }
 
   if (Hue.open_profile_username === data.username) {
@@ -484,7 +484,7 @@ Hue.user_disconnect = function (data) {
   }
 
   if (Hue.open_profile_username === data.username) {
-    Hue.show_profile(data.username, $("#show_profilepic").attr("src"))
+    Hue.show_profile(data.username, data.user_id)
   }
 
   Hue.do_update_activity_bar = true
@@ -599,25 +599,30 @@ Hue.setup_show_profile = function () {
 }
 
 // Stars the profile audio
-Hue.play_profile_audio = function () {
+Hue.play_audioclip = function () {
   let clip = Hue.get_audioclip(Hue.open_profile_user_id)
 
-  if (Hue.profile_audio) {
-    Hue.stop_profile_audio()
+  if (Hue.profile_audio && !Hue.profile_audio.paused) {
+    if (Hue.profile_audio_src.split("?ver=")[0] === Hue.profile_audio_src) {
+      return
+    }
+
+    Hue.stop_audioclip()
   }
 
   Hue.profile_audio = document.createElement("audio")
 
   Hue.profile_audio.onended = function () {
-    Hue.stop_profile_audio()
+    Hue.stop_audioclip()
   }
 
   Hue.profile_audio.src = clip
+  Hue.profile_audio_src = clip
   Hue.profile_audio.play()
 }
 
 // Stops the profile audio
-Hue.stop_profile_audio = function () {
+Hue.stop_audioclip = function () {
   if (Hue.profile_audio) {
     Hue.profile_audio.src = ""
     Hue.profile_audio = undefined
@@ -625,7 +630,7 @@ Hue.stop_profile_audio = function () {
 }
 
 // Shows a user's profile window
-Hue.show_profile = function (username, profilepic = false, user_id = false) {
+Hue.show_profile = function (username, user_id = false) {
   let id
   let role = "Offline"
   let bio = ""
@@ -633,16 +638,16 @@ Hue.show_profile = function (username, profilepic = false, user_id = false) {
   let skulls = 0
   let user = false
 
+  if (username) {
+    user = Hue.get_user_by_username(username)
+  } else if (user_id) {
+    user = Hue.get_user_by_user_id(user_id)
+  }
+
   if (user_id) {
     id = user_id
   } else if (user) {
     id = user.user_id
-  }
-
-  if (username) {
-    user = Hue.get_user_by_username(username)
-  } else if(user_id) {
-    user = Hue.get_user_by_user_id(user_id)
   }
 
   if (user) {
@@ -675,38 +680,22 @@ Hue.show_profile = function (username, profilepic = false, user_id = false) {
 
   $("#show_profilepic").attr("src", pi)
 
-  if (!Hue.usernames.includes(username)) {
-    $("#show_profile_whisper").css("display", "none")
-    $("#show_profile_hearts").css("display", "none")
-    $("#show_profile_skulls").css("display", "none")
-  } else {
+  if (user) {
     $("#show_profile_whisper").css("display", "block")
     $("#show_profile_hearts").css("display", "flex")
     $("#show_profile_skulls").css("display", "flex")
+    $("#show_profile_sync_tv").css("display", "flex") 
 
     Hue.set_hearts_counter(hearts)
     Hue.set_skulls_counter(skulls)
-  }
-
-  if (Hue.room_state["tv_enabled"] 
-  && Hue.usernames.includes(username)) {
-    $("#show_profile_sync_tv").css("display", "flex")
   } else {
+    $("#show_profile_whisper").css("display", "none")
+    $("#show_profile_hearts").css("display", "none")
+    $("#show_profile_skulls").css("display", "none")
     $("#show_profile_sync_tv").css("display", "none")
   }
 
-  if (
-    $(".show_profile_button").filter(function () {
-      return $(this).css("display") !== "none"
-    }).length
-  ) {
-    $("#show_profile_buttons").css("display", "grid")
-  } else {
-    $("#show_profile_buttons").css("display", "none")
-  }
-
   $("#show_profile_user").data("username", username)
-
   $("#show_profile_info").html("")
 
   if (user) {
@@ -725,7 +714,7 @@ Hue.show_profile = function (username, profilepic = false, user_id = false) {
   Hue.horizontal_separator($("#show_profile_badges")[0])
 
   Hue.msg_profile.show(function () {
-    Hue.play_profile_audio()
+    Hue.play_audioclip()
   })
 }
 

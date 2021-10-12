@@ -6,7 +6,7 @@ Hue.setup_activity_bar = function () {
   }, Hue.config.activity_bar_interval)
 
   $("#activity_bar").on("click", ".activity_bar_item", function () {
-    Hue.show_profile(false, false, $(this).data("user_id"))
+    Hue.show_profile("", $(this).data("user_id"))
   })
 }
 
