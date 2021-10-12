@@ -20,15 +20,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_room_font_color"
 >The initial font color for new rooms.
 
-"image_directory"
->The directory where uploaded images will be stored.
-
-"public_image_location"
->The public root of images. For example a public_image_location of /img/ would send public image urls as /img/image.jpg, which would reside in public/img/. Needs a slash at the end.
-
-"public_tv_location"
->The public root of videos. For example a public_tv_location of /img/ would send public image urls as /img/image.jpg, which would reside in public/img/. Needs a slash at the end.
-
 "default_image_source"
 >Default source for the image for new rooms or when "/image default" is issued.
 

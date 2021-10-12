@@ -1214,7 +1214,7 @@ Hue.update_user_activity = function (user_id) {
 
 // Get a profilepic path
 Hue.get_profilepic = function (user_id) {
-  let pi = Hue.config.public_profilepic_location + user_id + ".png"
+  let pi = `${Hue.config.public_media_directory}/user/${user_id}/profilepic.png`
   let user = Hue.get_user_by_user_id(user_id)
   
   if (user) {
@@ -1226,7 +1226,7 @@ Hue.get_profilepic = function (user_id) {
 
 // Get audioclip path
 Hue.get_audioclip = function (user_id) {
-  let pi = Hue.config.public_audioclip_location + user_id + ".mp3"
+  let pi = `${Hue.config.public_media_directory}/user/${user_id}/audioclip.mp3`
   let user = Hue.get_user_by_user_id(user_id)
   
   if (user) {
