@@ -214,11 +214,7 @@ Hue.setup_user_menu = function () {
   })
 
   $("#user_menu_audioclip").on("click", function () {
-    if (Hue.get_user_profile().audioclip) {
-      Hue.show_audioclip_menu()
-    } else {
-      Hue.select_audioclip()
-    }
+    Hue.show_audioclip_menu()
   })
 
   $("#user_menu_details").on("click", function () {

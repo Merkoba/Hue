@@ -150,6 +150,33 @@ Hue.replace_property_in_userlist_by_username = function (
   }
 }
 
+// Replaces a property of a user in the userlist by user id
+Hue.replace_property_in_userlist_by_id = function (
+  user_id,
+  prop,
+  new_value,
+  update = true
+) {
+  let changed = false
+
+  for (let i = 0; i < Hue.userlist.length; i++) {
+    if (Hue.userlist[i].user_id === user_id) {
+      Hue.userlist[i][prop] = new_value
+      changed = true
+      break
+    }
+  }
+
+  if (update && changed) {
+    Hue.update_userlist(prop)
+
+    if (Hue.open_profile_user_id === user_id) {
+      let user = Hue.get_profilepic(user_id)
+      Hue.show_profile(user.username)
+    }
+  }  
+}
+
 // Gets the role of a user by username
 Hue.get_role = function (uname) {
   for (let i = 0; i < Hue.userlist.length; i++) {
@@ -1112,12 +1139,10 @@ Hue.audioclip_changed = function (data) {
     Hue.show_profile(data.username)
   }
 
-  if (data.audioclip) {
-    Hue.show_room_notification(
-      data.username,
-      `${user.username} changed their audio clip`
-    )
-  }
+  Hue.show_room_notification(
+    data.username,
+    `${user.username} changed their audio clip`
+  )
 }
 
 // Superuser command to change a user's username
