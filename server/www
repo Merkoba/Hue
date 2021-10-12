@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 const tar = require("tar")
 
-const utilz = require("../public/static/js/libs/utilz.js")()
+const utilz = require("../public/static/assets/js/libs/utilz.js")()
 
 function normalizePort(val) {
 	let port = parseInt(val, 10)
