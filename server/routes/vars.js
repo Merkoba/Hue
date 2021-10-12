@@ -68,7 +68,6 @@ module.exports = function (c, config) {
   c.vars.max_message_board_post_length = config.max_message_board_post_length
   c.vars.max_message_board_posts = config.max_message_board_posts
   c.vars.max_audioclip_size = config.max_audioclip_size
-  c.vars.max_audioclip_duration = config.max_audioclip_duration
   c.vars.system_username = config.system_username
   c.vars.commands_prefix = config.commands_prefix
   c.vars.create_room_cooldown = config.create_room_cooldown
