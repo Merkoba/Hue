@@ -600,30 +600,30 @@ Hue.setup_show_profile = function () {
 Hue.play_audioclip = function () {
   let clip = Hue.get_audioclip(Hue.open_profile_user_id)
 
-  if (Hue.profile_audio && !Hue.profile_audio.paused) {
-    if (Hue.profile_audio_src.split("?ver=")[0] === Hue.profile_audio_src) {
+  if (Hue.audioclip && !Hue.audioclip.paused) {
+    if (Hue.audioclip_src.split("?ver=")[0] === Hue.audioclip_src) {
       return
     }
 
     Hue.stop_audioclip()
   }
 
-  Hue.profile_audio = document.createElement("audio")
+  Hue.audioclip = document.createElement("audio")
 
-  Hue.profile_audio.onended = function () {
+  Hue.audioclip.onended = function () {
     Hue.stop_audioclip()
   }
 
-  Hue.profile_audio.src = clip
-  Hue.profile_audio_src = clip
-  Hue.profile_audio.play()
+  Hue.audioclip.src = clip
+  Hue.audioclip_src = clip
+  Hue.audioclip.play()
 }
 
 // Stops the profile audio
 Hue.stop_audioclip = function () {
-  if (Hue.profile_audio) {
-    Hue.profile_audio.src = ""
-    Hue.profile_audio = undefined
+  if (Hue.audioclip) {
+    Hue.audioclip.src = ""
+    Hue.audioclip = undefined
   }
 }
 
