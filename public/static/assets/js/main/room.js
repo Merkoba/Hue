@@ -330,7 +330,7 @@ Hue.apply_theme = function () {
   let theme = Hue.background_color
 
   if (theme.startsWith("#")) {
-    theme = Hue.colorlib.array_to_rgb(Hue.colorlib.hex_to_rgb(theme))
+    theme = Hue.colorlib.hex_to_rgb(theme)
   }
 
   let background_color = theme
@@ -402,10 +402,8 @@ Hue.open_background_select = function () {
 }
 
 // If upload is chosen as the method to change the background image
-// the file dialog is opened
 Hue.open_background_picker = function () {
   Hue.msg_info2.close()
-
   $("#background_input").trigger("click")
 }
 

@@ -166,17 +166,17 @@ Hue.start_settings_widgets_listeners = function () {
       setting.widget_type === "checkbox" ||
       setting.widget_type === "select"
     ) {
-      item.change(() => setting.action())
+      item.on("change", () => setting.action())
     } else if (
       setting.widget_type === "textarea" ||
       setting.widget_type === "text"
     ) {
-      item.blur(() => setting.action())
+      item.on("blur", () => setting.action())
     } else if (
       setting.widget_type === "number" ||
       setting.widget_type === "color"
     ) {
-      item.change(() => setting.action())
+      item.on("change", () => setting.action())
     } else if (setting.widget_type === "range") {
       item.on("input change", function () {
         setting.action()

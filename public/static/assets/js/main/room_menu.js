@@ -1,14 +1,14 @@
 // Setups change events for the room menu widgets
 Hue.setup_room_menu = function () {
-  $("#admin_background_color").change(function () {
+  $("#admin_background_color").on("change", function () {
     Hue.change_background_color($(this).val())
   })
 
-  $("#admin_text_color").change(function () {
+  $("#admin_text_color").on("change", function () {
     Hue.change_text_color($(this).val())
   })
 
-  $("#admin_room_name").blur(function () {
+  $("#admin_room_name").on("blur", function () {
     let name = Hue.utilz.clean_string2($(this).val())
 
     if (name === "") {
@@ -21,7 +21,7 @@ Hue.setup_room_menu = function () {
     }
   })
 
-  $("#admin_topic").blur(function () {
+  $("#admin_topic").on("blur", function () {
     let t = Hue.utilz.clean_string2($(this).val())
 
     if (t === "") {
