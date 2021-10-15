@@ -390,11 +390,17 @@ Hue.open_background_select = function () {
     "Change Background",
     Hue.template_background_select(),
   ], function () {
+    $("#background_select_draw").on("click", function () {
+      Hue.msg_info2.close()
+      Hue.open_draw_image("background")
+    })
+
     $("#background_select_url").on("click", function () {
       Hue.open_background_input()
     })
 
     $("#background_select_upload").on("click", function () {
+      Hue.msg_info2.close()
       Hue.open_background_picker()
     })
   })
@@ -403,7 +409,6 @@ Hue.open_background_select = function () {
 
 // If upload is chosen as the method to change the background image
 Hue.open_background_picker = function () {
-  Hue.msg_info2.close()
   $("#background_input").trigger("click")
 }
 
