@@ -159,11 +159,7 @@ Hue.setup_draw_image = function () {
 }
 
 // Prepares initial settings for the draw image window
-Hue.draw_image_prepare_settings = function () {
-  Hue.draw_image_pencil_size = 8
-  
-  Hue.set_draw_image_mode_input("pencil")
-
+Hue.draw_image_prepare_settings = function () {  
   $("#draw_image_pencil_color").on("click", function () {
     Hue.set_draw_image_mode_input("pencil")
   })
@@ -179,14 +175,6 @@ Hue.draw_image_prepare_settings = function () {
   $("#draw_image_bucket_color").on("change", function () {
     Hue.draw_image_bucket_color = $(this).val()
   })
-
-  $("#draw_image_pencil_size")
-    .find("option")
-    .each(function () {
-      if ($(this).val() == Hue.draw_image_pencil_size) {
-        $(this).prop("selected", true)
-      }
-    })
 
   $("#draw_image_pencil_size").on("change", function () {
     Hue.draw_image_pencil_size = $(this).val()
@@ -251,12 +239,25 @@ Hue.increase_draw_image_snapshot = function (data) {
 Hue.clear_draw_image_state = function () {
   let context = Hue.draw_image_context
   let bg_hex = Hue.colorlib.get_random_hex()
+  
   context.fillStyle = bg_hex
   context.fillRect(0, 0, context.canvas.width, context.canvas.height)
+  
   Hue.draw_image_pencil_color = Hue.colorlib.get_lighter_or_darker(bg_hex, 0.6)
   Hue.draw_image_bucket_color = Hue.colorlib.get_random_hex()
   $("#draw_image_pencil_color").val(Hue.draw_image_pencil_color)
   $("#draw_image_bucket_color").val(Hue.draw_image_bucket_color)
+  
+  Hue.set_draw_image_mode_input("pencil")
+  Hue.draw_image_pencil_size = 8
+
+  $("#draw_image_pencil_size")
+  .find("option")
+  .each(function () {
+    if ($(this).val() == Hue.draw_image_pencil_size) {
+      $(this).prop("selected", true)
+    }
+  })
 
   Hue.draw_image_snapshots = {
     level_0: {
