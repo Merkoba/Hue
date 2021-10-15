@@ -416,6 +416,8 @@ Hue.upload_draw_image = function () {
         Hue.show_image_upload_comment(blob, "image_upload")
       } else if (Hue.draw_image_target === "profilepic") {
         Hue.profilepic_selected(blob)
+      } else if (Hue.draw_image_target === "background") {
+        Hue.background_selected(blob)
       }
 
       Hue.msg_draw_image.close()
