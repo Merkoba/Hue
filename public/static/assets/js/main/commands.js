@@ -531,7 +531,7 @@ Hue.commands = {
   },
   "draw": {
     action: (arg, ans) => {
-      Hue.msg_draw_image.show()
+      Hue.open_draw_image("image")
     },
     description: `Open drawing window`,
   },

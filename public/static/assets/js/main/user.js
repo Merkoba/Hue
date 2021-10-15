@@ -193,7 +193,7 @@ Hue.setup_user_menu = function () {
     }
   })
 
-  $("#user_menu_bio_textarea").blur(function () {
+  $("#user_menu_bio_textarea").on("blur", function () {
     let value = Hue.utilz.clean_string12($(this).val())
 
     if (value !== Hue.bio) {
@@ -210,7 +210,7 @@ Hue.setup_user_menu = function () {
   })
 
   $("#user_menu_profilepic").on("click", function () {
-    Hue.open_profilepic_picker()
+    Hue.open_profilepic_select()
   })
 
   $("#user_menu_audioclip").on("click", function () {
@@ -248,11 +248,6 @@ Hue.update_user_menu = function () {
 // Shows the user menu
 Hue.show_user_menu = function () {
   Hue.msg_user_menu.show()
-}
-
-// Opens the profile image picker to change the profile image
-Hue.open_profilepic_picker = function () {
-  $("#profilepic_picker").trigger("click")
 }
 
 // Setups the profile image circular cropper
@@ -298,6 +293,30 @@ Hue.reset_profilepic_cropper = function () {
   }
 }
 
+// Picker window to select how to change the profilepic
+Hue.open_profilepic_select = function () {
+  Hue.msg_info2.show([
+    "Change Profile Image",
+    Hue.template_profilepic_select(),
+  ], function () {
+    $("#profilepic_select_draw").on("click", function () {
+      Hue.msg_info2.close()
+      Hue.open_draw_image("profilepic")
+    })
+
+    $("#profilepic_select_upload").on("click", function () {
+      Hue.msg_info2.close()
+      Hue.open_profilepic_picker()
+    })
+  })
+  Hue.horizontal_separator($("#profilepic_select_container")[0])
+}
+
+// If upload is chosen as the method to change the profilepic
+Hue.open_profilepic_picker = function () {
+  $("#profilepic_input").trigger("click")
+}
+
 // This is executed after a profile image has been selected in the file dialog
 Hue.profilepic_selected = function (file) {
   if (!file) {
@@ -310,7 +329,7 @@ Hue.profilepic_selected = function (file) {
     Hue.reset_profilepic_cropper()
 
     Hue.msg_profilepic_cropper.show(function () {
-      $("#profilepic_picker").closest("form").get(0).reset()
+      $("#profilepic_input").closest("form").get(0).reset()
 
       Hue.profilepic_cropper = $("#profilepic_cropper").croppie({
         viewport: {
@@ -322,14 +341,15 @@ Hue.profilepic_selected = function (file) {
       })
 
       Hue.profilepic_cropper
-        .croppie("bind", {
-          url: e.target.result,
-          points: [],
-        })
+      
+      .croppie("bind", {
+        url: e.target.result,
+        points: [],
+      })
 
-        .then(function () {
-          Hue.profilepic_cropper.croppie("setZoom", 0)
-        })
+      .then(function () {
+        Hue.profilepic_cropper.croppie("setZoom", 0)
+      })
     })
   }
 
@@ -400,13 +420,13 @@ Hue.show_audioclip_menu = function () {
       Hue.user_menu_audio.play()
     })
 
-    Hue.horizontal_separator($("#background_select_container")[0])
+    Hue.horizontal_separator($("#audioclip_select_container")[0])
   })
 }
 
 // Opens the file picker to choose an audio clip
 Hue.select_audioclip = function () {
-  $("#audioclip_picker").trigger("click")
+  $("#audioclip_input").trigger("click")
 }
 
 // When an audio clip gets selected from the file picker

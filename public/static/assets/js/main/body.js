@@ -20,7 +20,7 @@ Hue.start_body_events = function () {
     Hue.mouse_is_down = false
   })
 
-  $("#profilepic_picker").on("change", function () {
+  $("#profilepic_input").on("change", function () {
     Hue.profilepic_selected(this.files[0])
   })
 
@@ -28,7 +28,7 @@ Hue.start_body_events = function () {
     Hue.background_selected(this.files[0])
   })
 
-  $("#audioclip_picker").on("change", function () {
+  $("#audioclip_input").on("change", function () {
     Hue.audioclip_selected(this.files[0])
   })
 }

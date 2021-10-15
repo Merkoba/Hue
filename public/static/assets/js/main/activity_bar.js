@@ -98,7 +98,6 @@ Hue.clear_activity_bar_items = function () {
 
 // Updates the profile image of an item in the activity bar
 Hue.update_activity_bar_image = function (id, src) {
-  console.log(src)
   $("#activity_bar_inner")
     .find(".activity_bar_item")
     .each(function () {
