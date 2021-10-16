@@ -379,12 +379,13 @@ Hue.push_whisper = function (message, on_click, read) {
   let item = $(
     `<div class='whispers_item modal_item'><div class='whispers_item_content action dynamic_title'>${message_html}</div>`
   )
-  let content = item.find(".whispers_item_content").eq(0)
+  let content = item.querySelector(".whispers_item_content")
 
-  content.attr("title", t)
-  content.data("otitle", t)
-  content.data("date", d)
-  content.data("read", read)
+  content.title = t
+  content.hue_dataset = {}
+  content.hue_dataset.otitle = t
+  content.hue_dataset.date = d
+  content.hue_dataset.read = read
 
   if (read) {
     content.text(message)

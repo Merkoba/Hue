@@ -30,7 +30,7 @@ Hue.setup_footer = function () {
     }
   })
 
-  Hue.horizontal_separator(Hue.el("#footer_media_items")[0])
+  Hue.horizontal_separator(Hue.el("#footer_media_items"))
 }
 
 // Enabled footer expand
