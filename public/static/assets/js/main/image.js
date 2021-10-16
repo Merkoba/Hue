@@ -105,7 +105,7 @@ Hue.setup_image = function (mode, odata = {}) {
 
   if (mode === "change") {
     if (Hue.image_locked) {
-      document.querySelector("#footer_lock_image_icon").classList.add("blinking")
+      Hue.el("#footer_lock_image_icon").classList.add("blinking")
     }
 
     Hue.change({type: "image"})
@@ -154,11 +154,11 @@ Hue.current_image = function () {
 // Loads an image with a specified item
 Hue.show_image = function (force = false) {
   let item = Hue.loaded_image
-  document.querySelector("#media_image_error").style.display = "none"
-  document.querySelector("#media_image_frame").style.display = "initial"
+  Hue.el("#media_image_error").style.display = "none"
+  Hue.el("#media_image_frame").style.display = "initial"
 
-  if (force || document.querySelector("#media_image_frame").src !== item.source) {
-    document.querySelector("#media_image_frame").src = item.source
+  if (force || Hue.el("#media_image_frame").src !== item.source) {
+    Hue.el("#media_image_frame").src = item.source
   } else {
     Hue.after_image_load(false)
   }
@@ -256,7 +256,7 @@ Hue.fix_image_frame = function () {
     return false
   }
 
-  if (!document.querySelector("#media_image_frame").naturalHeight) {
+  if (!Hue.el("#media_image_frame").naturalHeight) {
     return false
   }
 
@@ -266,9 +266,9 @@ Hue.fix_image_frame = function () {
 // Changes the image visibility based on current state
 Hue.change_image_visibility = function () {
   if (Hue.room_state.image_enabled) {
-    document.querySelector("#media").style.display = "flex"
-    document.querySelector("#media_image").style.display = "flex"
-    document.querySelector("#footer_toggle_image_icon").querySelector("use").href = "#icon_toggle-on"
+    Hue.el("#media").style.display = "flex"
+    Hue.el("#media_image").style.display = "flex"
+    Hue.el("#footer_toggle_image_icon").querySelector("use").href = "#icon_toggle-on"
 
     if (Hue.first_media_change && Hue.started) {
       Hue.change({ type: "image" })
@@ -277,7 +277,7 @@ Hue.change_image_visibility = function () {
     Hue.image_visible = true
     Hue.fix_image_frame()
   } else {
-    document.querySelector("#media_image").style.display = "none"
+    Hue.el("#media_image").style.display = "none"
 
     let num_visible = Hue.num_media_elements_visible()
 
@@ -285,7 +285,7 @@ Hue.change_image_visibility = function () {
       Hue.hide_media()
     }
 
-    document.querySelector("#footer_toggle_image_icon").querySelector("use").href = "#icon_toggle-off"
+    Hue.el("#footer_toggle_image_icon").querySelector("use").href = "#icon_toggle-off"
     Hue.image_visible = false
   }
 
@@ -293,7 +293,6 @@ Hue.change_image_visibility = function () {
     Hue.fix_visible_video_frame()
   }
 
-  Hue.check_footer_media_rotate()
   Hue.goto_bottom()
 }
 
@@ -331,17 +330,17 @@ Hue.modal_image_next_click = function (e) {
 
 // Setups image modal window events
 Hue.setup_modal_image = function () {
-  let img = document.querySelector("#modal_image")
+  let img = Hue.el("#modal_image")
 
   img.addEventListener("load", function () {
-    document.querySelector("#modal_image_spinner").style.display = "none"
-    document.querySelector("#modal_image").style.display = "block"
+    Hue.el("#modal_image_spinner").style.display = "none"
+    Hue.el("#modal_image").style.display = "block"
   })
 
   img.addEventListener("error", function () {
-    document.querySelector("#modal_image_spinner").style.display = "none"
-    document.querySelector("#modal_image").style.display = "none"
-    document.querySelector("#modal_image_error").style.display = "block"
+    Hue.el("#modal_image_spinner").style.display = "none"
+    Hue.el("#modal_image").style.display = "none"
+    Hue.el("#modal_image_error").style.display = "block"
   })
 
   let f = function (e) {
@@ -349,7 +348,7 @@ Hue.setup_modal_image = function () {
       return false
     }
 
-    if (document.querySelector("#modal_image_container").classList.contains("expanded_modal_image")) {
+    if (Hue.el("#modal_image_container").classList.contains("expanded_modal_image")) {
       return false
     }
 
@@ -362,32 +361,32 @@ Hue.setup_modal_image = function () {
     }
   }
 
-  document.querySelector("#Msg-window-modal_image").addEventListener("wheel", f)
+  Hue.el("#Msg-window-modal_image").addEventListener("wheel", f)
 
-  document.querySelector("#modal_image_container").addEventListener("click", function () {
-    if (document.querySelector("#modal_image_container").classList.contains("expanded_modal_image")) {
+  Hue.el("#modal_image_container").addEventListener("click", function () {
+    if (Hue.el("#modal_image_container").classList.contains("expanded_modal_image")) {
       Hue.restore_modal_image()
     } else {
       Hue.msg_modal_image.close()
     }
   })
 
-  document.querySelector("#modal_image_arrow_prev").addEventListener("click", function (e) {
+  Hue.el("#modal_image_arrow_prev").addEventListener("click", function (e) {
     Hue.modal_image_prev_click()
   })
 
-  document.querySelector("#modal_image_arrow_next").addEventListener("click", function (e) {
+  Hue.el("#modal_image_arrow_next").addEventListener("click", function (e) {
     Hue.modal_image_next_click()
   })
 
-  document.querySelector("#modal_image_toolbar_load").addEventListener("click", function (e) {
+  Hue.el("#modal_image_toolbar_load").addEventListener("click", function (e) {
     let item = Hue.loaded_modal_image
     Hue.toggle_media({type:"image", what:true})
     Hue.change({ type: "image", item: item, force: true })
     Hue.close_all_modals()
   })
 
-  document.querySelector("#modal_image_toolbar_change").addEventListener("click", function (e) {
+  Hue.el("#modal_image_toolbar_change").addEventListener("click", function (e) {
     Hue.show_confirm("Change Image", "This will change it for everyone", function () {
       let item = Hue.loaded_modal_image
       Hue.change_image_source(item.source)
@@ -395,8 +394,8 @@ Hue.setup_modal_image = function () {
     })
   })
 
-  document.querySelector("#modal_image_toolbar_expand").addEventListener("click", function (e) {
-    if (document.querySelector("#modal_image_container").hasClass("expanded_modal_image")) {
+  Hue.el("#modal_image_toolbar_expand").addEventListener("click", function (e) {
+    if (Hue.el("#modal_image_container").hasClass("expanded_modal_image")) {
       Hue.restore_modal_image()
     } else {
       Hue.expand_modal_image()
@@ -406,19 +405,19 @@ Hue.setup_modal_image = function () {
 
 // Expand modal image to give it full height
 Hue.expand_modal_image = function () {
-  document.querySelector("#modal_image_container").classList.add("expanded_modal_image")
-  document.querySelector("#modal_image_toolbar_expand").textContent = "Restore"
+  Hue.el("#modal_image_container").classList.add("expanded_modal_image")
+  Hue.el("#modal_image_toolbar_expand").textContent = "Restore"
 }
 
 // Restore expanded modal image
 Hue.restore_modal_image = function () {
-  document.querySelector("#modal_image_container").classList.remove("expanded_modal_image")
-  document.querySelector("#modal_image_toolbar_expand").textContent = "Expand"
+  Hue.el("#modal_image_container").classList.remove("expanded_modal_image")
+  Hue.el("#modal_image_toolbar_expand").textContent = "Expand"
 }
 
 // Clears image information in the modal image window
 Hue.clear_modal_image_info = function () {
-  document.querySelector("#modal_image_header_info").innerHTML = ""
+  Hue.el("#modal_image_header_info").innerHTML = ""
 }
 
 // Shows the modal image window
@@ -436,57 +435,57 @@ Hue.show_modal_image = function (id = 0) {
   }
 
   Hue.loaded_modal_image = data
-  let img = document.querySelector("#modal_image")
+  let img = Hue.el("#modal_image")
   img.style.display = "none"
-  document.querySelector("#modal_image_spinner").style.display = "block"
-  document.querySelector("#modal_image_error").style.display = "none"
+  Hue.el("#modal_image_spinner").style.display = "block"
+  Hue.el("#modal_image_error").style.display = "none"
   img.src = data.source
 
-  document.querySelector("#modal_image_header_info").innerHTML = data.info_html
-  document.querySelector("#modal_image_header_info").querySelector(".modal_image_timeago")
+  Hue.el("#modal_image_header_info").innerHTML = data.info_html
+  Hue.el("#modal_image_header_info").querySelector(".modal_image_timeago")
     .textContent = Hue.utilz.timeago(data.date)
 
-  Hue.horizontal_separator(document.querySelector("#modal_image_header_info")[0])
+  Hue.horizontal_separator(Hue.el("#modal_image_header_info")[0])
 
   if (data.comment || data.query) {
-    document.querySelector("#modal_image_subheader").innerHTML =
+    Hue.el("#modal_image_subheader").innerHTML =
       Hue.parse_text(Hue.utilz.make_html_safe(data.comment || data.query))
-    document.querySelector("#modal_image_subheader").style.display = "block"
-    Hue.setup_whispers_click(document.querySelector("#modal_image_subheader"), data.setter)
+    Hue.el("#modal_image_subheader").style.display = "block"
+    Hue.setup_whispers_click(Hue.el("#modal_image_subheader"), data.setter)
   } else {
-    document.querySelector("#modal_image_subheader").style.display = "none"
+    Hue.el("#modal_image_subheader").style.display = "none"
   }
 
   if (data !== Hue.loaded_image) {
-    document.querySelector("#modal_image_toolbar_load").style.display = "block"
+    Hue.el("#modal_image_toolbar_load").style.display = "block"
   } else {
-    document.querySelector("#modal_image_toolbar_load").style.display = "none"
+    Hue.el("#modal_image_toolbar_load").style.display = "none"
   }
 
   if (Hue.change_image_source(data.source, true)) {
-    document.querySelector("#modal_image_toolbar_change").style.display = "flex"
+    Hue.el("#modal_image_toolbar_change").style.display = "flex"
   } else {
-    document.querySelector("#modal_image_toolbar_change").style.display = "none"
+    Hue.el("#modal_image_toolbar_change").style.display = "none"
   }
 
-  Hue.horizontal_separator(document.querySelector("#modal_image_header_info_container")[0])
+  Hue.horizontal_separator(Hue.el("#modal_image_header_info_container")[0])
   Hue.msg_modal_image.show()
 }
 
 // Starts events for the image
 Hue.start_image_events = function () {
-  document.querySelector("#media_image_frame").addEventListener("load", function (e) {
+  Hue.el("#media_image_frame").addEventListener("load", function (e) {
     Hue.after_image_load()
   })
 
-  document.querySelector("#media_image_frame").addEventListener("error", function () {
-    document.querySelector("#media_image_frame").style.display = "none"
-    document.querySelector("#media_image_error").style.display = "initial"
+  Hue.el("#media_image_frame").addEventListener("error", function () {
+    Hue.el("#media_image_frame").style.display = "none"
+    Hue.el("#media_image_error").style.display = "initial"
     Hue.after_image_load()
   })
 
-  document.querySelector("#media_image_frame").style.height = 0
-  document.querySelector("#media_image_frame").style.width = 0
+  Hue.el("#media_image_frame").style.height = 0
+  Hue.el("#media_image_frame").style.width = 0
 }
 
 // This runs after an image successfully loads
@@ -501,30 +500,30 @@ Hue.after_image_load = function (ok = true) {
 // Setups image expansions when clicked
 // When an image in the chat is clicked the image is shown full sized in a window
 Hue.setup_expand_image = function () {
-  let img = document.querySelector("#expand_image")
+  let img = Hue.el("#expand_image")
 
   img.addEventListener("load", function () {
     img.style.display = "block"
-    document.querySelector("#expand_image_spinner").style.display = "none"
+    Hue.el("#expand_image_spinner").style.display = "none"
   })
 
   img.addEventListener("error", function () {
-    document.querySelector("#expand_image_spinner").style.display = "none"
-    document.querySelector("#expand_image").style.display = "none"
-    document.querySelector("#expand_image_error").style.display = "block"
+    Hue.el("#expand_image_spinner").style.display = "none"
+    Hue.el("#expand_image").style.display = "none"
+    Hue.el("#expand_image_error").style.display = "block"
   })
 
-  document.querySelector("#expand_image_container").addEventListener("click", function () {
+  Hue.el("#expand_image_container").addEventListener("click", function () {
     Hue.hide_expand_image()
   })
 }
 
 // Shows a window with an image at full size
 Hue.expand_image = function (src) {
-  document.querySelector("#expand_image").style.display = "none"
-  document.querySelector("#expand_image_spinner").style.display = "block"
-  document.querySelector("#expand_image_error").style.display = "none"
-  document.querySelector("#expand_image").src = src
+  Hue.el("#expand_image").style.display = "none"
+  Hue.el("#expand_image_spinner").style.display = "block"
+  Hue.el("#expand_image_error").style.display = "none"
+  Hue.el("#expand_image").src = src
   Hue.msg_expand_image.show()
 }
 
@@ -537,7 +536,7 @@ Hue.hide_expand_image = function () {
 // Shows the image picker window to input a URL, or upload a file
 Hue.show_image_picker = function () {
   Hue.msg_image_picker.show(function () {
-    document.querySelector("#image_source_picker_input").focus()
+    Hue.el("#image_source_picker_input").focus()
     Hue.show_media_history("image")
     Hue.scroll_modal_to_top("image_picker")
   })
@@ -545,8 +544,8 @@ Hue.show_image_picker = function () {
 
 // Shows the window to add a comment to an image upload
 Hue.show_image_upload_comment = function (file, type) {
-  document.querySelector("#image_upload_comment_image_feedback").style.display = "none"
-  document.querySelector("#image_upload_comment_image_preview").style.display = "inline-block"
+  Hue.el("#image_upload_comment_image_feedback").style.display = "none"
+  Hue.el("#image_upload_comment_image_preview").style.display = "inline-block"
 
   let reader = new FileReader()
 
@@ -554,7 +553,7 @@ Hue.show_image_upload_comment = function (file, type) {
     Hue.image_upload_comment_file = file
     Hue.image_upload_comment_type = type
 
-    document.querySelector("#image_upload_comment_image_preview").src = e.target.result
+    Hue.el("#image_upload_comment_image_preview").src = e.target.result
 
     Hue.msg_image_upload_comment.set_title(
       `${Hue.utilz.slice_string_end(
@@ -563,14 +562,14 @@ Hue.show_image_upload_comment = function (file, type) {
       )} (${Hue.utilz.get_size_string(file.size, 2)})`
     )
 
-    document.querySelector("#Msg-titlebar-image_upload_comment").title = file.name
+    Hue.el("#Msg-titlebar-image_upload_comment").title = file.name
 
     Hue.msg_image_upload_comment.show(function () {
-      document.querySelector("#image_upload_comment_submit").addEventListener("click", function () {
+      Hue.el("#image_upload_comment_submit").addEventListener("click", function () {
         Hue.process_image_upload_comment()
       })
 
-      document.querySelector("#image_upload_comment_input").focus()
+      Hue.el("#image_upload_comment_input").focus()
       Hue.scroll_modal_to_bottom("image_upload_comment")
     })
   }
@@ -580,11 +579,11 @@ Hue.show_image_upload_comment = function (file, type) {
 
 // Setups the upload image comment window
 Hue.setup_image_upload_comment = function () {
-  let img = document.querySelector("#image_upload_comment_image_preview")
+  let img = Hue.el("#image_upload_comment_image_preview")
 
   img.addEventListener("error", function () {
     this.style.display = "none"
-    document.querySelector("#image_upload_comment_image_feedback").style.display = "inline"
+    Hue.el("#image_upload_comment_image_feedback").style.display = "inline"
   })
 }
 
@@ -597,7 +596,7 @@ Hue.process_image_upload_comment = function () {
 
   let file = Hue.image_upload_comment_file
   let type = Hue.image_upload_comment_type
-  let comment = Hue.utilz.clean_string2(document.querySelector("#image_upload_comment_input").value)
+  let comment = Hue.utilz.clean_string2(Hue.el("#image_upload_comment_input").value)
 
   if (comment.length > Hue.config.max_media_comment_length) {
     return false
@@ -608,7 +607,7 @@ Hue.process_image_upload_comment = function () {
 }
 
 Hue.image_picker_submit = function () {
-  let val = document.querySelector("#image_source_picker_input").value.trim()
+  let val = Hue.el("#image_source_picker_input").value.trim()
 
   if (val !== "") {
     Hue.change_image_source(val)

@@ -676,14 +676,14 @@ Hue.show_commands = function (filter = "") {
   }
 
   Hue.msg_info2.show(["Commands", commands], function () {
-    $("#commands_container").html(s)
+    Hue.el("#commands_container").innerHTML = s
 
-    $("#commands_filter").on("input", function () {
+    Hue.el("#commands_filter").on("input", function () {
       Hue.do_modal_filter_timer()
     })
 
     if (filter.trim()) {
-      $("#commands_filter").val(filter)
+      Hue.el("#commands_filter").value = filter
       Hue.do_modal_filter()
     }
   })

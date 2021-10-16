@@ -116,7 +116,7 @@ Hue.setup_tv = function (mode, odata = {}) {
   if (mode === "change") {
     if (mode === "change") {
       if (Hue.tv_locked) {
-        document.querySelector("#footer_lock_tv_icon").classList.add("blinking")
+        Hue.el("#footer_lock_tv_icon").classList.add("blinking")
       }
 
       Hue.change({
@@ -181,8 +181,8 @@ Hue.stop_tv = function () {
     Hue.soundcloud_video_player.pause()
   }
 
-  if (document.querySelector("#media_video")) {
-    document.querySelector("#media_video").pause()
+  if (Hue.el("#media_video")) {
+    Hue.el("#media_video").pause()
   }
 }
 
@@ -205,12 +205,12 @@ Hue.play_tv = function () {
       Hue.soundcloud_video_player.play()
     }
   } else if (Hue.current_tv().type === "video") {
-    if (document.querySelector("#media_video")) {
-      document.querySelector("#media_video").play()
+    if (Hue.el("#media_video")) {
+      Hue.el("#media_video").play()
     }
   } else if (Hue.current_tv().type === "iframe") {
-    document.querySelector("#media_iframe_video").src = Hue.current_tv().source
-    document.querySelector("#media_iframe_poster").style.display = "none"
+    Hue.el("#media_iframe_video").src = Hue.current_tv().source
+    Hue.el("#media_iframe_poster").style.display = "none"
   } else {
     played = false
   }
@@ -219,7 +219,7 @@ Hue.play_tv = function () {
 // Destroys all tv players that don't match the item's type
 // Makes the item's type visible
 Hue.hide_tv = function (item = false) {
-  document.querySelectorAll("#media_tv .media_container").forEach(function (it) {
+  Hue.els("#media_tv .media_container").forEach(function (it) {
     let type = it.id.replace("media_", "").replace("_video_container", "")
 
     if (!item || item.type !== type) {
@@ -309,20 +309,20 @@ Hue.show_soundcloud_video = function (play = true) {
 Hue.show_video_video = function (play = true) {
   let item = Hue.loaded_tv
 
-  if (!document.querySelector("#media_video")) {
+  if (!Hue.el("#media_video")) {
     let s = `<video id='media_video'
         class='video_frame' width="640px" height="360px"
         preload="none" poster="${Hue.config.default_video_url}" controls></video>
         ${Hue.get_media_info_html("tv")}`
 
-    document.querySelector("#media_video_video_container").innerHTML = s
+    Hue.el("#media_video_video_container").innerHTML = s
   }
 
   Hue.before_show_tv(item)
-  document.querySelector("#media_video").src = item.source
+  Hue.el("#media_video").src = item.source
 
   if (play) {
-    document.querySelector("#media_video").play()
+    Hue.el("#media_video").play()
   }
 
   Hue.after_show_tv()
@@ -332,23 +332,23 @@ Hue.show_video_video = function (play = true) {
 Hue.show_iframe_video = function (play = true) {
   let item = Hue.loaded_tv
 
-  if (!document.querySelector("#media_iframe_video")) {
+  if (!Hue.el("#media_iframe_video")) {
     let s = `<div id='media_iframe_poster' class='action'>Click Here To Load</div>
         <iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" 
         width="640px" height="360px" id='media_iframe_video' class='video_frame'></iframe>
         ${Hue.get_media_info_html("tv")}`
 
-    document.querySelector("#media_iframe_video_container").innerHTML = s
+    Hue.el("#media_iframe_video_container").innerHTML = s
     Hue.setup_iframe_video()
   }
 
   Hue.before_show_tv(item)
 
   if (play) {
-    document.querySelector("#media_iframe_video").src = item.source
-    document.querySelector("#media_iframe_poster").style.display = "none"
+    Hue.el("#media_iframe_video").src = item.source
+    Hue.el("#media_iframe_poster").style.display = "none"
   } else {
-    document.querySelector("#media_iframe_poster").style.display = "block"
+    Hue.el("#media_iframe_poster").style.display = "block"
   }
 
   Hue.after_show_tv()
@@ -475,9 +475,9 @@ Hue.do_tv_change = function (src, comment) {
 // Changes the tv visibility based on current state
 Hue.change_tv_visibility = function (play = false) {
   if (Hue.room_state.tv_enabled) {
-    document.querySelector("#media").style.display = "flex"
-    document.querySelector("#media_tv").style.display = "flex"
-    document.querySelector("#footer_toggle_tv_icon").querySelector("use").href = "#icon_toggle-on"
+    Hue.el("#media").style.display = "flex"
+    Hue.el("#media_tv").style.display = "flex"
+    Hue.el("#footer_toggle_tv_icon").querySelector("use").href = "#icon_toggle-on"
 
     if (!Hue.tv_visible) {
       Hue.tv_visible = true
@@ -499,7 +499,7 @@ Hue.change_tv_visibility = function (play = false) {
     Hue.stop_tv()
     Hue.hide_tv()
 
-    document.querySelector("#media_tv").style.display = "none"
+    Hue.el("#media_tv").style.display = "none"
 
     let num_visible = Hue.num_media_elements_visible()
 
@@ -507,7 +507,7 @@ Hue.change_tv_visibility = function (play = false) {
       Hue.hide_media()
     }
 
-    document.querySelector("#footer_toggle_tv_icon").querySelector("use").href = "#icon_toggle-off"
+    Hue.el("#footer_toggle_tv_icon").querySelector("use").href = "#icon_toggle-off"
     Hue.tv_visible = false
   }
 
@@ -515,7 +515,6 @@ Hue.change_tv_visibility = function (play = false) {
     Hue.fix_image_frame()
   }
 
-  Hue.check_footer_media_rotate()
   Hue.goto_bottom()
 }
 
@@ -523,7 +522,7 @@ Hue.change_tv_visibility = function (play = false) {
 // Shows the tv picker window to input a URL
 Hue.show_tv_picker = function () {
   Hue.msg_tv_picker.show(function () {
-    document.querySelector("#tv_source_picker_input").focus()
+    Hue.el("#tv_source_picker_input").focus()
     Hue.show_media_history("tv")
     Hue.scroll_modal_to_top("tv_picker")
   })
@@ -566,7 +565,7 @@ Hue.decrease_tv_percentage = function () {
 Hue.get_visible_video_frame_id = function () {
   let id = false
 
-  document.querySelectorAll(".video_frame").forEach(function (it) {
+  Hue.els(".video_frame").forEach(function (it) {
     if (it.parentElement.style.display !== "none") {
       id = it.id
       return false
@@ -583,7 +582,7 @@ Hue.set_default_tv_size = function () {
 
 // Setup for the tv iframe
 Hue.setup_iframe_video = function () {
-  document.querySelector("#media_iframe_poster").addEventListener("click", function () {
+  Hue.el("#media_iframe_poster").addEventListener("click", function () {
     Hue.play_tv()
   })
 }
@@ -598,7 +597,7 @@ Hue.fix_visible_video_frame = function () {
 }
 
 Hue.tv_picker_submit = function () {
-  let val = document.querySelector("#tv_source_picker_input").value.trim()
+  let val = Hue.el("#tv_source_picker_input").value.trim()
 
   if (val !== "") {
     Hue.change_tv_source(val)
@@ -617,7 +616,7 @@ Hue.can_sync_tv = function () {
       return false
     }
   } else if (Hue.loaded_tv.type === "video") {
-    if (!document.querySelector("#media_video")) {
+    if (!Hue.el("#media_video")) {
       return false
     }
   } else {
@@ -659,7 +658,7 @@ Hue.report_tv_progress = function (data) {
   if (ttype === "youtube") {
     progress = Math.round(Hue.youtube_video_player.getCurrentTime())
   } else if (ttype === "video") {
-    progress = Math.round(document.querySelector("#media_video").currentTime)
+    progress = Math.round(Hue.el("#media_video").currentTime)
   }
 
   if (progress) {
@@ -702,15 +701,15 @@ Hue.receive_tv_progress = function (data) {
       return false
     }
 
-    document.querySelector("#media_video")[0].currentTime = data.progress
-    document.querySelector("#media_video")[0].play()
+    Hue.el("#media_video")[0].currentTime = data.progress
+    Hue.el("#media_video")[0].play()
   }
 }
 
 // Shows the window to add a comment to a video upload
 Hue.show_tv_upload_comment = function (file, type) {
-  document.querySelector("#tv_upload_comment_video_feedback").style.display = "none"
-  document.querySelector("#tv_upload_comment_video_preview").style.display = "inline-block"
+  Hue.el("#tv_upload_comment_video_feedback").style.display = "none"
+  Hue.el("#tv_upload_comment_video_preview").style.display = "inline-block"
 
   let reader = new FileReader()
 
@@ -718,7 +717,7 @@ Hue.show_tv_upload_comment = function (file, type) {
     Hue.tv_upload_comment_file = file
     Hue.tv_upload_comment_type = type
 
-    document.querySelector("#tv_upload_comment_video_preview").src = e.target.result
+    Hue.el("#tv_upload_comment_video_preview").src = e.target.result
 
     Hue.msg_tv_upload_comment.set_title(
       `${Hue.utilz.slice_string_end(
@@ -727,14 +726,14 @@ Hue.show_tv_upload_comment = function (file, type) {
       )} (${Hue.utilz.get_size_string(file.size, 2)})`
     )
 
-    document.querySelector("#Msg-titlebar-tv_upload_comment").title = file.name
+    Hue.el("#Msg-titlebar-tv_upload_comment").title = file.name
 
     Hue.msg_tv_upload_comment.show(function () {
-      document.querySelector("#tv_upload_comment_submit").addEventListener("click", function () {
+      Hue.el("#tv_upload_comment_submit").addEventListener("click", function () {
         Hue.process_tv_upload_comment()
       })
 
-      document.querySelector("#tv_upload_comment_input").focus()
+      Hue.el("#tv_upload_comment_input").focus()
       Hue.scroll_modal_to_bottom("tv_upload_comment")
     })
   }
@@ -751,7 +750,7 @@ Hue.process_tv_upload_comment = function () {
 
   let file = Hue.tv_upload_comment_file
   let type = Hue.tv_upload_comment_type
-  let comment = Hue.utilz.clean_string2(document.querySelector("#tv_upload_comment_input").value)
+  let comment = Hue.utilz.clean_string2(Hue.el("#tv_upload_comment_input").value)
 
   if (comment.length > Hue.config.max_media_comment_length) {
     return false
@@ -763,9 +762,9 @@ Hue.process_tv_upload_comment = function () {
 
 // Setups the upload tv comment window
 Hue.setup_tv_upload_comment = function () {
-  let video = document.querySelector("#tv_upload_comment_video_preview")
+  let video = Hue.el("#tv_upload_comment_video_preview")
   video.addEventListener("error", function () {
     this.style.display = "none"
-    document.querySelector("#tv_upload_comment_video_feedback").style.display = "inline"
+    Hue.el("#tv_upload_comment_video_feedback").style.display = "inline"
   })
 }

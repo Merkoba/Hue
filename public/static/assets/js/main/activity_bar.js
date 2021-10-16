@@ -5,9 +5,9 @@ Hue.setup_activity_bar = function () {
     Hue.update_activity_bar(true)
   }, Hue.config.activity_bar_interval)
 
-  document.querySelector("#activity_bar").addEventListener("click", function (e) {
+  Hue.el("#activity_bar").addEventListener("click", function (e) {
     if (e.target.closest(".activity_bar_item")) {
-      Hue.show_profile("", e.target.closest(".activity_bar_item").dataset.user_id)
+      Hue.show_profile("", e.target.closest(".activity_bar_item").hue_dataset.user_id)
     }
   })
 }
@@ -59,18 +59,20 @@ Hue.update_activity_bar = function (check = false) {
       }
     })
 
-    img_el.dataset.user_id = user.user_id
+    img_el.hue_dataset = {}
+    img_el.hue_dataset.user_id = user.user_id
+    el.hue_dataset = {}
+    el.hue_dataset.user_id = user.user_id
+    el.hue_dataset.uname =user.username
     text_el.textContent = user.username.slice(0, Hue.config.max_activity_username_length)
-    el.dataset.user_id = user.user_id
-    el.dataset.uname =user.username
-    document.querySelector("#activity_bar_inner").append(el)
+    Hue.el("#activity_bar_inner").append(el)
   }
 
   Hue.resize_activity_bar()
 }
 
 Hue.resize_activity_bar = function () {
-  let ab_inner = document.querySelector("#activity_bar_inner")
+  let ab_inner = Hue.el("#activity_bar_inner")
   ab_inner.classList.remove("no_usernames")
 
   if (ab_inner.scrollWidth > ab_inner.clientWidth) {
@@ -82,8 +84,8 @@ Hue.resize_activity_bar = function () {
 Hue.get_activity_bar_item_by_user_id = function (id) {
   let item = false
 
-  document.querySelectorAll(".activity_bar_item").forEach(function (it) {
-    if (it.dataset.user_id === id) {
+  Hue.els(".activity_bar_item").forEach(function (it) {
+    if (it.hue_dataset.user_id === id) {
       item = it
       return false
     }
@@ -94,7 +96,7 @@ Hue.get_activity_bar_item_by_user_id = function (id) {
 
 // Removes all items on the activity bar
 Hue.clear_activity_bar_items = function () {
-  document.querySelector("#activity_bar_inner")
+  Hue.el("#activity_bar_inner")
   .querySelectorAll(".activity_bar_item")
   .forEach(function (it) {
     it.remove()
@@ -103,10 +105,10 @@ Hue.clear_activity_bar_items = function () {
 
 // Updates the profile image of an item in the activity bar
 Hue.update_activity_bar_image = function (id, src) {
-  document.querySelector("#activity_bar_inner")
+  Hue.el("#activity_bar_inner")
   .querySelectorAll(".activity_bar_item")
   .forEach(function (it) {
-    if (it.dataset.user_id === id) {
+    if (it.hue_dataset.user_id === id) {
       it.querySelector(".activity_bar_image").src = src
       return false
     }

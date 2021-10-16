@@ -86,18 +86,18 @@ Hue.change_bio = function (value) {
 
 // Setups the user details window
 Hue.build_details = function () {
-  document.querySelector("#details_username").textContent = Hue.username
+  Hue.el("#details_username").textContent = Hue.username
 
   let s = `<div>${Hue.utilz.nice_date(Hue.user_reg_date)}</div>
     </div>(${Hue.utilz.timeago(Hue.user_reg_date)})</div>`
 
-  document.querySelector("#details_reg_date").innerHTML = s
+  Hue.el("#details_reg_date").innerHTML = s
 
   s = `<div>${Hue.utilz.nice_date(Hue.date_joined)}</div>
     </div>(${Hue.utilz.timeago(Hue.date_joined)})</div>`
 
-  document.querySelector("#details_joined_room").innerHTML = s
-  document.querySelector("#details_id").innerHTML = `ID: ${Hue.user_id}`
+  Hue.el("#details_joined_room").innerHTML = s
+  Hue.el("#details_id").innerHTML = `ID: ${Hue.user_id}`
 }
 
 // Shows the user's details window
@@ -115,10 +115,10 @@ Hue.show_change_username = function () {
     </div>`
 
   Hue.msg_info2.show(["Change Username", s], function () {
-    document.querySelector("#change_username_input").value = Hue.username
-    document.querySelector("#change_username_input").focus()
+    Hue.el("#change_username_input").value = Hue.username
+    Hue.el("#change_username_input").focus()
 
-    document.querySelector("#change_username_submit").addEventListener("click", function () {
+    Hue.el("#change_username_submit").addEventListener("click", function () {
       Hue.submit_change_username()
     })
 
@@ -128,7 +128,7 @@ Hue.show_change_username = function () {
 
 // Submits the change username form
 Hue.submit_change_username = function () {
-  let uname = document.querySelector("#change_username_input").value.trim()
+  let uname = Hue.el("#change_username_input").value.trim()
 
   if (uname === Hue.username) {
     Hue.checkmsg("That's already the username")
@@ -152,9 +152,9 @@ Hue.show_change_password = function () {
     </div>`
 
   Hue.msg_info2.show(["Change Password", s], function () {
-    document.querySelector("#change_password_input_1").focus()
+    Hue.el("#change_password_input_1").focus()
 
-    document.querySelector("#change_password_submit").addEventListener("click", function () {
+    Hue.el("#change_password_submit").addEventListener("click", function () {
       Hue.submit_change_password()
     })
 
@@ -164,8 +164,8 @@ Hue.show_change_password = function () {
 
 // Submits the change password form
 Hue.submit_change_password = function () {
-  let p1 = document.querySelector("#change_password_input_1").value.trim()
-  let p2 = document.querySelector("#change_password_input_2").value.trim()
+  let p1 = Hue.el("#change_password_input_1").value.trim()
+  let p2 = Hue.el("#change_password_input_2").value.trim()
 
   if (Hue.change_password(p1, p2)) {
     Hue.msg_info2.close()
@@ -176,24 +176,24 @@ Hue.submit_change_password = function () {
 Hue.set_username = function (uname) {
   Hue.username = uname
   Hue.generate_mentions_regex()
-  document.querySelector("#user_menu_username").textContent = Hue.username
+  Hue.el("#user_menu_username").textContent = Hue.username
 }
 
 // Bio setter
 Hue.set_bio = function (bio) {
   Hue.bio = bio
-  document.querySelector("#user_menu_bio_textarea").value = Hue.bio
+  Hue.el("#user_menu_bio_textarea").value = Hue.bio
 }
 
 // Setups the user menu
 Hue.setup_user_menu = function () {
-  document.querySelector("#user_menu_profilepic").addEventListener("error", function () {
+  Hue.el("#user_menu_profilepic").addEventListener("error", function () {
     if (this.src !== Hue.config.default_profilepic_url) {
       this.src = Hue.config.default_profilepic_url
     }
   })
 
-  document.querySelector("#user_menu_bio_textarea").addEventListener("blur", function () {
+  Hue.el("#user_menu_bio_textarea").addEventListener("blur", function () {
     let value = Hue.utilz.clean_string12(this.value)
 
     if (value !== Hue.bio) {
@@ -209,31 +209,31 @@ Hue.setup_user_menu = function () {
     }
   })
 
-  document.querySelector("#user_menu_profilepic").addEventListener("click", function () {
+  Hue.el("#user_menu_profilepic").addEventListener("click", function () {
     Hue.open_profilepic_select()
   })
 
-  document.querySelector("#user_menu_audioclip").addEventListener("click", function () {
+  Hue.el("#user_menu_audioclip").addEventListener("click", function () {
     Hue.show_audioclip_menu()
   })
 
-  document.querySelector("#user_menu_details").addEventListener("click", function () {
+  Hue.el("#user_menu_details").addEventListener("click", function () {
     Hue.show_details()
   })
 
-  document.querySelector("#user_menu_logout").addEventListener("click", function () {
+  Hue.el("#user_menu_logout").addEventListener("click", function () {
     Hue.needs_confirm("logout")
   })
 
-  document.querySelector("#user_menu_settings").addEventListener("click", function () {
+  Hue.el("#user_menu_settings").addEventListener("click", function () {
     Hue.show_settings()
   })
 
-  document.querySelector("#user_menu_change_username").addEventListener("click", function () {
+  Hue.el("#user_menu_change_username").addEventListener("click", function () {
     Hue.show_change_username()    
   })
 
-  document.querySelector("#user_menu_change_password").addEventListener("click", function () {
+  Hue.el("#user_menu_change_password").addEventListener("click", function () {
     Hue.show_change_password()    
   })
 }
@@ -241,8 +241,8 @@ Hue.setup_user_menu = function () {
 // Updates some user menu elements
 Hue.update_user_menu = function () {
   let src = Hue.get_profilepic(Hue.user_id)
-  document.querySelector("#user_menu_profilepic").src = src
-  document.querySelector("#user_menu_bio_textarea").value = Hue.bio
+  Hue.el("#user_menu_profilepic").src = src
+  Hue.el("#user_menu_bio_textarea").value = Hue.bio
 }
 
 // Shows the user menu
@@ -252,7 +252,7 @@ Hue.show_user_menu = function () {
 
 // Setups the profile image circular cropper
 Hue.setup_profilepic_cropper = function () {
-  document.querySelector("#profilepic_cropper_upload").addEventListener("click", function () {
+  Hue.el("#profilepic_cropper_upload").addEventListener("click", function () {
     Hue.profilepic_cropper
       .croppie("result", {
         type: "blob",
@@ -266,8 +266,8 @@ Hue.setup_profilepic_cropper = function () {
       })
 
       .then(function (blob) {
-        document.querySelector("#user_menu_profilepic").src = Hue.config.profilepic_loading_url
-        
+        Hue.el("#user_menu_profilepic").src = Hue.config.profilepic_loading_url
+
         Hue.upload_file({
           file: blob,
           action: "profilepic_upload",
@@ -277,11 +277,11 @@ Hue.setup_profilepic_cropper = function () {
       })
   })
 
-  document.querySelector("#profilepic_cropper_change").addEventListener("click", function () {
+  Hue.el("#profilepic_cropper_change").addEventListener("click", function () {
     Hue.open_profilepic_picker()
   })
 
-  Hue.horizontal_separator(document.querySelector("#profilepic_cropper_buttons"))
+  Hue.horizontal_separator(Hue.el("#profilepic_cropper_buttons"))
 }
 
 // Resets the profile image cropper to default state
@@ -297,22 +297,22 @@ Hue.open_profilepic_select = function () {
     "Change Profile Image",
     Hue.template_profilepic_select(),
   ], function () {
-    document.querySelector("#profilepic_select_draw").addEventListener("click", function () {
+    Hue.el("#profilepic_select_draw").addEventListener("click", function () {
       Hue.msg_info2.close()
       Hue.open_draw_image("profilepic")
     })
 
-    document.querySelector("#profilepic_select_upload").addEventListener("click", function () {
+    Hue.el("#profilepic_select_upload").addEventListener("click", function () {
       Hue.msg_info2.close()
       Hue.open_profilepic_picker()
     })
   })
-  Hue.horizontal_separator(document.querySelector("#profilepic_select_container"))
+  Hue.horizontal_separator(Hue.el("#profilepic_select_container"))
 }
 
 // If upload is chosen as the method to change the profilepic
 Hue.open_profilepic_picker = function () {
-  document.querySelector("#profilepic_input").click()
+  Hue.el("#profilepic_input").click()
 }
 
 // This is executed after a profile image has been selected in the file dialog
@@ -327,9 +327,9 @@ Hue.profilepic_selected = function (file) {
     Hue.reset_profilepic_cropper()
 
     Hue.msg_profilepic_cropper.show(function () {
-      document.querySelector("#profilepic_input").closest("form").reset()
+      Hue.el("#profilepic_input").closest("form").reset()
 
-      Hue.profilepic_cropper = document.querySelector("#profilepic_cropper").croppie({
+      Hue.profilepic_cropper = Hue.el("#profilepic_cropper").croppie({
         viewport: {
           width: 200,
           height: 200,
@@ -398,19 +398,19 @@ Hue.show_others_disconnected = function (data) {
 // Shows some options for the audio clip
 Hue.show_audioclip_menu = function () {
   Hue.msg_info2.show(["Audio Clip", Hue.template_audioclip_menu()], function () {
-    document.querySelector("#upload_audioclip").addEventListener("click", function () {
+    Hue.el("#upload_audioclip").addEventListener("click", function () {
       Hue.select_audioclip()
       Hue.msg_info2.close()
     })
 
-    document.querySelector("#remove_audioclip").addEventListener("click", function () {
+    Hue.el("#remove_audioclip").addEventListener("click", function () {
       Hue.needs_confirm_2(function () {
         Hue.socket_emit("remove_audioclip", {})
         Hue.msg_info2.close()
       })
     })
 
-    document.querySelector("#play_audioclip").addEventListener("click", function () {
+    Hue.el("#play_audioclip").addEventListener("click", function () {
       Hue.user_menu_audio = document.createElement("audio")
       let user = Hue.get_user_profile().audioclip
       let src = Hue.get_audioclip(user.user_id)
@@ -418,13 +418,13 @@ Hue.show_audioclip_menu = function () {
       Hue.user_menu_audio.play()
     })
 
-    Hue.horizontal_separator(document.querySelector("#audioclip_select_container"))
+    Hue.horizontal_separator(Hue.el("#audioclip_select_container"))
   })
 }
 
 // Opens the file picker to choose an audio clip
 Hue.select_audioclip = function () {
-  document.querySelector("#audioclip_input").click()
+  Hue.el("#audioclip_input").click()
 }
 
 // When an audio clip gets selected from the file picker

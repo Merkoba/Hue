@@ -1,24 +1,24 @@
 // Resets chat search filter state
 Hue.reset_chat_search_filter = function () {
-  $("#chat_search_filter").val("")
-  $("#chat_search_container").html("")
+  Hue.el("#chat_search_filter").val("")
+  Hue.el("#chat_search_container").html("")
 }
 
 // Shows the chat search window
 Hue.show_chat_search = function (filter = "") {
-  $("#chat_search_container").html("")
-  $("#chat_search_filter").val(filter ? filter : "")
+  Hue.el("#chat_search_container").html("")
+  Hue.el("#chat_search_filter").val(filter ? filter : "")
 
   if (filter.trim()) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
-    let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
+    let clone = Hue.clone_children("#chat_area")
 
-    clone.each(function () {
-      $(this).removeAttr("id")
+    clone.forEach(function () {
+      this.removeAttribute("id")
     })
 
     clone = clone.filter(function () {
-      let text = $(this).text().toLowerCase()
+      let text = this.textContent.toLowerCase()
 
       if (!text) {
         return false
@@ -27,7 +27,7 @@ Hue.show_chat_search = function (filter = "") {
       let text_cmp = text.includes(lc_value)
       
       let source_cmp = false
-      let media_source = $(this).data("media_source")
+      let media_source = this.hue_dataset.media_source
       
       if (media_source) {
         source_cmp = media_source.includes(lc_value)
@@ -36,11 +36,11 @@ Hue.show_chat_search = function (filter = "") {
       return text_cmp || source_cmp
     })
 
-    if (clone.children().length) {
-      clone.appendTo("#chat_search_container")
+    if (clone.children.length) {
+      Hue.el("#chat_search_container").append(clone)
     } 
   } else {
-    $("#chat_search_container").html("<div class='center'>Search recent messages</div>")
+    Hue.el("#chat_search_container").innerHTML = "<div class='center'>Search recent messages</div>"
   }
 
   Hue.msg_chat_search.show(function () {
