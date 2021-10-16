@@ -91,9 +91,8 @@ Hue.draw_image_add_sector = function () {
 // Setups the draw image window
 Hue.setup_draw_image = function () {
   Hue.draw_image_context = $("#draw_image_area")[0].getContext("2d")
-  Hue.clear_draw_image_state()
 
-  $("#draw_image_area").mousedown(function (e) {
+  $("#draw_image_area").on("mousedown", function (e) {
     if (Hue.draw_image_mode === "bucket") {
       return false
     }
@@ -165,6 +164,7 @@ Hue.setup_draw_image = function () {
 
   $("#draw_image_pencil_size").html(select)
   Hue.draw_image_prepare_settings()
+  Hue.clear_draw_image_state()
 }
 
 // Prepares initial settings for the draw image window
