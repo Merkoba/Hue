@@ -6,21 +6,21 @@ Hue.start_chat_menu_context_menu = function () {
       e.stopPropagation()
       let items = []
       let message = e.target.closest(".message")
-      let mode = message.dataset.mode
-      let type = message.dataset.type
-      let user_id = message.dataset.user_id
+      let mode = message.hue_dataset.mode
+      let type = message.hue_dataset.type
+      let user_id = message.hue_dataset.user_id
       let chat_container = e.target.closest(".chat_content_container")
       let url = ""
       
       if (chat_container) {
-        url = chat_container.dataset.first_url
+        url = chat_container.hue_dataset.first_url
       }
 
       if (!e.target.closest("#chat_area")) {
         items.push({
           text: "Jump",
           action: function () {
-            let message_id = e.target.closest(".message").dataset.message_id
+            let message_id = e.target.closest(".message").hue_dataset.message_id
             Hue.jump_to_chat_message(message_id)
           }
         })
@@ -53,7 +53,7 @@ Hue.start_chat_menu_context_menu = function () {
           text: "Change Image",
           action: function () {
             Hue.show_confirm("Change Image", "This will change it for everyone", function () {
-              let first_url = e.target.closest(".chat_content_container").dataset.first_url
+              let first_url = e.target.closest(".chat_content_container").hue_dataset.first_url
               Hue.change_image_source(first_url)
             })
           }
@@ -65,7 +65,7 @@ Hue.start_chat_menu_context_menu = function () {
           text: "Change TV",
           action: function () {
             Hue.show_confirm("Change TV", "This will change it for everyone", function () {
-              let first_url = e.target.closest(".chat_content_container").dataset.first_url
+              let first_url = e.target.closest(".chat_content_container").hue_dataset.first_url
               Hue.change_tv_source(first_url)
             })
           }
@@ -88,12 +88,12 @@ Hue.start_chat_menu_context_menu = function () {
             Hue.show_confirm("Delete Message", "Remove message from the chat log", function () {
               let id = false
               let message = e.target.closest(".message")
-              let mode = message.dataset.mode
+              let mode = message.hue_dataset.mode
   
               if (mode === "chat") {
-                id = e.target.closest(".chat_content_container").dataset.id
+                id = e.target.closest(".chat_content_container").hue_dataset.id
               } else if (mode === "announcement") {
-                id = message.dataset.id
+                id = message.hue_dataset.id
               }
   
               if (id) {
@@ -112,7 +112,7 @@ Hue.start_chat_menu_context_menu = function () {
 
 // Starts the context menu on user elements
 Hue.start_user_context_menu = function () {
-  let container = document.querySelector("#show_profile_user")
+  let container = Hue.el("#show_profile_user")
 
   document.addEventListener("click", function (e) {
     if (container.contains(e.target)) {
@@ -124,7 +124,7 @@ Hue.start_user_context_menu = function () {
           text: "Voice",
           action: function () {
             Hue.show_confirm("Give Voice Role", "Can interact with users and change media but no operator abilities", function () {
-              let arg = container.dataset.username
+              let arg = container.hue_dataset.username
               Hue.change_role(arg, "voice")
             })        
           }
@@ -134,7 +134,7 @@ Hue.start_user_context_menu = function () {
           text: "Op",
           action: function () {
             Hue.show_confirm("Give Op Role", "Enables access to operator features and commands", function () {
-              let arg = container.dataset.username
+              let arg = container.hue_dataset.username
               Hue.change_role(arg, "op")
             })       
           }
@@ -144,18 +144,18 @@ Hue.start_user_context_menu = function () {
           text: "Admin",
           action: function () {
             Hue.show_confirm("Give Admin Role", "Operator abilities plus can add/remove operators ", function () {
-              let arg = container.dataset.username
+              let arg = container.hue_dataset.username
               Hue.change_role(arg, "admin")
             })      
           }
         })
 
-        if (Hue.user_is_online_by_username(container.dataset.username)) {
+        if (Hue.user_is_online_by_username(container.hue_dataset.username)) {
           items.push({
             text: "Kick",
             action: function () {
               Hue.show_confirm("Kick User", "Disconnect the user from the room", function () {
-                let arg = container.dataset.username
+                let arg = container.hue_dataset.username
                 Hue.kick(arg)
               })     
             }
@@ -166,7 +166,7 @@ Hue.start_user_context_menu = function () {
           text: "Ban",
           action: function () {
             Hue.show_confirm("Ban User", "Ban the user from joining the room", function () {
-              let arg = container.dataset.username
+              let arg = container.hue_dataset.username
               Hue.ban(arg)
             })    
           }

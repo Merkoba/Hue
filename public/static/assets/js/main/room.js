@@ -167,7 +167,7 @@ Hue.request_admin_activity = function (filter = "") {
 
 // Shows the admin activity list
 Hue.show_admin_activity = function (messages) {
-  document.querySelector("#admin_activity_container").innerHTML = ""
+  Hue.el("#admin_activity_container").innerHTML = ""
 
   Hue.msg_admin_activity.show(function () {
     for (let message of messages) {
@@ -184,12 +184,13 @@ Hue.show_admin_activity = function (messages) {
       let el = el0.firstElementChild
       el.querySelector(".admin_activity_message").textContent = `${message.data.username} ${message.data.content}`
       el.querySelector(".admin_activity_date").textContent = nice_date
-      el.dataset.date = message.date
-      el.dataset.otitle = nice_date
-      document.querySelector("#admin_activity_container").prepend(el)
+      el.hue_dataset = {}
+      el.hue_dataset.date = message.date
+      el.hue_dataset.otitle = nice_date
+      Hue.el("#admin_activity_container").prepend(el)
     }
 
-    document.querySelector("#admin_activity_filter").value = Hue.admin_activity_filter_string
+    Hue.el("#admin_activity_filter").value = Hue.admin_activity_filter_string
     Hue.do_modal_filter()
   })
 }
@@ -307,7 +308,7 @@ Hue.set_background = function (data, apply = true) {
 
 // Setups background
 Hue.setup_background = function () {
-  document.querySelectorAll(".background").forEach(function (it) {
+  Hue.els(".background").forEach(function (it) {
     it.addEventListener("error", function () {
       if (this.src !== Hue.config.default_background_url) {
         this.src = Hue.config.default_background_url
@@ -318,7 +319,7 @@ Hue.setup_background = function () {
 
 // Applies the background to all background elements
 Hue.apply_background = function () {
-  document.querySelectorAll(".background").forEach(function (it) {
+  Hue.els(".background").forEach(function (it) {
     it.src = Hue.background
   })
 }
@@ -398,26 +399,26 @@ Hue.open_background_select = function () {
     "Change Background",
     Hue.template_background_select(),
   ], function () {
-    document.querySelector("#background_select_draw").addEventListener("click", function () {
+    Hue.el("#background_select_draw").addEventListener("click", function () {
       Hue.msg_info2.close()
       Hue.open_draw_image("background")
     })
 
-    document.querySelector("#background_select_url").addEventListener("click", function () {
+    Hue.el("#background_select_url").addEventListener("click", function () {
       Hue.open_background_input()
     })
 
-    document.querySelector("#background_select_upload").addEventListener("click", function () {
+    Hue.el("#background_select_upload").addEventListener("click", function () {
       Hue.msg_info2.close()
       Hue.open_background_picker()
     })
   })
-  Hue.horizontal_separator(document.querySelector("#background_select_container"))
+  Hue.horizontal_separator(Hue.el("#background_select_container"))
 }
 
 // If upload is chosen as the method to change the background image
 Hue.open_background_picker = function () {
-  document.querySelector("#background_input").click()
+  Hue.el("#background_input").click()
 }
 
 // If a URL source is chosen as the method to change the background image
@@ -426,11 +427,11 @@ Hue.open_background_input = function () {
   Hue.msg_info2.show(
     ["Change Background", Hue.template_background_input()],
     function () {
-      document.querySelector("#background_input_submit").addEventListener("click", function () {
+      Hue.el("#background_input_submit").addEventListener("click", function () {
         Hue.background_input_action()
       })
 
-      document.querySelector("#background_input_text").focus()
+      Hue.el("#background_input_text").focus()
       Hue.background_input_open = true
     }
   )
@@ -438,7 +439,7 @@ Hue.open_background_input = function () {
 
 // On background image source input change
 Hue.background_input_action = function () {
-  let src = document.querySelector("#background_input_text").value.trim()
+  let src = Hue.el("#background_input_text").value.trim()
 
   if (Hue.change_background_source(src)) {
     Hue.msg_info2.close()
@@ -457,14 +458,14 @@ Hue.background_selected = function (file) {
 
   let size = file.size / 1024
 
-  document.querySelector("#background_input").closest("form").reset()
+  Hue.el("#background_input").closest("form").reset()
 
   if (size > Hue.config.max_image_size) {
     Hue.checkmsg("File is too big")
     return false
   }
 
-  document.querySelector("#admin_background").src = Hue.config.background_loading_url
+  Hue.el("#admin_background").src = Hue.config.background_loading_url
   Hue.upload_file({ file: file, action: "background_upload" })
 }
 

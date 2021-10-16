@@ -90,9 +90,9 @@ Hue.draw_image_add_sector = function () {
 
 // Setups the draw image window
 Hue.setup_draw_image = function () {
-  Hue.draw_image_context =document.querySelector("#draw_image_area").getContext("2d")
+  Hue.draw_image_context =Hue.el("#draw_image_area").getContext("2d")
 
- document.querySelector("#draw_image_area").addEventListener("mousedown", function (e) {
+ Hue.el("#draw_image_area").addEventListener("mousedown", function (e) {
     if (Hue.draw_image_mode === "bucket") {
       return false
     }
@@ -104,7 +104,7 @@ Hue.setup_draw_image = function () {
     Hue.redraw_draw_image()
   })
 
- document.querySelector("#draw_image_area").addEventListener("mousemove", function (e) {
+ Hue.el("#draw_image_area").addEventListener("mousemove", function (e) {
     if (Hue.mouse_is_down) {
       Hue.draw_image_add_click(
         e.offsetX,
@@ -117,11 +117,11 @@ Hue.setup_draw_image = function () {
     Hue.draw_image_just_entered = false
   })
 
- document.querySelector("#draw_image_area").addEventListener("mouseenter", function (e) {
+ Hue.el("#draw_image_area").addEventListener("mouseenter", function (e) {
     Hue.draw_image_just_entered = true
   })
 
- document.querySelector("#draw_image_area").addEventListener("click", function (e) {
+ Hue.el("#draw_image_area").addEventListener("click", function (e) {
     if (Hue.draw_image_mode === "bucket") {
       let result = Hue.draw_image_bucket_fill(e.offsetX, e.offsetY)
 
@@ -132,27 +132,27 @@ Hue.setup_draw_image = function () {
     }
   })
 
- document.querySelector("#draw_image_mode_select_pencil").addEventListener("click", function () {
+ Hue.el("#draw_image_mode_select_pencil").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("pencil")
   })
 
- document.querySelector("#draw_image_mode_select_bucket").addEventListener("click", function () {
+ Hue.el("#draw_image_mode_select_bucket").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("bucket")
   })
 
- document.querySelector("#draw_image_undo").addEventListener("click", function () {
+ Hue.el("#draw_image_undo").addEventListener("click", function () {
     Hue.draw_image_undo()
   })
 
- document.querySelector("#draw_image_redo").addEventListener("click", function () {
+ Hue.el("#draw_image_redo").addEventListener("click", function () {
     Hue.draw_image_redo()
   })
 
- document.querySelector("#draw_image_clear").addEventListener("click", function () {
+ Hue.el("#draw_image_clear").addEventListener("click", function () {
     Hue.needs_confirm("clear_draw_image_func")
   })
 
- document.querySelector("#draw_image_upload").addEventListener("click", function () {
+ Hue.el("#draw_image_upload").addEventListener("click", function () {
     Hue.upload_draw_image()
   })
   
@@ -162,30 +162,30 @@ Hue.setup_draw_image = function () {
     select += `<option value="${i}">${i}</option>`
   }
 
- document.querySelector("#draw_image_pencil_size").innerHTML = select
+ Hue.el("#draw_image_pencil_size").innerHTML = select
   Hue.draw_image_prepare_settings()
   Hue.clear_draw_image_state()
 }
 
 // Prepares initial settings for the draw image window
 Hue.draw_image_prepare_settings = function () {  
- document.querySelector("#draw_image_pencil_color").addEventListener("click", function () {
+ Hue.el("#draw_image_pencil_color").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("pencil")
   })
 
- document.querySelector("#draw_image_pencil_color").addEventListener("change", function () {
+ Hue.el("#draw_image_pencil_color").addEventListener("change", function () {
     Hue.draw_image_pencil_color = this.value
   })
 
- document.querySelector("#draw_image_bucket_color").addEventListener("click", function () {
+ Hue.el("#draw_image_bucket_color").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("bucket")
   })
 
- document.querySelector("#draw_image_bucket_color").addEventListener("change", function () {
+ Hue.el("#draw_image_bucket_color").addEventListener("change", function () {
     Hue.draw_image_bucket_color = this.value
   })
 
- document.querySelector("#draw_image_pencil_size").addEventListener("change", function () {
+ Hue.el("#draw_image_pencil_size").addEventListener("change", function () {
     Hue.draw_image_pencil_size = this.value
   })
 }
@@ -194,11 +194,11 @@ Hue.draw_image_prepare_settings = function () {
 // Changes the appearance of the widgets to reflect this
 Hue.set_draw_image_mode_input = function (m) {
   if (m === "pencil") {
-   document.querySelector("#draw_image_mode_select_pencil").classList.add("modal_icon_selected")
-   document.querySelector("#draw_image_mode_select_bucket").classList.remove("modal_icon_selected")
+   Hue.el("#draw_image_mode_select_pencil").classList.add("modal_icon_selected")
+   Hue.el("#draw_image_mode_select_bucket").classList.remove("modal_icon_selected")
   } else if (m === "bucket") {
-   document.querySelector("#draw_image_mode_select_bucket").classList.add("modal_icon_selected")
-   document.querySelector("#draw_image_mode_select_pencil").classList.remove("modal_icon_selected")
+   Hue.el("#draw_image_mode_select_bucket").classList.add("modal_icon_selected")
+   Hue.el("#draw_image_mode_select_pencil").classList.remove("modal_icon_selected")
   }
 
   Hue.draw_image_mode = m
@@ -254,13 +254,13 @@ Hue.clear_draw_image_state = function () {
 
   Hue.draw_image_pencil_color = Hue.colorlib.get_lighter_or_darker(bg_hex, 0.6)
   Hue.draw_image_bucket_color = Hue.colorlib.get_random_hex()
-  document.querySelector("#draw_image_pencil_color").value = Hue.draw_image_pencil_color
-  document.querySelector("#draw_image_bucket_color").value = Hue.draw_image_bucket_color
+  Hue.el("#draw_image_pencil_color").value = Hue.draw_image_pencil_color
+  Hue.el("#draw_image_bucket_color").value = Hue.draw_image_bucket_color
 
   Hue.set_draw_image_mode_input("pencil")
   Hue.draw_image_pencil_size = 8
 
-  document.querySelector("#draw_image_pencil_size").querySelectorAll("option")
+  Hue.el("#draw_image_pencil_size").querySelectorAll("option")
   .forEach(function (it) {
     if (it.value == Hue.draw_image_pencil_size) {
       it.selected = true
@@ -417,7 +417,7 @@ Hue.upload_draw_image = function () {
     return false
   }
 
- document.querySelector("#draw_image_area").toBlob(
+ Hue.el("#draw_image_area").toBlob(
     function (blob) {
       blob.name = "draw_image.png"
       

@@ -142,12 +142,10 @@ Hue.clear_tabbed = function (element) {
 // Setups autocomplete functionality
 // This allows to have tab autocomplete on all allowed textboxes
 Hue.setup_autocomplete = function () {
-  $("body").on(
-    "keydown",
-    "textarea, input[type='text'], input[type='search']",
-    function (e) {
+  Hue.el("body").addEventListener("keydown", function (e) {
+    if (Hue.utilz.is_textbox(e.target)) {
       if (e.key === "Tab") {
-        let value = $(this).val()
+        let value = this.value
 
         if (value.length > 0) {
           Hue.tabbed(this)
@@ -157,13 +155,11 @@ Hue.setup_autocomplete = function () {
 
       Hue.clear_tabbed(this)
     }
-  )
+  })
 
-  $("body").on(
-    "click",
-    "textarea, input[type='text'], input[type='search']",
-    function (e) {
+  Hue.el("body").addEventListener("click", function (e) {
+    if (Hue.utilz.is_textbox(e.target)) {
       Hue.clear_tabbed(this)
     }
-  )
+  })
 }

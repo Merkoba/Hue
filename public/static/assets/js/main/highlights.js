@@ -56,19 +56,22 @@ Hue.check_latest_highlight = function () {
 // Either a chat content container or an announcement
 Hue.get_latest_highlight = function () {
   let latest_highlight = false
+  let items = Hue.els("#chat_area .chat_content_container")
 
-  $($("#chat_area .chat_content_container").get().reverse()).each(function () {
-    if ($(this).data("highlighted")) {
-      latest_highlight = this
+  items.reverse().forEach(function (it) {
+    if (it.hue_dataset.highlighted) {
+      latest_highlight = it
       return false
     }
   })
 
   if (latest_highlight) {
-    $($("#chat_area > .message.announcement").get().reverse()).each(
-      function () {
-        if ($(this).data("highlighted")) {
-          if ($(this).data("date") > $(latest_highlight).data("date")) {
+    let items = Hue.els("#chat_area > .message.announcement")
+
+    items.reverse().forEach(
+      function (it) {
+        if (it.hue_dataset.highlighted) {
+          if (it.hue_dataset.date > latest_highlight.hue_dataset.date) {
             latest_highlight = this
           }
 
@@ -96,7 +99,7 @@ Hue.on_highlight = function () {
   }
 
   if (Hue.msg_highlights.is_open()) {
-    Hue.show_highlights($("#highlights_filter").val())
+    Hue.show_highlights(Hue.el("#highlights_filter").value)
   }
 
   Hue.on_activity("highlight")
@@ -104,16 +107,16 @@ Hue.on_highlight = function () {
 
 // Resets highlights filter data
 Hue.reset_highlights_filter = function () {
-  $("#highlights_filter").val("")
-  $("#highlights_container").html("")
+  Hue.el("#highlights_filter").value = ""
+  Hue.el("#highlights_container").innerHTML = ""
 }
 
 // Show and/or filters highlights window
 Hue.show_highlights = function (filter = "") {
-  $("#highlights_container").html("")
-  $("#highlights_filter").val(filter ? filter : "")
+  Hue.el("#highlights_container").innerHTML = ""
+  Hue.el("#highlights_filter").value = filter ? filter : ""
 
-  let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
+  let clone = Hue.clone_children("#chat_area")
 
   clone.each(function () {
     $(this).removeAttr("id")
@@ -154,8 +157,8 @@ Hue.show_highlights = function (filter = "") {
     })
   }
 
-  if (clone.children().length) {
-    clone.appendTo("#highlights_container")
+  if (clone.children.length) {
+    Hue.el("#highlights_container").append(clone)
   }
 
   Hue.msg_highlights.show(function () {
