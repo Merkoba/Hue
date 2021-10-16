@@ -364,7 +364,6 @@ Hue.start_msg = function () {
   Hue.msg_draw_image = Msg.factory(
     Object.assign({}, common, titlebar,{
       id: "draw_image",
-      close_on_overlay_click: false,
       after_show: function(instance){
         common.after_show(instance)
         Hue.draw_image_open = true
