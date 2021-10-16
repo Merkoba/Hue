@@ -71,10 +71,13 @@ Hue.push_notification = function (icon, message, on_click = false) {
     content_classes = "action"
   }
 
-  let item = $(
-    `<div class='notifications_item modal_item'><div class='notifications_item_content ${content_classes} dynamic_title'>${icon_html}${message_html}</div>`
-  )
+  let s = 
+    `<div class='notifications_item modal_item'>
+      <div class='notifications_item_content ${content_classes} dynamic_title'>${icon_html}${message_html}</div>
+    </div>`
 
+  let item = document.createElement("div")
+  item.innerHTML = s
   let content = item.querySelector(".notifications_item_content")
 
   content.title = t
@@ -83,27 +86,26 @@ Hue.push_notification = function (icon, message, on_click = false) {
   content.dataset.date = d
 
   if (on_click) {
-    content.on("click", function () {
+    content.addEventListener("click", function () {
       on_click()
     })
   }
 
-  let items = $("#notifications_container .notifications_item")
-  let num_items = items.length
+  let items = Hue.els("#notifications_container .notifications_item")
 
-  if (num_items === 0) {
-    $("#notifications_container").html(item)
+  if (items.length === 0) {
+    Hue.el("#notifications_container").innerHTML = item
   } else {
-    $("#notifications_container").prepend(item)
+    Hue.el("#notifications_container").prepend(item)
   }
 
-  if (num_items > Hue.config.notifications_crop_limit) {
-    $("#notifications_container .notifications_item").last().remove()
+  if (items.length > Hue.config.notifications_crop_limit) {
+    items.slice(-1)[0].remove()
   }
 
   if (Hue.notifications_count < 100) {
     Hue.notifications_count += 1
-    $("#header_notifications_count").text(`(${Hue.notifications_count})`)
+    Hue.el("#header_notifications_count").text(`(${Hue.notifications_count})`)
   }
 }
 
@@ -111,12 +113,12 @@ Hue.push_notification = function (icon, message, on_click = false) {
 Hue.show_notifications = function (filter = "") {
   Hue.msg_notifications.show(function () {
     if (filter.trim()) {
-      $("#notifications_filter").val(filter)
+      Hue.el("#notifications_filter").val(filter)
       Hue.do_modal_filter()
     }
 
     Hue.notifications_count = 0
-    $("#header_notifications_count").text("(0)")
+    Hue.el("#header_notifications_count").text("(0)")
   })
 }
 

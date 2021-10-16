@@ -12,6 +12,7 @@ Hue.els = function (query) {
 Hue.clone = function (el) {
   let clone = el.cloneNode(true)
   clone.hue_dataset = el.hue_dataset
+  
   return clone
 }
 

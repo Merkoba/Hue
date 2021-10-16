@@ -1,22 +1,22 @@
 // Setup main menu
 Hue.setup_main_menu = function () {
-  $("#main_menu_user_menu").on("click", function () {
+  Hue.el("#main_menu_user_menu").addEventListener("click", function () {
     Hue.show_user_menu()
   })
 
-  $("#main_menu_room_menu").on("click", function () {
+  Hue.el("#main_menu_room_menu").addEventListener("click", function () {
     Hue.show_room_menu()
   })
 
-  $("#main_menu_media_menu").on("click", function () {
+  Hue.el("#main_menu_media_menu").addEventListener("click", function () {
     Hue.show_media_menu()
   })
 
-  $("#main_menu_commands").on("click", function () {
+  Hue.el("#main_menu_commands").addEventListener("click", function () {
     Hue.show_commands()
   })
 
-  $("#main_menu_create_room").on("click", function () {
+  Hue.el("#main_menu_create_room").addEventListener("click", function () {
     Hue.show_create_room()
   })
 }
@@ -29,10 +29,10 @@ Hue.show_main_menu = function () {
 // Configure main menu based on role
 Hue.config_main_menu = function () {
   if (Hue.is_admin_or_op()) {
-    $("#main_menu_room_menu").css("display", "block")
+    Hue.el("#main_menu_room_menu").style.display = "block"
   } else {
-    $("#main_menu_room_menu").css("display", "none")
+    Hue.el("#main_menu_room_menu").style.display = "none"
   }
 
-  Hue.vertical_separator($("#main_menu")[0])
+  Hue.vertical_separator(Hue.el("#main_menu"))
 }
