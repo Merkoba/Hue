@@ -274,8 +274,11 @@ Hue.do_update_userlist = function (prop = "") {
 // Some configurations for the userlist window
 Hue.setup_userlist_window = function () {
   Hue.el("#userlist").addEventListener("click", function (e) {
-    if (e.target.closest(".userlist_item")) {
-      let username = e.target.closest(".userlist_item").hue_dataset.username
+    let el = e.target.closest(".userlist_item")
+
+    if (el) {
+      console.log(el.hue_dataset)
+      let username =el.hue_dataset.username
       if (Hue.userlist_mode === "normal") {
         Hue.show_profile(username)
       } else if (Hue.userlist_mode === "whisper") {
@@ -329,7 +332,8 @@ Hue.update_userlist_window = function () {
     container.append(h)
   }
 
-  Hue.el("#userlist").innerHTML = container.innerHTML
+  Hue.el("#userlist").innerHTML = ""
+  Hue.el("#userlist").append(container)
 
   if (Hue.userlist_filtered) {
     Hue.do_modal_filter("userlist")
@@ -713,7 +717,7 @@ Hue.show_profile = function (username, user_id = false) {
   item.textContent = `ID: ${id}`
   Hue.el("#show_profile_info").append(item)
   
-  Hue.horizontal_separator(Hue.el("#show_profile_badges")[0])
+  Hue.horizontal_separator(Hue.el("#show_profile_badges"))
 
   Hue.msg_profile.show(function () {
     Hue.play_audioclip()

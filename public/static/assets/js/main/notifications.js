@@ -74,11 +74,13 @@ Hue.push_notification = function (icon, message, on_click = false) {
   let item = $(
     `<div class='notifications_item modal_item'><div class='notifications_item_content ${content_classes} dynamic_title'>${icon_html}${message_html}</div>`
   )
-  let content = item.find(".notifications_item_content").eq(0)
 
-  content.attr("title", t)
-  content.data("otitle", t)
-  content.data("date", d)
+  let content = item.querySelector(".notifications_item_content")
+
+  content.title = t
+  conent.hue_dataset = {}
+  content.dataset.otitle = t
+  content.dataset.date = d
 
   if (on_click) {
     content.on("click", function () {

@@ -227,7 +227,7 @@ Hue.show_media_history = function (type, filter = "") {
   let clone = Hue.clone_children("#chat_area").reverse()
 
   clone.forEach(function (it) {
-    it.removeAttr("id")
+    it.removeAttribute("id")
   })
 
   if (filter.trim()) {
@@ -314,7 +314,7 @@ Hue.show_media_source = function (what) {
 // More media picker configurations
 Hue.setup_media_pickers = function () {
   for (let type of Hue.utilz.media_types) {
-    Hue.horizontal_separator(Hue.el(`#${type}_picker_options`)[0])
+    Hue.horizontal_separator(Hue.el(`#${type}_picker_options`))
   }
 
   Hue.el("#image_picker_upload").addEventListener("click", function () {

@@ -419,7 +419,7 @@ Hue.add_to_chat = function (args = {}) {
     if (args.just_edited && args.id) {
       Hue.els(".chat_content_container").forEach(function (it) {
         if (it.hue_dataset.id === args.id) {
-          it.replaceWith(content_container.cloneNode(true))
+          it.replaceWith(Hue.clone(content_container))
           Hue.goto_bottom()
           return false
         }

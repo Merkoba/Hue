@@ -1,26 +1,34 @@
 // Applies separation to generic horizontal separator classes
 Hue.setup_generic_separators = function () {
-  $(".generic_horizontal_separator").each(function () {
-    Hue.horizontal_separator(this)
-  })/
+  Hue.els(".generic_horizontal_separator").forEach(function (it) {
+    Hue.horizontal_separator(it)
+  })
 
-  $(".generic_vertical_separator").each(function () {
-    Hue.vertical_separator(this)
+  Hue.els(".generic_vertical_separator").forEach(function (it) {
+    Hue.vertical_separator(it)
   })
 }
 
 // Remove & add vertical or horizontal separators
 Hue.apply_separator = function (el, cls) {
-  $(el).find("> .separator").each(function () {
-    $(this).remove()
+  el.querySelectorAll(":scope > .separator").forEach(function (it) {
+    it.remove()
   })
 
-  let elems = $(el).find(">").filter(function(){
-    if($(this).css("display") !== "none")
-      return $(this)
+  let elems = Array.from(el.children).filter(it => {
+    return it.style.display !== "none"
   })
 
-  elems.not(":last").after(`<div class='separator ${cls}'></div>`)
+  for (let i=0; i<elems.length; i++) {
+    if (i === elems.length - 1) {
+      break
+    }
+
+    let sep = document.createElement("div")
+    sep.classList.add("separator")
+    sep.classList.add(cls)
+    elems[i].insertAdjacentElement("afterend", sep)
+  }
 }
 
 // Add horizontal separators
@@ -118,19 +126,20 @@ Hue.make_safe = function (args = {}) {
     }
 
     if (args.onclick) {
-      c_text.on("click", args.onclick)
+      c_text.addEventListener("click", args.onclick)
     }
 
     if (args.date) {
       let nd = Hue.utilz.nice_date(args.date)
 
-      c_text.data("date", args.date)
-      c_text.data("otitle", nd)
-      c_text.attr("title", nd)
-      c_text.addClass("dynamic_title")
+      c_text.hue_dataset = {}
+      c_text.hue_dataset.date = args.date
+      c_text.hue_dataset.otitle = nd
+      c_text.title = nd
+      c_text.classList.add("dynamic_title")
     } else {
       if (args.title) {
-        c_text.attr("title", args.title)
+        c_text.title = args.title
       }
     }
   }
@@ -152,11 +161,11 @@ Hue.make_safe = function (args = {}) {
 
 // Setups the confirm window
 Hue.setup_confirm = function () {
-  $("#confirm_button_confirm").on("click", function () {
+  Hue.el("#confirm_button_confirm").addEventListener("click", function () {
     Hue.on_confirm()
   })
 
-  $("#confirm_button_cancel").on("click", function () {
+  Hue.el("#confirm_button_cancel").addEventListener("click", function () {
     Hue.msg_confirm.close()
   })
 }
@@ -164,11 +173,11 @@ Hue.setup_confirm = function () {
 // Shows the confirm window
 Hue.show_confirm = function (title, message, action) {
   if (message) {
-    $("#confirm_message").text(message)
-    $("#confirm_message").css("display", "block")
+    Hue.el("#confirm_message").textContent = message
+    Hue.el("#confirm_message").style.display = "block"
   } else {
-    $("#confirm_message").text("")
-    $("#confirm_message").css("display", "none")
+    Hue.el("#confirm_message").textContent = ""
+    Hue.el("#confirm_message").style.display = "none"
   }
 
   Hue.confirm_action = action
