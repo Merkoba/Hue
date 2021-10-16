@@ -1,7 +1,11 @@
-// JQuery function to turn url text into actual links
 jQuery.fn.urlize = function (stop_propagation = true) {
+
+}
+
+// Function to turn url text into actual links
+Hue.urlize = function (el, stop_propagation = true) {
   try {
-    let html = this.html()
+    let html = el.innerHTML
 
     if (!html || !Hue.utilz.includes_url(html)) {
       return false
@@ -20,10 +24,10 @@ jQuery.fn.urlize = function (stop_propagation = true) {
     }
 
     if (matches.length > 0) {
-      on_matches(matches, html, this)
+      on_matches(matches, html)
     }
 
-    function on_matches(matches, html, obj) {
+    function on_matches(matches, html) {
       let cls = "generic action"
 
       if (stop_propagation) {
@@ -45,6 +49,7 @@ jQuery.fn.urlize = function (stop_propagation = true) {
           Hue.utilz.escape_special_characters(matches[i]),
           "g"
         )
+
         let u = matches[i]
         let max = Hue.config.max_displayed_url
 
@@ -58,17 +63,17 @@ jQuery.fn.urlize = function (stop_propagation = true) {
         )
       }
 
-      $(obj).html(html)
+      el.innerHTML = html
 
-      $(obj)
-        .find(".stop_propagation")
-        .each(function () {
-          $(this).on("click", function (e) {
-            e.stopPropagation()
-          })
+      el.querySelectorAll(".stop_propagation").forEach(function () {
+        this.addEventListener("click", function (e) {
+          e.stopPropagation()
         })
+      })
     }
-  } catch (err) {}
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 // Goes to a url
