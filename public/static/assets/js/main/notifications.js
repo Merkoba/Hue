@@ -113,7 +113,7 @@ Hue.push_notification = function (icon, message, on_click = false) {
 Hue.show_notifications = function (filter = "") {
   Hue.msg_notifications.show(function () {
     if (filter.trim()) {
-      Hue.el("#notifications_filter").val(filter)
+      Hue.el("#notifications_filter").value = filter
       Hue.do_modal_filter()
     }
 

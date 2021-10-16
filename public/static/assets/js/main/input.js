@@ -64,7 +64,7 @@ Hue.clear_input = function () {
 
 // Changes the input
 Hue.change_input = function (s, to_end = true, focus = true) {
-  Hue.el("#input").val(s)
+  Hue.el("#input").value = s
 
   if (to_end) {
     Hue.input_to_end()

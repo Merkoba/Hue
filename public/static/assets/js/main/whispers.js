@@ -165,7 +165,7 @@ Hue.send_popup_message = function (force = false) {
 
   Hue.sending_whisper = true
 
-  let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#write_message_area").val()).trim()
+  let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#write_message_area").value).trim()
   let diff = Hue.config.max_whispers_post_length - message.length
 
   if (diff === Hue.config.max_whispers_post_length) {
@@ -196,7 +196,7 @@ Hue.send_popup_message = function (force = false) {
     Hue.sending_whisper = false
   }
 
-  Hue.el("#write_message_area").val("")
+  Hue.el("#write_message_area").value = ""
 }
 
 // On whisper received
@@ -414,7 +414,7 @@ Hue.push_whisper = function (message, on_click, read) {
 Hue.show_whispers = function (filter = "") {
   Hue.msg_whispers.show(function () {
     if (filter.trim()) {
-      Hue.el("#whispers_filter").val(filter)
+      Hue.el("#whispers_filter").value = filter
       Hue.do_modal_filter()
     }
   })
