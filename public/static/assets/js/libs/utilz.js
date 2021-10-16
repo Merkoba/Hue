@@ -421,7 +421,7 @@ const Utilz = function () {
 			}
 		}
 
-		return false
+		return ""
 	}
 
 	utilz.get_urls = function (s) {
