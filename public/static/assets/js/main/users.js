@@ -430,7 +430,7 @@ Hue.show_userlist_window = function (mode = "normal", filter = "") {
 
   Hue.msg_userlist.show(function () {
     if (filter.trim()) {
-      Hue.el("#userlist_filter").val(filter)
+      Hue.el("#userlist_filter").value = filter
       Hue.do_modal_filter()
     }
   })

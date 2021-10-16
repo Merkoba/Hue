@@ -136,7 +136,7 @@ Hue.modify_setting_widget = function (setting_name) {
     widget_type === "range" ||
     widget_type === "color"
   ) {
-    item.val(Hue.settings[setting_name])
+    item.value = Hue.settings[setting_name]
   } else if (widget_type === "select") {
     item.querySelectorAll("option").forEach(function (it) {
       if (it.value == Hue.settings[setting_name]) {

@@ -65,11 +65,11 @@
 					return false
 				}
 
-				Hue.el("#register_username").val(Hue.el("#register_username").val().trim())
+				Hue.el("#register_username").value = Hue.el("#register_username").value.trim()
 
-				let username = Hue.el("#register_username").val()
-				let password = Hue.el("#register_password").val()
-				let password2 = Hue.el("#register_password2").val()
+				let username = Hue.el("#register_username").value
+				let password = Hue.el("#register_password").value
+				let password2 = Hue.el("#register_password2").value
 
 				if (username.length === 0) {
 					set_message("Username can't be empty")
@@ -121,7 +121,7 @@
 			Hue.el("#register_username").addEventListener("input", on_username_input)
 
 			function on_username_input() {
-				let uname = Hue.el("#register_username").val().trim()
+				let uname = Hue.el("#register_username").value.trim()
 
 				if (uname === current_username) {
 					return
@@ -131,7 +131,7 @@
 
 				if (uname.length > max_username_length) {
 					uname = uname.substring(0, max_username_length)
-					Hue.el("#register_username").val(uname)
+					Hue.el("#register_username").value = uname
 				}
 
 				current_username = uname
@@ -142,7 +142,7 @@
 			}
 
 			if (form_username && form_username !== "undefined") {
-				Hue.el("#register_username").val(form_username)
+				Hue.el("#register_username").value = form_username
 				on_username_input()
 			}
 		</script>

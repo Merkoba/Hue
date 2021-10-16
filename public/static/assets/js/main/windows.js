@@ -162,8 +162,8 @@ Hue.start_msg = function () {
       window_width: "24rem",
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.el("#image_source_picker_input").val("")
-        Hue.el("#image_source_picker_input_comment").val("")
+        Hue.el("#image_source_picker_input").value = ""
+        Hue.el("#image_source_picker_input_comment").value = ""
         Hue.reset_media_history_filter("image")
       },
     })
@@ -175,8 +175,8 @@ Hue.start_msg = function () {
       window_width: "24rem",
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.el("#tv_source_picker_input").val("")
-        Hue.el("#tv_source_picker_input_comment").val("")
+        Hue.el("#tv_source_picker_input").value = ""
+        Hue.el("#tv_source_picker_input_comment").value = ""
         Hue.reset_media_history_filter("tv")
       },
     })
@@ -266,7 +266,7 @@ Hue.start_msg = function () {
       id: "image_upload_comment",
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.el("#image_upload_comment_input").val("")
+        Hue.el("#image_upload_comment_input").value = ""
         Hue.image_upload_comment_file = false
         Hue.image_upload_comment_type = false
       },
@@ -278,7 +278,7 @@ Hue.start_msg = function () {
       id: "tv_upload_comment",
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.el("#tv_upload_comment_input").val("")
+        Hue.el("#tv_upload_comment_input").value = ""
         Hue.tv_upload_comment_file = false
         Hue.tv_upload_comment_type = false
       },
@@ -486,8 +486,8 @@ Hue.reset_modal_filter = function (instance) {
   }
 
   if (filter.length) {
-    if (filter.val()) {
-      filter.val("")
+    if (filter.value) {
+      filter.value = ""
       Hue.do_modal_filter(id)
     }
   }
@@ -590,7 +590,7 @@ Hue.do_modal_filter = function (id = false) {
     return false
   }
 
-  let value = filter.val().trim()
+  let value = filter.value.trim()
   let lc_value = Hue.utilz.clean_string2(value).toLowerCase()
   let items = win.querySelectorAll(".modal_item")
   let display

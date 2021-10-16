@@ -39,7 +39,7 @@ Hue.enable_footer_expand = function () {
     return
   }
 
-  Hue.el("#footer").addClass("footer_expanded")
+  Hue.el("#footer").classList.add("footer_expanded")
   Hue.after_footer_expand_change()
 }
 
@@ -49,7 +49,7 @@ Hue.disable_footer_expand = function () {
     return
   }
 
-  Hue.el("#footer").removeClass("footer_expanded")
+  Hue.el("#footer").classList.remove("footer_expanded")
   Hue.after_footer_expand_change()
 }
 

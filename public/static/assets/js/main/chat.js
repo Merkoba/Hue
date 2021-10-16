@@ -686,10 +686,10 @@ Hue.show_fresh_messages = function () {
   }
 
   for (let container of Hue.fresh_messages_list) {
-    container.addClass("fresh_message")
+    container.classList.add("fresh_message")
 
     setTimeout(function () {
-      container.removeClass("fresh_message")
+      container.classList.remove("fresh_message")
     }, Hue.fresh_messages_duration)
   }
 
@@ -1360,7 +1360,7 @@ Hue.setup_link_preview = function (fmessage) {
 
     link_preview_image.addEventListener("error", function () {
       link_preview_image.style.display = "none"
-      link_preview_el.removeClass("link_preview_with_image")
+      link_preview_el.classList.remove("link_preview_with_image")
       Hue.goto_bottom()
     })
   }

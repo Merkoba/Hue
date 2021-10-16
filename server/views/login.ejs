@@ -23,10 +23,10 @@
 					return false
 				}
 
-				Hue.el("#login_username").val(Hue.el("#login_username").val().trim())
+				Hue.el("#login_username").value = Hue.el("#login_username").value.trim()
 
-				let username = Hue.el("#login_username").val()
-				let password = Hue.el("#login_password").val()
+				let username = Hue.el("#login_username").value
+				let password = Hue.el("#login_password").value
 
 				if (username.length === 0) {
 					set_message("Username can't be empty")
@@ -87,7 +87,7 @@
 			Hue.el("#login_username").trigger("focus")
 
 			if(form_username && form_username !== "undefined") {
-				Hue.el("#login_username").val(form_username)
+				Hue.el("#login_username").value = form_username
 			}
 		</script>
 	</body>
