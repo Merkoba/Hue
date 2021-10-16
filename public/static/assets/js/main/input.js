@@ -28,12 +28,6 @@ Hue.setup_input = function () {
     }
   })
 
-  $("#input").on("focus", function () {
-    if (Hue.context_menu_open) {
-      $(".context-menu-list").trigger("contextmenu:hide")
-    }
-  })
-
   $("#input").on("paste", function (e) {
     let items = (e.clipboardData || e.originalEvent.clipboardData).items
 

@@ -435,8 +435,11 @@ Hue.add_to_chat = function (args = {}) {
           Hue.config.max_same_post_messages
         ) {
           let date_diff =
-            Array.from(args.message.querySelectorAll(".chat_content")).slice(-1)[0].dataset.date -
-            Array.from(last_message.querySelectorAll(".chat_content")).slice(-1)[0].dataset.date
+            parseInt(Array.from(args.message.querySelectorAll(".chat_content")
+            ).slice(-1)[0].dataset.date) -
+
+            parseInt(Array.from(last_message.querySelectorAll(".chat_content")
+            ).slice(-1)[0].dataset.date)
   
           if (date_diff < Hue.config.max_same_post_diff) {
             content_container.dataset.date = date
@@ -1115,9 +1118,10 @@ Hue.jump_to_chat_message = function (message_id) {
     return false
   }
 
-  el[0].scrollIntoView({
+  el.scrollIntoView({
     block: "center"
   })
+
   Hue.close_all_modals()
 }
 

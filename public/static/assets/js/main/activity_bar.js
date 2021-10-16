@@ -5,8 +5,10 @@ Hue.setup_activity_bar = function () {
     Hue.update_activity_bar(true)
   }, Hue.config.activity_bar_interval)
 
-  $("#activity_bar").on("click", ".activity_bar_item", function () {
-    Hue.show_profile("", $(this).data("user_id"))
+  document.querySelector("#activity_bar").addEventListener("click", function (e) {
+    if (e.target.closest(".activity_bar_item")) {
+      Hue.show_profile("", e.target.closest(".activity_bar_item").dataset.user_id)
+    }
   })
 }
 
@@ -37,39 +39,42 @@ Hue.update_activity_bar = function (check = false) {
   for (let user of activity_list) {
     let pi = Hue.get_profilepic(user.user_id)
 
-    let h = $(`
+    let s = `
       <div class='activity_bar_item'>
           <div class='activity_bar_image_container round_image_container'>
               <img class='activity_bar_image profilepic' src='${pi}' loading='lazy'>
           </div>
           <div class='activity_bar_text'></div>
-      </div>`)
+      </div>`
 
-    let text_el = h.find(".activity_bar_text").eq(0)
-    let img_el = h.find(".activity_bar_image").eq(0)
+    let el0 = document.createElement("div")
+    el0.innerHTML = s
+    let el = el0.firstElementChild
+    let text_el = el.querySelector(".activity_bar_text")
+    let img_el = el.querySelector(".activity_bar_image")
 
-    img_el.on("error", function () {
-      if ($(this).attr("src") !== Hue.config.default_profilepic_url) {
-        $(this).attr("src", Hue.config.default_profilepic_url)
+    img_el.addEventListener("error", function () {
+      if (this.src !== Hue.config.default_profilepic_url) {
+        this.src = Hue.config.default_profilepic_url
       }
     })
 
-    img_el.data("user_id", user.user_id)
-    text_el.text(user.username.slice(0, Hue.config.max_activity_username_length))
-    h.data("user_id", user.user_id)
-    h.data("uname", user.username)
-    $("#activity_bar_inner").append(h)
+    img_el.dataset.user_id = user.user_id
+    text_el.textContent = user.username.slice(0, Hue.config.max_activity_username_length)
+    el.dataset.user_id = user.user_id
+    el.dataset.uname =user.username
+    document.querySelector("#activity_bar_inner").append(el)
   }
 
   Hue.resize_activity_bar()
 }
 
 Hue.resize_activity_bar = function () {
-  let ab_inner = $("#activity_bar_inner")
-  ab_inner.removeClass("no_usernames")
+  let ab_inner = document.querySelector("#activity_bar_inner")
+  ab_inner.classList.remove("no_usernames")
 
-  if (ab_inner[0].scrollWidth > ab_inner[0].clientWidth) {
-    ab_inner.addClass("no_usernames")
+  if (ab_inner.scrollWidth > ab_inner.clientWidth) {
+    ab_inner.classList.add("no_usernames")
   }
 }
 
@@ -77,9 +82,9 @@ Hue.resize_activity_bar = function () {
 Hue.get_activity_bar_item_by_user_id = function (id) {
   let item = false
 
-  $(".activity_bar_item").each(function () {
-    if ($(this).data("user_id") === id) {
-      item = this
+  document.querySelectorAll(".activity_bar_item").forEach(function (it) {
+    if (it.dataset.user_id === id) {
+      item = it
       return false
     }
   })
@@ -89,21 +94,21 @@ Hue.get_activity_bar_item_by_user_id = function (id) {
 
 // Removes all items on the activity bar
 Hue.clear_activity_bar_items = function () {
-  $("#activity_bar_inner")
-    .find(".activity_bar_item")
-    .each(function () {
-      $(this).remove()
-    })
+  document.querySelector("#activity_bar_inner")
+  .querySelectorAll(".activity_bar_item")
+  .forEach(function (it) {
+    it.remove()
+  })
 }
 
 // Updates the profile image of an item in the activity bar
 Hue.update_activity_bar_image = function (id, src) {
-  $("#activity_bar_inner")
-    .find(".activity_bar_item")
-    .each(function () {
-      if ($(this).data("user_id") === id) {
-        $(this).find(".activity_bar_image").eq(0).attr("src", src)
-        return false
-      }
-    })
+  document.querySelector("#activity_bar_inner")
+  .querySelectorAll(".activity_bar_item")
+  .forEach(function (it) {
+    if (it.dataset.user_id === id) {
+      it.querySelector(".activity_bar_image").src = src
+      return false
+    }
+  })
 }
