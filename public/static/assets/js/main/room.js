@@ -167,31 +167,29 @@ Hue.request_admin_activity = function (filter = "") {
 
 // Shows the admin activity list
 Hue.show_admin_activity = function (messages) {
-  $("#admin_activity_container").html("")
+  document.querySelector("#admin_activity_container").innerHTML = ""
 
   Hue.msg_admin_activity.show(function () {
     for (let message of messages) {
       let nice_date = Hue.utilz.nice_date(message.date)
 
-      let el = $(`
-            <div class='modal_item admin_activity_item dynamic_title' title='${nice_date}'>
-                <div class='admin_activity_message'></div>
-                <div class='admin_activity_date'></div>
-            </div>`)
+      let s = `
+        <div class='modal_item admin_activity_item dynamic_title' title='${nice_date}'>
+            <div class='admin_activity_message'></div>
+            <div class='admin_activity_date'></div>
+        </div>`
 
-      el.find(".admin_activity_message")
-        .eq(0)
-        .text(`${message.data.username} ${message.data.content}`)
-      el.find(".admin_activity_date").eq(0).text(nice_date)
-
-      el.data("date", message.date)
-      el.data("otitle", nice_date)
-
-      $("#admin_activity_container").prepend(el)
+      let el0 = document.createElement("div")
+      el0.innerHTML = s
+      let el = el0.firstElementChild
+      el.querySelector(".admin_activity_message").textContent = `${message.data.username} ${message.data.content}`
+      el.querySelector(".admin_activity_date").textContent = nice_date
+      el.dataset.date = message.date
+      el.dataset.otitle = nice_date
+      document.querySelector("#admin_activity_container").prepend(el)
     }
 
-    $("#admin_activity_filter").val(Hue.admin_activity_filter_string)
-
+    document.querySelector("#admin_activity_filter").value = Hue.admin_activity_filter_string
     Hue.do_modal_filter()
   })
 }
@@ -208,25 +206,30 @@ Hue.request_admin_list = function () {
 
 // Shows the admin list
 Hue.show_admin_list = function (data) {
-  let s = $("<div id='admin_list_container' class='grid_column_center'></div>")
-
   data.list.sort(Hue.compare_userlist)
+  let s = "<div id='admin_list_container' class='grid_column_center'></div>"
+  let el0 = document.createElement("div")
+  el0.innerHTML = s
+  let el = el0.firstElementChild
 
   for (let user of data.list) {
-    let hs =
-      "<div class='flex_row_center'><div class='admin_list_username'></div>&nbsp;&nbsp;<div class='admin_list_role'></div></div>"
-    let h = $(`<div class='admin_list_item action'>${hs}</div>`)
+    let hs = `
+      <div class='flex_row_center'><div class='admin_list_username'>
+      </div>&nbsp;&nbsp;<div class='admin_list_role'></div></div>`
 
-    h.find(".admin_list_username").eq(0).text(user.username)
-    h.find(".admin_list_role")
-      .eq(0)
-      .text(`(${Hue.get_pretty_role_name(user.role)})`)
+    let h = `<div class='admin_list_item action'>${hs}</div>`
+    let hel0 = document.createElement("div")
+    hel0.innerHTML = h
+    let hel = hel0.firstElementChild
 
-    h.on("click", function () {
+    hel.querySelector(".admin_list_username").textContent = user.username
+    hel.querySelector(".admin_list_role").textContent = `(${Hue.get_pretty_role_name(user.role)})`
+
+    hel.addEventListener("click", function () {
       Hue.show_profile(user.username)
     })
 
-    s.append(h)
+    el.append(h)
   }
 
   Hue.msg_info2.show([`Admin List (${data.list.length})`, s[0]], function () {
@@ -246,22 +249,27 @@ Hue.request_ban_list = function () {
 
 // Shows the ban list
 Hue.show_ban_list = function (data) {
-  let s = $("<div id='ban_list_container' class='grid_column_center'></div>")
+  let s = "<div id='ban_list_container' class='grid_column_center'></div>"
+  let el0 = document.createElement("div")
+  el0.innerHTML = s
+  let el = el0.firstElementChild
 
   for (let user of data.list) {
-    let hs =
-      "<div class='flex_row_center'><div class='ban_list_username' title='Click To Unban'></div></div>"
-    let h = $(`<div class='ban_list_item action'>${hs}</div>`)
+    let hs = `<div class='flex_row_center'><div class='ban_list_username' title='Click To Unban'></div></div>`
+    let h = `<div class='ban_list_item action'>${hs}</div>`
+    let hel0 = document.createElement("div")
+    hel0.innerHTML = h
+    let hel = hel0.firstElementChild
 
-    h.find(".ban_list_username").eq(0).text(user.username)
+    hel.querySelector(".ban_list_username").textContent = user.username
 
-    h.on("click", function () {
+    hel.addEventListener("click", function () {
       Hue.show_confirm(`Unban ${user.username}`, "", function () {
         Hue.unban(user.username)
       })
     })
 
-    s.append(h)
+    el.append(h)
   }
 
   Hue.msg_info2.show([`Ban List (${data.list.length})`, s[0]], function () {
@@ -299,10 +307,10 @@ Hue.set_background = function (data, apply = true) {
 
 // Setups background
 Hue.setup_background = function () {
-  $(".background").each(function () {
-    $(this).on("error", function () {
-      if ($(this).attr("src") !== Hue.config.default_background_url) {
-        $(this).attr("src", Hue.config.default_background_url)
+  document.querySelectorAll(".background").forEach(function (it) {
+    it.addEventListener("error", function () {
+      if (this.src !== Hue.config.default_background_url) {
+        this.src = Hue.config.default_background_url
       }    
     })
   })
@@ -310,8 +318,8 @@ Hue.setup_background = function () {
 
 // Applies the background to all background elements
 Hue.apply_background = function () {
-  $(".background").each(function () {
-    $(this).attr("src", Hue.background)
+  document.querySelectorAll(".background").forEach(function (it) {
+    it.src = Hue.background
   })
 }
 
@@ -390,26 +398,26 @@ Hue.open_background_select = function () {
     "Change Background",
     Hue.template_background_select(),
   ], function () {
-    $("#background_select_draw").on("click", function () {
+    document.querySelector("#background_select_draw").addEventListener("click", function () {
       Hue.msg_info2.close()
       Hue.open_draw_image("background")
     })
 
-    $("#background_select_url").on("click", function () {
+    document.querySelector("#background_select_url").addEventListener("click", function () {
       Hue.open_background_input()
     })
 
-    $("#background_select_upload").on("click", function () {
+    document.querySelector("#background_select_upload").addEventListener("click", function () {
       Hue.msg_info2.close()
       Hue.open_background_picker()
     })
   })
-  Hue.horizontal_separator($("#background_select_container")[0])
+  Hue.horizontal_separator(document.querySelector("#background_select_container"))
 }
 
 // If upload is chosen as the method to change the background image
 Hue.open_background_picker = function () {
-  $("#background_input").trigger("click")
+  document.querySelector("#background_input").click()
 }
 
 // If a URL source is chosen as the method to change the background image
@@ -418,11 +426,11 @@ Hue.open_background_input = function () {
   Hue.msg_info2.show(
     ["Change Background", Hue.template_background_input()],
     function () {
-      $("#background_input_submit").on("click", function () {
+      document.querySelector("#background_input_submit").addEventListener("click", function () {
         Hue.background_input_action()
       })
 
-      $("#background_input_text").trigger("focus")
+      document.querySelector("#background_input_text").focus()
       Hue.background_input_open = true
     }
   )
@@ -430,7 +438,7 @@ Hue.open_background_input = function () {
 
 // On background image source input change
 Hue.background_input_action = function () {
-  let src = $("#background_input_text").val().trim()
+  let src = document.querySelector("#background_input_text").value.trim()
 
   if (Hue.change_background_source(src)) {
     Hue.msg_info2.close()
@@ -449,18 +457,14 @@ Hue.background_selected = function (file) {
 
   let size = file.size / 1024
 
-  $("#background_input").closest("form").get(0).reset()
+  document.querySelector("#background_input").closest("form").reset()
 
   if (size > Hue.config.max_image_size) {
     Hue.checkmsg("File is too big")
     return false
   }
 
-  $("#admin_background").attr(
-    "src",
-    Hue.config.background_loading_url
-  )
-
+  document.querySelector("#admin_background").src = Hue.config.background_loading_url
   Hue.upload_file({ file: file, action: "background_upload" })
 }
 
