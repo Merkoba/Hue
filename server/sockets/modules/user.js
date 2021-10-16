@@ -211,7 +211,17 @@ module.exports = function (
 
   // Remove the audio clip
   handler.public.remove_audioclip = function (socket, data) {
-    handler.do_change_audioclip(socket, "")
+    let file_name = "audioclip.mp3"
+    let container = vars.path.join(vars.media_root, "user", socket.hue_user_id)
+    let path = vars.path.join(container, file_name)
+    
+    if (vars.fs.existsSync(path)) {
+      vars.fs.unlink(path, function (err) {
+        if (err) {
+          logger.log_error(err)
+        }
+      })
+    }
   }
 
   // Completes audio clip changes
