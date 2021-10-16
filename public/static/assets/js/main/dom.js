@@ -13,7 +13,7 @@ Hue.clone_children = function (query) {
   let items = []
   let children = Array.from(Hue.el(query).children)
   
-  for (let c of children.reverse()) {
+  for (let c of children) {
     items.push(c.cloneNode(true))
   }
 
