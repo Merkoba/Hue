@@ -1,51 +1,44 @@
 // Setups the message board
 Hue.setup_message_board = function () {
-  $("#message_board_post_icon").on("click", function () {
-    Hue.create_message_board_post()
+  Hue.el("#message_board_post_textarea").addEventListener("input blur", function () {
+    this.value = this.value.substring(0, Hue.config.max_message_board_post_length)
   })
 
-  $("#message_board_post_button").on("click", function () {
-    Hue.submit_message_board_post()
-  })
+  Hue.el("#message_board_container").addEventListener("click",
+    function (e) {
+      let el = e.target.closest(".message_board_delete")
 
-  $("#message_board_post_textarea").on("input blur", function () {
-    let val = $(this)
-      .val()
-      .substring(0, Hue.config.max_message_board_post_length)
-    $(this).val(val)
-  })
-
-  $("#message_board_container").on(
-    "click",
-    ".message_board_delete",
-    function () {
-      let item = $(this).closest(".message_board_item")
-      let id = item.data("id")
-
-      if (id) {
-        Hue.show_confirm("Delete Message", "", function () {
-          Hue.socket_emit("delete_message_board_post", { id: id })
-        })
+      if (el) {
+        let item = el.closest(".message_board_item")
+        let id = item.data("id")
+  
+        if (id) {
+          Hue.show_confirm("Delete Message", "", function () {
+            Hue.socket_emit("delete_message_board_post", { id: id })
+          })
+        }
       }
     }
   )
 
-  $("#message_board_container").on(
-    "click",
-    ".message_board_username",
-    function () {
-      Hue.show_profile($(this).data("uname"))
+  Hue.el("#message_board_container").addEventListener("click",
+    function (e) {
+      let el = e.target.closest(".message_board_username")
+      
+      if (el) {
+        Hue.show_profile(el.hue_dataset.uname)
+      }
     }
   )
 
-  $("#message_board_publish").on("click", function () {
+  Hue.el("#message_board_publish").addEventListener("click", function () {
     Hue.submit_message_board_post()
   })
 }
 
 // Creates and adds an item to the message board
 Hue.add_post_to_message_board = function (post) {
-  let item = $(`
+  let s = `
     <div class='message_board_item modal_item'>
         <div class='message_board_top'>
           <div class='message_board_username action'></div>
@@ -53,50 +46,55 @@ Hue.add_post_to_message_board = function (post) {
         </div>
         <div class='message_board_text dynamic_title'></div>
         <div><div class='message_board_delete action inline underlined'>Delete</div></div>
-    </div>`)
+    </div>`
 
-  item.data("id", post.id)
-  item.data("date", post.date)
+  let item = document.createElement("div")
+  item.innerHTML = s
+  item.hue_dataset = {}
+  item.hue_dataset.id = post.id
+  item.hue_dataset.date = post.date
 
-  let username = item.find(".message_board_username").eq(0)
-  username.text(post.username)
-  username.data("uname", post.username)
+  let username = item.querySelector(".message_board_username")
+  username.textContent = post.username
+  username.hue_dataset = {}
+  username.hue_dataset.uname = post.username
 
-  let date = item.find(".message_board_date").eq(0)
-  date.text(Hue.utilz.nice_date(post.date))
+  let date = item.querySelector(".message_board_date")
+  date.textContent = Hue.utilz.nice_date(post.date)
 
-  let text = item.find(".message_board_text").eq(0)
-  text.html(Hue.parse_text(Hue.utilz.make_html_safe(post.message))).urlize()
+  let text = item.querySelector(".message_board_text")
+  text.innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(post.message))
+  Hue.urlize(text)
   let title = Hue.utilz.nice_date(post.date)
 
   if (post.id) {
     title = `${post.id.slice(-3)} | ${title}`
   }
 
-  text.attr("title", title)
-  text.data("date", post.date)
-  text.data("otitle", title)
+  text.title = title
+  text.hue_dataset = {}
+  text.hue_dataset.date = post.date
+  text.hue_dataset.otitle = title
 
-  let delet = item.find(".message_board_delete").eq(0)
+  let delet = item.querySelector(".message_board_delete")
 
   if (post.user_id === Hue.user_id) {
-    delet.css("display", "inline-block")
+    delet.style.display = "inline-block"
   }
 
-  let items = $("#message_board_container .message_board_item")
+  let items = Hue.els("#message_board_container .message_board_item")
   let num_items = items.length
 
   if (num_items === 0) {
-    $("#message_board_container").html(item)
+    Hue.el("#message_board_container").innerHTML = item
   } else {
-    $("#message_board_container").prepend(item)
+    Hue.el("#message_board_container").prepend(item)
   }
 
-  if (
-    $("#message_board_container").find(".message_board_item").length >
-    Hue.config.max_message_board_posts
-  ) {
-    $("#message_board_container").find(".message_board_item").last().remove()
+  let mb_items = Array.from(Hue.el("#message_board_container").querySelectorAll(".message_board_item"))
+
+  if (mb_items.length > Hue.config.max_message_board_posts) {
+    mb_items.slice(-1)[0].remove()
   }
 
   if (Hue.message_board_filtered) {
@@ -107,7 +105,7 @@ Hue.add_post_to_message_board = function (post) {
 // Fills the message board with init data
 Hue.init_message_board = function (data) {
   if (data.message_board_posts.length > 0) {
-    $("#message_board_container").html("")
+    Hue.el("#message_board_container").innerHTML = ""
   }
 
   for (let post of data.message_board_posts) {
@@ -115,7 +113,7 @@ Hue.init_message_board = function (data) {
   }
 
   Hue.check_last_message_board_post()
-  Hue.vertical_separator($("#message_board_container")[0])
+  Hue.vertical_separator(Hue.el("#message_board_container"))
 }
 
 // Shows the message board
@@ -125,10 +123,10 @@ Hue.show_message_board = function (filter = "") {
     Hue.check_last_message_board_post()
 
     if (filter.trim()) {
-      $("#message_board_filter").val(filter)
+      Hue.el("#message_board_filter").value = filter
       Hue.do_modal_filter()
     } else {
-      $("#message_board_post_textarea").trigger("focus")
+      Hue.el("#message_board_post_textarea").focus()
     }
   })
 }
@@ -139,13 +137,13 @@ Hue.submit_message_board_post = function () {
     return false
   }
 
-  let message = Hue.utilz.remove_multiple_empty_lines($("#message_board_post_textarea").val()).trim()
+  let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#message_board_post_textarea").value).trim()
 
   if (!message || message.length > Hue.config.max_message_board_post_length) {
     return false
   }
 
-  $("#message_board_post_textarea").val("")
+  Hue.el("#message_board_post_textarea").value = ""
   Hue.socket_emit("message_board_post", { message: message })
 }
 
@@ -164,46 +162,45 @@ Hue.on_message_board_received = function (data) {
     Hue.update_last_message_post_checked()
   }
 
-  Hue.vertical_separator($("#message_board_container")[0])
+  Hue.vertical_separator(Hue.el("#message_board_container")[0])
 }
 
 // Checks if there are new message board posts
 Hue.check_last_message_board_post = function () {
-  let items = $("#message_board_container").find(".message_board_item")
+  let items = Hue.el("#message_board_container").querySelectorAll(".message_board_item")
 
   if (items.length === 0) {
-    $("#header_message_board_count").text("(0)")
+    Hue.el("#header_message_board_count").textContent = "(0)"
     return false
   }
 
   let date = Hue.room_state.last_message_board_post
 
-  if (items.first().data("date") > date) {
+  if (items[0].hue_dataset.date > date) {
     if (!Hue.msg_message_board.is_open()) {
       let count = 0
 
-      $("#message_board_container")
-        .find(".message_board_item")
-        .each(function () {
-          if ($(this).data("date") <= date) {
+      Hue.el("#message_board_container").querySelectorAll(".message_board_item")
+        forEach(function (it) {
+          if (it.hue_dataset.date <= date) {
             return false
           }
 
           count += 1
         })
 
-      $("#header_message_board_count").text(`(${count})`)
+      Hue.el("#header_message_board_count").textContent = `(${count})`
     } else {
       Hue.update_last_message_post_checked()
     }
   } else {
-    $("#header_message_board_count").text("(0)")
+    Hue.el("#header_message_board_count").textContent = "(0)"
   }
 }
 
 // Updates the message board date local storage
 Hue.update_last_message_post_checked = function () {
-  let item = $("#message_board_container").find(".message_board_item").first()
+  let item = Hue.el("#message_board_container").querySelector(".message_board_item")
   let date = item.data("date")
 
   if (date !== Hue.room_state.last_message_board_post) {
@@ -216,25 +213,24 @@ Hue.update_last_message_post_checked = function () {
 Hue.check_message_board_permissions = function () {
   if (Hue.is_admin_or_op(Hue.role)) {
     if (Hue.role === "admin") {
-      $("#message_board_container").addClass("message_board_container_admin")
+      Hue.el("#message_board_container").classList.add("message_board_container_admin")
     } else {
-      $("#message_board_container").removeClass("message_board_container_admin")
+      Hue.el("#message_board_container").classList.remove("message_board_container_admin")
     }
     
-    $("#message_board_input").css("display", "block")
+    Hue.el("#message_board_input").style.display = "block"
   } else {
-    $("#message_board_container").removeClass("message_board_container_admin")
-    $("#message_board_input").css("display", "none")
+    Hue.el("#message_board_container").classList.remove("message_board_container_admin")
+    Hue.el("#message_board_input").style.display = "none"
   }
 }
 
 // Remove a post from the message board window
 Hue.remove_message_board_post = function (data) {
-  $("#message_board_container")
-    .find(".message_board_item")
-    .each(function () {
-      if ($(this).data("id") === data.id) {
-        $(this).remove()
+  Hue.el("#message_board_container").querySelectorAll(".message_board_item")
+    .forEach(function (it) {
+      if (it.hue_dataset.id === data.id) {
+        it.remove()
         return false
       }
     })

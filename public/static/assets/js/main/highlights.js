@@ -116,7 +116,7 @@ Hue.show_highlights = function (filter = "") {
   Hue.el("#highlights_container").innerHTML = ""
   Hue.el("#highlights_filter").value = filter ? filter : ""
 
-  let clone = Hue.clone_children("#chat_area")
+  let clone = Hue.clone_children("#chat_area").reverse()
 
   clone.each(function () {
     $(this).removeAttr("id")

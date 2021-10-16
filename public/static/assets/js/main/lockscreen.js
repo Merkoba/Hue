@@ -1,24 +1,24 @@
 // Setups lockscreen events
 Hue.setup_lockscreen = function () {
-  $("#lockscreen_title_menu").on("mouseenter", function () {
+  Hue.el("#lockscreen_title_menu").addEventListener("mouseenter", function () {
     Hue.lockscreen_peek_timeout = setTimeout(function () {
-      $("#Msg-container-lockscreen").css("opacity", 0.2)
+      Hue.el("#Msg-container-lockscreen").style.opacity = 0.2
       Hue.lockscreen_peek_active = true
     }, Hue.lockscreen_peek_delay)
   })
 
-  $("#lockscreen_title_menu").on("mouseleave", function () {
+  Hue.el("#lockscreen_title_menu").addEventListener("mouseleave", function () {
     clearTimeout(Hue.lockscreen_peek_timeout)
 
     if (Hue.lockscreen_peek_active) {
-      $("#Msg-container-lockscreen").css("opacity", 1)
+      Hue.el("#Msg-container-lockscreen").style.opacity = 1
       Hue.remove_alert_title()
     }
 
     Hue.lockscreen_peek_active = false
   })
 
-  $("#lockscreen_principal").on("click", function () {
+  Hue.el("#lockscreen_principal").addEventListener("click", function () {
     Hue.unlock_screen()
   })
 }
