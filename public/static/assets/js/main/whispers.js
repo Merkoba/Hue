@@ -112,7 +112,7 @@ Hue.write_popup_message = function (unames = [], type = "user") {
   Hue.message_type = type
 
   Hue.msg_message.show(function () {
-    $("#write_message_area").trigger("focus")
+    Hue.el("#write_message_area").focus()
 
     if (type === "user") {
       Hue.show_message_feedback("Click titlebar to add more users")
@@ -165,7 +165,7 @@ Hue.send_popup_message = function (force = false) {
 
   Hue.sending_whisper = true
 
-  let message = Hue.utilz.remove_multiple_empty_lines($("#write_message_area").val()).trim()
+  let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#write_message_area").val()).trim()
   let diff = Hue.config.max_whispers_post_length - message.length
 
   if (diff === Hue.config.max_whispers_post_length) {
@@ -196,7 +196,7 @@ Hue.send_popup_message = function (force = false) {
     Hue.sending_whisper = false
   }
 
-  $("#write_message_area").val("")
+  Hue.el("#write_message_area").val("")
 }
 
 // On whisper received
@@ -249,16 +249,16 @@ Hue.show_whisper = function (data) {
 
   modal.show(function () {
     let container = modal.content
-    let text_el = $(container).find(".sent_message_text").eq(0)
+    let text_el = container.querySelector(".sent_message_text")
     text_el.html(message_html)
     text_el.urlize()
-    let button_el = $(container).find(".sent_message_button").eq(0)
+    let button_el = container.querySelector(".sent_message_button")
 
     if (data.type === "user") {
       button_el.html(button_html)
-      button_el.on("click", button_func)
+      button_el.addEventListener("click", button_func)
     } else {
-      button_el.css("display", "none")
+      button_el.style.display = "none"
     }
     
     Hue.setup_whispers_click(text_el, usr[0])
@@ -345,25 +345,20 @@ Hue.do_send_whisper = function (data, show = true) {
 
 // Setups whispers click events
 Hue.setup_whispers_click = function (content, username) {
-  $(content)
-    .find(".whisper_link")
-    .each(function () {
-      $(this).on("click", function () {
-        Hue.process_write_whisper(
-          `${username} > ${$(this).data("whisper")}`,
-          false
-        )
-      })
+  content.querySelectorAll(".whisper_link").forEach(function (it) {
+    it.addEventListener("click", function () {
+      Hue.process_write_whisper(`${username} > ${Hue.dataset[it].whisper}`, false)
     })
+  })
 }
 
 // Setups the message window
 Hue.setup_message_window = function () {
-  $("#write_message_send_button").on("click", function () {
+  Hue.el("#write_message_send_button").addEventListener("click", function () {
     Hue.send_popup_message()
   })
 
-  $("#write_message_send_button").dblclick(function () {
+  Hue.el("#write_message_send_button").addEventListener("dblclick", function () {
     Hue.send_popup_message(true)
   })
 }
@@ -382,10 +377,10 @@ Hue.push_whisper = function (message, on_click, read) {
   let content = item.querySelector(".whispers_item_content")
 
   content.title = t
-  content.hue_dataset = {}
-  content.hue_dataset.otitle = t
-  content.hue_dataset.date = d
-  content.hue_dataset.read = read
+  Hue.dataset[content] = {}
+  Hue.dataset[content].otitle = t
+  Hue.dataset[content].date = d
+  Hue.dataset[content].read = read
 
   if (read) {
     content.text(message)
@@ -393,21 +388,21 @@ Hue.push_whisper = function (message, on_click, read) {
     content.text(`${message} (unread)`)
   }
 
-  content.on("click", function () {
+  content.addEventListener("click", function () {
     on_click()
   })
 
-  let items = $("#whispers_container .whispers_item")
+  let items = Hue.el("#whispers_container .whispers_item")
   let num_items = items.length
 
   if (num_items === 0) {
-    $("#whispers_container").html(item)
+    Hue.el("#whispers_container").html(item)
   } else {
-    $("#whispers_container").prepend(item)
+    Hue.el("#whispers_container").prepend(item)
   }
 
   if (num_items > Hue.config.whispers_crop_limit) {
-    $("#whispers_container .whispers_item").last().remove()
+    Hue.el("#whispers_container .whispers_item").last().remove()
   }
 
   Hue.update_whispers_unread_count()
@@ -419,7 +414,7 @@ Hue.push_whisper = function (message, on_click, read) {
 Hue.show_whispers = function (filter = "") {
   Hue.msg_whispers.show(function () {
     if (filter.trim()) {
-      $("#whispers_filter").val(filter)
+      Hue.el("#whispers_filter").val(filter)
       Hue.do_modal_filter()
     }
   })
@@ -427,15 +422,15 @@ Hue.show_whispers = function (filter = "") {
 
 // Updates the whispers unread count
 Hue.update_whispers_unread_count = function () {
-  $("#header_whispers_count").text(`(${Hue.get_unread_whispers()})`)
+  Hue.el("#header_whispers_count").text(`(${Hue.get_unread_whispers()})`)
 }
 
 // Get a list of unread whispers
 Hue.get_unread_whispers = function () {
   let num_unread = 0
 
-  $(".whispers_item_content").each(function () {
-    if (!$(this).data("read")) {
+  Hue.els(".whispers_item_content").forEach(function (it) {
+    if (!Hue.dataset[it].read) {
       num_unread += 1
     }
   })
@@ -445,6 +440,6 @@ Hue.get_unread_whispers = function () {
 
 // Shows the message feedback
 Hue.show_message_feedback = function (s) {
-  $("#write_message_feedback").text(s)
-  $("#write_message_feedback").css("display", "block")
+  Hue.el("#write_message_feedback").text(s)
+  Hue.el("#write_message_feedback").style.display = "block"
 }

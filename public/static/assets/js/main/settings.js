@@ -6,9 +6,9 @@ Hue.user_settings = {
     widget_type: "checkbox",
     description: `Whether messages containing the user's username must be highlighted`,
     action: (save = true) => {
-      Hue.settings.highlight_current_username = $(
+      Hue.settings.highlight_current_username = Hue.el(
         `#settings_highlight_current_username`
-      ).prop("checked")
+      ).checked
 
       if (save) {
         Hue.save_settings()
@@ -19,9 +19,9 @@ Hue.user_settings = {
     widget_type: "checkbox",
     description: `Whether username highlight checks are case insensitive or not`,
     action: (save = true) => {
-      Hue.settings.case_insensitive_username_highlights = $(
+      Hue.settings.case_insensitive_username_highlights = Hue.el(
         `#settings_case_insensitive_username_highlights`
-      ).prop("checked")
+      ).checked
 
       Hue.generate_mentions_regex()
 
@@ -34,9 +34,7 @@ Hue.user_settings = {
     widget_type: "checkbox",
     description: `Whether messages received should open in a window automatically`,
     action: (save = true) => {
-      Hue.settings.open_whispers_automatically = $(`#settings_open_whispers_automatically`).prop(
-        "checked"
-      )
+      Hue.settings.open_whispers_automatically = Hue.el(`#settings_open_whispers_automatically`).checked
 
       if (save) {
         Hue.save_settings()
@@ -47,9 +45,7 @@ Hue.user_settings = {
     widget_type: "checkbox",
     description: `Whether to show image previews on certain chat image links`,
     action: (save = true) => {
-      Hue.settings.show_image_previews = $(`#settings_show_image_previews`).prop(
-        "checked"
-      )
+      Hue.settings.show_image_previews = Hue.el(`#settings_show_image_previews`).checked
 
       if (save) {
         Hue.save_settings()
@@ -60,9 +56,7 @@ Hue.user_settings = {
     widget_type: "checkbox",
     description: `Whether to show related information of chat links when available`,
     action: (save = true) => {
-      Hue.settings.show_link_previews = $(`#settings_show_link_previews`).prop(
-        "checked"
-      )
+      Hue.settings.show_link_previews = Hue.el(`#settings_show_link_previews`).checked
 
       if (save) {
         Hue.save_settings()
@@ -73,9 +67,7 @@ Hue.user_settings = {
     widget_type: "checkbox",
     description: `Whether to show desktop notifications on highlights`,
     action: (save = true) => {
-      Hue.settings.show_highlight_notifications = $(`#settings_show_highlight_notifications`).prop(
-        "checked"
-      )
+      Hue.settings.show_highlight_notifications = Hue.el(`#settings_show_highlight_notifications`).checked
 
       if (save) {
         Hue.save_settings()
@@ -86,9 +78,7 @@ Hue.user_settings = {
     widget_type: "checkbox",
     description: `Whether to show desktop notifications on activity after your last message`,
     action: (save = true) => {
-      Hue.settings.show_activity_notifications = $(`#settings_show_activity_notifications`).prop(
-        "checked"
-      )
+      Hue.settings.show_activity_notifications = Hue.el(`#settings_show_activity_notifications`).checked
 
       if (save) {
         Hue.save_settings()
@@ -135,10 +125,10 @@ Hue.start_settings_widgets = function () {
 // Updates a setting widget based on the setting state
 Hue.modify_setting_widget = function (setting_name) {
   let widget_type = Hue.user_settings[setting_name].widget_type
-  let item = $(`#settings_${setting_name}`)
+  let item = Hue.el(`#settings_${setting_name}`)
 
   if (widget_type === "checkbox") {
-    item.prop("checked", Hue.settings[setting_name])
+    item.checked = Hue.settings[setting_name]
   } else if (
     widget_type === "textarea" ||
     widget_type === "text" ||
@@ -148,9 +138,9 @@ Hue.modify_setting_widget = function (setting_name) {
   ) {
     item.val(Hue.settings[setting_name])
   } else if (widget_type === "select") {
-    item.find("option").each(function () {
-      if ($(this).val() == Hue.settings[setting_name]) {
-        $(this).prop("selected", true)
+    item.querySelectorAll("option").forEach(function (it) {
+      if (it.value == Hue.settings[setting_name]) {
+        it.selected =true
       }
     })
   }
@@ -160,25 +150,25 @@ Hue.modify_setting_widget = function (setting_name) {
 Hue.start_settings_widgets_listeners = function () {
   for (let key in Hue.user_settings) {
     let setting = Hue.user_settings[key]
-    let item = $(`#settings_${key}`)
+    let item = Hue.el(`#settings_${key}`)
 
     if (
       setting.widget_type === "checkbox" ||
       setting.widget_type === "select"
     ) {
-      item.on("change", () => setting.action())
+      item.addEventListener("change", () => setting.action())
     } else if (
       setting.widget_type === "textarea" ||
       setting.widget_type === "text"
     ) {
-      item.on("blur", () => setting.action())
+      item.addEventListener("blur", () => setting.action())
     } else if (
       setting.widget_type === "number" ||
       setting.widget_type === "color"
     ) {
-      item.on("change", () => setting.action())
+      item.addEventListener("change", () => setting.action())
     } else if (setting.widget_type === "range") {
-      item.on("input change", function () {
+      item.addEventListener("input change", function () {
         setting.action()
       })
     }
@@ -211,7 +201,7 @@ Hue.reset_settings = function (empty = true) {
 Hue.show_settings = function (filter = "") {
   Hue.msg_settings.show(function () {
     if (filter.trim()) {
-      $("#settings_filter").val(filter)
+      Hue.el("#settings_filter").value = filter
       Hue.do_modal_filter()
     }
   })
@@ -221,7 +211,7 @@ Hue.show_settings = function (filter = "") {
 Hue.setup_settings_windows = function () {
   Hue.set_user_settings_titles()
 
-  $("#settings_request_notifications").on("click", function () {
+  Hue.el("#settings_request_notifications").addEventListener("click", function () {
     Hue.request_desktop_notifications_permission()
   })
 }
@@ -242,7 +232,7 @@ Hue.set_user_settings_titles = function () {
     }
 
     let title = `${setting.description} (${key}) (Default: ${value})`
-    $(`#settings_${key}`).closest(".settings_item").attr("title", title)
+    Hue.el(`#settings_${key}`).closest(".settings_item").title = title
   }
 }
 

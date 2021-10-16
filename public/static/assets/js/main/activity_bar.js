@@ -7,7 +7,7 @@ Hue.setup_activity_bar = function () {
 
   Hue.el("#activity_bar").addEventListener("click", function (e) {
     if (e.target.closest(".activity_bar_item")) {
-      Hue.show_profile("", e.target.closest(".activity_bar_item").hue_dataset.user_id)
+      Hue.show_profile("", Hue.dataset[e.target.closest(".activity_bar_item")].user_id)
     }
   })
 }
@@ -59,11 +59,11 @@ Hue.update_activity_bar = function (check = false) {
       }
     })
 
-    img_el.hue_dataset = {}
-    img_el.hue_dataset.user_id = user.user_id
-    el.hue_dataset = {}
-    el.hue_dataset.user_id = user.user_id
-    el.hue_dataset.uname =user.username
+    Hue.dataset[img_el] = {}
+    Hue.dataset[img_el].user_id = user.user_id
+    Hue.dataset[el] = {}
+    Hue.dataset[el].user_id = user.user_id
+    Hue.dataset[el].uname =user.username
     text_el.textContent = user.username.slice(0, Hue.config.max_activity_username_length)
     Hue.el("#activity_bar_inner").append(el)
   }
@@ -85,7 +85,7 @@ Hue.get_activity_bar_item_by_user_id = function (id) {
   let item = false
 
   Hue.els(".activity_bar_item").forEach(function (it) {
-    if (it.hue_dataset.user_id === id) {
+    if (Hue.dataset[it].user_id === id) {
       item = it
       return false
     }
@@ -108,7 +108,7 @@ Hue.update_activity_bar_image = function (id, src) {
   Hue.el("#activity_bar_inner")
   .querySelectorAll(".activity_bar_item")
   .forEach(function (it) {
-    if (it.hue_dataset.user_id === id) {
+    if (Hue.dataset[it].user_id === id) {
       it.querySelector(".activity_bar_image").src = src
       return false
     }

@@ -10,10 +10,7 @@ Hue.els = function (query) {
 
 // Clone element
 Hue.clone = function (el) {
-  let clone = el.cloneNode(true)
-  clone.hue_dataset = el.hue_dataset
-  
-  return clone
+  return el.cloneNode(true)
 }
 
 // Clone element children

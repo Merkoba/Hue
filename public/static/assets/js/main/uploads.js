@@ -253,12 +253,8 @@ Hue.change_upload_status = function (file, status, clear = false) {
     return false
   }
 
-  $(file.hue_popup.content)
-    .find(".action_popup_message")
-    .eq(0)
-    .text(
-      `Uploading ${Hue.get_file_action_name(file.hue_data.action)}: ${status}`
-    )
+  file.hue_popup.content.querySelector(".action_popup_message").textContent =
+    `Uploading ${Hue.get_file_action_name(file.hue_data.action)}: ${status}`
 
   if (clear) {
     file.hue_popup.close()
