@@ -86,7 +86,7 @@ Hue.on_app_focused = function () {
 
 // Starts window resize events
 Hue.resize_events = function () {
-  $(window).resize(function () {
+  window.addEventListener("resize", function () {
     Hue.resize_timer()
   })
 }

@@ -27,7 +27,7 @@ Hue.create_youtube_video_player = function () {
   Hue.youtube_video_player_requested = false
 
   let html = "<div id='media_youtube_video' class='video_frame'></div>"
-  $("#media_youtube_video_container").html(html)
+  Hue.el("#media_youtube_video_container").innerHTML = html
   Hue.add_media_info("media_youtube_video_container")
 
   Hue.yt_video_player = new YT.Player("media_youtube_video", {
@@ -104,9 +104,9 @@ Hue.create_soundcloud_video_player = function () {
     let src =
       "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536"
 
-    $("#media_soundcloud_video_container")
-      .html(`<iframe width="640px" height="360px"
-        id='media_soundcloud_video' class='video_frame' src='${src}'></iframe>`)
+    Hue.el("#media_soundcloud_video_container")
+      .innerHTML = `<iframe width="640px" height="360px"
+        id='media_soundcloud_video' class='video_frame' src='${src}'></iframe>`
 
     Hue.add_media_info("media_soundcloud_video_container")
 
@@ -196,8 +196,9 @@ Hue.create_twitch_video_player = function () {
     twch_video_player.addEventListener(Twitch.Player.READY, () => {
       Hue.twitch_video_player = twch_video_player
 
-      let iframe = $("#media_twitch_video_container").find("iframe").eq(0)
-      iframe.attr("id", "media_twitch_video").addClass("video_frame")
+      let iframe = Hue.el("#media_twitch_video_container").querySelector("iframe")
+      iframe.id = "media_twitch_video"
+      iframe.classList.add("video_Frame")
       Hue.add_media_info("media_twitch_video_container")
 
       if (Hue.twitch_video_player_request) {

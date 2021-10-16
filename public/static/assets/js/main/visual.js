@@ -43,22 +43,23 @@ Hue.vertical_separator = function (el) {
 
 // Applies separation to generic horizontal separator classes
 Hue.setup_generic_separators = function () {
-  $(".generic_horizontal_separator").each(function () {
-    Hue.horizontal_separator(this)
+  Hue.els(".generic_horizontal_separator").forEach(function (it) {
+    Hue.horizontal_separator(it)
   })
 
-  $(".generic_vertical_separator").each(function () {
-    Hue.vertical_separator(this)
+  Hue.els(".generic_vertical_separator").forEach(function (it) {
+    Hue.vertical_separator(it)
   })
 }
 
 // This hides the loading animation and makes the main container visible
 Hue.make_main_container_visible = function () {
-  $("#loading").css("opacity", 0)
-  $("#main_container").css("opacity", 1).css("pointer-events", "initial")
+  Hue.el("#loading").style.opacity = 0
+  Hue.el("#main_container").style.opacity = 1
+  Hue.el("#main_container").style.pointerEvents = "initial"
 
   setTimeout(function () {
-    $("#loading").css("display", "none")
+    Hue.el("#loading").style.display = "none"
   }, 1600)
 }
 
@@ -91,22 +92,28 @@ Hue.make_safe = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  let c = $("<div></div>")
+  let c = document.createElement("div")
 
   if (args.text || !args.remove_text_if_empty) {
-    let c_text_classes = "message_info_text inline"
+    let c_text_classes = ["message_info_text inline"]
 
     if (args.onclick) {
-      c_text_classes += " action"
+      c_text_classes.push("action")
     }
 
     if (args.text_classes) {
-      c_text_classes += ` ${args.text_classes}`
+      c_text_classes.push(` ${args.text_classes}`)
     }
 
-    c.append(`<div class='${c_text_classes}'></div>`)
+    let ctc = document.createElement("div")
 
-    let c_text = c.find(".message_info_text").eq(0)
+    for (let cls of c_text_classes) {
+      ctc.classList.add(cls)
+    }
+
+    c.append(ctc)
+
+    let c_text = c.querySelector(".message_info_text")
 
     if (args.text_as_html) {
       let h = Hue.utilz.make_html_safe(args.text)
@@ -132,9 +139,9 @@ Hue.make_safe = function (args = {}) {
     if (args.date) {
       let nd = Hue.utilz.nice_date(args.date)
 
-      c_text.hue_dataset = {}
-      c_text.hue_dataset.date = args.date
-      c_text.hue_dataset.otitle = nd
+      Hue.dataset[c_text] = {}
+      Hue.dataset[c_text].date = args.date
+      Hue.dataset[c_text].otitle = nd
       c_text.title = nd
       c_text.classList.add("dynamic_title")
     } else {
@@ -213,21 +220,20 @@ Hue.show_current_date = function () {
 // Start timeago checks
 Hue.start_timeago = function () {
   setInterval(() => {
-    $(".chat_area").each(function () {
-      $(this).find(".chat_timeago").each(function () {
-        let message = $(this).closest(".message")
-        $(this).text(Hue.utilz.timeago(message.data("date")))
+    Hue.els(".chat_area").forEach(function (it) {
+      it.querySelectorAll(".chat_timeago").forEach(function (it2) {
+        let message = it2.closest(".message")
+        it2.text(Hue.utilz.timeago(message.data("date")))
       })
     })
 
-    $("#media .media_info_container").each(function () {
-      $(this).find(".media_info_timeago").eq(0)
-        .text(Hue.utilz.timeago($(this).data("date")))
+    Hue.els("#media .media_info_container").forEach(function (it) {
+      it.querySelector(".media_info_timeago").textContent = Hue.utilz.timeago(Hue.dataset[it].date)
     })
 
     if (Hue.msg_modal_image.is_open()) {
-      $("#modal_image_header_info").find(".modal_image_timeago")
-        .eq(0).text(Hue.utilz.timeago(Hue.loaded_modal_image.date))
+      Hue.el("#modal_image_header_info").querySelector(".modal_image_timeago")
+        .textContent = Hue.utilz.timeago(Hue.loaded_modal_image.date)
     }
   }, Hue.timeago_delay)
 }

@@ -130,6 +130,7 @@ Hue.draw_image_max_levels = 200
 Hue.draw_image_open = false
 Hue.last_message_date = 0
 Hue.update_userlist_delay = 2000
+Hue.dataset = {}
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -166,7 +167,6 @@ Hue.init = function () {
   Hue.start_image_events()
   Hue.start_dropzone()
   Hue.activate_visibility_listener()
-  Hue.copypaste_events()
   Hue.scroll_events()
   Hue.resize_events()
   Hue.start_chat_mouse_events()

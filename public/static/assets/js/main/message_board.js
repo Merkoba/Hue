@@ -26,7 +26,7 @@ Hue.setup_message_board = function () {
       let el = e.target.closest(".message_board_username")
       
       if (el) {
-        Hue.show_profile(el.hue_dataset.uname)
+        Hue.show_profile(Hue.dataset[el].uname)
       }
     }
   )
@@ -50,14 +50,14 @@ Hue.add_post_to_message_board = function (post) {
 
   let item = document.createElement("div")
   item.innerHTML = s
-  item.hue_dataset = {}
-  item.hue_dataset.id = post.id
-  item.hue_dataset.date = post.date
+  Hue.dataset[item] = {}
+  Hue.dataset[item].id = post.id
+  Hue.dataset[item].date = post.date
 
   let username = item.querySelector(".message_board_username")
   username.textContent = post.username
-  username.hue_dataset = {}
-  username.hue_dataset.uname = post.username
+  Hue.dataset[username] = {}
+  Hue.dataset[username].uname = post.username
 
   let date = item.querySelector(".message_board_date")
   date.textContent = Hue.utilz.nice_date(post.date)
@@ -72,9 +72,9 @@ Hue.add_post_to_message_board = function (post) {
   }
 
   text.title = title
-  text.hue_dataset = {}
-  text.hue_dataset.date = post.date
-  text.hue_dataset.otitle = title
+  Hue.dataset[text] = {}
+  Hue.dataset[text].date = post.date
+  Hue.dataset[text].otitle = title
 
   let delet = item.querySelector(".message_board_delete")
 
@@ -176,13 +176,13 @@ Hue.check_last_message_board_post = function () {
 
   let date = Hue.room_state.last_message_board_post
 
-  if (items[0].hue_dataset.date > date) {
+  if (Hue.dataset[items[0]].date > date) {
     if (!Hue.msg_message_board.is_open()) {
       let count = 0
 
       Hue.el("#message_board_container").querySelectorAll(".message_board_item")
         forEach(function (it) {
-          if (it.hue_dataset.date <= date) {
+          if (Hue.dataset[it].date <= date) {
             return false
           }
 
@@ -229,7 +229,7 @@ Hue.check_message_board_permissions = function () {
 Hue.remove_message_board_post = function (data) {
   Hue.el("#message_board_container").querySelectorAll(".message_board_item")
     .forEach(function (it) {
-      if (it.hue_dataset.id === data.id) {
+      if (Hue.dataset[it].id === data.id) {
         it.remove()
         return false
       }

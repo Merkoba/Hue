@@ -42,7 +42,7 @@ Hue.check_latest_highlight = function () {
   let latest_highlight = Hue.get_latest_highlight()
 
   if (latest_highlight) {
-    let date = $(latest_highlight).data("date")
+    let date = Hue.dataset[latest_highlight].date
 
     if (date > Hue.room_state.last_highlight_date) {
       Hue.room_state.last_highlight_date = date
@@ -59,7 +59,7 @@ Hue.get_latest_highlight = function () {
   let items = Hue.els("#chat_area .chat_content_container")
 
   items.reverse().forEach(function (it) {
-    if (it.hue_dataset.highlighted) {
+    if (Hue.dataset[it].highlighted) {
       latest_highlight = it
       return false
     }
@@ -70,8 +70,8 @@ Hue.get_latest_highlight = function () {
 
     items.reverse().forEach(
       function (it) {
-        if (it.hue_dataset.highlighted) {
-          if (it.hue_dataset.date > latest_highlight.hue_dataset.date) {
+        if (Hue.dataset[it].highlighted) {
+          if (Hue.dataset[it].date > Hue.dataset[latest_highlight].date) {
             latest_highlight = this
           }
 
@@ -118,28 +118,27 @@ Hue.show_highlights = function (filter = "") {
 
   let clone = Hue.clone_children("#chat_area").reverse()
 
-  clone.each(function () {
-    $(this).removeAttr("id")
+  clone.forEach(function (it) {
+    it.removeAttribute("id")
   })
 
   if (filter.trim()) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
 
-    clone = clone.filter(function () {
-      if (!$(this).data("highlighted")) {
+    clone = clone.filter(it => {
+      if (!Hue.dataset[it].highlighted) {
         return false
       }
       
-      let text = $(this).text().toLowerCase()
+      let text = it.textContent.toLowerCase()
 
       if (!text) {
         return false
       }
 
       let text_cmp = text.includes(lc_value)
-      
       let source_cmp = false
-      let media_source = $(this).data("media_source")
+      let media_source = Hue.dataset[it].media_source
       
       if (media_source) {
         source_cmp = media_source.includes(lc_value)
@@ -148,8 +147,8 @@ Hue.show_highlights = function (filter = "") {
       return text_cmp || source_cmp
     })
   } else {
-    clone = clone.filter(function () {
-      if (!$(this).data("highlighted")) {
+    clone = clone.filter(it => {
+      if (!Hue.dataset[it].highlighted) {
         return false
       }
 

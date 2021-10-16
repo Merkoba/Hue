@@ -59,7 +59,7 @@ Hue.create_debouncers = function () {
 
   // Debounce timer for media history filters
   Hue.media_history_filter_timer = Hue.create_debouncer(function (type) {
-    let filter = $(`#${type}_history_filter`).value
+    let filter = Hue.el(`#${type}_history_filter`).value
     Hue.show_media_history(type, filter)
   }, Hue.filter_delay)
 

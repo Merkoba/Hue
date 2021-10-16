@@ -185,29 +185,29 @@ Hue.add_chat_message = function (args = {}) {
     first_url = Hue.utilz.get_first_url(args.message)
   }
 
-  fmessage.hue_dataset = {}
-  fmessage.hue_dataset.user_id = args.user_id
-  fmessage.hue_dataset.public = args.public
-  fmessage.hue_dataset.date = d
-  fmessage.hue_dataset.highlighted = highlighted
-  fmessage.hue_dataset.uname = args.username
-  fmessage.hue_dataset.mode = "chat"
+  Hue.dataset[fmessage] = {}
+  Hue.dataset[fmessage].user_id = args.user_id
+  Hue.dataset[fmessage].public = args.public
+  Hue.dataset[fmessage].date = d
+  Hue.dataset[fmessage].highlighted = highlighted
+  Hue.dataset[fmessage].uname = args.username
+  Hue.dataset[fmessage].mode = "chat"
 
   let chat_content_container = fmessage.querySelector(".chat_content_container")
 
-  chat_content_container.hue_dataset = {}
-  chat_content_container.hue_dataset.id = args.id
-  chat_content_container.hue_dataset.edited = args.edited
-  chat_content_container.hue_dataset.highlighted = highlighted
-  chat_content_container.hue_dataset.date = d
-  chat_content_container.hue_dataset.first_url = first_url
-  chat_content_container.hue_dataset.original_message = args.message
+  Hue.dataset[chat_content_container] = {}
+  Hue.dataset[chat_content_container].id = args.id
+  Hue.dataset[chat_content_container].edited = args.edited
+  Hue.dataset[chat_content_container].highlighted = highlighted
+  Hue.dataset[chat_content_container].date = d
+  Hue.dataset[chat_content_container].first_url = first_url
+  Hue.dataset[chat_content_container].original_message = args.message
 
   let chat_profilepic_container = fmessage.querySelector(".chat_profilepic_container")
-  chat_profilepic_container.hue_dataset = {}
+  Hue.dataset[chat_profilepic_container] = {}
 
   let chat_content = fmessage.querySelector(".chat_content")
-  chat_content.hue_dataset = {}
+  Hue.dataset[chat_content] = {}
 
   if (!image_preview && !link_preview) {
     Hue.urlize(chat_content)
@@ -345,9 +345,9 @@ Hue.add_chat_announcement = function (args = {}) {
   }
 
   split.title = t
-  split.hue_dataset = {}
-  split.hue_dataset.otitle = t
-  split.hue_dataset.date = d
+  Hue.dataset[split] = {}
+  Hue.dataset[split].otitle = t
+  Hue.dataset[split].date = d
 
   content.textContent = args.message
   Hue.urlize(content)
@@ -357,19 +357,19 @@ Hue.add_chat_announcement = function (args = {}) {
     brk.addEventListener("click", args.onclick)
   }
 
-  fmessage.hue_dataset = {}
-  fmessage.hue_dataset.id = args.id
-  fmessage.hue_dataset.public = args.public
-  fmessage.hue_dataset.date = d
-  fmessage.hue_dataset.highlighted = highlighted
-  fmessage.hue_dataset.type = args.type
-  fmessage.hue_dataset.info1 = args.info1
-  fmessage.hue_dataset.info2 = args.info2
-  fmessage.hue_dataset.uname = args.username
-  fmessage.hue_dataset.mode = "announcement"
-  fmessage.hue_dataset.user_id = args.user_id
-  fmessage.hue_dataset.in_log = args.in_log
-  fmessage.hue_dataset.media_source = args.media_source
+  Hue.dataset[fmessage] = {}
+  Hue.dataset[fmessage].id = args.id
+  Hue.dataset[fmessage].public = args.public
+  Hue.dataset[fmessage].date = d
+  Hue.dataset[fmessage].highlighted = highlighted
+  Hue.dataset[fmessage].type = args.type
+  Hue.dataset[fmessage].info1 = args.info1
+  Hue.dataset[fmessage].info2 = args.info2
+  Hue.dataset[fmessage].uname = args.username
+  Hue.dataset[fmessage].mode = "announcement"
+  Hue.dataset[fmessage].user_id = args.user_id
+  Hue.dataset[fmessage].in_log = args.in_log
+  Hue.dataset[fmessage].media_source = args.media_source
 
   let message_id = Hue.add_to_chat({
     message: fmessage
@@ -403,22 +403,22 @@ Hue.add_to_chat = function (args = {}) {
   let chat_area = Hue.el("#chat_area")
   let last_message = Hue.els("#chat_area > .message").slice(-1)[0]
   let appended = false
-  let mode = args.message.hue_dataset.mode
-  let user_id = args.message.hue_dataset.user_id
-  let date = args.message.hue_dataset.date
-  let is_public = args.message.hue_dataset.public
-  let highlighted = args.message.hue_dataset.highlighted
+  let mode = Hue.dataset[args.message].mode
+  let user_id = Hue.dataset[args.message].user_id
+  let date = Hue.dataset[args.message].date
+  let is_public = Hue.dataset[args.message].public
+  let highlighted = Hue.dataset[args.message].highlighted
   let content_container, message_id
 
   if (mode === "chat") {
     content_container = args.message.querySelector(".chat_content_container")
     Hue.chat_content_container_id += 1
-    content_container.hue_dataset.chat_content_container_id = Hue.chat_content_container_id
+    Hue.dataset[content_container].chat_content_container_id = Hue.chat_content_container_id
     content_container.classList.add(`chat_content_container_${Hue.chat_content_container_id}`)
 
     if (args.just_edited && args.id) {
       Hue.els(".chat_content_container").forEach(function (it) {
-        if (it.hue_dataset.id === args.id) {
+        if (Hue.dataset[it].id === args.id) {
           it.replaceWith(Hue.clone(content_container))
           Hue.goto_bottom()
           return false
@@ -443,21 +443,21 @@ Hue.add_to_chat = function (args = {}) {
           Hue.config.max_same_post_messages
         ) {
           let date_diff =
-            Array.from(args.message.querySelectorAll(".chat_content")
-            .slice(-1)[0].hue_dataset.date) -
+            Hue.dataset[Array.from(args.message.querySelectorAll(".chat_content"))
+            .slice(-1)[0]].date -
 
-            Array.from(last_message.querySelectorAll(".chat_content")
-            .slice(-1)[0].hue_dataset.date)
+            Hue.dataset[Array.from(last_message.querySelectorAll(".chat_content"))
+            .slice(-1)[0]].date
   
           if (date_diff < Hue.config.max_same_post_diff) {
-            content_container.hue_dataset.date = date
-            content_container.hue_dataset.highlighted = highlighted
+            Hue.dataset[content_container].date = date
+            Hue.dataset[content_container].highlighted = highlighted
   
             last_message.querySelector(".chat_container").append(content_container)
-            message_id = last_message.hue_dataset.message_id
+            message_id = Hue.dataset[last_message].message_id
   
-            if (!last_message.hue_dataset.highlighted) {
-              last_message.hue_dataset.highlighted = highlighted
+            if (!Hue.dataset[last_message].highlighted) {
+              Hue.dataset[last_message].highlighted = highlighted
             }
   
             appended = true
@@ -480,7 +480,7 @@ Hue.add_to_chat = function (args = {}) {
 
     Hue.message_id += 1
     message_id = Hue.message_id
-    args.message.hue_dataset.message_id = message_id
+    Hue.dataset[args.message].message_id = message_id
     args.message.classList.add(`message_id_${message_id}`)
   }
 
@@ -534,16 +534,16 @@ Hue.start_chat_mouse_events = function () {
       if (e.target.classList.contains("chat_uname")) {
         let m = e.target.closest(".message")
         Hue.show_profile(
-          m.hue_dataset.uname,
-          m.hue_dataset.user_id
+          Hue.dataset[m].uname,
+          Hue.dataset[m].user_id
         )
       }
 
       if (e.target.classList.contains("chat_profilepic")) {
         let m = e.target.closest(".message")
         Hue.show_profile(
-          m.hue_dataset.uname,
-          m.hue_dataset.user_id
+          Hue.dataset[m].uname,
+          Hue.dataset[m].user_id
         )
       }
 
@@ -606,7 +606,7 @@ Hue.start_reply = function (target) {
 
   let message = target.closest(".message")
   let text = Hue.remove_urls(Hue.utilz.clean_string2(target.textContent))
-  let uname = message.hue_dataset.uname
+  let uname = Hue.dataset[message].uname
 
   if (!text || !uname) {
     return false
@@ -737,7 +737,7 @@ Hue.edit_last_message = function (reverse = false) {
       return false
     }
 
-    if (it.hue_dataset.user_id === Hue.user_id) {
+    if (Hue.dataset[it].user_id === Hue.user_id) {
       let items = Array.from(it.querySelectorAll(".chat_content_container"))
 
       items.reverse().forEach(
@@ -792,7 +792,7 @@ Hue.edit_message = function (container) {
   Hue.editing_message = true
   Hue.editing_message_container = container
   Hue.editing_message_area = area
-  Hue.editing_original_message = container.hue_dataset.original_message
+  Hue.editing_original_message = Hue.dataset[container].original_message
 
   area.value = Hue.editing_original_message
   area.focus()
@@ -837,7 +837,7 @@ Hue.send_edit_messsage = function (id) {
   let new_message = Hue.editing_message_area.value
   new_message = Hue.utilz.remove_multiple_empty_lines(new_message)
   new_message = Hue.utilz.untab_string(new_message).trimEnd()
-  let edit_id = Hue.editing_message_container.hue_dataset.id
+  let edit_id = Hue.dataset[Hue.editing_message_container].id
   Hue.stop_edit_message()
 
   if (chat_content.textContent === new_message) {
@@ -892,7 +892,7 @@ Hue.send_delete_message = function (id) {
 Hue.remove_message_from_chat = function (data) {
   if (data.type === "chat") {
     Hue.els(".chat_content_container").forEach(function (it) {
-      if (it.hue_dataset.id == data.id) {
+      if (Hue.dataset[it].id == data.id) {
         Hue.process_remove_chat_message(it)
         return false
       }
@@ -903,7 +903,7 @@ Hue.remove_message_from_chat = function (data) {
     data.type === "tv"
   ) {
     Hue.els(".message.announcement").forEach(function (it) {
-      if (it.hue_dataset.id == data.id) {
+      if (Hue.dataset[it].id == data.id) {
         Hue.process_remove_announcement(it)
         return false
       }
@@ -916,7 +916,7 @@ Hue.remove_message_from_chat = function (data) {
 // Removes a chat message from the chat, when triggered through the context menu
 Hue.remove_message_from_context_menu = function (menu) {
   let message = menu.closest(".message")
-  let mode = message.hue_dataset.mode
+  let mode = Hue.dataset[message].mode
 
   if (mode === "chat") {
     Hue.process_remove_chat_message(menu.closest(".chat_content_container"))
@@ -927,11 +927,11 @@ Hue.remove_message_from_context_menu = function (menu) {
 
 // Determines how to remove a chat message
 Hue.process_remove_chat_message = function (chat_content_container) {
-  let chat_content_container_id = chat_content_container.hue_dataset.chat_content_container_id
+  let chat_content_container_id = Hue.dataset[chat_content_container].chat_content_container_id
 
   Hue.els(".chat_content_container").forEach(function (it) {
     if (
-      it.hue_dataset.chat_content_container_id === chat_content_container_id
+      Hue.dataset[it].chat_content_container_id === chat_content_container_id
     ) {
       if (
         it.closest(".chat_container").querySelectorAll(".chat_content_container").length === 1
@@ -946,14 +946,14 @@ Hue.process_remove_chat_message = function (chat_content_container) {
 
 // Determines how to remove an announcement
 Hue.process_remove_announcement = function (message) {
-  let type = message.hue_dataset.type
-  let message_id = message.hue_dataset.message_id
+  let type = Hue.dataset[message].type
+  let message_id = Hue.dataset[message].message_id
 
   if (
     type === "image_change" ||
     type === "tv_change"
   ) {
-    let id = message.hue_dataset.id
+    let id = Hue.dataset[message].id
     Hue.remove_item_from_media_changed(type.replace("_change", ""), id)
   }
 
@@ -1023,7 +1023,7 @@ Hue.get_last_chat_message_by_username = function (ouname) {
   let items = Hue.els("#chat_area > .message.chat_message")
   
   items.reverse().forEach(function (it) {
-    let uname = it.hue_dataset.uname
+    let uname = Hue.dataset[it].uname
 
     if (uname) {
       if (uname === ouname) {
@@ -1042,7 +1042,7 @@ Hue.get_last_chat_message_by_user_id = function (ouser_id) {
   let items = Hue.els("#chat_area > .message.chat_message")
 
   items.reverse().forEach(function (it) {
-    let user_id = it.hue_dataset.user_id
+    let user_id = Hue.dataset[it].user_id
 
     if (user_id) {
       if (user_id === ouser_id) {
@@ -1097,7 +1097,7 @@ Hue.remove_aura = function (id) {
     let message = it.closest(".chat_message")
 
     if (message.length > 0) {
-      if (message.hue_dataset.user_id === id) {
+      if (Hue.dataset[message].user_id === id) {
         it.classList.remove("aura")
       }
     }
@@ -1107,7 +1107,7 @@ Hue.remove_aura = function (id) {
     let activity_bar_item = it.closest(".activity_bar_item")
 
     if (activity_bar_item.length > 0) {
-      if (activity_bar_item.hue_dataset.user_id === id) {
+      if (Hue.dataset[activity_bar_item].user_id === id) {
         it.classList.remove("aura")
       }
     }
@@ -1163,13 +1163,13 @@ Hue.activity_above = function () {
 
   messages.reverse().forEach(function (it) {
     let same_uname = false
-    let uname = it.hue_dataset.uname
+    let uname = Hue.dataset[it].uname
 
     if (uname && uname === Hue.username) {
       same_uname = true
     }
 
-    if (same_uname || it.hue_dataset.highlighted) {
+    if (same_uname || Hue.dataset[it].highlighted) {
       if (it.offsetTop < activity_up_scroller_height) {
         let diff = scrolltop + it.offsetTop - activity_up_scroller_height - 10
 
@@ -1200,13 +1200,13 @@ Hue.activity_below = function () {
 
   docuemnt.querySelectorAll("#chat_area > .message").forEach(function (it) {
     let same_uname = false
-    let uname = it.hue_dataset.uname
+    let uname = Hue.dataset[it].uname
 
     if (uname && uname === Hue.username) {
       same_uname = true
     }
 
-    if (same_uname || it.hue_dataset.highlighted) {
+    if (same_uname || Hue.dataset[it].highlighted) {
       let h = it.offsetHeight
 
       if (it.offsetTop + h + activity_down_scroller_height > chat_area_height) {
@@ -1349,17 +1349,17 @@ Hue.setup_link_preview = function (fmessage) {
   let link_preview_image = link_preview_el.querySelector(".link_preview_image")
 
   if (link_preview_image.length > 0) {
-    link_preview_image.on("click", function (e) {
+    link_preview_image.addEventListener("click", function (e) {
       e.stopPropagation()
       Hue.expand_image(this.src.replace(".gifv", ".gif"))
     })
 
-    link_preview_image.on("load", function () {
+    link_preview_image.addEventListener("load", function () {
       Hue.goto_bottom()
     })
 
-    link_preview_image.on("error", function () {
-      link_preview_image.css("display", "none")
+    link_preview_image.addEventListener("error", function () {
+      link_preview_image.style.display = "none"
       link_preview_el.removeClass("link_preview_with_image")
       Hue.goto_bottom()
     })
@@ -1706,8 +1706,8 @@ Hue.activity_notification = function () {
 
 // Get last chat message or announcement date
 Hue.get_last_message_date = function () {
-  let a = Hue.els("#chat_area .chat_content").slice(-1)[0].hue_dataset.date || 0
-  let b = Hue.els("#chat_area .media_announcement").slice(-1)[0].hue_dataset.date || 0
+  let a = Hue.dataset[Hue.els("#chat_area .chat_content").slice(-1)[0]].date || 0
+  let b = Hue.dataset[Hue.els("#chat_area .media_announcement").slice(-1)[0]].date || 0
   return Math.max(a, b)
 }
 

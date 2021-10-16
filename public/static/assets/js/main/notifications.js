@@ -81,9 +81,9 @@ Hue.push_notification = function (icon, message, on_click = false) {
   let content = item.querySelector(".notifications_item_content")
 
   content.title = t
-  conent.hue_dataset = {}
-  content.dataset.otitle = t
-  content.dataset.date = d
+  Hue.dataset[content] = {}
+  Hue.dataset[content].otitle = t
+  Hue.dataset[content].date = d
 
   if (on_click) {
     content.addEventListener("click", function () {

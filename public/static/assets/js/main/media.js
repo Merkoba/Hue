@@ -234,7 +234,7 @@ Hue.show_media_history = function (type, filter = "") {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
 
     clone = clone.filter(function () {
-      let type2 = this.hue_dataset.type
+      let type2 = Hue.dataset[this].type
 
       if (type2 !== `${type}_change`) {
         return false
@@ -250,7 +250,7 @@ Hue.show_media_history = function (type, filter = "") {
     })
   } else {
     clone = clone.filter(function () {
-      let type2 = this.hue_dataset.type
+      let type2 = Hue.dataset[this].type
 
       if (type2 !== `${type}_change`) {
         return false
@@ -584,14 +584,14 @@ Hue.apply_media_info = function (type) {
   container.querySelector(".media_info_timeago").textContent = Hue.utilz.timeago(item.date)
   container.title = hover_title
     
-  if (container.hue_dataset === undefined) {
-    container.hue_dataset = {}
+  if (Hue.dataset[container] === undefined) {
+    Hue.dataset[container] = {}
   }
 
-  container.hue_dataset.otitle = hover_title
-  container.hue_dataset.date = item.date
-  container.hue_dataset.item = item
-  container.hue_dataset.type = type
+  Hue.dataset[container].otitle = hover_title
+  Hue.dataset[container].date = item.date
+  Hue.dataset[container].item = item
+  Hue.dataset[container].type = type
 }
 
 // Some fixes on reconneciton
@@ -766,7 +766,7 @@ Hue.start_media_info = function () {
     let el = e.target.closest(".media_info_username")
 
     if (el) {
-      let username = el.closest(".media_info_container").hue_dataset.item = setter
+      let username = Hue.dataset[el.closest(".media_info_container")].item = setter
       Hue.show_profile(username)
     }
   })
@@ -776,8 +776,8 @@ Hue.start_media_info = function () {
 
     if (el) {
       let media_info = el.closest(".media_info_container")
-      let item = media_info.hue_dataset.item
-      let type = media_info.hue_dataset.type
+      let item = Hue.dataset[media_info].item
+      let type = Hue.dataset[media_info].type
   
       Hue.open_url_menu({
         source: item.source,
