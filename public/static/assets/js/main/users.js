@@ -296,24 +296,25 @@ Hue.update_userlist_window = function () {
     let pi = Hue.get_profilepic(item.user_id)
 
     let s = `
-        <div class='modal_item userlist_item action'>
-            <div class='userlist_column flex_column_center'>
-                <div>
-                    <div class='userlist_item_profilepic_container round_image_container actionbox'>
-                        <img class='userlist_item_profilepic profilepic' src='${pi}' loading='lazy'>
-                    </div>
-                    <div class='userlist_item_details_container'>
-                        <div class='userlist_item_username'></div>
-                        <div class='userlist_item_role'></div>
-                    </div>
-                </div>
-            </div>
-        </div>`
+      <div class='userlist_column flex_column_center'>
+          <div>
+              <div class='userlist_item_profilepic_container round_image_container actionbox'>
+                  <img class='userlist_item_profilepic profilepic' src='${pi}' loading='lazy'>
+              </div>
+              <div class='userlist_item_details_container'>
+                  <div class='userlist_item_username'></div>
+                  <div class='userlist_item_role'></div>
+              </div>
+          </div>
+      </div>`
 
-    let el0 = document.createElement("div")
-    el0.innerHTML = s
-    let h = el0.firstElementChild
-    let image = h.querySelector(".userlist_item_profilepic")
+    let el = document.createElement("div")
+    el.classList.add("modal_item")
+    el.classList.add("userlist_item")
+    el.classList.add("action")
+    el.innerHTML = s
+
+    let image = el.querySelector(".userlist_item_profilepic")
 
     image.addEventListener("error", function (e) {
       if (this.src !== Hue.config.default_profilepic_url) {
@@ -322,12 +323,12 @@ Hue.update_userlist_window = function () {
     })
 
     let role_tag = Hue.role_tag(item.role)
-    let role_element = h.querySelector(".userlist_item_role")
+    let role_element = el.querySelector(".userlist_item_role")
     role_element.textContent = role_tag
-    let uname = h.querySelector(".userlist_item_username")
+    let uname = el.querySelector(".userlist_item_username")
     uname.textContent = item.username
-    Hue.dataset(h, "username", item.username)
-    container.append(h)
+    Hue.dataset(el, "username", item.username)
+    container.append(el)
   }
 
   Hue.el("#userlist").innerHTML = ""

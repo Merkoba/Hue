@@ -214,12 +214,11 @@ Hue.hide_tv = function (item = false) {
     let type = it.id.replace("media_", "").replace("_video_container", "")
 
     if (!item || item.type !== type) {
-      let s = `<div id='${it.id}' class='media_container'></div>`
-      let el0 = document.createElement("div")
-      el0.innerHTML = s
-      let new_el = el0.firstElementChild
-      new_el.style.display = "none"
-      it.replaceWith(new_el)
+      let el = document.createElement("div")
+      el.classList.add("media_container")
+      el.id = it.id
+      el.style.display = "none"
+      it.replaceWith(el)
       Hue[`${type}_video_player`] = undefined
       Hue[`${type}_video_player_requested`] = false
       Hue[`${type}_video_player_request`] = false

@@ -173,15 +173,15 @@ Hue.show_admin_activity = function (messages) {
     for (let message of messages) {
       let nice_date = Hue.utilz.nice_date(message.date)
 
-      let s = `
-        <div class='modal_item admin_activity_item dynamic_title' title='${nice_date}'>
-            <div class='admin_activity_message'></div>
-            <div class='admin_activity_date'></div>
-        </div>`
+      let s = `<div class='admin_activity_message'></div><div class='admin_activity_date'></div>`
 
-      let el0 = document.createElement("div")
-      el0.innerHTML = s
-      let el = el0.firstElementChild
+      let el = document.createElement("div")
+      el.classList.add("modal_item")
+      el.classList.add("admin_activity_item")
+      el.classList.add("dynamic_title")
+      el.title = nice_date
+      el.innerHTML = s
+
       el.querySelector(".admin_activity_message").textContent = `${message.data.username} ${message.data.content}`
       el.querySelector(".admin_activity_date").textContent = nice_date
       Hue.dataset(el, "date", message.date)
@@ -208,31 +208,31 @@ Hue.request_admin_list = function () {
 Hue.show_admin_list = function (data) {
   data.list.sort(Hue.compare_userlist)
 
-  let el = document.createElement("div")
-  el.id = "admin_list_container"
-  el.classList.add("grid_column_center")
+  let container = document.createElement("div")
+  container.id = "admin_list_container"
+  container.classList.add("grid_column_center")
 
   for (let user of data.list) {
-    let hs = `
+    let s = `
       <div class='flex_row_center'><div class='admin_list_username'>
       </div>&nbsp;&nbsp;<div class='admin_list_role'></div></div>`
 
-    let h = `<div class='admin_list_item action'>${hs}</div>`
-    let hel0 = document.createElement("div")
-    hel0.innerHTML = h
-    let hel = hel0.firstElementChild
+    let el = document.createElement("div")
+    el.classList.add("admin_list_item")
+    el.classList.add("action")
+    el.innerHTML = s
 
-    hel.querySelector(".admin_list_username").textContent = user.username
-    hel.querySelector(".admin_list_role").textContent = `(${Hue.get_pretty_role_name(user.role)})`
+    el.querySelector(".admin_list_username").textContent = user.username
+    el.querySelector(".admin_list_role").textContent = `(${Hue.get_pretty_role_name(user.role)})`
 
-    hel.addEventListener("click", function () {
+    el.addEventListener("click", function () {
       Hue.show_profile(user.username)
     })
 
-    el.append(hel)
+    container.append(el)
   }
 
-  Hue.msg_info2.show([`Admin List (${data.list.length})`, el], function () {
+  Hue.msg_info2.show([`Admin List (${data.list.length})`, container], function () {
     Hue.admin_list_open = true
   })
 }
@@ -249,29 +249,30 @@ Hue.request_ban_list = function () {
 
 // Shows the ban list
 Hue.show_ban_list = function (data) {
-  let el = document.createElement("div")
-  el.id = "ban_list_container"
-  el.classList.add("grid_column_center")
+  let container = document.createElement("div")
+  container.id = "ban_list_container"
+  container.classList.add("grid_column_center")
 
   for (let user of data.list) {
-    let hs = `<div class='flex_row_center'><div class='ban_list_username' title='Click To Unban'></div></div>`
-    let h = `<div class='ban_list_item action'>${hs}</div>`
-    let hel0 = document.createElement("div")
-    hel0.innerHTML = h
-    let hel = hel0.firstElementChild
+    let s = `<div class='flex_row_center'><div class='ban_list_username' title='Click To Unban'></div></div>`
 
-    hel.querySelector(".ban_list_username").textContent = user.username
+    let el = document.createElement("div")
+    el.classList.add("ban_list_item")
+    el.classList.add("action")
+    el.innerHTML = s
 
-    hel.addEventListener("click", function () {
+    el.querySelector(".ban_list_username").textContent = user.username
+
+    el.addEventListener("click", function () {
       Hue.show_confirm(`Unban ${user.username}`, "", function () {
         Hue.unban(user.username)
       })
     })
 
-    el.append(hel)
+    container.append(el)
   }
 
-  Hue.msg_info2.show([`Ban List (${data.list.length})`, el], function () {
+  Hue.msg_info2.show([`Ban List (${data.list.length})`, container], function () {
     Hue.ban_list_open = true
   })
 }
