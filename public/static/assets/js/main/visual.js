@@ -94,22 +94,17 @@ Hue.make_safe = function (args = {}) {
   let c = Hue.div()
 
   if (args.text || !args.remove_text_if_empty) {
-    let c_text_classes = ["message_info_text", "inline"]
+    let c_text_classes = "message_info_text inline"
 
     if (args.onclick) {
-      c_text_classes.push("action")
+      c_text_classes += " action"
     }
 
     if (args.text_classes) {
-      c_text_classes.push(` ${args.text_classes}`)
+      c_text_classes += ` ${args.text_classes}`
     }
 
-    let ctc = Hue.div()
-
-    for (let cls of c_text_classes) {
-      ctc.classList.add(cls)
-    }
-
+    let ctc = Hue.div(c_text_classes)
     c.append(ctc)
 
     let c_text = c.querySelector(".message_info_text")
