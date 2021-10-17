@@ -24,7 +24,7 @@ Hue.apply_separator = function (el, cls) {
       break
     }
 
-    let sep = document.createElement("div")
+    let sep = Hue.div()
     sep.classList.add("separator")
     sep.classList.add(cls)
     elems[i].insertAdjacentElement("afterend", sep)
@@ -92,7 +92,7 @@ Hue.make_safe = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  let c = document.createElement("div")
+  let c = Hue.div()
 
   if (args.text || !args.remove_text_if_empty) {
     let c_text_classes = ["message_info_text", "inline"]
@@ -105,7 +105,7 @@ Hue.make_safe = function (args = {}) {
       c_text_classes.push(` ${args.text_classes}`)
     }
 
-    let ctc = document.createElement("div")
+    let ctc = Hue.div()
 
     for (let cls of c_text_classes) {
       ctc.classList.add(cls)

@@ -370,7 +370,7 @@ Hue.push_whisper = function (message, on_click, read) {
 
   let message_html = `<div class='whispers_message'>${Hue.utilz.make_html_safe(message)}</div>`
 
-  let item = document.createElement("div")
+  let item = Hue.div()
   item.classList.add("whispers_item")
   item.classList.add("modal_item")
   item.innerHTML = `<div class='whispers_item_content action dynamic_title'>${message_html}`
