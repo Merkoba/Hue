@@ -703,9 +703,9 @@ Hue.create_modal = function (args = {}, ptype = "unset") {
 Hue.process_msg_close_button = function (button) {
   let container = $(button).closest(".Msg-container")
 
-  if (container.hasClass("Msg-container-modal")) {
+  if (container.classList.contains("Msg-container-modal")) {
     Hue.close_all_modals()
-  } else if (container.hasClass("Msg-container-popup")) {
+  } else if (container.classList.contains("Msg-container-popup")) {
     Hue.close_all_popups()
   }
 }

@@ -536,6 +536,7 @@ Hue.start_chat_mouse_events = function () {
 
       if (e.target.classList.contains("message_edit_cancel")) {
         Hue.stop_edit_message()
+        Hue.check_scrollers()
       }
       
       if (e.target.classList.contains("chat_reply_username")) {
@@ -1002,25 +1003,6 @@ Hue.hide_typing = function () {
   }
 
   Hue.typing = false
-}
-
-// Gets the most recent chat message by username
-Hue.get_last_chat_message_by_username = function (ouname) {
-  let found_message = false
-  let items = Hue.els("#chat_area > .message.chat_message")
-  
-  items.reverse().forEach(it => {
-    let uname = Hue.dataset(it, "uname")
-
-    if (uname) {
-      if (uname === ouname) {
-        found_message = it
-        return false
-      }
-    }
-  })
-
-  return found_message
 }
 
 // Gets the most recent chat message by user_id
