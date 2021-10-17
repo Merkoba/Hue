@@ -224,9 +224,9 @@ Hue.open_url_menu = function (args = {}) {
     Hue.el("#open_url_menu_load").style.display = inline-block
 
     if (args.data !== Hue[`loaded_${args.media_type}`]) {
-      Hue.el("#open_url_menu_load").text("Load")
+      Hue.el("#open_url_menu_load").textContent = "Load"
     } else {
-      Hue.el("#open_url_menu_load").text("Reload")
+      Hue.el("#open_url_menu_load").textContent = "Reload"
     }
 
     if (Hue[`change_${args.media_type}_source`](args.source, true)) {

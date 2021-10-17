@@ -24,3 +24,25 @@ Hue.clone_children = function (query) {
 
   return items
 }
+
+// Data set manager
+Hue.dataset = function (el, value, setvalue = "") {
+  let id = el.dataset.dataset_id
+
+  if (!id) {
+    id = Hue.dataset_id
+    Hue.dataset_id += 1
+    el.dataset.dataset_id = id
+    Hue.dataset_obj[id] = {}
+  }
+
+  if (setvalue) {
+    Hue.dataset_obj[id][value] = setvalue
+  } else {
+    return Hue.dataset_obj[id][value]
+  }
+}
+
+new MutationObserver(function (e) {
+  console.log(e)
+})

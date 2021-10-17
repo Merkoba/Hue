@@ -42,7 +42,7 @@ Hue.check_latest_highlight = function () {
   let latest_highlight = Hue.get_latest_highlight()
 
   if (latest_highlight) {
-    let date = Hue.dataset[latest_highlight].date
+    let date = Hue.dataset(latest_highlight, "date")
 
     if (date > Hue.room_state.last_highlight_date) {
       Hue.room_state.last_highlight_date = date
@@ -59,7 +59,7 @@ Hue.get_latest_highlight = function () {
   let items = Hue.els("#chat_area .chat_content_container")
 
   items.reverse().forEach(function (it) {
-    if (Hue.dataset[it].highlighted) {
+    if (Hue.dataset(it, "highlighted")) {
       latest_highlight = it
       return false
     }
@@ -70,8 +70,8 @@ Hue.get_latest_highlight = function () {
 
     items.reverse().forEach(
       function (it) {
-        if (Hue.dataset[it].highlighted) {
-          if (Hue.dataset[it].date > Hue.dataset[latest_highlight].date) {
+        if (Hue.dataset(it, "highlighted")) {
+          if (Hue.dataset(it, "date") > Hue.dataset(latest_highlight, "date")) {
             latest_highlight = this
           }
 
@@ -126,7 +126,7 @@ Hue.show_highlights = function (filter = "") {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
 
     clone = clone.filter(it => {
-      if (!Hue.dataset[it].highlighted) {
+      if (!Hue.dataset(it, "highlighted")) {
         return false
       }
       
@@ -138,7 +138,7 @@ Hue.show_highlights = function (filter = "") {
 
       let text_cmp = text.includes(lc_value)
       let source_cmp = false
-      let media_source = Hue.dataset[it].media_source
+      let media_source = Hue.dataset(it, "media_source")
       
       if (media_source) {
         source_cmp = media_source.includes(lc_value)
@@ -148,7 +148,7 @@ Hue.show_highlights = function (filter = "") {
     })
   } else {
     clone = clone.filter(it => {
-      if (!Hue.dataset[it].highlighted) {
+      if (!Hue.dataset(it, "highlighted")) {
         return false
       }
 

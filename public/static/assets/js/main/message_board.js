@@ -10,7 +10,7 @@ Hue.setup_message_board = function () {
 
       if (el) {
         let item = el.closest(".message_board_item")
-        let id = item.data("id")
+        let id = Hue.dataset(item, "id")
   
         if (id) {
           Hue.show_confirm("Delete Message", "", function () {
@@ -26,7 +26,7 @@ Hue.setup_message_board = function () {
       let el = e.target.closest(".message_board_username")
       
       if (el) {
-        Hue.show_profile(Hue.dataset[el].uname)
+        Hue.show_profile(Hue.dataset(el, "uname"))
       }
     }
   )
@@ -50,14 +50,12 @@ Hue.add_post_to_message_board = function (post) {
 
   let item = document.createElement("div")
   item.innerHTML = s
-  Hue.dataset[item] = {}
-  Hue.dataset[item].id = post.id
-  Hue.dataset[item].date = post.date
+  Hue.dataset(item, "id", post.id)
+  Hue.dataset(item, "date", post.date)
 
   let username = item.querySelector(".message_board_username")
   username.textContent = post.username
-  Hue.dataset[username] = {}
-  Hue.dataset[username].uname = post.username
+  Hue.dataset(username, "uname", post.username)
 
   let date = item.querySelector(".message_board_date")
   date.textContent = Hue.utilz.nice_date(post.date)
@@ -72,9 +70,8 @@ Hue.add_post_to_message_board = function (post) {
   }
 
   text.title = title
-  Hue.dataset[text] = {}
-  Hue.dataset[text].date = post.date
-  Hue.dataset[text].otitle = title
+  Hue.dataset(text, "date", post.date)
+  Hue.dataset(text, "otitle", title)
 
   let delet = item.querySelector(".message_board_delete")
 
@@ -176,13 +173,13 @@ Hue.check_last_message_board_post = function () {
 
   let date = Hue.room_state.last_message_board_post
 
-  if (Hue.dataset[items[0]].date > date) {
+  if (Hue.dataset(items[0], "date") > date) {
     if (!Hue.msg_message_board.is_open()) {
       let count = 0
 
       Hue.el("#message_board_container").querySelectorAll(".message_board_item")
         forEach(function (it) {
-          if (Hue.dataset[it].date <= date) {
+          if (Hue.dataset(it, "date") <= date) {
             return false
           }
 
@@ -201,7 +198,7 @@ Hue.check_last_message_board_post = function () {
 // Updates the message board date local storage
 Hue.update_last_message_post_checked = function () {
   let item = Hue.el("#message_board_container").querySelector(".message_board_item")
-  let date = item.data("date")
+  let date = Hue.dataset(item, "date")
 
   if (date !== Hue.room_state.last_message_board_post) {
     Hue.room_state.last_message_board_post = date
@@ -229,7 +226,7 @@ Hue.check_message_board_permissions = function () {
 Hue.remove_message_board_post = function (data) {
   Hue.el("#message_board_container").querySelectorAll(".message_board_item")
     .forEach(function (it) {
-      if (Hue.dataset[it].id === data.id) {
+      if (Hue.dataset(it, "id") === data.id) {
         it.remove()
         return false
       }

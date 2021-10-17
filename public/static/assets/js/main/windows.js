@@ -199,7 +199,7 @@ Hue.start_msg = function () {
       },
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.el("#write_message_feedback").text("")
+        Hue.el("#write_message_feedback").textContent = ""
         Hue.el("#write_message_feedback").style.display = "none"
         Hue.writing_message = false
       },
@@ -469,9 +469,9 @@ Hue.start_modal_filters = function () {
 
 // Focuses the filter widget of a modal
 Hue.focus_modal_filter = function (instance) {
-  let filter = Hue.els(`#Msg-content-${instance.options.id}`).querySelector(".filter_input")
+  let filter = Hue.el(`#Msg-content-${instance.options.id}`).querySelector(".filter_input")
 
-  if (filter.length) {
+  if (filter) {
     filter.focus()
   }
 }
@@ -481,11 +481,11 @@ Hue.reset_modal_filter = function (instance) {
   let id = instance.options.id
   let filter = Hue.el(`#Msg-content-${id}`).querySelector(".filter_input")
 
-  if (id === "info" || id === "info2" || filter.dataset.mode === "manual") {
-    return false
-  }
+  if (filter) {
+    if (id === "info" || id === "info2" || filter.dataset.mode === "manual") {
+      return false
+    }
 
-  if (filter.length) {
     if (filter.value) {
       filter.value = ""
       Hue.do_modal_filter(id)
@@ -595,11 +595,11 @@ Hue.do_modal_filter = function (id = false) {
   let items = win.querySelectorAll(".modal_item")
   let display
 
-  if (!win.data("filter_display")) {
+  if (!Hue.dataset(win, "filter_display")) {
     display = items[0].style.display
-    Hue.dataset[win].filter_display = display
+    Hue.dataset(win, "filter_display", display)
   } else {
-    display = win.data("filter_display")
+    display = Hue.dataset(win, "filter_display")
   }
 
   if (lc_value) {
@@ -631,7 +631,7 @@ Hue.do_modal_filter = function (id = false) {
 
 // Scrolls a modal window to the top
 Hue.scroll_modal_to_top = function (id) {
-  Hue.el(`#Msg-content-container-${id}`).scrollTop(0)
+  Hue.el(`#Msg-content-container-${id}`).scrollTop = 0
 }
 
 // Scrolls a modal window to the bottom

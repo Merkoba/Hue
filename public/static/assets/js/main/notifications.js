@@ -81,9 +81,8 @@ Hue.push_notification = function (icon, message, on_click = false) {
   let content = item.querySelector(".notifications_item_content")
 
   content.title = t
-  Hue.dataset[content] = {}
-  Hue.dataset[content].otitle = t
-  Hue.dataset[content].date = d
+  Hue.dataset(content, "otitle", t)
+  Hue.dataset(content, "date", d)
 
   if (on_click) {
     content.addEventListener("click", function () {
@@ -105,7 +104,7 @@ Hue.push_notification = function (icon, message, on_click = false) {
 
   if (Hue.notifications_count < 100) {
     Hue.notifications_count += 1
-    Hue.el("#header_notifications_count").text(`(${Hue.notifications_count})`)
+    Hue.el("#header_notifications_count").textContent = `(${Hue.notifications_count})`
   }
 }
 
@@ -118,7 +117,7 @@ Hue.show_notifications = function (filter = "") {
     }
 
     Hue.notifications_count = 0
-    Hue.el("#header_notifications_count").text("(0)")
+    Hue.el("#header_notifications_count").textContent = "(0)"
   })
 }
 

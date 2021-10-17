@@ -5,7 +5,7 @@
 const Hue = {}
 
 // This enables information about socket calls to the server in the console
-Hue.debug_socket = false
+Hue.debug_socket = true
 
 // This wraps all functions with a function
 // It shows every triggered function name
@@ -130,7 +130,8 @@ Hue.draw_image_max_levels = 200
 Hue.draw_image_open = false
 Hue.last_message_date = 0
 Hue.update_userlist_delay = 2000
-Hue.dataset = {}
+Hue.dataset_obj = {}
+Hue.dataset_id = 0
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
