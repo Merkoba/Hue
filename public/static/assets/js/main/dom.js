@@ -48,6 +48,16 @@ Hue.dataset = function (el, value, setvalue = "") {
 }
 
 // Create an empty div
-Hue.div = function () {
-  return document.createElement("div")
+Hue.div = function (classes = "") {
+  let new_div = document.createElement("div")
+
+  if (classes) {
+    let classlist = classes.split(" ").filter(x => x != "")
+  
+    for (let cls of classlist) {
+      new_div.classList.add(cls)
+    }
+  }
+
+  return new_div
 }

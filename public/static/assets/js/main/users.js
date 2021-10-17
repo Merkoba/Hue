@@ -308,10 +308,7 @@ Hue.update_userlist_window = function () {
           </div>
       </div>`
 
-    let el = Hue.div()
-    el.classList.add("modal_item")
-    el.classList.add("userlist_item")
-    el.classList.add("action")
+    let el = Hue.div("modal_item userlist_item action")
     el.innerHTML = s
 
     let image = el.querySelector(".userlist_item_profilepic")
@@ -714,7 +711,6 @@ Hue.show_profile = function (username, user_id = false) {
   let item = Hue.div()
   item.textContent = `ID: ${id}`
   Hue.el("#show_profile_info").append(item)
-  
   Hue.horizontal_separator(Hue.el("#show_profile_badges"))
 
   Hue.msg_profile.show(function () {

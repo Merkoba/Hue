@@ -46,8 +46,7 @@ Hue.update_activity_bar = function (check = false) {
       </div>
       <div class='activity_bar_text'></div>`
 
-    let el = Hue.div()
-    el.classList.add("activity_bar_item")
+    let el = Hue.div("activity_bar_item")
     el.innerHTML = s
 
     let text_el = el.querySelector(".activity_bar_text")
