@@ -559,6 +559,17 @@ Hue.start_chat_mouse_events = function () {
           Hue.open_url_menu_by_media_id("tv", id)
         }
       }
+
+      if (e.target.classList.contains("link_preview_image")) {
+        e.stopPropagation()
+        Hue.expand_image(e.target.src.replace(".gifv", ".gif"))
+      }
+
+      if (e.target.classList.contains("image_preview_image")) {
+        e.stopPropagation()
+        let src = Hue.dataset(e.target, "image_preview_src_original")
+        Hue.expand_image(src.replace(".gifv", ".gif"))
+      }
     }
   })
 
@@ -1311,12 +1322,7 @@ Hue.setup_link_preview = function (fmessage) {
   let link_preview_el = fmessage.querySelector(".link_preview")
   let link_preview_image = link_preview_el.querySelector(".link_preview_image")
 
-  if (link_preview_image.length) {
-    link_preview_image.addEventListener("click", function (e) {
-      e.stopPropagation()
-      Hue.expand_image(this.src.replace(".gifv", ".gif"))
-    })
-
+  if (link_preview_image) {
     link_preview_image.addEventListener("load", function () {
       Hue.goto_bottom()
     })
@@ -1372,13 +1378,6 @@ Hue.make_image_preview = function (message) {
 // Setups image preview elements
 Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
   let image_preview_el = fmessage.querySelector(".image_preview")
-
-  image_preview_el.addEventListener("click", function () {
-    Hue.open_url_menu({
-      source: image_preview_src_original
-    })
-  })
-
   let image_preview_image = image_preview_el.querySelector(".image_preview_image")
 
   image_preview_image.addEventListener("load", function () {
@@ -1389,12 +1388,8 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
     Hue.goto_bottom()
   })
 
-  image_preview_image.addEventListener("click", function (e) {
-    e.stopPropagation()
-    Hue.expand_image(image_preview_src_original.replace(".gifv", ".gif"))
-  })
-
   Hue.urlize(image_preview_el.parentElement.querySelector(".image_preview_text"))
+  Hue.dataset(image_preview_image, "image_preview_src_original", image_preview_src_original)
 }
 
 // Starts chat area scroll events
