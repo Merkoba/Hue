@@ -589,7 +589,7 @@ Hue.setup_show_profile = function () {
   })
 
   Hue.el("#show_profile_search").addEventListener("click", function () {
-    Hue.show_chat_search(Hue.open_profile_username)
+    Hue.show_chat_search(Hue.open_profile_user_id, "user_id")
   })
 
   Hue.el("#show_profile_hearts_icon").addEventListener("click", function () {
@@ -641,10 +641,10 @@ Hue.show_profile = function (username, user_id = false) {
   let skulls = 0
   let user = false
 
-  if (username) {
-    user = Hue.get_user_by_username(username)
-  } else if (user_id) {
+  if (user_id) {
     user = Hue.get_user_by_user_id(user_id)
+  } else if (username) {
+    user = Hue.get_user_by_username(username)
   }
 
   if (user_id) {

@@ -347,7 +347,7 @@ Hue.do_send_whisper = function (data, show = true) {
 Hue.setup_whispers_click = function (content, username) {
   content.querySelectorAll(".whisper_link").forEach(it => {
     it.addEventListener("click", function () {
-      Hue.process_write_whisper(`${username} > ${Hue.dataset(it, "whisper")}`, false)
+      Hue.process_write_whisper(`${username} > ${it.dataset.whisper}`, false)
     })
   })
 }
