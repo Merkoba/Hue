@@ -223,8 +223,6 @@ Hue.show_whisper = function (data) {
   let title, button_html
   let usr
 
-  console.log(data)
-
   if (data.usernames === undefined) {
     title = `Whisper from ${data.username}`
     usr = [data.username]
@@ -373,7 +371,8 @@ Hue.push_whisper = function (message, on_click, read) {
   let message_html = `<div class='whispers_message'>${Hue.utilz.make_html_safe(message)}</div>`
 
   let item = document.createElement("div")
-  item.classList.add("whispers_item_modal_item")
+  item.classList.add("whispers_item")
+  item.classList.add("modal_item")
   item.innerHTML = `<div class='whispers_item_content action dynamic_title'>${message_html}`
 
   let content = item.querySelector(".whispers_item_content")
@@ -393,17 +392,12 @@ Hue.push_whisper = function (message, on_click, read) {
     on_click()
   })
 
+  Hue.el("#whispers_container").prepend(item)
+  
   let items = Hue.els("#whispers_container .whispers_item")
-  let num_items = items.length
 
-  if (num_items === 0) {
-    Hue.el("#whispers_container").innerHTML = item
-  } else {
-    Hue.el("#whispers_container").prepend(item)
-  }
-
-  if (num_items > Hue.config.whispers_crop_limit) {
-    Hue.el("#whispers_container .whispers_item").last().remove()
+  if (items.length > Hue.config.whispers_crop_limit) {
+    Hue.els("#whispers_container .whispers_item").slice(-1)[0].remove()
   }
 
   Hue.update_whispers_unread_count()
