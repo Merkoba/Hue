@@ -37,10 +37,10 @@ document.addEventListener("keydown", function (e) {
 	}
 })
 
-$(function () {
+window.onload = function () {
 	try {
 		if (message && message !== "undefined") {
 			set_message(message)
 		}
 	} catch (err) {}
-})
+}
