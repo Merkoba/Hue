@@ -223,6 +223,8 @@ Hue.show_whisper = function (data) {
   let title, button_html
   let usr
 
+  console.log(data)
+
   if (data.usernames === undefined) {
     title = `Whisper from ${data.username}`
     usr = [data.username]
@@ -250,12 +252,12 @@ Hue.show_whisper = function (data) {
   modal.show(function () {
     let container = modal.content
     let text_el = container.querySelector(".sent_message_text")
-    text_el.html(message_html)
-    text_el.urlize()
+    text_el.innerHTML = message_html
+    Hue.urlize(text_el)
     let button_el = container.querySelector(".sent_message_button")
 
     if (data.type === "user") {
-      button_el.html(button_html)
+      button_el.innerHTML = button_html
       button_el.addEventListener("click", button_func)
     } else {
       button_el.style.display = "none"
@@ -368,12 +370,12 @@ Hue.push_whisper = function (message, on_click, read) {
   let d = Date.now()
   let t = Hue.utilz.nice_date(d)
 
-  let message_html = `<div class='whispers_message'>${Hue.utilz.make_html_safe(
-    message
-  )}</div>`
-  let item = $(
-    `<div class='whispers_item modal_item'><div class='whispers_item_content action dynamic_title'>${message_html}</div>`
-  )
+  let message_html = `<div class='whispers_message'>${Hue.utilz.make_html_safe(message)}</div>`
+
+  let item = document.createElement("div")
+  item.classList.add("whispers_item_modal_item")
+  item.innerHTML = `<div class='whispers_item_content action dynamic_title'>${message_html}`
+
   let content = item.querySelector(".whispers_item_content")
 
   content.title = t
@@ -391,11 +393,11 @@ Hue.push_whisper = function (message, on_click, read) {
     on_click()
   })
 
-  let items = Hue.el("#whispers_container .whispers_item")
+  let items = Hue.els("#whispers_container .whispers_item")
   let num_items = items.length
 
   if (num_items === 0) {
-    Hue.el("#whispers_container").html(item)
+    Hue.el("#whispers_container").innerHTML = item
   } else {
     Hue.el("#whispers_container").prepend(item)
   }
