@@ -26,7 +26,7 @@ Hue.setup_message_board = function () {
       let el = e.target.closest(".message_board_username")
       
       if (el) {
-        Hue.show_profile(Hue.dataset(el, "uname"))
+        Hue.show_profile(Hue.dataset(el, "username"))
       }
     }
   )
@@ -55,7 +55,7 @@ Hue.add_post_to_message_board = function (post) {
 
   let username = item.querySelector(".message_board_username")
   username.textContent = post.username
-  Hue.dataset(username, "uname", post.username)
+  Hue.dataset(username, "username", post.username)
 
   let date = item.querySelector(".message_board_date")
   date.textContent = Hue.utilz.nice_date(post.date)
