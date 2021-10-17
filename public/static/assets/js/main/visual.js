@@ -120,9 +120,10 @@ Hue.make_safe = function (args = {}) {
       h = Hue.parse_text(h)
 
       if (args.urlize) {
-        c_text.html(h).urlize()
+        c_text.innerHTML = h
+        Hue.urlize(c_text)
       } else {
-        c_text.html(h)
+        c_text.innerHTML = h
       }
     } else {
       if (args.urlize) {
@@ -162,7 +163,7 @@ Hue.make_safe = function (args = {}) {
     c.append(`<div class='message_info_html ${sp}'>${args.html}</div>`)
   }
 
-  return c[0]
+  return c
 }
 
 // Setups the confirm window
