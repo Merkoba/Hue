@@ -261,7 +261,7 @@ Hue.clear_draw_image_state = function () {
   Hue.draw_image_pencil_size = 8
 
   Hue.el("#draw_image_pencil_size").querySelectorAll("option")
-  .forEach(function (it) {
+  .forEach(it => {
     if (it.value == Hue.draw_image_pencil_size) {
       it.selected = true
     }

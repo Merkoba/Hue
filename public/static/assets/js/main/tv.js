@@ -219,7 +219,7 @@ Hue.play_tv = function () {
 // Destroys all tv players that don't match the item's type
 // Makes the item's type visible
 Hue.hide_tv = function (item = false) {
-  Hue.els("#media_tv .media_container").forEach(function (it) {
+  Hue.els("#media_tv .media_container").forEach(it => {
     let type = it.id.replace("media_", "").replace("_video_container", "")
 
     if (!item || item.type !== type) {
@@ -565,7 +565,7 @@ Hue.decrease_tv_percentage = function () {
 Hue.get_visible_video_frame_id = function () {
   let id = false
 
-  Hue.els(".video_frame").forEach(function (it) {
+  Hue.els(".video_frame").forEach(it => {
     if (it.parentElement.style.display !== "none") {
       id = it.id
       return false

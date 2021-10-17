@@ -58,7 +58,7 @@ Hue.get_latest_highlight = function () {
   let latest_highlight = false
   let items = Hue.els("#chat_area .chat_content_container")
 
-  items.reverse().forEach(function (it) {
+  items.reverse().forEach(it => {
     if (Hue.dataset(it, "highlighted")) {
       latest_highlight = it
       return false
@@ -118,7 +118,7 @@ Hue.show_highlights = function (filter = "") {
 
   let clone = Hue.clone_children("#chat_area").reverse()
 
-  clone.forEach(function (it) {
+  clone.forEach(it => {
     it.removeAttribute("id")
   })
 

@@ -1,17 +1,17 @@
 // Applies separation to generic horizontal separator classes
 Hue.setup_generic_separators = function () {
-  Hue.els(".generic_horizontal_separator").forEach(function (it) {
+  Hue.els(".generic_horizontal_separator").forEach(it => {
     Hue.horizontal_separator(it)
   })
 
-  Hue.els(".generic_vertical_separator").forEach(function (it) {
+  Hue.els(".generic_vertical_separator").forEach(it => {
     Hue.vertical_separator(it)
   })
 }
 
 // Remove & add vertical or horizontal separators
 Hue.apply_separator = function (el, cls) {
-  el.querySelectorAll(":scope > .separator").forEach(function (it) {
+  el.querySelectorAll(":scope > .separator").forEach(it => {
     it.remove()
   })
 
@@ -43,11 +43,11 @@ Hue.vertical_separator = function (el) {
 
 // Applies separation to generic horizontal separator classes
 Hue.setup_generic_separators = function () {
-  Hue.els(".generic_horizontal_separator").forEach(function (it) {
+  Hue.els(".generic_horizontal_separator").forEach(it => {
     Hue.horizontal_separator(it)
   })
 
-  Hue.els(".generic_vertical_separator").forEach(function (it) {
+  Hue.els(".generic_vertical_separator").forEach(it => {
     Hue.vertical_separator(it)
   })
 }
@@ -225,14 +225,14 @@ Hue.start_timeago = function () {
 
 // The timeago action
 Hue.timeago_action = function () {
-  Hue.els(".chat_area").forEach(function (it) {
-    it.querySelectorAll(".chat_timeago").forEach(function (it2) {
+  Hue.els(".chat_area").forEach(it => {
+    it.querySelectorAll(".chat_timeago").forEach(it2 => {
       let message = it2.closest(".message")
       it2.textContent = Hue.utilz.timeago(Hue.dataset(message, "date"))
     })
   })
 
-  Hue.els("#media .media_info_container").forEach(function (it) {
+  Hue.els("#media .media_info_container").forEach(it => {
     it.querySelector(".media_info_timeago").textContent = Hue.utilz.timeago(Hue.dataset(it, "date"))
   })
 

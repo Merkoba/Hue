@@ -29,9 +29,9 @@ Hue.user_join = function (data) {
 
 // Removes the online effect to a user's profile images
 Hue.remove_offline_profilepics = function (user_id) {
-  Hue.els("#chat_area .message").forEach(function (it) {
+  Hue.els("#chat_area .message").forEach(it => {
     if (Hue.dataset(it, "user_id") === user_id) {
-      it.querySelectorAll(".chat_profilepic_container").forEach(function (it2) {
+      it.querySelectorAll(".chat_profilepic_container").forEach(it2 => {
         it2.classList.remove("profilepic_offline")
       })
     }
@@ -40,9 +40,9 @@ Hue.remove_offline_profilepics = function (user_id) {
 
 // Add the online effect to a user's profile images
 Hue.add_offline_profilepics = function (user_id) {
-  Hue.els("#chat_area .message").forEach(function (it) {
+  Hue.els("#chat_area .message").forEach(it => {
     if (Hue.dataset(it, "user_id") === user_id) {
-      it.querySelectorAll(".chat_profilepic_container").forEach(function (it) {
+      it.querySelectorAll(".chat_profilepic_container").forEach(it => {
         it.classList.add("profilepic_offline")
       })
     }
@@ -1079,7 +1079,7 @@ Hue.remove_badge_icons = function (profilepic_container) {
   profilepic_container.classList.remove("heart_badge")
   profilepic_container.classList.remove("skull_badge")
   profilepic_container.classList.remove(`profilepic_badge`)
-  profilepic_container.querySelectorAll(".profilepic_badge_icon").forEach(function (it) {
+  profilepic_container.querySelectorAll(".profilepic_badge_icon").forEach(it => {
     it.remove()
   })
 }

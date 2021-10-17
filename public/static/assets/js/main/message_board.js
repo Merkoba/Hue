@@ -178,7 +178,7 @@ Hue.check_last_message_board_post = function () {
       let count = 0
 
       Hue.el("#message_board_container").querySelectorAll(".message_board_item")
-        forEach(function (it) {
+        forEach(it => {
           if (Hue.dataset(it, "date") <= date) {
             return false
           }
@@ -225,7 +225,7 @@ Hue.check_message_board_permissions = function () {
 // Remove a post from the message board window
 Hue.remove_message_board_post = function (data) {
   Hue.el("#message_board_container").querySelectorAll(".message_board_item")
-    .forEach(function (it) {
+    .forEach(it => {
       if (Hue.dataset(it, "id") === data.id) {
         it.remove()
         return false

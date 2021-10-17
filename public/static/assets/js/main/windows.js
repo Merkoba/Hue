@@ -1,6 +1,6 @@
 // Create all the Handlebars templates
 Hue.setup_templates = function () {
-  Hue.els(".template").forEach(function (it) {
+  Hue.els(".template").forEach(it => {
     Hue[it.id] = Handlebars.compile(Hue.el(`#${it.id}`).innerHTML)
   })
 }
@@ -457,7 +457,7 @@ Hue.info2_vars_to_false = function () {
 
 // Starts automatic modal filters
 Hue.start_modal_filters = function () {
-  Hue.els(".filter_input").forEach(function (it) {
+  Hue.els(".filter_input").forEach(it => {
     if (it.dataset.mode !== "manual") {
       it.addEventListener("input", function () {
         Hue.do_modal_filter_timer()

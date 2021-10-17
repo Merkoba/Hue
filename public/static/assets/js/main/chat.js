@@ -409,7 +409,7 @@ Hue.add_to_chat = function (args = {}) {
     content_container.classList.add(`chat_content_container_${Hue.chat_content_container_id}`)
 
     if (args.just_edited && args.id) {
-      Hue.els(".chat_content_container").forEach(function (it) {
+      Hue.els(".chat_content_container").forEach(it => {
         if (Hue.dataset(it, "id") === args.id) {
           it.replaceWith(Hue.clone(content_container))
           Hue.goto_bottom()
@@ -721,7 +721,7 @@ Hue.edit_last_message = function (reverse = false) {
 
   let messages = Hue.els("#chat_area > .message")
 
-  messages.reverse().forEach(function (it) {
+  messages.reverse().forEach(it => {
     if (found) {
       return false
     }
@@ -729,36 +729,34 @@ Hue.edit_last_message = function (reverse = false) {
     if (Hue.dataset(it, "user_id") === Hue.user_id) {
       let items = Array.from(it.querySelectorAll(".chat_content_container"))
 
-      items.reverse().forEach(
-        function (it2) {
-          if (Hue.editing_message) {
-            if (it2 === Hue.editing_message_container) {
-              edit_found = true
-              return true
-            }
-          }
-
-          let cnt = it2
-
-          if (!edit_found) {
-            last_container = it2
+      items.reverse().forEach(it2 => {
+        if (Hue.editing_message) {
+          if (it2 === Hue.editing_message_container) {
+            edit_found = true
             return true
-          } else {
-            if (reverse) {
-              cnt = last_container
-            }
           }
-
-          if (!cnt) {
-            Hue.stop_edit_message()
-          } else {
-            Hue.edit_message(cnt)
-          }
-
-          found = true
-          return false
         }
-      )
+
+        let cnt = it2
+
+        if (!edit_found) {
+          last_container = it2
+          return true
+        } else {
+          if (reverse) {
+            cnt = last_container
+          }
+        }
+
+        if (!cnt) {
+          Hue.stop_edit_message()
+        } else {
+          Hue.edit_message(cnt)
+        }
+
+        found = true
+        return false
+      })
     }
   })
 }
@@ -880,7 +878,7 @@ Hue.send_delete_message = function (id) {
 // Remove a message from the chat
 Hue.remove_message_from_chat = function (data) {
   if (data.type === "chat") {
-    Hue.els(".chat_content_container").forEach(function (it) {
+    Hue.els(".chat_content_container").forEach(it => {
       if (Hue.dataset(it, "id") == data.id) {
         Hue.process_remove_chat_message(it)
         return false
@@ -891,7 +889,7 @@ Hue.remove_message_from_chat = function (data) {
     data.type === "image" ||
     data.type === "tv"
   ) {
-    Hue.els(".message.announcement").forEach(function (it) {
+    Hue.els(".message.announcement").forEach(it => {
       if (Hue.dataset(it, "id") == data.id) {
         Hue.process_remove_announcement(it)
         return false
@@ -918,7 +916,7 @@ Hue.remove_message_from_context_menu = function (menu) {
 Hue.process_remove_chat_message = function (chat_content_container) {
   let chat_content_container_id = Hue.dataset(chat_content_container, "chat_content_container_id")
 
-  Hue.els(".chat_content_container").forEach(function (it) {
+  Hue.els(".chat_content_container").forEach(it => {
     if (
       Hue.dataset(it, "chat_content_container_id") === chat_content_container_id
     ) {
@@ -946,7 +944,7 @@ Hue.process_remove_announcement = function (message) {
     Hue.remove_item_from_media_changed(type.replace("_change", ""), id)
   }
 
-  Hue.els(`.message_id_${message_id}`).forEach(function (it) {
+  Hue.els(`.message_id_${message_id}`).forEach(it => {
     it.remove()
   })
 }
@@ -1011,7 +1009,7 @@ Hue.get_last_chat_message_by_username = function (ouname) {
   let found_message = false
   let items = Hue.els("#chat_area > .message.chat_message")
   
-  items.reverse().forEach(function (it) {
+  items.reverse().forEach(it => {
     let uname = Hue.dataset(it, "uname")
 
     if (uname) {
@@ -1030,7 +1028,7 @@ Hue.get_last_chat_message_by_user_id = function (ouser_id) {
   let found_message = false
   let items = Hue.els("#chat_area > .message.chat_message")
 
-  items.reverse().forEach(function (it) {
+  items.reverse().forEach(it => {
     let user_id = Hue.dataset(it, "user_id")
 
     if (user_id) {
@@ -1082,7 +1080,7 @@ Hue.add_aura = function (id) {
 Hue.remove_aura = function (id) {
   clearTimeout(Hue.aura_timeouts[id])
   
-  Hue.els(".chat_profilepic_container.aura").forEach(function (it) {
+  Hue.els(".chat_profilepic_container.aura").forEach(it => {
     let message = it.closest(".chat_message")
 
     if (message.length > 0) {
@@ -1092,7 +1090,7 @@ Hue.remove_aura = function (id) {
     }
   })
 
-  Hue.els(".activity_bar_image_container.aura").forEach(function (it) {
+  Hue.els(".activity_bar_image_container.aura").forEach(it => {
     let activity_bar_item = it.closest(".activity_bar_item")
 
     if (activity_bar_item.length > 0) {
@@ -1150,7 +1148,7 @@ Hue.activity_above = function () {
   let scrolltop = Hue.el("#chat_area").scrollTop
   let messages = Hue.els("#chat_area > .message")
 
-  messages.reverse().forEach(function (it) {
+  messages.reverse().forEach(it => {
     let same_uname = false
     let uname = Hue.dataset(it, "uname")
 
@@ -1187,7 +1185,7 @@ Hue.activity_below = function () {
   let chat_area_height = Hue.el("#chat_area").clientHeight
   let scrolltop = Hue.el("#chat_area").scrollTop
 
-  docuemnt.querySelectorAll("#chat_area > .message").forEach(function (it) {
+  docuemnt.querySelectorAll("#chat_area > .message").forEach(it => {
     let same_uname = false
     let uname = Hue.dataset(it, "uname")
 
@@ -1702,7 +1700,7 @@ Hue.get_last_message_date = function () {
 
 // Clear the chat by adding a spacer
 Hue.add_chat_spacer = function () {
-  Hue.els(".clear_spacer").forEach(function (it) {
+  Hue.els(".clear_spacer").forEach(it => {
     it.remove()
   })
 

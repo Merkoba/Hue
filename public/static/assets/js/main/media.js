@@ -86,13 +86,13 @@ Hue.swap_display_positions = function () {
 
 // Refresh media menu widgets
 Hue.refresh_media_menu = function () {
-  Hue.el("#media_menu_tv_size").querySelectorAll("option").forEach(function (it) {
+  Hue.el("#media_menu_tv_size").querySelectorAll("option").forEach(it => {
     if (it.value == Hue.room_state.tv_display_percentage) {
       it.selected = true
     }
   })
 
-  Hue.el("#media_menu_chat_size").querySelectorAll("option").forEach(function (it) {
+  Hue.el("#media_menu_chat_size").querySelectorAll("option").forEach(it => {
     if (it.value == Hue.room_state.chat_display_percentage) {
       it.selected = true
     }
@@ -128,7 +128,7 @@ Hue.remove_item_from_media_changed = function (type, id) {
 Hue.num_media_elements_visible = function () {
   let num = 0
 
-  Hue.els("#media_split .media_main_container").forEach(function (it) {
+  Hue.els("#media_split .media_main_container").forEach(it => {
     if (it.style.display !== "none") {
       num += 1
     }
@@ -226,7 +226,7 @@ Hue.show_media_history = function (type, filter = "") {
 
   let clone = Hue.clone_children("#chat_area").reverse()
 
-  clone.forEach(function (it) {
+  clone.forEach(it => {
     it.removeAttribute("id")
   })
 
@@ -279,12 +279,12 @@ Hue.setup_media_menu = function () {
   })   
 
   Hue.el("#media_menu_tv_size").addEventListener("change", function () {
-    let size = Hue.el("#media_menu_tv_size option:selected").value
+    let size = Hue.el("#media_menu_tv_size option:checked").value
     Hue.do_media_tv_size_change(size)
   })
 
   Hue.el("#media_menu_chat_size").addEventListener("change", function () {
-    let size = Hue.el("#media_menu_chat_size option:selected").value
+    let size = Hue.el("#media_menu_chat_size option:checked").value
     Hue.do_chat_size_change(size)
   })
 
@@ -677,14 +677,14 @@ Hue.change_media_layout = function (mode = false) {
   if (mode === "column") {
     Hue.el("#media_split").style.flexDirection = "column"
 
-    Hue.els(".media_main_container").forEach(function (it) {
+    Hue.els(".media_main_container").forEach(it => {
       it.style.width = "100%"
       it.style.height = "50%"
     })
   } else if (mode === "row") {
     Hue.el("#media_split").style.flexDirection = "row"
 
-    Hue.els(".media_main_container").forEach(it, function (it) {
+    Hue.els(".media_main_container").forEach(it => {
       it.style.width = "50%"
       it.style.height = "100%"
     })
