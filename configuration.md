@@ -334,6 +334,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "db_write_file_timeout_limit"
 >Max time without saving a file after a write call.
 
+"chat_crop_limit"
+>Max number of messages to keep on the client.
+
 
 ## config.secret.json
 

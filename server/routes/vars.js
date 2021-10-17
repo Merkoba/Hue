@@ -76,4 +76,5 @@ module.exports = function (c, config) {
   c.vars.max_displayed_url = config.max_displayed_url
   c.vars.max_activity_username_length = config.max_activity_username_length
   c.vars.public_media_directory = config.public_media_directory
+  c.vars.chat_crop_limit = config.chat_crop_limit
 }

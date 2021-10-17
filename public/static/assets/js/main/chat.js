@@ -454,9 +454,9 @@ Hue.add_to_chat = function (args = {}) {
     chat_area.append(args.message)
     let messages = Hue.els("#chat_area > .message")
 
-    if (messages.length > Hue.chat_crop_limit) {
-      let diff = messages.length - Hue.chat_crop_limit
-      for (let message of messages.slice(diff)) {
+    if (messages.length > Hue.config.chat_crop_limit) {
+      let diff = messages.length - Hue.config.chat_crop_limit
+      for (let message of messages.slice(0, diff)) {
         message.remove()
       }
     }

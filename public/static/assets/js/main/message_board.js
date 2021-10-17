@@ -39,16 +39,16 @@ Hue.setup_message_board = function () {
 // Creates and adds an item to the message board
 Hue.add_post_to_message_board = function (post) {
   let s = `
-    <div class='message_board_item modal_item'>
-        <div class='message_board_top'>
-          <div class='message_board_username action'></div>
-          <div class='message_board_date'></div>
-        </div>
-        <div class='message_board_text dynamic_title'></div>
-        <div><div class='message_board_delete action inline underlined'>Delete</div></div>
-    </div>`
+    <div class='message_board_top'>
+      <div class='message_board_username action'></div>
+      <div class='message_board_date'></div>
+    </div>
+    <div class='message_board_text dynamic_title'></div>
+    <div><div class='message_board_delete action inline underlined'>Delete</div></div>`
 
   let item = document.createElement("div")
+  item.classList.add("message_board_item")
+  item.classList.add("modal_item")
   item.innerHTML = s
   Hue.dataset(item, "id", post.id)
   Hue.dataset(item, "date", post.date)
@@ -79,14 +79,7 @@ Hue.add_post_to_message_board = function (post) {
     delet.style.display = "inline-block"
   }
 
-  let items = Hue.els("#message_board_container .message_board_item")
-  let num_items = items.length
-
-  if (num_items === 0) {
-    Hue.el("#message_board_container").innerHTML = item
-  } else {
-    Hue.el("#message_board_container").prepend(item)
-  }
+  Hue.el("#message_board_container").prepend(item)
 
   let mb_items = Array.from(Hue.el("#message_board_container").querySelectorAll(".message_board_item"))
 
@@ -159,7 +152,7 @@ Hue.on_message_board_received = function (data) {
     Hue.update_last_message_post_checked()
   }
 
-  Hue.vertical_separator(Hue.el("#message_board_container")[0])
+  Hue.vertical_separator(Hue.el("#message_board_container"))
 }
 
 // Checks if there are new message board posts
@@ -177,14 +170,13 @@ Hue.check_last_message_board_post = function () {
     if (!Hue.msg_message_board.is_open()) {
       let count = 0
 
-      Hue.el("#message_board_container").querySelectorAll(".message_board_item")
-        forEach(it => {
-          if (Hue.dataset(it, "date") <= date) {
-            return false
-          }
+      Hue.el("#message_board_container").querySelectorAll(".message_board_item").forEach(it => {
+        if (Hue.dataset(it, "date") <= date) {
+          return false
+        }
 
-          count += 1
-        })
+        count += 1
+      })
 
       Hue.el("#header_message_board_count").textContent = `(${count})`
     } else {
