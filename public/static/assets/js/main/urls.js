@@ -61,7 +61,7 @@ Hue.urlize = function (el, stop_propagation = true) {
 
       el.innerHTML = html
 
-      el.querySelectorAll(".stop_propagation").forEach(function () {
+      el.querySelectorAll(".stop_propagation").forEach(it => {
         this.addEventListener("click", function (e) {
           e.stopPropagation()
         })

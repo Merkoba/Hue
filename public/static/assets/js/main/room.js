@@ -307,7 +307,7 @@ Hue.set_background = function (data, apply = true) {
 
 // Setups background
 Hue.setup_background = function () {
-  Hue.els(".background").forEach(function (it) {
+  Hue.els(".background").forEach(it => {
     it.addEventListener("error", function () {
       if (this.src !== Hue.config.default_background_url) {
         this.src = Hue.config.default_background_url
@@ -318,7 +318,7 @@ Hue.setup_background = function () {
 
 // Applies the background to all background elements
 Hue.apply_background = function () {
-  Hue.els(".background").forEach(function (it) {
+  Hue.els(".background").forEach(it => {
     it.src = Hue.background
   })
 }

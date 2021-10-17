@@ -13,7 +13,7 @@ Hue.show_chat_search = function (filter = "") {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
     let clone = Hue.clone_children("#chat_area").reverse()
 
-    clone.forEach(function (it) {
+    clone.forEach(it => {
       it.removeAttribute("id")
     })
 

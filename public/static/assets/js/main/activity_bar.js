@@ -82,7 +82,7 @@ Hue.resize_activity_bar = function () {
 Hue.get_activity_bar_item_by_user_id = function (id) {
   let item = false
 
-  Hue.els(".activity_bar_item").forEach(function (it) {
+  Hue.els(".activity_bar_item").forEach(it => {
     if (Hue.dataset(it, "user_id") === id) {
       item = it
       return false
@@ -96,7 +96,7 @@ Hue.get_activity_bar_item_by_user_id = function (id) {
 Hue.clear_activity_bar_items = function () {
   Hue.el("#activity_bar_inner")
   .querySelectorAll(".activity_bar_item")
-  .forEach(function (it) {
+  .forEach(it => {
     it.remove()
   })
 }
@@ -105,7 +105,7 @@ Hue.clear_activity_bar_items = function () {
 Hue.update_activity_bar_image = function (id, src) {
   Hue.el("#activity_bar_inner")
   .querySelectorAll(".activity_bar_item")
-  .forEach(function (it) {
+  .forEach(it => {
     if (Hue.dataset(it, "user_id") === id) {
       it.querySelector(".activity_bar_image").src = src
       return false

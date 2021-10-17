@@ -345,7 +345,7 @@ Hue.do_send_whisper = function (data, show = true) {
 
 // Setups whispers click events
 Hue.setup_whispers_click = function (content, username) {
-  content.querySelectorAll(".whisper_link").forEach(function (it) {
+  content.querySelectorAll(".whisper_link").forEach(it => {
     it.addEventListener("click", function () {
       Hue.process_write_whisper(`${username} > ${Hue.dataset(it, "whisper")}`, false)
     })
@@ -428,7 +428,7 @@ Hue.update_whispers_unread_count = function () {
 Hue.get_unread_whispers = function () {
   let num_unread = 0
 
-  Hue.els(".whispers_item_content").forEach(function (it) {
+  Hue.els(".whispers_item_content").forEach(it => {
     if (!Hue.dataset(it, "read")) {
       num_unread += 1
     }
