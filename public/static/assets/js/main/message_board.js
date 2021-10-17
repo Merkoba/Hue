@@ -81,10 +81,10 @@ Hue.add_post_to_message_board = function (post) {
 
   Hue.el("#message_board_container").prepend(item)
 
-  let mb_items = Array.from(Hue.el("#message_board_container").querySelectorAll(".message_board_item"))
+  let items = Hue.els("#message_board_container .message_board_item")
 
-  if (mb_items.length > Hue.config.max_message_board_posts) {
-    mb_items.slice(-1)[0].remove()
+  if (items.length > Hue.config.max_message_board_posts) {
+    items.slice(-1)[0].remove()
   }
 
   if (Hue.message_board_filtered) {

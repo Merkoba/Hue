@@ -602,19 +602,19 @@ Hue.do_modal_filter = function (id = false) {
   }
 
   if (lc_value) {
-    items.each(function () {
+    items.forEach(it => {
       let item_value = this.textContent.toLowerCase()
 
       if (item_value.includes(lc_value)) {
-        this.style.display = display
+        it.style.display = display
       } else {
-        this.style.display = "none"
+        it.style.display = "none"
       }
     })
 
     Hue[`${id}_filtered`] = true
   } else {
-    items.each(function () {
+    items.forEach(it => {
       this.style.display = display
     })
 
