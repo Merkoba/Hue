@@ -5,9 +5,14 @@ Hue.reset_chat_search_filter = function () {
 }
 
 // Shows the chat search window
-Hue.show_chat_search = function (filter = "") {
+Hue.show_chat_search = function (filter = "", mode = "normal") {
   Hue.el("#chat_search_container").innerHTML = ""
-  Hue.el("#chat_search_filter").value = filter ? filter : ""
+
+  if (mode === "user_id") {
+    Hue.el("#chat_search_filter").value = ""
+  } else {
+    Hue.el("#chat_search_filter").value = filter ? filter : ""
+  }
 
   if (filter.trim()) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
@@ -18,6 +23,11 @@ Hue.show_chat_search = function (filter = "") {
     })
 
     clone = clone.filter(it => {
+      if (mode === "user_id") {
+        let user_id = Hue.dataset(it, "user_id")
+        return filter === user_id
+      }
+
       let text = it.textContent.toLowerCase()
 
       if (!text) {
