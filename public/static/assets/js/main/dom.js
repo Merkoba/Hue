@@ -42,7 +42,3 @@ Hue.dataset = function (el, value, setvalue = "") {
     return Hue.dataset_obj[id][value]
   }
 }
-
-new MutationObserver(function (e) {
-  console.log(e)
-})
