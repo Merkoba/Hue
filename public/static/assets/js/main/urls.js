@@ -1,5 +1,5 @@
 // Function to turn url text into actual links
-Hue.urlize = function (el, stop_propagation = true) {
+Hue.urlize = function (el) {
   try {
     let html = el.innerHTML
 
@@ -25,11 +25,6 @@ Hue.urlize = function (el, stop_propagation = true) {
 
     function on_matches(matches, html) {
       let cls = "generic action"
-
-      if (stop_propagation) {
-        cls += " stop_propagation"
-      }
-
       let used_urls = []
 
       for (let i = 0; i < matches.length; i++) {
@@ -60,12 +55,6 @@ Hue.urlize = function (el, stop_propagation = true) {
       }
 
       el.innerHTML = html
-
-      el.querySelectorAll(".stop_propagation").forEach(it => {
-        this.addEventListener("click", function (e) {
-          e.stopPropagation()
-        })
-      })
     }
   } catch (err) {
     console.error(err)

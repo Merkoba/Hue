@@ -547,12 +547,14 @@ Hue.start_chat_mouse_events = function () {
       let media = e.target.closest(".media_announcement")
 
       if (media) {
-        let id = Hue.dataset(media, "id")
-        let type = Hue.dataset(media, "type")
-        if (type === "image_change") {
-          Hue.show_modal_image(id)
-        } else if (type === "tv_change") {
-          Hue.open_url_menu_by_media_id("tv", id)
+        if (e.target.classList.contains("announcement_content")) {
+          let id = Hue.dataset(media, "id")
+          let type = Hue.dataset(media, "type")
+          if (type === "image_change") {
+            Hue.show_modal_image(id)
+          } else if (type === "tv_change") {
+            Hue.open_url_menu_by_media_id("tv", id)
+          }
         }
       }
 
