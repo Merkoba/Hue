@@ -514,6 +514,10 @@ Hue.add_to_chat = function (args = {}) {
 Hue.start_chat_mouse_events = function () {
   document.addEventListener("click", function (e) {
     if (e.target.closest(".chat_area")) {
+      if (e.target.closest(".chat_menu_button")) {
+        return
+      }
+
       if (e.target.classList.contains("chat_uname")) {
         let m = e.target.closest(".message")
         Hue.show_profile(
@@ -524,6 +528,7 @@ Hue.start_chat_mouse_events = function () {
 
       if (e.target.classList.contains("chat_profilepic")) {
         let m = e.target.closest(".message")
+
         Hue.show_profile(
           Hue.dataset(m, "uname"),
           Hue.dataset(m, "user_id")
@@ -1086,7 +1091,7 @@ Hue.remove_aura = function (id) {
 // Jumps to a chat message in the chat area
 // This is used when clicking the Jump button in
 // windows showing chat message clones
-Hue.jump_to_chat_message = function (message_id) {
+Hue.jump_to_chat_message = function (message_id, highlight = true) {
   let el = Hue.el(`#chat_area > .message_id_${message_id}`)
 
   if (el.length === 0) {
@@ -1096,6 +1101,14 @@ Hue.jump_to_chat_message = function (message_id) {
   el.scrollIntoView({
     block: "center"
   })
+  
+  if (highlight) {
+    el.classList.add("fresh_message")
+
+    setTimeout(function () {
+      el.classList.remove("fresh_message")
+    }, Hue.fresh_messages_duration)
+  }
 
   Hue.close_all_modals()
 }
@@ -1123,76 +1136,59 @@ Hue.on_chat_message = function (data) {
 // Find the next chat message above that involves the user
 // This is a message made by the user or one that is highlighted
 Hue.activity_above = function () {
-  let step = false
-  let activity_up_scroller_height = Hue.el("#activity_up_scroller").offsetHeight
-  let scrolltop = Hue.el("#chat_area").scrollTop
   let messages = Hue.els("#chat_area > .message")
 
-  messages.reverse().forEach(it => {
+  for (let message of messages.reverse()) {
     let same_uname = false
-    let uname = Hue.dataset(it, "uname")
+    let uname = Hue.dataset(message, "uname")
 
     if (uname && uname === Hue.username) {
       same_uname = true
     }
 
-    if (same_uname || Hue.dataset(it, "highlighted")) {
-      if (it.offsetTop < activity_up_scroller_height) {
-        let diff = scrolltop + it.offsetTop - activity_up_scroller_height - 10
+    if (same_uname || Hue.dataset(message, "highlighted")) {
+      let rect = message.getBoundingClientRect()
 
-        if (scrolltop - diff < 50) {
-          return true
-        }
-
-        Hue.scroll_chat_to(diff)
-        step = true
-        return false
+      if (rect.top <= 0) {
+        Hue.jump_to_chat_message(Hue.dataset(message, "message_id"), false)
+        return
       }
     }
-  })
-
-  if (!step) {
-    Hue.goto_top()
   }
+
+  Hue.goto_top()
 }
 
 // Find the next chat message below that involves the user
 // This is a message made by the user or one that is highlighted
 Hue.activity_below = function () {
-  let step = false
-  let activity_up_scroller_height = Hue.el("#activity_up_scroller").offsetHeight
-  let activity_down_scroller_height = Hue.el("#activity_down_scroller").offsetHeight
-  let chat_area_height = Hue.el("#chat_area").clientHeight
-  let scrolltop = Hue.el("#chat_area").scrollTop
+  let messages = Hue.els("#chat_area > .message")
 
-  docuemnt.querySelectorAll("#chat_area > .message").forEach(it => {
+  for (let message of messages) {
     let same_uname = false
-    let uname = Hue.dataset(it, "uname")
+    let uname = Hue.dataset(message, "uname")
 
     if (uname && uname === Hue.username) {
       same_uname = true
     }
 
-    if (same_uname || Hue.dataset(it, "highlighted")) {
-      let h = it.offsetHeight
+    let area = Hue.el("#chat_area")
+    let area_height = area.offsetHeight
+    let area_rect = area.getBoundingClientRect()
 
-      if (it.offsetTop + h + activity_down_scroller_height > chat_area_height) {
-        let diff = scrolltop + it.offsetTop - activity_up_scroller_height - 10
+    if (same_uname || Hue.dataset(message, "highlighted")) {
+      if (same_uname || Hue.dataset(message, "highlighted")) {
+        let rect = message.getBoundingClientRect()
 
-        if (diff - scrolltop < 50) {
-          return true
+        if (rect.top >= area_rect.top + area_height) {
+          Hue.jump_to_chat_message(Hue.dataset(message, "message_id"), false)
+          return
         }
-
-        Hue.scroll_chat_to(diff)
-        step = true
-        return false
       }
     }
-  })
-
-  if (!step) {
-    Hue.goto_bottom(true)
   }
+
+  Hue.goto_bottom(true)
 }
 
 // Clears the chat area
