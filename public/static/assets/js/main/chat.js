@@ -117,7 +117,7 @@ Hue.add_chat_message = function (args = {}) {
     </div>
     <div class='chat_right_side'>
         <div class='chat_message_top'>
-            <div class='chat_uname action'></div>
+            <div class='chat_username action'></div>
             <div class='chat_timeago'></div>
         </div>
         <div class='chat_container'>
@@ -161,8 +161,8 @@ Hue.add_chat_message = function (args = {}) {
     fmessage.querySelector(".chat_content").innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(args.message))
   }
 
-  let huname = fmessage.querySelector(".chat_uname")
-  huname.textContent = args.username
+  let chat_username = fmessage.querySelector(".chat_username")
+  chat_username.textContent = args.username
 
   let htimeago = fmessage.querySelector(".chat_timeago")
   htimeago.textContent = Hue.utilz.timeago(d)
@@ -296,7 +296,7 @@ Hue.add_chat_announcement = function (args = {}) {
   if (is_media) {
     announcement_top = `
     <div class='chat_message_top announcement_top'>
-      <div class='chat_uname action'></div>
+      <div class='chat_username action'></div>
       <div class='chat_timeago'></div>
     </div>`
   }
@@ -327,7 +327,7 @@ Hue.add_chat_announcement = function (args = {}) {
   let split = fmessage.querySelector(".announcement_content_split")
 
   if (is_media) {
-    let username = fmessage.querySelector(".chat_uname")
+    let username = fmessage.querySelector(".chat_username")
     let date = fmessage.querySelector(".chat_timeago")
     username.textContent = args.username
     date.textContent = Hue.utilz.timeago(args.date)
@@ -417,8 +417,8 @@ Hue.add_to_chat = function (args = {}) {
       last_message.classList.contains("chat_message")
     ) {
       if (
-        args.message.querySelector(".chat_uname").textContent ===
-        last_message.querySelector(".chat_uname").textContent
+        args.message.querySelector(".chat_username").textContent ===
+        last_message.querySelector(".chat_username").textContent
       ) {
         if (
           last_message.querySelectorAll(".chat_content").length <
@@ -514,7 +514,7 @@ Hue.start_chat_mouse_events = function () {
         return
       }
 
-      if (e.target.classList.contains("chat_uname")) {
+      if (e.target.classList.contains("chat_username")) {
         let m = e.target.closest(".message")
         Hue.show_profile(
           Hue.dataset(m, "username"),
@@ -616,13 +616,13 @@ Hue.start_reply = function (target) {
 
   let message = target.closest(".message")
   let text = Hue.remove_urls(Hue.utilz.clean_string2(target.textContent))
-  let uname = Hue.dataset(message, "username")
+  let username = Hue.dataset(message, "username")
 
-  if (!text || !uname) {
+  if (!text || !username) {
     return false
   }
 
-  Hue.show_reply(uname, text)
+  Hue.show_reply(username, text)
   return true
 }
 
@@ -1148,14 +1148,14 @@ Hue.activity_above = function () {
   let messages = Hue.els("#chat_area > .message")
 
   for (let message of messages.reverse()) {
-    let same_uname = false
-    let uname = Hue.dataset(message, "username")
+    let same_username = false
+    let username = Hue.dataset(message, "username")
 
-    if (uname && uname === Hue.username) {
-      same_uname = true
+    if (username && username === Hue.username) {
+      same_username = true
     }
 
-    if (same_uname || Hue.dataset(message, "highlighted")) {
+    if (same_username || Hue.dataset(message, "highlighted")) {
       let rect = message.getBoundingClientRect()
 
       if (rect.top <= 0) {
@@ -1174,19 +1174,19 @@ Hue.activity_below = function () {
   let messages = Hue.els("#chat_area > .message")
 
   for (let message of messages) {
-    let same_uname = false
-    let uname = Hue.dataset(message, "username")
+    let same_username = false
+    let username = Hue.dataset(message, "username")
 
-    if (uname && uname === Hue.username) {
-      same_uname = true
+    if (username && username === Hue.username) {
+      same_username = true
     }
 
     let area = Hue.el("#chat_area")
     let area_height = area.offsetHeight
     let area_rect = area.getBoundingClientRect()
 
-    if (same_uname || Hue.dataset(message, "highlighted")) {
-      if (same_uname || Hue.dataset(message, "highlighted")) {
+    if (same_username || Hue.dataset(message, "highlighted")) {
+      if (same_username || Hue.dataset(message, "highlighted")) {
         let rect = message.getBoundingClientRect()
 
         if (rect.top >= area_rect.top + area_height) {

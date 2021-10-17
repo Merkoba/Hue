@@ -176,9 +176,9 @@ Hue.replace_property_in_userlist_by_id = function (
 }
 
 // Gets the role of a user by username
-Hue.get_role = function (uname) {
+Hue.get_role = function (username) {
   for (let i = 0; i < Hue.userlist.length; i++) {
-    if (Hue.userlist[i].username === uname) {
+    if (Hue.userlist[i].username === username) {
       return Hue.userlist[i].role
     }
   }
@@ -220,9 +220,9 @@ Hue.get_pretty_role_name = function (p) {
 }
 
 // Gets a user from the user list by username
-Hue.get_user_by_username = function (uname) {
+Hue.get_user_by_username = function (username) {
   for (let user of Hue.userlist) {
-    if (user.username === uname) {
+    if (user.username === username) {
       return user
     }
   }
@@ -322,8 +322,8 @@ Hue.update_userlist_window = function () {
     let role_tag = Hue.role_tag(item.role)
     let role_element = el.querySelector(".userlist_item_role")
     role_element.textContent = role_tag
-    let uname = el.querySelector(".userlist_item_username")
-    uname.textContent = item.username
+    let username = el.querySelector(".userlist_item_username")
+    username.textContent = item.username
     Hue.dataset(el, "username", item.username)
     container.append(el)
   }
@@ -553,16 +553,16 @@ Hue.get_matching_usernames = function (s) {
   }
 
   let split = s.split(" ")
-  let uname = split[0]
+  let username = split[0]
   let matches = []
 
   for (let i = 0; i < split.length; i++) {
     if (i > 0) {
-      uname = `${uname} ${split[i]}`
+      username = `${username} ${split[i]}`
     }
 
-    if (Hue.usernames.includes(uname)) {
-      matches.push(uname)
+    if (Hue.usernames.includes(username)) {
+      matches.push(username)
     }
   }
 
@@ -818,34 +818,34 @@ Hue.set_role = function (rol, config = true) {
 }
 
 // Bans a user
-Hue.ban = function (uname) {
+Hue.ban = function (username) {
   if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
-  if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
-    if (uname === Hue.username) {
+  if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
+    if (username === Hue.username) {
       Hue.checkmsg("You can't ban yourself")
       return false
     }
 
-    Hue.socket_emit("ban", { username: uname })
+    Hue.socket_emit("ban", { username: username })
   }
 }
 
 // Unbans a user
-Hue.unban = function (uname) {
+Hue.unban = function (username) {
   if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
-  if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
-    if (uname === Hue.username) {
+  if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
+    if (username === Hue.username) {
       Hue.checkmsg("You can't unban yourself")
       return false
     }
 
-    Hue.socket_emit("unban", { username: uname })
+    Hue.socket_emit("unban", { username: username })
   }
 }
 
@@ -1074,7 +1074,7 @@ Hue.audioclip_changed = function (data) {
 
 // Superuser command to change a user's username
 Hue.modusername = function (arg) {
-  let original_uname, new_uname
+  let original_username, new_username
 
   if (arg.includes(" > ")) {
     let split = arg.split(" > ")
@@ -1083,8 +1083,8 @@ Hue.modusername = function (arg) {
       return false
     }
 
-    original_uname = split[0].trim()
-    new_uname = split[1].trim()
+    original_username = split[0].trim()
+    new_username = split[1].trim()
   } else {
     let split = arg.split(" ")
 
@@ -1092,29 +1092,29 @@ Hue.modusername = function (arg) {
       return false
     }
 
-    original_uname = split[0].trim()
-    new_uname = split[1].trim()
+    original_username = split[0].trim()
+    new_username = split[1].trim()
   }
 
-  if (!original_uname || !new_uname) {
+  if (!original_username || !new_username) {
     return false
   }
 
-  if (original_uname === new_uname) {
+  if (original_username === new_username) {
     return false
   }
 
-  if (new_uname.length > Hue.config.max_username_length) {
+  if (new_username.length > Hue.config.max_username_length) {
     Hue.checkmsg("Username is too long")
     return false
   }
 
-  if (Hue.utilz.clean_username(new_uname) !== new_uname) {
+  if (Hue.utilz.clean_username(new_username) !== new_username) {
     Hue.checkmsg("Username contains invalid characters")
     return false
   }
 
-  Hue.socket_emit("modusername", {original:original_uname, new:new_uname})
+  Hue.socket_emit("modusername", {original:original_username, new:new_username})
 }
 
 // Superuser command to change a user's password
