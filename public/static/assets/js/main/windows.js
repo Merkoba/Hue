@@ -699,7 +699,7 @@ Hue.create_modal = function (args = {}, ptype = "unset") {
 // If it comes from a modal it closes all modals
 // If it comes from a popup it closes all popups
 Hue.process_msg_close_button = function (button) {
-  let container = $(button).closest(".Msg-container")
+  let container = button.closest(".Msg-container")
 
   if (container.classList.contains("Msg-container-modal")) {
     Hue.close_all_modals()
