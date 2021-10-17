@@ -87,10 +87,6 @@ Hue.setup_image = function (mode, odata = {}) {
     }
   }
 
-  data.onclick = function () {
-    Hue.show_modal_image(data.id)
-  }
-
   if (data.message) {
     data.message_id = Hue.announce_image(data).message_id
   }
@@ -121,7 +117,6 @@ Hue.announce_image = function (data) {
     date: data.date,
     username: data.setter,
     title: data.info,
-    onclick: data.onclick,
     type: "image_change",
     user_id: data.user_id,
     in_log: data.in_log,
