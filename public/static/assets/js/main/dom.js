@@ -26,7 +26,7 @@ Hue.clone_children = function (query) {
 }
 
 // Data set manager
-Hue.dataset = function (el, value, setvalue = "") {
+Hue.dataset = function (el, value, setvalue) {
   if (!el) {
     return
   }
@@ -40,7 +40,7 @@ Hue.dataset = function (el, value, setvalue = "") {
     Hue.dataset_obj[id] = {}
   }
 
-  if (setvalue) {
+  if (setvalue !== undefined) {
     Hue.dataset_obj[id][value] = setvalue
   } else {
     return Hue.dataset_obj[id][value]

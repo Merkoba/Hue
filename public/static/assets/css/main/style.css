@@ -1113,9 +1113,9 @@ select {
 	max-width: 30rem;
 }
 
-#write_message_feedback {
+#write_message_add_user {
 	padding-bottom: 1.2rem;
-	display: none;
+	cursor: pointer;
 }
 
 #write_message_send_button {
@@ -2074,14 +2074,6 @@ a.special_link:hover {
 
 .show_message_reply_with_spacing {
 	margin-bottom: 0.4rem;
-}
-
-.message_info_html_spaced {
-	margin-top: 1rem;
-}
-
-.message_info_text {
-	white-space: pre-wrap;
 }
 
 .full_width {

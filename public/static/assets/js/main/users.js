@@ -534,9 +534,9 @@ Hue.announce_new_username = function (data) {
 }
 
 // Returns feedback on wether a user is in the room or not
-Hue.user_not_in_room = function (uname) {
-  if (uname) {
-    Hue.checkmsg(`${uname} is not in the room`)
+Hue.user_not_in_room = function (username) {
+  if (username) {
+    Hue.checkmsg(`${username} is not in the room`)
   } else {
     Hue.checkmsg("User is not in the room")
   }
@@ -863,30 +863,30 @@ Hue.receive_ban_count = function (data) {
 }
 
 // Kicks a user
-Hue.kick = function (uname) {
+Hue.kick = function (username) {
   if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
-  if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
-    if (uname === Hue.username) {
+  if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
+    if (username === Hue.username) {
       Hue.checkmsg("You can't kick yourself")
       return false
     }
 
-    if (!Hue.usernames.includes(uname)) {
+    if (!Hue.usernames.includes(username)) {
       Hue.user_not_in_room()
       return false
     }
 
-    let rol = Hue.get_role(uname)
+    let rol = Hue.get_role(username)
 
     if ((rol === "admin" || rol === "op") && Hue.role !== "admin") {
       Hue.forbidden_user()
       return false
     }
 
-    Hue.socket_emit("kick", { username: uname })
+    Hue.socket_emit("kick", { username: username })
   }
 }
 

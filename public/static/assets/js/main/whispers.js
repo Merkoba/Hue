@@ -1,7 +1,7 @@
 // Checks if a user is in the room to receive a whisper
-Hue.check_whisper_user = function (uname) {
-  if (!Hue.usernames.includes(uname)) {
-    Hue.user_not_in_room(uname)
+Hue.check_whisper_user = function (username) {
+  if (!Hue.usernames.includes(username)) {
+    Hue.user_not_in_room(username)
     return false
   }
 
@@ -21,11 +21,9 @@ Hue.process_write_whisper = function (arg, show = true) {
     Hue.write_popup_message(split, "user")
   } else {
     let matches = Hue.get_matching_usernames(arg)
-
     if (matches.length === 1) {
       let message = arg.replace(matches[0], "")
       let arg2 = `${matches[0]} > ${message}`
-
       Hue.send_inline_whisper(arg2, show)
     } else if (matches.length > 1) {
       Hue.checkmsg(
@@ -95,31 +93,26 @@ Hue.write_popup_message = function (unames = [], type = "user") {
     }
   }
 
-  let f = function () {
-    Hue.show_userlist_window("whisper")
-  }
-
   let title 
 
   if (type === "user") {
-    title = { text: `Whisper to ${Hue.utilz.nice_list(unames)}`, onclick: f }
+    title = `Whisper to ${Hue.utilz.nice_list(unames)}`
   } else {
-    title = { text: `Whisper (${type})`}
+    title = `Whisper (${type})`
+  }
+
+  if (type === "user") {
+    Hue.el("#write_message_add_user").style.display = "block"
+  } else {
+    Hue.el("#write_message_add_user").style.display = "none"
   }
 
   Hue.message_unames = unames
-  Hue.msg_message.set_title(Hue.make_safe(title))
+  Hue.msg_message.set_title(Hue.utilz.make_html_safe(title))
   Hue.message_type = type
 
   Hue.msg_message.show(function () {
     Hue.el("#write_message_area").focus()
-
-    if (type === "user") {
-      Hue.show_message_feedback("Click titlebar to add more users")
-    } else if (type === "system_broadcast") {
-      Hue.show_message_feedback("This will send a whisper to every user")
-    }
-
     Hue.sending_whisper = false
   })
 }
@@ -143,22 +136,14 @@ Hue.update_whisper_users = function (uname) {
     }
   }
 
-  let f = function () {
-    Hue.show_userlist_window("whisper")
-  }
-
-  let title = {
-    text: `Whisper to ${Hue.utilz.nice_list(Hue.message_unames)}`,
-    onclick: f,
-  }
-
-  Hue.msg_message.set_title(Hue.make_safe(title))
+  let title = `Whisper to ${Hue.utilz.nice_list(Hue.message_unames)}`
+  Hue.msg_message.set_title(Hue.utilz.make_html_safe(title))
   Hue.msg_userlist.close()
 }
 
 // Submits the whisper window form
 // Handles different types of whispers
-Hue.send_popup_message = function (force = false) {
+Hue.send_popup_message = function () {
   if (Hue.sending_whisper) {
     return false
   }
@@ -172,7 +157,7 @@ Hue.send_popup_message = function (force = false) {
     Hue.sending_whisper = false
     return false
   } else if (diff < 0) {
-    Hue.show_message_feedback(`Character limit exceeded by ${Math.abs(diff)}`)
+    Hue.checkmsg(`Character limit exceeded by ${Math.abs(diff)}`)
     Hue.sending_whisper = false
     return false
   }
@@ -181,22 +166,22 @@ Hue.send_popup_message = function (force = false) {
   let num_lines = message_split.length
 
   if (num_lines > Hue.config.max_num_newlines) {
-    Hue.show_message_feedback("Too many linebreaks")
+    Hue.checkmsg("Too many linebreaks")
     Hue.sending_whisper = false
     return false
   }
 
-  let ans = Hue.send_whisper(message, force)
+  let ans = Hue.send_whisper(message)
 
   if (ans) {
     Hue.msg_message.close(function () {
       Hue.sending_whisper = false
     })
+
+    Hue.el("#write_message_area").value = ""
   } else {
     Hue.sending_whisper = false
   }
-
-  Hue.el("#write_message_area").value = ""
 }
 
 // On whisper received
@@ -218,7 +203,6 @@ Hue.whisper_received = function (data) {
 
 // Shows a whisper message
 Hue.show_whisper = function (data) {
-  let title_func = function () {}
   let button_func = function () {}
   let title, button_html
   let usr
@@ -236,14 +220,11 @@ Hue.show_whisper = function (data) {
   button_func = function () {
     Hue.write_popup_message(usr)
   }
-
-  title_func = function () {
-    Hue.show_profile(usr[0])
-  }
   
   let modal = Hue.create_modal({window_class: "!whisper_width"}, "whisper")
   modal.set(Hue.template_sent_message())
-  modal.set_title(Hue.make_safe({text: title, onclick: title_func }))
+  modal.set_title(Hue.utilz.make_html_safe(title))
+  
   let message_html = Hue.utilz.make_html_safe(data.message)
   message_html = Hue.parse_text(message_html)
 
@@ -273,7 +254,7 @@ Hue.show_whisper = function (data) {
 }
 
 // Sends a whisper to user(s)
-Hue.send_whisper = function (message, force = false) {
+Hue.send_whisper = function (message) {
   if (Hue.message_type === "system_broadcast") {
     Hue.do_send_whisper({message: message, usernames: [], type: Hue.message_type})
     return true
@@ -293,21 +274,6 @@ Hue.send_whisper = function (message, force = false) {
       discarded.push(u)
     } else {
       approved.push(u)
-    }
-  }
-
-  if (!force) {
-    if (discarded.length > 0) {
-      let us = Hue.utilz.nice_list(discarded)
-      let w = discarded.length === 1 ? "is" : "are"
-      let dd = ""
-
-      if (unames.length > discarded.length) {
-        dd = " Double click Send to send anyway"
-      }
-
-      Hue.show_message_feedback(`(${us} ${w} not in the room)${dd}`)
-      return false
     }
   }
 
@@ -358,8 +324,8 @@ Hue.setup_message_window = function () {
     Hue.send_popup_message()
   })
 
-  Hue.el("#write_message_send_button").addEventListener("dblclick", function () {
-    Hue.send_popup_message(true)
+  Hue.el("#write_message_add_user").addEventListener("click", function () {
+    Hue.show_userlist_window("whisper")
   })
 }
 
@@ -372,7 +338,7 @@ Hue.push_whisper = function (message, on_click, read) {
   item.innerHTML = `<div class='whispers_item_content action dynamic_title'>${message_html}`
   let content = item.querySelector(".whispers_item_content")
   content.title = t
-  
+
   Hue.dataset(content, "otitle", t)
   Hue.dataset(content, "date", d)
   Hue.dataset(content, "read", read)
@@ -426,10 +392,4 @@ Hue.get_unread_whispers = function () {
   })
 
   return num_unread
-}
-
-// Shows the message feedback
-Hue.show_message_feedback = function (s) {
-  Hue.el("#write_message_feedback").textContent = s
-  Hue.el("#write_message_feedback").style.display = "block"
 }

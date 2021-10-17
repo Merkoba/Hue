@@ -199,8 +199,6 @@ Hue.start_msg = function () {
       },
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.el("#write_message_feedback").textContent = ""
-        Hue.el("#write_message_feedback").style.display = "none"
         Hue.writing_message = false
       },
     })
