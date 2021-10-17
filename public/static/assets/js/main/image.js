@@ -445,7 +445,7 @@ Hue.show_modal_image = function (id = 0) {
   Hue.el("#modal_image_header_info").querySelector(".modal_image_timeago")
     .textContent = Hue.utilz.timeago(data.date)
 
-  Hue.horizontal_separator(Hue.el("#modal_image_header_info")[0])
+  Hue.horizontal_separator(Hue.el("#modal_image_header_info"))
 
   if (data.comment || data.query) {
     Hue.el("#modal_image_subheader").innerHTML =
@@ -468,7 +468,7 @@ Hue.show_modal_image = function (id = 0) {
     Hue.el("#modal_image_toolbar_change").style.display = "none"
   }
 
-  Hue.horizontal_separator(Hue.el("#modal_image_header_info_container")[0])
+  Hue.horizontal_separator(Hue.el("#modal_image_header_info_container"))
   Hue.msg_modal_image.show()
 }
 
