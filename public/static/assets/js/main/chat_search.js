@@ -27,7 +27,7 @@ Hue.show_chat_search = function (filter = "") {
       let text_cmp = text.includes(lc_value)
       
       let source_cmp = false
-      let media_source = Hue.dataset[it].media_source
+      let media_source = Hue.dataset(it, "media_source")
       
       if (media_source) {
         source_cmp = media_source.includes(lc_value)

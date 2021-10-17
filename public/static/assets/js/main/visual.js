@@ -95,7 +95,7 @@ Hue.make_safe = function (args = {}) {
   let c = document.createElement("div")
 
   if (args.text || !args.remove_text_if_empty) {
-    let c_text_classes = ["message_info_text inline"]
+    let c_text_classes = ["message_info_text", "inline"]
 
     if (args.onclick) {
       c_text_classes.push("action")
@@ -126,9 +126,10 @@ Hue.make_safe = function (args = {}) {
       }
     } else {
       if (args.urlize) {
-        c_text.text(args.text).urlize()
+        c_text.textContent = args.text
+        Hue.urlize(c_text)
       } else {
-        c_text.text(args.text)
+        c_text.textContent = args.text
       }
     }
 
@@ -138,10 +139,8 @@ Hue.make_safe = function (args = {}) {
 
     if (args.date) {
       let nd = Hue.utilz.nice_date(args.date)
-
-      Hue.dataset[c_text] = {}
-      Hue.dataset[c_text].date = args.date
-      Hue.dataset[c_text].otitle = nd
+      Hue.dataset(c_text, "date", args.date)
+      Hue.dataset(c_text, "otitle", nd)
       c_text.title = nd
       c_text.classList.add("dynamic_title")
     } else {
@@ -220,20 +219,25 @@ Hue.show_current_date = function () {
 // Start timeago checks
 Hue.start_timeago = function () {
   setInterval(() => {
-    Hue.els(".chat_area").forEach(function (it) {
-      it.querySelectorAll(".chat_timeago").forEach(function (it2) {
-        let message = it2.closest(".message")
-        it2.text(Hue.utilz.timeago(message.data("date")))
-      })
-    })
-
-    Hue.els("#media .media_info_container").forEach(function (it) {
-      it.querySelector(".media_info_timeago").textContent = Hue.utilz.timeago(Hue.dataset[it].date)
-    })
-
-    if (Hue.msg_modal_image.is_open()) {
-      Hue.el("#modal_image_header_info").querySelector(".modal_image_timeago")
-        .textContent = Hue.utilz.timeago(Hue.loaded_modal_image.date)
-    }
+    Hue.timeago_action()
   }, Hue.timeago_delay)
+}
+
+// The timeago action
+Hue.timeago_action = function () {
+  Hue.els(".chat_area").forEach(function (it) {
+    it.querySelectorAll(".chat_timeago").forEach(function (it2) {
+      let message = it2.closest(".message")
+      it2.textContent = Hue.utilz.timeago(Hue.dataset(message, "date"))
+    })
+  })
+
+  Hue.els("#media .media_info_container").forEach(function (it) {
+    it.querySelector(".media_info_timeago").textContent = Hue.utilz.timeago(Hue.dataset(it, "date"))
+  })
+
+  if (Hue.msg_modal_image.is_open()) {
+    Hue.el("#modal_image_header_info").querySelector(".modal_image_timeago")
+      .textContent = Hue.utilz.timeago(Hue.loaded_modal_image.date)
+  }  
 }

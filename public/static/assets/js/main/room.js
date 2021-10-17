@@ -184,9 +184,8 @@ Hue.show_admin_activity = function (messages) {
       let el = el0.firstElementChild
       el.querySelector(".admin_activity_message").textContent = `${message.data.username} ${message.data.content}`
       el.querySelector(".admin_activity_date").textContent = nice_date
-      Hue.dataset[el] = {}
-      Hue.dataset[el].date = message.date
-      Hue.dataset[el].otitle = nice_date
+      Hue.dataset(el, "date", message.date)
+      Hue.dataset(el, "otitle", nice_date)
       Hue.el("#admin_activity_container").prepend(el)
     }
 

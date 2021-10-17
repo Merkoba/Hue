@@ -264,10 +264,10 @@ Hue.show_whisper = function (data) {
     Hue.setup_whispers_click(text_el, usr[0])
   })
 
-  if (!data.notification.data("read")) {
-    let text = data.notification.text().replace(/\s\(unread\)$/, "")
-    data.notification.text(text)
-    data.notification.data("read", true)
+  if (!Hue.dataset(data.notification, "read")) {
+    let text = data.notification.textContent.replace(/\s\(unread\)$/, "")
+    data.notification.textContent = text
+    Hue.dataset(data.notification, "read", true)
     Hue.update_whispers_unread_count()
   }
 }
@@ -347,7 +347,7 @@ Hue.do_send_whisper = function (data, show = true) {
 Hue.setup_whispers_click = function (content, username) {
   content.querySelectorAll(".whisper_link").forEach(function (it) {
     it.addEventListener("click", function () {
-      Hue.process_write_whisper(`${username} > ${Hue.dataset[it].whisper}`, false)
+      Hue.process_write_whisper(`${username} > ${Hue.dataset(it, "whisper")}`, false)
     })
   })
 }
@@ -377,15 +377,14 @@ Hue.push_whisper = function (message, on_click, read) {
   let content = item.querySelector(".whispers_item_content")
 
   content.title = t
-  Hue.dataset[content] = {}
-  Hue.dataset[content].otitle = t
-  Hue.dataset[content].date = d
-  Hue.dataset[content].read = read
+  Hue.dataset(content, "otitle", t)
+  Hue.dataset(content, "date", d)
+  Hue.dataset(content, "read", read)
 
   if (read) {
-    content.text(message)
+    content.textContent = message
   } else {
-    content.text(`${message} (unread)`)
+    content.textContent = `${message} (unread)`
   }
 
   content.addEventListener("click", function () {
@@ -422,7 +421,7 @@ Hue.show_whispers = function (filter = "") {
 
 // Updates the whispers unread count
 Hue.update_whispers_unread_count = function () {
-  Hue.el("#header_whispers_count").text(`(${Hue.get_unread_whispers()})`)
+  Hue.el("#header_whispers_count").textContent = `(${Hue.get_unread_whispers()})`
 }
 
 // Get a list of unread whispers
@@ -430,7 +429,7 @@ Hue.get_unread_whispers = function () {
   let num_unread = 0
 
   Hue.els(".whispers_item_content").forEach(function (it) {
-    if (!Hue.dataset[it].read) {
+    if (!Hue.dataset(it, "read")) {
       num_unread += 1
     }
   })
@@ -440,6 +439,6 @@ Hue.get_unread_whispers = function () {
 
 // Shows the message feedback
 Hue.show_message_feedback = function (s) {
-  Hue.el("#write_message_feedback").text(s)
+  Hue.el("#write_message_feedback").textContent = s
   Hue.el("#write_message_feedback").style.display = "block"
 }

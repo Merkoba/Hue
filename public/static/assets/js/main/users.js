@@ -30,7 +30,7 @@ Hue.user_join = function (data) {
 // Removes the online effect to a user's profile images
 Hue.remove_offline_profilepics = function (user_id) {
   Hue.els("#chat_area .message").forEach(function (it) {
-    if (Hue.dataset[it].user_id === user_id) {
+    if (Hue.dataset(it, "user_id") === user_id) {
       it.querySelectorAll(".chat_profilepic_container").forEach(function (it2) {
         it2.classList.remove("profilepic_offline")
       })
@@ -41,7 +41,7 @@ Hue.remove_offline_profilepics = function (user_id) {
 // Add the online effect to a user's profile images
 Hue.add_offline_profilepics = function (user_id) {
   Hue.els("#chat_area .message").forEach(function (it) {
-    if (Hue.dataset[it].user_id === user_id) {
+    if (Hue.dataset(it, "user_id") === user_id) {
       it.querySelectorAll(".chat_profilepic_container").forEach(function (it) {
         it.classList.add("profilepic_offline")
       })
@@ -277,7 +277,7 @@ Hue.setup_userlist_window = function () {
     let el = e.target.closest(".userlist_item")
 
     if (el) {
-      let username = Hue.dataset[el].username
+      let username = Hue.dataset(el, "username")
       if (Hue.userlist_mode === "normal") {
         Hue.show_profile(username)
       } else if (Hue.userlist_mode === "whisper") {
@@ -326,8 +326,7 @@ Hue.update_userlist_window = function () {
     role_element.textContent = role_tag
     let uname = h.querySelector(".userlist_item_username")
     uname.textContent = item.username
-    Hue.dataset[h] = {}
-    Hue.dataset[h].username = item.username
+    Hue.dataset(h, "username", item.username)
     container.append(h)
   }
 
@@ -699,8 +698,7 @@ Hue.show_profile = function (username, user_id = false) {
     Hue.el("#show_profile_sync_tv").style.display = "none"
   }
 
-  Hue.dataset[Hue.el("#show_profile_user")] = {}
-  Hue.dataset[Hue.el("#show_profile_user")].username = username
+  Hue.dataset(Hue.el("#show_profile_user"), "username", username)
   Hue.el("#show_profile_info").innerHTML = ""
 
   if (user) {
@@ -1055,7 +1053,7 @@ Hue.change_profilepic_badge = function (profilepic_container, type) {
     </svg>`
   )
 
-  let number = Hue.dataset[profilepic_container].badge_feedback_number
+  let number = Hue.dataset(profilepic_container, "badge_feedback_number")
 
   if (!number) {
     number = 1
@@ -1063,10 +1061,10 @@ Hue.change_profilepic_badge = function (profilepic_container, type) {
     number += 1
   }
 
-  Hue.dataset[profilepic_container].badge_feedback_number = number
+  Hue.dataset(profilepic_container, "badge_feedback_number", number)
 
   setTimeout(function () {
-    let number_2 = Hue.dataset[profilepic_container].badge_feedback_number
+    let number_2 = Hue.dataset(profilepic_container, "badge_feedback_number")
 
     if (number !== number_2) {
       return false
