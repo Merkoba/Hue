@@ -202,6 +202,7 @@ Hue.add_chat_message = function (args = {}) {
 
   let chat_content = fmessage.querySelector(".chat_content")
   Hue.dataset(chat_content, "date", d)
+  Hue.dataset(chat_content, "otitle", title)
 
   if (!image_preview && !link_preview) {
     Hue.urlize(chat_content)
@@ -328,7 +329,6 @@ Hue.add_chat_announcement = function (args = {}) {
 
   let content = fmessage.querySelector(".announcement_content")
   let split = fmessage.querySelector(".announcement_content_split")
-  let brk = fmessage.querySelector(".brk")
 
   if (is_media) {
     let username = fmessage.querySelector(".chat_uname")
