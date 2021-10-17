@@ -27,6 +27,10 @@ Hue.clone_children = function (query) {
 
 // Data set manager
 Hue.dataset = function (el, value, setvalue = "") {
+  if (!el || !value) {
+    return
+  }
+  
   let id = el.dataset.dataset_id
 
   if (!id) {

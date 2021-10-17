@@ -109,7 +109,6 @@ Hue.tv_locked = false
 Hue.fresh_messages_list = []
 Hue.max_fresh_messages = 100
 Hue.fresh_messages_duration = 2000
-Hue.chat_crop_limit = 500
 Hue.old_input_val = ""
 Hue.old_reply_input_val = ""
 Hue.notifications_count = 0
