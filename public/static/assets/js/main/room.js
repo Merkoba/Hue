@@ -207,10 +207,10 @@ Hue.request_admin_list = function () {
 // Shows the admin list
 Hue.show_admin_list = function (data) {
   data.list.sort(Hue.compare_userlist)
-  let s = "<div id='admin_list_container' class='grid_column_center'></div>"
-  let el0 = document.createElement("div")
-  el0.innerHTML = s
-  let el = el0.firstElementChild
+
+  let el = document.createElement("div")
+  el.id = "admin_list_container"
+  el.classList.add("grid_column_center")
 
   for (let user of data.list) {
     let hs = `
@@ -229,10 +229,10 @@ Hue.show_admin_list = function (data) {
       Hue.show_profile(user.username)
     })
 
-    el.append(h)
+    el.append(hel)
   }
 
-  Hue.msg_info2.show([`Admin List (${data.list.length})`, s[0]], function () {
+  Hue.msg_info2.show([`Admin List (${data.list.length})`, el], function () {
     Hue.admin_list_open = true
   })
 }
@@ -249,10 +249,9 @@ Hue.request_ban_list = function () {
 
 // Shows the ban list
 Hue.show_ban_list = function (data) {
-  let s = "<div id='ban_list_container' class='grid_column_center'></div>"
-  let el0 = document.createElement("div")
-  el0.innerHTML = s
-  let el = el0.firstElementChild
+  let el = document.createElement("div")
+  el.id = "ban_list_container"
+  el.classList.add("grid_column_center")
 
   for (let user of data.list) {
     let hs = `<div class='flex_row_center'><div class='ban_list_username' title='Click To Unban'></div></div>`
@@ -269,10 +268,10 @@ Hue.show_ban_list = function (data) {
       })
     })
 
-    el.append(h)
+    el.append(hel)
   }
 
-  Hue.msg_info2.show([`Ban List (${data.list.length})`, s[0]], function () {
+  Hue.msg_info2.show([`Ban List (${data.list.length})`, el], function () {
     Hue.ban_list_open = true
   })
 }

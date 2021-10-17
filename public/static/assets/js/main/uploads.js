@@ -14,7 +14,6 @@ Hue.start_dropzone = function () {
     clickable: "#image_picker_upload, #image_upload_comment_change, #tv_picker_upload, #tv_upload_comment_change",
     acceptedFiles: types.join(",")
   })
-
   
   Hue.dropzone.on("addedfile", function (file) {
     let ext = file.name.split(".").slice(-1)[0]
@@ -28,6 +27,10 @@ Hue.start_dropzone = function () {
       Hue.dropzone.files = []
     }
   })
+
+  Hue.dropzone.on("maxfilesexceeded", function(file) {
+    Hue.dropzone.removeFile(file)
+  })  
 }
 
 // Handle generic image upload

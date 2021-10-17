@@ -717,7 +717,6 @@ Hue.handle_edit_direction = function (reverse = false) {
 // Edits the next latest chat message
 // Either in normal or reverse order
 Hue.edit_last_message = function (reverse = false) {
-  let found = false
   let edit_found = true
   let last_container = false
 
@@ -727,44 +726,39 @@ Hue.edit_last_message = function (reverse = false) {
 
   let messages = Hue.els("#chat_area > .message")
 
-  messages.reverse().forEach(it => {
-    if (found) {
-      return false
-    }
+  for (let message of messages.reverse()) {
+    if (Hue.dataset(message, "user_id") === Hue.user_id) {
+      let items = Array.from(message.querySelectorAll(".chat_content_container"))
 
-    if (Hue.dataset(it, "user_id") === Hue.user_id) {
-      let items = Array.from(it.querySelectorAll(".chat_content_container"))
-
-      items.reverse().forEach(it2 => {
+      for (let item of items.reverse()) {
         if (Hue.editing_message) {
-          if (it2 === Hue.editing_message_container) {
+          if (item === Hue.editing_message_container) {
             edit_found = true
-            return true
+            continue
           }
         }
-
-        let cnt = it2
-
+  
+        let cnt = item
+  
         if (!edit_found) {
-          last_container = it2
-          return true
+          last_container = item
+          continue
         } else {
           if (reverse) {
             cnt = last_container
           }
         }
-
+  
         if (!cnt) {
           Hue.stop_edit_message()
         } else {
           Hue.edit_message(cnt)
         }
 
-        found = true
-        return false
-      })
+        return
+      }
     }
-  })
+  }
 }
 
 // Starts chat message editing
