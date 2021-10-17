@@ -2,8 +2,8 @@
 Hue.generate_words_to_autocomplete = function () {
   let susernames = []
 
-  for (let uname of Hue.usernames) {
-    susernames.push(`${uname}'s`)
+  for (let username of Hue.usernames) {
+    susernames.push(`${username}'s`)
   }
 
   let words = []

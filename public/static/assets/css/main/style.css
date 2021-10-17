@@ -459,7 +459,7 @@ body * {
 	align-items: center;
 }
 
-.chat_uname {
+.chat_username {
 	cursor: pointer;
 	white-space: nowrap;
 	display: inline-block;

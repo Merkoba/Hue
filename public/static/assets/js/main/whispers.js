@@ -45,8 +45,8 @@ Hue.send_inline_whisper = function (arg, show = true) {
     return false
   }
 
-  let uname = split[0].trim()
-  let usplit = uname.split("&&")
+  let username = split[0].trim()
+  let usplit = username.split("&&")
   let message = Hue.utilz.clean_string2(split.slice(1).join(">"))
 
   if (!message) {
@@ -80,13 +80,13 @@ Hue.send_inline_whisper = function (arg, show = true) {
 }
 
 // Shows the window to write whispers
-Hue.write_popup_message = function (unames = [], type = "user") {
-  if (unames.length === 0) {
+Hue.write_popup_message = function (usernames = [], type = "user") {
+  if (usernames.length === 0) {
     if (type === "user") {
       return false
     }
   } else {
-    for (let u of unames) {
+    for (let u of usernames) {
       if (!Hue.check_whisper_user(u)) {
         return false
       }
@@ -96,7 +96,7 @@ Hue.write_popup_message = function (unames = [], type = "user") {
   let title 
 
   if (type === "user") {
-    title = `Whisper to ${Hue.utilz.nice_list(unames)}`
+    title = `Whisper to ${Hue.utilz.nice_list(usernames)}`
   } else {
     title = `Whisper (${type})`
   }
@@ -107,7 +107,7 @@ Hue.write_popup_message = function (unames = [], type = "user") {
     Hue.el("#write_message_add_user").style.display = "none"
   }
 
-  Hue.message_unames = unames
+  Hue.message_usernames = usernames
   Hue.msg_message.set_title(Hue.utilz.make_html_safe(title))
   Hue.message_type = type
 
@@ -118,25 +118,25 @@ Hue.write_popup_message = function (unames = [], type = "user") {
 }
 
 // Updates the user receivers in the whisper window after picking a username in the user list
-Hue.update_whisper_users = function (uname) {
-  if (!Hue.message_unames.includes(uname)) {
-    Hue.message_unames.push(uname)
+Hue.update_whisper_users = function (username) {
+  if (!Hue.message_usernames.includes(username)) {
+    Hue.message_usernames.push(username)
   } else {
-    if (Hue.message_unames.length === 1) {
+    if (Hue.message_usernames.length === 1) {
       return false
     }
 
-    for (let i = 0; i < Hue.message_unames.length; i++) {
-      let u = Hue.message_unames[i]
+    for (let i = 0; i < Hue.message_usernames.length; i++) {
+      let u = Hue.message_usernames[i]
 
-      if (u === uname) {
-        Hue.message_unames.splice(i, 1)
+      if (u === username) {
+        Hue.message_usernames.splice(i, 1)
         break
       }
     }
   }
 
-  let title = `Whisper to ${Hue.utilz.nice_list(Hue.message_unames)}`
+  let title = `Whisper to ${Hue.utilz.nice_list(Hue.message_usernames)}`
   Hue.msg_message.set_title(Hue.utilz.make_html_safe(title))
   Hue.msg_userlist.close()
 }
@@ -260,16 +260,16 @@ Hue.send_whisper = function (message) {
     return true
   }
 
-  let unames = Hue.message_unames
+  let usernames = Hue.message_usernames
 
-  if (!unames) {
+  if (!usernames) {
     return false
   }
 
   let discarded = []
   let approved = []
 
-  for (let u of unames) {
+  for (let u of usernames) {
     if (!Hue.usernames.includes(u)) {
       discarded.push(u)
     } else {

@@ -4,28 +4,28 @@ Hue.logout = function () {
 }
 
 // Changes the user's username
-Hue.change_username = function (uname) {
-  if (Hue.utilz.clean_username(uname) !== uname) {
+Hue.change_username = function (username) {
+  if (Hue.utilz.clean_username(username) !== username) {
     Hue.checkmsg("Username contains invalid characters")
     return false
   }
 
-  if (uname.length === 0) {
+  if (username.length === 0) {
     Hue.checkmsg("Username can't be empty")
     return false
   }
 
-  if (uname.length > Hue.config.max_username_length) {
+  if (username.length > Hue.config.max_username_length) {
     Hue.checkmsg("Username is too long")
     return false
   }
 
-  if (uname === Hue.username) {
+  if (username === Hue.username) {
     Hue.checkmsg("That's already your username")
     return false
   }
 
-  Hue.socket_emit("change_username", { username: uname })
+  Hue.socket_emit("change_username", { username: username })
   return true
 }
 
@@ -128,14 +128,14 @@ Hue.show_change_username = function () {
 
 // Submits the change username form
 Hue.submit_change_username = function () {
-  let uname = Hue.el("#change_username_input").value.trim()
+  let username = Hue.el("#change_username_input").value.trim()
 
-  if (uname === Hue.username) {
+  if (username === Hue.username) {
     Hue.checkmsg("That's already the username")
     return
   }
 
-  if (Hue.change_username(uname)) {
+  if (Hue.change_username(username)) {
     Hue.msg_info2.close()
   }
 }
@@ -173,8 +173,8 @@ Hue.submit_change_password = function () {
 }
 
 // Username setter
-Hue.set_username = function (uname) {
-  Hue.username = uname
+Hue.set_username = function (username) {
+  Hue.username = username
   Hue.generate_mentions_regex()
   Hue.el("#user_menu_username").textContent = Hue.username
 }

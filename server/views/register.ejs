@@ -121,20 +121,20 @@
 			Hue.el("#register_username").addEventListener("input", on_username_input)
 
 			function on_username_input() {
-				let uname = Hue.el("#register_username").value.trim()
+				let username = Hue.el("#register_username").value.trim()
 
-				if (uname === current_username) {
+				if (username === current_username) {
 					return
 				}
 
 				Hue.el("#username_taken").style.display = "none"
 
-				if (uname.length > max_username_length) {
-					uname = uname.substring(0, max_username_length)
-					Hue.el("#register_username").value = uname
+				if (username.length > max_username_length) {
+					username = username.substring(0, max_username_length)
+					Hue.el("#register_username").value = username
 				}
 
-				current_username = uname
+				current_username = username
 			}
 
 			function recaptcha_callback() {
