@@ -72,7 +72,7 @@ Hue.push_notification = function (icon, message, on_click = false) {
     content_classes = "action"
   }
 
-  let item = document.createElement("div")
+  let item = Hue.div()
   item.classList.add("notifications_item")
   item.classList.add("modal_item")
   item.innerHTML = `<div class='notifications_item_content ${content_classes} dynamic_title'>${icon_html}${message_html}</div>`

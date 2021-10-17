@@ -754,7 +754,7 @@ Hue.get_media_info_html = function (type) {
 
 // Append media inf
 Hue.append_media_info = function (container, type) {
-  let el = document.createElement("div")
+  let el = Hue.div()
   el.innerHTML = Hue.get_media_info_html(type)
   Hue.el(container).append(el)
 }

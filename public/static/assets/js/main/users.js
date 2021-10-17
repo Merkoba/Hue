@@ -289,7 +289,7 @@ Hue.setup_userlist_window = function () {
 
 // Fills the userlist window with user information
 Hue.update_userlist_window = function () {
-  let container = document.createElement("div")
+  let container = Hue.div()
 
   for (let i = 0; i < Hue.userlist.length; i++) {
     let item = Hue.userlist[i]
@@ -308,7 +308,7 @@ Hue.update_userlist_window = function () {
           </div>
       </div>`
 
-    let el = document.createElement("div")
+    let el = Hue.div()
     el.classList.add("modal_item")
     el.classList.add("userlist_item")
     el.classList.add("action")
@@ -703,7 +703,7 @@ Hue.show_profile = function (username, user_id = false) {
   Hue.el("#show_profile_info").innerHTML = ""
 
   if (user) {
-    let item = document.createElement("div")
+    let item = Hue.div()
     let nicedate = Hue.utilz.nice_date(user.date_joined)
     let timeago = Hue.utilz.timeago(user.date_joined)
     item.textContent = `Got Online: ${timeago}`
@@ -711,7 +711,7 @@ Hue.show_profile = function (username, user_id = false) {
     Hue.el("#show_profile_info").append(item)
   }
 
-  let item = document.createElement("div")
+  let item = Hue.div()
   item.textContent = `ID: ${id}`
   Hue.el("#show_profile_info").append(item)
   

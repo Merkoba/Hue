@@ -175,7 +175,7 @@ Hue.show_admin_activity = function (messages) {
 
       let s = `<div class='admin_activity_message'></div><div class='admin_activity_date'></div>`
 
-      let el = document.createElement("div")
+      let el = Hue.div()
       el.classList.add("modal_item")
       el.classList.add("admin_activity_item")
       el.classList.add("dynamic_title")
@@ -208,7 +208,7 @@ Hue.request_admin_list = function () {
 Hue.show_admin_list = function (data) {
   data.list.sort(Hue.compare_userlist)
 
-  let container = document.createElement("div")
+  let container = Hue.div()
   container.id = "admin_list_container"
   container.classList.add("grid_column_center")
 
@@ -217,7 +217,7 @@ Hue.show_admin_list = function (data) {
       <div class='flex_row_center'><div class='admin_list_username'>
       </div>&nbsp;&nbsp;<div class='admin_list_role'></div></div>`
 
-    let el = document.createElement("div")
+    let el = Hue.div()
     el.classList.add("admin_list_item")
     el.classList.add("action")
     el.innerHTML = s
@@ -249,14 +249,14 @@ Hue.request_ban_list = function () {
 
 // Shows the ban list
 Hue.show_ban_list = function (data) {
-  let container = document.createElement("div")
+  let container = Hue.div()
   container.id = "ban_list_container"
   container.classList.add("grid_column_center")
 
   for (let user of data.list) {
     let s = `<div class='flex_row_center'><div class='ban_list_username' title='Click To Unban'></div></div>`
 
-    let el = document.createElement("div")
+    let el = Hue.div()
     el.classList.add("ban_list_item")
     el.classList.add("action")
     el.innerHTML = s

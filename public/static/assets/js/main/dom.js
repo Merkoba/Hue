@@ -46,3 +46,8 @@ Hue.dataset = function (el, value, setvalue = "") {
     return Hue.dataset_obj[id][value]
   }
 }
+
+// Create an empty div
+Hue.div = function () {
+  return document.createElement("div")
+}

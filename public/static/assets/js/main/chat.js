@@ -142,7 +142,7 @@ Hue.add_chat_message = function (args = {}) {
         </div>
     </div>`
 
-  fmessage = document.createElement("div")
+  fmessage = Hue.div()
   fmessage.classList.add("message")
   fmessage.classList.add("chat_message")
   fmessage.innerHTML = s
@@ -317,7 +317,7 @@ Hue.add_chat_announcement = function (args = {}) {
         </div>
     </div>`
 
-  let fmessage = document.createElement("div")
+  let fmessage = Hue.div()
   fmessage.innerHTML = s
   fmessage.id = container_id
   fmessage.classList.add("message")
@@ -828,7 +828,7 @@ Hue.stop_edit_message = function () {
   Hue.editing_message_container.style.display = "flex"
   Hue.editing_message = false
   Hue.editing_message_container = false
-  Hue.editing_message_area = document.createElement("div")
+  Hue.editing_message_area = Hue.div()
 }
 
 // Submits a chat message edit
@@ -1675,7 +1675,7 @@ Hue.add_chat_spacer = function () {
     it.remove()
   })
 
-  let spacer = document.createElement("div")
+  let spacer = Hue.div()
   spacer.classList.add("message")
   spacer.classList.add("clear_spacer")
 
