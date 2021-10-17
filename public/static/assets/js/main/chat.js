@@ -248,7 +248,6 @@ Hue.add_chat_announcement = function (args = {}) {
     message: "",
     highlight: false,
     title: false,
-    onclick: false,
     container_id: false,
     date: false,
     type: "normal",
@@ -285,7 +284,7 @@ Hue.add_chat_announcement = function (args = {}) {
   let d = args.date ? args.date : Date.now()
   let t = args.title ? args.title : Hue.utilz.nice_date(d)
 
-  if (args.onclick) {
+  if (is_media) {
     content_classes += " action"
   }
 
@@ -344,11 +343,6 @@ Hue.add_chat_announcement = function (args = {}) {
 
   content.textContent = args.message
   Hue.urlize(content)
-
-  if (args.onclick) {
-    content.addEventListener("click", args.onclick)
-    brk.addEventListener("click", args.onclick)
-  }
 
   Hue.dataset(fmessage, "id", args.id)
   Hue.dataset(fmessage, "public", args.public)
@@ -546,6 +540,18 @@ Hue.start_chat_mouse_events = function () {
       
       if (e.target.classList.contains("chat_reply_username")) {
         Hue.show_profile(e.target.textContent)
+      }
+
+      let media = e.target.closest(".media_announcement")
+
+      if (media) {
+        let id = Hue.dataset(media, "id")
+        let type = Hue.dataset(media, "type")
+        if (type === "image_change") {
+          Hue.show_modal_image(id)
+        } else if (type === "tv_change") {
+          Hue.open_url_menu_by_media_id("tv", id)
+        }
       }
     }
   })

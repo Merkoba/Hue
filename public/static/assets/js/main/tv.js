@@ -93,14 +93,6 @@ Hue.setup_tv = function (mode, odata = {}) {
 
   data.info += ` | ${data.nice_date}`
 
-  data.onclick = function () {
-    Hue.open_url_menu({
-      source: data.source,
-      data: data,
-      media_type: "tv"
-    })
-  }
-
   if (!data.date) {
     data.date = Date.now()
   }
@@ -134,7 +126,6 @@ Hue.announce_tv = function (data) {
     save: true,
     brk: Hue.get_chat_icon("tv"),
     title: data.info,
-    onclick: data.onclick,
     date: data.date,
     type: data.type,
     username: data.setter,

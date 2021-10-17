@@ -260,7 +260,10 @@ Hue.show_media_history = function (type, filter = "") {
     })
   }
 
-  Hue.el(`#${type}_history_container`).append(clone)
+  for (let el of clone) {
+    Hue.el(`#${type}_history_container`).append(el)
+  }
+
   Hue.vertical_separator(Hue.el(`#${type}_history_container`))
 }
 
@@ -863,4 +866,15 @@ Hue.set_default_main_layout = function (apply = true) {
     Hue.save_room_state()
     Hue.apply_media_percentages()
   }
+}
+
+// Show the open url menu with data
+Hue.open_url_menu_by_media_id = function (type, id) {
+  let data = Hue.get_media_item(type, id)
+
+  Hue.open_url_menu({
+    source: data.source,
+    data: data,
+    media_type: type
+  })
 }
