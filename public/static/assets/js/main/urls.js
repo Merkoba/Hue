@@ -149,21 +149,21 @@ Hue.setup_drag_events = function () {
 // Changes button visibility based on url
 Hue.check_handle_url_options = function (text) {
   if (text && text.length < Hue.config.max_input_length) {
-    Hue.el("#handle_url_chat").style.display = inline-block
+    Hue.el("#handle_url_chat").style.display = "inline-block"
   } else {
-    Hue.el("#handle_url_chat").style.display = none
+    Hue.el("#handle_url_chat").style.display = "none"
   }
 
   if (Hue.change_image_source(text, true)) {
-    Hue.el("#handle_url_image").style.display = inline-block
+    Hue.el("#handle_url_image").style.display = "inline-block"
   } else {
-    Hue.el("#handle_url_image").style.display = none
+    Hue.el("#handle_url_image").style.display = "none"
   }
 
   if (Hue.change_tv_source(text, true)) {
-    Hue.el("#handle_url_tv").style.display = inline-block
+    Hue.el("#handle_url_tv").style.display = "inline-block"
   } else {
-    Hue.el("#handle_url_tv").style.display = none
+    Hue.el("#handle_url_tv").style.display = "none"
   }
 
   Hue.horizontal_separator(Hue.el("#handle_url_container"))
@@ -215,13 +215,13 @@ Hue.open_url_menu = function (args = {}) {
   Hue.open_url_title = args.title || args.data.title
 
   if (Hue.open_url_title && Hue.open_url_title !== args.source) {
-    Hue.el("#open_url_menu_copy_title").style.display = inline-block
+    Hue.el("#open_url_menu_copy_title").style.display = "inline-block"
   } else {
-    Hue.el("#open_url_menu_copy_title").style.display = none
+    Hue.el("#open_url_menu_copy_title").style.display = "none"
   }
 
   if (args.media_type && args.data) {
-    Hue.el("#open_url_menu_load").style.display = inline-block
+    Hue.el("#open_url_menu_load").style.display = "inline-block"
 
     if (args.data !== Hue[`loaded_${args.media_type}`]) {
       Hue.el("#open_url_menu_load").textContent = "Load"
@@ -230,13 +230,13 @@ Hue.open_url_menu = function (args = {}) {
     }
 
     if (Hue[`change_${args.media_type}_source`](args.source, true)) {
-      Hue.el("#open_url_menu_change").style.display = inline-block
+      Hue.el("#open_url_menu_change").style.display = "inline-block"
     } else {
-      Hue.el("#open_url_menu_change").style.display = none
+      Hue.el("#open_url_menu_change").style.display = "none"
     }
   } else {
-    Hue.el("#open_url_menu_load").style.display = none
-    Hue.el("#open_url_menu_change").style.display = none
+    Hue.el("#open_url_menu_load").style.display = "none"
+    Hue.el("#open_url_menu_change").style.display = "none"
   }
 
   Hue.horizontal_separator(Hue.el("#open_url_container"))

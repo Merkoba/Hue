@@ -346,8 +346,7 @@ Hue.start_msg = function () {
       id: "profilepic_cropper",
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.reset_profilepic_cropper()
-      },
+      }
     })
   )
 
@@ -647,7 +646,7 @@ Hue.create_popup = function (args = {}, ptype = "unset") {
     args.id = `popup_${Hue.popup_id}`
   }
 
-  let panel_size = Hue.el("#footer").height()
+  let panel_size = Hue.el("#footer").offsetHeight
   let edge_padding_y = panel_size * 1.5
 
   let def_args = {

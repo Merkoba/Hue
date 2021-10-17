@@ -249,7 +249,7 @@ Hue.get_file_next = function (file) {
 
 // Updates the upload status announcement based on upload progress
 Hue.change_upload_status = function (file, status, clear = false) {
-  if (!file.hue_popup) {
+  if (!file.hue_popup || !file.hue_popup.content) {
     return false
   }
 
