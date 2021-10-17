@@ -589,8 +589,10 @@ Hue.apply_media_info = function (type) {
     
   Hue.dataset(container, "otitle", hover_title)
   Hue.dataset(container, "date", item.date)
-  Hue.dataset(container, "item", item)
   Hue.dataset(container, "type", type)
+  Hue.dataset(container, "id", item.id)
+  Hue.dataset(container, "setter", item.setter)
+  Hue.dataset(container, "user_id", item.user_id)
 }
 
 // Some fixes on reconneciton
@@ -765,8 +767,9 @@ Hue.start_media_info = function () {
     let el = e.target.closest(".media_info_username")
 
     if (el) {
-      let username = Hue.dataset(el.closest(".media_info_container"), "item", setter)
-      Hue.show_profile(username)
+      let username = Hue.dataset(el.closest(".media_info_container"), "setter")
+      let user_id = Hue.dataset(el.closest(".media_info_container"), "user_id")
+      Hue.show_profile(username, user_id)
     }
   })
 
@@ -775,14 +778,9 @@ Hue.start_media_info = function () {
 
     if (el) {
       let media_info = el.closest(".media_info_container")
-      let item = Hue.dataset(media_info, "item")
       let type = Hue.dataset(media_info, "type")
-  
-      Hue.open_url_menu({
-        source: item.source,
-        data: item,
-        media_type: type
-      })
+      let id = Hue.dataset(media_info, "id")
+      Hue.open_url_menu_by_media_id(type, id)
     }
   })
 }
