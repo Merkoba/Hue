@@ -65,19 +65,17 @@ Hue.push_notification = function (icon, message, on_click = false) {
   let message_html = `<div class='notifications_message'>${Hue.utilz.make_html_safe(
     message
   )}</div>`
+
   let content_classes = ""
 
   if (on_click) {
     content_classes = "action"
   }
 
-  let s = 
-    `<div class='notifications_item modal_item'>
-      <div class='notifications_item_content ${content_classes} dynamic_title'>${icon_html}${message_html}</div>
-    </div>`
-
   let item = document.createElement("div")
-  item.innerHTML = s
+  item.classList.add("notifications_item")
+  item.classList.add("modal_item")
+  item.innerHTML = `<div class='notifications_item_content ${content_classes} dynamic_title'>${icon_html}${message_html}</div>`
   let content = item.querySelector(".notifications_item_content")
 
   content.title = t
@@ -89,14 +87,10 @@ Hue.push_notification = function (icon, message, on_click = false) {
       on_click()
     })
   }
-
+  
+  Hue.el("#notifications_container").prepend(item)
+  
   let items = Hue.els("#notifications_container .notifications_item")
-
-  if (items.length === 0) {
-    Hue.el("#notifications_container").innerHTML = item
-  } else {
-    Hue.el("#notifications_container").prepend(item)
-  }
 
   if (items.length > Hue.config.notifications_crop_limit) {
     items.slice(-1)[0].remove()
