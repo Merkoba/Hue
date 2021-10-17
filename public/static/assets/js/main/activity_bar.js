@@ -7,7 +7,8 @@ Hue.setup_activity_bar = function () {
 
   Hue.el("#activity_bar").addEventListener("click", function (e) {
     if (e.target.closest(".activity_bar_item")) {
-      Hue.show_profile("", Hue.dataset(e.target.closest(".activity_bar_item"), "user_id"))
+      let item = e.target.closest(".activity_bar_item")
+      Hue.show_profile(Hue.dataset(item, "username"), Hue.dataset(item, "user_id"))
     }
   })
 }
@@ -61,7 +62,7 @@ Hue.update_activity_bar = function (check = false) {
 
     Hue.dataset(img_el, "user_id", user.user_id)
     Hue.dataset(el, "user_id", user.user_id)
-    Hue.dataset(el, "uname", user.username)
+    Hue.dataset(el, "username", user.username)
     text_el.textContent = user.username.slice(0, Hue.config.max_activity_username_length)
     Hue.el("#activity_bar_inner").append(el)
   }

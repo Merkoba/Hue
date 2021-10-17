@@ -189,7 +189,7 @@ Hue.add_chat_message = function (args = {}) {
   Hue.dataset(fmessage, "public", args.public)
   Hue.dataset(fmessage, "date", d)
   Hue.dataset(fmessage, "highlighted", highlighted)
-  Hue.dataset(fmessage, "uname", args.username)
+  Hue.dataset(fmessage, "username", args.username)
   Hue.dataset(fmessage, "mode", "chat")
 
   let chat_content_container = fmessage.querySelector(".chat_content_container")
@@ -351,7 +351,7 @@ Hue.add_chat_announcement = function (args = {}) {
   Hue.dataset(fmessage, "type", args.type)
   Hue.dataset(fmessage, "info1", args.info1)
   Hue.dataset(fmessage, "info2", args.info2)
-  Hue.dataset(fmessage, "uname", args.username)
+  Hue.dataset(fmessage, "username", args.username)
   Hue.dataset(fmessage, "mode", "announcement")
   Hue.dataset(fmessage, "user_id", args.user_id)
   Hue.dataset(fmessage, "in_log", args.in_log)
@@ -521,7 +521,7 @@ Hue.start_chat_mouse_events = function () {
       if (e.target.classList.contains("chat_uname")) {
         let m = e.target.closest(".message")
         Hue.show_profile(
-          Hue.dataset(m, "uname"),
+          Hue.dataset(m, "username"),
           Hue.dataset(m, "user_id")
         )
       }
@@ -530,7 +530,7 @@ Hue.start_chat_mouse_events = function () {
         let m = e.target.closest(".message")
 
         Hue.show_profile(
-          Hue.dataset(m, "uname"),
+          Hue.dataset(m, "username"),
           Hue.dataset(m, "user_id")
         )
       }
@@ -607,7 +607,7 @@ Hue.start_reply = function (target) {
 
   let message = target.closest(".message")
   let text = Hue.remove_urls(Hue.utilz.clean_string2(target.textContent))
-  let uname = Hue.dataset(message, "uname")
+  let uname = Hue.dataset(message, "username")
 
   if (!text || !uname) {
     return false
@@ -1140,7 +1140,7 @@ Hue.activity_above = function () {
 
   for (let message of messages.reverse()) {
     let same_uname = false
-    let uname = Hue.dataset(message, "uname")
+    let uname = Hue.dataset(message, "username")
 
     if (uname && uname === Hue.username) {
       same_uname = true
@@ -1166,7 +1166,7 @@ Hue.activity_below = function () {
 
   for (let message of messages) {
     let same_uname = false
-    let uname = Hue.dataset(message, "uname")
+    let uname = Hue.dataset(message, "username")
 
     if (uname && uname === Hue.username) {
       same_uname = true

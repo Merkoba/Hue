@@ -117,8 +117,14 @@ Hue.show_notifications = function (filter = "") {
 
 // Centralized function for room changes
 Hue.show_room_notification = function (username, message) {
+  let user = Hue.get_user_by_username(username)
+
   let f = function () {
-    Hue.show_profile(username)
+    if (user) {
+      Hue.show_profile(username, user.user_id)
+    } else {
+      Hue.show_profile(username)
+    }
   }
 
   let item = Hue.make_info_popup_item({
