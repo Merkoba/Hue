@@ -1025,21 +1025,19 @@ Hue.get_last_chat_message_by_username = function (ouname) {
 
 // Gets the most recent chat message by user_id
 Hue.get_last_chat_message_by_user_id = function (ouser_id) {
-  let found_message = false
   let items = Hue.els("#chat_area > .message.chat_message")
 
-  items.reverse().forEach(it => {
-    let user_id = Hue.dataset(it, "user_id")
-
+  for (let item of items.reverse()) {
+    let user_id = Hue.dataset(item, "user_id")
+  
     if (user_id) {
       if (user_id === ouser_id) {
-        found_message = it
-        return false
+        return item
       }
     }
-  })
+  }
 
-  return found_message
+  return false
 }
 
 // Gives or maintains aura classes
@@ -1083,7 +1081,7 @@ Hue.remove_aura = function (id) {
   Hue.els(".chat_profilepic_container.aura").forEach(it => {
     let message = it.closest(".chat_message")
 
-    if (message.length > 0) {
+    if (message) {
       if (Hue.dataset(message, "user_id") === id) {
         it.classList.remove("aura")
       }
@@ -1093,7 +1091,7 @@ Hue.remove_aura = function (id) {
   Hue.els(".activity_bar_image_container.aura").forEach(it => {
     let activity_bar_item = it.closest(".activity_bar_item")
 
-    if (activity_bar_item.length > 0) {
+    if (activity_bar_item) {
       if (Hue.dataset(activity_bar_item, "user_id") === id) {
         it.classList.remove("aura")
       }
@@ -1335,7 +1333,7 @@ Hue.setup_link_preview = function (fmessage) {
   let link_preview_el = fmessage.querySelector(".link_preview")
   let link_preview_image = link_preview_el.querySelector(".link_preview_image")
 
-  if (link_preview_image.length > 0) {
+  if (link_preview_image.length) {
     link_preview_image.addEventListener("click", function (e) {
       e.stopPropagation()
       Hue.expand_image(this.src.replace(".gifv", ".gif"))
