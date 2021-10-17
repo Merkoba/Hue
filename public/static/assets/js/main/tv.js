@@ -692,8 +692,8 @@ Hue.receive_tv_progress = function (data) {
       return false
     }
 
-    Hue.el("#media_video")[0].currentTime = data.progress
-    Hue.el("#media_video")[0].play()
+    Hue.el("#media_video").currentTime = data.progress
+    Hue.el("#media_video").play()
   }
 }
 
