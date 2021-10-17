@@ -3,7 +3,9 @@ Hue.start_body_events = function () {
   Hue.el("body").addEventListener("mouseover", function (e) {
     if (e.target.closest(".dynamic_title")) {
       let el = e.target.closest(".dynamic_title")
-      let new_title = `${Hue.dataset(el, "otitle")} (${Hue.utilz.timeago(Hue.dataset(el, "date"))})`
+      let otitle = Hue.dataset(el, "otitle")
+      let timeago = Hue.utilz.timeago(Hue.dataset(el, "date"))
+      let new_title = `${otitle} (${timeago})`
       el.title = new_title
     }
   })
