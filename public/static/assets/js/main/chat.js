@@ -142,9 +142,7 @@ Hue.add_chat_message = function (args = {}) {
         </div>
     </div>`
 
-  fmessage = Hue.div()
-  fmessage.classList.add("message")
-  fmessage.classList.add("chat_message")
+  fmessage = Hue.div("message chat_message")
   fmessage.innerHTML = s
 
   if (image_preview) {
@@ -317,11 +315,9 @@ Hue.add_chat_announcement = function (args = {}) {
         </div>
     </div>`
 
-  let fmessage = Hue.div()
+  let fmessage = Hue.div("message announcement")
   fmessage.innerHTML = s
   fmessage.id = container_id
-  fmessage.classList.add("message")
-  fmessage.classList.add("announcement")
   
   if (is_media) {
     fmessage.classList.add("media_announcement")
@@ -1675,10 +1671,7 @@ Hue.add_chat_spacer = function () {
     it.remove()
   })
 
-  let spacer = Hue.div()
-  spacer.classList.add("message")
-  spacer.classList.add("clear_spacer")
-
+  let spacer = Hue.div("message clear_spacer")
   Hue.el("#chat_area").append(spacer)
   Hue.goto_bottom(true)
 }

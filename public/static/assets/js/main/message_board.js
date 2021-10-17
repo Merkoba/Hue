@@ -46,9 +46,7 @@ Hue.add_post_to_message_board = function (post) {
     <div class='message_board_text dynamic_title'></div>
     <div><div class='message_board_delete action inline underlined'>Delete</div></div>`
 
-  let item = Hue.div()
-  item.classList.add("message_board_item")
-  item.classList.add("modal_item")
+  let item = Hue.div("message_board_item modal_item")
   item.innerHTML = s
   Hue.dataset(item, "id", post.id)
   Hue.dataset(item, "date", post.date)

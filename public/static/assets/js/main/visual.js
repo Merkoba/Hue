@@ -24,8 +24,7 @@ Hue.apply_separator = function (el, cls) {
       break
     }
 
-    let sep = Hue.div()
-    sep.classList.add("separator")
+    let sep = Hue.div("separator")
     sep.classList.add(cls)
     elems[i].insertAdjacentElement("afterend", sep)
   }

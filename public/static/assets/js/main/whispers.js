@@ -367,17 +367,12 @@ Hue.setup_message_window = function () {
 Hue.push_whisper = function (message, on_click, read) {
   let d = Date.now()
   let t = Hue.utilz.nice_date(d)
-
   let message_html = `<div class='whispers_message'>${Hue.utilz.make_html_safe(message)}</div>`
-
-  let item = Hue.div()
-  item.classList.add("whispers_item")
-  item.classList.add("modal_item")
+  let item = Hue.div("whispers_item modal_item")
   item.innerHTML = `<div class='whispers_item_content action dynamic_title'>${message_html}`
-
   let content = item.querySelector(".whispers_item_content")
-
   content.title = t
+  
   Hue.dataset(content, "otitle", t)
   Hue.dataset(content, "date", d)
   Hue.dataset(content, "read", read)
