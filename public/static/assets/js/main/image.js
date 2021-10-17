@@ -390,7 +390,7 @@ Hue.setup_modal_image = function () {
   })
 
   Hue.el("#modal_image_toolbar_expand").addEventListener("click", function (e) {
-    if (Hue.el("#modal_image_container").hasClass("expanded_modal_image")) {
+    if (Hue.el("#modal_image_container").classList.contains("expanded_modal_image")) {
       Hue.restore_modal_image()
     } else {
       Hue.expand_modal_image()

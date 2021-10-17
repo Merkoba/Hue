@@ -145,21 +145,21 @@ Hue.setup_autocomplete = function () {
   Hue.el("body").addEventListener("keydown", function (e) {
     if (Hue.utilz.is_textbox(e.target)) {
       if (e.key === "Tab") {
-        let value = this.value
+        let value = e.target.value
 
         if (value.length > 0) {
-          Hue.tabbed(this)
+          Hue.tabbed(e.target)
           return
         }
       }
 
-      Hue.clear_tabbed(this)
+      Hue.clear_tabbed(e.target)
     }
   })
 
   Hue.el("body").addEventListener("click", function (e) {
     if (Hue.utilz.is_textbox(e.target)) {
-      Hue.clear_tabbed(this)
+      Hue.clear_tabbed(e.target)
     }
   })
 }
