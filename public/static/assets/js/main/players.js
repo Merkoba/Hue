@@ -1,11 +1,11 @@
 // Loads YouTube script or creates players
-Hue.load_youtube = async function (what = "") {
+Hue.load_youtube = async function () {
   if (Hue.youtube_loaded) {
     if (
-      Hue.youtube_video_player_requested &&
-      Hue.youtube_video_player === undefined
+      Hue.youtube_player_requested &&
+      Hue.youtube_player === undefined
     ) {
-      Hue.create_youtube_video_player()
+      Hue.create_youtube_player()
     }
 
     return false
@@ -23,16 +23,16 @@ Hue.load_youtube = async function (what = "") {
 }
 
 // Create tv YouTube player
-Hue.create_youtube_video_player = function () {
-  Hue.youtube_video_player_requested = false
+Hue.create_youtube_player = function () {
+  Hue.youtube_player_requested = false
 
   let html = "<div id='media_youtube_video' class='video_frame'></div>"
   Hue.el("#media_youtube_video_container").innerHTML = html
   Hue.add_media_info("media_youtube_video_container")
 
-  Hue.yt_video_player = new YT.Player("media_youtube_video", {
+  Hue.yt_player = new YT.Player("media_youtube_video", {
     events: {
-      onReady: Hue.on_youtube_video_player_ready,
+      onReady: Hue.on_youtube_player_ready,
     },
     playerVars: {
       iv_load_policy: 3,
@@ -46,27 +46,27 @@ Hue.create_youtube_video_player = function () {
 
 // This gets executed when the YouTube iframe API is ready
 onYouTubeIframeAPIReady = function () {
-  if (Hue.youtube_video_player_requested) {
-    Hue.create_youtube_video_player()
+  if (Hue.youtube_player_requested) {
+    Hue.create_youtube_player()
   }
 }
 
 // This gets executed when the tv YouTube player is ready
-Hue.on_youtube_video_player_ready = function () {
+Hue.on_youtube_player_ready = function () {
   this.clear_activity_bar_items
-  Hue.youtube_video_player = Hue.yt_video_player
+  Hue.youtube_player = Hue.yt_player
 
-  Hue.youtube_video_player.addEventListener("onStateChange", function (e) {
+  Hue.youtube_player.addEventListener("onStateChange", function (e) {
     if (e.data === 5) {
       if (Hue.youtube_video_play_on_queue) {
-        Hue.youtube_video_player.playVideo()
+        Hue.youtube_player.playVideo()
       }
     }
   })
 
-  if (Hue.youtube_video_player_request) {
-    Hue.change(Hue.youtube_video_player_request)
-    Hue.youtube_video_player_request = false
+  if (Hue.youtube_player_request) {
+    Hue.change(Hue.youtube_player_request)
+    Hue.youtube_player_request = false
   }
 }
 
@@ -74,10 +74,10 @@ Hue.on_youtube_video_player_ready = function () {
 Hue.start_soundcloud = async function () {
   if (Hue.soundcloud_loaded) {
     if (
-      Hue.soundcloud_video_player_requested &&
-      Hue.soundcloud_video_player === undefined
+      Hue.soundcloud_player_requested &&
+      Hue.soundcloud_player === undefined
     ) {
-      Hue.create_soundcloud_video_player()
+      Hue.create_soundcloud_player()
     }
   }
 
@@ -86,19 +86,17 @@ Hue.start_soundcloud = async function () {
   }
 
   Hue.soundcloud_loading = true
-
   await Hue.load_script("https://w.soundcloud.com/player/api.js")
-
   Hue.soundcloud_loaded = true
 
-  if (Hue.soundcloud_video_player_requested) {
-    Hue.create_soundcloud_video_player()
+  if (Hue.soundcloud_player_requested) {
+    Hue.create_soundcloud_player()
   }
 }
 
 // Creates the tv Soundcloud player
-Hue.create_soundcloud_video_player = function () {
-  Hue.soundcloud_video_player_requested = false
+Hue.create_soundcloud_player = function () {
+  Hue.soundcloud_player_requested = false
 
   try {
     let src =
@@ -110,14 +108,14 @@ Hue.create_soundcloud_video_player = function () {
 
     Hue.add_media_info("media_soundcloud_video_container")
 
-    let _soundcloud_video_player = SC.Widget("media_soundcloud_video")
+    let _soundcloud_player = SC.Widget("media_soundcloud_video")
 
-    _soundcloud_video_player.bind(SC.Widget.Events.READY, function () {
-      Hue.soundcloud_video_player = _soundcloud_video_player
+    _soundcloud_player.bind(SC.Widget.Events.READY, function () {
+      Hue.soundcloud_player = _soundcloud_player
 
-      if (Hue.soundcloud_video_player_request) {
-        Hue.change(Hue.soundcloud_video_player_request)
-        Hue.soundcloud_video_player_request = false
+      if (Hue.soundcloud_player_request) {
+        Hue.change(Hue.soundcloud_player_request)
+        Hue.soundcloud_player_request = false
       }
     })
   } catch (err) {
@@ -135,11 +133,11 @@ Hue.request_media = function (player, args) {
   Hue[`${player}_requested`] = true
   Hue[`${player}_request`] = args
 
-  if (player === "youtube_video_player") {
+  if (player === "youtube_player") {
     Hue.load_youtube()
-  } else if (player === "twitch_video_player") {
+  } else if (player === "twitch_player") {
     Hue.start_twitch()
-  } else if (player === "soundcloud_video_player") {
+  } else if (player === "soundcloud_player") {
     Hue.start_soundcloud()
   }
 }
@@ -152,8 +150,8 @@ Hue.add_media_info = function (container_id) {
 // Loads Twitch script and creates player
 Hue.start_twitch = async function () {
   if (Hue.twitch_loaded) {
-    if (Hue.twitch_video_player_requested && Hue.twitch_video_player === undefined) {
-      Hue.create_twitch_video_player()
+    if (Hue.twitch_player_requested && Hue.twitch_player === undefined) {
+      Hue.create_twitch_player()
     }
 
     return false
@@ -169,14 +167,14 @@ Hue.start_twitch = async function () {
 
   Hue.twitch_loaded = true
 
-  if (Hue.twitch_video_player_requested) {
-    Hue.create_twitch_video_player()
+  if (Hue.twitch_player_requested) {
+    Hue.create_twitch_player()
   }
 }
 
 // Creates the tv Twitch player
-Hue.create_twitch_video_player = function () {
-  Hue.twitch_video_player_requested = false
+Hue.create_twitch_player = function () {
+  Hue.twitch_player_requested = false
 
   let c = Hue.current_tv()
   let channel = "dummy"
@@ -186,24 +184,24 @@ Hue.create_twitch_video_player = function () {
   }
 
   try {
-    let twch_video_player = new Twitch.Player("media_twitch_video_container", {
+    let twch_player = new Twitch.Player("media_twitch_video_container", {
       width: 640,
       height: 360,
       autoplay: false,
       channel: channel
     })
 
-    twch_video_player.addEventListener(Twitch.Player.READY, () => {
-      Hue.twitch_video_player = twch_video_player
+    twch_player.addEventListener(Twitch.Player.READY, () => {
+      Hue.twitch_player = twch_player
 
       let iframe = Hue.el("#media_twitch_video_container").querySelector("iframe")
       iframe.id = "media_twitch_video"
       iframe.classList.add("video_Frame")
       Hue.add_media_info("media_twitch_video_container")
 
-      if (Hue.twitch_video_player_request) {
-        Hue.change(Hue.twitch_video_player_request)
-        Hue.twitch_video_player_request = false
+      if (Hue.twitch_player_request) {
+        Hue.change(Hue.twitch_player_request)
+        Hue.twitch_player_request = false
       }
     })
   } catch (err) {
