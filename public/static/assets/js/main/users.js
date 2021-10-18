@@ -42,8 +42,8 @@ Hue.remove_offline_profilepics = function (user_id) {
 Hue.add_offline_profilepics = function (user_id) {
   Hue.els("#chat_area .message").forEach(it => {
     if (Hue.dataset(it, "user_id") === user_id) {
-      it.querySelectorAll(".chat_profilepic_container").forEach(it => {
-        it.classList.add("profilepic_offline")
+      it.querySelectorAll(".chat_profilepic_container").forEach(it2 => {
+        it2.classList.add("profilepic_offline")
       })
     }
   })
