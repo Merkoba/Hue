@@ -523,6 +523,7 @@ module.exports = function (
     handler.modify_socket_properties(first_socket.hue_user_id, prop, {
       method: "badge_received",
       data: {
+        user_id: first_socket.hue_user_id,
         username: data.username,
         badges: badges,
         type: data.type,

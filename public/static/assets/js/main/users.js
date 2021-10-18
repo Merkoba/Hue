@@ -1019,6 +1019,68 @@ Hue.on_badge_received = function (data) {
   }
 
   Hue.replace_property_in_userlist_by_username(data.username, prop, prop_value)
+
+  if (Hue.app_focused) {
+    let message = Hue.get_last_chat_message_by_user_id(data.user_id)
+
+    if (message) {
+      let profilepic_container = message.querySelector(".chat_profilepic_container")
+      Hue.change_profilepic_badge(profilepic_container, data.type)
+    }
+  }  
+}
+
+// Changes the profile image of a user receiving a badge
+Hue.change_profilepic_badge = function (profilepic_container, type) {
+  Hue.remove_badge_icons(profilepic_container)
+  profilepic_container.classList.add(`${type}_badge`)
+  profilepic_container.classList.add("profilepic_badge")
+
+  let icon
+
+  if (type === "heart") {
+    icon = "heart-solid"
+  } else if (type === "skull") {
+    icon = "skull"
+  }
+
+  let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+  svg.classList.add("other_icon")
+  svg.classList.add("profilepic_badge_icon")
+  svg.classList.add(`${type}_badge`)
+  svg.innerHTML = `<use href='#icon_${icon}'>`
+
+  profilepic_container.append(svg)
+
+  let number = Hue.dataset(profilepic_container, "badge_feedback_number")
+
+  if (!number) {
+    number = 1
+  } else {
+    number += 1
+  }
+
+  Hue.dataset(profilepic_container, "badge_feedback_number", number)
+
+  setTimeout(function () {
+    let number_2 = Hue.dataset(profilepic_container, "badge_feedback_number")
+
+    if (number !== number_2) {
+      return false
+    }
+
+    Hue.remove_badge_icons(profilepic_container)
+  }, Hue.config.badge_feedback_duration)
+}
+
+// Removes badge icons from profile image container
+Hue.remove_badge_icons = function (profilepic_container) {
+  profilepic_container.classList.remove("heart_badge")
+  profilepic_container.classList.remove("skull_badge")
+  profilepic_container.classList.remove(`profilepic_badge`)
+  profilepic_container.querySelectorAll(".profilepic_badge_icon").forEach(it => {
+    it.remove()
+  })
 }
 
 // Sets the hearts counter in the profile window

@@ -658,14 +658,14 @@ Hue.change_media_lock = function(args) {
 // Toggles media locks for any type
 Hue.change_media_lock_icon = function (type) {
   if (Hue[`${type}_locked`]) {
-    Hue.el(`#footer_lock_${type}_icon`).querySelector("use").href = "#icon_locked"
+    Hue.el(`#footer_lock_${type}_icon`).querySelector("use").href.baseVal = "#icon_locked"
     Hue.el(`#footer_lock_${type}_label`).style.display = "flex"
 
     if (Hue[`loaded_${type}`] !== Hue[`current_${type}`]()) {
       Hue.el(`#footer_lock_${type}_icon`).classList.add("blinking")
     }
   } else {
-    Hue.el(`#footer_lock_${type}_icon`).querySelector("use").href = "#icon_unlocked"
+    Hue.el(`#footer_lock_${type}_icon`).querySelector("use").href.baseVal = "#icon_unlocked"
     Hue.el(`#footer_lock_${type}_icon`).classList.remove("blinking")
     Hue.el(`#footer_lock_${type}_label`).style.display = "none"
 
