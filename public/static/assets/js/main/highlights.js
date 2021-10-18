@@ -65,6 +65,17 @@ Hue.get_latest_highlight = function () {
     }
   }
 
+  if (!latest_highlight) {
+    let items = Hue.els("#chat_area > .message.announcement")
+
+    for (let item of items.reverse()) {
+      if (Hue.dataset(item, "highlighted")) {
+        latest_highlight = item
+        break
+      }
+    }
+  }  
+
   return latest_highlight
 }
 
