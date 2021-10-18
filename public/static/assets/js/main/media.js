@@ -501,15 +501,15 @@ Hue.change = function (args = {}) {
     }
 
     if (item.type !== "video" && item.type !== "iframe") {
-      if (Hue[`${item.type}_video_player`] === undefined) {
-        Hue.request_media(`${item.type}_video_player`, args)
+      if (Hue[`${item.type}_player`] === undefined) {
+        Hue.request_media(`${item.type}_player`, args)
         return false
       }
     }
 
     Hue.loaded_tv = item
 
-    Hue[`show_${item.type}_video`](args.play)
+    Hue[`show_${item.type}_tv`](args.play)
 
     if (!args.item || args.item === Hue.current_tv()) {
       Hue.el("#footer_lock_tv_icon").classList.remove("blinking")
