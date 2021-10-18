@@ -119,7 +119,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   }
 
   function walkdir(dir, callback) {
-    fs.readdirSync(dir).forEach( f => {
+    fs.readdirSync(dir).forEach(f => {
       let dirPath = path.join(dir, f)
       let isDirectory = fs.statSync(dirPath).isDirectory()
       isDirectory ? 
