@@ -266,7 +266,7 @@ Hue.change_image_visibility = function () {
     Hue.el("#footer_toggle_image_icon").querySelector("use").href.baseVal = "#icon_toggle-on"
 
     if (Hue.first_media_change && Hue.started) {
-      Hue.change({ type: "image" })
+      Hue.change({ type: "image", force: true, current_source: Hue.image_locked })
     }
 
     Hue.image_visible = true
