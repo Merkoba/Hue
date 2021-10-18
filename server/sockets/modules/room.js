@@ -313,7 +313,8 @@ module.exports = function (
 
           for (let file of files) {
             if (file.startsWith("background") && file !== file_name) {
-              let path = vars.path.join(vars.background_root, file)
+              let container = vars.path.join(vars.media_root, "room", socket.hue_room_id)
+              let path = vars.path.join(container, file)
 
               vars.fs.unlink(path, function (err) {
                 if (err) {

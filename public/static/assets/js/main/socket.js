@@ -325,7 +325,7 @@ Hue.on_disconnect = function () {
     Hue.show_profile(Hue.open_profile_username)
   }
 
-  if ($("#reconnecting_feedback").length === 0) {
+  if (Hue.el("#reconnecting_feedback")) {
     Hue.feedback("Reconnecting...", { container_id: "reconnecting_feedback" })
   }
 

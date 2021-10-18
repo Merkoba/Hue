@@ -1,8 +1,7 @@
 // Create all the Handlebars templates
 Hue.setup_templates = function () {
-  $(".template").each(function () {
-    let id = $(this).attr("id")
-    Hue[id] = Handlebars.compile($(`#${id}`).html())
+  Hue.els(".template").forEach(it => {
+    Hue[it.id] = Handlebars.compile(Hue.el(`#${it.id}`).innerHTML)
   })
 }
 
@@ -115,11 +114,8 @@ Hue.start_msg = function () {
       window_width: "22rem",
       after_close: function (instance) {
         common.after_close(instance)
-        $("#show_profile_username").text("Loading")
-        $("#show_profilepic").attr(
-          "src",
-          Hue.config.profilepic_loading_url
-        )
+        Hue.el("#show_profile_username").textContent = "Loading"
+        Hue.el("#show_profilepic").src = Hue.config.profilepic_loading_url
         Hue.open_profile_username = false
         Hue.open_profile_user = false
         Hue.stop_audioclip()
@@ -166,8 +162,8 @@ Hue.start_msg = function () {
       window_width: "24rem",
       after_close: function (instance) {
         common.after_close(instance)
-        $("#image_source_picker_input").val("")
-        $("#image_source_picker_input_comment").val("")
+        Hue.el("#image_source_picker_input").value = ""
+        Hue.el("#image_source_picker_input_comment").value = ""
         Hue.reset_media_history_filter("image")
       },
     })
@@ -179,8 +175,8 @@ Hue.start_msg = function () {
       window_width: "24rem",
       after_close: function (instance) {
         common.after_close(instance)
-        $("#tv_source_picker_input").val("")
-        $("#tv_source_picker_input_comment").val("")
+        Hue.el("#tv_source_picker_input").value = ""
+        Hue.el("#tv_source_picker_input_comment").value = ""
         Hue.reset_media_history_filter("tv")
       },
     })
@@ -203,8 +199,6 @@ Hue.start_msg = function () {
       },
       after_close: function (instance) {
         common.after_close(instance)
-        $("#write_message_feedback").text("")
-        $("#write_message_feedback").css("display", "none")
         Hue.writing_message = false
       },
     })
@@ -270,7 +264,7 @@ Hue.start_msg = function () {
       id: "image_upload_comment",
       after_close: function (instance) {
         common.after_close(instance)
-        $("#image_upload_comment_input").val("")
+        Hue.el("#image_upload_comment_input").value = ""
         Hue.image_upload_comment_file = false
         Hue.image_upload_comment_type = false
       },
@@ -282,7 +276,7 @@ Hue.start_msg = function () {
       id: "tv_upload_comment",
       after_close: function (instance) {
         common.after_close(instance)
-        $("#tv_upload_comment_input").val("")
+        Hue.el("#tv_upload_comment_input").value = ""
         Hue.tv_upload_comment_file = false
         Hue.tv_upload_comment_type = false
       },
@@ -350,8 +344,7 @@ Hue.start_msg = function () {
       id: "profilepic_cropper",
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.reset_profilepic_cropper()
-      },
+      }
     })
   )
 
@@ -462,9 +455,9 @@ Hue.info2_vars_to_false = function () {
 
 // Starts automatic modal filters
 Hue.start_modal_filters = function () {
-  $(".filter_input").each(function () {
-    if ($(this).data("mode") !== "manual") {
-      $(this).on("input", function () {
+  Hue.els(".filter_input").forEach(it => {
+    if (it.dataset.mode !== "manual") {
+      it.addEventListener("input", function () {
         Hue.do_modal_filter_timer()
       })
     }
@@ -473,29 +466,25 @@ Hue.start_modal_filters = function () {
 
 // Focuses the filter widget of a modal
 Hue.focus_modal_filter = function (instance) {
-  let filter = $(`#Msg-content-${instance.options.id}`)
-    .find(".filter_input")
-    .eq(0)
+  let filter = Hue.el(`#Msg-content-${instance.options.id}`).querySelector(".filter_input")
 
-  if (filter.length) {
-    filter.trigger("focus")
+  if (filter) {
+    filter.focus()
   }
 }
 
 // Empties the filter of a modal and updates it
 Hue.reset_modal_filter = function (instance) {
   let id = instance.options.id
-  let filter = $(`#Msg-content-${id}`)
-    .find(".filter_input")
-    .eq(0)
+  let filter = Hue.el(`#Msg-content-${id}`).querySelector(".filter_input")
 
-  if (id === "info" || id === "info2" || filter.data("mode") === "manual") {
-    return false
-  }
+  if (filter) {
+    if (id === "info" || id === "info2" || filter.dataset.mode === "manual") {
+      return false
+    }
 
-  if (filter.length) {
-    if (filter.val()) {
-      filter.val("")
+    if (filter.value) {
+      filter.value = ""
       Hue.do_modal_filter(id)
     }
   }
@@ -564,19 +553,19 @@ Hue.close_all_popups = function (callback = false) {
 
 // Starts custom filters events
 Hue.start_filters = function () {
-  $("#chat_search_filter").on("input", function () {
+  Hue.el("#chat_search_filter").addEventListener("input", function () {
     Hue.chat_search_timer()
   })
 
-  $("#highlights_filter").on("input", function () {
+  Hue.el("#highlights_filter").addEventListener("input", function () {
     Hue.highlights_filter_timer()
   })
 
-  $("#image_history_filter").on("input", function () {
+  Hue.el("#image_history_filter").addEventListener("input", function () {
     Hue.media_history_filter_timer("image")
   })
 
-  $("#tv_history_filter").on("input", function () {
+  Hue.el("#tv_history_filter").addEventListener("input", function () {
     Hue.media_history_filter_timer("tv")
   })
 }
@@ -591,40 +580,40 @@ Hue.do_modal_filter = function (id = false) {
     id = Hue.active_modal.options.id
   }
 
-  let win = $(`#Msg-content-${id}`)
-  let filter = win.find(".filter_input").eq(0)
+  let win = Hue.el(`#Msg-content-${id}`)
+  let filter = win.querySelector(".filter_input")
 
   if (!filter.length) {
     return false
   }
 
-  let value = filter.val().trim()
+  let value = filter.value.trim()
   let lc_value = Hue.utilz.clean_string2(value).toLowerCase()
-  let items = win.find(".modal_item")
+  let items = win.querySelectorAll(".modal_item")
   let display
 
-  if (!win.data("filter_display")) {
-    display = items.first().css("display")
-    win.data("filter_display", display)
+  if (!Hue.dataset(win, "filter_display")) {
+    display = items[0].style.display
+    Hue.dataset(win, "filter_display", display)
   } else {
-    display = win.data("filter_display")
+    display = Hue.dataset(win, "filter_display")
   }
 
   if (lc_value) {
-    items.each(function () {
-      let item_value = $(this).text().toLowerCase()
+    items.forEach(it => {
+      let item_value = this.textContent.toLowerCase()
 
       if (item_value.includes(lc_value)) {
-        $(this).css("display", display)
+        it.style.display = display
       } else {
-        $(this).css("display", "none")
+        it.style.display = "none"
       }
     })
 
     Hue[`${id}_filtered`] = true
   } else {
-    items.each(function () {
-      $(this).css("display", display)
+    items.forEach(it => {
+      it.style.display = display
     })
 
     Hue[`${id}_filtered`] = false
@@ -639,12 +628,12 @@ Hue.do_modal_filter = function (id = false) {
 
 // Scrolls a modal window to the top
 Hue.scroll_modal_to_top = function (id) {
-  $(`#Msg-content-container-${id}`).scrollTop(0)
+  Hue.el(`#Msg-content-container-${id}`).scrollTop = 0
 }
 
 // Scrolls a modal window to the bottom
 Hue.scroll_modal_to_bottom = function (id) {
-  let container = $(`#Msg-content-container-${id}`)[0]
+  let container = Hue.el(`#Msg-content-container-${id}`)
   container.scrollTop = container.scrollHeight
 }
 
@@ -655,7 +644,7 @@ Hue.create_popup = function (args = {}, ptype = "unset") {
     args.id = `popup_${Hue.popup_id}`
   }
 
-  let panel_size = $("#footer").height()
+  let panel_size = Hue.el("#footer").offsetHeight
   let edge_padding_y = panel_size * 1.5
 
   let def_args = {
@@ -710,11 +699,11 @@ Hue.create_modal = function (args = {}, ptype = "unset") {
 // If it comes from a modal it closes all modals
 // If it comes from a popup it closes all popups
 Hue.process_msg_close_button = function (button) {
-  let container = $(button).closest(".Msg-container")
+  let container = button.closest(".Msg-container")
 
-  if (container.hasClass("Msg-container-modal")) {
+  if (container.classList.contains("Msg-container-modal")) {
     Hue.close_all_modals()
-  } else if (container.hasClass("Msg-container-popup")) {
+  } else if (container.classList.contains("Msg-container-popup")) {
     Hue.close_all_popups()
   }
 }

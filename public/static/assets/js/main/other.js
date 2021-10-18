@@ -1,14 +1,6 @@
 // Copies a string to the clipboard
-Hue.copy_string = function (s) {
-  let textareaEl = document.createElement("textarea")
-
-  document.body.appendChild(textareaEl)
-
-  textareaEl.value = s
-  textareaEl.select()
-
-  document.execCommand("copy")
-  document.body.removeChild(textareaEl)
+Hue.copy_string = function (text) {
+  navigator.clipboard.writeText(text)
 }
 
 // Feedback that an error occurred
@@ -84,13 +76,13 @@ Hue.generate_favicon = function (mode) {
   context.fillStyle = color
   context.fillRect(center - (side / 2), center - (side / 2), side, side)
 
-  let link = document.querySelector("link[rel*='icon']") || document.createElement('link')
+  let link = Hue.el("link[rel*='icon']") || document.createElement('link')
 
-  link.type = 'image/x-icon'
-  link.rel = 'shortcut icon'
+  link.type = "image/x-icon"
+  link.rel = "shortcut icon"
   link.href = canvas.toDataURL()
 
-  document.getElementsByTagName('head')[0].appendChild(link)
+  Hue.el("head").appendChild(link)
   Hue.favicon_mode = mode
 }
 

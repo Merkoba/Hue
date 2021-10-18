@@ -13,7 +13,7 @@ Hue.add_chat_message = function (args = {}) {
     link_image: false,
     link_url: false,
     edited: false,
-    just_edited: false,
+    just_edited: false
   }
 
   args = Object.assign(def_args, args)
@@ -28,7 +28,6 @@ Hue.add_chat_message = function (args = {}) {
 
   args.message = Hue.replace_message_vars(args.id, args.message)
 
-  let message_classes = "message chat_message"
   let container_classes = "chat_content_container chat_menu_button_main reply_message_container"
   let content_classes = "chat_content dynamic_title reply_message"
   let d = args.date ? args.date : Date.now()
@@ -66,17 +65,17 @@ Hue.add_chat_message = function (args = {}) {
   }
 
   let highlighted = false
-  let preview_text_classes = ""
+  let preview_text_class = ""
 
   if (args.username !== Hue.username) {
     if (image_preview && image_preview_text) {
       if (Hue.check_highlights(image_preview_text)) {
-        preview_text_classes += " highlighted_message"
+        preview_text_class = "highlighted_message"
         highlighted = true
       }
     } else if (link_preview && link_preview_text) {
       if (Hue.check_highlights(link_preview_text)) {
-        preview_text_classes += " highlighted_message"
+        preview_text_class = "highlighted_message"
         highlighted = true
       }
     } else {
@@ -111,73 +110,68 @@ Hue.add_chat_message = function (args = {}) {
   }
 
   let s = `
-    <div class='${message_classes}'>
-        <div class='chat_left_side'>
-            <div class='${profilepic_classes}'>
-                <img class='chat_profilepic profilepic' src='${pi}' loading='lazy'>
-            </div>
+    <div class='chat_left_side'>
+        <div class='${profilepic_classes}'>
+            <img class='chat_profilepic profilepic' src='${pi}' loading='lazy'>
         </div>
-        <div class='chat_right_side'>
-            <div class='chat_message_top'>
-                <div class='chat_uname action'></div>
-                <div class='chat_timeago'></div>
-            </div>
-            <div class='chat_container'>
-                <div class='${container_classes}'>
+    </div>
+    <div class='chat_right_side'>
+        <div class='chat_message_top'>
+            <div class='chat_username action'></div>
+            <div class='chat_timeago'></div>
+        </div>
+        <div class='chat_container'>
+            <div class='${container_classes}'>
 
-                    <div class='chat_menu_button_container'>
-                        <svg class='other_icon chat_menu_button chat_menu_button_menu'>
-                          <use href='#icon_ellipsis'>
-                        </svg>
-                    </div>
+                <div class='chat_menu_button_container'>
+                    <svg class='other_icon chat_menu_button chat_menu_button_menu'>
+                      <use href='#icon_ellipsis'>
+                    </svg>
+                </div>
 
-                    <div class='${content_classes}' title='${title}' data-otitle='${title}' data-date='${d}'></div>
+                <div class='${content_classes}' title='${title}' data-otitle='${title}' data-date='${d}'></div>
 
-                    <div class='message_edit_container'>
-                        <textarea class='message_edit_area'></textarea>
-                        <div class='message_edit_buttons'>
-                            <div class='message_edit_button action message_edit_cancel'>Cancel</div>
-                            <div class='message_edit_button action message_edit_submit'>Submit</div>
-                        </div>
+                <div class='message_edit_container'>
+                    <textarea class='message_edit_area'></textarea>
+                    <div class='message_edit_buttons'>
+                        <div class='message_edit_button action message_edit_cancel'>Cancel</div>
+                        <div class='message_edit_button action message_edit_submit'>Submit</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>`
 
-  fmessage = $(s)
-  fmessage
-    .find(".chat_content_container")
-    .eq(0)
-    .data("original_message", args.message)
+  fmessage = Hue.div("message chat_message")
+  fmessage.innerHTML = s
 
   if (image_preview) {
-    fmessage.find(".chat_content").eq(0).html(image_preview)
-    fmessage.find(".image_preview_text").eq(0).addClass(preview_text_classes)
+    fmessage.querySelector(".chat_content").innerHTML = image_preview
+
+    if (preview_text_class) {
+      fmessage.querySelector(".image_preview_text").classList.add(preview_text_class)
+    }
   } else if (link_preview) {
-    fmessage.find(".chat_content").eq(0).html(link_preview)
-    fmessage.find(".link_preview_text").eq(0).addClass(preview_text_classes)
+    fmessage.querySelector(".chat_content").innerHTML = link_preview
+
+    if (preview_text_class) {
+      fmessage.querySelector(".link_preview_text").classList.add(preview_text_class)
+    }
   } else {
-    fmessage
-      .find(".chat_content")
-      .eq(0)
-      .html(Hue.parse_text(Hue.utilz.make_html_safe(args.message)))
+    fmessage.querySelector(".chat_content").innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(args.message))
   }
 
-  let huname = fmessage.find(".chat_uname").eq(0)
-  huname.text(args.username)
+  let chat_username = fmessage.querySelector(".chat_username")
+  chat_username.textContent = args.username
 
-  let htimeago = fmessage.find(".chat_timeago").eq(0)
-  htimeago.text(Hue.utilz.timeago(d))
+  let htimeago = fmessage.querySelector(".chat_timeago")
+  htimeago.textContent = Hue.utilz.timeago(d)
 
-  fmessage
-    .find(".chat_profilepic")
-    .eq(0)
-    .on("error", function () {
-      if ($(this).attr("src") !== Hue.config.default_profilepic_url) {
-        $(this).attr("src", Hue.config.default_profilepic_url)
-      }
-    })
+  fmessage.querySelector(".chat_profilepic").addEventListener("error", function () {
+    if (this.src !== Hue.config.default_profilepic_url) {
+      this.src = Hue.config.default_profilepic_url
+    }
+  })
 
   let first_url = false
 
@@ -189,23 +183,27 @@ Hue.add_chat_message = function (args = {}) {
     first_url = Hue.utilz.get_first_url(args.message)
   }
 
-  fmessage.data("user_id", args.user_id)
-  fmessage.data("public", args.public)
-  fmessage.data("date", d)
-  fmessage.data("highlighted", highlighted)
-  fmessage.data("uname", args.username)
-  fmessage.data("mode", "chat")
-  let chat_content_container = fmessage.find(".chat_content_container").eq(0)
-  let chat_content = fmessage.find(".chat_content").eq(0)
+  Hue.dataset(fmessage, "user_id", args.user_id)
+  Hue.dataset(fmessage, "public", args.public)
+  Hue.dataset(fmessage, "date", d)
+  Hue.dataset(fmessage, "highlighted", highlighted)
+  Hue.dataset(fmessage, "username", args.username)
+  Hue.dataset(fmessage, "mode", "chat")
 
-  chat_content_container.data("id", args.id)
-  chat_content_container.data("edited", args.edited)
-  chat_content_container.data("highlighted", highlighted)
-  chat_content_container.data("date", d)
-  chat_content_container.data("first_url", first_url)
+  let chat_content_container = fmessage.querySelector(".chat_content_container")
+  Hue.dataset(chat_content_container, "id", args.id)
+  Hue.dataset(chat_content_container, "edited", args.edited)
+  Hue.dataset(chat_content_container, "highlighted", highlighted)
+  Hue.dataset(chat_content_container, "date", d)
+  Hue.dataset(chat_content_container, "first_url", first_url)
+  Hue.dataset(chat_content_container, "original_message", args.message)
+
+  let chat_content = fmessage.querySelector(".chat_content")
+  Hue.dataset(chat_content, "date", d)
+  Hue.dataset(chat_content, "otitle", title)
 
   if (!image_preview && !link_preview) {
-    chat_content.urlize()
+    Hue.urlize(chat_content)
   }
 
   if (image_preview) {
@@ -249,7 +247,6 @@ Hue.add_chat_announcement = function (args = {}) {
     message: "",
     highlight: false,
     title: false,
-    onclick: false,
     container_id: false,
     date: false,
     type: "normal",
@@ -265,13 +262,6 @@ Hue.add_chat_announcement = function (args = {}) {
 
   args = Object.assign(def_args, args)
   let is_media = args.type === "image_change" || args.type === "tv_change"
-
-  let message_classes = "message announcement"
-  
-  if (is_media) {
-    message_classes += " media_announcement"
-  }
-
   let container_classes = "announcement_content_container chat_menu_button_main reply_message_container"
   let split_classes = "announcement_content_split dynamic_title"
   let content_classes = "announcement_content reply_message"
@@ -293,7 +283,7 @@ Hue.add_chat_announcement = function (args = {}) {
   let d = args.date ? args.date : Date.now()
   let t = args.title ? args.title : Hue.utilz.nice_date(d)
 
-  if (args.onclick) {
+  if (is_media) {
     content_classes += " action"
   }
 
@@ -306,62 +296,62 @@ Hue.add_chat_announcement = function (args = {}) {
   if (is_media) {
     announcement_top = `
     <div class='chat_message_top announcement_top'>
-      <div class='chat_uname action'></div>
+      <div class='chat_username action'></div>
       <div class='chat_timeago'></div>
     </div>`
   }
 
   let s = `
-    <div${container_id}class='${message_classes}'>
-        <div class='${brk_classes}'>${args.brk}</div>
-        <div class='${container_classes}'>
-            <div class='chat_menu_button_container'>
-                <svg class='other_icon chat_menu_button chat_menu_button_menu'>
-                  <use href='#icon_ellipsis'>
-                </svg>
-            </div>
-            <div class='${split_classes}'>
-                ${announcement_top}
-                <div class='${content_classes}'></div>
-            </div>
+    <div class='${brk_classes}'>${args.brk}</div>
+    <div class='${container_classes}'>
+        <div class='chat_menu_button_container'>
+            <svg class='other_icon chat_menu_button chat_menu_button_menu'>
+              <use href='#icon_ellipsis'>
+            </svg>
+        </div>
+        <div class='${split_classes}'>
+            ${announcement_top}
+            <div class='${content_classes}'></div>
         </div>
     </div>`
 
-  let fmessage = $(s)
-  let content = fmessage.find(".announcement_content").eq(0)
-  let split = fmessage.find(".announcement_content_split").eq(0)
-  let brk = fmessage.find(".brk").eq(0)
+  let fmessage = Hue.div("message announcement")
+  fmessage.innerHTML = s
+  fmessage.id = container_id
+  
+  if (is_media) {
+    fmessage.classList.add("media_announcement")
+  }
+
+  let content = fmessage.querySelector(".announcement_content")
+  let split = fmessage.querySelector(".announcement_content_split")
 
   if (is_media) {
-    let username = fmessage.find(".chat_uname").eq(0)
-    let date = fmessage.find(".chat_timeago").eq(0)
-    username.text(args.username)
-    date.text(Hue.utilz.timeago(args.date))
+    let username = fmessage.querySelector(".chat_username")
+    let date = fmessage.querySelector(".chat_timeago")
+    username.textContent = args.username
+    date.textContent = Hue.utilz.timeago(args.date)
   }
 
-  split.attr("title", t)
-  split.data("otitle", t)
-  split.data("date", d)
+  split.title = t
+  Hue.dataset(split, "otitle", t)
+  Hue.dataset(split, "date", d)
 
-  content.text(args.message).urlize()
+  content.textContent = args.message
+  Hue.urlize(content)
 
-  if (args.onclick) {
-    content.on("click", args.onclick)
-    brk.on("click", args.onclick)
-  }
-
-  fmessage.data("id", args.id)
-  fmessage.data("public", args.public)
-  fmessage.data("date", d)
-  fmessage.data("highlighted", highlighted)
-  fmessage.data("type", args.type)
-  fmessage.data("info1", args.info1)
-  fmessage.data("info2", args.info2)
-  fmessage.data("uname", args.username)
-  fmessage.data("mode", "announcement")
-  fmessage.data("user_id", args.user_id)
-  fmessage.data("in_log", args.in_log)
-  fmessage.data("media_source", args.media_source)
+  Hue.dataset(fmessage, "id", args.id)
+  Hue.dataset(fmessage, "public", args.public)
+  Hue.dataset(fmessage, "date", d)
+  Hue.dataset(fmessage, "highlighted", highlighted)
+  Hue.dataset(fmessage, "type", args.type)
+  Hue.dataset(fmessage, "info1", args.info1)
+  Hue.dataset(fmessage, "info2", args.info2)
+  Hue.dataset(fmessage, "username", args.username)
+  Hue.dataset(fmessage, "mode", "announcement")
+  Hue.dataset(fmessage, "user_id", args.user_id)
+  Hue.dataset(fmessage, "in_log", args.in_log)
+  Hue.dataset(fmessage, "media_source", args.media_source)
 
   let message_id = Hue.add_to_chat({
     message: fmessage
@@ -392,68 +382,65 @@ Hue.add_to_chat = function (args = {}) {
     return false
   }
 
-  let chat_area = $("#chat_area")
-  let last_message = $("#chat_area > .message").last()
+  let chat_area = Hue.el("#chat_area")
+  let last_message = Hue.els("#chat_area > .message").slice(-1)[0]
   let appended = false
-  let mode = args.message.data("mode")
-  let user_id = args.message.data("user_id")
-  let date = args.message.data("date")
-  let is_public = args.message.data("public")
-  let highlighted = args.message.data("highlighted")
+  let mode = Hue.dataset(args.message, "mode")
+  let user_id = Hue.dataset(args.message, "user_id")
+  let date = Hue.dataset(args.message, "date")
+  let is_public = Hue.dataset(args.message, "public")
+  let highlighted = Hue.dataset(args.message, "highlighted")
   let content_container, message_id
 
   if (mode === "chat") {
-    content_container = args.message.find(".chat_content_container").eq(0)
+    content_container = args.message.querySelector(".chat_content_container")
     Hue.chat_content_container_id += 1
-    content_container.data(
-      "chat_content_container_id",
-      Hue.chat_content_container_id
-    )
-    content_container.addClass(
-      `chat_content_container_${Hue.chat_content_container_id}`
-    )
+    Hue.dataset(content_container, "chat_content_container_id", Hue.chat_content_container_id)
+    content_container.classList.add(`chat_content_container_${Hue.chat_content_container_id}`)
 
     if (args.just_edited && args.id) {
-      $(".chat_content_container").each(function () {
-        if ($(this).data("id") === args.id) {
-          $(this).replaceWith(content_container.clone(true, true))
+      for (let item of Hue.els(".chat_content_container")) {
+        if (Hue.dataset(item, "id") === args.id) {
+          item.replaceWith(Hue.clone(content_container))
           Hue.goto_bottom()
-          return false
+          break
         }
-      })
+      }
 
       return false
     }
   }
 
-  if (
-    args.message.hasClass("chat_message") &&
-    last_message.hasClass("chat_message")
-  ) {
+  if (last_message) {
     if (
-      args.message.find(".chat_uname").eq(0).text() ===
-      last_message.find(".chat_uname").eq(0).text()
+      args.message.classList.contains("chat_message") &&
+      last_message.classList.contains("chat_message")
     ) {
       if (
-        last_message.find(".chat_content").length <
-        Hue.config.max_same_post_messages
+        args.message.querySelector(".chat_username").textContent ===
+        last_message.querySelector(".chat_username").textContent
       ) {
-        let date_diff =
-          args.message.find(".chat_content").last().data("date") -
-          last_message.find(".chat_content").last().data("date")
-
-        if (date_diff < Hue.config.max_same_post_diff) {
-          content_container.data("date", date)
-          content_container.data("highlighted", highlighted)
-
-          last_message.find(".chat_container").eq(0).append(content_container)
-          message_id = last_message.data("message_id")
-
-          if (!last_message.data("highlighted")) {
-            last_message.data("highlighted", highlighted)
+        if (
+          last_message.querySelectorAll(".chat_content").length <
+          Hue.config.max_same_post_messages
+        ) {
+          let c1 = Array.from(args.message.querySelectorAll(".chat_content")).slice(-1)[0]
+          let c2 = Array.from(last_message.querySelectorAll(".chat_content")).slice(-1)[0]
+          let date_diff = Hue.dataset(c1, "date") - Hue.dataset(c2, "date")
+          
+          if (date_diff < Hue.config.max_same_post_diff) {
+            Hue.dataset(content_container, "date", date)
+            Hue.dataset(content_container, "highlighted", highlighted)
+  
+            last_message.querySelector(".chat_container").append(content_container)
+            message_id = Hue.dataset(last_message, "message_id")
+  
+            if (!Hue.dataset(last_message, "highlighted")) {
+              Hue.dataset(last_message, "highlighted", highlighted)
+            }
+  
+            appended = true
           }
-
-          appended = true
         }
       }
     }
@@ -461,18 +448,19 @@ Hue.add_to_chat = function (args = {}) {
 
   if (!appended) {
     chat_area.append(args.message)
-    let length = $("#chat_area > .message").length
+    let messages = Hue.els("#chat_area > .message")
 
-    if (length > Hue.chat_crop_limit) {
-      $("#chat_area")
-        .find(`.message:lt(${length - Hue.chat_crop_limit})`)
-        .remove()
+    if (messages.length > Hue.config.chat_crop_limit) {
+      let diff = messages.length - Hue.config.chat_crop_limit
+      for (let message of messages.slice(0, diff)) {
+        message.remove()
+      }
     }
 
     Hue.message_id += 1
     message_id = Hue.message_id
-    args.message.data("message_id", message_id)
-    args.message.addClass(`message_id_${message_id}`)
+    Hue.dataset(args.message, "message_id", message_id)
+    args.message.classList.add(`message_id_${message_id}`)
   }
 
   if (Hue.started) {
@@ -508,11 +496,11 @@ Hue.add_to_chat = function (args = {}) {
     if (content_container) {
       Hue.add_fresh_message(content_container)
     } else {
-      let container = args.message.find(".announcement_content_container").eq(0)
+      let container = args.message.querySelector(".announcement_content_container")
       Hue.add_fresh_message(container)
     }
   }
-
+  
   return {
     message_id: message_id
   }
@@ -520,105 +508,139 @@ Hue.add_to_chat = function (args = {}) {
 
 // Starts chat mouse events
 Hue.start_chat_mouse_events = function () {
-  $(".chat_area").on("click", ".chat_uname", function () {
-    let m = $(this).closest(".message")
+  document.addEventListener("click", function (e) {
+    if (e.target.closest(".chat_area")) {
+      if (e.target.closest(".chat_menu_button")) {
+        return
+      }
 
-    Hue.show_profile(
-      m.data("uname"),
-      m.data("user_id")
-    )
-  })
+      if (e.target.classList.contains("chat_username")) {
+        let m = e.target.closest(".message")
+        Hue.show_profile(
+          Hue.dataset(m, "username"),
+          Hue.dataset(m, "user_id")
+        )
+      }
 
-  $(".chat_area").on("click", ".chat_profilepic", function () {
-    let m = $(this).closest(".message")
+      if (e.target.classList.contains("chat_profilepic")) {
+        let m = e.target.closest(".message")
 
-    Hue.show_profile(
-      m.data("uname"),
-      m.data("user_id")
-    )
-  })
+        Hue.show_profile(
+          Hue.dataset(m, "username"),
+          Hue.dataset(m, "user_id")
+        )
+      }
 
-  $(".chat_area").on("click", ".message_edit_submit", function () {
-    Hue.send_edit_messsage()
-  })
+      if (e.target.classList.contains("message_edit_submit")) {
+        Hue.send_edit_messsage()
+      }
 
-  $(".chat_area").on("click", ".message_edit_cancel", function () {
-    Hue.stop_edit_message()
-  })
+      if (e.target.classList.contains("message_edit_cancel")) {
+        Hue.stop_edit_message()
+        Hue.check_scrollers()
+      }
+      
+      if (e.target.classList.contains("chat_reply_username")) {
+        Hue.show_profile(e.target.textContent)
+      }
 
-  $(".chat_area").on("mouseup", ".chat_content_container", function (e) {
-    if (e.button === 1) {
-      if (Hue.start_reply(e.target)) {
-        e.preventDefault()
+      let media = e.target.closest(".media_announcement")
+
+      if (media) {
+        if (e.target.classList.contains("announcement_content")) {
+          let id = Hue.dataset(media, "id")
+          let type = Hue.dataset(media, "type")
+          if (type === "image_change") {
+            Hue.show_modal_image(id)
+          } else if (type === "tv_change") {
+            Hue.open_url_menu_by_media_id("tv", id)
+          }
+        }
+      }
+
+      if (e.target.classList.contains("link_preview_image")) {
         e.stopPropagation()
+        Hue.expand_image(e.target.src.replace(".gifv", ".gif"))
+      }
+
+      if (e.target.classList.contains("image_preview_image")) {
+        e.stopPropagation()
+        let src = Hue.dataset(e.target, "image_preview_src_original")
+        Hue.expand_image(src.replace(".gifv", ".gif"))
       }
     }
   })
 
-  $(".chat_area").on("mouseup", ".announcement_content_container", function (e) {
-    if (e.button === 1) {
-      if (Hue.start_reply(e.target)) {
-        e.preventDefault()
-        e.stopPropagation()
+  document.addEventListener("mouseup", function (e) {
+    if (e.target.closest(".chat_area")) {
+      if (e.target.classList.contains("chat_content")) {
+        if (e.button === 1) {
+          if (Hue.start_reply(e.target)) {
+            e.preventDefault()
+            e.stopPropagation()
+          }
+        }
+      }
+
+      if (e.target.classList.contains("announcement_content")) {
+        if (e.button === 1) {
+          if (Hue.start_reply(e.target)) {
+            e.preventDefault()
+            e.stopPropagation()
+          }
+        }
       }
     }
-  })
-
-  $(".chat_area").on("click", ".chat_reply_username", function () {
-    Hue.show_profile($(this).text())
   })
 }
 
 // Setup reply
 Hue.setup_reply = function () {
-  $("#reply_submit").on("click", function () {
+  Hue.el("#reply_submit").addEventListener("click", function () {
     Hue.submit_reply()
   })
 
-  $("#reply_input").on("input", function () {
-    let value = $(this).val()
-
-    if (Hue.old_reply_input_val !== value) {
+  Hue.el("#reply_input").addEventListener("input", function () {
+    if (Hue.old_reply_input_val !== this.value) {
       Hue.check_typing("reply")
-      Hue.old_reply_input_val = value
+      Hue.old_reply_input_val = this.value
     }
   })
 }
 
 // Prepare data to show the reply window
 Hue.start_reply = function (target) {
-  if ($(target).is("a")) {
+  if (target.tagName === "A") {
     return false
   }
 
-  let message = $(target).closest(".message")
-  let text = Hue.remove_urls(Hue.utilz.clean_string2($(target).text()))
-  let uname = message.data("uname")
+  let message = target.closest(".message")
+  let text = Hue.remove_urls(Hue.utilz.clean_string2(target.textContent))
+  let username = Hue.dataset(message, "username")
 
-  if (!text || !uname) {
+  if (!text || !username) {
     return false
   }
 
-  Hue.show_reply(uname, text)
+  Hue.show_reply(username, text)
   return true
 }
 
 // Show the reply window
 Hue.show_reply = function (username, text) {
-  $("#reply_text").val(text)
-
+  Hue.el("#reply_text").value = text
   let input = Hue.get_input().trim()
 
   if (input) {
     Hue.clear_input()
-    $("#reply_input").val(input)
+    Hue.el("#reply_input").value = input
   }
 
   Hue.old_reply_input_val = ""
   Hue.msg_reply.set_title(`Re: ${username}`)
 
   Hue.msg_reply.show(function () {
-    $("#reply_input").trigger("focus")
+    Hue.el("#reply_input").focus()
   })
 
   Hue.reply_username = username
@@ -626,7 +648,7 @@ Hue.show_reply = function (username, text) {
 
 // Submit the reply window
 Hue.submit_reply = function () {
-  let reply = $("#reply_input").val().trim()
+  let reply = Hue.el("#reply_input").value.trim()
 
   if (Hue.is_command(reply)) {
     reply = `/${reply}`
@@ -635,7 +657,7 @@ Hue.submit_reply = function () {
   Hue.msg_reply.close()
   Hue.goto_bottom(true)
 
-  let otext = Hue.utilz.clean_string2($("#reply_text").val())
+  let otext = Hue.utilz.clean_string2(Hue.el("#reply_text").value)
   let text = otext.substring(0, Hue.config.quote_max_length).trim()
 
   if (otext.length > text.length) {
@@ -653,7 +675,7 @@ Hue.submit_reply = function () {
     })
   }
 
-  $("#reply_input").val("")
+  Hue.el("#reply_input").value = ""
 }
 
 // Adds a message to the fresh message list
@@ -674,10 +696,10 @@ Hue.show_fresh_messages = function () {
   }
 
   for (let container of Hue.fresh_messages_list) {
-    container.addClass("fresh_message")
+    container.classList.add("fresh_message")
 
     setTimeout(function () {
-      container.removeClass("fresh_message")
+      container.classList.remove("fresh_message")
     }, Hue.fresh_messages_duration)
   }
 
@@ -710,7 +732,6 @@ Hue.handle_edit_direction = function (reverse = false) {
 // Edits the next latest chat message
 // Either in normal or reverse order
 Hue.edit_last_message = function (reverse = false) {
-  let found = false
   let edit_found = true
   let last_container = false
 
@@ -718,44 +739,41 @@ Hue.edit_last_message = function (reverse = false) {
     edit_found = false
   }
 
-  $($("#chat_area > .message").get().reverse()).each(function () {
-    if (found) {
-      return false
-    }
+  let messages = Hue.els("#chat_area > .message")
 
-    if ($(this).data("user_id") === Hue.user_id) {
-      $($(this).find(".chat_content_container").get().reverse()).each(
-        function () {
-          if (Hue.editing_message) {
-            if (this === Hue.editing_message_container) {
-              edit_found = true
-              return true
-            }
+  for (let message of messages.reverse()) {
+    if (Hue.dataset(message, "user_id") === Hue.user_id) {
+      let items = Array.from(message.querySelectorAll(".chat_content_container"))
+
+      for (let item of items.reverse()) {
+        if (Hue.editing_message) {
+          if (item === Hue.editing_message_container) {
+            edit_found = true
+            continue
           }
-
-          let cnt = this
-
-          if (!edit_found) {
-            last_container = this
-            return true
-          } else {
-            if (reverse) {
-              cnt = last_container
-            }
-          }
-
-          if (!cnt) {
-            Hue.stop_edit_message()
-          } else {
-            Hue.edit_message(cnt)
-          }
-
-          found = true
-          return false
         }
-      )
+  
+        let cnt = item
+  
+        if (!edit_found) {
+          last_container = item
+          continue
+        } else {
+          if (reverse) {
+            cnt = last_container
+          }
+        }
+  
+        if (!cnt) {
+          Hue.stop_edit_message()
+        } else {
+          Hue.edit_message(cnt)
+        }
+
+        return
+      }
     }
-  })
+  }
 }
 
 // Starts chat message editing
@@ -764,21 +782,22 @@ Hue.edit_message = function (container) {
     Hue.stop_edit_message()
   }
 
-  let edit_container = $(container).find(".message_edit_container").get(0)
-  let area = $(container).find(".message_edit_area").get(0)
-  let chat_content = $(container).find(".chat_content").get(0)
+  let edit_container = container.querySelector(".message_edit_container")
+  let area = container.querySelector(".message_edit_area")
+  let chat_content = container.querySelector(".chat_content")
 
-  $(edit_container).css("display", "block")
-  $(chat_content).css("display", "none")
-  $(container).removeClass("chat_menu_button_main")
-  $(container).css("display", "block")
+  edit_container.style.display = "block"
+  chat_content.style.display = "none"
+  container.classList.remove("chat_menu_button_main")
+  container.style.display = "block"
 
   Hue.editing_message = true
   Hue.editing_message_container = container
   Hue.editing_message_area = area
-  Hue.editing_original_message = $(container).data("original_message")
+  Hue.editing_original_message = Hue.dataset(container, "original_message")
 
-  $(area).val(Hue.editing_original_message).trigger("focus")
+  area.value = Hue.editing_original_message
+  area.focus()
 
   setTimeout(function () {
     area.setSelectionRange(area.value.length, area.value.length)
@@ -797,21 +816,17 @@ Hue.stop_edit_message = function () {
     return false
   }
 
-  let edit_container = $(Hue.editing_message_container)
-    .find(".message_edit_container")
-    .get(0)
-  let chat_content = $(Hue.editing_message_container)
-    .find(".chat_content")
-    .get(0)
+  let edit_container = Hue.editing_message_container.querySelector(".message_edit_container")
+  let chat_content = Hue.editing_message_container.querySelector(".chat_content")
 
-  $(edit_container).css("display", "none")
-  $(Hue.editing_message_area).val("")
-  $(chat_content).css("display", "inline-block")
-  $(Hue.editing_message_container).addClass("chat_menu_button_main")
-  $(Hue.editing_message_container).css("display", "flex")
+  edit_container.style.display = "none"
+  Hue.editing_message_area.value = ""
+  chat_content.style.display = "inline-block"
+  Hue.editing_message_container.classList.add("chat_menu_button_main")
+  Hue.editing_message_container.style.display = "flex"
   Hue.editing_message = false
   Hue.editing_message_container = false
-  Hue.editing_message_area = $("<div></div>")[0]
+  Hue.editing_message_area = Hue.div()
 }
 
 // Submits a chat message edit
@@ -820,19 +835,14 @@ Hue.send_edit_messsage = function (id) {
     return false
   }
 
-  let chat_content = $(Hue.editing_message_container)
-    .find(".chat_content")
-    .get(0)
-
+  let chat_content = Hue.editing_message_container.querySelector(".chat_content")
   let new_message = Hue.editing_message_area.value
   new_message = Hue.utilz.remove_multiple_empty_lines(new_message)
   new_message = Hue.utilz.untab_string(new_message).trimEnd()
-
-  let edit_id = $(Hue.editing_message_container).data("id")
-
+  let edit_id = Hue.dataset(Hue.editing_message_container, "id")
   Hue.stop_edit_message()
 
-  if ($(chat_content).text() === new_message) {
+  if (chat_content.textContent === new_message) {
     return false
   }
 
@@ -883,23 +893,23 @@ Hue.send_delete_message = function (id) {
 // Remove a message from the chat
 Hue.remove_message_from_chat = function (data) {
   if (data.type === "chat") {
-    $(".chat_content_container").each(function () {
-      if ($(this).data("id") == data.id) {
-        Hue.process_remove_chat_message(this)
-        return false
+    for (let item of Hue.els(".chat_content_container")) {
+      if (Hue.dataset(item, "id") == data.id) {
+        Hue.process_remove_chat_message(item)
+        break
       }
-    })
+    }
   } else if (
     data.type === "announcement" ||
     data.type === "image" ||
     data.type === "tv"
   ) {
-    $(".message.announcement").each(function () {
-      if ($(this).data("id") == data.id) {
-        Hue.process_remove_announcement(this)
-        return false
+    for (let item of Hue.els(".message.announcement")) {
+      if (Hue.dataset(item, "id") == data.id) {
+        Hue.process_remove_announcement(item)
+        break
       }
-    })
+    }
   }
 
   Hue.goto_bottom()
@@ -907,11 +917,11 @@ Hue.remove_message_from_chat = function (data) {
 
 // Removes a chat message from the chat, when triggered through the context menu
 Hue.remove_message_from_context_menu = function (menu) {
-  let message = $(menu).closest(".message")
-  let mode = message.data("mode")
+  let message = menu.closest(".message")
+  let mode = Hue.dataset(message, "mode")
 
   if (mode === "chat") {
-    Hue.process_remove_chat_message($(menu).closest(".chat_content_container"))
+    Hue.process_remove_chat_message(menu.closest(".chat_content_container"))
   } else if (mode === "announcement") {
     Hue.process_remove_announcement(message)
   }
@@ -919,21 +929,18 @@ Hue.remove_message_from_context_menu = function (menu) {
 
 // Determines how to remove a chat message
 Hue.process_remove_chat_message = function (chat_content_container) {
-  let chat_content_container_id = $(chat_content_container).data(
-    "chat_content_container_id"
-  )
+  let chat_content_container_id = Hue.dataset(chat_content_container, "chat_content_container_id")
 
-  $(".chat_content_container").each(function () {
+  Hue.els(".chat_content_container").forEach(it => {
     if (
-      $(this).data("chat_content_container_id") === chat_content_container_id
+      Hue.dataset(it, "chat_content_container_id") === chat_content_container_id
     ) {
       if (
-        $(this).closest(".chat_container").find(".chat_content_container")
-        .length === 1
+        it.closest(".chat_container").querySelectorAll(".chat_content_container").length === 1
       ) {
-        $(this).closest(".message").remove()
+        it.closest(".message").remove()
       } else {
-        $(this).remove()
+        it.remove()
       }
     }
   })
@@ -941,19 +948,19 @@ Hue.process_remove_chat_message = function (chat_content_container) {
 
 // Determines how to remove an announcement
 Hue.process_remove_announcement = function (message) {
-  let type = $(message).data("type")
-  let message_id = $(message).data("message_id")
+  let type = Hue.dataset(message, "type")
+  let message_id = Hue.dataset(message, "message_id")
 
   if (
     type === "image_change" ||
     type === "tv_change"
   ) {
-    let id = $(message).data("id")
+    let id = Hue.dataset(message, "id")
     Hue.remove_item_from_media_changed(type.replace("_change", ""), id)
   }
 
-  $(`.message_id_${message_id}`).each(function () {
-    $(this).remove()
+  Hue.els(`.message_id_${message_id}`).forEach(it => {
+    it.remove()
   })
 }
 
@@ -971,7 +978,7 @@ Hue.check_typing = function (mode = "input") {
 
     tval = val.trim()
   } else if (mode === "reply") {
-    let val = $("#reply_input").val()
+    let val = Hue.el("#reply_input").value
 
     if (val.length < Hue.old_reply_input_val.length) {
       return false
@@ -1012,40 +1019,21 @@ Hue.hide_typing = function () {
   Hue.typing = false
 }
 
-// Gets the most recent chat message by username
-Hue.get_last_chat_message_by_username = function (ouname) {
-  let found_message = false
-
-  $($("#chat_area > .message.chat_message").get().reverse()).each(function () {
-    let uname = $(this).data("uname")
-
-    if (uname) {
-      if (uname === ouname) {
-        found_message = this
-        return false
-      }
-    }
-  })
-
-  return found_message
-}
-
 // Gets the most recent chat message by user_id
 Hue.get_last_chat_message_by_user_id = function (ouser_id) {
-  let found_message = false
+  let items = Hue.els("#chat_area > .message.chat_message")
 
-  $($("#chat_area > .message.chat_message").get().reverse()).each(function () {
-    let user_id = $(this).data("user_id")
-
+  for (let item of items.reverse()) {
+    let user_id = Hue.dataset(item, "user_id")
+  
     if (user_id) {
       if (user_id === ouser_id) {
-        found_message = this
-        return false
+        return item
       }
     }
-  })
+  }
 
-  return found_message
+  return false
 }
 
 // Gives or maintains aura classes
@@ -1072,44 +1060,36 @@ Hue.add_aura = function (id) {
   let message = Hue.get_last_chat_message_by_user_id(id)
 
   if (message) {
-    $(message).find(".chat_profilepic_container").eq(0).addClass("aura")
+    message.querySelector(".chat_profilepic_container").classList.add("aura")
   }
 
   let activity_bar_item = Hue.get_activity_bar_item_by_user_id(id)
 
   if (activity_bar_item) {
-    $(activity_bar_item)
-      .find(".activity_bar_image_container")
-      .eq(0)
-      .addClass("aura")
+    activity_bar_item.querySelector(".activity_bar_image_container").classList.add("aura")
   }
 }
 
 // Removes the aura class from messages from a user
 Hue.remove_aura = function (id) {
   clearTimeout(Hue.aura_timeouts[id])
+  
+  Hue.els(".chat_profilepic_container.aura").forEach(it => {
+    let message = it.closest(".chat_message")
 
-  let aura = "aura"
-  let cls = ".chat_profilepic_container.aura"
-
-  $(cls).each(function () {
-    let message = $(this).closest(".chat_message")
-
-    if (message.length > 0) {
-      if (message.data("user_id") === id) {
-        $(this).removeClass(aura)
+    if (message) {
+      if (Hue.dataset(message, "user_id") === id) {
+        it.classList.remove("aura")
       }
     }
   })
 
-  cls = ".activity_bar_image_container.aura"
+  Hue.els(".activity_bar_image_container.aura").forEach(it => {
+    let activity_bar_item = it.closest(".activity_bar_item")
 
-  $(cls).each(function () {
-    let activity_bar_item = $(this).closest(".activity_bar_item")
-
-    if (activity_bar_item.length > 0) {
-      if (activity_bar_item.data("user_id") === id) {
-        $(this).removeClass(aura)
+    if (activity_bar_item) {
+      if (Hue.dataset(activity_bar_item, "user_id") === id) {
+        it.classList.remove("aura")
       }
     }
   })
@@ -1120,16 +1100,25 @@ Hue.remove_aura = function (id) {
 // Jumps to a chat message in the chat area
 // This is used when clicking the Jump button in
 // windows showing chat message clones
-Hue.jump_to_chat_message = function (message_id) {
-  let el = $(`#chat_area > .message_id_${message_id}`).eq(0)
+Hue.jump_to_chat_message = function (message_id, highlight = true) {
+  let el = Hue.el(`#chat_area > .message_id_${message_id}`)
 
   if (el.length === 0) {
     return false
   }
 
-  el[0].scrollIntoView({
+  el.scrollIntoView({
     block: "center"
   })
+  
+  if (highlight) {
+    el.classList.add("fresh_message")
+
+    setTimeout(function () {
+      el.classList.remove("fresh_message")
+    }, Hue.fresh_messages_duration)
+  }
+
   Hue.close_all_modals()
 }
 
@@ -1156,83 +1145,64 @@ Hue.on_chat_message = function (data) {
 // Find the next chat message above that involves the user
 // This is a message made by the user or one that is highlighted
 Hue.activity_above = function () {
-  let step = false
-  let activity_up_scroller_height = $("#activity_up_scroller").outerHeight()
-  let scrolltop = $("#chat_area").scrollTop()
+  let messages = Hue.els("#chat_area > .message")
 
-  $($("#chat_area > .message").get().reverse()).each(function () {
-    let same_uname = false
-    let uname = $(this).data("uname")
+  for (let message of messages.reverse()) {
+    let same_username = false
+    let username = Hue.dataset(message, "username")
 
-    if (uname && uname === Hue.username) {
-      same_uname = true
+    if (username && username === Hue.username) {
+      same_username = true
     }
 
-    if (same_uname || $(this).data("highlighted")) {
-      let p = $(this).position()
+    if (same_username || Hue.dataset(message, "highlighted")) {
+      let rect = message.getBoundingClientRect()
 
-      if (p.top < activity_up_scroller_height) {
-        let diff = scrolltop + p.top - activity_up_scroller_height - 10
-
-        if (scrolltop - diff < 50) {
-          return true
-        }
-
-        Hue.scroll_chat_to(diff)
-        step = true
-        return false
+      if (rect.top <= 0) {
+        Hue.jump_to_chat_message(Hue.dataset(message, "message_id"), false)
+        return
       }
     }
-  })
-
-  if (!step) {
-    Hue.goto_top()
   }
+
+  Hue.goto_top()
 }
 
 // Find the next chat message below that involves the user
 // This is a message made by the user or one that is highlighted
 Hue.activity_below = function () {
-  let step = false
-  let activity_up_scroller_height = $("#activity_up_scroller").outerHeight()
-  let activity_down_scroller_height = $("#activity_down_scroller").outerHeight()
-  let chat_area_height = $("#chat_area").innerHeight()
-  let scrolltop = $("#chat_area").scrollTop()
+  let messages = Hue.els("#chat_area > .message")
 
-  $("#chat_area > .message").each(function () {
-    let same_uname = false
-    let uname = $(this).data("uname")
+  for (let message of messages) {
+    let same_username = false
+    let username = Hue.dataset(message, "username")
 
-    if (uname && uname === Hue.username) {
-      same_uname = true
+    if (username && username === Hue.username) {
+      same_username = true
     }
 
-    if (same_uname || $(this).data("highlighted")) {
-      let p = $(this).position()
-      let h = $(this).outerHeight()
+    let area = Hue.el("#chat_area")
+    let area_height = area.offsetHeight
+    let area_rect = area.getBoundingClientRect()
 
-      if (p.top + h + activity_down_scroller_height > chat_area_height) {
-        let diff = scrolltop + p.top - activity_up_scroller_height - 10
+    if (same_username || Hue.dataset(message, "highlighted")) {
+      if (same_username || Hue.dataset(message, "highlighted")) {
+        let rect = message.getBoundingClientRect()
 
-        if (diff - scrolltop < 50) {
-          return true
+        if (rect.top >= area_rect.top + area_height) {
+          Hue.jump_to_chat_message(Hue.dataset(message, "message_id"), false)
+          return
         }
-
-        Hue.scroll_chat_to(diff)
-        step = true
-        return false
       }
     }
-  })
-
-  if (!step) {
-    Hue.goto_bottom(true)
   }
+
+  Hue.goto_bottom(true)
 }
 
 // Clears the chat area
 Hue.clear_chat = function () {
-  $("#chat_area").html("")
+  Hue.el("#chat_area").innerHTML = ""
 }
 
 // Changes the chat display size
@@ -1254,21 +1224,17 @@ Hue.do_chat_size_change = function (size) {
 
 // Scrolls the chat to a certain vertical position
 Hue.scroll_chat_to = function (scrolltop) {
-  $("#chat_area").scrollTop(scrolltop)
+  Hue.el("#chat_area").scrollTop = scrolltop
 }
 
 // Scrolls the chat up
 Hue.scroll_up = function (n) {
-  let diff = $("#chat_area").scrollTop() - n
-  Hue.scroll_chat_to(diff)
-  return diff
+  Hue.el("#chat_area").scrollTop -= n
 }
 
 // Scrolls the chat down
 Hue.scroll_down = function (n) {
-  let diff = $("#chat_area").scrollTop() + n
-  Hue.scroll_chat_to(diff)
-  return diff
+  Hue.el("#chat_area").scrollTop += n
 }
 
 // Generates the username mention regex using the highlights regex
@@ -1351,27 +1317,22 @@ Hue.make_link_preview = function (args = {}) {
 
 // Setups link preview elements
 Hue.setup_link_preview = function (fmessage) {
-  let link_preview_el = fmessage.find(".link_preview").eq(0)
-  let link_preview_image = link_preview_el.find(".link_preview_image").eq(0)
+  let link_preview_el = fmessage.querySelector(".link_preview")
+  let link_preview_image = link_preview_el.querySelector(".link_preview_image")
 
-  if (link_preview_image.length > 0) {
-    link_preview_image.on("click", function (e) {
-      e.stopPropagation()
-      Hue.expand_image($(this).attr("src").replace(".gifv", ".gif"))
-    })
-
-    link_preview_image.on("load", function () {
+  if (link_preview_image) {
+    link_preview_image.addEventListener("load", function () {
       Hue.goto_bottom()
     })
 
-    link_preview_image.on("error", function () {
-      link_preview_image.css("display", "none")
-      link_preview_el.removeClass("link_preview_with_image")
+    link_preview_image.addEventListener("error", function () {
+      link_preview_image.style.display = "none"
+      link_preview_el.classList.remove("link_preview_with_image")
       Hue.goto_bottom()
     })
   }
 
-  link_preview_el.parent().find(".link_preview_text").eq(0).urlize()
+  Hue.urlize(link_preview_el.parentElement.querySelector(".link_preview_text"))
 }
 
 // Makes image preview elements
@@ -1414,35 +1375,24 @@ Hue.make_image_preview = function (message) {
 
 // Setups image preview elements
 Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
-  let image_preview_el = fmessage.find(".image_preview").eq(0)
+  let image_preview_el = fmessage.querySelector(".image_preview")
+  let image_preview_image = image_preview_el.querySelector(".image_preview_image")
 
-  image_preview_el.on("click", function () {
-    Hue.open_url_menu({
-      source: image_preview_src_original
-    })
-  })
-
-  let image_preview_image = image_preview_el.find(".image_preview_image").eq(0)
-
-  image_preview_image.on("load", function () {
+  image_preview_image.addEventListener("load", function () {
     Hue.goto_bottom()
   })
 
-  image_preview_image.on("error", function () {
+  image_preview_image.addEventListener("error", function () {
     Hue.goto_bottom()
   })
 
-  image_preview_image.on("click", function (e) {
-    e.stopPropagation()
-    Hue.expand_image(image_preview_src_original.replace(".gifv", ".gif"))
-  })
-
-  image_preview_el.parent().find(".image_preview_text").eq(0).urlize()
+  Hue.urlize(image_preview_el.parentElement.querySelector(".image_preview_text"))
+  Hue.dataset(image_preview_image, "image_preview_src_original", image_preview_src_original)
 }
 
 // Starts chat area scroll events
 Hue.scroll_events = function () {
-  $("#chat_area")[0].addEventListener("scroll", function (e) {
+  Hue.el("#chat_area").addEventListener("scroll", function (e) {
     if (!Hue.chat_scrolled) {
       Hue.check_scrollers()
     } else {
@@ -1459,7 +1409,7 @@ Hue.show_top_scroller = function () {
     return
   }
 
-  $("#top_scroller_container").css("visibility", "visible")
+  Hue.el("#top_scroller_container").style.visibility = "visible"
   Hue.top_scroller_visible = true
 }
 
@@ -1469,7 +1419,7 @@ Hue.hide_top_scroller = function () {
     return
   }
 
-  $("#top_scroller_container").css("visibility", "hidden")
+  Hue.el("#top_scroller_container").style.visibility = "hidden"
   Hue.top_scroller_visible = false
 }
 
@@ -1481,7 +1431,7 @@ Hue.show_bottom_scroller = function () {
     return
   }
 
-  $("#bottom_scroller_container").css("visibility", "visible")
+  Hue.el("#bottom_scroller_container").style.visibility = "visible"
   Hue.chat_scrolled = true
   Hue.bottom_scroller_visible = true
 }
@@ -1492,24 +1442,22 @@ Hue.hide_bottom_scroller = function () {
     return
   }
 
-  $("#bottom_scroller_container").css("visibility", "hidden")
+  Hue.el("#bottom_scroller_container").style.visibility = "hidden"
   Hue.chat_scrolled = false
   Hue.bottom_scroller_visible = false
 }
 
 // Updates scrollers state based on scroll position
 Hue.check_scrollers = function (threshold = 5) {
-  let area = $("#chat_area")
-  let scrolltop = area.scrollTop()
-
-  let max = area.prop("scrollHeight") - area.innerHeight()
-  let diff = max - scrolltop
+  let area = Hue.el("#chat_area")
+  let max = area.scrollHeight - area.clientHeight
+  let diff = max - area.scrollTop
 
   if (diff < threshold) {
     Hue.hide_top_scroller()
     Hue.hide_bottom_scroller()
   } else {
-    if (scrolltop < threshold) {
+    if (area.scrollTop < threshold) {
       Hue.hide_top_scroller()
     } else {
       Hue.show_top_scroller()
@@ -1530,8 +1478,8 @@ Hue.goto_bottom = function (force = false) {
     return
   }
 
-  let $ch = $("#chat_area")
-  let max = $ch.prop("scrollHeight") - $ch.innerHeight()
+  let chat = Hue.el("#chat_area")
+  let max = chat.scrollHeight - chat.clientHeight
 
   if (force || !Hue.chat_scrolled) {
     Hue.scroll_chat_to(max)
@@ -1663,22 +1611,22 @@ Hue.public_feedback = function (message, data = false) {
 
 // Setups some chat configs
 Hue.setup_chat = function () {
-  $("#top_scroller").on("click", function () {
+  Hue.el("#top_scroller").addEventListener("click", function () {
     Hue.goto_top()
     Hue.check_scrollers()
   })
 
-  $("#activity_up_scroller").on("click", function () {
+  Hue.el("#activity_up_scroller").addEventListener("click", function () {
     Hue.activity_above()
   })
 
-  $("#bottom_scroller").on("click", function () {
+  Hue.el("#bottom_scroller").addEventListener("click", function () {
     Hue.stop_edit_message()
     Hue.goto_bottom(true)
     Hue.check_scrollers()
   })
 
-  $("#activity_down_scroller").on("click", function () {
+  Hue.el("#activity_down_scroller").addEventListener("click", function () {
     Hue.activity_below()
   })
 }
@@ -1714,19 +1662,18 @@ Hue.activity_notification = function () {
 
 // Get last chat message or announcement date
 Hue.get_last_message_date = function () {
-  let a = $("#chat_area .chat_content").last().data("date") || 0
-  let b = $("#chat_area .media_announcement").last().data("date") || 0
+  let a = Hue.dataset(Hue.els("#chat_area .chat_content").slice(-1)[0], "date") || 0
+  let b = Hue.dataset(Hue.els("#chat_area .media_announcement").slice(-1)[0], "date") || 0
   return Math.max(a, b)
 }
 
 // Clear the chat by adding a spacer
 Hue.add_chat_spacer = function () {
-  $(".clear_spacer").each(function () {
-    $(this).remove()
+  Hue.els(".clear_spacer").forEach(it => {
+    it.remove()
   })
 
-  let spacer = $("<div class='message clear_spacer'></div>")
-
-  $("#chat_area").append(spacer)
+  let spacer = Hue.div("message clear_spacer")
+  Hue.el("#chat_area").append(spacer)
   Hue.goto_bottom(true)
 }

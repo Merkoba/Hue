@@ -459,7 +459,7 @@ body * {
 	align-items: center;
 }
 
-.chat_uname {
+.chat_username {
 	cursor: pointer;
 	white-space: nowrap;
 	display: inline-block;
@@ -1113,9 +1113,9 @@ select {
 	max-width: 30rem;
 }
 
-#write_message_feedback {
+#write_message_add_user {
 	padding-bottom: 1.2rem;
-	display: none;
+	cursor: pointer;
 }
 
 #write_message_send_button {
@@ -2076,14 +2076,6 @@ a.special_link:hover {
 	margin-bottom: 0.4rem;
 }
 
-.message_info_html_spaced {
-	margin-top: 1rem;
-}
-
-.message_info_text {
-	white-space: pre-wrap;
-}
-
 .full_width {
 	width: 100%;
 }
@@ -2103,23 +2095,6 @@ a.special_link:hover {
 pre {
 	margin: 0;
 	white-space: pre-wrap;
-}
-
-#chat_area .heart_badge {
-	background-color: red;
-	color: white;
-}
-
-#chat_area .skull_badge {
-	background-color: black;
-}
-
-#chat_area .profilepic_badge>.chat_profilepic {
-	display: none
-}
-
-#chat_area .profilepic_badge>.profilepic_badge_icon {
-	box-shadow: none;
 }
 
 .info_popup_item {
@@ -2423,4 +2398,12 @@ pre {
 
 .clear_spacer {
 	height: 100vh;
+}
+
+.ctxmenu {
+	z-index: 999999999 !important;
+}
+
+.ctxmenu li span {
+	cursor: pointer;
 }

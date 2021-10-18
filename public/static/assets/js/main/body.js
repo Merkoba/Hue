@@ -1,34 +1,36 @@
 // Starts body events
 Hue.start_body_events = function () {
-  $("body").on("mouseenter", ".dynamic_title", function () {
-    let new_title = `${$(this).data("otitle")} (${Hue.utilz.timeago(
-      $(this).data("date")
-    )})`
-
-    $(this).attr("title", new_title)
+  Hue.el("body").addEventListener("mouseover", function (e) {
+    if (e.target.closest(".dynamic_title")) {
+      let el = e.target.closest(".dynamic_title")
+      let otitle = Hue.dataset(el, "otitle")
+      let timeago = Hue.utilz.timeago(Hue.dataset(el, "date"))
+      let new_title = `${otitle} (${timeago})`
+      el.title = new_title
+    }
   })
 
-  $("body").on("mousedown", function () {
+  Hue.el("body").addEventListener("mousedown", function () {
     Hue.mouse_is_down = true
   })
 
-  $("body").on("mouseup", function (e) {
+  Hue.el("body").addEventListener("mouseup", function (e) {
     Hue.mouse_is_down = false
   })
 
-  $("body").on("mouseleave", function () {
+  Hue.el("body").addEventListener("mouseleave", function () {
     Hue.mouse_is_down = false
   })
 
-  $("#profilepic_input").on("change", function () {
+  Hue.el("#profilepic_input").addEventListener("change", function () {
     Hue.profilepic_selected(this.files[0])
   })
 
-  $("#background_input").on("change", function () {
+  Hue.el("#background_input").addEventListener("change", function () {
     Hue.background_selected(this.files[0])
   })
 
-  $("#audioclip_input").on("change", function () {
+  Hue.el("#audioclip_input").addEventListener("change", function () {
     Hue.audioclip_selected(this.files[0])
   })
 }

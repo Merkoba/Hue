@@ -4,28 +4,28 @@ Hue.logout = function () {
 }
 
 // Changes the user's username
-Hue.change_username = function (uname) {
-  if (Hue.utilz.clean_username(uname) !== uname) {
+Hue.change_username = function (username) {
+  if (Hue.utilz.clean_username(username) !== username) {
     Hue.checkmsg("Username contains invalid characters")
     return false
   }
 
-  if (uname.length === 0) {
+  if (username.length === 0) {
     Hue.checkmsg("Username can't be empty")
     return false
   }
 
-  if (uname.length > Hue.config.max_username_length) {
+  if (username.length > Hue.config.max_username_length) {
     Hue.checkmsg("Username is too long")
     return false
   }
 
-  if (uname === Hue.username) {
+  if (username === Hue.username) {
     Hue.checkmsg("That's already your username")
     return false
   }
 
-  Hue.socket_emit("change_username", { username: uname })
+  Hue.socket_emit("change_username", { username: username })
   return true
 }
 
@@ -86,18 +86,18 @@ Hue.change_bio = function (value) {
 
 // Setups the user details window
 Hue.build_details = function () {
-  $("#details_username").text(Hue.username)
+  Hue.el("#details_username").textContent = Hue.username
 
   let s = `<div>${Hue.utilz.nice_date(Hue.user_reg_date)}</div>
     </div>(${Hue.utilz.timeago(Hue.user_reg_date)})</div>`
 
-  $("#details_reg_date").html(s)
+  Hue.el("#details_reg_date").innerHTML = s
 
   s = `<div>${Hue.utilz.nice_date(Hue.date_joined)}</div>
     </div>(${Hue.utilz.timeago(Hue.date_joined)})</div>`
 
-  $("#details_joined_room").html(s)
-  $("#details_id").html(`ID: ${Hue.user_id}`)
+  Hue.el("#details_joined_room").innerHTML = s
+  Hue.el("#details_id").innerHTML = `ID: ${Hue.user_id}`
 }
 
 // Shows the user's details window
@@ -115,10 +115,10 @@ Hue.show_change_username = function () {
     </div>`
 
   Hue.msg_info2.show(["Change Username", s], function () {
-    $("#change_username_input").val(Hue.username)
-    $("#change_username_input").trigger("focus")
+    Hue.el("#change_username_input").value = Hue.username
+    Hue.el("#change_username_input").focus()
 
-    $("#change_username_submit").on("click", function () {
+    Hue.el("#change_username_submit").addEventListener("click", function () {
       Hue.submit_change_username()
     })
 
@@ -128,14 +128,14 @@ Hue.show_change_username = function () {
 
 // Submits the change username form
 Hue.submit_change_username = function () {
-  let uname = $("#change_username_input").val().trim()
+  let username = Hue.el("#change_username_input").value.trim()
 
-  if (uname === Hue.username) {
+  if (username === Hue.username) {
     Hue.checkmsg("That's already the username")
     return
   }
 
-  if (Hue.change_username(uname)) {
+  if (Hue.change_username(username)) {
     Hue.msg_info2.close()
   }
 }
@@ -152,9 +152,9 @@ Hue.show_change_password = function () {
     </div>`
 
   Hue.msg_info2.show(["Change Password", s], function () {
-    $("#change_password_input_1").trigger("focus")
+    Hue.el("#change_password_input_1").focus()
 
-    $("#change_password_submit").on("click", function () {
+    Hue.el("#change_password_submit").addEventListener("click", function () {
       Hue.submit_change_password()
     })
 
@@ -164,8 +164,8 @@ Hue.show_change_password = function () {
 
 // Submits the change password form
 Hue.submit_change_password = function () {
-  let p1 = $("#change_password_input_1").val().trim()
-  let p2 = $("#change_password_input_2").val().trim()
+  let p1 = Hue.el("#change_password_input_1").value.trim()
+  let p2 = Hue.el("#change_password_input_2").value.trim()
 
   if (Hue.change_password(p1, p2)) {
     Hue.msg_info2.close()
@@ -173,67 +173,67 @@ Hue.submit_change_password = function () {
 }
 
 // Username setter
-Hue.set_username = function (uname) {
-  Hue.username = uname
+Hue.set_username = function (username) {
+  Hue.username = username
   Hue.generate_mentions_regex()
-  $("#user_menu_username").text(Hue.username)
+  Hue.el("#user_menu_username").textContent = Hue.username
 }
 
 // Bio setter
 Hue.set_bio = function (bio) {
   Hue.bio = bio
-  $("#user_menu_bio_textarea").val(Hue.bio)
+  Hue.el("#user_menu_bio_textarea").value = Hue.bio
 }
 
 // Setups the user menu
 Hue.setup_user_menu = function () {
-  $("#user_menu_profilepic").on("error", function () {
-    if ($(this).attr("src") !== Hue.config.default_profilepic_url) {
-      $(this).attr("src", Hue.config.default_profilepic_url)
+  Hue.el("#user_menu_profilepic").addEventListener("error", function () {
+    if (this.src !== Hue.config.default_profilepic_url) {
+      this.src = Hue.config.default_profilepic_url
     }
   })
 
-  $("#user_menu_bio_textarea").on("blur", function () {
-    let value = Hue.utilz.clean_string12($(this).val())
+  Hue.el("#user_menu_bio_textarea").addEventListener("blur", function () {
+    let value = Hue.utilz.clean_string12(this.value)
 
     if (value !== Hue.bio) {
       let result = Hue.change_bio(value)
 
       if (!result) {
-        $(this).val(Hue.bio)
+        this.value = Hue.bio
       } else {
-        $(this).val(value)
+        this.value = value
       }
     } else {
-      $(this).val(value)
+      this.value = value
     }
   })
 
-  $("#user_menu_profilepic").on("click", function () {
+  Hue.el("#user_menu_profilepic").addEventListener("click", function () {
     Hue.open_profilepic_select()
   })
 
-  $("#user_menu_audioclip").on("click", function () {
+  Hue.el("#user_menu_audioclip").addEventListener("click", function () {
     Hue.show_audioclip_menu()
   })
 
-  $("#user_menu_details").on("click", function () {
+  Hue.el("#user_menu_details").addEventListener("click", function () {
     Hue.show_details()
   })
 
-  $("#user_menu_logout").on("click", function () {
+  Hue.el("#user_menu_logout").addEventListener("click", function () {
     Hue.needs_confirm("logout")
   })
 
-  $("#user_menu_settings").on("click", function () {
+  Hue.el("#user_menu_settings").addEventListener("click", function () {
     Hue.show_settings()
   })
 
-  $("#user_menu_change_username").on("click", function () {
+  Hue.el("#user_menu_change_username").addEventListener("click", function () {
     Hue.show_change_username()    
   })
 
-  $("#user_menu_change_password").on("click", function () {
+  Hue.el("#user_menu_change_password").addEventListener("click", function () {
     Hue.show_change_password()    
   })
 }
@@ -241,8 +241,8 @@ Hue.setup_user_menu = function () {
 // Updates some user menu elements
 Hue.update_user_menu = function () {
   let src = Hue.get_profilepic(Hue.user_id)
-  $("#user_menu_profilepic").attr("src", src)
-  $("#user_menu_bio_textarea").val(Hue.bio)
+  Hue.el("#user_menu_profilepic").src = src
+  Hue.el("#user_menu_bio_textarea").value = Hue.bio
 }
 
 // Shows the user menu
@@ -252,9 +252,8 @@ Hue.show_user_menu = function () {
 
 // Setups the profile image circular cropper
 Hue.setup_profilepic_cropper = function () {
-  $("#profilepic_cropper_upload").on("click", function () {
-    Hue.profilepic_cropper
-      .croppie("result", {
+  Hue.el("#profilepic_cropper_upload").addEventListener("click", function () {
+    Hue.profilepic_cropper.result({
         type: "blob",
         size: {
           width: Hue.config.profilepic_diameter,
@@ -266,10 +265,8 @@ Hue.setup_profilepic_cropper = function () {
       })
 
       .then(function (blob) {
-        $("#user_menu_profilepic").attr(
-          "src",
-          Hue.config.profilepic_loading_url
-        )
+        Hue.el("#user_menu_profilepic").src = Hue.config.profilepic_loading_url
+
         Hue.upload_file({
           file: blob,
           action: "profilepic_upload",
@@ -279,18 +276,11 @@ Hue.setup_profilepic_cropper = function () {
       })
   })
 
-  $("#profilepic_cropper_change").on("click", function () {
+  Hue.el("#profilepic_cropper_change").addEventListener("click", function () {
     Hue.open_profilepic_picker()
   })
 
-  Hue.horizontal_separator($("#profilepic_cropper_buttons")[0])
-}
-
-// Resets the profile image cropper to default state
-Hue.reset_profilepic_cropper = function () {
-  if (Hue.profilepic_cropper && Hue.profilepic_cropper.croppie) {
-    Hue.profilepic_cropper.croppie("destroy")
-  }
+  Hue.horizontal_separator(Hue.el("#profilepic_cropper_buttons"))
 }
 
 // Picker window to select how to change the profilepic
@@ -299,22 +289,22 @@ Hue.open_profilepic_select = function () {
     "Change Profile Image",
     Hue.template_profilepic_select(),
   ], function () {
-    $("#profilepic_select_draw").on("click", function () {
+    Hue.el("#profilepic_select_draw").addEventListener("click", function () {
       Hue.msg_info2.close()
       Hue.open_draw_image("profilepic")
     })
 
-    $("#profilepic_select_upload").on("click", function () {
+    Hue.el("#profilepic_select_upload").addEventListener("click", function () {
       Hue.msg_info2.close()
       Hue.open_profilepic_picker()
     })
   })
-  Hue.horizontal_separator($("#profilepic_select_container")[0])
+  Hue.horizontal_separator(Hue.el("#profilepic_select_container"))
 }
 
 // If upload is chosen as the method to change the profilepic
 Hue.open_profilepic_picker = function () {
-  $("#profilepic_input").trigger("click")
+  Hue.el("#profilepic_input").click()
 }
 
 // This is executed after a profile image has been selected in the file dialog
@@ -326,29 +316,27 @@ Hue.profilepic_selected = function (file) {
   let reader = new FileReader()
 
   reader.onload = function (e) {
-    Hue.reset_profilepic_cropper()
-
     Hue.msg_profilepic_cropper.show(function () {
-      $("#profilepic_input").closest("form").get(0).reset()
+      Hue.el("#profilepic_input").closest("form").reset()
 
-      Hue.profilepic_cropper = $("#profilepic_cropper").croppie({
-        viewport: {
-          width: 200,
-          height: 200,
-          type: "circle",
-        },
-        boundary: { width: 350, height: 350 },
-      })
+      if (!Hue.profilepic_cropper) {
+        Hue.profilepic_cropper = new Croppie(Hue.el("#profilepic_cropper"), {
+          viewport: {
+            width: 200,
+            height: 200,
+            type: "circle",
+          },
+          boundary: { width: 350, height: 350 }
+        })
+      }
 
-      Hue.profilepic_cropper
-      
-      .croppie("bind", {
+      Hue.profilepic_cropper.bind({
         url: e.target.result,
         points: [],
       })
 
       .then(function () {
-        Hue.profilepic_cropper.croppie("setZoom", 0)
+        Hue.profilepic_cropper.setZoom(0)
       })
     })
   }
@@ -400,19 +388,19 @@ Hue.show_others_disconnected = function (data) {
 // Shows some options for the audio clip
 Hue.show_audioclip_menu = function () {
   Hue.msg_info2.show(["Audio Clip", Hue.template_audioclip_menu()], function () {
-    $("#upload_audioclip").on("click", function () {
+    Hue.el("#upload_audioclip").addEventListener("click", function () {
       Hue.select_audioclip()
       Hue.msg_info2.close()
     })
 
-    $("#remove_audioclip").on("click", function () {
+    Hue.el("#remove_audioclip").addEventListener("click", function () {
       Hue.needs_confirm_2(function () {
         Hue.socket_emit("remove_audioclip", {})
         Hue.msg_info2.close()
       })
     })
 
-    $("#play_audioclip").on("click", function () {
+    Hue.el("#play_audioclip").addEventListener("click", function () {
       Hue.user_menu_audio = document.createElement("audio")
       let user = Hue.get_user_profile().audioclip
       let src = Hue.get_audioclip(user.user_id)
@@ -420,13 +408,13 @@ Hue.show_audioclip_menu = function () {
       Hue.user_menu_audio.play()
     })
 
-    Hue.horizontal_separator($("#audioclip_select_container")[0])
+    Hue.horizontal_separator(Hue.el("#audioclip_select_container"))
   })
 }
 
 // Opens the file picker to choose an audio clip
 Hue.select_audioclip = function () {
-  $("#audioclip_input").trigger("click")
+  Hue.el("#audioclip_input").click()
 }
 
 // When an audio clip gets selected from the file picker

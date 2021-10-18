@@ -42,7 +42,7 @@ Hue.check_latest_highlight = function () {
   let latest_highlight = Hue.get_latest_highlight()
 
   if (latest_highlight) {
-    let date = $(latest_highlight).data("date")
+    let date = Hue.dataset(latest_highlight, "date")
 
     if (date > Hue.room_state.last_highlight_date) {
       Hue.room_state.last_highlight_date = date
@@ -56,27 +56,25 @@ Hue.check_latest_highlight = function () {
 // Either a chat content container or an announcement
 Hue.get_latest_highlight = function () {
   let latest_highlight = false
+  let items = Hue.els("#chat_area .chat_content_container")
 
-  $($("#chat_area .chat_content_container").get().reverse()).each(function () {
-    if ($(this).data("highlighted")) {
-      latest_highlight = this
-      return false
+  for (let item of items.reverse()) {
+    if (Hue.dataset(item, "highlighted")) {
+      latest_highlight = item
+      break
     }
-  })
-
-  if (latest_highlight) {
-    $($("#chat_area > .message.announcement").get().reverse()).each(
-      function () {
-        if ($(this).data("highlighted")) {
-          if ($(this).data("date") > $(latest_highlight).data("date")) {
-            latest_highlight = this
-          }
-
-          return false
-        }
-      }
-    )
   }
+
+  if (!latest_highlight) {
+    let items = Hue.els("#chat_area > .message.announcement")
+
+    for (let item of items.reverse()) {
+      if (Hue.dataset(item, "highlighted")) {
+        latest_highlight = item
+        break
+      }
+    }
+  }  
 
   return latest_highlight
 }
@@ -96,7 +94,7 @@ Hue.on_highlight = function () {
   }
 
   if (Hue.msg_highlights.is_open()) {
-    Hue.show_highlights($("#highlights_filter").val())
+    Hue.show_highlights(Hue.el("#highlights_filter").value)
   }
 
   Hue.on_activity("highlight")
@@ -104,39 +102,38 @@ Hue.on_highlight = function () {
 
 // Resets highlights filter data
 Hue.reset_highlights_filter = function () {
-  $("#highlights_filter").val("")
-  $("#highlights_container").html("")
+  Hue.el("#highlights_filter").value = ""
+  Hue.el("#highlights_container").innerHTML = ""
 }
 
 // Show and/or filters highlights window
 Hue.show_highlights = function (filter = "") {
-  $("#highlights_container").html("")
-  $("#highlights_filter").val(filter ? filter : "")
+  Hue.el("#highlights_container").innerHTML = ""
+  Hue.el("#highlights_filter").value = filter ? filter : ""
 
-  let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
+  let messages = Hue.clone_children("#chat_area").reverse()
 
-  clone.each(function () {
-    $(this).removeAttr("id")
+  messages.forEach(it => {
+    it.removeAttribute("id")
   })
 
   if (filter.trim()) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
 
-    clone = clone.filter(function () {
-      if (!$(this).data("highlighted")) {
+    messages = messages.filter(it => {
+      if (!Hue.dataset(it, "highlighted")) {
         return false
       }
       
-      let text = $(this).text().toLowerCase()
+      let text = it.textContent.toLowerCase()
 
       if (!text) {
         return false
       }
 
       let text_cmp = text.includes(lc_value)
-      
       let source_cmp = false
-      let media_source = $(this).data("media_source")
+      let media_source = Hue.dataset(it, "media_source")
       
       if (media_source) {
         source_cmp = media_source.includes(lc_value)
@@ -145,8 +142,8 @@ Hue.show_highlights = function (filter = "") {
       return text_cmp || source_cmp
     })
   } else {
-    clone = clone.filter(function () {
-      if (!$(this).data("highlighted")) {
+    messages = messages.filter(it => {
+      if (!Hue.dataset(it, "highlighted")) {
         return false
       }
 
@@ -154,8 +151,10 @@ Hue.show_highlights = function (filter = "") {
     })
   }
 
-  if (clone.children().length) {
-    clone.appendTo("#highlights_container")
+  if (messages.length) {
+    for (let message of messages) {
+      Hue.el("#highlights_container").append(message)
+    }
   }
 
   Hue.msg_highlights.show(function () {

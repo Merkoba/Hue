@@ -3,34 +3,34 @@ Hue.setup_footer = function () {
   let media = ["image", "tv"]
 
   for (let type of media) {
-    $(`#footer_${type}_label`).on("click", function () {
+    Hue.el(`#footer_${type}_label`).addEventListener("click", function () {
       Hue[`show_${type}_picker`]()
     })
 
-    $(`#footer_${type}_toggler`).on("click", function () {
+    Hue.el(`#footer_${type}_toggler`).addEventListener("click", function () {
       Hue.toggle_media({type:type, feedback:true})
     })
 
-    $(`#footer_${type}_lock`).on("click", function () {
+    Hue.el(`#footer_${type}_lock`).addEventListener("click", function () {
       Hue.change_media_lock({type:type, feedback:true})
     })
   }
 
-  $("#footer_highlights").on("click", function () {
+  Hue.el("#footer_highlights").addEventListener("click", function () {
     Hue.show_highlights()
   })
 
-  $("#footer_search").on("click", function () {
+  Hue.el("#footer_search").addEventListener("click", function () {
     Hue.show_chat_search()
   })
 
-  $("#footer_items").on("click", function(e) {
+  Hue.el("#footer_items").addEventListener("click", function(e) {
     if (e.target === this) {
-      $("#input").trigger("focus")
+      Hue.el("#input").focus()
     }
   })
 
-  Hue.horizontal_separator($("#footer_media_items")[0])
+  Hue.horizontal_separator(Hue.el("#footer_media_items"))
 }
 
 // Enabled footer expand
@@ -39,7 +39,7 @@ Hue.enable_footer_expand = function () {
     return
   }
 
-  $("#footer").addClass("footer_expanded")
+  Hue.el("#footer").classList.add("footer_expanded")
   Hue.after_footer_expand_change()
 }
 
@@ -49,7 +49,7 @@ Hue.disable_footer_expand = function () {
     return
   }
 
-  $("#footer").removeClass("footer_expanded")
+  Hue.el("#footer").classList.remove("footer_expanded")
   Hue.after_footer_expand_change()
 }
 
@@ -61,14 +61,5 @@ Hue.after_footer_expand_change = function () {
 
   if (!Hue.get_input().trim()) {
     Hue.clear_input()
-  }
-}
-
-// Checks how to handle the rotate icon
-Hue.check_footer_media_rotate = function () {
-  if (Hue.num_media_elements_visible() < 2) {
-    $("#footer_media_rotate").addClass("faded")
-  } else {
-    $("#footer_media_rotate").removeClass("faded")
   }
 }

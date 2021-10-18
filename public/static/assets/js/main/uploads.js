@@ -14,7 +14,6 @@ Hue.start_dropzone = function () {
     clickable: "#image_picker_upload, #image_upload_comment_change, #tv_picker_upload, #tv_upload_comment_change",
     acceptedFiles: types.join(",")
   })
-
   
   Hue.dropzone.on("addedfile", function (file) {
     let ext = file.name.split(".").slice(-1)[0]
@@ -28,6 +27,10 @@ Hue.start_dropzone = function () {
       Hue.dropzone.files = []
     }
   })
+
+  Hue.dropzone.on("maxfilesexceeded", function(file) {
+    Hue.dropzone.removeFile(file)
+  })  
 }
 
 // Handle generic image upload
@@ -249,16 +252,12 @@ Hue.get_file_next = function (file) {
 
 // Updates the upload status announcement based on upload progress
 Hue.change_upload_status = function (file, status, clear = false) {
-  if (!file.hue_popup) {
+  if (!file.hue_popup || !file.hue_popup.content) {
     return false
   }
 
-  $(file.hue_popup.content)
-    .find(".action_popup_message")
-    .eq(0)
-    .text(
-      `Uploading ${Hue.get_file_action_name(file.hue_data.action)}: ${status}`
-    )
+  file.hue_popup.content.querySelector(".action_popup_message").textContent =
+    `Uploading ${Hue.get_file_action_name(file.hue_data.action)}: ${status}`
 
   if (clear) {
     file.hue_popup.close()

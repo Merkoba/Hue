@@ -8,11 +8,11 @@ Hue.create_room = function (data) {
 // Shows the Create Room window
 Hue.show_create_room = function () {
   Hue.msg_info2.show(["Create Room", Hue.template_create_room()], function () {
-    $("#create_room_done").on("click", function () {
+    Hue.el("#create_room_done").addEventListener("click", function () {
       Hue.create_room_submit()
     })
 
-    $("#create_room_name").trigger("focus")
+    Hue.el("#create_room_name").focus()
     Hue.create_room_open = true
   })
 }
@@ -22,7 +22,7 @@ Hue.create_room_submit = function () {
   let data = {}
 
   data.name = Hue.utilz.clean_string2(
-    $("#create_room_name").val().substring(0, Hue.config.max_room_name_length)
+    Hue.el("#create_room_name").value.substring(0, Hue.config.max_room_name_length)
   )
 
   if (data.name === "") {
@@ -41,12 +41,12 @@ Hue.show_open_room = function (id) {
   Hue.msg_info2.show(
     ["Open Room", Hue.template_open_room({ id: id })],
     function () {
-      $("#open_room_here").on("click", function () {
+      Hue.el("#open_room_here").addEventListener("click", function () {
         Hue.goto_url(id, "same")
         Hue.msg_info2.close()
       })
 
-      $("#open_room_new_tab").on("click", function () {
+      Hue.el("#open_room_new_tab").addEventListener("click", function () {
         Hue.goto_url(id, "tab")
         Hue.msg_info2.close()
       })
