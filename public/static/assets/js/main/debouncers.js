@@ -39,7 +39,7 @@ Hue.create_debouncers = function () {
 
   // Debounce timer for chat search filter
   Hue.chat_search_timer = Hue.create_debouncer(function () {
-    Hue.show_chat_search($("#chat_search_filter").val())
+    Hue.show_chat_search(Hue.el("#chat_search_filter").value)
   }, Hue.filter_delay)
 
   // Debounce typing timer to send a typing emit
@@ -54,12 +54,12 @@ Hue.create_debouncers = function () {
 
   // Debounce timer for highlights filter
   Hue.highlights_filter_timer = Hue.create_debouncer(function () {
-    Hue.show_highlights($("#highlights_filter").val())
+    Hue.show_highlights(Hue.el("#highlights_filter").value)
   }, Hue.filter_delay)
 
   // Debounce timer for media history filters
   Hue.media_history_filter_timer = Hue.create_debouncer(function (type) {
-    let filter = $(`#${type}_history_filter`).val()
+    let filter = Hue.el(`#${type}_history_filter`).value
     Hue.show_media_history(type, filter)
   }, Hue.filter_delay)
 
@@ -75,7 +75,7 @@ Hue.create_debouncers = function () {
 
   // Debounce timer for settings filter
   Hue.settings_filter_timer = Hue.create_debouncer(function () {
-    Hue.show_settings($("#settings_filter").val())
+    Hue.show_settings(Hue.el("#settings_filter").value)
   }, Hue.filter_delay)
 
   // Debounce timer for userlist update

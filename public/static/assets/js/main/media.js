@@ -1,10 +1,10 @@
 // Setups media
 Hue.setup_media = function () {
-  $("#media_image_frame").on("click", function () {
+  Hue.el("#media_image_frame").addEventListener("click", function () {
     Hue.show_modal_image()
   })
 
-  $("#media_image_error").on("click", function () {
+  Hue.el("#media_image_error").addEventListener("click", function () {
     Hue.show_modal_image()
   })
 }
@@ -27,32 +27,32 @@ Hue.apply_media_percentages = function () {
   let p2 = 100 - p1
 
   if (mode === "column") {
-    $("#media_tv").css("height", `${p1}%`)
-    $("#media_image").css("height", `${p2}%`)
-    $("#media_tv").css("width", "100%")
-    $("#media_image").css("width", "100%")
+    Hue.el("#media_tv").style.height = `${p1}%`
+    Hue.el("#media_image").style.height = `${p2}%`
+    Hue.el("#media_tv").style.width = "100%"
+    Hue.el("#media_image").style.width = "100%"
   } else if (mode === "row") {
-    $("#media_tv").css("width", `${p1}%`)
-    $("#media_image").css("width", `${p2}%`)
-    $("#media_tv").css("height", "100%")
-    $("#media_image").css("height", "100%")
+    Hue.el("#media_tv").style.width = `${p1}%`
+    Hue.el("#media_image").style.width = `${p2}%`
+    Hue.el("#media_tv").style.height = "100%"
+    Hue.el("#media_image").style.height = "100%"
   }
 
   let c1 = Hue.limit_media_percentage(Hue.room_state.chat_display_percentage)
   let c2 = 100 - c1
 
   if (Hue.room_state.main_layout === "column") {
-    $("#main_rows_container").css("flex-direction", "column-reverse")
-    $("#chat_main").css("height", `${c1}%`)
-    $("#media").css("height", `${c2}%`)
-    $("#chat_main").css("width", "100%")
-    $("#media").css("width", "100%") 
+    Hue.el("#main_rows_container").style.flexDirection = "column-reverse"
+    Hue.el("#chat_main").style.height = `${c1}%`
+    Hue.el("#media").style.height = `${c2}%`
+    Hue.el("#chat_main").style.width = "100%"
+    Hue.el("#media").style.width = "100%"
   } else {
-    $("#main_rows_container").css("flex-direction", "row")
-    $("#chat_main").css("width", `${c1}%`)
-    $("#media").css("width", `${c2}%`)
-    $("#chat_main").css("height", "100%")
-    $("#media").css("height", "100%")    
+    Hue.el("#main_rows_container").style.flexDirection = "row"
+    Hue.el("#chat_main").style.width = `${c1}%`
+    Hue.el("#media").style.width = `${c2}%`
+    Hue.el("#chat_main").style.height = "100%"
+    Hue.el("#media").style.height = "100%"
   }
 
   Hue.fix_frames()
@@ -73,8 +73,8 @@ Hue.apply_media_positions = function () {
     ip = 1
   }
 
-  $("#media_image").css("order", ip)
-  $("#media_tv").css("order", tvp)
+  Hue.el("#media_image").style.order = ip
+  Hue.el("#media_tv").style.order = tvp
 }
 
 Hue.swap_display_positions = function () {
@@ -86,15 +86,15 @@ Hue.swap_display_positions = function () {
 
 // Refresh media menu widgets
 Hue.refresh_media_menu = function () {
-  $("#media_menu_tv_size").find("option").each(function () {
-    if ($(this).val() == Hue.room_state.tv_display_percentage) {
-      $(this).prop("selected", true)
+  Hue.el("#media_menu_tv_size").querySelectorAll("option").forEach(it => {
+    if (it.value == Hue.room_state.tv_display_percentage) {
+      it.selected = true
     }
   })
 
-  $("#media_menu_chat_size").find("option").each(function () {
-    if ($(this).val() == Hue.room_state.chat_display_percentage) {
-      $(this).prop("selected", true)
+  Hue.el("#media_menu_chat_size").querySelectorAll("option").forEach(it => {
+    if (it.value == Hue.room_state.chat_display_percentage) {
+      it.selected = true
     }
   })
 }
@@ -128,8 +128,8 @@ Hue.remove_item_from_media_changed = function (type, id) {
 Hue.num_media_elements_visible = function () {
   let num = 0
 
-  $("#media_split .media_main_container").each(function () {
-    if ($(this).css("display") !== "none") {
+  Hue.els("#media_split .media_main_container").forEach(it => {
+    if (it.style.display !== "none") {
       num += 1
     }
   })
@@ -141,7 +141,7 @@ Hue.num_media_elements_visible = function () {
 // The proper way is to use '/image url > comment'
 // But if the > is ommitted it will still try to determine what each part is
 Hue.get_media_change_inline_comment = function (type, source) {
-  let comment = $(`#${type}_source_picker_input_comment`).val()
+  let comment = Hue.el(`#${type}_source_picker_input_comment`).value
 
   if (comment) {
     // OK
@@ -194,7 +194,7 @@ Hue.get_media_object_from_init_data = function (type) {
 // Hides the media area (image and tv)
 Hue.hide_media = function () {
   Hue.stop_tv()
-  $("#media").css("display", "none")
+  Hue.el("#media").style.display = "none"
 }
 
 // Setups media modes from initial data
@@ -215,32 +215,32 @@ Hue.media_visibility_and_locks = function () {
 
 // Resets media history filter of a certain type
 Hue.reset_media_history_filter = function (type) {
-  $(`#${type}_history_filter`).val("")
-  $(`#${type}_history_container`).html("")
+  Hue.el(`#${type}_history_filter`).value = ""
+  Hue.el(`#${type}_history_container`).innerHTML = ""
 }
 
 // Shows and/or filters media history of a certain type
 Hue.show_media_history = function (type, filter = "") {
-  $(`#${type}_history_container`).html("")
-  $(`#${type}_history_filter`).val(filter ? filter : "")
+  Hue.el(`#${type}_history_container`).innerHTML = ""
+  Hue.el(`#${type}_history_filter`).value = filter ? filter : ""
 
-  let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
+  let clone = Hue.clone_children("#chat_area").reverse()
 
-  clone.each(function () {
-    $(this).removeAttr("id")
+  clone.forEach(it => {
+    it.removeAttribute("id")
   })
 
   if (filter.trim()) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
 
-    clone = clone.filter(function () {
-      let type2 = $(this).data("type")
+    clone = clone.filter(it => {
+      let type2 = Hue.dataset(it, "type")
 
       if (type2 !== `${type}_change`) {
         return false
       }
 
-      let text = $(this).text().toLowerCase()
+      let text = it.textContent.toLowerCase()
 
       if (!text) {
         return false
@@ -249,8 +249,8 @@ Hue.show_media_history = function (type, filter = "") {
       return text.includes(lc_value)
     })
   } else {
-    clone = clone.filter(function () {
-      let type2 = $(this).data("type")
+    clone = clone.filter(it => {
+      let type2 = Hue.dataset(it, "type")
 
       if (type2 !== `${type}_change`) {
         return false
@@ -260,35 +260,38 @@ Hue.show_media_history = function (type, filter = "") {
     })
   }
 
-  clone.appendTo(`#${type}_history_container`)
-  Hue.vertical_separator($(`#${type}_history_container`)[0])
+  for (let el of clone) {
+    Hue.el(`#${type}_history_container`).append(el)
+  }
+
+  Hue.vertical_separator(Hue.el(`#${type}_history_container`))
 }
 
 // Additional media menu configurations
 Hue.setup_media_menu = function () {
-  $("#media_menu_swap").on("click", function () {
+  Hue.el("#media_menu_swap").addEventListener("click", function () {
     Hue.swap_media()
   })
 
-  $("#media_menu_rotate").on("click", function () {
+  Hue.el("#media_menu_rotate").addEventListener("click", function () {
     Hue.rotate_media()
   })
 
-  $("#media_menu_revolve").on("click", function () {
+  Hue.el("#media_menu_revolve").addEventListener("click", function () {
     Hue.change_main_layout()
   })   
 
-  $("#media_menu_tv_size").on("change", function () {
-    let size = $("#media_menu_tv_size option:selected").val()
+  Hue.el("#media_menu_tv_size").addEventListener("change", function () {
+    let size = Hue.el("#media_menu_tv_size option:checked").value
     Hue.do_media_tv_size_change(size)
   })
 
-  $("#media_menu_chat_size").on("change", function () {
-    let size = $("#media_menu_chat_size option:selected").val()
+  Hue.el("#media_menu_chat_size").addEventListener("change", function () {
+    let size = Hue.el("#media_menu_chat_size option:checked").value
     Hue.do_chat_size_change(size)
   })
 
-  $("#media_menu_defaults").on("click", function () {
+  Hue.el("#media_menu_defaults").addEventListener("click", function () {
     Hue.apply_media_defaults()
   }) 
 }
@@ -314,23 +317,23 @@ Hue.show_media_source = function (what) {
 // More media picker configurations
 Hue.setup_media_pickers = function () {
   for (let type of Hue.utilz.media_types) {
-    Hue.horizontal_separator($(`#${type}_picker_options`)[0])
+    Hue.horizontal_separator(Hue.el(`#${type}_picker_options`))
   }
 
-  $("#image_picker_upload").on("click", function () {
+  Hue.el("#image_picker_upload").addEventListener("click", function () {
     Hue.msg_image_picker.close()
   })
   
-  $("#image_picker_draw").on("click", function () {
+  Hue.el("#image_picker_draw").addEventListener("click", function () {
     Hue.msg_image_picker.close()
     Hue.open_draw_image("image")
   })
   
-  $("#image_picker_submit").on("click", function () {
+  Hue.el("#image_picker_submit").addEventListener("click", function () {
     Hue.image_picker_submit()
   })
 
-  $("#tv_picker_reload").on("click", function () {
+  Hue.el("#tv_picker_reload").addEventListener("click", function () {
     if (Hue.loaded_tv) {
       Hue.load_media("tv", Hue.loaded_tv)
     }
@@ -338,11 +341,11 @@ Hue.setup_media_pickers = function () {
     Hue.close_all_modals()
   })
 
-  $("#tv_picker_submit").on("click", function () {
+  Hue.el("#tv_picker_submit").addEventListener("click", function () {
     Hue.tv_picker_submit()
   })
 
-  $("#tv_picker_upload").on("click", function () {
+  Hue.el("#tv_picker_upload").addEventListener("click", function () {
     Hue.msg_tv_picker.close()
   })  
 }
@@ -351,28 +354,27 @@ Hue.setup_media_pickers = function () {
 // It grows the element as much as it can while maintaining the aspect ratio
 // This is done by making calculations with the element and parent's ratios
 Hue.fix_frame = function (frame_id, test_parent_height = false) {
-  let id = `#${frame_id}`
-  let frame = $(id)
+  let frame = Hue.el(`#${frame_id}`)
   let frame_ratio
 
   if (frame_id === "media_image_frame") {
-    frame_ratio = frame[0].naturalHeight / frame[0].naturalWidth
+    frame_ratio = frame.naturalHeight / frame.naturalWidth
   } else {
     frame_ratio = 0.5625
   }
 
-  let parent = frame.parent()
+  let parent = frame.parentElement
   let info_height = 0
-  let info = frame.parent().find(".media_info")
+  let info = frame.parentElement.querySelectorAll(".media_info")
 
   if (info.length > 0) {
-    info_height = info.eq(0).outerHeight(true)
+    info_height = info[0].offsetHeight
   }
 
-  let parent_width = parent.width()
+  let parent_width = parent.offsetWidth
   let parent_height = test_parent_height ?
     test_parent_height :
-    parent.height() - info_height
+    parent.offsetHeight - info_height
   let parent_ratio = parent_height / parent_width
   let width, height
 
@@ -388,8 +390,8 @@ Hue.fix_frame = function (frame_id, test_parent_height = false) {
   }
 
   if (!test_parent_height) {
-    frame.width(width)
-    frame.height(height)
+    frame.style.width = `${width}px`
+    frame.style.height = `${height}px`
   } else {
     return {
       width: width,
@@ -475,7 +477,7 @@ Hue.change = function (args = {}) {
     Hue.show_image(args.force)
 
     if (!args.item || args.item === Hue.current_image()) {
-      $("#footer_lock_image_icon").removeClass("blinking")
+      Hue.el("#footer_lock_image_icon").classList.remove("blinking")
     }
   } else if (args.type === "tv") {
     if (!Hue.room_state.tv_enabled) {
@@ -510,7 +512,7 @@ Hue.change = function (args = {}) {
     Hue[`show_${item.type}_video`](args.play)
 
     if (!args.item || args.item === Hue.current_tv()) {
-      $("#footer_lock_tv_icon").removeClass("blinking")
+      Hue.el("#footer_lock_tv_icon").classList.remove("blinking")
     }
   } else {
     return false
@@ -525,7 +527,6 @@ Hue.apply_media_info = function (type) {
     return false
   }
   
-  let container = $(`#media_${type}_info_container`)
   let custom_title
   let media_type
 
@@ -581,13 +582,17 @@ Hue.apply_media_info = function (type) {
     )}</div>
   `
 
-  $(container).find(".media_info").eq(0).html(html)
-  $(container).find(".media_info_timeago").eq(0).text(Hue.utilz.timeago(item.date))
-  $(container).attr("title", hover_title)
-  $(container).data("otitle", hover_title)
-  $(container).data("date", item.date)
-  $(container).data("item", item)
-  $(container).data("type", type)
+  let container = Hue.el(`#media_${type}_info_container`)
+  container.querySelector(".media_info").innerHTML = html
+  container.querySelector(".media_info_timeago").textContent = Hue.utilz.timeago(item.date)
+  container.title = hover_title
+    
+  Hue.dataset(container, "otitle", hover_title)
+  Hue.dataset(container, "date", item.date)
+  Hue.dataset(container, "type", type)
+  Hue.dataset(container, "id", item.id)
+  Hue.dataset(container, "setter", item.setter)
+  Hue.dataset(container, "user_id", item.user_id)
 }
 
 // Some fixes on reconneciton
@@ -653,16 +658,16 @@ Hue.change_media_lock = function(args) {
 // Toggles media locks for any type
 Hue.change_media_lock_icon = function (type) {
   if (Hue[`${type}_locked`]) {
-    $(`#footer_lock_${type}_icon`).find("use").eq(0).attr("href", "#icon_locked")
-    $(`#footer_lock_${type}_label`).css("display", "flex")
+    Hue.el(`#footer_lock_${type}_icon`).querySelector("use").href = "#icon_locked"
+    Hue.el(`#footer_lock_${type}_label`).style.display = "flex"
 
     if (Hue[`loaded_${type}`] !== Hue[`current_${type}`]()) {
-      $(`#footer_lock_${type}_icon`).addClass("blinking")
+      Hue.el(`#footer_lock_${type}_icon`).classList.add("blinking")
     }
   } else {
-    $(`#footer_lock_${type}_icon`).find("use").eq(0).attr("href", "#icon_unlocked")
-    $(`#footer_lock_${type}_icon`).removeClass("blinking")
-    $(`#footer_lock_${type}_label`).css("display", "none")
+    Hue.el(`#footer_lock_${type}_icon`).querySelector("use").href = "#icon_unlocked"
+    Hue.el(`#footer_lock_${type}_icon`).classList.remove("blinking")
+    Hue.el(`#footer_lock_${type}_label`).style.display = "none"
 
     Hue.change({ type: type })
   }
@@ -675,13 +680,19 @@ Hue.change_media_layout = function (mode = false) {
   }
 
   if (mode === "column") {
-    $("#media_split").css("flex-direction", "column")
-    $(".media_main_container").css("width", "100%")
-    $(".media_main_container").css("height", "50%")
+    Hue.el("#media_split").style.flexDirection = "column"
+
+    Hue.els(".media_main_container").forEach(it => {
+      it.style.width = "100%"
+      it.style.height = "50%"
+    })
   } else if (mode === "row") {
-    $("#media_split").css("flex-direction", "row")
-    $(".media_main_container").css("width", "50%")
-    $(".media_main_container").css("height", "100%")
+    Hue.el("#media_split").style.flexDirection = "row"
+
+    Hue.els(".media_main_container").forEach(it => {
+      it.style.width = "50%"
+      it.style.height = "100%"
+    })
   }
 
   Hue.apply_media_percentages()
@@ -741,25 +752,36 @@ Hue.get_media_info_html = function (type) {
   </div>`
 }
 
+// Append media inf
+Hue.append_media_info = function (container, type) {
+  let el = Hue.div()
+  el.innerHTML = Hue.get_media_info_html(type)
+  Hue.el(container).append(el)
+}
+
 // Some initial media info setups
 Hue.start_media_info = function () {
-  $("#media_image_container").append(Hue.get_media_info_html("image"))
+  Hue.append_media_info("#media_image_container", "image")
+  
+  Hue.el("#media").addEventListener("click", function (e) {
+    let el = e.target.closest(".media_info_username")
 
-  $("#media").on("click", ".media_info_username", function () {
-    let username = $(this).closest(".media_info_container").data("item").setter
-    Hue.show_profile(username)
+    if (el) {
+      let username = Hue.dataset(el.closest(".media_info_container"), "setter")
+      let user_id = Hue.dataset(el.closest(".media_info_container"), "user_id")
+      Hue.show_profile(username, user_id)
+    }
   })
 
-  $("#media").on("click", ".media_info_details", function () {
-    let media_info = $(this).closest(".media_info_container")
-    let item = media_info.data("item")
-    let type = media_info.data("type")
+  Hue.el("#media").addEventListener("click", function (e) {
+    let el = e.target.closest(".media_info_details")
 
-    Hue.open_url_menu({
-      source: item.source,
-      data: item,
-      media_type: type
-    })
+    if (el) {
+      let media_info = el.closest(".media_info_container")
+      let type = Hue.dataset(media_info, "type")
+      let id = Hue.dataset(media_info, "id")
+      Hue.open_url_menu_by_media_id(type, id)
+    }
   })
 }
 
@@ -842,4 +864,15 @@ Hue.set_default_main_layout = function (apply = true) {
     Hue.save_room_state()
     Hue.apply_media_percentages()
   }
+}
+
+// Show the open url menu with data
+Hue.open_url_menu_by_media_id = function (type, id) {
+  let data = Hue.get_media_item(type, id)
+
+  Hue.open_url_menu({
+    source: data.source,
+    data: data,
+    media_type: type
+  })
 }

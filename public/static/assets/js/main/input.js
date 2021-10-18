@@ -1,16 +1,16 @@
 // On input change
 Hue.on_input_change = function () {
-  let input = $("#input")[0]
-  let value = $(input).val()
-  if (Hue.old_input_val !== value) {
+  let input = Hue.el("#input")
+
+  if (Hue.old_input_val !== input.value) {
     Hue.check_typing()
-    Hue.old_input_val = value
+    Hue.old_input_val = input.value
 
     if (input.clientHeight < input.scrollHeight) {
       Hue.enable_footer_expand()
     }
 
-    if (!value) {
+    if (!input.value) {
       Hue.disable_footer_expand()
     }
   }
@@ -18,23 +18,18 @@ Hue.on_input_change = function () {
 
 // Setups events for the main input
 Hue.setup_input = function () {
-  $("#input").on("input", function () {
+  Hue.el("#input").addEventListener("input", function () {
     Hue.on_input_change()
   })
 
-  $("#input").on("click", function () {
+  Hue.el("#input").addEventListener("click", function () {
     if (Hue.editing_message) {
       Hue.stop_edit_message()
+      Hue.check_scrollers()
     }
   })
 
-  $("#input").on("focus", function () {
-    if (Hue.context_menu_open) {
-      $(".context-menu-list").trigger("contextmenu:hide")
-    }
-  })
-
-  $("#input").on("paste", function (e) {
+  Hue.el("#input").addEventListener("paste", function (e) {
     let items = (e.clipboardData || e.originalEvent.clipboardData).items
 
     for (let index in items) {
@@ -53,7 +48,7 @@ Hue.setup_input = function () {
 // Updates the input's placeholder
 Hue.update_input_placeholder = function () {
   let s = `Hi ${Hue.username}, write something to ${Hue.room_name}`
-  $("#input").attr("placeholder", s)
+  Hue.el("#input").placeholder = s
 }
 
 // Clears the input
@@ -70,7 +65,7 @@ Hue.clear_input = function () {
 
 // Changes the input
 Hue.change_input = function (s, to_end = true, focus = true) {
-  $("#input").val(s)
+  Hue.el("#input").value = s
 
   if (to_end) {
     Hue.input_to_end()
@@ -87,17 +82,17 @@ Hue.focus_input = function () {
     return false
   }
 
-  $("#input").trigger("focus")
+  Hue.el("#input").focus()
 }
 
 // Removes focus on the input
 Hue.blur_input = function () {
-  $("#input").trigger("blur")
+  Hue.el("#input").blur()
 }
 
 // Moves the input's caret to the end
 Hue.input_to_end = function () {
-  $("#input")[0].scrollLeft = $("#input")[0].scrollWidth
+  Hue.el("#input").scrollLeft = Hue.el("#input").scrollWidth
 }
 
 // Does a submit action from the input
@@ -117,7 +112,7 @@ Hue.submit_input = function () {
 
 // Get the input value
 Hue.get_input = function () {
-  return $("#input").val()
+  return Hue.el("#input").value
 }
 
 // Turns this * into this *

@@ -87,10 +87,6 @@ Hue.setup_image = function (mode, odata = {}) {
     }
   }
 
-  data.onclick = function () {
-    Hue.show_modal_image(data.id)
-  }
-
   if (data.message) {
     data.message_id = Hue.announce_image(data).message_id
   }
@@ -105,7 +101,7 @@ Hue.setup_image = function (mode, odata = {}) {
 
   if (mode === "change") {
     if (Hue.image_locked) {
-      $("#footer_lock_image_icon").addClass("blinking")
+      Hue.el("#footer_lock_image_icon").classList.add("blinking")
     }
 
     Hue.change({type: "image"})
@@ -121,7 +117,6 @@ Hue.announce_image = function (data) {
     date: data.date,
     username: data.setter,
     title: data.info,
-    onclick: data.onclick,
     type: "image_change",
     user_id: data.user_id,
     in_log: data.in_log,
@@ -154,11 +149,11 @@ Hue.current_image = function () {
 // Loads an image with a specified item
 Hue.show_image = function (force = false) {
   let item = Hue.loaded_image
-  $("#media_image_error").css("display", "none")
-  $("#media_image_frame").css("display", "initial")
+  Hue.el("#media_image_error").style.display = "none"
+  Hue.el("#media_image_frame").style.display = "initial"
 
-  if (force || $("#media_image_frame").attr("src") !== item.source) {
-    $("#media_image_frame").attr("src", item.source)
+  if (force || Hue.el("#media_image_frame").src !== item.source) {
+    Hue.el("#media_image_frame").src = item.source
   } else {
     Hue.after_image_load(false)
   }
@@ -256,7 +251,7 @@ Hue.fix_image_frame = function () {
     return false
   }
 
-  if (!$("#media_image_frame")[0].naturalHeight) {
+  if (!Hue.el("#media_image_frame").naturalHeight) {
     return false
   }
 
@@ -266,9 +261,9 @@ Hue.fix_image_frame = function () {
 // Changes the image visibility based on current state
 Hue.change_image_visibility = function () {
   if (Hue.room_state.image_enabled) {
-    $("#media").css("display", "flex")
-    $("#media_image").css("display", "flex")
-    $("#footer_toggle_image_icon").find("use").eq(0).attr("href", "#icon_toggle-on")
+    Hue.el("#media").style.display = "flex"
+    Hue.el("#media_image").style.display = "flex"
+    Hue.el("#footer_toggle_image_icon").querySelector("use").href = "#icon_toggle-on"
 
     if (Hue.first_media_change && Hue.started) {
       Hue.change({ type: "image" })
@@ -277,7 +272,7 @@ Hue.change_image_visibility = function () {
     Hue.image_visible = true
     Hue.fix_image_frame()
   } else {
-    $("#media_image").css("display", "none")
+    Hue.el("#media_image").style.display = "none"
 
     let num_visible = Hue.num_media_elements_visible()
 
@@ -285,8 +280,7 @@ Hue.change_image_visibility = function () {
       Hue.hide_media()
     }
 
-    $("#footer_toggle_image_icon").find("use").eq(0).attr("href", "#icon_toggle-off")
-
+    Hue.el("#footer_toggle_image_icon").querySelector("use").href = "#icon_toggle-off"
     Hue.image_visible = false
   }
 
@@ -294,7 +288,6 @@ Hue.change_image_visibility = function () {
     Hue.fix_visible_video_frame()
   }
 
-  Hue.check_footer_media_rotate()
   Hue.goto_bottom()
 }
 
@@ -332,17 +325,17 @@ Hue.modal_image_next_click = function (e) {
 
 // Setups image modal window events
 Hue.setup_modal_image = function () {
-  let img = $("#modal_image")
+  let img = Hue.el("#modal_image")
 
-  img[0].addEventListener("load", function () {
-    $("#modal_image_spinner").css("display", "none")
-    $("#modal_image").css("display", "block")
+  img.addEventListener("load", function () {
+    Hue.el("#modal_image_spinner").style.display = "none"
+    Hue.el("#modal_image").style.display = "block"
   })
 
-  img.on("error", function () {
-    $("#modal_image_spinner").css("display", "none")
-    $("#modal_image").css("display", "none")
-    $("#modal_image_error").css("display", "block")
+  img.addEventListener("error", function () {
+    Hue.el("#modal_image_spinner").style.display = "none"
+    Hue.el("#modal_image").style.display = "none"
+    Hue.el("#modal_image_error").style.display = "block"
   })
 
   let f = function (e) {
@@ -350,7 +343,7 @@ Hue.setup_modal_image = function () {
       return false
     }
 
-    if ($("#modal_image_container").hasClass("expanded_modal_image")) {
+    if (Hue.el("#modal_image_container").classList.contains("expanded_modal_image")) {
       return false
     }
 
@@ -363,32 +356,32 @@ Hue.setup_modal_image = function () {
     }
   }
 
-  $("#Msg-window-modal_image")[0].addEventListener("wheel", f)
+  Hue.el("#Msg-window-modal_image").addEventListener("wheel", f)
 
-  $("#modal_image_container").on("click", function () {
-    if ($("#modal_image_container").hasClass("expanded_modal_image")) {
+  Hue.el("#modal_image_container").addEventListener("click", function () {
+    if (Hue.el("#modal_image_container").classList.contains("expanded_modal_image")) {
       Hue.restore_modal_image()
     } else {
       Hue.msg_modal_image.close()
     }
   })
 
-  $("#modal_image_arrow_prev").on("click", function (e) {
+  Hue.el("#modal_image_arrow_prev").addEventListener("click", function (e) {
     Hue.modal_image_prev_click()
   })
 
-  $("#modal_image_arrow_next").on("click", function (e) {
+  Hue.el("#modal_image_arrow_next").addEventListener("click", function (e) {
     Hue.modal_image_next_click()
   })
 
-  $("#modal_image_toolbar_load").on("click", function (e) {
+  Hue.el("#modal_image_toolbar_load").addEventListener("click", function (e) {
     let item = Hue.loaded_modal_image
     Hue.toggle_media({type:"image", what:true})
     Hue.change({ type: "image", item: item, force: true })
     Hue.close_all_modals()
   })
 
-  $("#modal_image_toolbar_change").on("click", function (e) {
+  Hue.el("#modal_image_toolbar_change").addEventListener("click", function (e) {
     Hue.show_confirm("Change Image", "This will change it for everyone", function () {
       let item = Hue.loaded_modal_image
       Hue.change_image_source(item.source)
@@ -396,8 +389,8 @@ Hue.setup_modal_image = function () {
     })
   })
 
-  $("#modal_image_toolbar_expand").on("click", function (e) {
-    if ($("#modal_image_container").hasClass("expanded_modal_image")) {
+  Hue.el("#modal_image_toolbar_expand").addEventListener("click", function (e) {
+    if (Hue.el("#modal_image_container").classList.contains("expanded_modal_image")) {
       Hue.restore_modal_image()
     } else {
       Hue.expand_modal_image()
@@ -407,19 +400,19 @@ Hue.setup_modal_image = function () {
 
 // Expand modal image to give it full height
 Hue.expand_modal_image = function () {
-  $("#modal_image_container").addClass("expanded_modal_image")
-  $("#modal_image_toolbar_expand").text("Restore")
+  Hue.el("#modal_image_container").classList.add("expanded_modal_image")
+  Hue.el("#modal_image_toolbar_expand").textContent = "Restore"
 }
 
 // Restore expanded modal image
 Hue.restore_modal_image = function () {
-  $("#modal_image_container").removeClass("expanded_modal_image")
-  $("#modal_image_toolbar_expand").text("Expand")
+  Hue.el("#modal_image_container").classList.remove("expanded_modal_image")
+  Hue.el("#modal_image_toolbar_expand").textContent = "Expand"
 }
 
 // Clears image information in the modal image window
 Hue.clear_modal_image_info = function () {
-  $("#modal_image_header_info").html("")
+  Hue.el("#modal_image_header_info").innerHTML = ""
 }
 
 // Shows the modal image window
@@ -437,58 +430,57 @@ Hue.show_modal_image = function (id = 0) {
   }
 
   Hue.loaded_modal_image = data
-  let img = $("#modal_image")
-  img.css("display", "none")
-  $("#modal_image_spinner").css("display", "block")
-  $("#modal_image_error").css("display", "none")
-  img.attr("src", data.source)
+  let img = Hue.el("#modal_image")
+  img.style.display = "none"
+  Hue.el("#modal_image_spinner").style.display = "block"
+  Hue.el("#modal_image_error").style.display = "none"
+  img.src = data.source
 
-  $("#modal_image_header_info").html(data.info_html)
-  $("#modal_image_header_info").find(".modal_image_timeago")
-    .eq(0).text(Hue.utilz.timeago(data.date))
+  Hue.el("#modal_image_header_info").innerHTML = data.info_html
+  Hue.el("#modal_image_header_info").querySelector(".modal_image_timeago")
+    .textContent = Hue.utilz.timeago(data.date)
 
-  Hue.horizontal_separator($("#modal_image_header_info")[0])
+  Hue.horizontal_separator(Hue.el("#modal_image_header_info"))
 
   if (data.comment || data.query) {
-    $("#modal_image_subheader").html(
+    Hue.el("#modal_image_subheader").innerHTML =
       Hue.parse_text(Hue.utilz.make_html_safe(data.comment || data.query))
-    )
-    $("#modal_image_subheader").css("display", "block")
-    Hue.setup_whispers_click($("#modal_image_subheader"), data.setter)
+    Hue.el("#modal_image_subheader").style.display = "block"
+    Hue.setup_whispers_click(Hue.el("#modal_image_subheader"), data.setter)
   } else {
-    $("#modal_image_subheader").css("display", "none")
+    Hue.el("#modal_image_subheader").style.display = "none"
   }
 
   if (data !== Hue.loaded_image) {
-    $("#modal_image_toolbar_load").css("display", "block")
+    Hue.el("#modal_image_toolbar_load").style.display = "block"
   } else {
-    $("#modal_image_toolbar_load").css("display", "none")
+    Hue.el("#modal_image_toolbar_load").style.display = "none"
   }
 
   if (Hue.change_image_source(data.source, true)) {
-    $("#modal_image_toolbar_change").css("display", "flex")
+    Hue.el("#modal_image_toolbar_change").style.display = "flex"
   } else {
-    $("#modal_image_toolbar_change").css("display", "none")
+    Hue.el("#modal_image_toolbar_change").style.display = "none"
   }
 
-  Hue.horizontal_separator($("#modal_image_header_info_container")[0])
+  Hue.horizontal_separator(Hue.el("#modal_image_header_info_container"))
   Hue.msg_modal_image.show()
 }
 
 // Starts events for the image
 Hue.start_image_events = function () {
-  $("#media_image_frame")[0].addEventListener("load", function (e) {
+  Hue.el("#media_image_frame").addEventListener("load", function (e) {
     Hue.after_image_load()
   })
 
-  $("#media_image_frame").on("error", function () {
-    $("#media_image_frame").css("display", "none")
-    $("#media_image_error").css("display", "initial")
+  Hue.el("#media_image_frame").addEventListener("error", function () {
+    Hue.el("#media_image_frame").style.display = "none"
+    Hue.el("#media_image_error").style.display = "initial"
     Hue.after_image_load()
   })
 
-  $("#media_image_frame").height(0)
-  $("#media_image_frame").width(0)
+  Hue.el("#media_image_frame").style.height = 0
+  Hue.el("#media_image_frame").style.width = 0
 }
 
 // This runs after an image successfully loads
@@ -503,30 +495,30 @@ Hue.after_image_load = function (ok = true) {
 // Setups image expansions when clicked
 // When an image in the chat is clicked the image is shown full sized in a window
 Hue.setup_expand_image = function () {
-  let img = $("#expand_image")
+  let img = Hue.el("#expand_image")
 
-  img[0].addEventListener("load", function () {
-    img.css("display", "block")
-    $("#expand_image_spinner").css("display", "none")
+  img.addEventListener("load", function () {
+    img.style.display = "block"
+    Hue.el("#expand_image_spinner").style.display = "none"
   })
 
-  img.on("error", function () {
-    $("#expand_image_spinner").css("display", "none")
-    $("#expand_image").css("display", "none")
-    $("#expand_image_error").css("display", "block")
+  img.addEventListener("error", function () {
+    Hue.el("#expand_image_spinner").style.display = "none"
+    Hue.el("#expand_image").style.display = "none"
+    Hue.el("#expand_image_error").style.display = "block"
   })
 
-  $("#expand_image_container").on("click", function () {
+  Hue.el("#expand_image_container").addEventListener("click", function () {
     Hue.hide_expand_image()
   })
 }
 
 // Shows a window with an image at full size
 Hue.expand_image = function (src) {
-  $("#expand_image").css("display", "none")
-  $("#expand_image_spinner").css("display", "block")
-  $("#expand_image_error").css("display", "none")
-  $("#expand_image").attr("src", src)
+  Hue.el("#expand_image").style.display = "none"
+  Hue.el("#expand_image_spinner").style.display = "block"
+  Hue.el("#expand_image_error").style.display = "none"
+  Hue.el("#expand_image").src = src
   Hue.msg_expand_image.show()
 }
 
@@ -539,7 +531,7 @@ Hue.hide_expand_image = function () {
 // Shows the image picker window to input a URL, or upload a file
 Hue.show_image_picker = function () {
   Hue.msg_image_picker.show(function () {
-    $("#image_source_picker_input").trigger("focus")
+    Hue.el("#image_source_picker_input").focus()
     Hue.show_media_history("image")
     Hue.scroll_modal_to_top("image_picker")
   })
@@ -547,8 +539,8 @@ Hue.show_image_picker = function () {
 
 // Shows the window to add a comment to an image upload
 Hue.show_image_upload_comment = function (file, type) {
-  $("#image_upload_comment_image_feedback").css("display", "none")
-  $("#image_upload_comment_image_preview").css("display", "inline-block")
+  Hue.el("#image_upload_comment_image_feedback").style.display = "none"
+  Hue.el("#image_upload_comment_image_preview").style.display = "inline-block"
 
   let reader = new FileReader()
 
@@ -556,7 +548,7 @@ Hue.show_image_upload_comment = function (file, type) {
     Hue.image_upload_comment_file = file
     Hue.image_upload_comment_type = type
 
-    $("#image_upload_comment_image_preview").attr("src", e.target.result)
+    Hue.el("#image_upload_comment_image_preview").src = e.target.result
 
     Hue.msg_image_upload_comment.set_title(
       `${Hue.utilz.slice_string_end(
@@ -565,14 +557,14 @@ Hue.show_image_upload_comment = function (file, type) {
       )} (${Hue.utilz.get_size_string(file.size, 2)})`
     )
 
-    $("#Msg-titlebar-image_upload_comment").attr("title", file.name)
+    Hue.el("#Msg-titlebar-image_upload_comment").title = file.name
 
     Hue.msg_image_upload_comment.show(function () {
-      $("#image_upload_comment_submit").on("click", function () {
+      Hue.el("#image_upload_comment_submit").addEventListener("click", function () {
         Hue.process_image_upload_comment()
       })
 
-      $("#image_upload_comment_input").trigger("focus")
+      Hue.el("#image_upload_comment_input").focus()
       Hue.scroll_modal_to_bottom("image_upload_comment")
     })
   }
@@ -582,11 +574,11 @@ Hue.show_image_upload_comment = function (file, type) {
 
 // Setups the upload image comment window
 Hue.setup_image_upload_comment = function () {
-  let img = $("#image_upload_comment_image_preview")
+  let img = Hue.el("#image_upload_comment_image_preview")
 
-  img.on("error", function () {
-    $(this).css("display", "none")
-    $("#image_upload_comment_image_feedback").css("display", "inline")
+  img.addEventListener("error", function () {
+    this.style.display = "none"
+    Hue.el("#image_upload_comment_image_feedback").style.display = "inline"
   })
 }
 
@@ -599,7 +591,7 @@ Hue.process_image_upload_comment = function () {
 
   let file = Hue.image_upload_comment_file
   let type = Hue.image_upload_comment_type
-  let comment = Hue.utilz.clean_string2($("#image_upload_comment_input").val())
+  let comment = Hue.utilz.clean_string2(Hue.el("#image_upload_comment_input").value)
 
   if (comment.length > Hue.config.max_media_comment_length) {
     return false
@@ -610,7 +602,7 @@ Hue.process_image_upload_comment = function () {
 }
 
 Hue.image_picker_submit = function () {
-  let val = $("#image_source_picker_input").val().trim()
+  let val = Hue.el("#image_source_picker_input").value.trim()
 
   if (val !== "") {
     Hue.change_image_source(val)

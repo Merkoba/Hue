@@ -65,43 +65,38 @@ Hue.push_notification = function (icon, message, on_click = false) {
   let message_html = `<div class='notifications_message'>${Hue.utilz.make_html_safe(
     message
   )}</div>`
+
   let content_classes = ""
 
   if (on_click) {
     content_classes = "action"
   }
 
-  let item = $(
-    `<div class='notifications_item modal_item'><div class='notifications_item_content ${content_classes} dynamic_title'>${icon_html}${message_html}</div>`
-  )
-  let content = item.find(".notifications_item_content").eq(0)
+  let item = Hue.div("notifications_item modal_item")
+  item.innerHTML = `<div class='notifications_item_content ${content_classes} dynamic_title'>${icon_html}${message_html}</div>`
+  let content = item.querySelector(".notifications_item_content")
 
-  content.attr("title", t)
-  content.data("otitle", t)
-  content.data("date", d)
+  content.title = t
+  Hue.dataset(content, "otitle", t)
+  Hue.dataset(content, "date", d)
 
   if (on_click) {
-    content.on("click", function () {
+    content.addEventListener("click", function () {
       on_click()
     })
   }
+  
+  Hue.el("#notifications_container").prepend(item)
+  
+  let items = Hue.els("#notifications_container .notifications_item")
 
-  let items = $("#notifications_container .notifications_item")
-  let num_items = items.length
-
-  if (num_items === 0) {
-    $("#notifications_container").html(item)
-  } else {
-    $("#notifications_container").prepend(item)
-  }
-
-  if (num_items > Hue.config.notifications_crop_limit) {
-    $("#notifications_container .notifications_item").last().remove()
+  if (items.length > Hue.config.notifications_crop_limit) {
+    items.slice(-1)[0].remove()
   }
 
   if (Hue.notifications_count < 100) {
     Hue.notifications_count += 1
-    $("#header_notifications_count").text(`(${Hue.notifications_count})`)
+    Hue.el("#header_notifications_count").textContent = `(${Hue.notifications_count})`
   }
 }
 
@@ -109,19 +104,25 @@ Hue.push_notification = function (icon, message, on_click = false) {
 Hue.show_notifications = function (filter = "") {
   Hue.msg_notifications.show(function () {
     if (filter.trim()) {
-      $("#notifications_filter").val(filter)
+      Hue.el("#notifications_filter").value = filter
       Hue.do_modal_filter()
     }
 
     Hue.notifications_count = 0
-    $("#header_notifications_count").text("(0)")
+    Hue.el("#header_notifications_count").textContent = "(0)"
   })
 }
 
 // Centralized function for room changes
 Hue.show_room_notification = function (username, message) {
+  let user = Hue.get_user_by_username(username)
+
   let f = function () {
-    Hue.show_profile(username)
+    if (user) {
+      Hue.show_profile(username, user.user_id)
+    } else {
+      Hue.show_profile(username)
+    }
   }
 
   let item = Hue.make_info_popup_item({

@@ -75,9 +75,9 @@ Hue.activate_key_detection = function () {
         if (Hue.msg_info2.is_highest()) {
           if (e.key === "Enter") {
             if (e.shiftKey) {
-              $("#open_room_here").trigger("click")
+              Hue.el("#open_room_here").click()
             } else {
-              $("#open_room_new_tab").trigger("click")
+              Hue.el("#open_room_new_tab").click()
             }
 
             e.preventDefault()
@@ -220,6 +220,7 @@ Hue.activate_key_detection = function () {
         e.preventDefault()
       } else if (e.key === "Escape") {
         Hue.stop_edit_message()
+        Hue.check_scrollers()
         e.preventDefault()
       } else if (e.key === "ArrowUp") {
         let res = Hue.handle_edit_direction()

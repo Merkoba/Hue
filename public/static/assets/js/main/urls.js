@@ -1,7 +1,7 @@
-// JQuery function to turn url text into actual links
-jQuery.fn.urlize = function (stop_propagation = true) {
+// Function to turn url text into actual links
+Hue.urlize = function (el) {
   try {
-    let html = this.html()
+    let html = el.innerHTML
 
     if (!html || !Hue.utilz.includes_url(html)) {
       return false
@@ -20,16 +20,11 @@ jQuery.fn.urlize = function (stop_propagation = true) {
     }
 
     if (matches.length > 0) {
-      on_matches(matches, html, this)
+      on_matches(matches, html)
     }
 
-    function on_matches(matches, html, obj) {
+    function on_matches(matches, html) {
       let cls = "generic action"
-
-      if (stop_propagation) {
-        cls += " stop_propagation"
-      }
-
       let used_urls = []
 
       for (let i = 0; i < matches.length; i++) {
@@ -45,6 +40,7 @@ jQuery.fn.urlize = function (stop_propagation = true) {
           Hue.utilz.escape_special_characters(matches[i]),
           "g"
         )
+
         let u = matches[i]
         let max = Hue.config.max_displayed_url
 
@@ -58,17 +54,11 @@ jQuery.fn.urlize = function (stop_propagation = true) {
         )
       }
 
-      $(obj).html(html)
-
-      $(obj)
-        .find(".stop_propagation")
-        .each(function () {
-          $(this).on("click", function (e) {
-            e.stopPropagation()
-          })
-        })
+      el.innerHTML = html
     }
-  } catch (err) {}
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 // Goes to a url
@@ -85,12 +75,12 @@ Hue.goto_url = function (url, mode) {
 Hue.handle_url = function (text) {
   if (text) {
     Hue.check_handle_url_options(text)
-    $("#handle_url_input").val(text)
-    $("#handle_url_comment").val("")
+    Hue.el("#handle_url_input").value = text
+    Hue.el("#handle_url_comment").value = ""
     Hue.handled_url_input = text
     Hue.handled_url_comment = ""
     Hue.msg_handle_url.show(function () {
-      $("#handle_url_comment").trigger("focus")
+      Hue.el("#handle_url_comment").focus()
     })
   }
 }
@@ -111,15 +101,15 @@ Hue.handle_url_chat = function () {
 // This is used to display actions when dropping a URL
 // Like changing the tv when dropping a YouTube URL
 Hue.setup_drag_events = function () {
-  $("#main_container")[0].addEventListener("drop", function (e) {
+  Hue.el("#main_container").addEventListener("drop", function (e) {
     Hue.handle_url(e.dataTransfer.getData("text/plain").trim())
   })
 
-  $("#handle_url_chat").on("click", function () {
+  Hue.el("#handle_url_chat").addEventListener("click", function () {
     Hue.handle_url_chat()
   })
 
-  $("#handle_url_image").on("click", function () {
+  Hue.el("#handle_url_image").addEventListener("click", function () {
     Hue.change_image_source(
       Hue.handled_url_input,
       false,
@@ -128,71 +118,69 @@ Hue.setup_drag_events = function () {
     Hue.close_all_modals()
   })
 
-  $("#handle_url_tv").on("click", function () {
+  Hue.el("#handle_url_tv").addEventListener("click", function () {
     Hue.change_tv_source(Hue.handled_url_input, false, Hue.handled_url_comment)
     Hue.close_all_modals()
   })
 
-  $("#handle_url_input").on("input blur", function () {
-    Hue.handled_url_input = $(this).val().trim()
-    $("#handle_url_input").val(Hue.handled_url_input)
+  Hue.el("#handle_url_input").addEventListener("input blur", function () {
+    Hue.handled_url_input = this.value.trim()
+    Hue.el("#handle_url_input").value = Hue.handled_url_input
     Hue.check_handle_url_options(Hue.handled_url_input)
   })
 
-  $("#handle_url_comment").on("input blur", function () {
-    Hue.handled_url_comment = $(this)
-      .val()
-      .substring(0, Hue.config.max_media_comment_length)
-    $("#handle_url_comment").val(Hue.handled_url_comment)
+  Hue.el("#handle_url_comment").addEventListener("input blur", function () {
+    Hue.handled_url_comment = this.value.substring(0, Hue.config.max_media_comment_length)
+    Hue.el("#handle_url_comment").value = Hue.handled_url_comment
   })
 }
 
 // Changes button visibility based on url
 Hue.check_handle_url_options = function (text) {
   if (text && text.length < Hue.config.max_input_length) {
-    $("#handle_url_chat").css("display", "inline-block")
+    Hue.el("#handle_url_chat").style.display = "inline-block"
   } else {
-    $("#handle_url_chat").css("display", "none")
+    Hue.el("#handle_url_chat").style.display = "none"
   }
 
   if (Hue.change_image_source(text, true)) {
-    $("#handle_url_image").css("display", "inline-block")
+    Hue.el("#handle_url_image").style.display = "inline-block"
   } else {
-    $("#handle_url_image").css("display", "none")
+    Hue.el("#handle_url_image").style.display = "none"
   }
 
   if (Hue.change_tv_source(text, true)) {
-    $("#handle_url_tv").css("display", "inline-block")
+    Hue.el("#handle_url_tv").style.display = "inline-block"
   } else {
-    $("#handle_url_tv").css("display", "none")
+    Hue.el("#handle_url_tv").style.display = "none"
   }
 
-  Hue.horizontal_separator($("#handle_url_container")[0])
+  Hue.horizontal_separator(Hue.el("#handle_url_container"))
 }
 
 // Setups the Open URL picker window
 Hue.setup_open_url = function () {
-  $("#open_url_menu_open").on("click", function () {
+  Hue.el("#open_url_menu_open").addEventListener("click", function () {
     Hue.goto_url(Hue.open_url_source, "tab")
     Hue.close_all_modals()
   })
 
-  $("#open_url_menu_copy").on("click", function () {
+  Hue.el("#open_url_menu_copy").addEventListener("click", function () {
     Hue.copy_string(Hue.open_url_source)
     Hue.close_all_modals()
   })
 
-  $("#open_url_menu_copy_title").on("click", function () {
+  Hue.el("#open_url_menu_copy_title").addEventListener("click", function () {
     Hue.copy_string(Hue.open_url_title)
     Hue.close_all_modals()
   })
 
-  $("#open_url_menu_load").on("click", function () {
+  Hue.el("#open_url_menu_load").addEventListener("click", function () {
     Hue.load_media(Hue.open_url_media_type, Hue.open_url_data)
     Hue.close_all_modals()
   })
 
-  $("#open_url_menu_change").on("click", function () {
+  Hue.el("#open_url_menu_change").addEventListener("click", function () {
     Hue.show_confirm(`Change ${Hue.media_string(Hue.open_url_media_type)}`, 
     "This will change it for everyone", function () {
       Hue[`change_${Hue.open_url_media_type}_source`](Hue.open_url_data.source)
@@ -216,31 +204,31 @@ Hue.open_url_menu = function (args = {}) {
   Hue.open_url_title = args.title || args.data.title
 
   if (Hue.open_url_title && Hue.open_url_title !== args.source) {
-    $("#open_url_menu_copy_title").css("display", "inline-block")
+    Hue.el("#open_url_menu_copy_title").style.display = "inline-block"
   } else {
-    $("#open_url_menu_copy_title").css("display", "none")
+    Hue.el("#open_url_menu_copy_title").style.display = "none"
   }
 
   if (args.media_type && args.data) {
-    $("#open_url_menu_load").css("display", "inline-block")
+    Hue.el("#open_url_menu_load").style.display = "inline-block"
 
     if (args.data !== Hue[`loaded_${args.media_type}`]) {
-      $("#open_url_menu_load").text("Load")
+      Hue.el("#open_url_menu_load").textContent = "Load"
     } else {
-      $("#open_url_menu_load").text("Reload")
+      Hue.el("#open_url_menu_load").textContent = "Reload"
     }
 
     if (Hue[`change_${args.media_type}_source`](args.source, true)) {
-      $("#open_url_menu_change").css("display", "inline-block")
+      Hue.el("#open_url_menu_change").style.display = "inline-block"
     } else {
-      $("#open_url_menu_change").css("display", "none")
+      Hue.el("#open_url_menu_change").style.display = "none"
     }
   } else {
-    $("#open_url_menu_load").css("display", "none")
-    $("#open_url_menu_change").css("display", "none")
+    Hue.el("#open_url_menu_load").style.display = "none"
+    Hue.el("#open_url_menu_change").style.display = "none"
   }
 
-  Hue.horizontal_separator($("#open_url_container")[0])
+  Hue.horizontal_separator(Hue.el("#open_url_container"))
   Hue.open_url_source = args.source
   Hue.open_url_data = args.data
   Hue.open_url_media_type = args.media_type

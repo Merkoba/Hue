@@ -29,10 +29,10 @@ Hue.user_join = function (data) {
 
 // Removes the online effect to a user's profile images
 Hue.remove_offline_profilepics = function (user_id) {
-  $("#chat_area .message").each(function () {
-    if ($(this).data("user_id") === user_id) {
-      $(this).find(".chat_profilepic_container").each(function () {
-        $(this).removeClass("profilepic_offline")
+  Hue.els("#chat_area .message").forEach(it => {
+    if (Hue.dataset(it, "user_id") === user_id) {
+      it.querySelectorAll(".chat_profilepic_container").forEach(it2 => {
+        it2.classList.remove("profilepic_offline")
       })
     }
   })
@@ -40,10 +40,10 @@ Hue.remove_offline_profilepics = function (user_id) {
 
 // Add the online effect to a user's profile images
 Hue.add_offline_profilepics = function (user_id) {
-  $("#chat_area .message").each(function () {
-    if ($(this).data("user_id") === user_id) {
-      $(this).find(".chat_profilepic_container").each(function () {
-        $(this).addClass("profilepic_offline")
+  Hue.els("#chat_area .message").forEach(it => {
+    if (Hue.dataset(it, "user_id") === user_id) {
+      it.querySelectorAll(".chat_profilepic_container").forEach(it2 => {
+        it2.classList.add("profilepic_offline")
       })
     }
   })
@@ -53,7 +53,7 @@ Hue.add_offline_profilepics = function (user_id) {
 Hue.update_usercount = function () {
   let s = `${Hue.utilz.singular_or_plural(Hue.usercount, "Users")} Online`
 
-  $("#header_users_count").text(`(${Hue.usercount})`)
+  Hue.el("#header_users_count").textContent = `(${Hue.usercount})`
 
   if (Hue.userlist_mode === "normal") {
     Hue.msg_userlist.set_title(s)
@@ -176,9 +176,9 @@ Hue.replace_property_in_userlist_by_id = function (
 }
 
 // Gets the role of a user by username
-Hue.get_role = function (uname) {
+Hue.get_role = function (username) {
   for (let i = 0; i < Hue.userlist.length; i++) {
-    if (Hue.userlist[i].username === uname) {
+    if (Hue.userlist[i].username === username) {
       return Hue.userlist[i].role
     }
   }
@@ -220,9 +220,9 @@ Hue.get_pretty_role_name = function (p) {
 }
 
 // Gets a user from the user list by username
-Hue.get_user_by_username = function (uname) {
+Hue.get_user_by_username = function (username) {
   for (let user of Hue.userlist) {
-    if (user.username === uname) {
+    if (user.username === username) {
       return user
     }
   }
@@ -273,60 +273,63 @@ Hue.do_update_userlist = function (prop = "") {
 
 // Some configurations for the userlist window
 Hue.setup_userlist_window = function () {
-  $("#userlist").on("click", ".userlist_item", function () {
-    let username = $(this).data("username")
+  Hue.el("#userlist").addEventListener("click", function (e) {
+    let el = e.target.closest(".userlist_item")
 
-    if (Hue.userlist_mode === "normal") {
-      Hue.show_profile(username)
-    } else if (Hue.userlist_mode === "whisper") {
-      Hue.update_whisper_users(username)
+    if (el) {
+      let username = Hue.dataset(el, "username")
+      if (Hue.userlist_mode === "normal") {
+        Hue.show_profile(username)
+      } else if (Hue.userlist_mode === "whisper") {
+        Hue.update_whisper_users(username)
+      }
     }
   })
 }
 
 // Fills the userlist window with user information
 Hue.update_userlist_window = function () {
-  let s = $()
-
-  s = s.add()
+  let container = Hue.div()
 
   for (let i = 0; i < Hue.userlist.length; i++) {
     let item = Hue.userlist[i]
     let pi = Hue.get_profilepic(item.user_id)
 
-    let h = $(`
-        <div class='modal_item userlist_item action'>
-            <div class='userlist_column flex_column_center'>
-                <div>
-                    <div class='userlist_item_profilepic_container round_image_container actionbox'>
-                        <img class='userlist_item_profilepic profilepic' src='${pi}' loading='lazy'>
-                    </div>
-                    <div class='userlist_item_details_container'>
-                        <div class='userlist_item_username'></div>
-                        <div class='userlist_item_role'></div>
-                    </div>
-                </div>
-            </div>
-        </div>`)
+    let s = `
+      <div class='userlist_column flex_column_center'>
+          <div>
+              <div class='userlist_item_profilepic_container round_image_container actionbox'>
+                  <img class='userlist_item_profilepic profilepic' src='${pi}' loading='lazy'>
+              </div>
+              <div class='userlist_item_details_container'>
+                  <div class='userlist_item_username'></div>
+                  <div class='userlist_item_role'></div>
+              </div>
+          </div>
+      </div>`
 
-    let image = h.find(".userlist_item_profilepic").eq(0)
+    let el = Hue.div("modal_item userlist_item action")
+    el.innerHTML = s
 
-    image.on("error", function (e) {
-      if ($(this).attr("src") !== Hue.config.default_profilepic_url) {
-        $(this).attr("src", Hue.config.default_profilepic_url)
+    let image = el.querySelector(".userlist_item_profilepic")
+
+    image.addEventListener("error", function (e) {
+      if (this.src !== Hue.config.default_profilepic_url) {
+        this.src = Hue.config.default_profilepic_url
       }
     })
 
     let role_tag = Hue.role_tag(item.role)
-    let role_element = h.find(".userlist_item_role").eq(0)
-    role_element.text(role_tag)
-    let uname = h.find(".userlist_item_username").eq(0)
-    uname.text(item.username)
-    h.data("username", item.username)
-    s = s.add(h)
+    let role_element = el.querySelector(".userlist_item_role")
+    role_element.textContent = role_tag
+    let username = el.querySelector(".userlist_item_username")
+    username.textContent = item.username
+    Hue.dataset(el, "username", item.username)
+    container.append(el)
   }
 
-  $("#userlist").html(s)
+  Hue.el("#userlist").innerHTML = ""
+  Hue.el("#userlist").append(container)
 
   if (Hue.userlist_filtered) {
     Hue.do_modal_filter("userlist")
@@ -424,7 +427,7 @@ Hue.show_userlist_window = function (mode = "normal", filter = "") {
 
   Hue.msg_userlist.show(function () {
     if (filter.trim()) {
-      $("#userlist_filter").val(filter)
+      Hue.el("#userlist_filter").value = filter
       Hue.do_modal_filter()
     }
   })
@@ -531,9 +534,9 @@ Hue.announce_new_username = function (data) {
 }
 
 // Returns feedback on wether a user is in the room or not
-Hue.user_not_in_room = function (uname) {
-  if (uname) {
-    Hue.checkmsg(`${uname} is not in the room`)
+Hue.user_not_in_room = function (username) {
+  if (username) {
+    Hue.checkmsg(`${username} is not in the room`)
   } else {
     Hue.checkmsg("User is not in the room")
   }
@@ -550,16 +553,16 @@ Hue.get_matching_usernames = function (s) {
   }
 
   let split = s.split(" ")
-  let uname = split[0]
+  let username = split[0]
   let matches = []
 
   for (let i = 0; i < split.length; i++) {
     if (i > 0) {
-      uname = `${uname} ${split[i]}`
+      username = `${username} ${split[i]}`
     }
 
-    if (Hue.usernames.includes(uname)) {
-      matches.push(uname)
+    if (Hue.usernames.includes(username)) {
+      matches.push(username)
     }
   }
 
@@ -568,30 +571,30 @@ Hue.get_matching_usernames = function (s) {
 
 // Setups user profile windows
 Hue.setup_show_profile = function () {
-  $("#show_profile_whisper").on("click", function () {
+  Hue.el("#show_profile_whisper").addEventListener("click", function () {
     Hue.write_popup_message([Hue.open_profile_username])
   })
 
-  $("#show_profile_sync_tv").on("click", function () {
+  Hue.el("#show_profile_sync_tv").addEventListener("click", function () {
     Hue.sync_tv(Hue.open_profile_username)
     Hue.msg_profile.close()
   })
 
-  $("#show_profilepic").on("error", function () {
-    if ($(this).attr("src") !== Hue.config.default_profilepic_url) {
-      $(this).attr("src", Hue.config.default_profilepic_url)
+  Hue.el("#show_profilepic").addEventListener("error", function () {
+    if (this.src !== Hue.config.default_profilepic_url) {
+      this.src = Hue.config.default_profilepic_url
     }
   })
 
-  $("#show_profile_search").on("click", function () {
-    Hue.show_chat_search(Hue.open_profile_username)
+  Hue.el("#show_profile_search").addEventListener("click", function () {
+    Hue.show_chat_search(Hue.open_profile_user_id, "user_id")
   })
 
-  $("#show_profile_hearts_icon").on("click", function () {
+  Hue.el("#show_profile_hearts_icon").addEventListener("click", function () {
     Hue.send_badge(Hue.open_profile_username, "heart")
   })
 
-  $("#show_profile_skulls_icon").on("click", function () {
+  Hue.el("#show_profile_skulls_icon").addEventListener("click", function () {
     Hue.send_badge(Hue.open_profile_username, "skull")
   })
 }
@@ -601,7 +604,7 @@ Hue.play_audioclip = function () {
   let clip = Hue.get_audioclip(Hue.open_profile_user_id)
 
   if (Hue.audioclip && !Hue.audioclip.paused) {
-    if (Hue.audioclip_src.split("?ver=")[0] === Hue.audioclip_src) {
+    if (Hue.audioclip_src === clip) {
       return
     }
 
@@ -636,10 +639,10 @@ Hue.show_profile = function (username, user_id = false) {
   let skulls = 0
   let user = false
 
-  if (username) {
-    user = Hue.get_user_by_username(username)
-  } else if (user_id) {
+  if (user_id) {
     user = Hue.get_user_by_user_id(user_id)
+  } else if (username) {
+    user = Hue.get_user_by_username(username)
   }
 
   if (user_id) {
@@ -649,7 +652,7 @@ Hue.show_profile = function (username, user_id = false) {
   }
 
   if (user) {
-    $("#show_profile_details").css("display", "block")
+    Hue.el("#show_profile_details").style.display = "block"
 
     role = Hue.get_pretty_role_name(user.role)
     bio = user.bio
@@ -663,53 +666,52 @@ Hue.show_profile = function (username, user_id = false) {
     username = user.username
     Hue.open_profile_user = user
   } else {
-    $("#show_profile_details").css("display", "none")
+    Hue.el("#show_profile_details").style.display = "none"
   }
   
   Hue.open_profile_user_id = id
   Hue.open_profile_username = username
   let pi = Hue.get_profilepic(id)
 
-  $("#show_profile_username").text(username)
-  $("#show_profile_role").text(`(${role})`)
-  $("#show_profile_bio")
-    .html(Hue.utilz.make_html_safe(bio).replace(/\n+/g, " <br> "))
-    .urlize()
+  Hue.el("#show_profile_username").textContent = username
+  Hue.el("#show_profile_role").textContent = `(${role})`
+  Hue.el("#show_profile_bio").innerHTML =
+    Hue.utilz.make_html_safe(bio).replace(/\n+/g, " <br> ")
+  Hue.urlize(Hue.el("#show_profile_bio"))
 
-  $("#show_profilepic").attr("src", pi)
+  Hue.el("#show_profilepic").src = pi
 
   if (user) {
-    $("#show_profile_whisper").css("display", "block")
-    $("#show_profile_hearts").css("display", "flex")
-    $("#show_profile_skulls").css("display", "flex")
-    $("#show_profile_sync_tv").css("display", "flex") 
+    Hue.el("#show_profile_whisper").style.display = "block"
+    Hue.el("#show_profile_hearts").style.display = "flex"
+    Hue.el("#show_profile_skulls").style.display = "flex"
+    Hue.el("#show_profile_sync_tv").style.display = "flex"
 
     Hue.set_hearts_counter(hearts)
     Hue.set_skulls_counter(skulls)
   } else {
-    $("#show_profile_whisper").css("display", "none")
-    $("#show_profile_hearts").css("display", "none")
-    $("#show_profile_skulls").css("display", "none")
-    $("#show_profile_sync_tv").css("display", "none")
+    Hue.el("#show_profile_whisper").style.display = "none"
+    Hue.el("#show_profile_hearts").style.display = "none"
+    Hue.el("#show_profile_skulls").style.display = "none"
+    Hue.el("#show_profile_sync_tv").style.display = "none"
   }
 
-  $("#show_profile_user").data("username", username)
-  $("#show_profile_info").html("")
+  Hue.dataset(Hue.el("#show_profile_user"), "username", username)
+  Hue.el("#show_profile_info").innerHTML = ""
 
   if (user) {
-    let item = document.createElement("div")
+    let item = Hue.div()
     let nicedate = Hue.utilz.nice_date(user.date_joined)
     let timeago = Hue.utilz.timeago(user.date_joined)
     item.textContent = `Got Online: ${timeago}`
     item.title = nicedate
-    $("#show_profile_info").append(item)
+    Hue.el("#show_profile_info").append(item)
   }
 
-  let item = document.createElement("div")
+  let item = Hue.div()
   item.textContent = `ID: ${id}`
-  $("#show_profile_info").append(item)
-  
-  Hue.horizontal_separator($("#show_profile_badges")[0])
+  Hue.el("#show_profile_info").append(item)
+  Hue.horizontal_separator(Hue.el("#show_profile_badges"))
 
   Hue.msg_profile.show(function () {
     Hue.play_audioclip()
@@ -728,7 +730,7 @@ Hue.profilepic_changed = function (data) {
   let src = Hue.get_profilepic(data.user_id)
 
   if (data.user_id === Hue.user_id) {
-    $("#user_menu_profilepic").attr("src", src)
+    Hue.el("#user_menu_profilepic").src = src
   }
 
   Hue.show_room_notification(
@@ -812,38 +814,38 @@ Hue.set_role = function (rol, config = true) {
     Hue.config_main_menu()
   }
 
-  $("#user_menu_role").text(`(${Hue.get_pretty_role_name(rol)})`)
+  Hue.el("#user_menu_role").textContent = `(${Hue.get_pretty_role_name(rol)})`
 }
 
 // Bans a user
-Hue.ban = function (uname) {
+Hue.ban = function (username) {
   if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
-  if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
-    if (uname === Hue.username) {
+  if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
+    if (username === Hue.username) {
       Hue.checkmsg("You can't ban yourself")
       return false
     }
 
-    Hue.socket_emit("ban", { username: uname })
+    Hue.socket_emit("ban", { username: username })
   }
 }
 
 // Unbans a user
-Hue.unban = function (uname) {
+Hue.unban = function (username) {
   if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
-  if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
-    if (uname === Hue.username) {
+  if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
+    if (username === Hue.username) {
       Hue.checkmsg("You can't unban yourself")
       return false
     }
 
-    Hue.socket_emit("unban", { username: uname })
+    Hue.socket_emit("unban", { username: username })
   }
 }
 
@@ -861,30 +863,30 @@ Hue.receive_ban_count = function (data) {
 }
 
 // Kicks a user
-Hue.kick = function (uname) {
+Hue.kick = function (username) {
   if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
-  if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
-    if (uname === Hue.username) {
+  if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
+    if (username === Hue.username) {
       Hue.checkmsg("You can't kick yourself")
       return false
     }
 
-    if (!Hue.usernames.includes(uname)) {
+    if (!Hue.usernames.includes(username)) {
       Hue.user_not_in_room()
       return false
     }
 
-    let rol = Hue.get_role(uname)
+    let rol = Hue.get_role(username)
 
     if ((rol === "admin" || rol === "op") && Hue.role !== "admin") {
       Hue.forbidden_user()
       return false
     }
 
-    Hue.socket_emit("kick", { username: uname })
+    Hue.socket_emit("kick", { username: username })
   }
 }
 
@@ -1017,78 +1019,16 @@ Hue.on_badge_received = function (data) {
   }
 
   Hue.replace_property_in_userlist_by_username(data.username, prop, prop_value)
-
-  if (Hue.app_focused) {
-    let message = Hue.get_last_chat_message_by_username(data.username)
-
-    if (message) {
-      let profilepic_container = $(message)
-        .find(".chat_profilepic_container")
-        .eq(0)
-      Hue.change_profilepic_badge(profilepic_container, data.type)
-    }
-  }
-}
-
-// Changes the profile image of a user receiving a badge
-Hue.change_profilepic_badge = function (profilepic_container, type) {
-  Hue.remove_badge_icons(profilepic_container)
-  profilepic_container.addClass(`${type}_badge`)
-  profilepic_container.addClass("profilepic_badge")
-
-  let icon
-
-  if (type === "heart") {
-    icon = "heart-solid"
-  } else if (type === "skull") {
-    icon = "skull"
-  }
-
-  profilepic_container.append(
-    `<svg class='other_icon profilepic_badge_icon ${type}_badge'>
-      <use href='#icon_${icon}'>
-    </svg>`
-  )
-
-  let number = profilepic_container.data("badge_feedback_number")
-
-  if (!number) {
-    number = 1
-  } else {
-    number += 1
-  }
-
-  profilepic_container.data("badge_feedback_number", number)
-
-  setTimeout(function () {
-    let number_2 = profilepic_container.data("badge_feedback_number")
-
-    if (number !== number_2) {
-      return false
-    }
-
-    Hue.remove_badge_icons(profilepic_container)
-  }, Hue.config.badge_feedback_duration)
-}
-
-// Removes badge icons from profile image container
-Hue.remove_badge_icons = function (profilepic_container) {
-  profilepic_container.removeClass("heart_badge")
-  profilepic_container.removeClass("skull_badge")
-  profilepic_container.removeClass(`profilepic_badge`)
-  profilepic_container.find(".profilepic_badge_icon").each(function () {
-    $(this).remove()
-  })
 }
 
 // Sets the hearts counter in the profile window
 Hue.set_hearts_counter = function (hearts) {
-  $("#show_profile_hearts_counter").text(Hue.utilz.format_number(hearts))
+  Hue.el("#show_profile_hearts_counter").textContent = Hue.utilz.format_number(hearts)
 }
 
 // Sets the skulls counter in the profile window
 Hue.set_skulls_counter = function (skulls) {
-  $("#show_profile_skulls_counter").text(Hue.utilz.format_number(skulls))
+  Hue.el("#show_profile_skulls_counter").textContent = Hue.utilz.format_number(skulls)
 }
 
 // If username is valid and it is not in all_usernames add it
@@ -1134,7 +1074,7 @@ Hue.audioclip_changed = function (data) {
 
 // Superuser command to change a user's username
 Hue.modusername = function (arg) {
-  let original_uname, new_uname
+  let original_username, new_username
 
   if (arg.includes(" > ")) {
     let split = arg.split(" > ")
@@ -1143,8 +1083,8 @@ Hue.modusername = function (arg) {
       return false
     }
 
-    original_uname = split[0].trim()
-    new_uname = split[1].trim()
+    original_username = split[0].trim()
+    new_username = split[1].trim()
   } else {
     let split = arg.split(" ")
 
@@ -1152,29 +1092,29 @@ Hue.modusername = function (arg) {
       return false
     }
 
-    original_uname = split[0].trim()
-    new_uname = split[1].trim()
+    original_username = split[0].trim()
+    new_username = split[1].trim()
   }
 
-  if (!original_uname || !new_uname) {
+  if (!original_username || !new_username) {
     return false
   }
 
-  if (original_uname === new_uname) {
+  if (original_username === new_username) {
     return false
   }
 
-  if (new_uname.length > Hue.config.max_username_length) {
+  if (new_username.length > Hue.config.max_username_length) {
     Hue.checkmsg("Username is too long")
     return false
   }
 
-  if (Hue.utilz.clean_username(new_uname) !== new_uname) {
+  if (Hue.utilz.clean_username(new_username) !== new_username) {
     Hue.checkmsg("Username contains invalid characters")
     return false
   }
 
-  Hue.socket_emit("modusername", {original:original_uname, new:new_uname})
+  Hue.socket_emit("modusername", {original:original_username, new:new_username})
 }
 
 // Superuser command to change a user's password

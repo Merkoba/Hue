@@ -23,10 +23,10 @@
 					return false
 				}
 
-				$("#login_username").val($("#login_username").val().trim())
+				Hue.el("#login_username").value = Hue.el("#login_username").value.trim()
 
-				let username = $("#login_username").val()
-				let password = $("#login_password").val()
+				let username = Hue.el("#login_username").value
+				let password = Hue.el("#login_password").value
 
 				if (username.length === 0) {
 					set_message("Username can't be empty")
@@ -48,7 +48,7 @@
 					return false
 				}
 
-				$("#btn_login").prop("disabled", true)
+				Hue.el("#btn_login").disabled = true
 
 				return true
 			}
@@ -84,10 +84,10 @@
 		</div>
 
 		<script>
-			$("#login_username").trigger("focus")
+			Hue.el("#login_username").focus()
 
 			if(form_username && form_username !== "undefined") {
-				$("#login_username").val(form_username)
+				Hue.el("#login_username").value = form_username
 			}
 		</script>
 	</body>

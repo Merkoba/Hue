@@ -1,18 +1,18 @@
 // Setups change events for the room menu widgets
 Hue.setup_room_menu = function () {
-  $("#admin_background_color").on("change", function () {
-    Hue.change_background_color($(this).val())
+  Hue.el("#admin_background_color").addEventListener("change", function () {
+    Hue.change_background_color(this.value)
   })
 
-  $("#admin_text_color").on("change", function () {
-    Hue.change_text_color($(this).val())
+  Hue.el("#admin_text_color").addEventListener("change", function () {
+    Hue.change_text_color(this.value)
   })
 
-  $("#admin_room_name").on("blur", function () {
-    let name = Hue.utilz.clean_string2($(this).val())
+  Hue.el("#admin_room_name").addEventListener("blur", function () {
+    let name = Hue.utilz.clean_string2(this.value)
 
     if (name === "") {
-      $("#admin_room_name").val(Hue.room_name)
+      Hue.el("#admin_room_name").value = Hue.room_name
       return false
     }
 
@@ -21,11 +21,11 @@ Hue.setup_room_menu = function () {
     }
   })
 
-  $("#admin_topic").on("blur", function () {
-    let t = Hue.utilz.clean_string2($(this).val())
+  Hue.el("#admin_topic").addEventListener("blur", function () {
+    let t = Hue.utilz.clean_string2(this.value)
 
     if (t === "") {
-      $("#admin_topic").val(Hue.topic)
+      Hue.el("#admin_topic").value = Hue.topic
       return false
     }
 
@@ -34,25 +34,25 @@ Hue.setup_room_menu = function () {
     }
   })
 
-  $("#admin_background").on("error", function () {
-    if ($(this).attr("src") !== Hue.config.background_loading_url) {
-      $(this).attr("src", Hue.config.background_loading_url)
+  Hue.el("#admin_background").addEventListener("error", function () {
+    if (this.src !== Hue.config.background_loading_url) {
+      this.src = Hue.config.background_loading_url
     }
   })
 
-  $("#room_menu_more_admin_activity").on("click", function () {
+  Hue.el("#room_menu_more_admin_activity").addEventListener("click", function () {
     Hue.request_admin_activity()
   })
 
-  $("#room_menu_more_admin_list").on("click", function () {
+  Hue.el("#room_menu_more_admin_list").addEventListener("click", function () {
     Hue.request_admin_list()
   })
 
-  $("#room_menu_more_ban_list").on("click", function () {
+  Hue.el("#room_menu_more_ban_list").addEventListener("click", function () {
     Hue.request_ban_list()
   })
 
-  $("#admin_background").on("click", function () {
+  Hue.el("#admin_background").addEventListener("click", function () {
     Hue.open_background_select()
   })
 }
@@ -80,14 +80,11 @@ Hue.config_admin_background = function () {
     return false
   }
 
-  if (Hue.background !== $("#admin_background").attr("src")) {
+  if (Hue.background !== Hue.el("#admin_background").src) {
     if (Hue.background !== "") {
-      $("#admin_background").attr("src", Hue.background)
+      Hue.el("#admin_background").src = Hue.background
     } else {
-      $("#admin_background").attr(
-        "src",
-        Hue.config.default_background_url
-      )
+      Hue.el("#admin_background").src = Hue.config.default_background_url
     }
   }
 }
@@ -98,7 +95,7 @@ Hue.config_admin_text_color = function () {
     return false
   }
 
-  $("#admin_text_color").val(Hue.text_color)
+  Hue.el("#admin_text_color").value = Hue.text_color
 }
 
 // Updates the background color widget in the room menu based on current state
@@ -107,7 +104,7 @@ Hue.config_admin_background_color = function () {
     return false
   }
 
-  $("#admin_background_color").val(Hue.background_color)
+  Hue.el("#admin_background_color").value = Hue.background_color
 }
 
 // Updates the room name widget in the room menu based on current state
@@ -116,7 +113,7 @@ Hue.config_admin_room_name = function () {
     return false
   }
 
-  $("#admin_room_name").val(Hue.room_name)
+  Hue.el("#admin_room_name").value = Hue.room_name
 }
 
 // Updates the topic widget in the room menu based on current state
@@ -125,5 +122,5 @@ Hue.config_admin_topic = function () {
     return false
   }
 
-  $("#admin_topic").val(Hue.topic)
+  Hue.el("#admin_topic").value = Hue.topic
 }

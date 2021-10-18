@@ -27,10 +27,7 @@ module.exports = function (
     }
 
     handler.process_message_links(data.message, function (response) {
-      let id
-      let date
-      let edited
-      let uname
+      let id, date, edited, username
 
       if (data.edit_id) {
         let messages = vars.rooms[socket.hue_room_id].log_messages
@@ -46,7 +43,7 @@ module.exports = function (
             if (message.data.user_id === socket.hue_user_id) {
               message.data.content = data.message
               message.data.edited = true
-              uname = message.data.username
+              username = message.data.username
               date = message.date
               edited = true
               vars.rooms[socket.hue_room_id].log_messages_modified = true
@@ -67,14 +64,14 @@ module.exports = function (
       } else {
         date = Date.now()
         id = handler.generate_message_id()
-        uname = socket.hue_username
+        username = socket.hue_username
         edited = false
       }
 
       handler.room_emit(socket, "chat_message", {
         id: id,
         user_id: socket.hue_user_id,
-        username: uname,
+        username: username,
         message: data.message,
         date: date,
         link_title: response.title,
@@ -92,7 +89,7 @@ module.exports = function (
           date: date,
           data: {
             user_id: socket.hue_user_id,
-            username: uname,
+            username: username,
             content: data.message,
             link_title: response.title,
             link_description: response.description,

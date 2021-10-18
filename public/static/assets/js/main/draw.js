@@ -90,9 +90,9 @@ Hue.draw_image_add_sector = function () {
 
 // Setups the draw image window
 Hue.setup_draw_image = function () {
-  Hue.draw_image_context = $("#draw_image_area")[0].getContext("2d")
+  Hue.draw_image_context =Hue.el("#draw_image_area").getContext("2d")
 
-  $("#draw_image_area").on("mousedown", function (e) {
+ Hue.el("#draw_image_area").addEventListener("mousedown", function (e) {
     if (Hue.draw_image_mode === "bucket") {
       return false
     }
@@ -104,7 +104,7 @@ Hue.setup_draw_image = function () {
     Hue.redraw_draw_image()
   })
 
-  $("#draw_image_area").mousemove(function (e) {
+ Hue.el("#draw_image_area").addEventListener("mousemove", function (e) {
     if (Hue.mouse_is_down) {
       Hue.draw_image_add_click(
         e.offsetX,
@@ -117,11 +117,11 @@ Hue.setup_draw_image = function () {
     Hue.draw_image_just_entered = false
   })
 
-  $("#draw_image_area").mouseenter(function (e) {
+ Hue.el("#draw_image_area").addEventListener("mouseenter", function (e) {
     Hue.draw_image_just_entered = true
   })
 
-  $("#draw_image_area").on("click", function (e) {
+ Hue.el("#draw_image_area").addEventListener("click", function (e) {
     if (Hue.draw_image_mode === "bucket") {
       let result = Hue.draw_image_bucket_fill(e.offsetX, e.offsetY)
 
@@ -132,27 +132,27 @@ Hue.setup_draw_image = function () {
     }
   })
 
-  $("#draw_image_mode_select_pencil").on("click", function () {
+ Hue.el("#draw_image_mode_select_pencil").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("pencil")
   })
 
-  $("#draw_image_mode_select_bucket").on("click", function () {
+ Hue.el("#draw_image_mode_select_bucket").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("bucket")
   })
 
-  $("#draw_image_undo").on("click", function () {
+ Hue.el("#draw_image_undo").addEventListener("click", function () {
     Hue.draw_image_undo()
   })
 
-  $("#draw_image_redo").on("click", function () {
+ Hue.el("#draw_image_redo").addEventListener("click", function () {
     Hue.draw_image_redo()
   })
 
-  $("#draw_image_clear").on("click", function () {
+ Hue.el("#draw_image_clear").addEventListener("click", function () {
     Hue.needs_confirm("clear_draw_image_func")
   })
 
-  $("#draw_image_upload").on("click", function () {
+ Hue.el("#draw_image_upload").addEventListener("click", function () {
     Hue.upload_draw_image()
   })
   
@@ -162,31 +162,31 @@ Hue.setup_draw_image = function () {
     select += `<option value="${i}">${i}</option>`
   }
 
-  $("#draw_image_pencil_size").html(select)
+ Hue.el("#draw_image_pencil_size").innerHTML = select
   Hue.draw_image_prepare_settings()
   Hue.clear_draw_image_state()
 }
 
 // Prepares initial settings for the draw image window
 Hue.draw_image_prepare_settings = function () {  
-  $("#draw_image_pencil_color").on("click", function () {
+ Hue.el("#draw_image_pencil_color").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("pencil")
   })
 
-  $("#draw_image_pencil_color").on("change", function () {
-    Hue.draw_image_pencil_color = $(this).val()
+ Hue.el("#draw_image_pencil_color").addEventListener("change", function () {
+    Hue.draw_image_pencil_color = this.value
   })
 
-  $("#draw_image_bucket_color").on("click", function () {
+ Hue.el("#draw_image_bucket_color").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("bucket")
   })
 
-  $("#draw_image_bucket_color").on("change", function () {
-    Hue.draw_image_bucket_color = $(this).val()
+ Hue.el("#draw_image_bucket_color").addEventListener("change", function () {
+    Hue.draw_image_bucket_color = this.value
   })
 
-  $("#draw_image_pencil_size").on("change", function () {
-    Hue.draw_image_pencil_size = $(this).val()
+ Hue.el("#draw_image_pencil_size").addEventListener("change", function () {
+    Hue.draw_image_pencil_size = this.value
   })
 }
 
@@ -194,11 +194,11 @@ Hue.draw_image_prepare_settings = function () {
 // Changes the appearance of the widgets to reflect this
 Hue.set_draw_image_mode_input = function (m) {
   if (m === "pencil") {
-    $("#draw_image_mode_select_pencil").addClass("modal_icon_selected")
-    $("#draw_image_mode_select_bucket").removeClass("modal_icon_selected")
+   Hue.el("#draw_image_mode_select_pencil").classList.add("modal_icon_selected")
+   Hue.el("#draw_image_mode_select_bucket").classList.remove("modal_icon_selected")
   } else if (m === "bucket") {
-    $("#draw_image_mode_select_bucket").addClass("modal_icon_selected")
-    $("#draw_image_mode_select_pencil").removeClass("modal_icon_selected")
+   Hue.el("#draw_image_mode_select_bucket").classList.add("modal_icon_selected")
+   Hue.el("#draw_image_mode_select_pencil").classList.remove("modal_icon_selected")
   }
 
   Hue.draw_image_mode = m
@@ -248,23 +248,22 @@ Hue.increase_draw_image_snapshot = function (data) {
 Hue.clear_draw_image_state = function () {
   let context = Hue.draw_image_context
   let bg_hex = Hue.colorlib.get_random_hex()
-  
+
   context.fillStyle = bg_hex
   context.fillRect(0, 0, context.canvas.width, context.canvas.height)
-  
+
   Hue.draw_image_pencil_color = Hue.colorlib.get_lighter_or_darker(bg_hex, 0.6)
   Hue.draw_image_bucket_color = Hue.colorlib.get_random_hex()
-  $("#draw_image_pencil_color").val(Hue.draw_image_pencil_color)
-  $("#draw_image_bucket_color").val(Hue.draw_image_bucket_color)
-  
+  Hue.el("#draw_image_pencil_color").value = Hue.draw_image_pencil_color
+  Hue.el("#draw_image_bucket_color").value = Hue.draw_image_bucket_color
+
   Hue.set_draw_image_mode_input("pencil")
   Hue.draw_image_pencil_size = 8
 
-  $("#draw_image_pencil_size")
-  .find("option")
-  .each(function () {
-    if ($(this).val() == Hue.draw_image_pencil_size) {
-      $(this).prop("selected", true)
+  Hue.el("#draw_image_pencil_size").querySelectorAll("option")
+  .forEach(it => {
+    if (it.value == Hue.draw_image_pencil_size) {
+      it.selected = true
     }
   })
 
@@ -418,7 +417,7 @@ Hue.upload_draw_image = function () {
     return false
   }
 
-  $("#draw_image_area")[0].toBlob(
+ Hue.el("#draw_image_area").toBlob(
     function (blob) {
       blob.name = "draw_image.png"
       

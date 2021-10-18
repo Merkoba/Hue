@@ -5,7 +5,7 @@
 const Hue = {}
 
 // This enables information about socket calls to the server in the console
-Hue.debug_socket = false
+Hue.debug_socket = true
 
 // This wraps all functions with a function
 // It shows every triggered function name
@@ -64,7 +64,7 @@ Hue.wheel_delay = 100
 Hue.wheel_delay_2 = 25
 Hue.emit_queue = []
 Hue.app_focused = false
-Hue.message_unames = ""
+Hue.message_usernames = ""
 Hue.aura_timeouts = {}
 Hue.mouse_is_down = false
 Hue.user_leaving = false
@@ -73,14 +73,13 @@ Hue.active_modal = false
 Hue.activity_list = []
 Hue.editing_message = false
 Hue.editing_message_container = false
-Hue.editing_message_area = $("<div></div>")[0]
+Hue.editing_message_area = document.createElement("div")
 Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 250
 Hue.sending_whisper = false
 Hue.chat_scrolled = false
 Hue.lockscreen_peek_delay = 500
 Hue.lockscreen_peek_active = false
-Hue.context_menu_open = false
 Hue.image_upload_comment_file = false
 Hue.image_upload_comment_type = false
 Hue.tv_upload_comment_file = false
@@ -110,7 +109,6 @@ Hue.tv_locked = false
 Hue.fresh_messages_list = []
 Hue.max_fresh_messages = 100
 Hue.fresh_messages_duration = 2000
-Hue.chat_crop_limit = 500
 Hue.old_input_val = ""
 Hue.old_reply_input_val = ""
 Hue.notifications_count = 0
@@ -131,6 +129,8 @@ Hue.draw_image_max_levels = 200
 Hue.draw_image_open = false
 Hue.last_message_date = 0
 Hue.update_userlist_delay = 2000
+Hue.dataset_obj = {}
+Hue.dataset_id = 0
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -167,7 +167,6 @@ Hue.init = function () {
   Hue.start_image_events()
   Hue.start_dropzone()
   Hue.activate_visibility_listener()
-  Hue.copypaste_events()
   Hue.scroll_events()
   Hue.resize_events()
   Hue.start_chat_mouse_events()
@@ -185,7 +184,6 @@ Hue.init = function () {
   Hue.setup_message_window()
   Hue.setup_autocomplete()
   Hue.setup_fonts()
-  Hue.setup_iframe_video()
   Hue.show_console_message()
   Hue.setup_expand_image()
   Hue.setup_local_storage()
