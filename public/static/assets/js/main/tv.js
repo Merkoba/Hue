@@ -477,7 +477,7 @@ Hue.change_tv_visibility = function (play = false) {
             type: "tv",
             force: true,
             play: play,
-            current_source: Hue.room_state.tv_locked,
+            current_source: Hue.tv_locked
           })
         }
       }
