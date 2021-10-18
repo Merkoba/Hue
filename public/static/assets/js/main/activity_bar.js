@@ -79,16 +79,11 @@ Hue.resize_activity_bar = function () {
 
 // Gets an activity bar item by username
 Hue.get_activity_bar_item_by_user_id = function (id) {
-  let item = false
-
-  Hue.els(".activity_bar_item").forEach(it => {
-    if (Hue.dataset(it, "user_id") === id) {
-      item = it
-      return false
+  for (let item of Hue.els(".activity_bar_item")) {
+    if (Hue.dataset(item, "user_id") === id) {
+      return item
     }
-  })
-
-  return item
+  }
 }
 
 // Removes all items on the activity bar
@@ -102,12 +97,10 @@ Hue.clear_activity_bar_items = function () {
 
 // Updates the profile image of an item in the activity bar
 Hue.update_activity_bar_image = function (id, src) {
-  Hue.el("#activity_bar_inner")
-  .querySelectorAll(".activity_bar_item")
-  .forEach(it => {
-    if (Hue.dataset(it, "user_id") === id) {
-      it.querySelector(".activity_bar_image").src = src
-      return false
+  for (let item of Hue.els(".activity_bar_item")) {
+    if (Hue.dataset(item, "user_id") === id) {
+      item.querySelector(".activity_bar_image").src = src
+      return
     }
-  })
+  }
 }

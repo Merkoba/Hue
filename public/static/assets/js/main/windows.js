@@ -613,7 +613,7 @@ Hue.do_modal_filter = function (id = false) {
     Hue[`${id}_filtered`] = true
   } else {
     items.forEach(it => {
-      this.style.display = display
+      it.style.display = display
     })
 
     Hue[`${id}_filtered`] = false
