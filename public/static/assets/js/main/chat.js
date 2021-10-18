@@ -399,13 +399,13 @@ Hue.add_to_chat = function (args = {}) {
     content_container.classList.add(`chat_content_container_${Hue.chat_content_container_id}`)
 
     if (args.just_edited && args.id) {
-      Hue.els(".chat_content_container").forEach(it => {
-        if (Hue.dataset(it, "id") === args.id) {
-          it.replaceWith(Hue.clone(content_container))
+      for (let item of Hue.els(".chat_content_container")) {
+        if (Hue.dataset(item, "id") === args.id) {
+          item.replaceWith(Hue.clone(content_container))
           Hue.goto_bottom()
-          return false
+          break
         }
-      })
+      }
 
       return false
     }
@@ -893,23 +893,23 @@ Hue.send_delete_message = function (id) {
 // Remove a message from the chat
 Hue.remove_message_from_chat = function (data) {
   if (data.type === "chat") {
-    Hue.els(".chat_content_container").forEach(it => {
-      if (Hue.dataset(it, "id") == data.id) {
-        Hue.process_remove_chat_message(it)
-        return false
+    for (let item of Hue.els(".chat_content_container")) {
+      if (Hue.dataset(item, "id") == data.id) {
+        Hue.process_remove_chat_message(item)
+        break
       }
-    })
+    }
   } else if (
     data.type === "announcement" ||
     data.type === "image" ||
     data.type === "tv"
   ) {
-    Hue.els(".message.announcement").forEach(it => {
-      if (Hue.dataset(it, "id") == data.id) {
-        Hue.process_remove_announcement(it)
-        return false
+    for (let item of Hue.els(".message.announcement")) {
+      if (Hue.dataset(item, "id") == data.id) {
+        Hue.process_remove_announcement(item)
+        break
       }
-    })
+    }
   }
 
   Hue.goto_bottom()

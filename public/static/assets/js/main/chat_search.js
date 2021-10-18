@@ -16,13 +16,13 @@ Hue.show_chat_search = function (filter = "", mode = "normal") {
 
   if (filter.trim()) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
-    let clone = Hue.clone_children("#chat_area").reverse()
+    let messages = Hue.clone_children("#chat_area").reverse()
 
-    clone.forEach(it => {
+    messages.forEach(it => {
       it.removeAttribute("id")
     })
 
-    clone = clone.filter(it => {
+    messages = messages.filter(it => {
       if (mode === "user_id") {
         let user_id = Hue.dataset(it, "user_id")
         return filter === user_id
@@ -46,9 +46,9 @@ Hue.show_chat_search = function (filter = "", mode = "normal") {
       return text_cmp || source_cmp
     })
 
-    if (clone.length) {
-      for (let el of clone) {
-        Hue.el("#chat_search_container").append(el)
+    if (messages.length) {
+      for (let message of messages) {
+        Hue.el("#chat_search_container").append(message)
       }
     } 
   } else {

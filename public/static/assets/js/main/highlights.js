@@ -58,27 +58,11 @@ Hue.get_latest_highlight = function () {
   let latest_highlight = false
   let items = Hue.els("#chat_area .chat_content_container")
 
-  items.reverse().forEach(it => {
-    if (Hue.dataset(it, "highlighted")) {
-      latest_highlight = it
-      return false
+  for (let item of items.reverse()) {
+    if (Hue.dataset(item, "highlighted")) {
+      latest_highlight = item
+      break
     }
-  })
-
-  if (latest_highlight) {
-    let items = Hue.els("#chat_area > .message.announcement")
-
-    items.reverse().forEach(
-      function (it) {
-        if (Hue.dataset(it, "highlighted")) {
-          if (Hue.dataset(it, "date") > Hue.dataset(latest_highlight, "date")) {
-            latest_highlight = this
-          }
-
-          return false
-        }
-      }
-    )
   }
 
   return latest_highlight
@@ -116,16 +100,16 @@ Hue.show_highlights = function (filter = "") {
   Hue.el("#highlights_container").innerHTML = ""
   Hue.el("#highlights_filter").value = filter ? filter : ""
 
-  let clone = Hue.clone_children("#chat_area").reverse()
+  let messages = Hue.clone_children("#chat_area").reverse()
 
-  clone.forEach(it => {
+  messages.forEach(it => {
     it.removeAttribute("id")
   })
 
   if (filter.trim()) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
 
-    clone = clone.filter(it => {
+    messages = messages.filter(it => {
       if (!Hue.dataset(it, "highlighted")) {
         return false
       }
@@ -147,7 +131,7 @@ Hue.show_highlights = function (filter = "") {
       return text_cmp || source_cmp
     })
   } else {
-    clone = clone.filter(it => {
+    messages = messages.filter(it => {
       if (!Hue.dataset(it, "highlighted")) {
         return false
       }
@@ -156,8 +140,10 @@ Hue.show_highlights = function (filter = "") {
     })
   }
 
-  if (clone.children.length) {
-    Hue.el("#highlights_container").append(clone)
+  if (messages.length) {
+    for (let message of messages) {
+      Hue.el("#highlights_container").append(message)
+    }
   }
 
   Hue.msg_highlights.show(function () {

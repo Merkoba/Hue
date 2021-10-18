@@ -554,12 +554,12 @@ Hue.decrease_tv_percentage = function () {
 Hue.get_visible_video_frame_id = function () {
   let id = false
 
-  Hue.els(".video_frame").forEach(it => {
-    if (it.parentElement.style.display !== "none") {
-      id = it.id
-      return false
+  for (let item of Hue.els(".video_frame")) {
+    if (item.parentElement.style.display !== "none") {
+      id = item.id
+      break
     }
-  })
+  }
 
   return id
 }

@@ -168,13 +168,15 @@ Hue.check_last_message_board_post = function () {
     if (!Hue.msg_message_board.is_open()) {
       let count = 0
 
-      Hue.el("#message_board_container").querySelectorAll(".message_board_item").forEach(it => {
-        if (Hue.dataset(it, "date") <= date) {
-          return false
-        }
+      let items = Hue.els(".message_board_item")
 
+      for (let item of items) {
+        if (Hue.dataset(item, "date") <= date) {
+          break
+        }
+  
         count += 1
-      })
+      }
 
       Hue.el("#header_message_board_count").textContent = `(${count})`
     } else {
@@ -214,13 +216,12 @@ Hue.check_message_board_permissions = function () {
 
 // Remove a post from the message board window
 Hue.remove_message_board_post = function (data) {
-  Hue.el("#message_board_container").querySelectorAll(".message_board_item")
-    .forEach(it => {
-      if (Hue.dataset(it, "id") === data.id) {
-        it.remove()
-        return false
-      }
-    })
+  for (let item of Hue.els(".message_board_item")) {
+    if (Hue.dataset(item, "id") === data.id) {
+      item.remove()
+      break
+    }
+  }
 
   Hue.check_last_message_board_post()
 }
