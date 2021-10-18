@@ -2097,6 +2097,23 @@ pre {
 	white-space: pre-wrap;
 }
 
+#chat_area .heart_badge {
+	background-color: red;
+	color: white;
+}
+
+#chat_area .skull_badge {
+	background-color: black;
+}
+
+#chat_area .profilepic_badge > .chat_profilepic {
+	display: none
+}
+
+#chat_area .profilepic_badge > .profilepic_badge_icon {
+	box-shadow: none;
+}
+
 .info_popup_item {
 	display: flex;
 	flex-direction: row;

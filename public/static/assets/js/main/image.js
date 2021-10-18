@@ -263,7 +263,7 @@ Hue.change_image_visibility = function () {
   if (Hue.room_state.image_enabled) {
     Hue.el("#media").style.display = "flex"
     Hue.el("#media_image").style.display = "flex"
-    Hue.el("#footer_toggle_image_icon").querySelector("use").href = "#icon_toggle-on"
+    Hue.el("#footer_toggle_image_icon").querySelector("use").href.baseVal = "#icon_toggle-on"
 
     if (Hue.first_media_change && Hue.started) {
       Hue.change({ type: "image" })
@@ -280,7 +280,7 @@ Hue.change_image_visibility = function () {
       Hue.hide_media()
     }
 
-    Hue.el("#footer_toggle_image_icon").querySelector("use").href = "#icon_toggle-off"
+    Hue.el("#footer_toggle_image_icon").querySelector("use").href.baseVal = "#icon_toggle-off"
     Hue.image_visible = false
   }
 
