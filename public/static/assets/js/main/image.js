@@ -285,7 +285,7 @@ Hue.change_image_visibility = function () {
   }
 
   if (Hue.tv_visible) {
-    Hue.fix_visible_video_frame()
+    Hue.fix_visible_tv_frame()
   }
 
   Hue.goto_bottom()

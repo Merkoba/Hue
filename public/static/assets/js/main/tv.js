@@ -160,20 +160,20 @@ Hue.push_tv_changed = function (data) {
 
 // Stops all defined tv players
 Hue.stop_tv = function () {
-  if (Hue.youtube_player) {
-    Hue.youtube_player.pauseVideo()
+  if (Hue.youtube_tv_player) {
+    Hue.youtube_tv_player.pauseVideo()
   }
 
-  if (Hue.twitch_player) {
-    Hue.twitch_player.pause()
+  if (Hue.twitch_tv_player) {
+    Hue.twitch_tv_player.pause()
   }
 
-  if (Hue.soundcloud_player) {
-    Hue.soundcloud_player.pause()
+  if (Hue.soundcloud_tv_player) {
+    Hue.soundcloud_tv_player.pause()
   }
 
-  if (Hue.el("#media_video")) {
-    Hue.el("#media_video").pause()
+  if (Hue.el("#media_video_tv")) {
+    Hue.el("#media_video_tv").pause()
   }
 }
 
@@ -184,23 +184,23 @@ Hue.play_tv = function () {
   }
 
   if (Hue.current_tv().type === "youtube") {
-    if (Hue.youtube_player) {
-      Hue.youtube_player.playVideo()
+    if (Hue.youtube_tv_player) {
+      Hue.youtube_tv_player.playVideo()
     }
   } else if (Hue.current_tv().type === "twitch") {
-    if (Hue.twitch_player) {
-      Hue.twitch_player.play()
+    if (Hue.twitch_tv_player) {
+      Hue.twitch_tv_player.play()
     }
   } else if (Hue.current_tv().type === "soundcloud") {
-    if (Hue.soundcloud_player) {
-      Hue.soundcloud_player.play()
+    if (Hue.soundcloud_tv_player) {
+      Hue.soundcloud_tv_player.play()
     }
   } else if (Hue.current_tv().type === "video") {
-    if (Hue.el("#media_video")) {
-      Hue.el("#media_video").play()
+    if (Hue.el("#media_video_tv")) {
+      Hue.el("#media_video_tv").play()
     }
   } else if (Hue.current_tv().type === "iframe") {
-    Hue.el("#media_iframe_video").src = Hue.current_tv().source
+    Hue.el("#media_iframe_tv").src = Hue.current_tv().source
     Hue.el("#media_iframe_poster").style.display = "none"
   } else {
     played = false
@@ -211,16 +211,16 @@ Hue.play_tv = function () {
 // Makes the item's type visible
 Hue.hide_tv = function (item = false) {
   Hue.els("#media_tv .media_container").forEach(it => {
-    let type = it.id.replace("media_", "").replace("_video_container", "")
+    let type = it.id.replace("media_", "").replace("_tv_container", "")
 
     if (!item || item.type !== type) {
       let el = Hue.div("media_container")
       el.id = it.id
       el.style.display = "none"
       it.replaceWith(el)
-      Hue[`${type}_player`] = undefined
-      Hue[`${type}_player_requested`] = false
-      Hue[`${type}_player_request`] = false
+      Hue[`${type}_tv_player`] = undefined
+      Hue[`${type}_tv_player_requested`] = false
+      Hue[`${type}_tv_player_request`] = false
     } else {
       it.style.display = "flex"
     }
@@ -232,15 +232,15 @@ Hue.show_youtube_tv = function (play = true) {
   let item = Hue.loaded_tv
   Hue.before_show_tv(item)
   let id = Hue.utilz.get_youtube_id(item.source)
-  Hue.youtube_video_play_on_queue = play
+  Hue.youtube_tv_play_on_queue = play
 
   if (id[0] === "video") {
-    Hue.youtube_player.cueVideoById({
+    Hue.youtube_tv_player.cueVideoById({
       videoId: id[1],
       startSeconds: Hue.utilz.get_youtube_time(item.source),
     })
   } else if (id[0] === "list") {
-    Hue.youtube_player.cuePlaylist({
+    Hue.youtube_tv_player.cuePlaylist({
       list: id[1][0],
       index: id[1][1]
     })
@@ -258,18 +258,18 @@ Hue.show_twitch_tv = function (play = true) {
   let id = Hue.utilz.get_twitch_id(item.source)
 
   if (id[0] === "video") {
-    Hue.twitch_player.setVideoSource(item.source)
+    Hue.twitch_tv_player.setVideoSource(item.source)
   } else if (id[0] === "channel") {
-    Hue.twitch_player.setChannel(id[1])
+    Hue.twitch_tv_player.setChannel(id[1])
   } else {
     return false
   }
 
   if (play) {
-    Hue.twitch_player.play()
+    Hue.twitch_tv_player.play()
   } else {
-    clearTimeout(Hue.play_twitch_player_timeout)
-    Hue.twitch_player.pause()
+    clearTimeout(Hue.play_twitch_tv_player_timeout)
+    Hue.twitch_tv_player.pause()
   }
 
   Hue.after_show_tv(play)
@@ -280,13 +280,13 @@ Hue.show_soundcloud_tv = function (play = true) {
   let item = Hue.loaded_tv
   Hue.before_show_tv(item)
 
-  Hue.soundcloud_player.load(item.source, {
+  Hue.soundcloud_tv_player.load(item.source, {
     auto_play: false,
     single_active: false,
     show_artwork: true,
     callback: function () {
       if (play) {
-        Hue.soundcloud_player.play()
+        Hue.soundcloud_tv_player.play()
       }
     },
   })
@@ -298,20 +298,21 @@ Hue.show_soundcloud_tv = function (play = true) {
 Hue.show_video_tv = function (play = true) {
   let item = Hue.loaded_tv
 
-  if (!Hue.el("#media_video")) {
-    let s = `<video id='media_video'
+  if (!Hue.el("#media_video_tv")) {
+    let s = `<video id='media_video_tv'
         class='video_frame' width="640px" height="360px"
         preload="none" poster="${Hue.config.default_video_url}" controls></video>
         ${Hue.get_media_info_html("tv")}`
 
-    Hue.el("#media_video_video_container").innerHTML = s
+    Hue.el("#media_video_tv_container").innerHTML = s
   }
 
+
   Hue.before_show_tv(item)
-  Hue.el("#media_video").src = item.source
+  Hue.el("#media_video_tv").src = item.source
 
   if (play) {
-    Hue.el("#media_video").play()
+    Hue.el("#media_video_tv").play()
   }
 
   Hue.after_show_tv()
@@ -321,20 +322,20 @@ Hue.show_video_tv = function (play = true) {
 Hue.show_iframe_tv = function (play = true) {
   let item = Hue.loaded_tv
 
-  if (!Hue.el("#media_iframe_video")) {
+  if (!Hue.el("#media_iframe_tv")) {
     let s = `<div id='media_iframe_poster' class='action'>Click Here To Load</div>
         <iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" 
-        width="640px" height="360px" id='media_iframe_video' class='video_frame'></iframe>
+        width="640px" height="360px" id='media_iframe_tv' class='video_frame'></iframe>
         ${Hue.get_media_info_html("tv")}`
 
-    Hue.el("#media_iframe_video_container").innerHTML = s
-    Hue.setup_iframe_video()
+    Hue.el("#media_iframe_tv_container").innerHTML = s
+    Hue.setup_iframe_tv()
   }
 
   Hue.before_show_tv(item)
 
   if (play) {
-    Hue.el("#media_iframe_video").src = item.source
+    Hue.el("#media_iframe_tv").src = item.source
     Hue.el("#media_iframe_poster").style.display = "none"
   } else {
     Hue.el("#media_iframe_poster").style.display = "block"
@@ -352,7 +353,7 @@ Hue.before_show_tv = function (item) {
 // This gets called after any tv video is loaded
 Hue.after_show_tv = function () {
   Hue.apply_media_info("tv")
-  Hue.fix_visible_video_frame()
+  Hue.fix_visible_tv_frame()
   Hue.focus_input()
 }
 
@@ -483,7 +484,7 @@ Hue.change_tv_visibility = function (play = false) {
       }
     }
 
-    Hue.fix_visible_video_frame()
+    Hue.fix_visible_tv_frame()
   } else {
     Hue.stop_tv()
     Hue.hide_tv()
@@ -570,14 +571,14 @@ Hue.set_default_tv_size = function () {
 }
 
 // Setup for the tv iframe
-Hue.setup_iframe_video = function () {
+Hue.setup_iframe_tv = function () {
   Hue.el("#media_iframe_poster").addEventListener("click", function () {
     Hue.play_tv()
   })
 }
 
 // Updates dimensions of the visible tv frame
-Hue.fix_visible_video_frame = function () {
+Hue.fix_visible_tv_frame = function () {
   let id = Hue.get_visible_video_frame_id()
 
   if (id) {
@@ -601,11 +602,11 @@ Hue.can_sync_tv = function () {
   }
 
   if (Hue.loaded_tv.type === "youtube") {
-    if (!Hue.youtube_player) {
+    if (!Hue.youtube_tv_player) {
       return false
     }
   } else if (Hue.loaded_tv.type === "video") {
-    if (!Hue.el("#media_video")) {
+    if (!Hue.el("#media_video_tv")) {
       return false
     }
   } else {
@@ -645,9 +646,9 @@ Hue.report_tv_progress = function (data) {
   let progress
 
   if (ttype === "youtube") {
-    progress = Math.round(Hue.youtube_player.getCurrentTime())
+    progress = Math.round(Hue.youtube_tv_player.getCurrentTime())
   } else if (ttype === "video") {
-    progress = Math.round(Hue.el("#media_video").currentTime)
+    progress = Math.round(Hue.el("#media_video_tv").currentTime)
   }
 
   if (progress) {
@@ -677,10 +678,10 @@ Hue.receive_tv_progress = function (data) {
 
     let id = Hue.utilz.get_youtube_id(Hue.loaded_tv.source)
 
-    Hue.youtube_video_play_on_queue = true
+    Hue.youtube_tv_play_on_queue = true
 
     if (id[0] === "video") {
-      Hue.youtube_player.cueVideoById({
+      Hue.youtube_tv_player.cueVideoById({
         videoId: id[1],
         startSeconds: data.progress,
       })
@@ -690,8 +691,8 @@ Hue.receive_tv_progress = function (data) {
       return false
     }
 
-    Hue.el("#media_video").currentTime = data.progress
-    Hue.el("#media_video").play()
+    Hue.el("#media_video_tv").currentTime = data.progress
+    Hue.el("#media_video_tv").play()
   }
 }
 

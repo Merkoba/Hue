@@ -404,7 +404,7 @@ Hue.fix_frame = function (frame_id, test_parent_height = false) {
 
 // Updates dimensions of the image and tv
 Hue.fix_frames = function () {
-  Hue.fix_visible_video_frame()
+  Hue.fix_visible_tv_frame()
   Hue.fix_image_frame()
 }
 
@@ -501,8 +501,8 @@ Hue.change = function (args = {}) {
     }
 
     if (item.type !== "video" && item.type !== "iframe") {
-      if (Hue[`${item.type}_player`] === undefined) {
-        Hue.request_media(`${item.type}_player`, args)
+      if (Hue[`${item.type}_tv_player`] === undefined) {
+        Hue.request_media(`${item.type}_tv_player`, args)
         return false
       }
     }
