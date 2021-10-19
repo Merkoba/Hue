@@ -446,7 +446,6 @@ Hue.show_modal_image = function (id = 0) {
     Hue.el("#modal_image_subheader").innerHTML =
       Hue.parse_text(Hue.utilz.make_html_safe(data.comment || data.query))
     Hue.el("#modal_image_subheader").style.display = "block"
-    Hue.setup_whispers_click(Hue.el("#modal_image_subheader"), data.setter)
   } else {
     Hue.el("#modal_image_subheader").style.display = "none"
   }

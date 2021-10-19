@@ -1,3 +1,74 @@
+// Processes whisper commands to determine how to handle the operation
+Hue.process_write_whisper = function (arg, show = true) {
+  let user = Hue.get_user_by_username(arg)
+
+  if (arg.includes(">")) {
+    Hue.send_inline_whisper(arg, show)
+  } else if (user) {
+    Hue.write_popup_message([arg], "user")
+  } else if (arg.includes("&&")) {
+    let split = arg.split("&&").map((x) => x.trim())
+    Hue.write_popup_message(split, "user")
+  } else {
+    let matches = Hue.get_matching_usernames(arg)
+    if (matches.length === 1) {
+      let message = arg.replace(matches[0], "")
+      let arg2 = `${matches[0]} > ${message}`
+      Hue.send_inline_whisper(arg2, show)
+    } else if (matches.length > 1) {
+      Hue.checkmsg(
+        `Multiple usernames matched. Use the proper > syntax. For example ${Hue.config.commands_prefix}whisper bob > hi`
+      )
+      return false
+    } else {
+      Hue.user_not_in_room()
+      return false
+    }
+  }
+}
+
+// Sends a whisper using the inline format (/whisper user > hello)
+Hue.send_inline_whisper = function (arg, show = true) {
+  let split = arg.split(">")
+
+  if (split.length < 2) {
+    return false
+  }
+
+  let username = split[0].trim()
+  let usplit = username.split("&&").map(x => x.trim())
+  let message = Hue.utilz.clean_string2(split.slice(1).join(">"))
+
+  if (!message) {
+    return false
+  }
+
+  let message_split = message.split("\n")
+  let num_lines = message_split.length
+
+  if (num_lines > Hue.config.max_num_newlines) {
+    return false
+  }
+
+  let c_usernames = []
+
+  for (let u of usplit) {
+    let cu = Hue.check_user_in_room(u)
+    
+    if (!cu) {
+      continue
+    }
+
+    c_usernames.push(cu)
+  }
+
+  if (c_usernames.length === 0) {
+    return false
+  }
+
+  Hue.do_send_whisper({message: message, usernames: c_usernames, type: "user"}, show)
+}
+
 // Shows the window to write whispers
 Hue.write_popup_message = function (usernames = [], type = "user") {
   let c_usernames = []
@@ -166,8 +237,6 @@ Hue.show_whisper = function (data) {
     } else {
       button_el.style.display = "none"
     }
-    
-    Hue.setup_whispers_click(text_el, usr[0])
   })
 
   if (!Hue.dataset(data.notification, "read")) {
@@ -232,15 +301,6 @@ Hue.do_send_whisper = function (data, show = true) {
     Hue.show_popup(Hue.make_info_popup(func), item)
     data.notification = Hue.push_whisper(msg, func, true)
   }
-}
-
-// Setups whispers click events
-Hue.setup_whispers_click = function (content, username) {
-  content.querySelectorAll(".whisper_link").forEach(it => {
-    it.addEventListener("click", function () {
-      Hue.write_popup_message([username], "user")
-    })
-  })
 }
 
 // Setups the message window
