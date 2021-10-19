@@ -528,21 +528,18 @@ Hue.apply_media_info = function (type) {
   }
   
   let custom_title
-  let media_type
 
   if (type === "tv") {
     if (item.size) {
       custom_title = `${Hue.utilz.get_size_string(item.size)} upload`
     }
 
-    media_type = "video"
     Hue.media_info_tv_data = [...arguments]
   } else if (type === "image") {
     if (item.size) {
       custom_title = `${Hue.utilz.get_size_string(item.size)} upload`
     }
 
-    media_type = "image"
     Hue.media_info_image_data = [...arguments]
   }
 
@@ -566,7 +563,7 @@ Hue.apply_media_info = function (type) {
     if (item.query) {
       info = item.query
     } else if (item.source) {
-      info = `Linked ${media_type}`
+      info = `Linked ${type}`
     }
   }
 
