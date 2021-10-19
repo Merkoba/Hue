@@ -222,7 +222,7 @@ Hue.get_pretty_role_name = function (p) {
 // Gets a user from the user list by username
 Hue.get_user_by_username = function (username) {
   for (let user of Hue.userlist) {
-    if (user.username === username) {
+    if (user.username.toLowerCase() === username.toLowerCase()) {
       return user
     }
   }
@@ -874,8 +874,7 @@ Hue.kick = function (username) {
       return false
     }
 
-    if (!Hue.usernames.includes(username)) {
-      Hue.user_not_in_room()
+    if (!Hue.check_user_in_room(username)) {
       return false
     }
 
@@ -1236,4 +1235,16 @@ Hue.get_audioclip = function (user_id) {
   }
 
   return pi
+}
+
+// Checks if a user is in the room
+Hue.check_user_in_room = function (username) {
+  let user = Hue.get_user_by_username(username)
+  
+  if (!user) {
+    Hue.user_not_in_room(username)
+    return false
+  }
+
+  return user.username
 }

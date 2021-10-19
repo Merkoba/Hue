@@ -119,7 +119,7 @@ Hue.show_room_notification = function (username, message) {
 
   let f = function () {
     if (user) {
-      Hue.show_profile(username, user.user_id)
+      Hue.show_profile(user.username, user.user_id)
     } else {
       Hue.show_profile(username)
     }

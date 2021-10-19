@@ -81,7 +81,7 @@ module.exports = function (
     ) {
       handler.user_emit(socket, "is_already", {
         what: data.role,
-        who: data.username,
+        who: userinfo.username
       })
       return false
     }
@@ -114,13 +114,13 @@ module.exports = function (
 
     handler.room_emit(socket, "user_role_changed", {
       username1: socket.hue_username,
-      username2: data.username,
+      username2: userinfo.username,
       role: data.role,
     })
 
     handler.push_admin_log_message(
       socket,
-      `changed the role of "${data.username}" to "${data.role}"`
+      `changed the role of "${userinfo.username}" to "${data.role}"`
     )
   }
 
@@ -237,12 +237,12 @@ module.exports = function (
         handler.get_out(socc)
       }
 
-      handler.push_admin_log_message(socket, `banned "${data.username}"`)
+      handler.push_admin_log_message(socket, `banned "${userinfo.username}"`)
     }
 
     handler.room_emit(socket, "user_banned", {
       username1: socket.hue_username,
-      username2: data.username,
+      username2: userinfo.username,
     })
 
     info.bans.push(id)
@@ -302,10 +302,10 @@ module.exports = function (
 
     handler.room_emit(socket, "user_unbanned", {
       username1: socket.hue_username,
-      username2: data.username,
+      username2: userinfo.username,
     })
 
-    handler.push_admin_log_message(socket, `unbanned "${data.username}"`)
+    handler.push_admin_log_message(socket, `unbanned "${userinfo.username}"`)
   }
 
   // Checks if socket is admin or op
@@ -524,10 +524,10 @@ module.exports = function (
       method: "badge_received",
       data: {
         user_id: first_socket.hue_user_id,
-        username: data.username,
+        username: first_socket.hue_username,
         badges: badges,
-        type: data.type,
-      },
+        type: data.type
+      }
     })
 
     // Update  the badge date on every socket

@@ -27,6 +27,7 @@ module.exports = function (
     }
 
     let old_username = socket.hue_username
+    
     let done = await db_manager.change_username(
       socket.hue_user_id,
       data.username
@@ -46,7 +47,7 @@ module.exports = function (
       )
     } else {
       handler.user_emit(socket, "username_already_exists", {
-        username: data.username,
+        username: data.username
       })
     }
   }

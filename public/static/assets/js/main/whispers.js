@@ -1,93 +1,18 @@
-// Checks if a user is in the room to receive a whisper
-Hue.check_whisper_user = function (username) {
-  if (!Hue.usernames.includes(username)) {
-    Hue.user_not_in_room(username)
-    return false
-  }
-
-  return true
-}
-
-// Processes whisper commands to determine how to handle the operation
-Hue.process_write_whisper = function (arg, show = true) {
-  let user = Hue.get_user_by_username(arg)
-
-  if (arg.includes(">")) {
-    Hue.send_inline_whisper(arg, show)
-  } else if (user) {
-    Hue.write_popup_message([arg], "user")
-  } else if (arg.includes("&&")) {
-    let split = arg.split("&&").map((x) => x.trim())
-    Hue.write_popup_message(split, "user")
-  } else {
-    let matches = Hue.get_matching_usernames(arg)
-    if (matches.length === 1) {
-      let message = arg.replace(matches[0], "")
-      let arg2 = `${matches[0]} > ${message}`
-      Hue.send_inline_whisper(arg2, show)
-    } else if (matches.length > 1) {
-      Hue.checkmsg(
-        `Multiple usernames matched. Use the proper > syntax. For example ${Hue.config.commands_prefix}whisper bob > hi`
-      )
-      return false
-    } else {
-      Hue.user_not_in_room()
-      return false
-    }
-  }
-}
-
-// Sends a whisper using the inline format (/whisper user > hello)
-Hue.send_inline_whisper = function (arg, show = true) {
-  let split = arg.split(">")
-
-  if (split.length < 2) {
-    return false
-  }
-
-  let username = split[0].trim()
-  let usplit = username.split("&&")
-  let message = Hue.utilz.clean_string2(split.slice(1).join(">"))
-
-  if (!message) {
-    return false
-  }
-
-  let message_split = message.split("\n")
-  let num_lines = message_split.length
-
-  if (num_lines > Hue.config.max_num_newlines) {
-    return false
-  }
-
-  let approved = []
-
-  for (let u of usplit) {
-    u = u.trim()
-
-    if (!Hue.check_whisper_user(u)) {
-      continue
-    }
-
-    approved.push(u)
-  }
-
-  if (approved.length === 0) {
-    return false
-  }
-
-  Hue.do_send_whisper({message: message, usernames: approved, type: "user"}, show)
-}
-
 // Shows the window to write whispers
 Hue.write_popup_message = function (usernames = [], type = "user") {
+  let c_usernames = []
+
   if (usernames.length === 0) {
     if (type === "user") {
       return false
     }
   } else {
     for (let u of usernames) {
-      if (!Hue.check_whisper_user(u)) {
+      let cu = Hue.check_user_in_room(u)
+      
+      if (cu) {
+        c_usernames.push(cu)
+      } else {
         return false
       }
     }
@@ -96,7 +21,7 @@ Hue.write_popup_message = function (usernames = [], type = "user") {
   let title 
 
   if (type === "user") {
-    title = `Whisper to ${Hue.utilz.nice_list(usernames)}`
+    title = `Whisper to ${Hue.utilz.nice_list(c_usernames)}`
   } else {
     title = `Whisper (${type})`
   }
@@ -107,7 +32,7 @@ Hue.write_popup_message = function (usernames = [], type = "user") {
     Hue.el("#write_message_add_user").style.display = "none"
   }
 
-  Hue.message_usernames = usernames
+  Hue.message_usernames = c_usernames
   Hue.msg_message.set_title(Hue.utilz.make_html_safe(title))
   Hue.message_type = type
 
@@ -313,7 +238,7 @@ Hue.do_send_whisper = function (data, show = true) {
 Hue.setup_whispers_click = function (content, username) {
   content.querySelectorAll(".whisper_link").forEach(it => {
     it.addEventListener("click", function () {
-      Hue.process_write_whisper(`${username} > ${it.dataset.whisper}`, false)
+      Hue.write_popup_message([username], "user")
     })
   })
 }
