@@ -214,8 +214,6 @@ Hue.add_chat_message = function (args = {}) {
     Hue.setup_link_preview(fmessage)
   }
 
-  Hue.setup_whispers_click(fmessage, args.username)
-
   let message_id = Hue.add_to_chat({
     id: args.id,
     message: fmessage,
@@ -510,25 +508,20 @@ Hue.add_to_chat = function (args = {}) {
 Hue.start_chat_mouse_events = function () {
   document.addEventListener("click", function (e) {
     if (e.target.closest(".chat_area")) {
+      let message = e.target.closest(".message")
+      let username = Hue.dataset(message, "username")
+      let user_id = Hue.dataset(message, "user_id")
+
       if (e.target.closest(".chat_menu_button")) {
         return
       }
 
       if (e.target.classList.contains("chat_username")) {
-        let m = e.target.closest(".message")
-        Hue.show_profile(
-          Hue.dataset(m, "username"),
-          Hue.dataset(m, "user_id")
-        )
+        Hue.show_profile(username, user_id)
       }
 
       if (e.target.classList.contains("chat_profilepic")) {
-        let m = e.target.closest(".message")
-
-        Hue.show_profile(
-          Hue.dataset(m, "username"),
-          Hue.dataset(m, "user_id")
-        )
+        Hue.show_profile(username, user_id)
       }
 
       if (e.target.classList.contains("message_edit_submit")) {
@@ -568,6 +561,10 @@ Hue.start_chat_mouse_events = function () {
         let src = Hue.dataset(e.target, "image_preview_src_original")
         Hue.expand_image(src.replace(".gifv", ".gif"))
       }
+
+      if (e.target.classList.contains("whisper_link")) {
+        Hue.process_write_whisper(`${username} > ${e.target.dataset.whisper}`, false)
+      }      
     }
   })
 
