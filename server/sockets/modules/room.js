@@ -46,7 +46,8 @@ module.exports = function (
 
     handler.room_emit(socket, "topic_changed", {
       topic: info.topic,
-      username: socket.hue_username,
+      user_id: socket.hue_user_id,
+      username: socket.hue_username
     })
 
     room.topic = info.topic
@@ -84,7 +85,8 @@ module.exports = function (
 
       handler.room_emit(socket, "room_name_changed", {
         name: info.name,
-        username: socket.hue_username,
+        user_id: socket.hue_user_id,
+        username: socket.hue_username
       })
 
       db_manager.update_room(info.id, {
@@ -154,7 +156,8 @@ module.exports = function (
 
     handler.room_emit(socket, "background_color_changed", {
       color: data.color,
-      username: socket.hue_username,
+      user_id: socket.hue_user_id,
+      username: socket.hue_username
     })
 
     handler.push_admin_log_message(
@@ -187,7 +190,8 @@ module.exports = function (
 
     handler.room_emit(socket, "text_color_changed", {
       color: data.color,
-      username: socket.hue_username,
+      user_id: socket.hue_user_id,
+      username: socket.hue_username
     })
 
     handler.push_admin_log_message(
@@ -292,6 +296,7 @@ module.exports = function (
     db_manager.update_room(socket.hue_room_id, obj)
 
     handler.room_emit(socket, "background_changed", {
+      user_id: socket.hue_user_id,
       username: socket.hue_username,
       background: file_name,
       background_type: type,
