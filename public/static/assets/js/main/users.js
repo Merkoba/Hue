@@ -129,21 +129,16 @@ Hue.replace_property_in_userlist_by_username = function (
   new_value,
   update = true
 ) {
-  let changed = false
+  let item = Hue.get_userlist_item_by_username(username)
 
-  for (let i = 0; i < Hue.userlist.length; i++) {
-    if (Hue.userlist[i].username === username) {
-      Hue.userlist[i][prop] = new_value
-      changed = true
-      break
-    }
-  }
+  if (item) {
+    item[prop] = new_value
 
-  if (update && changed) {
-    Hue.update_userlist(prop)
-
-    if (Hue.open_profile_username === username) {
-      Hue.show_profile(username)
+    if (update) {
+      Hue.update_userlist(prop)
+      if (Hue.open_profile_username === item.username) {
+        Hue.show_profile(item.username)
+      }
     }
   }
 }
@@ -155,24 +150,18 @@ Hue.replace_property_in_userlist_by_id = function (
   new_value,
   update = true
 ) {
-  let changed = false
+  let item = Hue.get_userlist_item_by_user_id(user_id)
 
-  for (let i = 0; i < Hue.userlist.length; i++) {
-    if (Hue.userlist[i].user_id === user_id) {
-      Hue.userlist[i][prop] = new_value
-      changed = true
-      break
+  if (item) {
+    item[prop] = new_value
+
+    if (update) {
+      Hue.update_userlist(prop)
+      if (Hue.open_profile_user_id === item.user_id) {
+        Hue.show_profile(item.username)
+      }
     }
-  }
-
-  if (update && changed) {
-    Hue.update_userlist(prop)
-
-    if (Hue.open_profile_user_id === user_id) {
-      let user = Hue.get_profilepic(user_id)
-      Hue.show_profile(user.username)
-    }
-  }  
+  } 
 }
 
 // Gets the role of a user by username
@@ -224,6 +213,28 @@ Hue.get_user_by_username = function (username) {
   for (let user of Hue.userlist) {
     if (user.username.toLowerCase() === username.toLowerCase()) {
       return user
+    }
+  }
+
+  return false
+}
+
+// Get userlist item by username
+Hue.get_userlist_item_by_username =  function (username) {
+  for (let item of Hue.userlist) {
+    if (item.username.toLowerCase() === username.toLowerCase()) {
+      return item
+    }
+  }
+
+  return false
+}
+
+// Get userlist item by user id
+Hue.get_userlist_item_by_user_id =  function (user_id) {
+  for (let item of Hue.userlist) {
+    if (item.user_id === user_id) {
+      return item
     }
   }
 

@@ -240,6 +240,7 @@ module.exports = function (
         method: "audioclip_changed",
         data: {
           user_id: socket.hue_user_id,
+          username: socket.hue_username,
           audioclip_version: new_ver
         }
       }
