@@ -126,7 +126,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   function check_file (type, path, query, fields) {
     return new Promise((resolve, reject) => {
       if (cache[path] && cache[path].obj) {
-        let obj = check_file_query(cache[path].obj, query, fields)
+        let obj = check_file_query(type, cache[path].obj, query, fields)
 
         if (obj) {
           resolve(obj)
@@ -152,7 +152,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           add_to_cache(path, original)
           check_version(type, path, original)
 
-          let obj = check_file_query(original, query, fields)
+          let obj = check_file_query(type, original, query, fields)
 
           if (obj) {
             resolve(obj)
@@ -165,12 +165,20 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Check file using the query and fields
-  function check_file_query (original, query, fields) {
+  function check_file_query (type, original, query, fields) {
     if (!query || query.length !== 2 || !query[0] || query[1] === undefined) {
       return false
     }
 
-    if (original[query[0]] !== query[1]) {
+    let prop_1 = original[query[0]]
+    let prop_2 = query[1]
+
+    if (type === "users" && query[0] === "username") {
+      prop_1 = prop_1.toLowerCase()
+      prop_2 = prop_2.toLowerCase()
+    }
+
+    if (prop_1 !== prop_2) {
       return false
     }
 

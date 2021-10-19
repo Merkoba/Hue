@@ -382,7 +382,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
   // Helper function
   function already_exists(res, username) {
-    let m = encodeURIComponent("Username already exist")
+    let m = encodeURIComponent("Username already exists")
     let form_username = encodeURIComponent(username)
 
     res.redirect(

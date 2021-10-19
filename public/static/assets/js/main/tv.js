@@ -659,7 +659,7 @@ Hue.report_tv_progress = function (data) {
     })
 
     Hue.show_room_notification(
-      data.request_username,
+      data.requester_username,
       `${data.requester_username} synced their tv with yours`
     )
   }

@@ -54,7 +54,7 @@ module.exports = function (
       let sockets = handler.get_room_sockets(room_id)
 
       for (let socc of sockets) {
-        if (socc.hue_username === username) {
+        if (socc.hue_username.toLowerCase() === username.toLowerCase()) {
           clients.push(socc)
         }
       }

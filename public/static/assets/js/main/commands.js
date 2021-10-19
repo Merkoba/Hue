@@ -134,7 +134,7 @@ Hue.commands = {
   },
   "whisper": {
     action: (arg, ans) => {
-      Hue.process_write_whisper(arg, true)
+      Hue.write_popup_message([arg], "user")
     },
     description: `Opens a window to write a whisper to x user. If the argument contains the &gt; character it will use the inline method where the username is whatever is to the left of the &gt; and the message whatever is to the right of it, and send the message directly without using the window`,
   },
@@ -441,7 +441,7 @@ Hue.commands = {
     },
     description: `Changes the user's bio`,
   },
-  "badgeheart": {
+  "heart": {
     action: (arg, ans) => {
       if (arg) {
         Hue.send_badge(arg, "heart")
@@ -449,7 +449,7 @@ Hue.commands = {
     },
     description: `Sends a heart badge to a user`,
   },
-  "badgeskull": {
+  "skull": {
     action: (arg, ans) => {
       if (arg) {
         Hue.send_badge(arg, "skull")
