@@ -40,9 +40,10 @@ module.exports = function (
         {
           method: "new_username",
           data: {
+            user_id: socket.hue_user_id,
             username: data.username,
-            old_username: old_username,
-          },
+            old_username: old_username
+          }
         }
       )
     } else {
@@ -105,8 +106,9 @@ module.exports = function (
     })
 
     handler.room_emit(socket, "bio_changed", {
+      user_id: socket.hue_user_id,
       username: socket.hue_username,
-      bio: socket.hue_bio,
+      bio: socket.hue_bio
     })
   }
 
@@ -169,6 +171,7 @@ module.exports = function (
         method: "profilepic_changed",
         data: {
           user_id: socket.hue_user_id,
+          username: socket.hue_username,
           profilepic_version: new_ver
         }
       }

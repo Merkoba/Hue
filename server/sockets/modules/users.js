@@ -410,7 +410,7 @@ module.exports = function (
     let list = []
 
     for (let user of users) {
-      list.push({ username: user.username, role: roles[user.id] })
+      list.push({ user_id: user.id, username: user.username, role: roles[user.id] })
     }
 
     handler.user_emit(socket, "receive_admin_list", { list: list })
@@ -450,7 +450,7 @@ module.exports = function (
     let list = []
 
     for (let user of users) {
-      list.push({ username: user.username })
+      list.push({ user_id: user.id, username: user.username })
     }
 
     handler.user_emit(socket, "receive_ban_list", { list: list })
@@ -588,9 +588,10 @@ module.exports = function (
         {
           method: "new_username",
           data: {
+            user_id: userinfo.id,
             username: data.new,
-            old_username: data.original,
-          },
+            old_username: data.original
+          }
         }
       )
 
@@ -602,7 +603,7 @@ module.exports = function (
     }
   }
 
-  // Superuser function to change a user's username
+  // Superuser function to change a user's password
   handler.public.modpassword = async function (socket, data) {
     if (!socket.hue_superuser) {
       handler.anti_spam_ban(socket)
