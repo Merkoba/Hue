@@ -1,8 +1,13 @@
 // Generates an array of autocompletable words on demand
 Hue.generate_words_to_autocomplete = function () {
+  let usernames = []
   let susernames = []
 
-  for (let username of Hue.usernames) {
+  for (let item of Hue.userlist) {
+    usernames.push(item.username)
+  }
+
+  for (let username of usernames) {
     susernames.push(`${username}'s`)
   }
 
@@ -10,7 +15,7 @@ Hue.generate_words_to_autocomplete = function () {
 
   words.push(
     ...Hue.commands_list_with_prefix,
-    ...Hue.usernames,
+    ...usernames,
     ...susernames,
     ...Hue.all_usernames
   )

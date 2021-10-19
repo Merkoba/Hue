@@ -5,7 +5,7 @@ Hue.process_write_whisper = function (arg, show = true) {
   if (arg.includes(">")) {
     Hue.send_inline_whisper(arg, show)
   } else if (user) {
-    Hue.write_popup_message([arg], "user")
+    Hue.write_popup_message([user.username], "user")
   } else if (arg.includes("&&")) {
     let split = arg.split("&&").map((x) => x.trim())
     Hue.write_popup_message(split, "user")
@@ -263,11 +263,14 @@ Hue.send_whisper = function (message) {
   let discarded = []
   let approved = []
 
+  
   for (let u of usernames) {
-    if (!Hue.usernames.includes(u)) {
-      discarded.push(u)
+    let user = Hue.get_userlist_item_by_username(u)
+    
+    if (!user) {
+      discarded.push(user.username)
     } else {
-      approved.push(u)
+      approved.push(user.username)
     }
   }
 

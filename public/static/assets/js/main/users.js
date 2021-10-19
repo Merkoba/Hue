@@ -256,12 +256,7 @@ Hue.get_user_by_user_id = function (id) {
 // Rebuilds the HTML of the user list window
 Hue.do_update_userlist = function (prop = "") {
   Hue.userlist.sort(Hue.compare_userlist)
-  Hue.usernames = []
-
-  for (let item of Hue.userlist) {
-    Hue.usernames.push(item.username)
-  }
-
+  
   if (Hue.msg_userlist.is_open()) {
     let uchange = true
 
@@ -572,7 +567,9 @@ Hue.get_matching_usernames = function (s) {
       username = `${username} ${split[i]}`
     }
 
-    if (Hue.usernames.includes(username)) {
+    let user = Hue.get_userlist_item_by_username(username)
+
+    if (user) {
       matches.push(username)
     }
   }

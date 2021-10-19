@@ -30,7 +30,6 @@ Hue.input_history = []
 Hue.input_history_index = 0
 Hue.input_history_crop_limit = 20
 Hue.userlist = []
-Hue.usernames = []
 Hue.all_usernames = []
 Hue.role = ""
 Hue.tab_info = {}
