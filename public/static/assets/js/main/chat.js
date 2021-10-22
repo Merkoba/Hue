@@ -264,13 +264,6 @@ Hue.add_chat_announcement = function (args = {}) {
   let split_classes = "announcement_content_split dynamic_title"
   let content_classes = "announcement_content reply_message"
   let brk_classes = "brk announcement_brk"
-
-  let container_id = " "
-
-  if (args.container_id) {
-    container_id = ` id='${args.container_id}' `
-  }
-
   let highlighted = false
 
   if (args.highlight) {
@@ -314,8 +307,12 @@ Hue.add_chat_announcement = function (args = {}) {
     </div>`
 
   let fmessage = Hue.div("message announcement")
+  
   fmessage.innerHTML = s
-  fmessage.id = container_id
+
+  if (args.container_id) {
+    fmessage.id = args.container_id
+  }  
   
   if (is_media) {
     fmessage.classList.add("media_announcement")
