@@ -319,11 +319,8 @@ Hue.on_disconnect = function () {
   Hue.update_userlist()
   Hue.update_activity_bar()
   Hue.generate_favicon(-1)
+  Hue.close_all_modals()
   Hue.last_message_date = Hue.get_last_message_date()
-
-  if (Hue.open_profile_username) {
-    Hue.show_profile(Hue.open_profile_username)
-  }
 
   if (!Hue.el("#reconnecting_feedback")) {
     Hue.feedback("Reconnecting...", { container_id: "reconnecting_feedback" })
