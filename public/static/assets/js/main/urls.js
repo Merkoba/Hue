@@ -246,9 +246,11 @@ Hue.open_url_menu = function (args = {}) {
 Hue.remove_urls = function (text) {
   let split = text.split(" ")
   let new_words = []
+  let hostname = ""
 
   for (let word of split) {
     if (Hue.utilz.is_url(word)) {
+      hostname = new URL(word).hostname
       let ext = Hue.utilz.get_extension(word).toLowerCase()
       if (Hue.utilz.video_extensions.includes(ext)) {
         new_words.push("(Video Link)")
@@ -263,6 +265,10 @@ Hue.remove_urls = function (text) {
       new_words.push(word)
     }
   }
+
+  if (new_words.length === 1) {
+    new_words.push(`(${hostname})`)
+  }  
 
   return new_words.join(" ")
 }
