@@ -41,11 +41,15 @@ module.exports = function (
 
           if (message.id === data.edit_id) {
             if (message.data.user_id === socket.hue_user_id) {
+              edited = true
+              date = message.date
+              username = message.data.username
               message.data.content = data.message
               message.data.edited = true
-              username = message.data.username
-              date = message.date
-              edited = true
+              message.data.link_title = response.title,
+              message.data.link_description = response.description
+              message.data.link_image = response.image
+              message.data.link_url = response.url        
               vars.rooms[socket.hue_room_id].log_messages_modified = true
               vars.rooms[socket.hue_room_id].activity = true
               break
