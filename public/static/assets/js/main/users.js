@@ -25,6 +25,14 @@ Hue.user_join = function (data) {
   }
 
   Hue.remove_offline_profilepics(data.user_id)
+
+  Hue.make_info_popup_item({
+    message: `${data.username} joined`,
+    on_click: function () {
+      Hue.show_profile(data.username, data.user_id)
+    },
+    icon: "user"
+  })  
 }
 
 // Removes the online effect to a user's profile images
@@ -496,6 +504,14 @@ Hue.user_disconnect = function (data) {
 
   Hue.do_update_activity_bar = true
   Hue.add_offline_profilepics(data.user_id)
+
+  Hue.make_info_popup_item({
+    message: `${data.username} left`,
+    on_click: function () {
+      Hue.show_profile(data.username, data.user_id)
+    },
+    icon: "user"
+  })  
 }
 
 // Announces that the operation cannot be applied to a certain user
@@ -661,7 +677,8 @@ Hue.show_profile = function (username, user_id = false) {
 
   if (user) {
     Hue.el("#show_profile_details").style.display = "block"
-
+    
+    username = user.username
     role = Hue.get_pretty_role_name(user.role)
     bio = user.bio
     hearts = user.hearts
