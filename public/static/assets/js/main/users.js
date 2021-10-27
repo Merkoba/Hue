@@ -678,7 +678,6 @@ Hue.show_profile = function (username, user_id = false) {
   if (user) {
     Hue.el("#show_profile_details").style.display = "block"
     
-    username = user.username
     role = Hue.get_pretty_role_name(user.role)
     bio = user.bio
     hearts = user.hearts
