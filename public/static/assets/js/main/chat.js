@@ -28,8 +28,8 @@ Hue.add_chat_message = function (args = {}) {
 
   args.message = Hue.replace_message_vars(args.id, args.message)
 
-  let container_classes = "chat_content_container chat_menu_button_main reply_message_container"
-  let content_classes = "chat_content dynamic_title reply_message"
+  let container_classes = "chat_content_container chat_menu_button_main reply_message_container edit_message_container"
+  let content_classes = "chat_content dynamic_title reply_message edit_message"
   let d = args.date ? args.date : Date.now()
   let nd = Hue.utilz.nice_date(d)
   let pi = Hue.get_profilepic(args.user_id)
@@ -122,7 +122,6 @@ Hue.add_chat_message = function (args = {}) {
         </div>
         <div class='chat_container'>
             <div class='${container_classes}'>
-
                 <div class='chat_menu_button_container'>
                     <svg class='other_icon chat_menu_button chat_menu_button_menu'>
                       <use href='#icon_ellipsis'>
@@ -190,20 +189,20 @@ Hue.add_chat_message = function (args = {}) {
   Hue.dataset(fmessage, "username", args.username)
   Hue.dataset(fmessage, "mode", "chat")
 
-  let chat_content_container = fmessage.querySelector(".chat_content_container")
-  Hue.dataset(chat_content_container, "id", args.id)
-  Hue.dataset(chat_content_container, "edited", args.edited)
-  Hue.dataset(chat_content_container, "highlighted", highlighted)
-  Hue.dataset(chat_content_container, "date", d)
-  Hue.dataset(chat_content_container, "first_url", first_url)
-  Hue.dataset(chat_content_container, "original_message", args.message)
+  let content_container = fmessage.querySelector(".chat_content_container")
+  Hue.dataset(content_container, "id", args.id)
+  Hue.dataset(content_container, "edited", args.edited)
+  Hue.dataset(content_container, "highlighted", highlighted)
+  Hue.dataset(content_container, "date", d)
+  Hue.dataset(content_container, "first_url", first_url)
+  Hue.dataset(content_container, "original_message", args.message)
 
-  let chat_content = fmessage.querySelector(".chat_content")
-  Hue.dataset(chat_content, "date", d)
-  Hue.dataset(chat_content, "otitle", title)
+  let content = fmessage.querySelector(".chat_content")
+  Hue.dataset(content, "date", d)
+  Hue.dataset(content, "otitle", title)
 
   if (!image_preview && !link_preview) {
-    Hue.urlize(chat_content)
+    Hue.urlize(content)
   }
 
   if (image_preview) {
@@ -260,9 +259,9 @@ Hue.add_chat_announcement = function (args = {}) {
 
   args = Object.assign(def_args, args)
   let is_media = args.type === "image_change" || args.type === "tv_change"
-  let container_classes = "announcement_content_container chat_menu_button_main reply_message_container"
+  let container_classes = "announcement_content_container chat_menu_button_main reply_message_container edit_message_container"
   let split_classes = "announcement_content_split dynamic_title"
-  let content_classes = "announcement_content reply_message"
+  let content_classes = "announcement_content reply_message edit_message"
   let brk_classes = "brk announcement_brk"
   let highlighted = false
 
@@ -304,6 +303,13 @@ Hue.add_chat_announcement = function (args = {}) {
             ${announcement_top}
             <div class='${content_classes}'></div>
         </div>
+        <div class='message_edit_container'>
+          <textarea class='message_edit_area'></textarea>
+          <div class='message_edit_buttons'>
+              <div class='message_edit_button action message_edit_cancel'>Cancel</div>
+              <div class='message_edit_button action message_edit_submit'>Submit</div>
+          </div>
+        </div>        
     </div>`
 
   let fmessage = Hue.div("message announcement")
@@ -317,6 +323,9 @@ Hue.add_chat_announcement = function (args = {}) {
   if (is_media) {
     fmessage.classList.add("media_announcement")
   }
+
+  let content_container = fmessage.querySelector(".announcement_content_container")
+  Hue.dataset(content_container, "original_message", args.message)
 
   let content = fmessage.querySelector(".announcement_content")
   let split = fmessage.querySelector(".announcement_content_split")
@@ -737,7 +746,7 @@ Hue.edit_last_message = function (reverse = false) {
 
   for (let message of messages.reverse()) {
     if (Hue.dataset(message, "user_id") === Hue.user_id) {
-      let items = Array.from(message.querySelectorAll(".chat_content_container"))
+      let items = Array.from(message.querySelectorAll(".edit_message_container"))
 
       for (let item of items.reverse()) {
         if (Hue.editing_message) {
@@ -778,10 +787,10 @@ Hue.edit_message = function (container) {
 
   let edit_container = container.querySelector(".message_edit_container")
   let area = container.querySelector(".message_edit_area")
-  let chat_content = container.querySelector(".chat_content")
+  let edit_message = container.querySelector(".edit_message")
 
   edit_container.style.display = "block"
-  chat_content.style.display = "none"
+  edit_message.style.display = "none"
   container.classList.remove("chat_menu_button_main")
   container.style.display = "block"
 
@@ -811,11 +820,11 @@ Hue.stop_edit_message = function () {
   }
 
   let edit_container = Hue.editing_message_container.querySelector(".message_edit_container")
-  let chat_content = Hue.editing_message_container.querySelector(".chat_content")
+  let edit_message = Hue.editing_message_container.querySelector(".edit_message")
 
   edit_container.style.display = "none"
   Hue.editing_message_area.value = ""
-  chat_content.style.display = "inline-block"
+  edit_message.style.display = "inline-block"
   Hue.editing_message_container.classList.add("chat_menu_button_main")
   Hue.editing_message_container.style.display = "flex"
   Hue.editing_message = false
@@ -829,31 +838,38 @@ Hue.send_edit_messsage = function (id) {
     return false
   }
 
-  let chat_content = Hue.editing_message_container.querySelector(".chat_content")
+  let message = Hue.editing_message_container.closest(".message")
+  let edit_mode = Hue.dataset(message, "mode")
+  let edit_message = Hue.editing_message_container.querySelector(".edit_message")
   let new_message = Hue.editing_message_area.value
+  let edit_id = Hue.dataset(Hue.editing_message_container, "id") || Hue.dataset(message, "id")
   new_message = Hue.utilz.remove_multiple_empty_lines(new_message)
   new_message = Hue.utilz.untab_string(new_message).trimEnd()
-  let edit_id = Hue.dataset(Hue.editing_message_container, "id")
   Hue.stop_edit_message()
 
-  if (chat_content.textContent === new_message) {
+  if (edit_message.textContent === new_message) {
     return false
   }
 
-  if (!edit_id) {
-    return false
-  }
+  if (edit_mode === "chat") {
+    if (!edit_id) {
+      return false
+    }
+  
+    if (new_message.length === 0) {
+      Hue.delete_message(edit_id)
+      return false
+    }
 
-  if (new_message.length === 0) {
-    Hue.delete_message(edit_id)
-    return false
+    Hue.process_message({
+      message: new_message,
+      edit_id: edit_id,
+      to_history: false
+    })
+  } else if (edit_mode === "announcement") {
+    let media_type = Hue.dataset(message, "type").split("_")[0]
+    Hue.do_edit_media_comment(media_type, edit_id, new_message)
   }
-
-  Hue.process_message({
-    message: new_message,
-    edit_id: edit_id,
-    to_history: false
-  })
 
   Hue.replace_in_input_history(Hue.editing_original_message, new_message)
 }

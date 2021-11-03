@@ -873,3 +873,42 @@ Hue.open_url_menu_by_media_id = function (type, id) {
     media_type: type
   })
 }
+
+// Send a media edit comment emit to the server
+Hue.do_edit_media_comment = function (type, id, comment) {
+  Hue.socket_emit("edit_media_comment", {
+    type: type,
+    id: id,
+    comment: comment
+  })
+}
+
+// After response from the server after editing media comment
+Hue.edited_media_comment = function (data) {
+  let messages = Hue.els(".media_announcement")
+
+  for (let message of messages) {
+    if (Hue.dataset(message, "id") === data.id) {
+      if (Hue.dataset(message, "type") === `${data.type}_change`) {
+        let content = message.querySelector(".announcement_content")
+        content.textContent = data.comment
+        let content_container = message.querySelector(".announcement_content_container")
+        Hue.dataset(content_container, "original_message", data.comment)
+      }
+    }
+  }
+
+  for (let item of Hue[`${data.type}_changed`]) {
+    if (item.id === data.id) {
+      item.comment = data.comment
+    }
+  }
+
+  Hue.apply_media_info(data.type)
+
+  if (Hue.msg_modal_image.is_open()) {
+    if (Hue.loaded_modal_image.id === data.id) {
+      Hue.show_modal_image(Hue.loaded_modal_image.id)
+    }
+  }
+}

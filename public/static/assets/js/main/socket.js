@@ -199,6 +199,9 @@ Hue.server_update_events = {
   done: (data) => {
     Hue.checkmsg("Done")
   },
+  edited_media_comment: (data) => {
+    Hue.edited_media_comment(data)
+  }
 }
 
 // Centralized function to initiate a socket emit to the server
@@ -333,9 +336,9 @@ Hue.on_disconnect = function () {
 // Some stats in socket i/o
 Hue.start_socket_stats = function () {
   setInterval(() => {
-    Hue.loginfo(`Socket Messsages IN (last minute): ${Hue.num_socket_in}`)
-    Hue.loginfo(`Socket Messsages OUT (last minute): ${Hue.num_socket_out}`)
+    Hue.loginfo(`Socket Messsages IN (last 10 minutes): ${Hue.num_socket_in}`)
+    Hue.loginfo(`Socket Messsages OUT (last 10 minutes): ${Hue.num_socket_out}`)
     Hue.num_socket_in = 0
     Hue.num_socket_out = 0
-  }, 60 * 1000);
+  }, 10 * 60 * 1000);
 }

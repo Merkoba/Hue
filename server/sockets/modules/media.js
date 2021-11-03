@@ -178,4 +178,48 @@ module.exports = function (
       })
     }
   }
+
+  // Edit the comment of a media change
+  handler.public.edit_media_comment = function (socket, data, type) {
+    let edited = false
+    let room_id = socket.hue_room_id
+    let messages = vars.rooms[room_id].log_messages
+
+    for (let i = 0; i < messages.length; i++) {
+      let message = messages[i]
+
+      if (message.type !== data.type) {
+        continue
+      }
+
+      if (message.id === data.id) {
+        if (message.data.user_id === socket.hue_user_id) {
+          message.data.comment = data.comment
+          vars.rooms[room_id].log_messages_modified = true
+          vars.rooms[room_id].activity = true
+          edited = true
+          break
+        } else {
+          return false
+        }
+      }
+    }
+
+    let room = vars.rooms[room_id]
+
+    if (room[`current_${data.type}_id`] === data.id) {
+      let obj = {}
+      obj[`${data.type}_comment`] = data.comment      
+      db_manager.update_room(room_id, obj)
+      edited = true
+    }
+    
+    if (edited) {
+      handler.room_emit(socket, "edited_media_comment", {
+        type: data.type,
+        id: data.id,
+        comment: data.comment
+      })      
+    }
+  }
 }
