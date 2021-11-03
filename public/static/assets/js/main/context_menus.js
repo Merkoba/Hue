@@ -38,11 +38,11 @@ Hue.start_chat_menu_context_menu = function () {
         })
       }
 
-      if (mode === "chat" && user_id === Hue.user_id) {
+      if (user_id === Hue.user_id && (mode === "chat" || type === "image_change" || type === "tv_change")) {
         items.push({
           text: "Edit",
           action: function () {
-            let el = e.target.closest(".chat_content_container")
+            let el = e.target.closest(".edit_message_container")
             Hue.edit_message(el)
           }
         })

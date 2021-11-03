@@ -1,5 +1,9 @@
 // Function to turn url text into actual links
 Hue.urlize = function (el) {
+  if (!el) {
+    return false
+  }
+  
   try {
     let html = el.innerHTML
 
