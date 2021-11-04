@@ -1002,7 +1002,10 @@ Hue.check_typing = function (mode = "input") {
       return false
     }
 
-    Hue.typing_timer()
+    if ((Date.now() - Hue.last_typing_emit) >= Hue.config.typing_delay) {
+      Hue.socket_emit("typing", {})
+      Hue.last_typing_emit = Date.now()
+    }
   }
 }
 
