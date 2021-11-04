@@ -42,11 +42,6 @@ Hue.create_debouncers = function () {
     Hue.show_chat_search(Hue.el("#chat_search_filter").value)
   }, Hue.filter_delay)
 
-  // Debounce typing timer to send a typing emit
-  Hue.typing_timer = Hue.create_debouncer(function () {
-    Hue.socket_emit("typing", {})
-  }, Hue.typing_delay)
-
   // Debounce timer to hide the typing actions
   Hue.typing_remove_timer = Hue.create_debouncer(function () {
     Hue.hide_typing()
