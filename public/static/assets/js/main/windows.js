@@ -586,7 +586,7 @@ Hue.do_modal_filter = function (id = false) {
   let lc_value = Hue.utilz.clean_string2(value).toLowerCase()
   let items = win.querySelectorAll(".modal_item")
 
-  if (lc_value) {
+  if (lc_value && items.length) {
     let display 
 
     if (!Hue.dataset(win, "filter_display")) {
