@@ -225,3 +225,8 @@ Hue.remove_message_board_post = function (data) {
 
   Hue.check_last_message_board_post()
 }
+
+// After message board filter
+Hue.after_message_board_filtered = function () {
+  Hue.vertical_separator(Hue.el("#message_board_container"))  
+}
