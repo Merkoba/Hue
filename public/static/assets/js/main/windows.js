@@ -582,26 +582,22 @@ Hue.do_modal_filter = function (id = false) {
 
   let win = Hue.el(`#Msg-content-${id}`)
   let filter = win.querySelector(".filter_input")
-
-  if (!filter.length) {
-    return false
-  }
-
   let value = filter.value.trim()
   let lc_value = Hue.utilz.clean_string2(value).toLowerCase()
   let items = win.querySelectorAll(".modal_item")
-  let display
-
-  if (!Hue.dataset(win, "filter_display")) {
-    display = items[0].style.display
-    Hue.dataset(win, "filter_display", display)
-  } else {
-    display = Hue.dataset(win, "filter_display")
-  }
 
   if (lc_value) {
+    let display 
+
+    if (!Hue.dataset(win, "filter_display")) {
+      display = items[0].style.display
+      Hue.dataset(win, "filter_display", display)
+    } else {
+      display = Hue.dataset(win, "filter_display")
+    }
+
     items.forEach(it => {
-      let item_value = this.textContent.toLowerCase()
+      let item_value = it.textContent.toLowerCase()
 
       if (item_value.includes(lc_value)) {
         it.style.display = display
@@ -613,6 +609,7 @@ Hue.do_modal_filter = function (id = false) {
     Hue[`${id}_filtered`] = true
   } else {
     items.forEach(it => {
+      let display = Hue.dataset(win, "filter_display")
       it.style.display = display
     })
 
