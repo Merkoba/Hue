@@ -587,20 +587,11 @@ Hue.do_modal_filter = function (id = false) {
   let items = win.querySelectorAll(".modal_item")
 
   if (lc_value && items.length) {
-    let display 
-
-    if (!Hue.dataset(win, "filter_display")) {
-      display = items[0].style.display
-      Hue.dataset(win, "filter_display", display)
-    } else {
-      display = Hue.dataset(win, "filter_display")
-    }
-
     items.forEach(it => {
       let item_value = it.textContent.toLowerCase()
 
       if (item_value.includes(lc_value)) {
-        it.style.display = display
+        it.style.display = "unset"
       } else {
         it.style.display = "none"
       }
@@ -609,8 +600,7 @@ Hue.do_modal_filter = function (id = false) {
     Hue[`${id}_filtered`] = true
   } else {
     items.forEach(it => {
-      let display = Hue.dataset(win, "filter_display")
-      it.style.display = display
+      it.style.display = "unset"
     })
 
     Hue[`${id}_filtered`] = false
