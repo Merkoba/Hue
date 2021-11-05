@@ -513,6 +513,10 @@ Hue.add_to_chat = function (args = {}) {
 // Starts chat mouse events
 Hue.start_chat_mouse_events = function () {
   document.addEventListener("click", function (e) {
+    if (!e.target) {
+      return
+    }
+
     if (e.target.closest(".chat_area")) {
       let message = e.target.closest(".message")
       let username = Hue.dataset(message, "username")
@@ -575,6 +579,10 @@ Hue.start_chat_mouse_events = function () {
   })
 
   document.addEventListener("mouseup", function (e) {
+    if (!e.target) {
+      return
+    }
+        
     if (e.target.closest(".chat_area")) {
       if (e.target.classList.contains("chat_content")) {
         if (e.button === 1) {
