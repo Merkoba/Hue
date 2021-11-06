@@ -227,6 +227,8 @@ Hue.show_whisper = function (data) {
   modal.show(function () {
     let container = modal.content
     let text_el = container.querySelector(".sent_message_text")
+    text_el.classList.add("user_details")
+    Hue.dataset(text_el, "username", data.username)
     text_el.innerHTML = message_html
     Hue.urlize(text_el)
     let button_el = container.querySelector(".sent_message_button")
