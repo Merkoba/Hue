@@ -141,7 +141,7 @@ Hue.add_chat_message = function (args = {}) {
         </div>
     </div>`
 
-  fmessage = Hue.div("message chat_message")
+  fmessage = Hue.div("message chat_message user_details")
   fmessage.innerHTML = s
 
   if (image_preview) {
@@ -516,7 +516,7 @@ Hue.start_chat_mouse_events = function () {
     if (!e.target) {
       return
     }
-
+    
     if (e.target.closest(".chat_area")) {
       let message = e.target.closest(".message")
       let username = Hue.dataset(message, "username")
@@ -571,18 +571,16 @@ Hue.start_chat_mouse_events = function () {
         let src = Hue.dataset(e.target, "image_preview_src_original")
         Hue.expand_image(src.replace(".gifv", ".gif"))
       }
+    }
 
-      if (e.target.classList.contains("whisper_link")) {
-        Hue.process_write_whisper(`${username} > ${e.target.dataset.whisper}`, false)
-      }      
+    if (e.target.classList.contains("whisper_link")) {
+      let container = e.target.closest(".user_details")
+      let username = Hue.dataset(container, "username")
+      Hue.process_write_whisper(`${username} > ${e.target.dataset.whisper}`, false)
     }
   })
 
   document.addEventListener("mouseup", function (e) {
-    if (!e.target) {
-      return
-    }
-        
     if (e.target.closest(".chat_area")) {
       if (e.target.classList.contains("chat_content")) {
         if (e.button === 1) {
