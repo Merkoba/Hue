@@ -519,35 +519,38 @@ Hue.start_chat_mouse_events = function () {
     
     if (e.target.closest(".chat_area")) {
       let message = e.target.closest(".message")
-      let id = Hue.dataset(message, "id")
-      let username = Hue.dataset(message, "username")
-      let user_id = Hue.dataset(message, "user_id")
-      let type = Hue.dataset(message, "type")
-
-      if (type === "image_change") {
-        Hue.show_modal_image(id)
-      } else if (type === "tv_change") {
-        Hue.open_url_menu_by_media_id("tv", id)
-      } else if (e.target.closest(".chat_menu_button")) {
-        return
-      } else if (e.target.classList.contains("chat_username")) {
-        Hue.show_profile(username, user_id)
-      } else if (e.target.classList.contains("chat_profilepic")) {
-        Hue.show_profile(username, user_id)
-      } else if (e.target.classList.contains("message_edit_submit")) {
-        Hue.send_edit_messsage()
-      } else if (e.target.classList.contains("message_edit_cancel")) {
-        Hue.stop_edit_message()
-        Hue.check_scrollers()
-      } else if (e.target.classList.contains("chat_reply_username")) {
-        Hue.show_profile(e.target.textContent)
-      } else if (e.target.classList.contains("link_preview_image")) {
-        e.stopPropagation()
-        Hue.expand_image(e.target.src.replace(".gifv", ".gif"))
-      } else if (e.target.classList.contains("image_preview_image")) {
-        e.stopPropagation()
-        let src = Hue.dataset(e.target, "image_preview_src_original")
-        Hue.expand_image(src.replace(".gifv", ".gif"))
+      
+      if (message) {
+        let id = Hue.dataset(message, "id")
+        let username = Hue.dataset(message, "username")
+        let user_id = Hue.dataset(message, "user_id")
+        let type = Hue.dataset(message, "type")
+  
+        if (type === "image_change") {
+          Hue.show_modal_image(id)
+        } else if (type === "tv_change") {
+          Hue.open_url_menu_by_media_id("tv", id)
+        } else if (e.target.closest(".chat_menu_button")) {
+          return
+        } else if (e.target.classList.contains("chat_username")) {
+          Hue.show_profile(username, user_id)
+        } else if (e.target.classList.contains("chat_profilepic")) {
+          Hue.show_profile(username, user_id)
+        } else if (e.target.classList.contains("message_edit_submit")) {
+          Hue.send_edit_messsage()
+        } else if (e.target.classList.contains("message_edit_cancel")) {
+          Hue.stop_edit_message()
+          Hue.check_scrollers()
+        } else if (e.target.classList.contains("chat_reply_username")) {
+          Hue.show_profile(e.target.textContent)
+        } else if (e.target.classList.contains("link_preview_image")) {
+          e.stopPropagation()
+          Hue.expand_image(e.target.src.replace(".gifv", ".gif"))
+        } else if (e.target.classList.contains("image_preview_image")) {
+          e.stopPropagation()
+          let src = Hue.dataset(e.target, "image_preview_src_original")
+          Hue.expand_image(src.replace(".gifv", ".gif"))
+        }
       }
     }
 
