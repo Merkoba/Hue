@@ -3,7 +3,7 @@ Hue.urlize = function (el) {
   if (!el) {
     return false
   }
-  
+
   try {
     let html = el.innerHTML
 
@@ -270,7 +270,7 @@ Hue.remove_urls = function (text) {
     }
   }
 
-  if (new_words.length === 1) {
+  if (hostname && new_words.length === 1) {
     new_words.push(`(${hostname})`)
   }  
 
