@@ -148,7 +148,6 @@ module.exports = function (
     room[`current_${type}_source`] = data.src
     room[`current_${type}_query`] = data.query
     room[`last_${type}_change`] = Date.now()
-    room.modified = Date.now()
 
     // Remove left over files
     if (data.type === "upload") {

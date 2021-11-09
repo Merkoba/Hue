@@ -36,8 +36,8 @@ Hue.server_update_events = {
   room_name_changed: (data) => {
     Hue.announce_room_name_change(data)
   },
-  log_changed: (data) => {
-    Hue.announce_log_change(data)
+  log_cleared: (data) => {
+    Hue.announce_log_cleared(data)
   },
   user_role_changed: (data) => {
     Hue.announce_role_change(data)

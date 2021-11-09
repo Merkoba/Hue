@@ -52,6 +52,10 @@ Hue.setup_room_menu = function () {
     Hue.request_ban_list()
   })
 
+  Hue.el("#room_menu_more_clear_log").addEventListener("click", function () {
+    Hue.clear_log()
+  })  
+
   Hue.el("#admin_background").addEventListener("click", function () {
     Hue.open_background_select()
   })

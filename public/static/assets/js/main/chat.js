@@ -519,7 +519,7 @@ Hue.start_chat_mouse_events = function () {
     
     if (e.target.closest(".chat_area")) {
       let message = e.target.closest(".message")
-      
+
       if (message) {
         let id = Hue.dataset(message, "id")
         let username = Hue.dataset(message, "username")
@@ -1674,4 +1674,29 @@ Hue.add_chat_spacer = function () {
   let spacer = Hue.div("message clear_spacer")
   Hue.el("#chat_area").append(spacer)
   Hue.goto_bottom(true)
+}
+
+// Deletes all chat messages
+Hue.clear_log = function () {
+  Hue.show_confirm("Clear Log", "Deletes all chat messages from the chat log", function () {
+    Hue.socket_emit("clear_log", {})
+  })  
+}
+
+// When chat log is cleared
+Hue.announce_log_cleared = function (data) {
+  let areas = Hue.els(".chat_area")
+  
+  for (let area of areas) {
+    area.innerHTML = ""
+  }
+
+  Hue.feedback(`Log cleared by ${data.username}`)
+
+  let current_image = Hue.current_image()
+  let current_tv = Hue.current_tv()
+  Hue.image_changed = []
+  Hue.tv_changed = []
+  Hue.setup_image("show", current_image)
+  Hue.setup_tv("show", current_tv)
 }

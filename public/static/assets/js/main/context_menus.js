@@ -85,7 +85,7 @@ Hue.start_chat_menu_context_menu = function () {
         items.push({
           text: "Delete",
           action: function () {
-            Hue.show_confirm("Delete Message", "Remove message from the chat log", function () {
+            Hue.show_confirm("Delete Message", "Delete message from the chat log", function () {
               let id = false
               let message = e.target.closest(".message")
               let mode = Hue.dataset(message, "mode")
