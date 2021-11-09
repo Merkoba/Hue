@@ -92,36 +92,36 @@ Hue.draw_image_add_sector = function () {
 Hue.setup_draw_image = function () {
   Hue.draw_image_context =Hue.el("#draw_image_area").getContext("2d")
 
- Hue.el("#draw_image_area").addEventListener("mousedown", function (e) {
-    if (Hue.draw_image_mode === "bucket") {
-      return false
-    }
-
-    Hue.draw_image_just_entered = false
-    Hue.draw_image_check_increase_snapshot()
-    Hue.draw_image_add_sector()
-    Hue.draw_image_add_click(e.offsetX, e.offsetY, false)
-    Hue.redraw_draw_image()
-  })
-
- Hue.el("#draw_image_area").addEventListener("mousemove", function (e) {
-    if (Hue.mouse_is_down) {
-      Hue.draw_image_add_click(
-        e.offsetX,
-        e.offsetY,
-        !Hue.draw_image_just_entered
-      )
+  Hue.el("#draw_image_area").addEventListener("mousedown", function (e) {
+    if (Hue.draw_image_mode === "pencil") {
+      Hue.draw_image_just_entered = false
+      Hue.draw_image_check_increase_snapshot()
+      Hue.draw_image_add_sector()
+      Hue.draw_image_add_click(e.offsetX, e.offsetY, false)
       Hue.redraw_draw_image()
     }
-
-    Hue.draw_image_just_entered = false
   })
 
- Hue.el("#draw_image_area").addEventListener("mouseenter", function (e) {
+  Hue.el("#draw_image_area").addEventListener("mousemove", function (e) {
+    if (Hue.draw_image_mode === "pencil") {
+      if (Hue.mouse_is_down) {
+        Hue.draw_image_add_click(
+          e.offsetX,
+          e.offsetY,
+          !Hue.draw_image_just_entered
+        )
+        Hue.redraw_draw_image()
+      }
+
+      Hue.draw_image_just_entered = false
+    }
+  })
+
+  Hue.el("#draw_image_area").addEventListener("mouseenter", function (e) {
     Hue.draw_image_just_entered = true
   })
 
- Hue.el("#draw_image_area").addEventListener("click", function (e) {
+  Hue.el("#draw_image_area").addEventListener("click", function (e) {
     if (Hue.draw_image_mode === "bucket") {
       let result = Hue.draw_image_bucket_fill(e.offsetX, e.offsetY)
 
@@ -132,60 +132,60 @@ Hue.setup_draw_image = function () {
     }
   })
 
- Hue.el("#draw_image_mode_select_pencil").addEventListener("click", function () {
+  Hue.el("#draw_image_mode_select_pencil").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("pencil")
   })
 
- Hue.el("#draw_image_mode_select_bucket").addEventListener("click", function () {
+  Hue.el("#draw_image_mode_select_bucket").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("bucket")
   })
 
- Hue.el("#draw_image_undo").addEventListener("click", function () {
+  Hue.el("#draw_image_undo").addEventListener("click", function () {
     Hue.draw_image_undo()
   })
 
- Hue.el("#draw_image_redo").addEventListener("click", function () {
+  Hue.el("#draw_image_redo").addEventListener("click", function () {
     Hue.draw_image_redo()
   })
 
- Hue.el("#draw_image_clear").addEventListener("click", function () {
+  Hue.el("#draw_image_clear").addEventListener("click", function () {
     Hue.needs_confirm("clear_draw_image_func")
   })
 
- Hue.el("#draw_image_upload").addEventListener("click", function () {
+  Hue.el("#draw_image_upload").addEventListener("click", function () {
     Hue.upload_draw_image()
   })
-  
+
   let select = ""
-  
+
   for (let i=2; i<=20; i+=2) {
     select += `<option value="${i}">${i}</option>`
   }
 
- Hue.el("#draw_image_pencil_size").innerHTML = select
+  Hue.el("#draw_image_pencil_size").innerHTML = select
   Hue.draw_image_prepare_settings()
   Hue.clear_draw_image_state()
 }
 
 // Prepares initial settings for the draw image window
 Hue.draw_image_prepare_settings = function () {  
- Hue.el("#draw_image_pencil_color").addEventListener("click", function () {
+  Hue.el("#draw_image_pencil_color").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("pencil")
   })
 
- Hue.el("#draw_image_pencil_color").addEventListener("change", function () {
+  Hue.el("#draw_image_pencil_color").addEventListener("change", function () {
     Hue.draw_image_pencil_color = this.value
   })
 
- Hue.el("#draw_image_bucket_color").addEventListener("click", function () {
+  Hue.el("#draw_image_bucket_color").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("bucket")
   })
 
- Hue.el("#draw_image_bucket_color").addEventListener("change", function () {
+  Hue.el("#draw_image_bucket_color").addEventListener("change", function () {
     Hue.draw_image_bucket_color = this.value
   })
 
- Hue.el("#draw_image_pencil_size").addEventListener("change", function () {
+  Hue.el("#draw_image_pencil_size").addEventListener("change", function () {
     Hue.draw_image_pencil_size = this.value
   })
 }
@@ -417,7 +417,7 @@ Hue.upload_draw_image = function () {
     return false
   }
 
- Hue.el("#draw_image_area").toBlob(
+  Hue.el("#draw_image_area").toBlob(
     function (blob) {
       blob.name = "draw_image.png"
       
