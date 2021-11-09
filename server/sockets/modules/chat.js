@@ -275,6 +275,8 @@ module.exports = function (
     handler.room_emit(socket, "log_cleared", {
       user_id: socket.hue_user_id,
       username: socket.hue_username
-    })    
+    })
+    
+    handler.push_admin_log_message(socket, "cleared the log")    
   }
 }
