@@ -28,7 +28,7 @@ Hue.add_chat_message = function (args = {}) {
 
   args.message = Hue.replace_message_vars(args.id, args.message)
 
-  let container_classes = "chat_content_container chat_menu_button_main reply_message_container edit_message_container"
+  let container_classes = "chat_content_container chat_menu_button_main reply_message_container edit_message_container message_unit"
   let content_classes = "chat_content dynamic_title reply_message edit_message"
   let d = args.date ? args.date : Date.now()
   let nd = Hue.utilz.nice_date(d)
@@ -312,7 +312,7 @@ Hue.add_chat_announcement = function (args = {}) {
         </div>        
     </div>`
 
-  let fmessage = Hue.div("message announcement")
+  let fmessage = Hue.div("message announcement message_unit")
   
   fmessage.innerHTML = s
 
@@ -514,6 +514,10 @@ Hue.add_to_chat = function (args = {}) {
 Hue.start_chat_mouse_events = function () {
   document.addEventListener("click", function (e) {
     if (!e.target) {
+      return
+    }
+
+    if (e.target.closest(".chat_menu_button")) {
       return
     }
     
@@ -860,51 +864,74 @@ Hue.send_edit_messsage = function (id) {
 }
 
 // Deletes a message
-Hue.delete_message = function (id, force = false) {
+Hue.delete_message = function (id) {
   if (!id) {
     return false
   }
 
-  if (force) {
-    Hue.send_delete_message(id)
-  } else {
-    if (!Hue.started_safe) {
-      return false
-    }
-
-    Hue.show_confirm("Delete Message", "", function () {
-      Hue.send_delete_message(id)
+  Hue.show_confirm("Delete Message", "Delete message from the chat log", function () {
+    Hue.socket_emit("delete_message", {
+      id: id
     })
-  }
+  })
 }
 
-// Makes the delete message emit
-Hue.send_delete_message = function (id) {
-  Hue.socket_emit("delete_message", {
-    id: id
+// Deletes messages above
+Hue.delete_messages_above = function (id) {
+  if (!id) {
+    return false
+  }
+
+  Hue.show_confirm("Delete Above", "Delete message above this message", function () {
+    Hue.socket_emit("delete_messages_above", {
+      id: id
+    })
   })
+}
+
+// Deletes messages above
+Hue.delete_messages_below = function (id) {
+  if (!id) {
+    return false
+  }
+
+  Hue.show_confirm("Delete Below", "Delete message below this message", function () {
+    Hue.socket_emit("delete_messages_below", {
+      id: id
+    })
+  })
+}
+
+// Get message by id
+Hue.get_message_by_id = function (id) {
+  let units = Hue.els("#chat_area .message_unit")
+
+  for (let i=0; i<units.length; i++) {
+    let uid = Hue.dataset(units[i], "id")
+
+    if (uid && uid === id) {
+      return [units[i], i, id]
+    }
+  }
+
+  return false
 }
 
 // Remove a message from the chat
 Hue.remove_message_from_chat = function (data) {
-  if (data.type === "chat") {
-    for (let item of Hue.els(".chat_content_container")) {
-      if (Hue.dataset(item, "id") == data.id) {
-        Hue.process_remove_chat_message(item)
-        break
-      }
-    }
-  } else if (
-    data.type === "announcement" ||
-    data.type === "image" ||
-    data.type === "tv"
-  ) {
-    for (let item of Hue.els(".message.announcement")) {
-      if (Hue.dataset(item, "id") == data.id) {
-        Hue.process_remove_announcement(item)
-        break
-      }
-    }
+  let ans = Hue.get_message_by_id(data.id)
+
+  if (!ans) {
+    return
+  }
+
+  let message = ans[0]
+  let mode = Hue.dataset(message.closest(".message"), "mode")
+
+  if (mode === "chat") {
+    Hue.process_remove_chat_message(message)
+  } else if (mode == "announcement") {
+    Hue.process_remove_announcement(message)
   }
 
   Hue.goto_bottom()
@@ -1681,7 +1708,7 @@ Hue.clear_log = function () {
   if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
-  
+
   Hue.show_confirm("Clear Log", "Delete all messages from the chat log", function () {
     Hue.socket_emit("clear_log", {})
   })  
@@ -1703,4 +1730,82 @@ Hue.announce_log_cleared = function (data) {
   Hue.tv_changed = []
   Hue.setup_image("show", current_image)
   Hue.setup_tv("show", current_tv)
+}
+
+// Handles delete message
+Hue.handle_delete_message = function (id, user_id) {
+  if (Hue.is_admin_or_op(Hue.role)) {
+    Hue.msg_info2.show([
+      "Delete Message(s)",
+      Hue.template_delete_messages_select(),
+    ], function () {
+      Hue.el("#delete_messages_select_delete").addEventListener("click", function () {
+        Hue.msg_info2.close()
+        Hue.delete_message(id)
+      })
+
+      Hue.el("#delete_messages_select_above").addEventListener("click", function () {
+        Hue.msg_info2.close()
+        Hue.delete_messages_above(id)
+      })
+
+      Hue.el("#delete_messages_select_below").addEventListener("click", function () {
+        Hue.msg_info2.close()
+        Hue.delete_messages_below(id)
+      })
+    })
+    Hue.horizontal_separator(Hue.el("#delete_messages_select_container"))
+  } else if (user_id === Hue.user_id) {
+    Hue.delete_message(id)
+  }
+}
+
+// When messages above were deleted
+Hue.deleted_messages_above = function (data) {
+  let ans = Hue.get_message_by_id(data.id)
+
+  if (!ans) {
+    return
+  }
+
+  let units = Hue.els("#chat_area .message_unit")
+
+  for (let i=0; i<ans[1]; i++) {
+    let unit = units[i]
+    let mode = Hue.dataset(unit.closest(".message"), "mode")
+    console.log(unit.textContent)
+
+    if (mode === "chat") {
+      Hue.process_remove_chat_message(unit)
+    } else if (mode == "announcement") {
+      Hue.process_remove_announcement(unit)
+    }    
+  }
+
+  Hue.goto_bottom()
+}
+
+// When messages below were deleted
+Hue.deleted_messages_below = function (data) {
+  let ans = Hue.get_message_by_id(data.id)
+
+  if (!ans) {
+    return
+  }
+
+  let units = Hue.els("#chat_area .message_unit")
+
+  for (let i=ans[1]+1; i<units.length; i++) {
+    let unit = units[i]
+    let mode = Hue.dataset(unit.closest(".message"), "mode")
+    console.log(unit.textContent)
+
+    if (mode === "chat") {
+      Hue.process_remove_chat_message(unit)
+    } else if (mode == "announcement") {
+      Hue.process_remove_announcement(unit)
+    }    
+  }
+
+  Hue.goto_bottom()
 }
