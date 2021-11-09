@@ -162,7 +162,6 @@ module.exports = function (
         socc.hue_role = ""
         socc.hue_kicked = true
         socc.hue_info1 = socket.hue_username
-
         handler.get_out(socc)
       }
 

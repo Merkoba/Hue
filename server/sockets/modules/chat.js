@@ -28,9 +28,10 @@ module.exports = function (
 
     handler.process_message_links(data.message, function (response) {
       let id, date, edited, username
+      let room = vars.rooms[socket.hue_room_id]
 
       if (data.edit_id) {
-        let messages = vars.rooms[socket.hue_room_id].log_messages
+        let messages = room.log_messages
 
         for (let i = 0; i < messages.length; i++) {
           let message = messages[i]
@@ -50,8 +51,8 @@ module.exports = function (
               message.data.link_description = response.description
               message.data.link_image = response.image
               message.data.link_url = response.url        
-              vars.rooms[socket.hue_room_id].log_messages_modified = true
-              vars.rooms[socket.hue_room_id].activity = true
+              room.log_messages_modified = true
+              room.activity = true
               break
             } else {
               return false
@@ -105,8 +106,6 @@ module.exports = function (
 
         handler.push_log_message(socket, message)
       }
-
-      vars.rooms[socket.hue_room_id].modified = Date.now()
     })
   }
 
@@ -214,6 +213,8 @@ module.exports = function (
       } else {
         deleted = true
         messages.splice(message_index, 1)
+        room.log_messages_modified = true
+        room.activity = true
       }
 
       if (deleted) {
@@ -256,5 +257,24 @@ module.exports = function (
         }
       }
     }
+  }
+
+  // Deletes all messages
+  handler.public.clear_log = function (socket, data) {
+    if (!socket.hue_superuser) {
+      if (!handler.is_admin_or_op(socket)) {
+        return false
+      }
+    }
+
+    let room = vars.rooms[socket.hue_room_id]
+    room.log_messages = []
+    room.log_messages_modified = true
+    room.activity = true
+
+    handler.room_emit(socket, "log_cleared", {
+      user_id: socket.hue_user_id,
+      username: socket.hue_username
+    })    
   }
 }

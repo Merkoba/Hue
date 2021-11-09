@@ -123,7 +123,6 @@ module.exports = function (
       topic: info.topic,
       name: info.name,
       public: info.public,
-      modified: Date.now(),
       last_image_change: 0,
       last_tv_change: 0,
       message_board_posts: info.message_board_posts
