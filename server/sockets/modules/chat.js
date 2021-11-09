@@ -219,8 +219,9 @@ module.exports = function (
 
       if (deleted) {
         handler.room_emit(socket, "message_deleted", {
-          id: message_id,
-          type: message_type,
+          user_id: socket.hue_user_id,
+          username: socket.hue_username,
+          id: message_id
         })
 
         if (
@@ -277,4 +278,66 @@ module.exports = function (
     
     handler.push_admin_log_message(socket, "cleared the log")    
   }
+
+  // Deletes all messages above a message
+  handler.public.delete_messages_above = function (socket, data) {
+    if (!handler.is_admin_or_op(socket)) {
+      return false
+    }
+
+    if (!data.id) {
+      return false
+    }
+
+    let room = vars.rooms[socket.hue_room_id]
+
+    for (let i=0; i<room.log_messages.length; i++) {
+      let message = room.log_messages[i]
+      if (message.id === data.id) {
+        room.log_messages = room.log_messages.slice(i)
+        room.log_messages_modified = true
+        room.activity = true
+
+        handler.room_emit(socket, "deleted_messages_above", {
+          user_id: socket.hue_user_id,
+          username: socket.hue_username,
+          id: data.id
+        })
+        
+        handler.push_admin_log_message(socket, "deleted messages above")         
+        return
+      }
+    }   
+  }
+  
+  // Deletes all messages above a message
+  handler.public.delete_messages_below = function (socket, data) {
+    if (!handler.is_admin_or_op(socket)) {
+      return false
+    }
+
+    if (!data.id) {
+      return false
+    }
+
+    let room = vars.rooms[socket.hue_room_id]
+
+    for (let i=0; i<room.log_messages.length; i++) {
+      let message = room.log_messages[i]
+      if (message.id === data.id) {
+        room.log_messages = room.log_messages.slice(0, i + 1)
+        room.log_messages_modified = true
+        room.activity = true
+
+        handler.room_emit(socket, "deleted_messages_below", {
+          user_id: socket.hue_user_id,
+          username: socket.hue_username,
+          id: data.id
+        })
+        
+        handler.push_admin_log_message(socket, "deleted messages below")         
+        return
+      }
+    }   
+  }  
 }

@@ -39,6 +39,12 @@ Hue.server_update_events = {
   log_cleared: (data) => {
     Hue.announce_log_cleared(data)
   },
+  deleted_messages_above: (data) => {
+    Hue.deleted_messages_above(data)
+  },
+  deleted_messages_below: (data) => {
+    Hue.deleted_messages_below(data)
+  },
   user_role_changed: (data) => {
     Hue.announce_role_change(data)
   },

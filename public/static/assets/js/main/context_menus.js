@@ -9,9 +9,11 @@ Hue.start_chat_menu_context_menu = function () {
       let mode = Hue.dataset(message, "mode")
       let type = Hue.dataset(message, "type")
       let user_id = Hue.dataset(message, "user_id")
+      let message_id = Hue.dataset(message, "message_id")
+      let id = Hue.dataset(e.target.closest(".message_unit"), "id")
       let chat_container = e.target.closest(".chat_content_container")
       let url = ""
-      
+
       if (chat_container) {
         url = Hue.dataset(chat_container, "first_url")
       }
@@ -20,7 +22,6 @@ Hue.start_chat_menu_context_menu = function () {
         items.push({
           text: "Jump",
           action: function () {
-            let message_id = Hue.dataset(e.target.closest(".message"), "message_id")
             Hue.jump_to_chat_message(message_id)
           }
         })
@@ -81,25 +82,12 @@ Hue.start_chat_menu_context_menu = function () {
         }
       })
       
-      if (Hue.is_admin_or_op(Hue.role) && (mode === "chat" || type === "image_change" || type === "tv_change")) {
+      if ((user_id === Hue.user_id || Hue.is_admin_or_op(Hue.role)) && 
+        (mode === "chat" || type === "image_change" || type === "tv_change")) {
         items.push({
           text: "Delete",
           action: function () {
-            Hue.show_confirm("Delete Message", "Delete message from the chat log", function () {
-              let id = false
-              let message = e.target.closest(".message")
-              let mode = Hue.dataset(message, "mode")
-  
-              if (mode === "chat") {
-                id = Hue.dataset(e.target.closest(".chat_content_container"), "id")
-              } else if (mode === "announcement") {
-                id = Hue.dataset(message, "id")
-              }
-  
-              if (id) {
-                Hue.delete_message(id, true)
-              }
-            })       
+            Hue.handle_delete_message(id, user_id)      
           }
         })
       }
