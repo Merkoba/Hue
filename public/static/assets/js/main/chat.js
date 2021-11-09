@@ -1773,7 +1773,6 @@ Hue.deleted_messages_above = function (data) {
   for (let i=0; i<ans[1]; i++) {
     let unit = units[i]
     let mode = Hue.dataset(unit.closest(".message"), "mode")
-    console.log(unit.textContent)
 
     if (mode === "chat") {
       Hue.process_remove_chat_message(unit)
@@ -1798,7 +1797,6 @@ Hue.deleted_messages_below = function (data) {
   for (let i=ans[1]+1; i<units.length; i++) {
     let unit = units[i]
     let mode = Hue.dataset(unit.closest(".message"), "mode")
-    console.log(unit.textContent)
 
     if (mode === "chat") {
       Hue.process_remove_chat_message(unit)
