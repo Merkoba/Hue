@@ -261,10 +261,8 @@ module.exports = function (
 
   // Deletes all messages
   handler.public.clear_log = function (socket, data) {
-    if (!socket.hue_superuser) {
-      if (!handler.is_admin_or_op(socket)) {
-        return false
-      }
+    if (!handler.is_admin_or_op(socket)) {
+      return false
     }
 
     let room = vars.rooms[socket.hue_room_id]
