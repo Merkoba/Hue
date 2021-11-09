@@ -1682,7 +1682,7 @@ Hue.clear_log = function () {
     return false
   }
   
-  Hue.show_confirm("Clear Log", "Deletes all chat messages from the chat log", function () {
+  Hue.show_confirm("Clear Log", "Delete all messages from the chat log", function () {
     Hue.socket_emit("clear_log", {})
   })  
 }
