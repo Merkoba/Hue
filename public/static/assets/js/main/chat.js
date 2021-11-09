@@ -1678,6 +1678,10 @@ Hue.add_chat_spacer = function () {
 
 // Deletes all chat messages
 Hue.clear_log = function () {
+  if (!Hue.is_admin_or_op(Hue.role)) {
+    return false
+  }
+  
   Hue.show_confirm("Clear Log", "Deletes all chat messages from the chat log", function () {
     Hue.socket_emit("clear_log", {})
   })  
