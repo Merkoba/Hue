@@ -1543,7 +1543,7 @@ svg.action:hover {
 	width: 22rem;
 	display: flex;
 	flex-direction: column;
-	gap: 2rem;
+	gap: 1.6rem;
 }
 
 .admin_activity_date {
@@ -1610,8 +1610,6 @@ svg.action:hover {
 .ban_list_item {
 	font-size: 1.2rem;
 	cursor: pointer;
-	margin-top: 0.8rem;
-	margin-bottom: 0.8rem;
 }
 
 .special_link {
