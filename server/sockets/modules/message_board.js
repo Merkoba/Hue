@@ -109,7 +109,8 @@ module.exports = function (
           id: data.id,
         })
 
-        break
+        handler.push_admin_log_message(socket, "deleted a message from the message board")         
+        return
       }
     }
   }

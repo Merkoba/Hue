@@ -197,7 +197,7 @@ Hue.server_update_events = {
     Hue.on_message_board_received(data)
   },
   message_board_post_deleted: (data) => {
-    Hue.remove_message_board_post(data)
+    Hue.deleted_message_board_post(data)
   },
   audioclip_changed: (data) => {
     Hue.audioclip_changed(data)
