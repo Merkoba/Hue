@@ -1539,12 +1539,11 @@ svg.action:hover {
 }
 
 #admin_activity_container {
+	margin-top: 0.8rem;
 	width: 22rem;
-}
-
-.admin_activity_item {
-	padding-top: 1rem;
-	padding-bottom: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
 }
 
 .admin_activity_date {
