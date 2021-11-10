@@ -13,7 +13,7 @@ Hue.setup_message_board = function () {
         let id = Hue.dataset(item, "id")
   
         if (id) {
-          Hue.show_confirm("Delete Message", "", function () {
+          Hue.show_confirm("Delete Message", "Delete message from the message board", function () {
             Hue.socket_emit("delete_message_board_post", { id: id })
           })
         }
@@ -215,7 +215,7 @@ Hue.check_message_board_permissions = function () {
 }
 
 // Remove a post from the message board window
-Hue.remove_message_board_post = function (data) {
+Hue.deleted_message_board_post = function (data) {
   for (let item of Hue.els(".message_board_item")) {
     if (Hue.dataset(item, "id") === data.id) {
       item.remove()
@@ -223,6 +223,7 @@ Hue.remove_message_board_post = function (data) {
     }
   }
 
+  Hue.vertical_separator(Hue.el("#message_board_container"))
   Hue.check_last_message_board_post()
 }
 

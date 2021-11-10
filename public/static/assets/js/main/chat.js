@@ -1781,11 +1781,6 @@ Hue.deleted_messages_above = function (data) {
     }    
   }
 
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} deleted some messages`
-  )
-
   Hue.goto_bottom()
 }
 
@@ -1809,11 +1804,6 @@ Hue.deleted_messages_below = function (data) {
       Hue.process_remove_announcement(unit)
     }    
   }
-
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} deleted some messages`
-  )
 
   Hue.goto_bottom()
 }
