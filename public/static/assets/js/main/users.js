@@ -628,7 +628,7 @@ Hue.play_audioclip = function () {
   let clip = Hue.get_audioclip(Hue.open_profile_user_id)
 
   if (Hue.audioclip && !Hue.audioclip.paused) {
-    if (Hue.audioclip_src === clip) {
+    if (Hue.audioclip_src.startsWith(clip)) {
       return
     }
 

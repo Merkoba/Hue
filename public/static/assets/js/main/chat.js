@@ -13,9 +13,13 @@ Hue.add_chat_message = function (args = {}) {
     link_image: false,
     link_url: false,
     edited: false,
-    just_edited: false
+    just_edited: false,
+    quote: "",
+    quote_username: "",
+    quote_user_id: ""
   }
 
+  
   args = Object.assign(def_args, args)
 
   let num_lines = args.message.split("\n").length
@@ -86,10 +90,6 @@ Hue.add_chat_message = function (args = {}) {
     }
   }
 
-  if (/^\w+ said\:/.test(args.message)) {
-    content_classes += " quote"
-  }
-
   let fmessage
   let title = ""
 
@@ -111,53 +111,70 @@ Hue.add_chat_message = function (args = {}) {
 
   let s = `
     <div class='chat_left_side'>
-        <div class='${profilepic_classes}'>
-            <img class='chat_profilepic profilepic' src='${pi}' loading='lazy'>
-        </div>
+      <div class='${profilepic_classes}'>
+        <img class='chat_profilepic profilepic' src='${pi}' loading='lazy'>
+      </div>
     </div>
     <div class='chat_right_side'>
         <div class='chat_message_top'>
-            <div class='chat_username action'></div>
-            <div class='chat_timeago'></div>
+          <div class='chat_username action'></div>
+          <div class='chat_timeago'></div>
         </div>
         <div class='chat_container'>
-            <div class='${container_classes}'>
-                <div class='chat_menu_button_container'>
-                    <svg class='other_icon chat_menu_button chat_menu_button_menu'>
-                      <use href='#icon_ellipsis'>
-                    </svg>
-                </div>
+          <div class='${container_classes}'>
+            <div class="chat_quote">
+              <img class="chat_quote_image">
+              <div class="chat_quote_text"></div>
+            </div>
+            <div class='chat_menu_button_container'>
+              <svg class='other_icon chat_menu_button chat_menu_button_menu'>
+                <use href='#icon_ellipsis'>
+              </svg>
+            </div>
 
-                <div class='${content_classes}' title='${title}' data-otitle='${title}' data-date='${d}'></div>
+            <div class='${content_classes}' title='${title}' data-otitle='${title}' data-date='${d}'></div>
 
-                <div class='message_edit_container'>
-                    <textarea class='message_edit_area'></textarea>
-                    <div class='message_edit_buttons'>
-                        <div class='message_edit_button action message_edit_cancel'>Cancel</div>
-                        <div class='message_edit_button action message_edit_submit'>Submit</div>
-                    </div>
+            <div class='message_edit_container'>
+                <textarea class='message_edit_area'></textarea>
+                <div class='message_edit_buttons'>
+                  <div class='message_edit_button action message_edit_cancel'>Cancel</div>
+                  <div class='message_edit_button action message_edit_submit'>Submit</div>
                 </div>
             </div>
+          </div>
         </div>
     </div>`
 
   fmessage = Hue.div("message chat_message user_details")
   fmessage.innerHTML = s
+  let content = fmessage.querySelector(".chat_content")
 
   if (image_preview) {
-    fmessage.querySelector(".chat_content").innerHTML = image_preview
+    content.innerHTML = image_preview
 
     if (preview_text_class) {
       fmessage.querySelector(".image_preview_text").classList.add(preview_text_class)
     }
   } else if (link_preview) {
-    fmessage.querySelector(".chat_content").innerHTML = link_preview
+    content.innerHTML = link_preview
 
     if (preview_text_class) {
       fmessage.querySelector(".link_preview_text").classList.add(preview_text_class)
     }
   } else {
-    fmessage.querySelector(".chat_content").innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(args.message))
+    content.innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(args.message))
+  }
+
+  let quote = fmessage.querySelector(".chat_quote")
+
+  if (args.quote) {
+    let quote_text = Hue.utilz.make_html_safe(`${args.quote_username} said: ${args.quote}`)
+    quote.querySelector(".chat_quote_text").innerHTML = Hue.format_quote(quote_text)
+    Hue.dataset(quote, "quote_username", args.quote_username)
+    Hue.dataset(quote, "quote_user_id", args.quote_user_id)
+    quote.querySelector(".chat_quote_image").src = Hue.get_profilepic(args.quote_user_id)
+  } else {
+    quote.style.display = "none"
   }
 
   let chat_username = fmessage.querySelector(".chat_username")
@@ -197,7 +214,6 @@ Hue.add_chat_message = function (args = {}) {
   Hue.dataset(content_container, "first_url", first_url)
   Hue.dataset(content_container, "original_message", args.message)
 
-  let content = fmessage.querySelector(".chat_content")
   Hue.dataset(content, "date", d)
   Hue.dataset(content, "otitle", title)
 
@@ -545,8 +561,12 @@ Hue.start_chat_mouse_events = function () {
         } else if (e.target.classList.contains("message_edit_cancel")) {
           Hue.stop_edit_message()
           Hue.check_scrollers()
-        } else if (e.target.classList.contains("chat_reply_username")) {
-          Hue.show_profile(e.target.textContent)
+        } else if (e.target.classList.contains("chat_quote_username") ||
+        e.target.classList.contains("chat_quote_image")) {
+          let quote = e.target.closest(".chat_quote")
+          let username = Hue.dataset(quote, "quote_username")
+          let user_id = Hue.dataset(quote, "quote_user_id")
+          Hue.show_profile(username, user_id)
         } else if (e.target.classList.contains("link_preview_image")) {
           e.stopPropagation()
           Hue.expand_image(e.target.src.replace(".gifv", ".gif"))
@@ -567,9 +587,10 @@ Hue.start_chat_mouse_events = function () {
 
   document.addEventListener("mouseup", function (e) {
     if (e.target.closest(".chat_area")) {
-      if (e.target.classList.contains("chat_content")) {
+      if (e.target.closest(".chat_content_container")) {
         if (e.button === 1) {
-          if (Hue.start_reply(e.target)) {
+          let container = e.target.closest(".chat_content_container")
+          if (Hue.start_reply(container.querySelector(".chat_content"))) {
             e.preventDefault()
             e.stopPropagation()
           }
@@ -609,17 +630,18 @@ Hue.start_reply = function (target) {
   let message = target.closest(".message")
   let text = Hue.remove_urls(Hue.utilz.clean_string2(target.textContent))
   let username = Hue.dataset(message, "username")
+  let user_id = Hue.dataset(message, "user_id")
 
   if (!text || !username) {
     return false
   }
 
-  Hue.show_reply(username, text)
+  Hue.show_reply(username, user_id, text)
   return true
 }
 
 // Show the reply window
-Hue.show_reply = function (username, text) {
+Hue.show_reply = function (username, user_id, text) {
   Hue.el("#reply_text").value = text
   let input = Hue.get_input().trim()
 
@@ -635,7 +657,8 @@ Hue.show_reply = function (username, text) {
     Hue.el("#reply_input").focus()
   })
 
-  Hue.reply_username = username
+  Hue.quote_username = username
+  Hue.quote_user_id = user_id
 }
 
 // Submit the reply window
@@ -650,22 +673,18 @@ Hue.submit_reply = function () {
   Hue.goto_bottom(true)
 
   let otext = Hue.utilz.clean_string2(Hue.el("#reply_text").value)
-  let text = otext.substring(0, Hue.config.quote_max_length).trim()
+  let quote = otext.substring(0, Hue.config.quote_max_length).trim()
 
-  if (otext.length > text.length) {
-    text += "..."
+  if (otext.length > quote.length) {
+    quote += "..."
   }
 
   Hue.process_message({
-    message: `${Hue.reply_username} said: ${text}`,
-    to_history: false
+    message: reply,
+    quote: quote,
+    quote_username: Hue.quote_username,
+    quote_user_id: Hue.quote_user_id
   })
-
-  if (reply) {
-    Hue.process_message({
-      message: reply
-    })
-  }
 
   Hue.el("#reply_input").value = ""
 }
@@ -777,8 +796,10 @@ Hue.edit_message = function (container) {
   let edit_container = container.querySelector(".message_edit_container")
   let area = container.querySelector(".message_edit_area")
   let edit_message = container.querySelector(".edit_message")
+  let edit_message_container = container.closest(".edit_message_container")
 
   edit_container.style.display = "block"
+  edit_message_container.classList.add("editing_chat_message")
   edit_message.style.display = "none"
   container.classList.remove("chat_menu_button_main")
   container.style.display = "block"
@@ -810,8 +831,10 @@ Hue.stop_edit_message = function () {
 
   let edit_container = Hue.editing_message_container.querySelector(".message_edit_container")
   let edit_message = Hue.editing_message_container.querySelector(".edit_message")
+  let edit_message_container = Hue.editing_message_container.closest(".edit_message_container")
 
   edit_container.style.display = "none"
+  edit_message_container.classList.remove("editing_chat_message")
   Hue.editing_message_area.value = ""
   edit_message.style.display = "inline-block"
   Hue.editing_message_container.classList.add("chat_menu_button_main")
@@ -1161,6 +1184,9 @@ Hue.on_chat_message = function (data) {
     link_url: data.link_url,
     edited: data.edited,
     just_edited: data.just_edited,
+    quote: data.quote,
+    quote_username: data.quote_username,
+    quote_user_id: data.quote_user_id
   })
 
   Hue.hide_typing()
@@ -1569,6 +1595,9 @@ Hue.show_log_messages = function (log_messages) {
             date: date,
             scroll: false,
             edited: data.edited,
+            quote: data.quote,
+            quote_username: data.quote_username,
+            quote_user_id: data.quote_user_id
           })
         } else if (type === "image") {
           data.id = id
