@@ -58,6 +58,6 @@ Hue.check_arrows = function (text) {
 // Remove arrows from the start of strings
 Hue.remove_arrows = function (text) {
   text = text.replace(/(&gt;)+/, "")
-  text = Hue.utilz.untab_string(text).trimEnd()
+  text = Hue.utilz.untab_string(text).trim()
   return text
 }
