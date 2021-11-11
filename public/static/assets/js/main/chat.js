@@ -123,7 +123,7 @@ Hue.add_chat_message = function (args = {}) {
         <div class='chat_container'>
           <div class='${container_classes}' title='${title}' data-otitle='${title}' data-date='${d}'>
             <div class="chat_quote">
-              <img class="chat_quote_image">
+              <img class="chat_quote_image profilepic">
               <div class="chat_quote_text"></div>
             </div>
             <div class='chat_menu_button_container'>
@@ -185,7 +185,7 @@ Hue.add_chat_message = function (args = {}) {
   let htimeago = fmessage.querySelector(".chat_timeago")
   htimeago.textContent = Hue.utilz.timeago(d)
 
-  fmessage.querySelector(".chat_profilepic").addEventListener("error", function () {
+  fmessage.querySelector(".profilepic").addEventListener("error", function () {
     if (this.src !== Hue.config.default_profilepic_url) {
       this.src = Hue.config.default_profilepic_url
     }
@@ -293,8 +293,8 @@ Hue.add_chat_announcement = function (args = {}) {
     content_classes += " action"
   }
 
-  if (args.username) {
-    brk_classes += " action"
+  if (args.user_id) {
+    brk_classes += " pos_absolute"
   }
 
   let announcement_top = ""
@@ -308,24 +308,27 @@ Hue.add_chat_announcement = function (args = {}) {
   }
 
   let s = `
-    <div class='${brk_classes}'>${args.brk}</div>
+    <div class='brk_container'>
+    <img class='brk_profilepic profilepic'>
+      <div class='${brk_classes}'>${args.brk}</div>
+    </div>
     <div class='${container_classes}'>
-        <div class='chat_menu_button_container'>
-            <svg class='other_icon chat_menu_button chat_menu_button_menu'>
-              <use href='#icon_ellipsis'>
-            </svg>
+      <div class='chat_menu_button_container'>
+        <svg class='other_icon chat_menu_button chat_menu_button_menu'>
+          <use href='#icon_ellipsis'>
+        </svg>
+      </div>
+      <div class='${split_classes}'>
+        ${announcement_top}
+        <div class='${content_classes}'></div>
+      </div>
+      <div class='message_edit_container'>
+        <textarea class='message_edit_area'></textarea>
+        <div class='message_edit_buttons'>
+          <div class='message_edit_button action message_edit_cancel'>Cancel</div>
+          <div class='message_edit_button action message_edit_submit'>Submit</div>
         </div>
-        <div class='${split_classes}'>
-            ${announcement_top}
-            <div class='${content_classes}'></div>
-        </div>
-        <div class='message_edit_container'>
-          <textarea class='message_edit_area'></textarea>
-          <div class='message_edit_buttons'>
-              <div class='message_edit_button action message_edit_cancel'>Cancel</div>
-              <div class='message_edit_button action message_edit_submit'>Submit</div>
-          </div>
-        </div>        
+      </div>        
     </div>`
 
   let fmessage = Hue.div("message announcement message_unit")
@@ -359,6 +362,14 @@ Hue.add_chat_announcement = function (args = {}) {
 
   content.textContent = args.message
   Hue.urlize(content)
+
+  let brk_bottom = fmessage.querySelector(".brk_profilepic")
+
+  if (args.user_id) {
+    brk_bottom.src = Hue.get_profilepic(args.user_id)
+  } else {
+    brk_bottom.style.display = "none"
+  }
 
   Hue.dataset(fmessage, "id", args.id)
   Hue.dataset(fmessage, "public", args.public)

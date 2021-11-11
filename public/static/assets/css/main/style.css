@@ -6,6 +6,7 @@
 	--profilepic_size: 2rem;
 	--tab_size: 1.6rem;
 	--chat_side_spacing: 0.8rem;
+	--small_profilepic_size: 1.2rem;
 }
 
 @font-face {
@@ -514,16 +515,29 @@ body * {
 	flex-grow: 1;
 }
 
+.brk_container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-right: var(--chat_side_spacing);
+}
+
 .brk {
 	flex-shrink: 0;
 	flex-grow: 0;
 	text-align: center;
-	margin-right: var(--chat_side_spacing);
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
 	min-width: var(--profilepic_size);
 	max-width: var(--profilepic_size);
+}
+
+.brk_profilepic {
+	width: var(--profilepic_size);
+	height: var(--profilepic_size);
+	opacity: 0.5
 }
 
 a.generic:link,
@@ -1925,8 +1939,8 @@ a.special_link:hover {
 }
 
 .chat_quote_image {
-	width: 1.2rem;
-	height: 1.2rem;
+	width: var(--small_profilepic_size);
+	height: var(--small_profilepic_size);
 	margin-right: 0.35rem;
 	cursor: pointer;
 }
@@ -2434,4 +2448,8 @@ pre {
 
 .ctxmenu li span {
 	cursor: pointer;
+}
+
+.pos_absolute {
+	position: absolute;
 }
