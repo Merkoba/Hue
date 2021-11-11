@@ -1931,10 +1931,6 @@ a.special_link:hover {
 	cursor: pointer;
 }
 
-.chat_quote_text {
-	margin-right: 0.15rem;
-}
-
 .chat_quote_username {
 	text-decoration: underline;
 	display: inline-block;
