@@ -32,8 +32,8 @@ Hue.add_chat_message = function (args = {}) {
 
   args.message = Hue.replace_message_vars(args.id, args.message)
 
-  let container_classes = "chat_content_container chat_menu_button_main reply_message_container edit_message_container message_unit"
-  let content_classes = "chat_content dynamic_title reply_message edit_message"
+  let container_classes = "chat_content_container chat_menu_button_main reply_message_container edit_message_container message_unit dynamic_title"
+  let content_classes = "chat_content reply_message edit_message"
   let d = args.date ? args.date : Date.now()
   let nd = Hue.utilz.nice_date(d)
   let pi = Hue.get_profilepic(args.user_id)
@@ -121,7 +121,7 @@ Hue.add_chat_message = function (args = {}) {
           <div class='chat_timeago'></div>
         </div>
         <div class='chat_container'>
-          <div class='${container_classes}'>
+          <div class='${container_classes}' title='${title}' data-otitle='${title}' data-date='${d}'>
             <div class="chat_quote">
               <img class="chat_quote_image">
               <div class="chat_quote_text"></div>
@@ -132,7 +132,7 @@ Hue.add_chat_message = function (args = {}) {
               </svg>
             </div>
 
-            <div class='${content_classes}' title='${title}' data-otitle='${title}' data-date='${d}'></div>
+            <div class='${content_classes}'></div>
 
             <div class='message_edit_container'>
                 <textarea class='message_edit_area'></textarea>
@@ -215,9 +215,7 @@ Hue.add_chat_message = function (args = {}) {
   Hue.dataset(content_container, "date", d)
   Hue.dataset(content_container, "first_url", first_url)
   Hue.dataset(content_container, "original_message", args.message)
-
-  Hue.dataset(content, "date", d)
-  Hue.dataset(content, "otitle", title)
+  Hue.dataset(content_container, "otitle", title)
 
   if (!image_preview && !link_preview) {
     Hue.urlize(content)
@@ -446,8 +444,8 @@ Hue.add_to_chat = function (args = {}) {
           last_message.querySelectorAll(".chat_content").length <
           Hue.config.max_same_post_messages
         ) {
-          let c1 = Array.from(args.message.querySelectorAll(".chat_content")).slice(-1)[0]
-          let c2 = Array.from(last_message.querySelectorAll(".chat_content")).slice(-1)[0]
+          let c1 = Array.from(args.message.querySelectorAll(".chat_content_container")).slice(-1)[0]
+          let c2 = Array.from(last_message.querySelectorAll(".chat_content_container")).slice(-1)[0]
           let date_diff = Hue.dataset(c1, "date") - Hue.dataset(c2, "date")
           
           if (date_diff < Hue.config.max_same_post_diff) {
