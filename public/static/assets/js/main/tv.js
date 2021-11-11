@@ -3,7 +3,7 @@
 // This is the entry function for tv objects to get registered, announced, and be ready for use
 Hue.setup_tv = function (mode, odata = {}) {
   let data = {}
-  
+
   data.id = odata.id
   data.user_id = odata.user_id
   data.type = odata.type
