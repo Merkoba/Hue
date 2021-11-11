@@ -1919,8 +1919,9 @@ a.special_link:hover {
 .chat_quote {
 	display: flex;
 	flex-direction: row;
-	padding: 1rem;
+	padding: 0.25rem;
 	margin-bottom: 0.25rem;
+	background-color: var(--altcolor_a);
 }
 
 .chat_quote_image {
@@ -1928,6 +1929,10 @@ a.special_link:hover {
 	height: 1.2rem;
 	margin-right: 0.35rem;
 	cursor: pointer;
+}
+
+.chat_quote_text {
+	margin-right: 0.15rem;
 }
 
 .chat_quote_username {
@@ -2257,11 +2262,6 @@ pre {
 
 .message_board_username {
 	cursor: pointer;
-}
-
-.chat_quote {
-	background-color: var(--altcolor_a);
-	padding: 0.25rem;
 }
 
 .expanded_modal_image {
