@@ -26,8 +26,17 @@ module.exports = function (
       return false
     }
 
+    if (data.quote.length > config.quote_max_length + 10) {
+      return false
+    }
+
+    if (data.quote.split("\n").length >= 2) {
+      return false
+    }    
+
     handler.process_message_links(data.message, function (response) {
       let id, date, edited, username
+      let quote, quote_username, quote_user_id
       let room = vars.rooms[socket.hue_room_id]
 
       if (data.edit_id) {
@@ -44,13 +53,16 @@ module.exports = function (
             if (message.data.user_id === socket.hue_user_id) {
               edited = true
               date = message.date
+              quote = message.data.quote
+              quote_username = message.data.quote_username
+              quote_user_id = message.data.quote_user_id
               username = message.data.username
               message.data.content = data.message
               message.data.edited = true
               message.data.link_title = response.title,
               message.data.link_description = response.description
               message.data.link_image = response.image
-              message.data.link_url = response.url        
+              message.data.link_url = response.url
               room.log_messages_modified = true
               room.activity = true
               break
@@ -71,6 +83,9 @@ module.exports = function (
         id = handler.generate_message_id()
         username = socket.hue_username
         edited = false
+        quote = data.quote
+        quote_username = data.quote_username
+        quote_user_id = data.quote_user_id
       }
 
       handler.room_emit(socket, "chat_message", {
@@ -85,6 +100,9 @@ module.exports = function (
         link_url: response.url,
         edited: edited,
         just_edited: edited,
+        quote: quote,
+        quote_username: quote_username,
+        quote_user_id: quote_user_id
       })
 
       if (!data.edit_id) {
@@ -101,6 +119,9 @@ module.exports = function (
             link_image: response.image,
             link_url: response.url,
             edited: edited,
+            quote: quote,
+            quote_username: quote_username,
+            quote_user_id: quote_user_id
           }
         }
 

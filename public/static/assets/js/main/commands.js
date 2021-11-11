@@ -715,7 +715,10 @@ Hue.process_message = function (args = {}) {
     to_history: true,
     clr_input: true,
     edit_id: false,
-    handle_url: true
+    handle_url: true,
+    quote: "",
+    quote_username: "",
+    quote_user_id: ""
   }
 
   args = Object.assign(def_args, args)
@@ -747,6 +750,9 @@ Hue.process_message = function (args = {}) {
     Hue.socket_emit("sendchat", {
       message: args.message,
       edit_id: args.edit_id,
+      quote: args.quote,
+      quote_username: args.quote_username,
+      quote_user_id: args.quote_user_id
     })
   }
 
