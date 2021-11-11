@@ -26,17 +26,20 @@ module.exports = function (
       return false
     }
 
-    if (data.quote.length > config.quote_max_length + 10) {
+    let quote = data.quote || ""
+    let quote_username = data.quote_username || ""
+    let quote_user_id = data.quote_user_id || ""
+
+    if (quote.length > config.quote_max_length + 10) {
       return false
     }
 
-    if (data.quote.split("\n").length >= 2) {
+    if (quote.split("\n").length >= 2) {
       return false
     }    
 
     handler.process_message_links(data.message, function (response) {
       let id, date, edited, username
-      let quote, quote_username, quote_user_id
       let room = vars.rooms[socket.hue_room_id]
 
       if (data.edit_id) {
