@@ -291,6 +291,7 @@ Hue.add_chat_announcement = function (args = {}) {
 
   if (is_media) {
     content_classes += " action"
+    brk_classes += " action"
   }
 
   if (args.user_id) {
