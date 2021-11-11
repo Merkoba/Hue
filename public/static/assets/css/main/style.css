@@ -537,7 +537,7 @@ body * {
 .brk_profilepic {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
-	opacity: 0.5
+	opacity: 0.25
 }
 
 a.generic:link,
