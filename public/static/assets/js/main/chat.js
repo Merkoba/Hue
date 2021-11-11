@@ -168,8 +168,10 @@ Hue.add_chat_message = function (args = {}) {
   let quote = fmessage.querySelector(".chat_quote")
 
   if (args.quote) {
-    let quote_text = Hue.utilz.make_html_safe(`${args.quote_username} said: ${args.quote}`)
-    quote.querySelector(".chat_quote_text").innerHTML = Hue.format_quote(quote_text)
+    let username_safe = Hue.utilz.make_html_safe(args.quote_username)
+    let quote_username_html = `<div class='chat_quote_username action'>${username_safe}</div>`
+    let content_safe = Hue.utilz.make_html_safe(args.quote)
+    quote.querySelector(".chat_quote_text").innerHTML = `${quote_username_html}: ${content_safe}`
     Hue.dataset(quote, "quote_username", args.quote_username)
     Hue.dataset(quote, "quote_user_id", args.quote_user_id)
     quote.querySelector(".chat_quote_image").src = Hue.get_profilepic(args.quote_user_id)
