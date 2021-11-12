@@ -570,7 +570,7 @@ Hue.start_chat_mouse_events = function () {
           Hue.stop_edit_message()
           Hue.check_scrollers()
         } else if (e.target.classList.contains("chat_quote_username") ||
-        e.target.classList.contains("chat_quote_image")) {
+          e.target.classList.contains("chat_quote_image")) {
           let quote = e.target.closest(".chat_quote")
           let username = Hue.dataset(quote, "quote_username")
           let user_id = Hue.dataset(quote, "quote_user_id")
@@ -582,11 +582,15 @@ Hue.start_chat_mouse_events = function () {
           e.stopPropagation()
           let src = Hue.dataset(e.target, "image_preview_src_original")
           Hue.expand_image(src.replace(".gifv", ".gif"))
-        } else if (type === "image_change") {
-          Hue.show_modal_image(id)
-        } else if (type === "tv_change") {
-          Hue.open_url_menu_by_media_id("tv", id)
+        } else if (e.target.classList.contains("announcement_content") ||
+          e.target.closest(".brk_container")) {
+          if (type === "image_change") {
+            Hue.show_modal_image(id)
+          } else if (type === "tv_change") {
+            Hue.open_url_menu_by_media_id("tv", id)
+          }
         }
+        
       }
     }
 
@@ -607,9 +611,10 @@ Hue.start_chat_mouse_events = function () {
             e.stopPropagation()
           }
         }
-      } else if (e.target.classList.contains("announcement_content")) {
+      } else if (e.target.closest(".announcement_content_container")) {
         if (e.button === 1) {
-          if (Hue.start_reply(e.target)) {
+          let container = e.target.closest(".announcement_content_container")
+          if (Hue.start_reply(container.querySelector(".announcement_content"))) {
             e.preventDefault()
             e.stopPropagation()
           }
