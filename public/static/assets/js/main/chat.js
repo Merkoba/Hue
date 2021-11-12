@@ -552,6 +552,10 @@ Hue.start_chat_mouse_events = function () {
       return
     }
 
+    if (e.target.tagName === "A") {
+      return false
+    }    
+
     if (e.target.closest(".chat_menu_button")) {
       return
     }
@@ -615,6 +619,10 @@ Hue.start_chat_mouse_events = function () {
   })
 
   document.addEventListener("mouseup", function (e) {
+    if (e.target.tagName === "A") {
+      return false
+    }
+    
     if (e.target.closest(".chat_area")) {
       if (e.target.closest(".chat_content_container")) {
         if (e.button === 1) {
@@ -1190,7 +1198,7 @@ Hue.jump_to_chat_message = function (message_id, highlight = true) {
   if (!message_id) {
     return
   }
-  
+
   let el = Hue.el(`#chat_area > .message_id_${message_id}`)
 
   if (!el) {
