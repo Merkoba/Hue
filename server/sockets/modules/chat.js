@@ -39,6 +39,18 @@ module.exports = function (
       return false
     }
 
+    if (quote_username.length > config.max_username_length) {
+      return false
+    }
+
+    if (quote_user_id.length > config.max_message_id_length) {
+      return false
+    }
+
+    if (quote_id.length > config.max_message_id_length) {
+      return false
+    }
+
     handler.process_message_links(data.message, function (response) {
       let id, date, edited, username
       let room = vars.rooms[socket.hue_room_id]
@@ -163,6 +175,10 @@ module.exports = function (
   // Deletes a message
   handler.public.delete_message = async function (socket, data) {
     if (!data.id) {
+      return false
+    }
+
+    if (data.id.length > config.max_message_id_length) {
       return false
     }
 
@@ -318,6 +334,10 @@ module.exports = function (
       return false
     }
 
+    if (data.id.length > config.max_message_id_length) {
+      return false
+    }
+
     let room = vars.rooms[socket.hue_room_id]
 
     for (let i=0; i<room.log_messages.length; i++) {
@@ -348,6 +368,10 @@ module.exports = function (
     if (!data.id) {
       return false
     }
+
+    if (data.id.length > config.max_message_id_length) {
+      return false
+    }    
 
     let room = vars.rooms[socket.hue_room_id]
 

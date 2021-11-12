@@ -81,6 +81,7 @@
 	"room_state_default_last_message_board_post": 0,
 	"jwt_expiration": 30000,
 	"max_jwt_token_length": 300,
+	"max_message_id_length": 100,
 	"max_user_id_length": 100,
 	"max_same_post_diff": 300000,
 	"max_same_post_messages": 20,
