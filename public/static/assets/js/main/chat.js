@@ -579,7 +579,9 @@ Hue.start_chat_mouse_events = function () {
         } else if (e.target.classList.contains("chat_quote_text")) {
           let quote = e.target.closest(".chat_quote")
           let id = Hue.dataset(quote, "quote_id")
-          Hue.jump_to_chat_message_by_id(id)
+          if (id) {
+            Hue.jump_to_chat_message_by_id(id)
+          }
         } else if (e.target.classList.contains("chat_quote_username") ||
           e.target.classList.contains("chat_quote_image")) {
           let quote = e.target.closest(".chat_quote")
@@ -959,6 +961,10 @@ Hue.delete_messages_below = function (id) {
 
 // Get message by id
 Hue.get_message_by_id = function (id) {
+  if (!id) {
+    return false
+  }
+
   let units = Hue.els("#chat_area .message_unit")
 
   for (let i=0; i<units.length; i++) {
@@ -1181,6 +1187,10 @@ Hue.remove_aura = function (id) {
 // This is used when clicking the Jump button in
 // windows showing chat message clones
 Hue.jump_to_chat_message = function (message_id, highlight = true) {
+  if (!message_id) {
+    return
+  }
+  
   let el = Hue.el(`#chat_area > .message_id_${message_id}`)
 
   if (!el) {
