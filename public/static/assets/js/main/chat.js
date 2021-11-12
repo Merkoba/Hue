@@ -1183,8 +1183,8 @@ Hue.remove_aura = function (id) {
 Hue.jump_to_chat_message = function (message_id, highlight = true) {
   let el = Hue.el(`#chat_area > .message_id_${message_id}`)
 
-  if (el.length === 0) {
-    return false
+  if (!el) {
+    return
   }
 
   el.scrollIntoView({
