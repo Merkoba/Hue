@@ -1209,7 +1209,6 @@ Hue.jump_to_chat_message_by_id = function (id) {
   if (ans) {
     let message = ans[0].closest(".message")
     let message_id = Hue.dataset(message, "message_id")
-    console.log(message_id)
     Hue.jump_to_chat_message(message_id)
   }
 }
