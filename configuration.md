@@ -215,6 +215,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "jwt_expiration"
 >How long jwt will be valid after login.
 
+"max_message_id_length"
+>Maximum length for message ids (like chat message or media change ids)
+
 "max_user_id_length"
 >After this length, this is clearly not a user id.
 
