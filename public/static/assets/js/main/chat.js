@@ -558,11 +558,7 @@ Hue.start_chat_mouse_events = function () {
         let user_id = Hue.dataset(message, "user_id")
         let type = Hue.dataset(message, "type")
   
-        if (type === "image_change") {
-          Hue.show_modal_image(id)
-        } else if (type === "tv_change") {
-          Hue.open_url_menu_by_media_id("tv", id)
-        } else if (e.target.closest(".chat_menu_button")) {
+        if (e.target.closest(".chat_menu_button")) {
           return
         } else if (e.target.classList.contains("chat_username")) {
           Hue.show_profile(username, user_id)
@@ -586,6 +582,10 @@ Hue.start_chat_mouse_events = function () {
           e.stopPropagation()
           let src = Hue.dataset(e.target, "image_preview_src_original")
           Hue.expand_image(src.replace(".gifv", ".gif"))
+        } else if (type === "image_change") {
+          Hue.show_modal_image(id)
+        } else if (type === "tv_change") {
+          Hue.open_url_menu_by_media_id("tv", id)
         }
       }
     }
