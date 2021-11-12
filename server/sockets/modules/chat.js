@@ -29,6 +29,7 @@ module.exports = function (
     let quote = data.quote || ""
     let quote_username = data.quote_username || ""
     let quote_user_id = data.quote_user_id || ""
+    let quote_id = data.quote_id || ""
 
     if (quote.length > config.quote_max_length + 10) {
       return false
@@ -36,7 +37,7 @@ module.exports = function (
 
     if (quote.split("\n").length >= 2) {
       return false
-    }    
+    }
 
     handler.process_message_links(data.message, function (response) {
       let id, date, edited, username
@@ -59,6 +60,7 @@ module.exports = function (
               quote = message.data.quote
               quote_username = message.data.quote_username
               quote_user_id = message.data.quote_user_id
+              quote_id = message.data.quote_id
               username = message.data.username
               message.data.content = data.message
               message.data.edited = true
@@ -89,6 +91,7 @@ module.exports = function (
         quote = data.quote
         quote_username = data.quote_username
         quote_user_id = data.quote_user_id
+        quote_id = data.quote_id
       }
 
       handler.room_emit(socket, "chat_message", {
@@ -105,7 +108,8 @@ module.exports = function (
         just_edited: edited,
         quote: quote,
         quote_username: quote_username,
-        quote_user_id: quote_user_id
+        quote_user_id: quote_user_id,
+        quote_id: quote_id
       })
 
       if (!data.edit_id) {
@@ -124,7 +128,8 @@ module.exports = function (
             edited: edited,
             quote: quote,
             quote_username: quote_username,
-            quote_user_id: quote_user_id
+            quote_user_id: quote_user_id,
+            quote_id: quote_id
           }
         }
 

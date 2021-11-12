@@ -16,10 +16,10 @@ Hue.add_chat_message = function (args = {}) {
     just_edited: false,
     quote: "",
     quote_username: "",
-    quote_user_id: ""
+    quote_user_id: "",
+    quote_id: ""
   }
 
-  
   args = Object.assign(def_args, args)
 
   let num_lines = args.message.split("\n").length
@@ -124,7 +124,7 @@ Hue.add_chat_message = function (args = {}) {
           <div class='${container_classes}' title='${title}' data-otitle='${title}' data-date='${d}'>
             <div class="chat_quote">
               <img class="chat_quote_image profilepic">
-              <div class="chat_quote_text"></div>
+              <div class="chat_quote_text action"></div>
             </div>
             <div class='chat_menu_button_container'>
               <svg class='other_icon chat_menu_button chat_menu_button_menu'>
@@ -174,6 +174,7 @@ Hue.add_chat_message = function (args = {}) {
     quote.querySelector(".chat_quote_text").innerHTML = `${quote_username_html}: ${content_safe}`
     Hue.dataset(quote, "quote_username", args.quote_username)
     Hue.dataset(quote, "quote_user_id", args.quote_user_id)
+    Hue.dataset(quote, "quote_id", args.quote_id)
     quote.querySelector(".chat_quote_image").src = Hue.get_profilepic(args.quote_user_id)
   } else {
     quote.style.display = "none"
@@ -569,6 +570,10 @@ Hue.start_chat_mouse_events = function () {
         } else if (e.target.classList.contains("message_edit_cancel")) {
           Hue.stop_edit_message()
           Hue.check_scrollers()
+        } else if (e.target.classList.contains("chat_quote_text")) {
+          let quote = e.target.closest(".chat_quote")
+          let id = Hue.dataset(quote, "quote_id")
+          Hue.jump_to_chat_message_by_id(id)
         } else if (e.target.classList.contains("chat_quote_username") ||
           e.target.classList.contains("chat_quote_image")) {
           let quote = e.target.closest(".chat_quote")
@@ -645,20 +650,22 @@ Hue.start_reply = function (target) {
   }
 
   let message = target.closest(".message")
+  let unit = target.closest(".message_unit")
   let text = Hue.remove_urls(Hue.utilz.clean_string2(target.textContent))
   let username = Hue.dataset(message, "username")
   let user_id = Hue.dataset(message, "user_id")
+  let id = Hue.dataset(unit, "id")
 
   if (!text || !username) {
     return false
   }
 
-  Hue.show_reply(username, user_id, text)
+  Hue.show_reply(id, username, user_id, text)
   return true
 }
 
 // Show the reply window
-Hue.show_reply = function (username, user_id, text) {
+Hue.show_reply = function (id, username, user_id, text) {
   Hue.el("#reply_text").value = text
   let input = Hue.get_input().trim()
 
@@ -674,6 +681,7 @@ Hue.show_reply = function (username, user_id, text) {
     Hue.el("#reply_input").focus()
   })
 
+  Hue.quote_id = id
   Hue.quote_username = username
   Hue.quote_user_id = user_id
 }
@@ -700,7 +708,8 @@ Hue.submit_reply = function () {
     message: reply,
     quote: quote,
     quote_username: Hue.quote_username,
-    quote_user_id: Hue.quote_user_id
+    quote_user_id: Hue.quote_user_id,
+    quote_id: Hue.quote_id
   })
 
   Hue.el("#reply_input").value = ""
@@ -1187,6 +1196,18 @@ Hue.jump_to_chat_message = function (message_id, highlight = true) {
   Hue.close_all_modals()
 }
 
+// Jumps to the message by id (not message_id)
+Hue.jump_to_chat_message_by_id = function (id) {
+  let ans = Hue.get_message_by_id(id)
+
+  if (ans) {
+    let message = ans[0].closest(".message")
+    let message_id = Hue.dataset(message, "message_id")
+    console.log(message_id)
+    Hue.jump_to_chat_message(message_id)
+  }
+}
+
 // What to do after receiving a chat message from the server
 Hue.on_chat_message = function (data) {
   Hue.add_chat_message({
@@ -1203,7 +1224,8 @@ Hue.on_chat_message = function (data) {
     just_edited: data.just_edited,
     quote: data.quote,
     quote_username: data.quote_username,
-    quote_user_id: data.quote_user_id
+    quote_user_id: data.quote_user_id,
+    quote_id: data.quote_id
   })
 
   Hue.hide_typing()
@@ -1614,7 +1636,8 @@ Hue.show_log_messages = function (log_messages) {
             edited: data.edited,
             quote: data.quote,
             quote_username: data.quote_username,
-            quote_user_id: data.quote_user_id
+            quote_user_id: data.quote_user_id,
+            quote_id: data.quote_id
           })
         } else if (type === "image") {
           data.id = id

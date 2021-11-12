@@ -718,7 +718,8 @@ Hue.process_message = function (args = {}) {
     handle_url: true,
     quote: "",
     quote_username: "",
-    quote_user_id: ""
+    quote_user_id: "",
+    quote_id: ""
   }
 
   args = Object.assign(def_args, args)
@@ -752,7 +753,8 @@ Hue.process_message = function (args = {}) {
       edit_id: args.edit_id,
       quote: args.quote,
       quote_username: args.quote_username,
-      quote_user_id: args.quote_user_id
+      quote_user_id: args.quote_user_id,
+      quote_id: args.quote_id
     })
   }
 
