@@ -365,13 +365,19 @@ Hue.add_chat_announcement = function (args = {}) {
   content.textContent = args.message
   Hue.urlize(content)
 
-  let brk_bottom = fmessage.querySelector(".brk_profilepic")
+  let brk_profilepic = fmessage.querySelector(".brk_profilepic")
 
   if (args.user_id) {
-    brk_bottom.src = Hue.get_profilepic(args.user_id)
+    brk_profilepic.src = Hue.get_profilepic(args.user_id)
   } else {
-    brk_bottom.style.display = "none"
+    brk_profilepic.style.display = "none"
   }
+
+  fmessage.querySelector(".profilepic").addEventListener("error", function () {
+    if (this.src !== Hue.config.default_profilepic_url) {
+      this.src = Hue.config.default_profilepic_url
+    }
+  })
 
   Hue.dataset(fmessage, "id", args.id)
   Hue.dataset(fmessage, "public", args.public)
