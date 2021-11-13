@@ -325,6 +325,7 @@ Hue.on_disconnect = function () {
 
   Hue.userlist = []
   Hue.activity_list = []
+  Hue.alert_mode = 0
   Hue.update_userlist()
   Hue.update_activity_bar()
   Hue.generate_favicon(-1)
