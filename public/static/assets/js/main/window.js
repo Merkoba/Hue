@@ -20,7 +20,7 @@ Hue.alert_title = function (mode) {
   Hue.generate_favicon(mode)
 }
 
-// Removes the activity indicator in the tab title
+// Removes the activity favicon
 Hue.remove_alert_title = function () {
   if (Hue.alert_mode > 0) {
     Hue.alert_mode = 0
