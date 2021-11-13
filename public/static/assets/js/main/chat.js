@@ -1779,7 +1779,7 @@ Hue.activity_notification = function () {
 
 // Get last chat message or announcement date
 Hue.get_last_message_date = function () {
-  let a = Hue.dataset(Hue.els("#chat_area .chat_content").slice(-1)[0], "date") || 0
+  let a = Hue.dataset(Hue.els("#chat_area .chat_content_container").slice(-1)[0], "date") || 0
   let b = Hue.dataset(Hue.els("#chat_area .media_announcement").slice(-1)[0], "date") || 0
   return Math.max(a, b)
 }
