@@ -653,7 +653,7 @@ a.generic:hover {
 	height: var(--icon_size);
 }
 
-.pos_absolute .chat_icon {
+.brk.pos_absolute .chat_icon {
 	width: var(--icon_size);
 	height: var(--profilepic_size);
 }
