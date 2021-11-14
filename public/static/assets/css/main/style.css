@@ -3,10 +3,11 @@
 	--panel_font_size: 1rem;
 	--icon_size: 1.4rem;
 	--app_font_family: imported_font, sans-serif;
-	--profilepic_size: 2rem;
 	--tab_size: 1.6rem;
 	--chat_side_spacing: 0.8rem;
+	--profilepic_size: 2rem;
 	--small_profilepic_size: 1.2rem;
+	--panel_profilepic_size: calc(var(--panel_height) * 0.66);
 }
 
 @font-face {
@@ -138,10 +139,10 @@ body * {
 }
 
 .activity_bar_profilepic_container {
-	min-width: calc(var(--panel_height) * 0.7);
-	max-width: calc(var(--panel_height) * 0.7);
-	min-height: calc(var(--panel_height) * 0.7);
-	max-height: calc(var(--panel_height) * 0.7);
+	min-width: var(--panel_profilepic_size);
+	max-width: var(--panel_profilepic_size);
+	min-height: var(--panel_profilepic_size);
+	max-height: var(--panel_profilepic_size);
 	transition: box-shadow 500ms;
 }
 
