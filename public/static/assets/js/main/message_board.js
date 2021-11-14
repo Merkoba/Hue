@@ -40,7 +40,10 @@ Hue.setup_message_board = function () {
 Hue.add_post_to_message_board = function (post) {
   let s = `
     <div class='message_board_top'>
-      <div class='message_board_username action'></div>
+      <div class='message_board_userdetails'>
+        <img class='message_board_profilepic profilepic'>
+        <div class='message_board_username action'></div>
+      </div>
       <div class='message_board_date'></div>
     </div>
     <div class='message_board_text dynamic_title'></div>
@@ -50,6 +53,9 @@ Hue.add_post_to_message_board = function (post) {
   item.innerHTML = s
   Hue.dataset(item, "id", post.id)
   Hue.dataset(item, "date", post.date)
+
+  let profilepic = item.querySelector(".message_board_profilepic")
+  profilepic.src = Hue.get_profilepic(post.user_id)
 
   let username = item.querySelector(".message_board_username")
   username.textContent = post.username

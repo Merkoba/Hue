@@ -123,7 +123,7 @@ Hue.add_chat_message = function (args = {}) {
         <div class='chat_container'>
           <div class='${container_classes}' title='${title}' data-otitle='${title}' data-date='${d}'>
             <div class="chat_quote">
-              <img class="chat_quote_image profilepic">
+              <img class="chat_quote_profilepic profilepic">
               <div class="chat_quote_text"></div>
             </div>
             <div class='chat_menu_button_container'>
@@ -175,7 +175,7 @@ Hue.add_chat_message = function (args = {}) {
     Hue.dataset(quote, "quote_username", args.quote_username)
     Hue.dataset(quote, "quote_user_id", args.quote_user_id)
     Hue.dataset(quote, "quote_id", args.quote_id)
-    quote.querySelector(".chat_quote_image").src = Hue.get_profilepic(args.quote_user_id)
+    quote.querySelector(".chat_quote_profilepic").src = Hue.get_profilepic(args.quote_user_id)
   } else {
     quote.style.display = "none"
   }
@@ -588,7 +588,7 @@ Hue.start_chat_mouse_events = function () {
             Hue.jump_to_chat_message_by_id(id)
           }
         } else if (e.target.classList.contains("chat_quote_username") ||
-          e.target.classList.contains("chat_quote_image")) {
+          e.target.classList.contains("chat_quote_profilepic")) {
           let quote = e.target.closest(".chat_quote")
           let username = Hue.dataset(quote, "quote_username")
           let user_id = Hue.dataset(quote, "quote_user_id")
@@ -1162,7 +1162,7 @@ Hue.add_aura = function (id) {
   let activity_bar_item = Hue.get_activity_bar_item_by_user_id(id)
 
   if (activity_bar_item) {
-    activity_bar_item.querySelector(".activity_bar_image_container").classList.add("aura")
+    activity_bar_item.querySelector(".activity_bar_profilepic_container").classList.add("aura")
   }
 }
 
@@ -1180,7 +1180,7 @@ Hue.remove_aura = function (id) {
     }
   })
 
-  Hue.els(".activity_bar_image_container.aura").forEach(it => {
+  Hue.els(".activity_bar_profilepic_container.aura").forEach(it => {
     let activity_bar_item = it.closest(".activity_bar_item")
 
     if (activity_bar_item) {

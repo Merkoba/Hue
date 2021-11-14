@@ -41,8 +41,8 @@ Hue.update_activity_bar = function (check = false) {
     let pi = Hue.get_profilepic(user.user_id)
 
     let s = `
-      <div class='activity_bar_image_container round_image_container'>
-          <img class='activity_bar_image profilepic' src='${pi}' loading='lazy'>
+      <div class='activity_bar_profilepic_container round_image_container'>
+          <img class='activity_bar_profilepic profilepic' src='${pi}' loading='lazy'>
       </div>
       <div class='activity_bar_text'></div>`
 
@@ -50,7 +50,7 @@ Hue.update_activity_bar = function (check = false) {
     el.innerHTML = s
 
     let text_el = el.querySelector(".activity_bar_text")
-    let img_el = el.querySelector(".activity_bar_image")
+    let img_el = el.querySelector(".activity_bar_profilepic")
 
     img_el.addEventListener("error", function () {
       if (this.src !== Hue.config.default_profilepic_url) {
@@ -96,10 +96,10 @@ Hue.clear_activity_bar_items = function () {
 }
 
 // Updates the profile image of an item in the activity bar
-Hue.update_activity_bar_image = function (id, src) {
+Hue.update_activity_bar_profilepic = function (id, src) {
   for (let item of Hue.els(".activity_bar_item")) {
     if (Hue.dataset(item, "user_id") === id) {
-      item.querySelector(".activity_bar_image").src = src
+      item.querySelector(".activity_bar_profilepic").src = src
       return
     }
   }
