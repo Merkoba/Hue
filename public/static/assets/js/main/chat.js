@@ -124,7 +124,7 @@ Hue.add_chat_message = function (args = {}) {
           <div class='${container_classes}' title='${title}' data-otitle='${title}' data-date='${d}'>
             <div class="chat_quote">
               <img class="chat_quote_image profilepic">
-              <div class="chat_quote_text action"></div>
+              <div class="chat_quote_text"></div>
             </div>
             <div class='chat_menu_button_container'>
               <svg class='other_icon chat_menu_button chat_menu_button_menu'>
@@ -279,6 +279,7 @@ Hue.add_chat_announcement = function (args = {}) {
   let container_classes = "announcement_content_container chat_menu_button_main reply_message_container edit_message_container"
   let split_classes = "announcement_content_split dynamic_title"
   let content_classes = "announcement_content reply_message edit_message"
+  let brk_container_classes = "brk_container"
   let brk_classes = "brk announcement_brk"
   let highlighted = false
 
@@ -292,7 +293,7 @@ Hue.add_chat_announcement = function (args = {}) {
 
   if (is_media) {
     content_classes += " action"
-    brk_classes += " action"
+    brk_container_classes += " action"
   }
 
   if (args.user_id) {
@@ -310,8 +311,8 @@ Hue.add_chat_announcement = function (args = {}) {
   }
 
   let s = `
-    <div class='brk_container'>
-    <img class='brk_profilepic profilepic'>
+    <div class='${brk_container_classes}'>
+    <img class='brk_profilepic profilepic actionbox'>
       <div class='${brk_classes}'>${args.brk}</div>
     </div>
     <div class='${container_classes}'>
@@ -600,14 +601,15 @@ Hue.start_chat_mouse_events = function () {
           let src = Hue.dataset(e.target, "image_preview_src_original")
           Hue.expand_image(src.replace(".gifv", ".gif"))
         } else if (e.target.classList.contains("announcement_content") ||
-          e.target.closest(".brk_container")) {
+          e.target.closest(".brk")) {
           if (type === "image_change") {
             Hue.show_modal_image(id)
           } else if (type === "tv_change") {
             Hue.open_url_menu_by_media_id("tv", id)
           }
+        } else if (e.target.closest(".brk_profilepic")) {
+          Hue.show_profile(username, user_id)
         }
-        
       }
     }
 
