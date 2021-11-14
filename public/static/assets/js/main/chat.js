@@ -123,7 +123,7 @@ Hue.add_chat_message = function (args = {}) {
         <div class='chat_container'>
           <div class='${container_classes}' title='${title}' data-otitle='${title}' data-date='${d}'>
             <div class="chat_quote">
-              <img class="chat_quote_profilepic profilepic">
+              <img class="chat_quote_profilepic profilepic" loading='lazy'>
               <div class="chat_quote_text"></div>
             </div>
             <div class='chat_menu_button_container'>
@@ -312,7 +312,7 @@ Hue.add_chat_announcement = function (args = {}) {
 
   let s = `
     <div class='${brk_container_classes}'>
-    <img class='brk_profilepic profilepic actionbox'>
+    <img class='brk_profilepic profilepic actionbox' loading='lazy'>
       <div class='${brk_classes}'>${args.brk}</div>
     </div>
     <div class='${container_classes}'>

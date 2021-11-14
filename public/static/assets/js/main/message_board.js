@@ -37,7 +37,7 @@ Hue.add_post_to_message_board = function (post) {
   let s = `
     <div class='message_board_top'>
       <div class='message_board_user_details action'>
-        <img class='message_board_profilepic profilepic actionbox'>
+        <img class='message_board_profilepic profilepic actionbox' loading='lazy'>
         <div class='message_board_username'></div>
       </div>
       <div class='message_board_date'></div>
