@@ -762,7 +762,7 @@ Hue.profilepic_changed = function (data) {
     `${user.username} changed their profile image`
   )
 
-  Hue.update_activity_bar_image(data.user_id, src)
+  Hue.update_activity_bar_profilepic(data.user_id, src)
 }
 
 // When any user changes their bio

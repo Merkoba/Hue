@@ -122,7 +122,7 @@ body * {
 	align-items: center;
 }
 
-.activity_bar_item:hover .activity_bar_image_container {
+.activity_bar_item:hover .activity_bar_profilepic_container {
 	box-shadow: 0 0 1.18rem currentColor;
 }
 
@@ -137,7 +137,7 @@ body * {
 	font-size: var(--panel_font_size);
 }
 
-.activity_bar_image_container {
+.activity_bar_profilepic_container {
 	min-width: calc(var(--panel_height) * 0.7);
 	max-width: calc(var(--panel_height) * 0.7);
 	min-height: calc(var(--panel_height) * 0.7);
@@ -145,7 +145,7 @@ body * {
 	transition: box-shadow 500ms;
 }
 
-.activity_bar_image {
+.activity_bar_profilepic {
 	width: 99%;
 }
 
@@ -447,7 +447,7 @@ body * {
 }
 
 .chat_profilepic_container.aura,
-.activity_bar_image_container.aura {
+.activity_bar_profilepic_container.aura {
 	animation: spin 1s linear infinite;
 }
 
@@ -1949,7 +1949,7 @@ a.special_link:hover {
 	background-color: var(--altcolor_a);
 }
 
-.chat_quote_image {
+.chat_quote_profilepic {
 	width: var(--small_profilepic_size);
 	height: var(--small_profilepic_size);
 	margin-right: 0.35rem;
@@ -2264,6 +2264,20 @@ pre {
 .message_board_item {
 	position: relative;
 	width: 100%;
+}
+
+.message_board_profilepic {
+	width: var(--small_profilepic_size);
+	height: var(--small_profilepic_size);
+	opacity: 1;
+	margin-right: 0.5rem;
+}
+
+.message_board_userdetails {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
 }
 
 .message_board_username {
