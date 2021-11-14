@@ -2278,6 +2278,7 @@ pre {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	margin-bottom: 0.5rem;
 }
 
 .message_board_username {
