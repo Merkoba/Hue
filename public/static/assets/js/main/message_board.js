@@ -51,6 +51,13 @@ Hue.add_post_to_message_board = function (post) {
   Hue.dataset(item, "date", post.date)
 
   let profilepic = item.querySelector(".message_board_profilepic")
+  
+  profilepic.addEventListener("error", function () {
+    if (this.src !== Hue.config.default_profilepic_url) {
+      this.src = Hue.config.default_profilepic_url
+    }
+  })
+
   profilepic.src = Hue.get_profilepic(post.user_id)
 
   let user_details = item.querySelector(".message_board_user_details")
