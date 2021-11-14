@@ -4,32 +4,28 @@ Hue.setup_message_board = function () {
     this.value = this.value.substring(0, Hue.config.max_message_board_post_length)
   })
 
-  Hue.el("#message_board_container").addEventListener("click",
-    function (e) {
-      let el = e.target.closest(".message_board_delete")
+  Hue.el("#message_board_container").addEventListener("click", function (e) {
+    let el = e.target.closest(".message_board_delete")
 
-      if (el) {
-        let item = el.closest(".message_board_item")
-        let id = Hue.dataset(item, "id")
-  
-        if (id) {
-          Hue.show_confirm("Delete Message", "Delete message from the message board", function () {
-            Hue.socket_emit("delete_message_board_post", { id: id })
-          })
-        }
+    if (el) {
+      let item = el.closest(".message_board_item")
+      let id = Hue.dataset(item, "id")
+
+      if (id) {
+        Hue.show_confirm("Delete Message", "Delete message from the message board", function () {
+          Hue.socket_emit("delete_message_board_post", { id: id })
+        })
       }
     }
-  )
 
-  Hue.el("#message_board_container").addEventListener("click",
-    function (e) {
-      let el = e.target.closest(".message_board_username")
-      
-      if (el) {
-        Hue.show_profile(Hue.dataset(el, "username"))
-      }
+    el = e.target.closest(".message_board_user_details")
+    
+    if (el) {
+      let username = Hue.dataset(el, "username")
+      let user_id = Hue.dataset(el, "user_id")
+      Hue.show_profile(username, user_id)
     }
-  )
+  })
 
   Hue.el("#message_board_publish").addEventListener("click", function () {
     Hue.submit_message_board_post()
@@ -40,9 +36,9 @@ Hue.setup_message_board = function () {
 Hue.add_post_to_message_board = function (post) {
   let s = `
     <div class='message_board_top'>
-      <div class='message_board_userdetails'>
-        <img class='message_board_profilepic profilepic'>
-        <div class='message_board_username action'></div>
+      <div class='message_board_user_details action'>
+        <img class='message_board_profilepic profilepic actionbox'>
+        <div class='message_board_username'></div>
       </div>
       <div class='message_board_date'></div>
     </div>
@@ -57,9 +53,12 @@ Hue.add_post_to_message_board = function (post) {
   let profilepic = item.querySelector(".message_board_profilepic")
   profilepic.src = Hue.get_profilepic(post.user_id)
 
+  let user_details = item.querySelector(".message_board_user_details")
+  Hue.dataset(user_details, "username", post.username)
+  Hue.dataset(user_details, "user_id", post.user_id)
+
   let username = item.querySelector(".message_board_username")
   username.textContent = post.username
-  Hue.dataset(username, "username", post.username)
 
   let date = item.querySelector(".message_board_date")
   date.textContent = Hue.utilz.nice_date(post.date)
