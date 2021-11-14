@@ -224,6 +224,10 @@ body * {
 	padding-bottom: 1.5rem;
 }
 
+.chat_area_clone {
+	position: relative;
+}
+
 .chat_area_clone .chat_content {
 	height: initial !important;
 }
