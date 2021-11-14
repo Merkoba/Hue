@@ -2266,14 +2266,7 @@ pre {
 	width: 100%;
 }
 
-.message_board_profilepic {
-	width: var(--small_profilepic_size);
-	height: var(--small_profilepic_size);
-	opacity: 1;
-	margin-right: 0.5rem;
-}
-
-.message_board_userdetails {
+.message_board_user_details {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -2281,10 +2274,16 @@ pre {
 	margin-bottom: 0.5rem;
 }
 
-.message_board_text {
-	white-space: pre-wrap;
-	background-color: var(--altcolor_a);
-	padding: 0.5rem;
+.message_board_profilepic {
+	width: var(--small_profilepic_size);
+	height: var(--small_profilepic_size);
+	opacity: 1;
+	margin-right: 0.5rem;
+	border-radius: 50%;
+}
+
+.message_board_username {
+	cursor: pointer;
 }
 
 .message_board_date {
@@ -2293,8 +2292,10 @@ pre {
 	font-size: 0.9rem;
 }
 
-.message_board_username {
-	cursor: pointer;
+.message_board_text {
+	white-space: pre-wrap;
+	background-color: var(--altcolor_a);
+	padding: 0.5rem;
 }
 
 .expanded_modal_image {
