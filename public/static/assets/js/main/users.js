@@ -319,7 +319,7 @@ Hue.update_userlist_window = function () {
                   <div class='userlist_item_username'></div>
                   <div class='userlist_item_role'></div>
               </div>
-          </div>ast
+          </div>
       </div>`
 
     let el = Hue.div("modal_item userlist_item action")
