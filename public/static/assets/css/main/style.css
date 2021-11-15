@@ -5,7 +5,7 @@
 	--app_font_family: imported_font, sans-serif;
 	--tab_size: 1.6rem;
 	--chat_side_spacing: 0.8rem;
-	--profilepic_size: 2rem;
+	--profilepic_size: 1.8rem;
 	--small_profilepic_size: 1.2rem;
 	--panel_profilepic_size: calc(var(--panel_height) * 0.66);
 }
