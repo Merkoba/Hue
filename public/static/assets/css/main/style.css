@@ -2350,14 +2350,6 @@ pre {
 	margin-bottom: 1.5rem !important;
 }
 
-#open_url_container {
-	white-space: nowrap;
-}
-
-#open_url_container > div {
-	flex-shrink: 0;
-}
-
 #draw_image_area {
 	cursor: crosshair;
 	width: 800px;
