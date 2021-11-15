@@ -86,8 +86,6 @@ module.exports = function (
       profilepic_version: 1,
       registration_date: 1,
       bio: 1,
-      hearts: 1,
-      skulls: 1,
       audioclip_version: 1
     }
 
@@ -161,8 +159,6 @@ module.exports = function (
   handler.do_join = async function (socket, info, userinfo, data) {
     socket.hue_room_id = info.id
     socket.hue_bio = userinfo.bio
-    socket.hue_hearts = userinfo.hearts
-    socket.hue_skulls = userinfo.skulls
     socket.hue_joining = true
 
     socket.join(socket.hue_room_id)
@@ -289,8 +285,6 @@ module.exports = function (
         role: socket.hue_role,
         profilepic_version: socket.hue_profilepic_version,
         bio: socket.hue_bio,
-        hearts: socket.hue_hearts,
-        skulls: socket.hue_skulls,
         audioclip_version: socket.hue_audioclip_version,
         date_joined: Date.now()
       })
