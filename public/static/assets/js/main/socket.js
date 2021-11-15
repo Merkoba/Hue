@@ -184,9 +184,6 @@ Hue.server_update_events = {
   bio_changed: (data) => {
     Hue.bio_changed(data)
   },
-  badge_received: (data) => {
-    Hue.on_badge_received(data)
-  },
   report_tv_progress: (data) => {
     Hue.report_tv_progress(data)
   },

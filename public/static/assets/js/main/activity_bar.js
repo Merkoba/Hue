@@ -41,10 +41,8 @@ Hue.update_activity_bar = function (check = false) {
     let pi = Hue.get_profilepic(user.user_id)
 
     let s = `
-      <div class='activity_bar_profilepic_container round_image_container'>
-          <img class='activity_bar_profilepic profilepic' src='${pi}' loading='lazy'>
-      </div>
-      <div class='activity_bar_text'></div>`
+      <img class='activity_bar_profilepic profilepic actionbox' src='${pi}' loading='lazy'>
+      <div class='activity_bar_text action'></div>`
 
     let el = Hue.div("activity_bar_item")
     el.innerHTML = s

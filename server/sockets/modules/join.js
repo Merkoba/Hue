@@ -20,7 +20,6 @@ module.exports = function (
     socket.hue_info1 = ""
     socket.hue_typing_counter = 0
     socket.hue_activity_counter = 0
-    socket.hue_last_badge_date = Date.now()
     await handler.add_spam(socket)
   }
 

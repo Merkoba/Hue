@@ -123,14 +123,6 @@ body * {
 	align-items: center;
 }
 
-.activity_bar_item:hover .activity_bar_profilepic_container {
-	box-shadow: 0 0 1.18rem currentColor;
-}
-
-.activity_bar_item:hover .activity_bar_text {
-	text-shadow: 0 0 1.18rem currentColor;
-}
-
 .activity_bar_text {
 	white-space: nowrap;
 	margin-left: 0.5rem;
@@ -138,16 +130,11 @@ body * {
 	font-size: var(--panel_font_size);
 }
 
-.activity_bar_profilepic_container {
-	min-width: var(--panel_profilepic_size);
-	max-width: var(--panel_profilepic_size);
-	min-height: var(--panel_profilepic_size);
-	max-height: var(--panel_profilepic_size);
-	transition: box-shadow 500ms;
-}
-
 .activity_bar_profilepic {
-	width: 99%;
+	width: var(--panel_profilepic_size);
+	height: var(--panel_profilepic_size);
+	transition: box-shadow 500ms;
+	border-radius: 50%;
 }
 
 .columns_container {
@@ -433,26 +420,20 @@ body * {
 	flex-shrink: 1;
 }
 
-.chat_profilepic_container {
-	min-width: var(--profilepic_size);
-	max-width: var(--profilepic_size);
-	min-height: var(--profilepic_size);
-	max-height: var(--profilepic_size);
-	margin-top: 0;
-	top: 2.5rem;
-}
-
 #chat_area .profilepic_offline {
 	opacity: 0.6;
 }
 
 .chat_profilepic {
-	width: 99%;
+	width: var(--profilepic_size);
+	height: var(--profilepic_size);
+	margin-top: 0;
 	cursor: pointer;
+	border-radius: 50%;
 }
 
-.chat_profilepic_container.aura,
-.activity_bar_profilepic_container.aura {
+.chat_profilepic.aura,
+.activity_bar_profilepic.aura {
 	animation: spin 1s linear infinite;
 }
 
@@ -637,8 +618,6 @@ a.generic:hover {
 .userlist_item_username {
 	cursor: pointer;
 	flex-shrink: 1;
-	max-width: 9rem;
-	overflow: hidden;
 }
 
 .userlist_item_role {
@@ -648,17 +627,11 @@ a.generic:hover {
 	cursor: pointer;
 }
 
-.userlist_item_profilepic_container {
-	min-width: var(--profilepic_size);
-	max-width: var(--profilepic_size);
-	min-height: var(--profilepic_size);
-	max-height: var(--profilepic_size);
-	margin-top: 0.2rem;
-}
-
 .userlist_item_profilepic {
-	width: 99%;
-	cursor: pointer;
+	width: var(--profilepic_size);
+	height: var(--profilepic_size);
+	border-radius: 50%;
+	margin-top: 0.2rem;
 }
 
 .chat_icon {
@@ -1019,26 +992,16 @@ select {
 	padding: 2rem;
 }
 
-.big_profilepic_container {
-	min-width: 11.76rem;
-	max-width: 11.76rem;
-	min-height: 11.76rem;
-	max-height: 11.76rem;
-}
-
 .big_profilepic {
-	width: 99%;
-}
-
-.bigger_profilepic_container {
-	min-width: 17.65rem;
-	max-width: 17.65rem;
-	min-height: 17.65rem;
-	max-height: 17.65rem;
+	width: 11.76rem;
+	height: 11.76rem;
+	border-radius: 50%;
 }
 
 .bigger_profilepic {
-	width: 99%;
+	width: 17.65rem;
+	height: 17.65rem;
+	border-radius: 50%;
 }
 
 #profilepic_picker {
@@ -1231,7 +1194,7 @@ select {
 	display: inline-block;
 }
 
-#user_menu_profilepic_container {
+#user_menu_profilepic {
 	margin-bottom: 2rem;
 }
 
@@ -1270,7 +1233,7 @@ select {
 .action,
 .action2,
 .action3,
-.action4, .action:hover .actionbox {
+.actionbox {
 	transition: text-shadow 500ms, box-shadow 500ms;
 	cursor: pointer;
 }
@@ -1295,7 +1258,7 @@ svg.action:hover {
 	box-shadow: inset 0 0 0.29rem currentColor;
 }
 
-.action4:hover, .action:hover .actionbox {
+.actionbox:hover {
 	box-shadow: 0 0 1.18rem currentColor, inset 0 0 1.1765rem currentColor;
 }
 
@@ -1608,16 +1571,6 @@ svg.action:hover {
 	margin-top: 1.6rem;
 }
 
-#show_profile_hearts_x {
-	margin-left: 0.5rem;
-	margin-right: 0.4rem;
-}
-
-#show_profile_skulls_x {
-	margin-left: 0.5rem;
-	margin-right: 0.4rem;
-}
-
 #show_profile_bio {
 	margin-top: 1rem;
 }
@@ -1625,10 +1578,6 @@ svg.action:hover {
 #show_profile_info {
 	margin-top: 1.6rem;
 	grid-gap: 0.8rem;
-}
-
-#show_profile_badges {
-	grid-gap: 1rem;
 }
 
 #admin_list_container,
@@ -1971,14 +1920,6 @@ a.special_link:hover {
 	white-space: pre-wrap;
 }
 
-.round_image_container {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	overflow: hidden;
-	border-radius: 50%;
-}
-
 .separator {
 	opacity: 0.25;
 }
@@ -2142,23 +2083,6 @@ a.special_link:hover {
 pre {
 	margin: 0;
 	white-space: pre-wrap;
-}
-
-#chat_area .heart_badge {
-	background-color: red;
-	color: white;
-}
-
-#chat_area .skull_badge {
-	background-color: black;
-}
-
-#chat_area .profilepic_badge > .chat_profilepic {
-	display: none
-}
-
-#chat_area .profilepic_badge > .profilepic_badge_icon {
-	box-shadow: none;
 }
 
 .info_popup_item {

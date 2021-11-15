@@ -92,7 +92,6 @@ Hue.loaded_image = {}
 Hue.loaded_tv = {}
 Hue.open_profile_username = false
 Hue.open_profile_user = false
-Hue.send_badge_disabled = true
 Hue.connected = false
 Hue.connections = 0
 Hue.connecting = true
@@ -198,7 +197,6 @@ Hue.init = function () {
   Hue.setup_message_board()
   Hue.change_media_layout()
   Hue.setup_profilepic_cropper()
-  Hue.setup_badges()
   Hue.setup_userlist_window()
   Hue.setup_user_menu()
   Hue.setup_header()

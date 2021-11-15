@@ -103,7 +103,7 @@ Hue.add_chat_message = function (args = {}) {
     title = `${args.id.slice(-3)} | ${title}`
   }
 
-  let profilepic_classes = "chat_profilepic_container round_image_container action4 profilepic"
+  let profilepic_classes = "chat_profilepic profilepic actionbox"
 
   if (!Hue.user_is_online_by_user_id(args.user_id)) {
     profilepic_classes += " profilepic_offline"
@@ -111,9 +111,7 @@ Hue.add_chat_message = function (args = {}) {
 
   let s = `
     <div class='chat_left_side'>
-      <div class='${profilepic_classes}'>
-        <img class='chat_profilepic profilepic' src='${pi}' loading='lazy'>
-      </div>
+        <img class='${profilepic_classes}' src='${pi}' loading='lazy'>
     </div>
     <div class='chat_right_side'>
         <div class='chat_message_top'>
@@ -279,7 +277,6 @@ Hue.add_chat_announcement = function (args = {}) {
   let container_classes = "announcement_content_container chat_menu_button_main reply_message_container edit_message_container"
   let split_classes = "announcement_content_split dynamic_title"
   let content_classes = "announcement_content reply_message edit_message"
-  let brk_container_classes = "brk_container"
   let brk_classes = "brk announcement_brk"
   let highlighted = false
 
@@ -293,7 +290,7 @@ Hue.add_chat_announcement = function (args = {}) {
 
   if (is_media) {
     content_classes += " action"
-    brk_container_classes += " action"
+    brk_classes += " action"
   }
 
   if (args.user_id) {
@@ -311,8 +308,8 @@ Hue.add_chat_announcement = function (args = {}) {
   }
 
   let s = `
-    <div class='${brk_container_classes}'>
-    <img class='brk_profilepic profilepic actionbox' loading='lazy'>
+    <div class='brk_container'>
+      <img class='brk_profilepic profilepic actionbox' loading='lazy'>
       <div class='${brk_classes}'>${args.brk}</div>
     </div>
     <div class='${container_classes}'>
@@ -1156,13 +1153,13 @@ Hue.add_aura = function (id) {
   let message = Hue.get_last_chat_message_by_user_id(id)
 
   if (message) {
-    message.querySelector(".chat_profilepic_container").classList.add("aura")
+    message.querySelector(".chat_profilepic").classList.add("aura")
   }
 
   let activity_bar_item = Hue.get_activity_bar_item_by_user_id(id)
 
   if (activity_bar_item) {
-    activity_bar_item.querySelector(".activity_bar_profilepic_container").classList.add("aura")
+    activity_bar_item.querySelector(".activity_bar_profilepic").classList.add("aura")
   }
 }
 
@@ -1170,7 +1167,7 @@ Hue.add_aura = function (id) {
 Hue.remove_aura = function (id) {
   clearTimeout(Hue.aura_timeouts[id])
   
-  Hue.els(".chat_profilepic_container.aura").forEach(it => {
+  Hue.els(".chat_profilepic.aura").forEach(it => {
     let message = it.closest(".chat_message")
 
     if (message) {
@@ -1180,7 +1177,7 @@ Hue.remove_aura = function (id) {
     }
   })
 
-  Hue.els(".activity_bar_profilepic_container.aura").forEach(it => {
+  Hue.els(".activity_bar_profilepic.aura").forEach(it => {
     let activity_bar_item = it.closest(".activity_bar_item")
 
     if (activity_bar_item) {
