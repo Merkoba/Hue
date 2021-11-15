@@ -1,9 +1,9 @@
 :root {
 	--panel_height: 2.2rem;
 	--panel_font_size: 1rem;
-	--icon_size: 1.4rem;
 	--app_font_family: imported_font, sans-serif;
 	--tab_size: 1.6rem;
+	--icon_size: 1.2rem;
 	--chat_side_spacing: 0.8rem;
 	--profilepic_size: 1.8rem;
 	--small_profilepic_size: 1.2rem;
