@@ -7,8 +7,6 @@ Hue.user_join = function (data) {
     profilepic_version: data.profilepic_version,
     date_joined: data.date_joined,
     bio: data.bio,
-    hearts: data.hearts,
-    skulls: data.skulls,
     audioclip_version: data.audioclip_version
   })
 
@@ -39,7 +37,7 @@ Hue.user_join = function (data) {
 Hue.remove_offline_profilepics = function (user_id) {
   Hue.els("#chat_area .message").forEach(it => {
     if (Hue.dataset(it, "user_id") === user_id) {
-      it.querySelectorAll(".chat_profilepic_container").forEach(it2 => {
+      it.querySelectorAll(".chat_profilepic").forEach(it2 => {
         it2.classList.remove("profilepic_offline")
       })
     }
@@ -50,7 +48,7 @@ Hue.remove_offline_profilepics = function (user_id) {
 Hue.add_offline_profilepics = function (user_id) {
   Hue.els("#chat_area .message").forEach(it => {
     if (Hue.dataset(it, "user_id") === user_id) {
-      it.querySelectorAll(".chat_profilepic_container").forEach(it2 => {
+      it.querySelectorAll(".chat_profilepic").forEach(it2 => {
         it2.classList.add("profilepic_offline")
       })
     }
@@ -77,8 +75,6 @@ Hue.add_to_userlist = function (args = {}) {
     profilepic_version: false,
     date_joined: false,
     bio: "",
-    hearts: 0,
-    skulls: 0,
     audioclip_version: false,
     last_activity: 0
   }
@@ -92,8 +88,6 @@ Hue.add_to_userlist = function (args = {}) {
       Hue.userlist[i].role = args.role
       Hue.userlist[i].profilepic_version = args.profilepic_version
       Hue.userlist[i].bio = args.bio
-      Hue.userlist[i].hearts = args.hearts
-      Hue.userlist[i].skulls = args.skulls
       Hue.userlist[i].audioclip_version = args.audioclip_version
       Hue.userlist[i].last_activity = args.last_activity
 
@@ -109,8 +103,6 @@ Hue.add_to_userlist = function (args = {}) {
     profilepic_version: args.profilepic_version,
     date_joined: args.date_joined,
     bio: args.bio,
-    hearts: args.hearts,
-    skulls: args.skulls,
     audioclip_version: args.audioclip_version,
     last_activity: args.last_activity
   })
@@ -311,18 +303,14 @@ Hue.update_userlist_window = function () {
 
     let s = `
       <div class='userlist_column flex_column_center'>
-          <div>
-              <div class='userlist_item_profilepic_container round_image_container actionbox'>
-                  <img class='userlist_item_profilepic profilepic' src='${pi}' loading='lazy'>
-              </div>
-              <div class='userlist_item_details_container'>
-                  <div class='userlist_item_username'></div>
-                  <div class='userlist_item_role'></div>
-              </div>
-          </div>
+        <img class='userlist_item_profilepic profilepic actionbox' src='${pi}' loading='lazy'>
+        <div class='userlist_item_details_container action'>
+          <div class='userlist_item_username'></div>
+          <div class='userlist_item_role'></div>
+        </div>
       </div>`
 
-    let el = Hue.div("modal_item userlist_item action")
+    let el = Hue.div("modal_item userlist_item")
     el.innerHTML = s
 
     let image = el.querySelector(".userlist_item_profilepic")
@@ -613,14 +601,6 @@ Hue.setup_show_profile = function () {
   Hue.el("#show_profile_search").addEventListener("click", function () {
     Hue.show_chat_search(Hue.open_profile_user_id, "user_id")
   })
-
-  Hue.el("#show_profile_hearts_icon").addEventListener("click", function () {
-    Hue.send_badge(Hue.open_profile_username, "heart")
-  })
-
-  Hue.el("#show_profile_skulls_icon").addEventListener("click", function () {
-    Hue.send_badge(Hue.open_profile_username, "skull")
-  })
 }
 
 // Stars the profile audio
@@ -659,8 +639,6 @@ Hue.show_profile = function (username, user_id = false) {
   let id
   let role = "Offline"
   let bio = ""
-  let hearts = 0
-  let skulls = 0
   let user = false
 
   if (user_id) {
@@ -680,8 +658,6 @@ Hue.show_profile = function (username, user_id = false) {
     
     role = Hue.get_pretty_role_name(user.role)
     bio = user.bio
-    hearts = user.hearts
-    skulls = user.skulls
 
     if (user.username === Hue.username) {
       same_user = true
@@ -707,16 +683,9 @@ Hue.show_profile = function (username, user_id = false) {
 
   if (user) {
     Hue.el("#show_profile_whisper").style.display = "block"
-    Hue.el("#show_profile_hearts").style.display = "flex"
-    Hue.el("#show_profile_skulls").style.display = "flex"
     Hue.el("#show_profile_sync_tv").style.display = "flex"
-
-    Hue.set_hearts_counter(hearts)
-    Hue.set_skulls_counter(skulls)
   } else {
     Hue.el("#show_profile_whisper").style.display = "none"
-    Hue.el("#show_profile_hearts").style.display = "none"
-    Hue.el("#show_profile_skulls").style.display = "none"
     Hue.el("#show_profile_sync_tv").style.display = "none"
   }
 
@@ -735,7 +704,6 @@ Hue.show_profile = function (username, user_id = false) {
   let item = Hue.div()
   item.textContent = `ID: ${id}`
   Hue.el("#show_profile_info").append(item)
-  Hue.horizontal_separator(Hue.el("#show_profile_badges"))
 
   Hue.msg_profile.show(function () {
     Hue.play_audioclip()
@@ -973,147 +941,6 @@ Hue.annex = function (rol = "admin") {
 // Superuser command to send a system broadcast
 Hue.system_broadcast = function () {
   Hue.write_popup_message([], "system_broadcast")
-}
-
-Hue.setup_badges = function () {
-  Hue.start_badge_timeout()
-}
-
-// Sends 1 badge to a user
-// This has a cooldown
-Hue.send_badge = function (username, type) {
-  if (username === Hue.username) {
-    Hue.checkmsg("You can't give a badge to yourself")
-    return false
-  }
-  
-  if (Hue.send_badge_disabled) {
-    let n = Hue.utilz.round2(Hue.config.send_badge_cooldown / 1000, 1)
-    let s = n === 1 ? "1 second" : `${n} seconds`
-    Hue.checkmsg(`You can send a badge every ${s}`)
-    return false
-  }
-
-  let user = Hue.get_user_by_username(username)
-
-  if (!user) {
-    return false
-  }
-
-  if (type !== "heart" && type !== "skull") {
-    return false
-  }
-
-  Hue.socket_emit("send_badge", { username: username, type: type })
-
-  Hue.send_badge_disabled = true
-
-  Hue.start_badge_timeout()
-}
-
-// Starts a timeout to enable badge sending
-Hue.start_badge_timeout = function () {
-  setTimeout(function () {
-    Hue.send_badge_disabled = false
-  }, Hue.config.send_badge_cooldown + 100)
-}
-
-// What happens when a user receives a badge
-Hue.on_badge_received = function (data) {
-  if (data.username === Hue.open_profile_username) {
-    if (data.type === "heart") {
-      Hue.set_hearts_counter(data.badges)
-    } else if (data.type === "skull") {
-      Hue.set_skulls_counter(data.badges)
-    }
-  }
-
-  let prop, prop_value
-  let user = Hue.get_user_by_username(data.username)
-
-  if (data.type === "heart") {
-    prop = "hearts"
-    prop_value = user.hearts + 1
-  }
-
-  if (data.type === "skull") {
-    prop = "skulls"
-    prop_value = user.skulls + 1
-  }
-
-  Hue.replace_property_in_userlist_by_username(data.username, prop, prop_value)
-
-  if (Hue.app_focused) {
-    let message = Hue.get_last_chat_message_by_user_id(data.user_id)
-
-    if (message) {
-      let profilepic_container = message.querySelector(".chat_profilepic_container")
-      Hue.change_profilepic_badge(profilepic_container, data.type)
-    }
-  }  
-}
-
-// Changes the profile image of a user receiving a badge
-Hue.change_profilepic_badge = function (profilepic_container, type) {
-  Hue.remove_badge_icons(profilepic_container)
-  profilepic_container.classList.add(`${type}_badge`)
-  profilepic_container.classList.add("profilepic_badge")
-
-  let icon
-
-  if (type === "heart") {
-    icon = "heart-solid"
-  } else if (type === "skull") {
-    icon = "skull"
-  }
-
-  let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-  svg.classList.add("other_icon")
-  svg.classList.add("profilepic_badge_icon")
-  svg.classList.add(`${type}_badge`)
-  svg.innerHTML = `<use href='#icon_${icon}'>`
-
-  profilepic_container.append(svg)
-
-  let number = Hue.dataset(profilepic_container, "badge_feedback_number")
-
-  if (!number) {
-    number = 1
-  } else {
-    number += 1
-  }
-
-  Hue.dataset(profilepic_container, "badge_feedback_number", number)
-
-  setTimeout(function () {
-    let number_2 = Hue.dataset(profilepic_container, "badge_feedback_number")
-
-    if (number !== number_2) {
-      return false
-    }
-
-    Hue.remove_badge_icons(profilepic_container)
-  }, Hue.config.badge_feedback_duration)
-}
-
-// Removes badge icons from profile image container
-Hue.remove_badge_icons = function (profilepic_container) {
-  profilepic_container.classList.remove("heart_badge")
-  profilepic_container.classList.remove("skull_badge")
-  profilepic_container.classList.remove(`profilepic_badge`)
-  profilepic_container.querySelectorAll(".profilepic_badge_icon").forEach(it => {
-    it.remove()
-  })
-}
-
-// Sets the hearts counter in the profile window
-Hue.set_hearts_counter = function (hearts) {
-  Hue.el("#show_profile_hearts_counter").textContent = Hue.utilz.format_number(hearts)
-}
-
-// Sets the skulls counter in the profile window
-Hue.set_skulls_counter = function (skulls) {
-  Hue.el("#show_profile_skulls_counter").textContent = Hue.utilz.format_number(skulls)
 }
 
 // If username is valid and it is not in all_usernames add it

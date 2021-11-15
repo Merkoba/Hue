@@ -296,12 +296,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_bio_lines"
 >Maximum number of linebreaks allowed in user bios.
 
-"send_badge_cooldown"
->How much time sending a badge is disabled after the last badge sent.
-
-"badge_feedback_duration"
->How long a profile image stays changed after a badge is received.
-
 "max_info_popups"
 >How many info popups (bottom right) can be displayed at once. After this, the older ones get closed.
 

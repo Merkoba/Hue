@@ -441,22 +441,6 @@ Hue.commands = {
     },
     description: `Changes the user's bio`,
   },
-  "heart": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.send_badge(arg, "heart")
-      }
-    },
-    description: `Sends a heart badge to a user`,
-  },
-  "skull": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.send_badge(arg, "skull")
-      }
-    },
-    description: `Sends a skull badge to a user`,
-  },
   "notifications": {
     action: (arg, ans) => {
       Hue.show_notifications(arg)
