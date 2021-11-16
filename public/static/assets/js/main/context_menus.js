@@ -2,7 +2,7 @@
 // This is triggered by a normal click
 Hue.start_chat_menu_context_menu = function () {
   document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("chat_menu_button_menu")) {
+    if (e.target.closest(".chat_menu_button_container")) {
       e.stopPropagation()
       let items = []
       let message = e.target.closest(".message")
@@ -11,12 +11,6 @@ Hue.start_chat_menu_context_menu = function () {
       let user_id = Hue.dataset(message, "user_id")
       let message_id = Hue.dataset(message, "message_id")
       let id = Hue.dataset(e.target.closest(".message_unit"), "id")
-      let chat_container = e.target.closest(".chat_content_container")
-      let url = ""
-
-      if (chat_container) {
-        url = Hue.dataset(chat_container, "first_url")
-      }
 
       if (!e.target.closest("#chat_area")) {
         items.push({
@@ -45,30 +39,6 @@ Hue.start_chat_menu_context_menu = function () {
           action: function () {
             let el = e.target.closest(".edit_message_container")
             Hue.edit_message(el)
-          }
-        })
-      }
-      
-      if (url && Hue.change_image_source(url, true)) {
-        items.push({
-          text: "Change Image",
-          action: function () {
-            Hue.show_confirm("Change Image", "This will change it for everyone", function () {
-              let first_url = Hue.dataset(e.target.closest(".chat_content_container"), "first_url")
-              Hue.change_image_source(first_url)
-            })
-          }
-        })
-      }
-
-      if (url && Hue.change_tv_source(url, true)) {
-        items.push({
-          text: "Change TV",
-          action: function () {
-            Hue.show_confirm("Change TV", "This will change it for everyone", function () {
-              let first_url = Hue.dataset(e.target.closest(".chat_content_container"), "first_url")
-              Hue.change_tv_source(first_url)
-            })
           }
         })
       }
