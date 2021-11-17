@@ -525,6 +525,10 @@ body * {
 	border-radius: 50%;
 }
 
+#chat_area .brk_profilepic {
+	outline: 1px solid var(--altcolor);
+}
+
 .media_history_container .brk_profilepic {
 	width: var(--small_profilepic_size);
 	height: var(--small_profilepic_size);
