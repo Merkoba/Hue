@@ -523,9 +523,6 @@ body * {
 	height: var(--profilepic_size);
 	opacity: 0.25;
 	border-radius: 50%;
-}
-
-#chat_area .brk_profilepic {
 	outline: 1px solid var(--font_color);
 }
 
@@ -534,6 +531,7 @@ body * {
 	height: var(--small_profilepic_size);
 	opacity: 1;
 	margin-bottom: 0.5rem;
+	outline: unset;
 }
 
 a.generic:link,
