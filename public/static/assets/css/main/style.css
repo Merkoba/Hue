@@ -526,7 +526,7 @@ body * {
 }
 
 #chat_area .brk_profilepic {
-	outline: 1px solid var(--altcolor);
+	outline: 1px solid var(--font_color);
 }
 
 .media_history_container .brk_profilepic {
