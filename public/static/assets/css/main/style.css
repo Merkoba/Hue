@@ -1664,7 +1664,7 @@ a.special_link:hover {
 	flex-direction: row;
 	align-items: flex-start;
 	justify-content: flex-start;
-	padding: 0.5rem;
+	padding: 0.25rem;
 	align-self: flex-start;
 	background-color: var(--altcolor_a);
 	color: var(--font_color);
@@ -1691,8 +1691,8 @@ a.special_link:hover {
 }
 
 .link_preview_with_image .link_preview_text_content {
-	margin-left: 1rem;
-	margin-right: 1rem;
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
 }
 
 .link_preview_title {
