@@ -703,6 +703,10 @@ Hue.show_reply = function (id, username, user_id, text) {
 Hue.submit_reply = function () {
   let reply = Hue.el("#reply_input").value.trim()
 
+  if (!reply) {
+    return
+  }
+
   if (Hue.is_command(reply)) {
     reply = `/${reply}`
   }
