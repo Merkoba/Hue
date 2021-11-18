@@ -1127,6 +1127,23 @@ Hue.get_last_chat_message_by_user_id = function (ouser_id) {
   return false
 }
 
+// Gets the most recent quote by user_id
+Hue.get_last_quote_by_user_id = function (ouser_id) {
+  let items = Hue.els("#chat_area .chat_quote")
+
+  for (let item of items.reverse()) {
+    let user_id = Hue.dataset(item, "quote_user_id")
+  
+    if (user_id) {
+      if (user_id === ouser_id) {
+        return item
+      }
+    }
+  }
+
+  return false
+}
+
 // Gives or maintains aura classes
 // Starts timeout to remove them
 Hue.show_aura = function (id) {
@@ -1154,6 +1171,13 @@ Hue.add_aura = function (id) {
     message.querySelector(".chat_profilepic").classList.add("aura")
   }
 
+  console.log(id)
+  let quote = Hue.get_last_quote_by_user_id(id)
+
+  if (quote) {
+    quote.querySelector(".chat_quote_profilepic").classList.add("aura")
+  }
+
   let activity_bar_item = Hue.get_activity_bar_item_by_user_id(id)
 
   if (activity_bar_item) {
@@ -1170,6 +1194,16 @@ Hue.remove_aura = function (id) {
 
     if (message) {
       if (Hue.dataset(message, "user_id") === id) {
+        it.classList.remove("aura")
+      }
+    }
+  })
+
+  Hue.els(".chat_quote_profilepic.aura").forEach(it => {
+    let message = it.closest(".chat_quote")
+
+    if (message) {
+      if (Hue.dataset(message, "quote_user_id") === id) {
         it.classList.remove("aura")
       }
     }
