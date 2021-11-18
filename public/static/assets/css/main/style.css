@@ -433,6 +433,7 @@ body * {
 }
 
 .chat_profilepic.aura,
+.chat_quote_profilepic.aura,
 .activity_bar_profilepic.aura {
 	animation: spin 1s linear infinite;
 }
