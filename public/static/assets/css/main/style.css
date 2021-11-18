@@ -1909,7 +1909,7 @@ a.special_link:hover {
 .chat_quote_profilepic {
 	width: var(--small_profilepic_size);
 	height: var(--small_profilepic_size);
-	margin-right: 0.35rem;
+	margin-right: 0.38rem;
 	cursor: pointer;
 	border-radius: 50%;
 }
