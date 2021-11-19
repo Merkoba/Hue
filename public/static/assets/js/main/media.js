@@ -111,6 +111,7 @@ Hue.start_active_media = function () {
     type: "image",
     play: false
   })
+
   Hue.change({
     type: "tv",
     play: false
@@ -335,7 +336,7 @@ Hue.setup_media_pickers = function () {
 
   Hue.el("#tv_picker_reload").addEventListener("click", function () {
     if (Hue.loaded_tv) {
-      Hue.load_media("tv", Hue.loaded_tv)
+      Hue.load_media(Hue.loaded_tv)
     }
 
     Hue.close_all_modals()
@@ -794,12 +795,12 @@ Hue.media_string = function (what) {
 }
 
 // Load or restart media
-Hue.load_media = function (type, data) {
-  Hue.toggle_media({type:type, what:true})
-  Hue.change_media_lock({type:"tv", what:true})
+Hue.load_media = function (data) {
+  Hue.toggle_media({type:data.media_type, what:true})
+  Hue.change_media_lock({type:data.media_type, what:true})
   
   Hue.change({
-    type: type,
+    type: data.media_type,
     item: data,
     force: true
   })
@@ -866,12 +867,7 @@ Hue.set_default_main_layout = function (apply = true) {
 // Show the open url menu with data
 Hue.open_url_menu_by_media_id = function (type, id) {
   let data = Hue.get_media_item(type, id)
-
-  Hue.open_url_menu({
-    source: data.source,
-    data: data,
-    media_type: type
-  })
+  Hue.open_url_menu(data)
 }
 
 // Send a media edit comment emit to the server

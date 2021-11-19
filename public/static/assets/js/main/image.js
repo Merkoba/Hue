@@ -14,6 +14,7 @@ Hue.setup_image = function (mode, odata = {}) {
   data.query = odata.query
   data.comment = odata.comment
   data.in_log = odata.in_log === undefined ? true : odata.in_log
+  data.media_type = "image"
 
   if (data.type === "upload") {
     data.source = `${Hue.config.public_media_directory}/room/${Hue.room_id}/image/${data.source}`
@@ -383,12 +384,7 @@ Hue.setup_modal_image = function () {
   })
 
   Hue.el("#modal_image_toolbar_menu").addEventListener("click", function (e) {
-    console.log(Hue.loaded_modal_image)
-    Hue.open_url_menu({
-      source: Hue.loaded_modal_image.source,
-      data: Hue.loaded_modal_image,
-      media_type: "image"
-    })
+    Hue.open_url_menu(Hue.loaded_modal_image)
   })
 
   Hue.el("#modal_image_subheader").addEventListener("click", function () {

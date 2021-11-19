@@ -168,27 +168,31 @@ Hue.check_handle_url_options = function (text) {
 // Setups the Open URL picker window
 Hue.setup_open_url = function () {
   Hue.el("#open_url_menu_open").addEventListener("click", function () {
-    Hue.goto_url(Hue.open_url_source, "tab")
+    Hue.goto_url(Hue.open_url_data.source, "tab")
     Hue.msg_open_url.close()
   })
 
   Hue.el("#open_url_menu_view_url").addEventListener("click", function () {
-    Hue.open_view_text(Hue.open_url_source)
+    Hue.open_view_text(Hue.open_url_data.source)
   })
   
   Hue.el("#open_url_menu_view_title").addEventListener("click", function () {
-    Hue.open_view_text(Hue.open_url_title)
+    Hue.open_view_text(Hue.open_url_data.title)
+  })
+
+  Hue.el("#open_url_menu_view_comment").addEventListener("click", function () {
+    Hue.open_view_text(Hue.open_url_data.comment)
   })
 
   Hue.el("#open_url_menu_load").addEventListener("click", function () {
-    Hue.load_media(Hue.open_url_media_type, Hue.open_url_data)
+    Hue.load_media(Hue.open_url_data)
     Hue.msg_open_url.close()
   })
 
   Hue.el("#open_url_menu_change").addEventListener("click", function () {
-    Hue.show_confirm(`Change ${Hue.media_string(Hue.open_url_media_type)}`, 
+    Hue.show_confirm(`Change ${Hue.media_string(Hue.open_url_data.media_type)}`, 
     "This will change it for everyone", function () {
-      Hue[`change_${Hue.open_url_media_type}_source`](Hue.open_url_data.source)
+      Hue[`change_${Hue.open_url_data.media_type}_source`](Hue.open_url_data.source)
       Hue.msg_open_url.close()
     })
   })
@@ -196,53 +200,39 @@ Hue.setup_open_url = function () {
 
 // Shows the Open URL menu
 // This is used to show actions for links and media
-Hue.open_url_menu = function (args = {}) {
-  let def_args = {
-    source: false,
-    type: 1,
-    data: {},
-    media_type: false,
-    title: false,
-  }
-
-  args = Object.assign(def_args, args)
-  Hue.open_url_title = args.title || args.data.title
-
-  if (Hue.open_url_title && Hue.open_url_title !== args.source) {
+Hue.open_url_menu = function (data) {
+  if (data.title) {
     Hue.el("#open_url_menu_view_title").style.display = "inline-block"
   } else {
     Hue.el("#open_url_menu_view_title").style.display = "none"
   }
 
-  if (args.media_type && args.data) {
-    Hue.el("#open_url_menu_load").style.display = "inline-block"
-
-    if (args.data !== Hue[`loaded_${args.media_type}`]) {
-      Hue.el("#open_url_menu_load").textContent = "Load"
-    } else {
-      Hue.el("#open_url_menu_load").textContent = "Reload"
-    }
-
-    if (Hue[`change_${args.media_type}_source`](args.source, true)) {
-      Hue.el("#open_url_menu_change").style.display = "inline-block"
-    } else {
-      Hue.el("#open_url_menu_change").style.display = "none"
-    }
+  if (data.comment) {
+    Hue.el("#open_url_menu_view_comment").style.display = "inline-block"
   } else {
-    Hue.el("#open_url_menu_load").style.display = "none"
+    Hue.el("#open_url_menu_view_comment").style.display = "none"
+  }
+
+  if (data !== Hue[`loaded_${data.media_type}`]) {
+    Hue.el("#open_url_menu_load").textContent = "Load"
+  } else {
+    Hue.el("#open_url_menu_load").textContent = "Reload"
+  }
+
+  if (Hue[`change_${data.media_type}_source`](data.source, true)) {
+    Hue.el("#open_url_menu_change").style.display = "inline-block"
+  } else {
     Hue.el("#open_url_menu_change").style.display = "none"
   }
 
   Hue.horizontal_separator(Hue.el("#open_url_container"))
-  Hue.open_url_source = args.source
-  Hue.open_url_data = args.data
-  Hue.open_url_media_type = args.media_type
-
+  
   let title = Hue.utilz.get_limited_string(
-    args.source,
+    data.source,
     Hue.config.url_title_max_length
   )
-
+    
+  Hue.open_url_data = data
   Hue.msg_open_url.set_title(title)
   Hue.msg_open_url.show()
 }
