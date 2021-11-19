@@ -2398,3 +2398,7 @@ pre {
 .pos_absolute {
 	position: absolute;
 }
+
+#view_text_copy {
+	margin-top: 0.8rem;
+}

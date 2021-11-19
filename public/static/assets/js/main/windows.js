@@ -311,6 +311,13 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_view_text = Msg.factory(
+    Object.assign({}, common, {
+      id: "view_text",
+      window_max_width: "40rem"
+    })
+  )  
+
   Hue.msg_details = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "details",
@@ -404,6 +411,7 @@ Hue.start_msg = function () {
   Hue.msg_reply.set(Hue.template_reply())
   Hue.msg_handle_url.set(Hue.template_handle_url())
   Hue.msg_open_url.set(Hue.template_open_url())
+  Hue.msg_view_text.set(Hue.template_view_text())
   Hue.msg_details.set(Hue.template_details())
   Hue.msg_message_board.set(Hue.template_message_board())
   Hue.msg_profilepic_cropper.set(Hue.template_profilepic_cropper())

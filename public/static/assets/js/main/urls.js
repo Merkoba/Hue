@@ -166,29 +166,27 @@ Hue.check_handle_url_options = function (text) {
 Hue.setup_open_url = function () {
   Hue.el("#open_url_menu_open").addEventListener("click", function () {
     Hue.goto_url(Hue.open_url_source, "tab")
-    Hue.close_all_modals()
+    Hue.msg_open_url.close()
   })
 
-  Hue.el("#open_url_menu_copy").addEventListener("click", function () {
-    Hue.copy_string(Hue.open_url_source)
-    Hue.close_all_modals()
+  Hue.el("#open_url_menu_view_url").addEventListener("click", function () {
+    Hue.open_view_text(Hue.open_url_source)
   })
-
-  Hue.el("#open_url_menu_copy_title").addEventListener("click", function () {
-    Hue.copy_string(Hue.open_url_title)
-    Hue.close_all_modals()
+  
+  Hue.el("#open_url_menu_view_title").addEventListener("click", function () {
+    Hue.open_view_text(Hue.open_url_title)
   })
 
   Hue.el("#open_url_menu_load").addEventListener("click", function () {
     Hue.load_media(Hue.open_url_media_type, Hue.open_url_data)
-    Hue.close_all_modals()
+    Hue.msg_open_url.close()
   })
 
   Hue.el("#open_url_menu_change").addEventListener("click", function () {
     Hue.show_confirm(`Change ${Hue.media_string(Hue.open_url_media_type)}`, 
     "This will change it for everyone", function () {
       Hue[`change_${Hue.open_url_media_type}_source`](Hue.open_url_data.source)
-      Hue.close_all_modals()
+      Hue.msg_open_url.close()
     })
   })
 }
@@ -208,9 +206,9 @@ Hue.open_url_menu = function (args = {}) {
   Hue.open_url_title = args.title || args.data.title
 
   if (Hue.open_url_title && Hue.open_url_title !== args.source) {
-    Hue.el("#open_url_menu_copy_title").style.display = "inline-block"
+    Hue.el("#open_url_menu_view_title").style.display = "inline-block"
   } else {
-    Hue.el("#open_url_menu_copy_title").style.display = "none"
+    Hue.el("#open_url_menu_view_title").style.display = "none"
   }
 
   if (args.media_type && args.data) {
