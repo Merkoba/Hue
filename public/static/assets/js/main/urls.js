@@ -1,5 +1,5 @@
 // Function to turn url text into actual links
-Hue.urlize = function (el) {
+Hue.urlize = function (el, limit_width = true) {
   if (!el) {
     return false
   }
@@ -46,10 +46,13 @@ Hue.urlize = function (el) {
         )
 
         let u = matches[i]
-        let max = Hue.config.max_displayed_url
 
-        if (u.length > max) {
-          u = `${u.substring(0, max)}...`
+        if (limit_width) {
+          let max = Hue.config.max_displayed_url
+  
+          if (u.length > max) {
+            u = `${u.substring(0, max)}...`
+          }
         }
 
         html = html.replace(
