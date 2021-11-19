@@ -374,21 +374,6 @@ Hue.setup_modal_image = function () {
     Hue.modal_image_next_click()
   })
 
-  Hue.el("#modal_image_toolbar_load").addEventListener("click", function (e) {
-    let item = Hue.loaded_modal_image
-    Hue.toggle_media({type:"image", what:true})
-    Hue.change({ type: "image", item: item, force: true })
-    Hue.close_all_modals()
-  })
-
-  Hue.el("#modal_image_toolbar_change").addEventListener("click", function (e) {
-    Hue.show_confirm("Change Image", "This will change it for everyone", function () {
-      let item = Hue.loaded_modal_image
-      Hue.change_image_source(item.source)
-      Hue.close_all_modals()
-    })
-  })
-
   Hue.el("#modal_image_toolbar_expand").addEventListener("click", function (e) {
     if (Hue.el("#modal_image_container").classList.contains("expanded_modal_image")) {
       Hue.restore_modal_image()
@@ -396,6 +381,15 @@ Hue.setup_modal_image = function () {
       Hue.expand_modal_image()
     }
   })
+
+  Hue.el("#modal_image_toolbar_menu").addEventListener("click", function (e) {
+    console.log(Hue.loaded_modal_image)
+    Hue.open_url_menu({
+      source: Hue.loaded_modal_image.source,
+      data: Hue.loaded_modal_image,
+      media_type: "image"
+    })
+  })  
 }
 
 // Expand modal image to give it full height
@@ -448,18 +442,6 @@ Hue.show_modal_image = function (id = 0) {
     Hue.el("#modal_image_subheader").style.display = "block"
   } else {
     Hue.el("#modal_image_subheader").style.display = "none"
-  }
-
-  if (data !== Hue.loaded_image) {
-    Hue.el("#modal_image_toolbar_load").style.display = "block"
-  } else {
-    Hue.el("#modal_image_toolbar_load").style.display = "none"
-  }
-
-  if (Hue.change_image_source(data.source, true)) {
-    Hue.el("#modal_image_toolbar_change").style.display = "flex"
-  } else {
-    Hue.el("#modal_image_toolbar_change").style.display = "none"
   }
 
   Hue.horizontal_separator(Hue.el("#modal_image_header_info_container"))

@@ -100,3 +100,20 @@ Hue.get_chat_icon = function (name) {
 Hue.get_icon = function (name, cls="") {
   return `<svg class='other_icon ${cls}'><use href='#icon_${name}'></svg>`
 }
+
+// Open view text
+Hue.open_view_text = function (text) {
+  Hue.msg_view_text.show(function () {
+    let text_el = Hue.el("#view_text_text")
+    text_el.textContent = text
+    Hue.urlize(text_el)
+  })  
+}
+
+// Setup view text window
+Hue.setup_view_text = function () {
+  Hue.el("#view_text_copy").addEventListener("click", function () {
+    Hue.copy_string(Hue.el("#view_text_text").textContent)
+    Hue.msg_view_text.close()
+  })
+}
