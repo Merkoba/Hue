@@ -106,7 +106,7 @@ Hue.open_view_text = function (text) {
   Hue.msg_view_text.show(function () {
     let text_el = Hue.el("#view_text_text")
     text_el.textContent = text
-    Hue.urlize(text_el)
+    Hue.urlize(text_el, false)
   })  
 }
 
