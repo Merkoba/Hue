@@ -389,7 +389,11 @@ Hue.setup_modal_image = function () {
       data: Hue.loaded_modal_image,
       media_type: "image"
     })
-  })  
+  })
+
+  Hue.el("#modal_image_subheader").addEventListener("click", function () {
+    Hue.open_view_text(this.textContent)
+  })
 }
 
 // Expand modal image to give it full height
