@@ -307,7 +307,7 @@ Hue.start_msg = function () {
   Hue.msg_open_url = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "open_url",
-      window_max_width: "40rem"
+      window_max_width: "50rem"
     })
   )
 
