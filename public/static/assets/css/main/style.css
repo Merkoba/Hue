@@ -4,6 +4,7 @@
 	--app_font_family: imported_font, sans-serif;
 	--tab_size: 1.6rem;
 	--icon_size: 1.2rem;
+	--bigger_icon_size: 2rem;
 	--chat_side_spacing: 0.8rem;
 	--profilepic_size: 1.8rem;
 	--small_profilepic_size: 1.2rem;
@@ -650,6 +651,11 @@ a.generic:hover {
 .other_icon {
 	width: var(--icon_size);
 	height: var(--icon_size);
+}
+
+.bigger_icon {
+	width: var(--bigger_icon_size);
+	height: var(--bigger_icon_size);
 }
 
 .dotted {
