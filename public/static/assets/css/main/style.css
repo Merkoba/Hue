@@ -4,7 +4,7 @@
 	--app_font_family: imported_font, sans-serif;
 	--tab_size: 1.6rem;
 	--icon_size: 1.2rem;
-	--bigger_icon_size: 2rem;
+	--bigger_icon_size: 1.8rem;
 	--chat_side_spacing: 0.8rem;
 	--profilepic_size: 1.8rem;
 	--small_profilepic_size: 1.2rem;
@@ -718,7 +718,7 @@ a.generic:hover {
 	top: 0;
 	width: 14rem;
 	border: 0.06rem solid grey;
-	font-size: 1.2rem;
+	font-size: 1rem;
 	text-align: center;
 	position: sticky;
 	z-index: 99;
@@ -962,7 +962,7 @@ select {
 }
 
 .input1 {
-	font-size: 1.2rem;
+	font-size: 1rem;
 	width: 18rem;
 	border: 0.06rem solid grey;
 	text-align: center;
