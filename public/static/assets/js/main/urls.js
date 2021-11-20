@@ -83,25 +83,15 @@ Hue.handle_url = function (text) {
   if (text) {
     Hue.check_handle_url_options(text)
     Hue.el("#handle_url_input").value = text
-    Hue.el("#handle_url_comment").value = ""
     Hue.handled_url_input = text
-    Hue.handled_url_comment = ""
-    Hue.msg_handle_url.show(function () {
-      Hue.el("#handle_url_comment").focus()
-    })
+    Hue.msg_handle_url.show()
   }
 }
 
 // Handle url chat action
 Hue.handle_url_chat = function () {
-  let message = Hue.handled_url_input
-
-  if (Hue.handled_url_comment) {
-    message = `${Hue.handled_url_comment.trim()} ${message.trim()}`
-  }
-    
-  Hue.process_message({ message: message, handle_url: false })
-  Hue.close_all_modals()
+  Hue.change_input(Hue.handled_url_input)
+  Hue.msg_handle_url.close()
 }
 
 // Setups drop listeners
@@ -117,28 +107,19 @@ Hue.setup_drag_events = function () {
   })
 
   Hue.el("#handle_url_image").addEventListener("click", function () {
-    Hue.change_image_source(
-      Hue.handled_url_input,
-      false,
-      Hue.handled_url_comment
-    )
-    Hue.close_all_modals()
+    Hue.load_media_picker("image", Hue.handled_url_input, "")
+    Hue.msg_handle_url.close()
   })
-
+  
   Hue.el("#handle_url_tv").addEventListener("click", function () {
-    Hue.change_tv_source(Hue.handled_url_input, false, Hue.handled_url_comment)
-    Hue.close_all_modals()
+    Hue.load_media_picker("tv", Hue.handled_url_input, "")
+    Hue.msg_handle_url.close()
   })
 
   Hue.el("#handle_url_input").addEventListener("input blur", function () {
     Hue.handled_url_input = this.value.trim()
     Hue.el("#handle_url_input").value = Hue.handled_url_input
     Hue.check_handle_url_options(Hue.handled_url_input)
-  })
-
-  Hue.el("#handle_url_comment").addEventListener("input blur", function () {
-    Hue.handled_url_comment = this.value.substring(0, Hue.config.max_media_comment_length)
-    Hue.el("#handle_url_comment").value = Hue.handled_url_comment
   })
 }
 

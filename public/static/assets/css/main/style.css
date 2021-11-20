@@ -2159,11 +2159,11 @@ pre {
 	border: 0.06rem solid grey;
 	text-align: center;
 	margin-bottom: 0.25rem;
-	padding: 0.5rem;
+	padding: 0.2rem;
 	display: block;
 }
 
-#handle_url_comment {
+#handle_url_input {
 	margin-bottom: 1rem;
 }
 

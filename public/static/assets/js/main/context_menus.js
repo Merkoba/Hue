@@ -11,6 +11,12 @@ Hue.start_chat_menu_context_menu = function () {
       let user_id = Hue.dataset(message, "user_id")
       let message_id = Hue.dataset(message, "message_id")
       let id = Hue.dataset(e.target.closest(".message_unit"), "id")
+      let url = ""
+
+      if (mode === "chat") {
+        let container = message.querySelector(".chat_content_container")
+        url = Hue.dataset(container, "first_url")
+      }
 
       if (!e.target.closest("#chat_area")) {
         items.push({
@@ -58,6 +64,15 @@ Hue.start_chat_menu_context_menu = function () {
           text: "Delete",
           action: function () {
             Hue.handle_delete_message(id, user_id)      
+          }
+        })
+      }
+
+      if (url) {
+        items.push({
+          text: "Handle",
+          action: function () {
+            Hue.handle_url(url)     
           }
         })
       }

@@ -908,3 +908,21 @@ Hue.edited_media_comment = function (data) {
     }
   }
 }
+
+// Used to change the image
+// Shows the image picker window to input a URL, or upload a file
+Hue.show_media_picker = function (type) {
+  Hue[`msg_${type}_picker`].show(function () {
+    Hue.el(`#${type}_source_picker_input`).focus()
+    Hue.show_media_history(type)
+    Hue.scroll_modal_to_top(`${type}_picker`)
+  })
+}
+
+// Load media picker
+Hue.load_media_picker = function (type, source, comment) {
+  Hue.show_media_picker(type)
+  console.log(`#${type}_source_picker_input`)
+  Hue.el(`#${type}_source_picker_input`).value = source
+  Hue.el(`#${type}_source_picker_input_comment`).value = comment
+}
