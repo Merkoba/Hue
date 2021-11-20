@@ -2159,17 +2159,9 @@ pre {
 	margin-bottom: 0.5rem;
 }
 
-.handle_url_input {
-	font-size: 1.1rem;
-	width: 30rem;
-	border: 0.06rem solid grey;
+#handle_url_url {
 	text-align: center;
 	margin-bottom: 0.25rem;
-	padding: 0.2rem;
-	display: block;
-}
-
-#handle_url_input {
 	margin-bottom: 1rem;
 }
 

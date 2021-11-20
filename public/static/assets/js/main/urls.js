@@ -79,18 +79,20 @@ Hue.goto_url = function (url, mode) {
 }
 
 // Handle URLS
-Hue.handle_url = function (text) {
-  if (text) {
-    Hue.check_handle_url_options(text)
-    Hue.el("#handle_url_input").value = text
-    Hue.handled_url_input = text
+Hue.handle_url = function (url) {
+  if (url) {
+    Hue.check_handle_url_options(url)
+    let url_el = Hue.el("#handle_url_url")
+    url_el.textContent = url
+    Hue.urlize(url_el, false)
+    Hue.handled_url = url
     Hue.msg_handle_url.show()
   }
 }
 
 // Handle url chat action
 Hue.handle_url_chat = function () {
-  Hue.change_input(Hue.handled_url_input)
+  Hue.change_input(Hue.handled_url)
   Hue.msg_handle_url.close()
 }
 
@@ -107,19 +109,19 @@ Hue.setup_drag_events = function () {
   })
 
   Hue.el("#handle_url_image").addEventListener("click", function () {
-    Hue.load_media_picker("image", Hue.handled_url_input, "")
+    Hue.load_media_picker("image", Hue.handled_url, "")
     Hue.msg_handle_url.close()
   })
   
   Hue.el("#handle_url_tv").addEventListener("click", function () {
-    Hue.load_media_picker("tv", Hue.handled_url_input, "")
+    Hue.load_media_picker("tv", Hue.handled_url, "")
     Hue.msg_handle_url.close()
   })
 
-  Hue.el("#handle_url_input").addEventListener("input blur", function () {
-    Hue.handled_url_input = this.value.trim()
-    Hue.el("#handle_url_input").value = Hue.handled_url_input
-    Hue.check_handle_url_options(Hue.handled_url_input)
+  Hue.el("#handle_url_url").addEventListener("input blur", function () {
+    Hue.handled_url = this.value.trim()
+    Hue.el("#handle_url_url").value = Hue.handled_url
+    Hue.check_handle_url_options(Hue.handled_url)
   })
 }
 
