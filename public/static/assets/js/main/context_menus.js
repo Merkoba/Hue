@@ -14,7 +14,7 @@ Hue.start_chat_menu_context_menu = function () {
       let url = ""
 
       if (mode === "chat") {
-        let container = message.querySelector(".chat_content_container")
+        let container = e.target.closest(".chat_content_container")
         url = Hue.dataset(container, "first_url")
       }
 
