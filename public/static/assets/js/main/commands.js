@@ -73,7 +73,7 @@ Hue.commands = {
       if (arg) {
         Hue.change_tv_source(arg)
       } else {
-        Hue.show_media_source("tv")
+        Hue.show_media_picker("tv")
       }
     },
     description: "Changes the TV using a search term or URL",
@@ -83,7 +83,7 @@ Hue.commands = {
       if (arg) {
         Hue.change_image_source(arg)
       } else {
-        Hue.show_media_source("image")
+        Hue.show_media_picker("image")
       }
     },
     description: "Changes the image with a URL",
@@ -308,18 +308,6 @@ Hue.commands = {
       Hue.show_current_date()
     },
     description: `Shows current date`,
-  },
-  "changeimage": {
-    action: (arg, ans) => {
-      Hue.show_media_picker("image")
-    },
-    description: `Opens window to change the image`,
-  },
-  "changetv": {
-    action: (arg, ans) => {
-      Hue.show_media_picker("tv")
-    },
-    description: `Opens the window to change the tv`,
   },
   "activityabove": {
     action: (arg, ans) => {

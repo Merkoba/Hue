@@ -297,24 +297,6 @@ Hue.setup_media_menu = function () {
   }) 
 }
 
-// Format local sources that start with slash
-Hue.get_proper_media_url = function (type) {
-  let source = Hue[`current_${type}`]().source
-
-  if (source.startsWith("/")) {
-    source = window.location.origin + source
-  }
-
-  return source
-}
-
-// Show the current source of a given media type
-Hue.show_media_source = function (what) {
-  let source = Hue.get_proper_media_url(what)
-  let s = Hue.media_string(what)
-  Hue.checkmsg(`${s} Source: ${source}`)
-}
-
 // More media picker configurations
 Hue.setup_media_pickers = function () {
   for (let type of Hue.utilz.media_types) {
