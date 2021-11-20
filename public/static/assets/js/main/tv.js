@@ -446,6 +446,22 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
         }
       }
     }
+  } else {
+    if (src.length > Hue.config.safe_limit_1) {
+      if (feedback) {
+        Hue.checkmsg("Query is too long")
+      }
+
+      return false
+    }
+
+    if (!Hue.config.youtube_enabled) {
+      if (feedback) {
+        Hue.checkmsg("YouTube support is not enabled")
+      }
+
+      return false
+    }    
   }
 
   if (just_check) {
