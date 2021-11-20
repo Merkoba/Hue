@@ -173,11 +173,8 @@ Hue.setup_open_url = function () {
   })
 
   Hue.el("#open_url_menu_change").addEventListener("click", function () {
-    Hue.show_confirm(`Change ${Hue.media_string(Hue.open_url_data.media_type)}`, 
-    "This will change it for everyone", function () {
-      Hue[`change_${Hue.open_url_data.media_type}_source`](Hue.open_url_data.source)
-      Hue.msg_open_url.close()
-    })
+    Hue.load_media_picker(Hue.open_url_data.media_type, Hue.open_url_data.source, Hue.open_url_data.comment)
+    Hue.msg_open_url.close()
   })
 }
 
