@@ -439,7 +439,7 @@ Hue.start_msg = function () {
   Hue.msg_details.set_title("User Details")
   Hue.msg_notifications.set_title("Notifications")
   Hue.msg_whispers.set_title("Whispers")
-  Hue.msg_handle_url.set_title("Drag n' Drop")
+  Hue.msg_handle_url.set_title("Handle URL")
   Hue.msg_message_board.set_title("Message Board")
   Hue.msg_profilepic_cropper.set_title("Crop A Circle")
   Hue.msg_confirm.set_title("Confirm Action")

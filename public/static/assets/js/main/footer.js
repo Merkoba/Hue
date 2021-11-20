@@ -4,7 +4,7 @@ Hue.setup_footer = function () {
 
   for (let type of media) {
     Hue.el(`#footer_${type}_label`).addEventListener("click", function () {
-      Hue[`show_${type}_picker`]()
+      Hue.show_media_picker(type)
     })
 
     Hue.el(`#footer_${type}_toggler`).addEventListener("click", function () {

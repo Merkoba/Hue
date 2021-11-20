@@ -311,13 +311,13 @@ Hue.commands = {
   },
   "changeimage": {
     action: (arg, ans) => {
-      Hue.show_image_picker()
+      Hue.show_media_picker("image")
     },
     description: `Opens window to change the image`,
   },
   "changetv": {
     action: (arg, ans) => {
-      Hue.show_tv_picker()
+      Hue.show_media_picker("tv")
     },
     description: `Opens the window to change the tv`,
   },

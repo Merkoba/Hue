@@ -509,16 +509,6 @@ Hue.change_tv_visibility = function (play = false) {
   Hue.goto_bottom()
 }
 
-// Used to change the tv
-// Shows the tv picker window to input a URL
-Hue.show_tv_picker = function () {
-  Hue.msg_tv_picker.show(function () {
-    Hue.el("#tv_source_picker_input").focus()
-    Hue.show_media_history("tv")
-    Hue.scroll_modal_to_top("tv_picker")
-  })
-}
-
 // Does the change of tv display percentage
 Hue.do_media_tv_size_change = function (size) {
   if (size === "max") {

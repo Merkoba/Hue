@@ -508,16 +508,6 @@ Hue.hide_expand_image = function () {
   Hue.msg_expand_image.close()
 }
 
-// Used to change the image
-// Shows the image picker window to input a URL, or upload a file
-Hue.show_image_picker = function () {
-  Hue.msg_image_picker.show(function () {
-    Hue.el("#image_source_picker_input").focus()
-    Hue.show_media_history("image")
-    Hue.scroll_modal_to_top("image_picker")
-  })
-}
-
 // Shows the window to add a comment to an image upload
 Hue.show_image_upload_comment = function (file, type) {
   Hue.el("#image_upload_comment_image_feedback").style.display = "none"
