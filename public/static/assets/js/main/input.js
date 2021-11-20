@@ -74,6 +74,8 @@ Hue.change_input = function (s, to_end = true, focus = true) {
   if (focus) {
     Hue.focus_input()
   }
+
+  Hue.on_input_change()
 }
 
 // Focuses the input
