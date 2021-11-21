@@ -434,7 +434,6 @@ body * {
 }
 
 .chat_profilepic.aura,
-.chat_quote_profilepic.aura,
 .activity_bar_profilepic.aura {
 	animation: spin 1s linear infinite;
 }
@@ -1275,46 +1274,11 @@ svg.action:hover {
 	box-shadow: 0 0 1.18rem currentColor, inset 0 0 1.1765rem currentColor;
 }
 
-.aura2 {
-	box-shadow: inset 0 0 0.24rem currentColor;
-}
-
-.aura3 {
-	text-shadow: 0 0 0.71rem currentColor;
-}
-
-.faded {
-	opacity: 0.5;
-}
-
-.nopointer {
-	pointer-events: none;
-}
-
-.inactive {
-	opacity: 0.5;
-	pointer-events: none;
-}
-
-.container_22 {
-	width: 22rem;
-}
-
 .slider_container {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-}
-
-.slider_icon_left {
-	width: 1.18rem;
-	margin-right: 0.59rem;
-}
-
-.slider_icon_right {
-	width: 1.18rem;
-	margin-left: 0.59rem;
 }
 
 .header_container {
@@ -1482,10 +1446,6 @@ svg.action:hover {
 	box-shadow: 0 0 2px currentColor
 }
 
-.sp-palette {
-	max-width: 3.82rem !important;
-}
-
 .highlighted_message {
 	background-color: var(--altbackground_a);
 	color: var(--font_color);
@@ -1494,10 +1454,6 @@ svg.action:hover {
 
 .fresh_message {
 	background: linear-gradient(.25turn, var(--altcolor_a), 50%, transparent);
-}
-
-.border_bottom {
-	border-bottom: 0.06rem solid currentColor;
 }
 
 .flex_row_center {
@@ -1514,29 +1470,11 @@ svg.action:hover {
 	justify-content: center;
 }
 
-.flex_column_left {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: flex-start;
-}
-
 .inline_flex_row_center {
 	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-}
-
-.inline_flex_column_center {
-	display: inline-flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-
-#admin_menu {
-	margin-top: 0.8rem;
 }
 
 #admin_activity_container {
@@ -1617,30 +1555,6 @@ a.special_link:visited {
 a.special_link:hover {
 	color: inherit;
 	text-decoration: underline;
-}
-
-.position_left {
-	left: 0;
-}
-
-.position_right {
-	right: 0;
-}
-
-.menu_subsection_title {
-	margin-top: 2.2rem;
-	margin-bottom: 2rem;
-	opacity: 0.5;
-	font-size: 1.1rem;
-	letter-spacing: 0.1rem;
-}
-
-.menu_subsection_title2 {
-	margin-top: 2rem;
-	margin-bottom: 2rem;
-	opacity: 0.5;
-	font-size: 1.1rem;
-	letter-spacing: 0.1rem;
 }
 
 .image_preview {
