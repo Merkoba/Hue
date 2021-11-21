@@ -904,7 +904,6 @@ Hue.show_media_picker = function (type) {
 // Load media picker
 Hue.load_media_picker = function (type, source, comment) {
   Hue.show_media_picker(type)
-  console.log(`#${type}_source_picker_input`)
   Hue.el(`#${type}_source_picker_input`).value = source
   Hue.el(`#${type}_source_picker_input_comment`).value = comment
 }
