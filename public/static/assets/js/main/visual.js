@@ -16,7 +16,7 @@ Hue.apply_separator = function (el, cls) {
   })
 
   let elems = Array.from(el.children).filter(it => {
-    return it.style.display !== "none"
+    return it.style.display !== "none" && !it.classList.contains("nodisplay")
   })
 
   for (let i=0; i<elems.length; i++) {
