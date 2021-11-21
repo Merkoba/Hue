@@ -352,6 +352,7 @@ Hue.push_whisper = function (message, on_click, read) {
   }
 
   Hue.update_whispers_unread_count()
+  Hue.el("#whispers_container .empty_window_message").remove()
 
   return content
 }

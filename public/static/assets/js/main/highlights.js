@@ -155,6 +155,10 @@ Hue.show_highlights = function (filter = "") {
     for (let message of messages) {
       Hue.el("#highlights_container").append(message)
     }
+  } else {
+    let empty = Hue.div("justify_self_center")
+    empty.textContent = "No highlights yet"
+    Hue.el("#highlights_container").append(empty)
   }
 
   Hue.msg_highlights.show(function () {
