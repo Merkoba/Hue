@@ -2314,3 +2314,7 @@ pre {
 #view_text_copy {
 	margin-top: 0.8rem;
 }
+
+.justify_self_center {
+	justify-self: center;
+}
