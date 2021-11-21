@@ -598,16 +598,16 @@ Hue.do_modal_filter = function (id = false) {
       let item_value = it.textContent.toLowerCase()
 
       if (item_value.includes(lc_value)) {
-        it.classList.remove("filter_item_invisible")
+        it.classList.remove("nodisplay")
       } else {
-        it.classList.add("filter_item_invisible")
+        it.classList.add("nodisplay")
       }
     })
 
     Hue[`${id}_filtered`] = true
   } else {
     items.forEach(it => {
-      it.classList.remove("filter_item_invisible")
+      it.classList.remove("nodisplay")
     })
 
     Hue[`${id}_filtered`] = false

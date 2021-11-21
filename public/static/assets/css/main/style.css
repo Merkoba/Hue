@@ -1063,7 +1063,7 @@ select {
 }
 
 .nodisplay {
-	display: none;
+	display: none !important;
 }
 
 .invisible {
@@ -2399,8 +2399,4 @@ pre {
 
 #view_text_copy {
 	margin-top: 0.8rem;
-}
-
-.filter_item_invisible {
-	display: none !important;
 }
