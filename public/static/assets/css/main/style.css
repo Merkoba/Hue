@@ -2250,6 +2250,10 @@ pre {
 }
 
 #media_menu_defaults {
+	margin-top: 1rem;
+}
+
+#media_menu_toggle_chat {
 	margin-top: 2rem;
 }
 

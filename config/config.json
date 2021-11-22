@@ -79,6 +79,7 @@
 	"room_state_default_media_layout": "column",
 	"room_state_default_main_layout": "row",
 	"room_state_default_last_message_board_post": 0,
+	"room_state_default_chat_enabled": true,
 	"jwt_expiration": 30000,
 	"max_jwt_token_length": 300,
 	"max_message_id_length": 100,
