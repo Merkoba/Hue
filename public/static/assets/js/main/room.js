@@ -23,7 +23,8 @@ Hue.get_room_state = function () {
     "tv_display_position",
     "media_layout",
     "last_message_board_post",
-    "main_layout"
+    "main_layout",
+    "chat_enabled"
   ]
 
   for (let setting of settings) {

@@ -1902,3 +1902,31 @@ Hue.deleted_messages_below = function (data) {
 
   Hue.goto_bottom()
 }
+
+// Check chat enabled
+Hue.check_chat_enabled = function () {
+  if (Hue.room_state.chat_enabled) {
+    Hue.el("#chat_main").classList.remove("nodisplay")
+  } else {
+    Hue.el("#chat_main").classList.add("nodisplay")
+  }
+}
+
+// Toggle chat on or off
+Hue.toggle_chat = function (what = undefined) {
+  if (what !== undefined) {
+    Hue.room_state.chat_enabled = what 
+  } else {
+    Hue.room_state.chat_enabled = !Hue.room_state.chat_enabled
+  }
+  
+  Hue.save_room_state()
+  Hue.check_chat_enabled()
+  Hue.fix_frames()
+  Hue.goto_bottom(true)
+}
+
+// Set default chat enabled
+Hue.set_default_chat_enabled = function () {
+  Hue.toggle_chat(Hue.config.room_state_default_chat_enabled)
+}
