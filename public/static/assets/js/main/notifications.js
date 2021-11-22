@@ -99,7 +99,11 @@ Hue.push_notification = function (icon, message, on_click = false) {
     Hue.el("#header_notifications_count").textContent = `(${Hue.notifications_count})`
   }
 
-  Hue.el("#notifications_container .empty_window_message").remove()
+  let empty = Hue.el("#notifications_container .empty_window_message")
+
+  if (empty) {
+    empty.remove()
+  }
 }
 
 // Shows information about the recent info popups
