@@ -2322,3 +2322,7 @@ pre {
 .justify_self_center {
 	justify-self: center;
 }
+
+.ban_list_item {
+	gap: 1rem;
+}

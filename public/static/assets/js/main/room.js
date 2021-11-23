@@ -221,7 +221,7 @@ Hue.show_admin_list = function (data) {
     el.querySelector(".admin_list_role").textContent = `(${Hue.get_pretty_role_name(user.role)})`
 
     el.addEventListener("click", function () {
-      Hue.show_profile(user.username)
+      Hue.show_profile(user.username, user.user_id)
     })
 
     container.append(el)
@@ -248,16 +248,27 @@ Hue.show_ban_list = function (data) {
   container.id = "ban_list_container"
 
   for (let user of data.list) {
-    let s = `<div class='flex_row_center'><div class='ban_list_username' title='Click To Unban'></div></div>`
+    let s = `<div class='flex_row_center ban_list_item'>
+      <div class='ban_list_username'></div>
+      <div class='ban_list_unban'>Unban</div>
+    </div>`
+
     let el = Hue.div("ban_list_item action")
     el.innerHTML = s
 
-    el.querySelector(".ban_list_username").textContent = user.username
+    let username = el.querySelector(".ban_list_username")
+    username.textContent = user.username
 
-    el.addEventListener("click", function () {
+    username.addEventListener("click", function () {
+      Hue.show_profile(user.username, user.user_id)
+    })
+
+    let unban = el.querySelector(".ban_list_unban")
+
+    unban.addEventListener("click", function () {
       Hue.show_confirm(`Unban ${user.username}`, "", function () {
         Hue.unban(user.username)
-      })
+      })     
     })
 
     container.append(el)
