@@ -340,8 +340,7 @@ Hue.on_disconnect = function () {
 // Some stats in socket i/o
 Hue.start_socket_stats = function () {
   setInterval(() => {
-    Hue.loginfo(`Socket Messsages IN (last 10 minutes): ${Hue.num_socket_in}`)
-    Hue.loginfo(`Socket Messsages OUT (last 10 minutes): ${Hue.num_socket_out}`)
+    Hue.loginfo(`Socket Messsages IN/OUT (last 10 minutes): ${Hue.num_socket_in}/${Hue.num_socket_out}`)
     Hue.num_socket_in = 0
     Hue.num_socket_out = 0
   }, 10 * 60 * 1000);
