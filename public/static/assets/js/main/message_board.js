@@ -113,6 +113,11 @@ Hue.init_message_board = function (data) {
   }
 
   Hue.check_last_message_board_post()
+
+  if (Hue.unread_message_board_count > 0) {
+    Hue.show_message_board()
+  }
+
   Hue.vertical_separator(Hue.el("#message_board_container"))
 }
 
@@ -190,11 +195,13 @@ Hue.check_last_message_board_post = function () {
         count += 1
       }
 
+      Hue.unread_message_board_count = count
       Hue.el("#header_message_board_count").textContent = `(${count})`
     } else {
       Hue.update_last_message_post_checked()
     }
   } else {
+    Hue.unread_message_board_count = 0
     Hue.el("#header_message_board_count").textContent = "(0)"
   }
 }
