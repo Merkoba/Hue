@@ -1,5 +1,10 @@
 // Processes whisper commands to determine how to handle the operation
 Hue.process_write_whisper = function (arg, show = true) {
+  if (!arg) {
+    Hue.checkmsg(`Format: ${Hue.config.commands_prefix}whisper [username] [message]`)
+    return
+  }
+
   let user = Hue.get_user_by_username(arg)
 
   if (arg.includes(">")) {
