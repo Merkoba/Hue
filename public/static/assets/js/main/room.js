@@ -249,11 +249,11 @@ Hue.show_ban_list = function (data) {
 
   for (let user of data.list) {
     let s = `<div class='flex_row_center ban_list_item'>
-      <div class='ban_list_username'></div>
-      <div class='ban_list_unban'>Unban</div>
+      <div class='ban_list_username action'></div>
+      <div class='ban_list_unban action'>Unban</div>
     </div>`
 
-    let el = Hue.div("ban_list_item action")
+    let el = Hue.div("ban_list_item")
     el.innerHTML = s
 
     let username = el.querySelector(".ban_list_username")
