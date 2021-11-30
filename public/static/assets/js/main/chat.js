@@ -712,8 +712,6 @@ Hue.submit_reply = function () {
   }
 
   Hue.msg_reply.close()
-  Hue.goto_bottom(true)
-
   let otext = Hue.utilz.clean_string2(Hue.el("#reply_text").value)
   let quote = otext.substring(0, Hue.config.quote_max_length).trim()
 
@@ -1344,13 +1342,13 @@ Hue.scroll_chat_to = function (scrolltop) {
 }
 
 // Scrolls the chat up
-Hue.scroll_up = function (n) {
-  Hue.el("#chat_area").scrollTop -= n
+Hue.scroll_up = function () {
+  Hue.el("#chat_area").scrollTop -= Hue.chat_scroll_amount
 }
 
 // Scrolls the chat down
-Hue.scroll_down = function (n) {
-  Hue.el("#chat_area").scrollTop += n
+Hue.scroll_down = function () {
+  Hue.el("#chat_area").scrollTop += Hue.chat_scroll_amount
 }
 
 // Generates the username mention regex using the highlights regex
