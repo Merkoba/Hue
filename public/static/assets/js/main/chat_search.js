@@ -14,8 +14,13 @@ Hue.show_chat_search = function (filter = "", mode = "normal") {
     Hue.el("#chat_search_filter").value = filter ? filter : ""
   }
 
+  let filters = []
+
   if (filter.trim()) {
-    let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
+    filters = filter.split(" || ").map(x => x.trim().toLowerCase())
+  }
+
+  if (filters.length) {
     let messages = Hue.clone_children("#chat_area").reverse()
 
     messages.forEach(it => {
@@ -25,7 +30,14 @@ Hue.show_chat_search = function (filter = "", mode = "normal") {
     messages = messages.filter(it => {
       if (mode === "user_id") {
         let user_id = Hue.dataset(it, "user_id")
-        return filter === user_id
+
+        for (let f of filters) {
+          if (f === user_id) {
+            return true
+          }
+        }
+
+        return false
       }
 
       let text = it.textContent.toLowerCase()
@@ -34,16 +46,16 @@ Hue.show_chat_search = function (filter = "", mode = "normal") {
         return false
       }
 
-      let text_cmp = text.includes(lc_value)
-      
-      let source_cmp = false
-      let media_source = Hue.dataset(it, "media_source")
-      
-      if (media_source) {
-        source_cmp = media_source.includes(lc_value)
+      let text_cmp = false
+
+      for (let f of filters) {
+        if (text.includes(f)) {
+          text_cmp = true
+          break
+        }
       }
 
-      return text_cmp || source_cmp
+      return text_cmp
     })
 
     if (messages.length) {
