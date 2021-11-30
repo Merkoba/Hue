@@ -24,6 +24,10 @@ Hue.setup_footer = function () {
     Hue.show_chat_search()
   })
 
+  Hue.el("#footer_links").addEventListener("click", function () {
+    Hue.show_chat_search("http:// || https://")
+  })
+
   Hue.el("#footer_items").addEventListener("click", function(e) {
     if (e.target === this) {
       Hue.el("#input").focus()
