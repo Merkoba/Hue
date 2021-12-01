@@ -112,12 +112,14 @@ module.exports = function (
       if (data.action === "image_upload") {
         handler.upload_media(socket, {
           file: full_file,
+          file_name: file.name,
           extension: file.extension,
           comment: file.comment,
         }, "image")
       } else if (data.action === "tv_upload") {
         handler.upload_media(socket, {
           file: full_file,
+          file_name: file.name,
           extension: file.extension,
           comment: file.comment,
         }, "tv")
