@@ -82,9 +82,9 @@ Hue.setup_image = function (mode, odata = {}) {
 
   if (!data.message) {
     if (data.size) {
-      data.message = "Uploaded image"
+      data.message = "Uploaded Image"
     } else {
-      data.message = "Linked image"
+      data.message = `Linked Image (${new URL(data.source).hostname})`
     }
   }
 
