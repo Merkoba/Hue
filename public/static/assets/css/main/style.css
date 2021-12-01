@@ -1719,6 +1719,10 @@ a.special_link:hover {
 	font-size: 1.2rem;
 }
 
+#media_iframe_tv {
+	border: 0;
+}
+
 #expand_image_container {
 	display: flex;
 	align-items: center;
