@@ -124,22 +124,6 @@ Hue.show_highlights = function (filter = "") {
       if (!Hue.dataset(it, "highlighted")) {
         return false
       }
-      
-      let text = it.textContent.toLowerCase()
-
-      if (!text) {
-        return false
-      }
-
-      let text_cmp = text.includes(lc_value)
-      let source_cmp = false
-      let media_source = Hue.dataset(it, "media_source")
-      
-      if (media_source) {
-        source_cmp = media_source.includes(lc_value)
-      }
-
-      return text_cmp || source_cmp
     })
   } else {
     messages = messages.filter(it => {
@@ -153,6 +137,14 @@ Hue.show_highlights = function (filter = "") {
 
   if (messages.length) {
     for (let message of messages) {
+      if (Hue.dataset(message, "mode") === "chat") {
+        for (let container of message.querySelectorAll(".chat_content_container")) {
+          if (!Hue.dataset(container, "highlighted")) {
+            container.remove()
+          }
+        }
+      }
+
       Hue.el("#highlights_container").append(message)
     }
   } else {
