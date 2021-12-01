@@ -1720,7 +1720,11 @@ a.special_link:hover {
 }
 
 #media_iframe_tv {
-	border: 0;
+	border: 1px solid var(--font_color);
+}
+
+.noborder {
+	border: 0 !important; 
 }
 
 #expand_image_container {
