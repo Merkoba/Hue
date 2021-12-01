@@ -52,6 +52,7 @@ module.exports = function (
           obj.size = size
           obj.type = "upload"
           obj.comment = data.comment
+          obj.file_name = data.file_name
 
           try {
             handler.do_change_media(socket, obj, type)
@@ -77,7 +78,7 @@ module.exports = function (
     }
 
     let date = Date.now()
-    let comment = data.comment || ""
+    let comment = data.comment || data.file_name || ""
     let size = data.size || 0
     let title = ""
 
