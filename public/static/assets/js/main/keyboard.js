@@ -284,6 +284,8 @@ Hue.activate_key_detection = function () {
       if (e.shiftKey) {
         Hue.input_history_change("up")
         e.preventDefault()
+      } else if (Hue.chat_scrolled) {
+        Hue.scroll_up()
       } else {
         Hue.edit_last_message()
       }
@@ -304,20 +306,7 @@ Hue.activate_key_detection = function () {
       return
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {
-        if (Hue.footer_expanded) {
-          Hue.disable_footer_expand()
-          return
-        }
-
-        if (Hue.get_input()) {
-          Hue.clear_input()
-        } else {
-          Hue.change_input(Hue.last_input_text)  
-        }
-
-        Hue.reset_input_history_index()
-        e.preventDefault()
-        return
+        Hue.goto_bottom(true)
       }
     }
   })

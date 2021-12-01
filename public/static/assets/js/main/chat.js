@@ -1596,6 +1596,8 @@ Hue.goto_bottom = function (force = false) {
   let max = chat.scrollHeight - chat.clientHeight
 
   if (force || !Hue.chat_scrolled) {
+    Hue.hide_top_scroller()
+    Hue.hide_bottom_scroller()
     Hue.scroll_chat_to(max)
   }
 }
