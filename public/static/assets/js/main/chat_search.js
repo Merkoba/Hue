@@ -28,6 +28,10 @@ Hue.show_chat_search = function (filter = "", mode = "normal") {
     })
 
     messages = messages.filter(it => {
+      if (Hue.dataset(it, "mode") !== "chat") {
+        return false
+      }
+
       if (mode === "user_id") {
         let user_id = Hue.dataset(it, "user_id")
 
@@ -40,22 +44,28 @@ Hue.show_chat_search = function (filter = "", mode = "normal") {
         return false
       }
 
-      let text = it.textContent.toLowerCase()
+      let message_matched = false
+      let containers = it.querySelectorAll(".chat_content_container")
 
-      if (!text) {
-        return false
-      }
-
-      let text_cmp = false
-
-      for (let f of filters) {
-        if (text.includes(f)) {
-          text_cmp = true
-          break
+      for (let container of containers) {
+        for (let f of filters) {
+          if (container.textContent.toLowerCase().includes(f)) {
+            message_matched = true
+            container.x_search_matched = true
+            break
+          }
         }
       }
 
-      return text_cmp
+      if (message_matched) {
+        for (let container of containers) {
+          if (!container.x_search_matched) {
+            container.remove()
+          }
+        }
+      }
+
+      return message_matched
     })
 
     if (messages.length) {
