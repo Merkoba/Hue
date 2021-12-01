@@ -201,7 +201,9 @@ Hue.play_tv = function () {
       Hue.el("#media_video_tv").play()
     }
   } else if (Hue.current_tv().type === "iframe") {
-    Hue.el("#media_iframe_tv").src = Hue.current_tv().source
+    let iframe = Hue.el("#media_iframe_tv")
+    iframe.classList.add("noborder")
+    iframe.src = Hue.current_tv().source
     Hue.el("#media_iframe_poster").style.display = "none"
   } else {
     played = false
@@ -334,11 +336,14 @@ Hue.show_iframe_tv = function (play = true) {
   }
 
   Hue.before_show_tv(item)
+  let iframe = Hue.el("#media_iframe_tv")
 
   if (play) {
-    Hue.el("#media_iframe_tv").src = item.source
+    iframe.classList.add("noborder")
+    iframe.src = item.source
     Hue.el("#media_iframe_poster").style.display = "none"
   } else {
+    iframe.classList.remove("noborder")
     Hue.el("#media_iframe_poster").style.display = "block"
   }
 
@@ -580,7 +585,6 @@ Hue.set_default_tv_size = function () {
 // Setup for the tv iframe
 Hue.setup_iframe_tv = function () {
   Hue.el("#media_iframe_poster").addEventListener("click", function () {
-    Hue.el("#media_iframe_tv").classList.add("noborder")
     Hue.play_tv()
   })
 }
