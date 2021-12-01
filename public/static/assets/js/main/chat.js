@@ -90,6 +90,10 @@ Hue.add_chat_message = function (args = {}) {
     }
   }
 
+  if (args.quote_user_id === Hue.user_id) {
+    highlighted = true
+  }
+
   let fmessage
   let title = ""
 
@@ -1497,6 +1501,7 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
   })
 
   image_preview_image.addEventListener("error", function () {
+    image_preview_image.style.display = "none"
     Hue.goto_bottom()
   })
 
