@@ -70,9 +70,9 @@ Hue.setup_tv = function (mode, odata = {}) {
 
   if (!data.message) {
     if (data.size) {
-      data.message = "Uploaded TV"
+      data.message = "Upload"
     } else {
-      data.message = `Linked TV (${new URL(data.source).hostname})`
+      data.message = `Link (${new URL(data.source).hostname})`
     }
   }
 
