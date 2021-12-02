@@ -533,7 +533,7 @@ Hue.apply_media_info = function (type) {
   let info = ""
 
   if (item.comment) {
-    info = item.comment
+    info = item.comment.substring(0, Hue.media_info_comment_max_length).trim()
   }
 
   let title = custom_title || item.title || ""
@@ -554,7 +554,6 @@ Hue.apply_media_info = function (type) {
     }
   }
 
-  info = info.substring(0, Hue.media_info_max_length).trim()
   let hover_title = item.info
 
   let html = `
