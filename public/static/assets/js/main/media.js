@@ -513,64 +513,19 @@ Hue.apply_media_info = function (type) {
   if (!item.type) {
     return false
   }
-  
-  let custom_title
 
-  if (type === "tv") {
-    if (item.size) {
-      custom_title = `${Hue.utilz.get_size_string(item.size)} upload`
-    }
-
-    Hue.media_info_tv_data = [...arguments]
-  } else if (type === "image") {
-    if (item.size) {
-      custom_title = `${Hue.utilz.get_size_string(item.size)} upload`
-    }
-
-    Hue.media_info_image_data = [...arguments]
-  }
-
-  let info = ""
-
-  if (item.comment) {
-    info = item.comment.substring(0, Hue.media_info_comment_max_length).trim()
-  }
-
-  let title = custom_title || item.title || ""
-
-  if (title) {
-    if (info) {
-      info += " | "
-    }
-
-    info += title
-  }
-
-  if (!info) {
-    if (item.query) {
-      info = item.query
-    } else if (item.source) {
-      info = `Linked ${type}`
-    }
-  }
-
-  let hover_title = item.info
+  let message = Hue.utilz.make_html_safe(item.message.substring(0, Hue.media_info_message_max_length).trim())
 
   let html = `
-    <div class='media_info_username action'>${Hue.utilz.make_html_safe(
-      item.setter
-    )}</div>
-    <div class='media_info_details action'>: ${Hue.utilz.make_html_safe(
-      info
-    )}</div>
-  `
+    <div class='media_info_username action'>${Hue.utilz.make_html_safe(item.setter)}</div>
+    <div class='media_info_details action'>: ${message}</div>`
 
   let container = Hue.el(`#media_${type}_info_container`)
   container.querySelector(".media_info").innerHTML = html
   container.querySelector(".media_info_timeago").textContent = Hue.utilz.timeago(item.date)
-  container.title = hover_title
+  container.title = item.info
     
-  Hue.dataset(container, "otitle", hover_title)
+  Hue.dataset(container, "otitle", item.info)
   Hue.dataset(container, "date", item.date)
   Hue.dataset(container, "type", type)
   Hue.dataset(container, "id", item.id)
