@@ -12,6 +12,9 @@ Hue.show_chat_search = function (filter = "") {
       return username === Hue.dataset(it, "username")
     } else if (f === "$highlights") {
       return Hue.dataset(it, "highlighted")
+    } else if (f === "$links") {
+      let s = it.textContent.toLowerCase()
+      return s.includes("http://") || s.includes("https://")
     } else {
       return it.textContent.toLowerCase().includes(f)
     }
@@ -86,5 +89,5 @@ Hue.show_chat_search = function (filter = "") {
 
 // Show links in chat search
 Hue.show_links = function () {
-  Hue.show_chat_search("http:// || https://")
+  Hue.show_chat_search("$links")
 }
