@@ -599,7 +599,7 @@ Hue.setup_show_profile = function () {
   })
 
   Hue.el("#show_profile_search").addEventListener("click", function () {
-    Hue.show_chat_search(Hue.open_profile_user_id, "user_id")
+    Hue.show_chat_search(`$user:${Hue.open_profile_username}`)
   })
 }
 

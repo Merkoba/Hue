@@ -25,7 +25,7 @@ Hue.setup_footer = function () {
   })
 
   Hue.el("#footer_links").addEventListener("click", function () {
-    Hue.show_chat_search("http:// || https://")
+    Hue.show_links()
   })
 
   Hue.el("#footer_items").addEventListener("click", function(e) {

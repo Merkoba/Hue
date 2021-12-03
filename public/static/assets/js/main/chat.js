@@ -210,7 +210,7 @@ Hue.add_chat_message = function (args = {}) {
   Hue.dataset(fmessage, "highlighted", highlighted)
   Hue.dataset(fmessage, "username", args.username)
   Hue.dataset(fmessage, "mode", "chat")
-
+  
   let content_container = fmessage.querySelector(".chat_content_container")
   Hue.dataset(content_container, "id", args.id)
   Hue.dataset(content_container, "edited", args.edited)
@@ -219,6 +219,7 @@ Hue.add_chat_message = function (args = {}) {
   Hue.dataset(content_container, "first_url", first_url)
   Hue.dataset(content_container, "original_message", args.message)
   Hue.dataset(content_container, "otitle", title)
+  Hue.dataset(content_container, "username", args.username)
 
   if (!image_preview && !link_preview) {
     Hue.urlize(content)
