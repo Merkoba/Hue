@@ -6,16 +6,16 @@ Hue.reset_chat_search_filter = function () {
 
 // Shows the chat search window
 Hue.show_chat_search = function (filter = "") {
-  function filtercheck (f, it) {
-    if (f.startsWith("$user:")) {
+  function filtercheck (it) {
+    if (filter.startsWith("$user:")) {
       return f_username === Hue.dataset(it, "username")
-    } else if (f === "$highlights") {
+    } else if (filter === "$highlights") {
       return Hue.dataset(it, "highlighted")
-    } else if (f === "$links") {
+    } else if (filter === "$links") {
       let s = it.textContent.toLowerCase()
       return s.includes("http://") || s.includes("https://")
     } else {
-      return it.textContent.toLowerCase().includes(f)
+      return it.textContent.toLowerCase().includes(filter)
     }
   }
 
@@ -29,7 +29,7 @@ Hue.show_chat_search = function (filter = "") {
     if (filter.startsWith("$user:")) {
       f_username = filter.replace("$user:", "")
     }
-    
+
     let messages = Hue.clone_children("#chat_area").reverse()
 
     messages.forEach(it => {
@@ -44,7 +44,7 @@ Hue.show_chat_search = function (filter = "") {
         let containers = it.querySelectorAll(".chat_content_container")
   
         for (let container of containers) {
-          if (filtercheck(filter, container)) {
+          if (filtercheck(container)) {
             message_matched = true
             container.x_search_matched = true
           }
@@ -58,7 +58,7 @@ Hue.show_chat_search = function (filter = "") {
           }
         }
       } else if (mode === "announcement") {
-        if (filtercheck(filter, it)) {
+        if (filtercheck(it)) {
           message_matched = true
         }
       }
