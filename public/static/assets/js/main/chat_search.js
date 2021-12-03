@@ -8,8 +8,7 @@ Hue.reset_chat_search_filter = function () {
 Hue.show_chat_search = function (filter = "") {
   function filtercheck (f, it) {
     if (f.startsWith("$user:")) {
-      let username = f.replace("$user:", "")
-      return username === Hue.dataset(it, "username")
+      return f_username === Hue.dataset(it, "username")
     } else if (f === "$highlights") {
       return Hue.dataset(it, "highlighted")
     } else if (f === "$links") {
@@ -22,15 +21,15 @@ Hue.show_chat_search = function (filter = "") {
 
   Hue.el("#chat_search_container").innerHTML = ""
   Hue.el("#chat_search_filter").value = filter
-  
 
-  let filters = []
+  filter = filter.trim()
+  let f_username = ""
 
-  if (filter.trim()) {
-    filters = filter.split(" || ").map(x => x.trim().toLowerCase())
-  }
-
-  if (filters.length) {
+  if (filter) {
+    if (filter.startsWith("$user:")) {
+      f_username = filter.replace("$user:", "")
+    }
+    
     let messages = Hue.clone_children("#chat_area").reverse()
 
     messages.forEach(it => {
@@ -45,12 +44,9 @@ Hue.show_chat_search = function (filter = "") {
         let containers = it.querySelectorAll(".chat_content_container")
   
         for (let container of containers) {
-          for (let f of filters) {
-            if (filtercheck(f, container)) {
-              message_matched = true
-              container.x_search_matched = true
-              break
-            }
+          if (filtercheck(filter, container)) {
+            message_matched = true
+            container.x_search_matched = true
           }
         }
   
@@ -62,12 +58,9 @@ Hue.show_chat_search = function (filter = "") {
           }
         }
       } else if (mode === "announcement") {
-        for (let f of filters) {
-          if (filtercheck(f, it)) {
-            message_matched = true
-            break
-          }
-        }        
+        if (filtercheck(filter, it)) {
+          message_matched = true
+        }
       }
 
       return message_matched
