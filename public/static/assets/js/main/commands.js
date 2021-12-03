@@ -181,14 +181,16 @@ Hue.commands = {
   },  
   "highlights": {
     action: (arg, ans) => {
-      if (arg) {
-        Hue.show_highlights(arg)
-      } else {
-        Hue.show_highlights()
-      }
+      Hue.show_highlights()
     },
-    description: `Shows chat messages where you were highlighted. Accepts a filter as an argument`,
+    description: `Shows chat messages where you were highlighted`,
   },
+  "links": {
+    action: (arg, ans) => {
+      Hue.show_links()
+    },
+    description: `Shows chat messages that contain links`,
+  },  
   "mainmenu": {
     action: (arg, ans) => {
       Hue.show_main_menu()

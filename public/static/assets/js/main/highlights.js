@@ -107,53 +107,6 @@ Hue.reset_highlights_filter = function () {
 }
 
 // Show and/or filters highlights window
-Hue.show_highlights = function (filter = "") {
-  Hue.el("#highlights_container").innerHTML = ""
-  Hue.el("#highlights_filter").value = filter ? filter : ""
-
-  let messages = Hue.clone_children("#chat_area").reverse()
-
-  messages.forEach(it => {
-    it.removeAttribute("id")
-  })
-
-  if (filter.trim()) {
-    let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
-
-    messages = messages.filter(it => {
-      if (!Hue.dataset(it, "highlighted")) {
-        return false
-      }
-    })
-  } else {
-    messages = messages.filter(it => {
-      if (!Hue.dataset(it, "highlighted")) {
-        return false
-      }
-
-      return true
-    })
-  }
-
-  if (messages.length) {
-    for (let message of messages) {
-      if (Hue.dataset(message, "mode") === "chat") {
-        for (let container of message.querySelectorAll(".chat_content_container")) {
-          if (!Hue.dataset(container, "highlighted")) {
-            container.remove()
-          }
-        }
-      }
-
-      Hue.el("#highlights_container").append(message)
-    }
-  } else {
-    let empty = Hue.div("justify_self_center")
-    empty.textContent = "No highlights yet"
-    Hue.el("#highlights_container").append(empty)
-  }
-
-  Hue.msg_highlights.show(function () {
-    Hue.scroll_modal_to_top("highlights")
-  })
+Hue.show_highlights = function () {
+  Hue.show_chat_search("$highlights")
 }

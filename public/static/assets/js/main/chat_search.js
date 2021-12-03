@@ -5,14 +5,21 @@ Hue.reset_chat_search_filter = function () {
 }
 
 // Shows the chat search window
-Hue.show_chat_search = function (filter = "", mode = "normal") {
-  Hue.el("#chat_search_container").innerHTML = ""
-
-  if (mode === "user_id") {
-    Hue.el("#chat_search_filter").value = ""
-  } else {
-    Hue.el("#chat_search_filter").value = filter ? filter : ""
+Hue.show_chat_search = function (filter = "") {
+  function filtercheck (f, it) {
+    if (f.startsWith("$user:")) {
+      let username = f.replace("$user:", "")
+      return username === Hue.dataset(it, "username")
+    } else if (f === "$highlights") {
+      return Hue.dataset(it, "highlighted")
+    } else {
+      return it.textContent.toLowerCase().includes(f)
+    }
   }
+
+  Hue.el("#chat_search_container").innerHTML = ""
+  Hue.el("#chat_search_filter").value = filter
+  
 
   let filters = []
 
@@ -28,41 +35,36 @@ Hue.show_chat_search = function (filter = "", mode = "normal") {
     })
 
     messages = messages.filter(it => {
-      if (Hue.dataset(it, "mode") !== "chat") {
-        return false
-      }
+      let mode = Hue.dataset(it, "mode")
+      let message_matched = false
 
-      if (mode === "user_id") {
-        let user_id = Hue.dataset(it, "user_id")
-
-        for (let f of filters) {
-          if (f === user_id) {
-            return true
+      if (mode === "chat") {
+        let containers = it.querySelectorAll(".chat_content_container")
+  
+        for (let container of containers) {
+          for (let f of filters) {
+            if (filtercheck(f, container)) {
+              message_matched = true
+              container.x_search_matched = true
+              break
+            }
           }
         }
-
-        return false
-      }
-
-      let message_matched = false
-      let containers = it.querySelectorAll(".chat_content_container")
-
-      for (let container of containers) {
+  
+        if (message_matched) {
+          for (let container of containers) {
+            if (!container.x_search_matched) {
+              container.remove()
+            }
+          }
+        }
+      } else if (mode === "announcement") {
         for (let f of filters) {
-          if (container.textContent.toLowerCase().includes(f)) {
+          if (filtercheck(f, it)) {
             message_matched = true
-            container.x_search_matched = true
             break
           }
-        }
-      }
-
-      if (message_matched) {
-        for (let container of containers) {
-          if (!container.x_search_matched) {
-            container.remove()
-          }
-        }
+        }        
       }
 
       return message_matched
@@ -80,4 +82,9 @@ Hue.show_chat_search = function (filter = "", mode = "normal") {
   Hue.msg_chat_search.show(function () {
     Hue.scroll_modal_to_top("chat_search")
   })
+}
+
+// Show links in chat search
+Hue.show_links = function () {
+  Hue.show_chat_search("http:// || https://")
 }
