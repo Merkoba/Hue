@@ -2,6 +2,7 @@
 /config/user_config.secret.json
 
 /node_modules/*
+/.vscode/*
 
 Thumbs.db
 desktop.ini
