@@ -133,5 +133,5 @@ Hue.show_intro = function () {
   bottomleft.show(["Welcome", "Chat/commands input"])   
 
   let bottomright = Hue.create_popup({position: "bottomright"})
-  bottomright.show(["Welcome", "Media controls"]) 
+  bottomright.show(["Welcome", "Chat Search | Media controls"]) 
 }
