@@ -692,6 +692,10 @@ Hue.process_message = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
+  if (!args.message.trim()) {
+    return false
+  }
+
   args.message = Hue.utilz.remove_pre_empty_lines(args.message)
   args.message = Hue.utilz.remove_multiple_empty_lines(args.message)
   args.message = Hue.utilz.untab_string(args.message).trimEnd()
@@ -708,10 +712,6 @@ Hue.process_message = function (args = {}) {
     args.to_history = ans.to_history
     args.clr_input = ans.clr_input
   } else {
-    if (args.message.length === 0) {
-      Hue.clear_input()
-    }
-
     if (args.message.length > Hue.config.max_input_length) {
       args.message = args.message.substring(0, Hue.config.max_input_length)
     }
