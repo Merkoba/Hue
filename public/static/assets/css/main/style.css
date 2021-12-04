@@ -1446,7 +1446,7 @@ svg.action:hover {
 	box-shadow: 0 0 2px currentColor
 }
 
-.highlighted_message {
+#chat_area .highlighted_message {
 	background-color: var(--altbackground_a);
 	color: var(--font_color);
 	box-shadow: 0 0 0.12rem currentColor;
@@ -1780,10 +1780,6 @@ a.special_link:hover {
 	flex-direction: row;
 	align-items: center;
 	white-space: pre-wrap;
-}
-
-.announcement_comment_highlighted {
-	box-shadow: inset 0 0 0.12rem currentColor;
 }
 
 .announcement_content_split {
