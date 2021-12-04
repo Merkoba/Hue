@@ -44,12 +44,18 @@ Hue.parse_text = function (text) {
 
 // Check for arrows at the start of a string
 Hue.check_arrows = function (text) {
-  if (text.startsWith("&gt;&gt;&gt;")) {
-    text = `<div class='colortext redtext'>${Hue.remove_arrows(text)}</div>`
-  } else if (text.startsWith("&gt;&gt")) {
-    text = `<div class='colortext bluetext'>${Hue.remove_arrows(text)}</div>`
-  } else if (text.startsWith("&gt;")) {
-    text = `<div class='colortext greentext'>${Hue.remove_arrows(text)}</div>`
+  if (text.startsWith("&gt;")) {
+    if (text.replace(/&gt;/g, "").trim() === "") {
+      return text
+    }
+    
+    if (text.startsWith("&gt;&gt;&gt;")) {
+      text = `<div class='colortext redtext'>${Hue.remove_arrows(text)}</div>`
+    } else if (text.startsWith("&gt;&gt")) {
+      text = `<div class='colortext bluetext'>${Hue.remove_arrows(text)}</div>`
+    } else {
+      text = `<div class='colortext greentext'>${Hue.remove_arrows(text)}</div>`
+    }
   }
 
   return text
