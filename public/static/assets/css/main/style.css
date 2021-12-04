@@ -1950,10 +1950,6 @@ a.special_link:hover {
 	user-select: none;
 }
 
-#user_menu {
-	user-select: none;
-}
-
 #user_menu_change_buttons {
 	margin-bottom: 1rem;
 	grid-gap: 0.8rem;
