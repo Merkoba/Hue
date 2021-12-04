@@ -525,10 +525,6 @@ Hue.announce_new_username = function (data) {
     )
 
     Hue.update_input_placeholder()
-
-    if (Hue.msg_details.is_open()) {
-      Hue.show_details()
-    }
   } else {
     Hue.show_room_notification(
       data.username,
@@ -599,7 +595,7 @@ Hue.setup_show_profile = function () {
   })
 
   Hue.el("#show_profile_search").addEventListener("click", function () {
-    Hue.show_chat_search(`$user:${Hue.open_profile_username}`)
+    Hue.show_chat_search(`$user:${Hue.open_profile_usernamef}`)
   })
 }
 

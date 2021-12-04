@@ -84,28 +84,6 @@ Hue.change_bio = function (value) {
   return true
 }
 
-// Setups the user details window
-Hue.build_details = function () {
-  Hue.el("#details_username").textContent = Hue.username
-
-  let s = `<div>${Hue.utilz.nice_date(Hue.user_reg_date)}</div>
-    </div>(${Hue.utilz.timeago(Hue.user_reg_date)})</div>`
-
-  Hue.el("#details_reg_date").innerHTML = s
-
-  s = `<div>${Hue.utilz.nice_date(Hue.date_joined)}</div>
-    </div>(${Hue.utilz.timeago(Hue.date_joined)})</div>`
-
-  Hue.el("#details_joined_room").innerHTML = s
-  Hue.el("#details_id").innerHTML = `ID: ${Hue.user_id}`
-}
-
-// Shows the user's details window
-Hue.show_details = function (data) {
-  Hue.build_details()
-  Hue.msg_details.show()
-}
-
 // Shows the change username form
 Hue.show_change_username = function () {
   let s = `
@@ -209,6 +187,9 @@ Hue.setup_user_menu = function () {
     }
   })
 
+  Hue.el("#user_menu_reg_date").textContent = Hue.utilz.nice_date(Hue.user_reg_date)
+  Hue.el("#user_menu_id").textContent = `ID: ${Hue.user_id}`
+
   Hue.el("#user_menu_profilepic").addEventListener("click", function () {
     Hue.open_profilepic_select()
   })
@@ -217,16 +198,8 @@ Hue.setup_user_menu = function () {
     Hue.show_audioclip_menu()
   })
 
-  Hue.el("#user_menu_details").addEventListener("click", function () {
-    Hue.show_details()
-  })
-
   Hue.el("#user_menu_logout").addEventListener("click", function () {
     Hue.needs_confirm("logout")
-  })
-
-  Hue.el("#user_menu_settings").addEventListener("click", function () {
-    Hue.show_settings()
   })
 
   Hue.el("#user_menu_change_username").addEventListener("click", function () {

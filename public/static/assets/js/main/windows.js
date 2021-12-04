@@ -318,13 +318,6 @@ Hue.start_msg = function () {
     })
   )  
 
-  Hue.msg_details = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "details",
-      window_width: "22rem"
-    })
-  )
-
   Hue.msg_notifications = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "notifications",
@@ -412,7 +405,6 @@ Hue.start_msg = function () {
   Hue.msg_handle_url.set(Hue.template_handle_url())
   Hue.msg_open_url.set(Hue.template_open_url())
   Hue.msg_view_text.set(Hue.template_view_text())
-  Hue.msg_details.set(Hue.template_details())
   Hue.msg_message_board.set(Hue.template_message_board())
   Hue.msg_profilepic_cropper.set(Hue.template_profilepic_cropper())
   Hue.msg_settings.set(Hue.template_settings())
@@ -436,7 +428,6 @@ Hue.start_msg = function () {
   Hue.msg_image_upload_comment.set_title("Add a Comment")
   Hue.msg_tv_upload_comment.set_title("Add a Comment")
   Hue.msg_reply.set_title("Write a Reply")
-  Hue.msg_details.set_title("User Details")
   Hue.msg_notifications.set_title("Notifications")
   Hue.msg_whispers.set_title("Whispers")
   Hue.msg_message_board.set_title("Message Board")
