@@ -327,9 +327,9 @@ Hue.not_an_op = function () {
 Hue.check_firstime = function () {
   if (Hue.get_local_storage(Hue.ls_first_time) === null) {
     Hue.first_time = true
+    Hue.show_intro()
     Hue.request_desktop_notifications_permission()
     Hue.save_local_storage(Hue.ls_first_time, false)
-    Hue.show_intro()
   } else {
     Hue.first_time = false
   }
