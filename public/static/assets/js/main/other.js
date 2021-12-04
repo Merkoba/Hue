@@ -117,3 +117,21 @@ Hue.setup_view_text = function () {
     Hue.msg_view_text.close()
   })
 }
+
+// Show intro on first join
+Hue.show_intro = function () {
+  let topleft = Hue.create_popup({position: "topleft"})
+  topleft.show(["Welcome", "Main Menu | Userlist | Message Board"])
+
+  let topcenter = Hue.create_popup({position: "top"})
+  topcenter.show(["Welcome", "Users online"])
+
+  let topright = Hue.create_popup({position: "topright"})
+  topright.show(["Welcome", "Whispers | Notifications | Lock Screen"])  
+  
+  let bottomleft = Hue.create_popup({position: "bottomleft"})
+  bottomleft.show(["Welcome", "Chat/commands input"])   
+
+  let bottomright = Hue.create_popup({position: "bottomright"})
+  bottomright.show(["Welcome", "Media controls"]) 
+}
