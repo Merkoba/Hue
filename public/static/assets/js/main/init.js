@@ -198,7 +198,6 @@ Hue.init = function () {
   Hue.change_media_layout()
   Hue.setup_profilepic_cropper()
   Hue.setup_userlist_window()
-  Hue.setup_user_menu()
   Hue.setup_header()
   Hue.setup_media()
   Hue.setup_activity_bar()
@@ -274,6 +273,7 @@ Hue.on_join = function (data) {
   Hue.fix_media_info()
   Hue.update_activity_bar()
   Hue.check_chat_enabled()
+  Hue.setup_user_menu()
 
   Hue.at_startup()
 }

@@ -108,12 +108,6 @@ Hue.commands = {
     },
     description: `Shows Commands`,
   },
-  "details": {
-    action: (arg, ans) => {
-      Hue.show_details()
-    },
-    description: `Shows the account details`,
-  },
   "logout": {
     action: (arg, ans) => {
       Hue.logout()
