@@ -205,8 +205,6 @@ Hue.play_tv = function () {
     iframe.classList.add("noborder")
     iframe.src = Hue.current_tv().source
     Hue.el("#media_iframe_poster").style.display = "none"
-  } else {
-    played = false
   }
 }
 

@@ -76,13 +76,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_played = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "played",
-      window_width: "26rem",
-    })
-  )
-
   Hue.msg_modal_image = Msg.factory(
     Object.assign({}, common, {
       id: "modal_image",
@@ -211,17 +204,6 @@ Hue.start_msg = function () {
       after_close: function (instance) {
         common.after_close(instance)
         Hue.reset_chat_search_filter()
-      },
-    })
-  )
-
-  Hue.msg_highlights = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "highlights",
-      window_width: "30rem",
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.reset_highlights_filter()
       },
     })
   )
@@ -386,11 +368,9 @@ Hue.start_msg = function () {
   Hue.msg_room_menu.set(Hue.template_room_menu())
   Hue.msg_user_menu.set(Hue.template_user_menu())
   Hue.msg_userlist.set(Hue.template_userlist())
-  Hue.msg_played.set(Hue.template_played())
   Hue.msg_image_picker.set(Hue.template_image_picker())
   Hue.msg_tv_picker.set(Hue.template_tv_picker())
   Hue.msg_message.set(Hue.template_message())
-  Hue.msg_highlights.set(Hue.template_highlights())
   Hue.msg_chat_search.set(Hue.template_chat_search())
   Hue.msg_modal_image.set(Hue.template_modal_image())
   Hue.msg_lockscreen.set(Hue.template_lockscreen())
@@ -416,9 +396,7 @@ Hue.start_msg = function () {
 
   // Set the titles
 
-  Hue.msg_highlights.set_title("Highlights")
   Hue.msg_chat_search.set_title("Chat Search")
-  Hue.msg_played.set_title("Recently Played")
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_menu.set_title("Room Menu")
   Hue.msg_user_menu.set_title("User Menu")
@@ -553,10 +531,6 @@ Hue.close_all_popups = function (callback = false) {
 Hue.start_filters = function () {
   Hue.el("#chat_search_filter").addEventListener("input", function () {
     Hue.chat_search_timer()
-  })
-
-  Hue.el("#highlights_filter").addEventListener("input", function () {
-    Hue.highlights_filter_timer()
   })
 
   Hue.el("#image_history_filter").addEventListener("input", function () {

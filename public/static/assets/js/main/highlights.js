@@ -93,17 +93,7 @@ Hue.on_highlight = function (username) {
     Hue.show_highlight_desktop_notification(username)
   }
 
-  if (Hue.msg_highlights.is_open()) {
-    Hue.show_highlights(Hue.el("#highlights_filter").value)
-  }
-
   Hue.on_activity("highlight")
-}
-
-// Resets highlights filter data
-Hue.reset_highlights_filter = function () {
-  Hue.el("#highlights_filter").value = ""
-  Hue.el("#highlights_container").innerHTML = ""
 }
 
 // Show and/or filters highlights window
