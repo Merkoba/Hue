@@ -242,7 +242,7 @@ Hue.add_chat_message = function (args = {}) {
   if (!args.edited) {
     if (args.username !== Hue.username) {
       if (highlighted) {
-        Hue.on_highlight()
+        Hue.on_highlight(args.username)
       } else {
         Hue.on_activity("message")
       }
@@ -400,7 +400,7 @@ Hue.add_chat_announcement = function (args = {}) {
   }).message_id
 
   if (highlighted) {
-    Hue.on_highlight()
+    Hue.on_highlight(args.username)
   }
 
   Hue.push_to_all_usernames(args.username)
@@ -429,6 +429,7 @@ Hue.add_to_chat = function (args = {}) {
   let appended = false
   let mode = Hue.dataset(args.message, "mode")
   let user_id = Hue.dataset(args.message, "user_id")
+  let username = Hue.dataset(args.message, "username")
   let date = Hue.dataset(args.message, "date")
   let is_public = Hue.dataset(args.message, "public")
   let highlighted = Hue.dataset(args.message, "highlighted")
@@ -520,7 +521,7 @@ Hue.add_to_chat = function (args = {}) {
     } else if (user_id) {
       if (user_id !== Hue.user_id) {
         if (Hue.last_chat_user_id === Hue.user_id) {
-          Hue.activity_notification()
+          Hue.activity_notification(username)
         }
       }
     }
@@ -1772,7 +1773,7 @@ Hue.set_default_chat_size = function () {
 }
 
 // Shows an alert when a message follows a user's message
-Hue.activity_notification = function () {
+Hue.activity_notification = function (username) {
   if (!Hue.started) {
     return false
   }
@@ -1782,7 +1783,7 @@ Hue.activity_notification = function () {
   }
 
   if (!Hue.app_focused) {
-    Hue.show_activity_desktop_notification()
+    Hue.show_activity_desktop_notification(username)
   }
 }
 

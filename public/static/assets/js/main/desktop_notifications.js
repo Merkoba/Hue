@@ -44,23 +44,23 @@ Hue.show_desktop_notification = function (s) {
 }
 
 // Shows a browser notification alerting of a highlight
-Hue.show_highlight_desktop_notification = function () {
+Hue.show_highlight_desktop_notification = function (username) {
   if (!Hue.has_desktop_notifications_permission()) {
     return false
   }
 
   Hue.show_desktop_notification(
-    `New highlight in ${Hue.room_name.substring(0, 40)}`
+    `New highlight in ${Hue.room_name.substring(0, 40)} (from ${username})`
   )
 }
 
 // Shows a browser notification alerting an after message
-Hue.show_activity_desktop_notification = function () {
+Hue.show_activity_desktop_notification = function (username) {
   if (!Hue.has_desktop_notifications_permission()) {
     return false
   }
 
   Hue.show_desktop_notification(
-    `Activity in ${Hue.room_name.substring(0, 40)}`
+    `Activity in ${Hue.room_name.substring(0, 40)} (from ${username})`
   )
 }

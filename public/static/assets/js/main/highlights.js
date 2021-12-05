@@ -80,7 +80,7 @@ Hue.get_latest_highlight = function () {
 }
 
 // What to do when a message gets highlighted
-Hue.on_highlight = function () {
+Hue.on_highlight = function (username) {
   if (!Hue.started) {
     return false
   }
@@ -90,7 +90,7 @@ Hue.on_highlight = function () {
   }
 
   if (!Hue.app_focused) {
-    Hue.show_highlight_desktop_notification()
+    Hue.show_highlight_desktop_notification(username)
   }
 
   if (Hue.msg_highlights.is_open()) {
