@@ -107,15 +107,9 @@ Hue.add_chat_message = function (args = {}) {
     title = `${args.id.slice(-3)} | ${title}`
   }
 
-  let profilepic_classes = "chat_profilepic profilepic actionbox"
-
-  if (!Hue.user_is_online_by_user_id(args.user_id)) {
-    profilepic_classes += " profilepic_offline"
-  }
-
   let s = `
     <div class='chat_left_side'>
-        <img class='${profilepic_classes}' src='${pi}' loading='lazy'>
+        <img class='chat_profilepic profilepic actionbox' src='${pi}' loading='lazy'>
     </div>
     <div class='chat_right_side'>
         <div class='chat_message_top'>
