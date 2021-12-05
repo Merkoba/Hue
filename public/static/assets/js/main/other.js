@@ -121,7 +121,7 @@ Hue.setup_view_text = function () {
 // Show intro on first join
 Hue.show_intro = function () {
   let topleft = Hue.create_popup({position: "topleft"})
-  topleft.show(["Welcome", "Main Menu | Userlist | Message Board"])
+  topleft.show(["Welcome", "Main Menu | User List | Message Board"])
 
   let topcenter = Hue.create_popup({position: "top"})
   topcenter.show(["Welcome", "Users online"])
