@@ -2323,3 +2323,7 @@ pre {
 .ban_list_item {
 	gap: 1rem;
 }
+
+#delete_messages_select_container {
+	margin-top: 1rem;
+}

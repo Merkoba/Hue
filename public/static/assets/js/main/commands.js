@@ -508,6 +508,14 @@ Hue.commands = {
       Hue.add_chat_spacer()
     },
     description: `Clear the chat`,
+  },
+  "user": {
+    action: (arg, ans) => {
+      if (arg) {
+        Hue.show_user_posts(arg)
+      }
+    },
+    description: `Show posts by a user`,
   }
 }
 
