@@ -25,7 +25,6 @@
 	"default_topic": "No topic",
 	"max_stored_image": 50,
 	"max_stored_tv": 50,
-	"played_crop_limit": 500,
 	"media_changed_crop_limit": 500,
 	"notifications_crop_limit": 500,
 	"notifications_close_delay": 5000,

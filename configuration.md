@@ -71,9 +71,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_topic"
 >The shown topic when the room is created.
 
-"played_crop_limit"
->Same as chat_crop limit but for items displayed when "Now Playing" is clicked.
-
 "max_input_length"
 >Maximum amount of text for something typed in the input box. If something bigger is inputed it will get cropped to meet this limit.
 

@@ -15,7 +15,6 @@ module.exports = function (c, config) {
   c.vars.default_tv_source = config.default_tv_source
   c.vars.default_tv_title = config.default_tv_title
   c.vars.default_tv_type = config.default_tv_type
-  c.vars.played_crop_limit = config.played_crop_limit
   c.vars.max_input_length = config.max_input_length
   c.vars.max_topic_length = config.max_topic_length
   c.vars.max_username_length = config.max_username_length
