@@ -47,11 +47,6 @@ Hue.create_debouncers = function () {
     Hue.hide_typing()
   }, Hue.config.max_typing_inactivity)
 
-  // Debounce timer for highlights filter
-  Hue.highlights_filter_timer = Hue.create_debouncer(function () {
-    Hue.show_highlights(Hue.el("#highlights_filter").value)
-  }, Hue.filter_delay)
-
   // Debounce timer for media history filters
   Hue.media_history_filter_timer = Hue.create_debouncer(function (type) {
     let filter = Hue.el(`#${type}_history_filter`).value

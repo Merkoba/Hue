@@ -25,7 +25,6 @@ Hue.ls_first_time = "first_time_v2"
 Hue.roles = ["admin", "op", "voice"]
 Hue.topic = ""
 Hue.colorlib = ColorLib()
-Hue.played = []
 Hue.input_history = []
 Hue.input_history_index = 0
 Hue.input_history_crop_limit = 20
