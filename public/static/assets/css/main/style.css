@@ -421,10 +421,6 @@ body * {
 	flex-shrink: 1;
 }
 
-#chat_area .profilepic_offline {
-	opacity: 0.6;
-}
-
 .chat_profilepic {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);

@@ -22,8 +22,6 @@ Hue.user_join = function (data) {
     Hue.do_update_activity_bar = true
   }
 
-  Hue.remove_offline_profilepics(data.user_id)
-
   Hue.make_info_popup_item({
     message: `${data.username} joined`,
     on_click: function () {
@@ -31,28 +29,6 @@ Hue.user_join = function (data) {
     },
     icon: "user"
   })  
-}
-
-// Removes the online effect to a user's profile images
-Hue.remove_offline_profilepics = function (user_id) {
-  Hue.els("#chat_area .message").forEach(it => {
-    if (Hue.dataset(it, "user_id") === user_id) {
-      it.querySelectorAll(".chat_profilepic").forEach(it2 => {
-        it2.classList.remove("profilepic_offline")
-      })
-    }
-  })
-}
-
-// Add the online effect to a user's profile images
-Hue.add_offline_profilepics = function (user_id) {
-  Hue.els("#chat_area .message").forEach(it => {
-    if (Hue.dataset(it, "user_id") === user_id) {
-      it.querySelectorAll(".chat_profilepic").forEach(it2 => {
-        it2.classList.add("profilepic_offline")
-      })
-    }
-  })
 }
 
 // Updates the user count in the header and user list
@@ -387,12 +363,6 @@ Hue.user_is_online_by_username = function (username) {
   return Boolean(user)
 }
 
-// Returns true or false depending if the user is online
-Hue.user_is_online_by_user_id = function (user_id) {
-  let user = Hue.get_user_by_user_id(user_id)
-  return Boolean(user)
-}
-
 // Checks if a user is controllable
 // Basically a user's role is below the user's role
 // An admin can control other admins
@@ -491,7 +461,6 @@ Hue.user_disconnect = function (data) {
   }
 
   Hue.do_update_activity_bar = true
-  Hue.add_offline_profilepics(data.user_id)
 
   Hue.make_info_popup_item({
     message: `${data.username} left`,
