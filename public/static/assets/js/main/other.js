@@ -124,14 +124,14 @@ Hue.show_intro = function () {
   topleft.show(["Welcome", "Main Menu | User List | Message Board"])
 
   let topcenter = Hue.create_popup({position: "top"})
-  topcenter.show(["Welcome", "Users online"])
+  topcenter.show(["Welcome", "Active Users"])
 
   let topright = Hue.create_popup({position: "topright"})
   topright.show(["Welcome", "Whispers | Notifications | Lock Screen"])  
   
   let bottomleft = Hue.create_popup({position: "bottomleft"})
-  bottomleft.show(["Welcome", "Chat/commands input"])   
+  bottomleft.show(["Welcome", "Chat/Commands Input"])   
 
   let bottomright = Hue.create_popup({position: "bottomright"})
-  bottomright.show(["Welcome", "Chat Search | Media controls"]) 
+  bottomright.show(["Welcome", "Chat Search | Media Controls"]) 
 }
