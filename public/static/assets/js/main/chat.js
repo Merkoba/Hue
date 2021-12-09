@@ -509,8 +509,12 @@ Hue.add_to_chat = function (args = {}) {
 
     if (highlighted) {
       if (Hue.room_state.last_highlight_date < date) {
-        Hue.room_state.last_highlight_date = date
-        Hue.save_room_state()
+        if (Hue.app_focused) {
+          Hue.room_state.last_highlight_date = date
+          Hue.save_room_state()
+        } else {
+          Hue.highlight_date_on_focus = date
+        }
       }
     } else if (user_id) {
       if (user_id !== Hue.user_id) {
