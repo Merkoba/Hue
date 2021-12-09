@@ -324,8 +324,6 @@ Hue.setup_media_pickers = function () {
     if (Hue.loaded_tv) {
       Hue.load_media(Hue.loaded_tv)
     }
-
-    Hue.close_all_modals()
   })
 
   Hue.el("#tv_picker_submit").addEventListener("click", function () {
