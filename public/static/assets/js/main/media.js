@@ -738,6 +738,8 @@ Hue.load_media = function (data) {
     item: data,
     force: true
   })
+
+  Hue.close_all_modals()
 }
 
 // Get media item by id
