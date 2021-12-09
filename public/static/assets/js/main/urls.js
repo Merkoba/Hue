@@ -169,7 +169,6 @@ Hue.setup_open_url = function () {
 
   Hue.el("#open_url_menu_load").addEventListener("click", function () {
     Hue.load_media(Hue.open_url_data)
-    Hue.msg_open_url.close()
   })
 
   Hue.el("#open_url_menu_change").addEventListener("click", function () {
