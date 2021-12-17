@@ -1,13 +1,11 @@
 // Select a single element
-Hue.el = function (query, start = undefined) {
-  let d = start || document
-  return d.querySelector(query)
+Hue.el = function (query, root = document) {
+  return root.querySelector(query)
 }
 
 // Select an array of elements
-Hue.els = function (query, start = undefined) {
-  let d = start || document
-  return Array.from(d.querySelectorAll(query))
+Hue.els = function (query, root = document) {
+  return Array.from(root.querySelectorAll(query))
 }
 
 // Clone element
