@@ -264,7 +264,7 @@ Hue.change_image_visibility = function () {
   if (Hue.room_state.image_enabled) {
     Hue.el("#media").style.display = "flex"
     Hue.el("#media_image").style.display = "flex"
-    Hue.el("#footer_toggle_image_icon").querySelector("use").href.baseVal = "#icon_toggle-on"
+    Hue.el("#footer_toggle_image_icon use").href.baseVal = "#icon_toggle-on"
 
     if (Hue.first_media_change && Hue.started) {
       Hue.change({ type: "image", force: true, current_source: Hue.image_locked })
@@ -281,7 +281,7 @@ Hue.change_image_visibility = function () {
       Hue.hide_media()
     }
 
-    Hue.el("#footer_toggle_image_icon").querySelector("use").href.baseVal = "#icon_toggle-off"
+    Hue.el("#footer_toggle_image_icon use").href.baseVal = "#icon_toggle-off"
     Hue.image_visible = false
   }
 
@@ -431,7 +431,7 @@ Hue.show_modal_image = function (id = 0) {
   img.src = data.source
 
   Hue.el("#modal_image_header_info").innerHTML = data.info_html
-  Hue.el("#modal_image_header_info").querySelector(".modal_image_timeago")
+  Hue.el("#modal_image_header_info .modal_image_timeago")
     .textContent = Hue.utilz.timeago(data.date)
 
   Hue.horizontal_separator(Hue.el("#modal_image_header_info"))

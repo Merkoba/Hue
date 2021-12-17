@@ -289,7 +289,7 @@ Hue.update_userlist_window = function () {
     let el = Hue.div("modal_item userlist_item")
     el.innerHTML = s
 
-    let image = el.querySelector(".userlist_item_profilepic")
+    let image = Hue.el(".userlist_item_profilepic", el)
 
     image.addEventListener("error", function (e) {
       if (this.src !== Hue.config.default_profilepic_url) {
@@ -298,9 +298,9 @@ Hue.update_userlist_window = function () {
     })
 
     let role_tag = Hue.role_tag(item.role)
-    let role_element = el.querySelector(".userlist_item_role")
+    let role_element = Hue.el(".userlist_item_role", el)
     role_element.textContent = role_tag
-    let username = el.querySelector(".userlist_item_username")
+    let username = Hue.el(".userlist_item_username", el)
     username.textContent = item.username
     Hue.dataset(el, "username", item.username)
     container.append(el)

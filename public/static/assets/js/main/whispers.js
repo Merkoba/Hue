@@ -231,12 +231,12 @@ Hue.show_whisper = function (data) {
 
   modal.show(function () {
     let container = modal.content
-    let text_el = container.querySelector(".sent_message_text")
+    let text_el = Hue.el(".sent_message_text", container)
     text_el.classList.add("user_details")
     Hue.dataset(text_el, "username", data.username)
     text_el.innerHTML = message_html
     Hue.urlize(text_el)
-    let button_el = container.querySelector(".sent_message_button")
+    let button_el = Hue.el(".sent_message_button", container)
 
     if (data.type === "user") {
       button_el.innerHTML = button_html
@@ -331,7 +331,7 @@ Hue.push_whisper = function (message, on_click, read) {
   let message_html = `<div class='whispers_message'>${Hue.utilz.make_html_safe(message)}</div>`
   let item = Hue.div("whispers_item modal_item")
   item.innerHTML = `<div class='whispers_item_content action dynamic_title'>${message_html}`
-  let content = item.querySelector(".whispers_item_content")
+  let content = Hue.el(".whispers_item_content", item)
   content.title = t
 
   Hue.dataset(content, "otitle", t)

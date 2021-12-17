@@ -138,7 +138,7 @@ Hue.modify_setting_widget = function (setting_name) {
   ) {
     item.value = Hue.settings[setting_name]
   } else if (widget_type === "select") {
-    item.querySelectorAll("option").forEach(it => {
+    Hue.els("option", item).forEach(it => {
       if (it.value == Hue.settings[setting_name]) {
         it.selected =true
       }

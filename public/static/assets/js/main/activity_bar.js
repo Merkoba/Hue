@@ -47,8 +47,8 @@ Hue.update_activity_bar = function (check = false) {
     let el = Hue.div("activity_bar_item")
     el.innerHTML = s
 
-    let text_el = el.querySelector(".activity_bar_text")
-    let img_el = el.querySelector(".activity_bar_profilepic")
+    let text_el = Hue.el(".activity_bar_text", el)
+    let img_el = Hue.el(".activity_bar_profilepic", el)
 
     img_el.addEventListener("error", function () {
       if (this.src !== Hue.config.default_profilepic_url) {
@@ -86,8 +86,7 @@ Hue.get_activity_bar_item_by_user_id = function (id) {
 
 // Removes all items on the activity bar
 Hue.clear_activity_bar_items = function () {
-  Hue.el("#activity_bar_inner")
-  .querySelectorAll(".activity_bar_item")
+  Hue.els("#activity_bar_inner .activity_bar_item")
   .forEach(it => {
     it.remove()
   })
@@ -97,7 +96,7 @@ Hue.clear_activity_bar_items = function () {
 Hue.update_activity_bar_profilepic = function (id, src) {
   for (let item of Hue.els(".activity_bar_item")) {
     if (Hue.dataset(item, "user_id") === id) {
-      item.querySelector(".activity_bar_profilepic").src = src
+      Hue(".activity_bar_profilepic", item).src = src
       return
     }
   }

@@ -11,7 +11,7 @@ Hue.setup_generic_separators = function () {
 
 // Remove & add vertical or horizontal separators
 Hue.apply_separator = function (el, cls) {
-  el.querySelectorAll(":scope > .separator").forEach(it => {
+  Hue.els(":scope > .separator", el).forEach(it => {
     it.remove()
   })
 
@@ -135,18 +135,18 @@ Hue.start_timeago = function () {
 // The timeago action
 Hue.timeago_action = function () {
   Hue.els(".chat_area").forEach(it => {
-    it.querySelectorAll(".chat_timeago").forEach(it2 => {
+    Hue.els(".chat_timeago", it).forEach(it2 => {
       let message = it2.closest(".message")
       it2.textContent = Hue.utilz.timeago(Hue.dataset(message, "date"))
     })
   })
 
   Hue.els("#media .media_info_container").forEach(it => {
-    it.querySelector(".media_info_timeago").textContent = Hue.utilz.timeago(Hue.dataset(it, "date"))
+    Hue.el(".media_info_timeago", it).textContent = Hue.utilz.timeago(Hue.dataset(it, "date"))
   })
 
   if (Hue.msg_modal_image.is_open()) {
-    Hue.el("#modal_image_header_info").querySelector(".modal_image_timeago")
+    Hue.el("#modal_image_header_info .modal_image_timeago")
       .textContent = Hue.utilz.timeago(Hue.loaded_modal_image.date)
   }  
 }

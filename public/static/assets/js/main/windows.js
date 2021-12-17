@@ -442,7 +442,7 @@ Hue.start_modal_filters = function () {
 
 // Focuses the filter widget of a modal
 Hue.focus_modal_filter = function (instance) {
-  let filter = Hue.el(`#Msg-content-${instance.options.id}`).querySelector(".filter_input")
+  let filter = Hue.el(`#Msg-content-${instance.options.id} .filter_input`)
 
   if (filter) {
     filter.focus()
@@ -452,7 +452,7 @@ Hue.focus_modal_filter = function (instance) {
 // Empties the filter of a modal and updates it
 Hue.reset_modal_filter = function (instance) {
   let id = instance.options.id
-  let filter = Hue.el(`#Msg-content-${id}`).querySelector(".filter_input")
+  let filter = Hue.el(`#Msg-content-${id} .filter_input`)
 
   if (filter) {
     if (id === "info" || id === "info2" || filter.dataset.mode === "manual") {
@@ -553,10 +553,10 @@ Hue.do_modal_filter = function (id = false) {
   }
 
   let win = Hue.el(`#Msg-content-${id}`)
-  let filter = win.querySelector(".filter_input")
+  let filter = Hue.el(".filter_input", win)
   let value = filter.value.trim()
   let lc_value = Hue.utilz.clean_string2(value).toLowerCase()
-  let items = win.querySelectorAll(".modal_item")
+  let items = Hue.els(".modal_item", win)
 
   if (lc_value && items.length) {
     items.forEach(it => {

@@ -50,7 +50,7 @@ Hue.add_post_to_message_board = function (post) {
   Hue.dataset(item, "id", post.id)
   Hue.dataset(item, "date", post.date)
 
-  let profilepic = item.querySelector(".message_board_profilepic")
+  let profilepic = Hue.el(".message_board_profilepic", item)
   
   profilepic.addEventListener("error", function () {
     if (this.src !== Hue.config.default_profilepic_url) {
@@ -60,17 +60,17 @@ Hue.add_post_to_message_board = function (post) {
 
   profilepic.src = Hue.get_profilepic(post.user_id)
 
-  let user_details = item.querySelector(".message_board_user_details")
+  let user_details = Hue.el(".message_board_user_details", item)
   Hue.dataset(user_details, "username", post.username)
   Hue.dataset(user_details, "user_id", post.user_id)
 
-  let username = item.querySelector(".message_board_username")
+  let username = Hue.el(".message_board_username", item)
   username.textContent = post.username
 
-  let date = item.querySelector(".message_board_date")
+  let date = Hue.el(".message_board_date", item)
   date.textContent = Hue.utilz.nice_date(post.date)
 
-  let text = item.querySelector(".message_board_text")
+  let text = Hue.el(".message_board_text", item)
   text.innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(post.message))
   Hue.urlize(text)
   let title = Hue.utilz.nice_date(post.date)
@@ -83,7 +83,7 @@ Hue.add_post_to_message_board = function (post) {
   Hue.dataset(text, "date", post.date)
   Hue.dataset(text, "otitle", title)
 
-  let delet = item.querySelector(".message_board_delete")
+  let delet = Hue.el(".message_board_delete", item)
 
   if (post.user_id === Hue.user_id) {
     delet.style.display = "inline-block"
@@ -172,7 +172,7 @@ Hue.on_message_board_received = function (data) {
 
 // Checks if there are new message board posts
 Hue.check_last_message_board_post = function () {
-  let items = Hue.el("#message_board_container").querySelectorAll(".message_board_item")
+  let items = Hue.els("#message_board_container .message_board_item")
 
   if (items.length === 0) {
     Hue.el("#header_message_board_count").textContent = "(0)"
@@ -208,7 +208,7 @@ Hue.check_last_message_board_post = function () {
 
 // Updates the message board date local storage
 Hue.update_last_message_post_checked = function () {
-  let item = Hue.el("#message_board_container").querySelector(".message_board_item")
+  let item = Hue.el("#message_board_container .message_board_item")
   let date = Hue.dataset(item, "date")
 
   if (date !== Hue.room_state.last_message_board_post) {
