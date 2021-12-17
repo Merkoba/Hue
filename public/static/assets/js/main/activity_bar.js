@@ -96,7 +96,7 @@ Hue.clear_activity_bar_items = function () {
 Hue.update_activity_bar_profilepic = function (id, src) {
   for (let item of Hue.els(".activity_bar_item")) {
     if (Hue.dataset(item, "user_id") === id) {
-      Hue(".activity_bar_profilepic", item).src = src
+      Hue.el(".activity_bar_profilepic", item).src = src
       return
     }
   }
