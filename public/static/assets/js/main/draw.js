@@ -410,13 +410,6 @@ Hue.draw_image_add_click = function (x, y, dragging) {
 
 // Turns the canvas drawing into a Blob and sends it to the server as an image upload
 Hue.upload_draw_image = function () {
-  if (
-    Hue.draw_image_current_snapshot.level === 0 &&
-    Hue.draw_image_current_snapshot.click_x.length === 0
-  ) {
-    return false
-  }
-
   Hue.el("#draw_image_area").toBlob(
     function (blob) {
       blob.name = "draw_image.png"
