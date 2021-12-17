@@ -67,6 +67,7 @@ module.exports = function (
   
             handler.user_emit(socc, "whisper", {
               room: socket.hue_room_id,
+              user_id: socket.hue_user_id,
               username: socket.hue_username,
               message: data.message,
               type: data.type

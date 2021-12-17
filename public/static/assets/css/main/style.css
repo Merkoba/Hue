@@ -2308,3 +2308,10 @@ pre {
 #delete_messages_select_container {
 	margin-top: 1rem;
 }
+
+.sent_message_profilepic {
+	width: var(--profilepic_size);
+	height: var(--profilepic_size);
+	transition: box-shadow 500ms;
+	border-radius: 50%;
+}
