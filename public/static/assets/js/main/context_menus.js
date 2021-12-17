@@ -31,9 +31,7 @@ Hue.start_chat_menu_context_menu = function () {
         items.push({
           text: "Reply",
           action: function () {
-            let el = e.target
-            .closest(".reply_message_container")
-            .querySelector(".reply_message")
+            let el = Hue.el(".reply_message", e.target.closest(".reply_message_container"))
             Hue.start_reply(el)
           }
         })

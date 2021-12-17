@@ -260,7 +260,7 @@ Hue.clear_draw_image_state = function () {
   Hue.set_draw_image_mode_input("pencil")
   Hue.draw_image_pencil_size = 8
 
-  Hue.el("#draw_image_pencil_size").querySelectorAll("option")
+  Hue.els("#draw_image_pencil_size option")
   .forEach(it => {
     if (it.value == Hue.draw_image_pencil_size) {
       it.selected = true

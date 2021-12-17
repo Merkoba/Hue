@@ -180,8 +180,8 @@ Hue.show_admin_activity = function (messages) {
       el.title = nice_date
       el.innerHTML = s
 
-      el.querySelector(".admin_activity_message").textContent = `${message.data.username} ${message.data.content}`
-      el.querySelector(".admin_activity_date").textContent = nice_date
+      Hue.el(".admin_activity_message", el).textContent = `${message.data.username} ${message.data.content}`
+      Hue.el(".admin_activity_date", el).textContent = nice_date
       Hue.dataset(el, "date", message.date)
       Hue.dataset(el, "otitle", nice_date)
       Hue.el("#admin_activity_container").prepend(el)
@@ -217,8 +217,8 @@ Hue.show_admin_list = function (data) {
     let el = Hue.div("admin_list_item action")
     el.innerHTML = s
 
-    el.querySelector(".admin_list_username").textContent = user.username
-    el.querySelector(".admin_list_role").textContent = `(${Hue.get_pretty_role_name(user.role)})`
+    Hue.el(".admin_list_username", el).textContent = user.username
+    Hue.el(".admin_list_role", el).textContent = `(${Hue.get_pretty_role_name(user.role)})`
 
     el.addEventListener("click", function () {
       Hue.show_profile(user.username, user.user_id)
@@ -256,14 +256,14 @@ Hue.show_ban_list = function (data) {
     let el = Hue.div("ban_list_item")
     el.innerHTML = s
 
-    let username = el.querySelector(".ban_list_username")
+    let username = Hue.el(".ban_list_username", el)
     username.textContent = user.username
 
     username.addEventListener("click", function () {
       Hue.show_profile(user.username, user.user_id)
     })
 
-    let unban = el.querySelector(".ban_list_unban")
+    let unban = Hue.el(".ban_list_unban", el)
 
     unban.addEventListener("click", function () {
       Hue.show_confirm(`Unban ${user.username}`, "", function () {

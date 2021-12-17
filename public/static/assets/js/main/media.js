@@ -86,13 +86,13 @@ Hue.swap_display_positions = function () {
 
 // Refresh media menu widgets
 Hue.refresh_media_menu = function () {
-  Hue.el("#media_menu_tv_size").querySelectorAll("option").forEach(it => {
+  Hue.els("#media_menu_tv_size option").forEach(it => {
     if (it.value == Hue.room_state.tv_display_percentage) {
       it.selected = true
     }
   })
 
-  Hue.el("#media_menu_chat_size").querySelectorAll("option").forEach(it => {
+  Hue.els("#media_menu_chat_size option").forEach(it => {
     if (it.value == Hue.room_state.chat_display_percentage) {
       it.selected = true
     }
@@ -350,7 +350,7 @@ Hue.fix_frame = function (frame_id, test_parent_height = false) {
 
   let parent = frame.parentElement
   let info_height = 0
-  let info = frame.parentElement.querySelectorAll(".media_info")
+  let info = Hue.els(".media_info", frame.parentElement)
 
   if (info.length > 0) {
     info_height = info[0].offsetHeight
@@ -519,8 +519,8 @@ Hue.apply_media_info = function (type) {
     <div class='media_info_details action'>: ${message}</div>`
 
   let container = Hue.el(`#media_${type}_info_container`)
-  container.querySelector(".media_info").innerHTML = html
-  container.querySelector(".media_info_timeago").textContent = Hue.utilz.timeago(item.date)
+  Hue.el(".media_info", container).innerHTML = html
+  Hue.el(".media_info_timeago", container).textContent = Hue.utilz.timeago(item.date)
   container.title = item.info
     
   Hue.dataset(container, "otitle", item.info)
@@ -594,14 +594,14 @@ Hue.change_media_lock = function(args) {
 // Toggles media locks for any type
 Hue.change_media_lock_icon = function (type) {
   if (Hue[`${type}_locked`]) {
-    Hue.el(`#footer_lock_${type}_icon`).querySelector("use").href.baseVal = "#icon_locked"
+    Hue.el(`#footer_lock_${type}_icon use`).href.baseVal = "#icon_locked"
     Hue.el(`#footer_lock_${type}_label`).style.display = "flex"
 
     if (Hue[`loaded_${type}`] !== Hue[`current_${type}`]()) {
       Hue.el(`#footer_lock_${type}_icon`).classList.add("blinking")
     }
   } else {
-    Hue.el(`#footer_lock_${type}_icon`).querySelector("use").href.baseVal = "#icon_unlocked"
+    Hue.el(`#footer_lock_${type}_icon use`).href.baseVal = "#icon_unlocked"
     Hue.el(`#footer_lock_${type}_icon`).classList.remove("blinking")
     Hue.el(`#footer_lock_${type}_label`).style.display = "none"
 
@@ -818,9 +818,9 @@ Hue.edited_media_comment = function (data) {
   for (let message of messages) {
     if (Hue.dataset(message, "id") === data.id) {
       if (Hue.dataset(message, "type") === `${data.type}_change`) {
-        let content = message.querySelector(".announcement_content")
+        let content = Hue.el(".announcement_content", message)
         content.textContent = data.comment
-        let content_container = message.querySelector(".announcement_content_container")
+        let content_container = Hue.el(".announcement_content_container", message)
         Hue.dataset(content_container, "original_message", data.comment)
       }
     }

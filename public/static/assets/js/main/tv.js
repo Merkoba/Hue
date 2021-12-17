@@ -487,7 +487,7 @@ Hue.change_tv_visibility = function (play = false) {
   if (Hue.room_state.tv_enabled) {
     Hue.el("#media").style.display = "flex"
     Hue.el("#media_tv").style.display = "flex"
-    Hue.el("#footer_toggle_tv_icon").querySelector("use").href.baseVal = "#icon_toggle-on"
+    Hue.el("#footer_toggle_tv_icon use").href.baseVal = "#icon_toggle-on"
 
     if (!Hue.tv_visible) {
       Hue.tv_visible = true
@@ -517,7 +517,7 @@ Hue.change_tv_visibility = function (play = false) {
       Hue.hide_media()
     }
 
-    Hue.el("#footer_toggle_tv_icon").querySelector("use").href.baseVal = "#icon_toggle-off"
+    Hue.el("#footer_toggle_tv_icon use").href.baseVal = "#icon_toggle-off"
     Hue.tv_visible = false
   }
 

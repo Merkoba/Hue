@@ -74,7 +74,7 @@ Hue.push_notification = function (icon, message, on_click = false) {
 
   let item = Hue.div("notifications_item modal_item")
   item.innerHTML = `<div class='notifications_item_content ${content_classes} dynamic_title'>${icon_html}${message_html}</div>`
-  let content = item.querySelector(".notifications_item_content")
+  let content = Hue.el(".notifications_item_content", item)
 
   content.title = t
   Hue.dataset(content, "otitle", t)

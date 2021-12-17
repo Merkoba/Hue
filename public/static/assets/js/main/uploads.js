@@ -256,7 +256,7 @@ Hue.change_upload_status = function (file, status, clear = false) {
     return false
   }
 
-  file.hue_popup.content.querySelector(".action_popup_message").textContent =
+  Hue.el(".action_popup_message", file.hue_popup.content).textContent =
     `Uploading ${Hue.get_file_action_name(file.hue_data.action)}: ${status}`
 
   if (clear) {

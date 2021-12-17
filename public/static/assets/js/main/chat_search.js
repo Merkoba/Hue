@@ -41,7 +41,7 @@ Hue.show_chat_search = function (filter = "") {
       let message_matched = false
 
       if (mode === "chat") {
-        let containers = it.querySelectorAll(".chat_content_container")
+        let containers = Hue.els(".chat_content_container", it)
   
         for (let container of containers) {
           if (filtercheck(container)) {
