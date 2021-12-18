@@ -2040,6 +2040,12 @@ pre {
 	max-width: 24.71rem;
 }
 
+.whispers_item {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+}
+
 .whispers_item_content {
 	display: inline-flex;
 	flex-direction: column;
@@ -2314,4 +2320,12 @@ pre {
 	height: var(--profilepic_size);
 	transition: box-shadow 500ms;
 	border-radius: 50%;
+}
+
+.whispers_item_profilepic {
+	width: var(--small_profilepic_size);
+	height: var(--small_profilepic_size);
+	transition: box-shadow 500ms;
+	border-radius: 50%;
+	margin-right: 0.5rem;
 }
