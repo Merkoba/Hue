@@ -192,7 +192,7 @@ Hue.whisper_received = function (data) {
   let item = Hue.make_info_popup_item({icon: "envelope", message: message, push: false})
 
   let open = Hue.get_setting("open_whispers_automatically") && !Hue.screen_locked
-  data.notification = Hue.push_whisper(message, func, open)
+  data.notification = Hue.push_whisper(message, func, open, data)
   
   if (open) {
     Hue.show_whisper(data)
@@ -345,17 +345,24 @@ Hue.setup_message_window = function () {
 }
 
 // Pushes a new whisper to the whispers window
-Hue.push_whisper = function (message, on_click, read) {
-  let d = Date.now()
-  let t = Hue.utilz.nice_date(d)
-  let message_html = `<div class='whispers_message'>${Hue.utilz.make_html_safe(message)}</div>`
+Hue.push_whisper = function (message, on_click, read, data = false) {
+  let date = Date.now()
+  let title = Hue.utilz.nice_date(date)
   let item = Hue.div("whispers_item modal_item")
-  item.innerHTML = `<div class='whispers_item_content action dynamic_title'>${message_html}`
-  let content = Hue.el(".whispers_item_content", item)
-  content.title = t
 
-  Hue.dataset(content, "otitle", t)
-  Hue.dataset(content, "date", d)
+  if (data && data.user_id) {
+    item.innerHTML = `<img class='whispers_item_profilepic' loading='lazy' src='${Hue.get_profilepic(data.user_id)}'>`
+  }
+
+  let message_el = Hue.div("whispers_item_content action dynamic_title")
+  message_el.textContent = message
+  item.appendChild(message_el)
+  
+  let content = Hue.el(".whispers_item_content", item)
+  content.title = title
+
+  Hue.dataset(content, "otitle", title)
+  Hue.dataset(content, "date", date)
   Hue.dataset(content, "read", read)
 
   if (read) {
