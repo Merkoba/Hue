@@ -216,8 +216,6 @@ Hue.show_whisper = function (data) {
     usr = data.usernames
   }
 
-  let user = Hue.get_user_by_user_id(data.user_id)
-
   button_html = Hue.utilz.nonbreak("Send Whisper")
 
   button_func = function () {
@@ -242,8 +240,8 @@ Hue.show_whisper = function (data) {
 
     let profilepic = Hue.el(".sent_message_profilepic", container)
 
-    if (user) {
-      profilepic.src = Hue.get_profilepic(user.user_id)
+    if (data.user_id) {
+      profilepic.src = Hue.get_profilepic(data.user_id)
       
       profilepic.addEventListener("click", function () {
         Hue.show_profile(data.username, data.user_id)
