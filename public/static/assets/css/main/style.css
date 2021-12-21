@@ -8,6 +8,8 @@
 	--chat_side_spacing: 0.8rem;
 	--profilepic_size: 1.8rem;
 	--small_profilepic_size: 1.2rem;
+	--big_profilepic_size: 11.5rem;
+	--bigger_profilepic_size: 17.5rem;
 	--panel_profilepic_size: calc(var(--panel_height) * 0.66);
 }
 
@@ -135,7 +137,6 @@ body * {
 	width: var(--panel_profilepic_size);
 	height: var(--panel_profilepic_size);
 	transition: box-shadow 500ms;
-	border-radius: 50%;
 }
 
 .columns_container {
@@ -426,7 +427,6 @@ body * {
 	height: var(--profilepic_size);
 	margin-top: 0;
 	cursor: pointer;
-	border-radius: 50%;
 }
 
 .chat_profilepic.aura,
@@ -519,7 +519,6 @@ body * {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
 	opacity: 0.25;
-	border-radius: 50%;
 	outline: 1px solid var(--font_color);
 }
 
@@ -614,7 +613,6 @@ a.generic:hover {
 .userlist_item_profilepic {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
-	border-radius: 50%;
 	margin-top: 0.2rem;
 }
 
@@ -981,18 +979,6 @@ select {
 	padding: 2rem;
 }
 
-.big_profilepic {
-	width: 11.76rem;
-	height: 11.76rem;
-	border-radius: 50%;
-}
-
-.bigger_profilepic {
-	width: 17.65rem;
-	height: 17.65rem;
-	border-radius: 50%;
-}
-
 #profilepic_picker {
 	display: none;
 }
@@ -1185,6 +1171,8 @@ select {
 
 #user_menu_profilepic {
 	margin-bottom: 2rem;
+	width: var(--big_profilepic_size);
+	height: var(--big_profilepic_size);
 }
 
 .user_menu_items_container {
@@ -1810,7 +1798,6 @@ a.special_link:hover {
 	height: var(--small_profilepic_size);
 	margin-right: 0.38rem;
 	cursor: pointer;
-	border-radius: 50%;
 }
 
 .chat_quote_username {
@@ -2106,7 +2093,6 @@ pre {
 	height: var(--small_profilepic_size);
 	opacity: 1;
 	margin-right: 0.5rem;
-	border-radius: 50%;
 }
 
 .message_board_username {
@@ -2319,13 +2305,20 @@ pre {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
 	transition: box-shadow 500ms;
-	border-radius: 50%;
 }
 
 .whispers_item_profilepic {
 	width: var(--small_profilepic_size);
 	height: var(--small_profilepic_size);
 	transition: box-shadow 500ms;
-	border-radius: 50%;
 	margin-right: 0.5rem;
+}
+
+.show_profilepic {
+	width: var(--bigger_profilepic_size);
+	height: var(--bigger_profilepic_size);
+}
+
+.profilepic {
+	border-radius: 50%;
 }
