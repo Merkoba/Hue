@@ -349,7 +349,7 @@ Hue.push_whisper = function (message, on_click, read, data = false) {
   let item = Hue.div("whispers_item modal_item")
 
   if (data && data.user_id) {
-    item.innerHTML = `<img class='whispers_item_profilepic' loading='lazy' src='${Hue.get_profilepic(data.user_id)}'>`
+    item.innerHTML = `<img class='whispers_item_profilepic profilepic' loading='lazy' src='${Hue.get_profilepic(data.user_id)}'>`
   }
 
   let message_el = Hue.div("whispers_item_content action dynamic_title")
