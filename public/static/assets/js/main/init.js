@@ -129,6 +129,7 @@ Hue.update_userlist_delay = 2000
 Hue.dataset_obj = {}
 Hue.dataset_id = 0
 Hue.highlight_date_on_focus = 0
+Hue.focused_once = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -230,6 +231,7 @@ Hue.on_join = function (data) {
   Hue.image_changed = []
   Hue.tv_changed = []
   Hue.superuser = data.superuser
+  Hue.focused_once = false
 
   Hue.load_date_3 = Date.now()
   Hue.loginfo("Joined Room")
@@ -266,7 +268,6 @@ Hue.on_join = function (data) {
   Hue.show_joined()
   Hue.config_room_menu()
   Hue.config_main_menu()
-  Hue.check_latest_highlight()
   Hue.init_message_board(data)
   Hue.start_active_media()
   Hue.update_input_placeholder()
@@ -306,4 +307,6 @@ Hue.at_startup = function () {
       Hue.on_activity("message")
     }
   }
+
+  Hue.check_latest_highlight()
 }
