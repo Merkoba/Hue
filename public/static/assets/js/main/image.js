@@ -57,7 +57,7 @@ Hue.setup_image = function (mode, odata = {}) {
     data.setter
   )}</div>`
 
-  if (data.type === "upload") {
+  if (data.size) {
     data.info += ` | Size: ${Hue.utilz.get_size_string(data.size)}`
     data.info_html += `<div>Size: ${Hue.utilz.get_size_string(data.size)}</div>`
   }

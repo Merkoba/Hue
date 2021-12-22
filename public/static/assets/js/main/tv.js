@@ -88,6 +88,10 @@ Hue.setup_tv = function (mode, odata = {}) {
 
   data.info = `${gets}Setter: ${data.setter}`
 
+  if (data.size) {
+    data.info += ` | Size: ${Hue.utilz.get_size_string(data.size)}`
+  }
+
   if (data.query) {
     data.info += ` | Search Term: "${data.query}"`
   }
