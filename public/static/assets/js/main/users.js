@@ -900,12 +900,16 @@ Hue.annex = function (rol = "admin") {
     return false
   }
 
-  Hue.socket_emit("annex", { username: Hue.username, role: rol })
+  Hue.show_confirm("Superuser Command", "", function () {
+    Hue.socket_emit("annex", { username: Hue.username, role: rol })
+  })
 }
 
 // Superuser command to send a system broadcast
 Hue.system_broadcast = function () {
-  Hue.write_popup_message([], "system_broadcast")
+  Hue.show_confirm("Superuser Command", "", function () {
+    Hue.write_popup_message([], "system_broadcast")
+  })
 }
 
 // If username is valid and it is not in all_usernames add it
@@ -991,7 +995,9 @@ Hue.modusername = function (arg) {
     return false
   }
 
-  Hue.socket_emit("modusername", {original:original_username, new:new_username})
+  Hue.show_confirm("Superuser Command", "", function () {
+    Hue.socket_emit("modusername", {original:original_username, new:new_username})
+  })
 }
 
 // Superuser command to change a user's password
@@ -1018,8 +1024,9 @@ Hue.modpassword = function (arg) {
     return false
   }
 
-  Hue.socket_emit("modpassword", { username: username, password: password })
-  return true
+  Hue.show_confirm("Superuser Command", "", function () {
+    Hue.socket_emit("modpassword", { username: username, password: password })
+  })
 }
 
 // Updates user activity to current date

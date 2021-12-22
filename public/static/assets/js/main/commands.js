@@ -538,7 +538,8 @@ Hue.setup_commands = function () {
     "systemrestart",
     "modusername",
     "modpassword",
-    "annex"
+    "annex",
+    "createroom"
   ]
 
   Hue.commands_list = []
