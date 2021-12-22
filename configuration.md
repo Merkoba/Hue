@@ -233,9 +233,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "media_changed_crop_limit"
 >How many items are stored in images_changed and tv_changed.
 
-"create_room_cooldown"
->How long a user must wait to create another room.
-
 "recaptcha_enabled"
 >Whether recaptcha verification is used at registration.
 

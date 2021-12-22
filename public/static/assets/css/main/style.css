@@ -1876,19 +1876,6 @@ a.special_link:hover {
 	margin-top: 1.6rem;
 }
 
-#create_room {
-	margin-top: 1rem;
-}
-
-#create_room_name {
-	margin-left: 0.8rem;
-	margin-right: 0.8rem;
-}
-
-#create_room_done {
-	margin-top: 1rem;
-}
-
 #open_room_new_tab {
 	margin-top: 1rem;
 }

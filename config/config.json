@@ -89,7 +89,6 @@
 	"max_same_post_messages": 20,
 	"typing_delay": 800,
 	"max_typing_inactivity": 2000,
-	"create_room_cooldown": 300000,
 	"recaptcha_enabled": true,
 	"socket_emit_throttle": 10,
 	"safe_limit_1": 100,

@@ -64,7 +64,6 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       password_date: { type: "number", default: 0 },
       profilepic_version: { type: "number", default: 0 },
       registration_date: { type: "number", default: 0 },
-      create_room_date: { type: "number", default: 0 },
       bio: { type: "string", default: "" },
       audioclip_version: { type: "number", default: 0 },
       modified: { type: "number", default: Date.now() },

@@ -63,46 +63,6 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
-  // Room creation started by a user
-  manager.user_create_room = function (data, force = false) {
-    return new Promise((resolve, reject) => {
-      manager
-        .get_user(["id", data.user_id], { create_room_date: 1 })
-
-        .then((user) => {
-          if (!force) {
-            if (
-              Date.now() - user.create_room_date <
-              config.create_room_cooldown
-            ) {
-              resolve("wait")
-              return
-            }
-          }
-
-          manager
-            .create_room(data)
-
-            .then((ans) => {
-              manager.update_user(data.user_id, { create_room_date: Date.now() })
-              resolve(ans)
-              return
-            })
-
-            .catch(err => {
-              reject(err)
-              logger.log_error(err)
-              return
-            })
-        })
-
-        .catch(err => {
-          reject(err)
-          logger.log_error(err)
-        })
-    })
-  }
-
   // Updates a room
   manager.update_room = function (id, fields) {
     fields.modified = Date.now()

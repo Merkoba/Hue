@@ -92,14 +92,6 @@ module.exports = function (
           if (!socket.hue_joined) {
             return false
           }
-        } else {
-          if (vars.check_locked.includes(m)) {
-            if (!socket.hue_joined) {
-              if (!socket.hue_locked) {
-                return false
-              }
-            }
-          }
         }
 
         handler.public[m](socket, data)
