@@ -210,6 +210,20 @@ Hue.activate_key_detection = function () {
         }
       }
 
+      if (Hue.msg_message_board.is_open()) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          Hue.submit_message_board_post()
+          e.preventDefault()
+        }
+      }
+
+      if (Hue.msg_message.is_open()) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          Hue.send_popup_message()
+          e.preventDefault()
+        }
+      }
+
       return
     }
 
