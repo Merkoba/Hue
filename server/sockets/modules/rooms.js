@@ -10,6 +10,11 @@ module.exports = function (
 ) {
   // Handles room creation
   handler.public.create_room = async function (socket, data) {
+    if (!socket.hue_superuser) {
+      handler.anti_spam_ban(socket)
+      return false
+    }
+
     if (
       data.name.length === 0 ||
       data.name.length > config.max_room_name_length
@@ -22,20 +27,7 @@ module.exports = function (
     }
 
     data.user_id = socket.hue_user_id
-
-    let force = false
-
-    if (socket.hue_superuser) {
-      force = true
-    }
-
-    let ans = await db_manager.user_create_room(data, force)
-
-    if (ans === "wait") {
-      handler.user_emit(socket, "create_room_wait", {})
-      return
-    }
-
+    let ans = await db_manager.create_room(data)
     handler.user_emit(socket, "room_created", { id: ans.id })
   }
 }

@@ -154,9 +154,6 @@ Hue.server_update_events = {
   error_occurred: (data) => {
     Hue.error_occurred()
   },
-  create_room_wait: (data) => {
-    Hue.create_room_cooldown_message()
-  },
   pong_received: (data) => {
     Hue.pong_received(data)
   },

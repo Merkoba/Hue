@@ -172,7 +172,17 @@ Hue.commands = {
       }
     },
     description: `(Only for superusers) Used to change a user's password`,
-  },  
+  }, 
+  "createroom": {
+    action: (arg, ans) => {
+      if (arg) {
+        Hue.create_room(arg)
+      } else {
+        Hue.create_room("New Room")
+      }
+    },
+    description: `(Only for superusers) Used to create `,
+  },     
   "highlights": {
     action: (arg, ans) => {
       Hue.show_highlights()

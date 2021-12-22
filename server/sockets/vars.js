@@ -67,9 +67,6 @@ module.exports = function (
     "typing"
   ]
 
-  // Check if user is locked from room with these functions
-  vars.check_locked = ["create_room"]
-
   vars.fetch_2 = function (url, args = {}) {
     console.info(`Fetching ${url} ...`)
     args.headers = args.headers || {}

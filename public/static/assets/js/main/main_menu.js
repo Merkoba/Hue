@@ -19,10 +19,6 @@ Hue.setup_main_menu = function () {
   Hue.el("#main_menu_commands").addEventListener("click", function () {
     Hue.show_commands()
   })
-
-  Hue.el("#main_menu_create_room").addEventListener("click", function () {
-    Hue.show_create_room()
-  })
 }
 
 // Show the main menu

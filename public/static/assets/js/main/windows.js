@@ -419,7 +419,6 @@ Hue.info_vars_to_false = function () {}
 
 // Sets all info window 2 variables to false
 Hue.info2_vars_to_false = function () {
-  Hue.create_room_open = false
   Hue.goto_room_open = false
   Hue.open_room_open = false
   Hue.background_input_open = false
