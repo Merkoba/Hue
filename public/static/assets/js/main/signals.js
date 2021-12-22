@@ -25,10 +25,11 @@ Hue.pong_received = function (data) {
   Hue.checkmsg(`Pong: ${nice_time}`)
 }
 
-// Only for superusers
-// Sends a system restart signal that tells all clients to refresh
+// Superuser signal that tells all clients to refresh
 Hue.send_system_restart_signal = function () {
-  Hue.socket_emit("system_restart_signal", {})
+  Hue.show_confirm("Superuser Command", "", function () {
+    Hue.socket_emit("system_restart_signal", {})
+  })
 }
 
 // When the system suggests a refresh

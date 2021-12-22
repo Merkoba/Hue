@@ -1,6 +1,8 @@
-// Creates a room
+// Superuser command to create a room
 Hue.create_room = function (name) {
-  Hue.socket_emit("create_room", {name: name})
+  Hue.show_confirm("Superuser Command", "", function () {
+    Hue.socket_emit("create_room", {name: name})
+  })
 }
 
 // Shows the Open Room window where the user selects how to open a room
