@@ -10,7 +10,7 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
   // Room and User versions
   // These must be increased by 1 when the schema changes
   vars.rooms_version = 88
-  vars.users_version = 54
+  vars.users_version = 55
 
   // Room schema definition
   // This is used to check types and fill defaults
