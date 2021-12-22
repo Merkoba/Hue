@@ -181,7 +181,7 @@ Hue.commands = {
         Hue.create_room("New Room")
       }
     },
-    description: `(Only for superusers) Used to create `,
+    description: `(Only for superusers) Used to create rooms`,
   },     
   "highlights": {
     action: (arg, ans) => {
