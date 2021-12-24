@@ -620,6 +620,10 @@ Hue.start_chat_mouse_events = function () {
   })
 
   document.addEventListener("mouseup", function (e) {
+    if (!e.target) {
+      return
+    }
+
     if (e.target.tagName === "A") {
       return false
     }
