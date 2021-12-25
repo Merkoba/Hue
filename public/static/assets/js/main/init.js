@@ -123,15 +123,16 @@ Hue.draw_image_just_entered = false
 Hue.draw_image_num_strokes_save = 500
 Hue.draw_image_max_levels = 200
 Hue.draw_image_open = false
+Hue.draw_image_max_pencil_size = 40
+Hue.draw_image_default_pencil_size = 20
+Hue.draw_image_pencil_size_step = 4
+Hue.draw_image_bucket_tolerance = 3
 Hue.last_message_date = 0
 Hue.update_userlist_delay = 2000
 Hue.dataset_obj = {}
 Hue.dataset_id = 0
 Hue.highlight_date_on_focus = 0
 Hue.focused_once = false
-Hue.max_draw_pencil_size = 40
-Hue.default_draw_pencil_size = 20
-Hue.draw_pencil_size_step = 4
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
