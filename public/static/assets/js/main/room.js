@@ -413,6 +413,7 @@ Hue.open_background_select = function () {
       Hue.open_background_picker()
     })
   })
+  
   Hue.horizontal_separator(Hue.el("#background_select_container"))
 }
 

@@ -252,8 +252,6 @@ Hue.setup_profilepic_cropper = function () {
   Hue.el("#profilepic_cropper_change").addEventListener("click", function () {
     Hue.open_profilepic_picker()
   })
-
-  Hue.horizontal_separator(Hue.el("#profilepic_cropper_buttons"))
 }
 
 // Picker window to select how to change the profilepic
@@ -272,6 +270,7 @@ Hue.open_profilepic_select = function () {
       Hue.open_profilepic_picker()
     })
   })
+  
   Hue.horizontal_separator(Hue.el("#profilepic_select_container"))
 }
 
