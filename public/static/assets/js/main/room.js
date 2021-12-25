@@ -396,7 +396,7 @@ Hue.announce_background_color_change = function (data) {
 // Picker window to select how to change the background image
 Hue.open_background_select = function () {
   Hue.msg_info2.show([
-    "Change Background",
+    "Background Image",
     Hue.template_background_select(),
   ], function () {
     Hue.el("#background_select_draw").addEventListener("click", function () {

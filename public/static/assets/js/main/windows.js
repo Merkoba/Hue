@@ -150,7 +150,7 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_image_picker = Msg.factory(
-    Object.assign({}, common, {
+    Object.assign({}, common, titlebar, {
       id: "image_picker",
       window_width: "24rem",
       after_close: function (instance) {
@@ -163,7 +163,7 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_tv_picker = Msg.factory(
-    Object.assign({}, common, {
+    Object.assign({}, common, titlebar, {
       id: "tv_picker",
       window_width: "24rem",
       after_close: function (instance) {
@@ -412,6 +412,8 @@ Hue.start_msg = function () {
   Hue.msg_profilepic_cropper.set_title("Crop A Circle")
   Hue.msg_confirm.set_title("Confirm Action")
   Hue.msg_draw_image.set_title("Draw an Image")
+  Hue.msg_image_picker.set_title("Image")
+  Hue.msg_tv_picker.set_title("TV")
 }
 
 // Sets all info window variables to false
