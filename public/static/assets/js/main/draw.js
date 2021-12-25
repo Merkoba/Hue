@@ -514,7 +514,11 @@ Hue.draw_image_bucket_fill = function (x, y) {
   let target_color = Hue.get_canvas_node_color(data, node, w)
   let replacement_color = Hue.colorlib.hex_to_rgb_array(Hue.draw_image_bucket_color)
   replacement_color.push(255)
-  
+
+  if (Hue.colorlib.get_rgba_distance(target_color, replacement_color) <= Hue.draw_image_bucket_tolerance)  {
+    return false
+  }
+
   let q = []
 
   data = Hue.set_canvas_node_color(data, node, replacement_color, w)
@@ -583,12 +587,4 @@ Hue.draw_image_change_mode = function () {
   } else if (Hue.draw_image_mode === "bucket") {
     Hue.set_draw_image_mode_input("pencil")
   }
-}
-
-// Get the distance between two rgba colors
-Hue.get_color_distance = function (a, b) {
-  return Math.sqrt((  (a[0] - b[0]) * (a[0] - b[0]) + 
-                      (a[1] - b[1]) * (a[1] - b[1]) +
-                      (a[2] - b[2]) * (a[2] - b[2]) +
-                      (a[3] - b[3]) * (a[3] - b[3]) ) / ( 256 * Math.sqrt(4) ))
 }
