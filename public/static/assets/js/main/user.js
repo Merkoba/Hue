@@ -259,7 +259,7 @@ Hue.setup_profilepic_cropper = function () {
 // Picker window to select how to change the profilepic
 Hue.open_profilepic_select = function () {
   Hue.msg_info2.show([
-    "Change Profile Image",
+    "Profile Image",
     Hue.template_profilepic_select(),
   ], function () {
     Hue.el("#profilepic_select_draw").addEventListener("click", function () {
