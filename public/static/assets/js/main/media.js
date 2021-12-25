@@ -303,10 +303,6 @@ Hue.setup_media_menu = function () {
 
 // More media picker configurations
 Hue.setup_media_pickers = function () {
-  for (let type of Hue.utilz.media_types) {
-    Hue.horizontal_separator(Hue.el(`#${type}_picker_options`))
-  }
-
   Hue.el("#image_picker_upload").addEventListener("click", function () {
     Hue.msg_image_picker.close()
   })

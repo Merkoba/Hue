@@ -1858,6 +1858,7 @@ Hue.handle_delete_message = function (id, user_id) {
         Hue.delete_messages_below(id)
       })
     })
+    
     Hue.horizontal_separator(Hue.el("#delete_messages_select_container"))
   } else if (user_id === Hue.user_id) {
     Hue.delete_message(id)
