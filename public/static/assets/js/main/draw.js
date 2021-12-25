@@ -525,50 +525,31 @@ Hue.draw_image_bucket_fill = function (x, y) {
   data = Hue.set_canvas_node_color(data, node, replacement_color, w)
   q.push(node)
 
+  function check (node) {
+    let color = Hue.get_canvas_node_color(data, node, w)
+    if (Hue.canvas_node_color_is_equal(color, target_color)) {
+      data = Hue.set_canvas_node_color(data, node, replacement_color, w)
+      q.push(node)
+    }
+  }
+
   while (q.length) {
     let n = q.shift()
 
     if (n[1] > 0) {
-      let nn = [n[0], n[1] - 1]
-      let nn_color = Hue.get_canvas_node_color(data, nn, w)
-
-      if (Hue.canvas_node_color_is_equal(nn_color, target_color)) {
-        data = Hue.set_canvas_node_color(data, nn, replacement_color, w)
-        q.push(nn)
-      }
+      check([n[0], n[1] - 1])
     }
 
     if (n[1] < w - 1) {
-      let nn = [n[0], n[1] + 1]
-
-      let nn_color = Hue.get_canvas_node_color(data, nn, w)
-
-      if (Hue.canvas_node_color_is_equal(nn_color, target_color)) {
-        data = Hue.set_canvas_node_color(data, nn, replacement_color, w)
-        q.push(nn)
-      }
+      check([n[0], n[1] + 1])
     }
 
     if (n[0] > 0) {
-      let nn = [n[0] - 1, n[1]]
-
-      let nn_color = Hue.get_canvas_node_color(data, nn, w)
-
-      if (Hue.canvas_node_color_is_equal(nn_color, target_color)) {
-        data = Hue.set_canvas_node_color(data, nn, replacement_color, w)
-        q.push(nn)
-      }
+      check([n[0] - 1, n[1]])
     }
 
     if (n[0] < h - 1) {
-      let nn = [n[0] + 1, n[1]]
-
-      let nn_color = Hue.get_canvas_node_color(data, nn, w)
-
-      if (Hue.canvas_node_color_is_equal(nn_color, target_color)) {
-        data = Hue.set_canvas_node_color(data, nn, replacement_color, w)
-        q.push(nn)
-      }
+      check([n[0] + 1, n[1]])
     }
   }
 
