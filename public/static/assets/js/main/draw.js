@@ -158,7 +158,7 @@ Hue.setup_draw_image = function () {
 
   let select = ""
 
-  for (let i=2; i<=20; i+=2) {
+  for (let i=Hue.draw_pencil_size_step; i<=Hue.max_draw_pencil_size; i+=Hue.draw_pencil_size_step) {
     select += `<option value="${i}">${i}</option>`
   }
 
@@ -258,7 +258,7 @@ Hue.clear_draw_image_state = function () {
   Hue.el("#draw_image_bucket_color").value = Hue.draw_image_bucket_color
 
   Hue.set_draw_image_mode_input("pencil")
-  Hue.draw_image_pencil_size = 8
+  Hue.draw_image_pencil_size = Hue.default_draw_pencil_size
 
   Hue.els("#draw_image_pencil_size option")
   .forEach(it => {

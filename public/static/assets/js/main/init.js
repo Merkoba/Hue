@@ -129,6 +129,9 @@ Hue.dataset_obj = {}
 Hue.dataset_id = 0
 Hue.highlight_date_on_focus = 0
 Hue.focused_once = false
+Hue.max_draw_pencil_size = 40
+Hue.default_draw_pencil_size = 20
+Hue.draw_pencil_size_step = 4
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
