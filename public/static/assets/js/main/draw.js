@@ -158,7 +158,7 @@ Hue.setup_draw_image = function () {
 
   let select = ""
 
-  for (let i=Hue.draw_pencil_size_step; i<=Hue.max_draw_pencil_size; i+=Hue.draw_pencil_size_step) {
+  for (let i=Hue.draw_image_pencil_size_step; i<=Hue.draw_image_max_pencil_size; i+=Hue.draw_image_pencil_size_step) {
     select += `<option value="${i}">${i}</option>`
   }
 
@@ -258,7 +258,7 @@ Hue.clear_draw_image_state = function () {
   Hue.el("#draw_image_bucket_color").value = Hue.draw_image_bucket_color
 
   Hue.set_draw_image_mode_input("pencil")
-  Hue.draw_image_pencil_size = Hue.default_draw_pencil_size
+  Hue.draw_image_pencil_size = Hue.draw_image_default_pencil_size
 
   Hue.els("#draw_image_pencil_size option")
   .forEach(it => {
@@ -513,13 +513,8 @@ Hue.draw_image_bucket_fill = function (x, y) {
   let node = [y, x]
   let target_color = Hue.get_canvas_node_color(data, node, w)
   let replacement_color = Hue.colorlib.hex_to_rgb_array(Hue.draw_image_bucket_color)
-
   replacement_color.push(255)
-
-  if (Hue.canvas_node_color_is_equal(target_color, replacement_color)) {
-    return false
-  }
-
+  
   let q = []
 
   data = Hue.set_canvas_node_color(data, node, replacement_color, w)
@@ -527,7 +522,7 @@ Hue.draw_image_bucket_fill = function (x, y) {
 
   function check (node) {
     let color = Hue.get_canvas_node_color(data, node, w)
-    if (Hue.canvas_node_color_is_equal(color, target_color)) {
+    if (Hue.colorlib.get_rgba_distance(color, target_color) <= Hue.draw_image_bucket_tolerance) {
       data = Hue.set_canvas_node_color(data, node, replacement_color, w)
       q.push(node)
     }
@@ -581,17 +576,6 @@ Hue.set_canvas_node_color = function (data, node, values, w) {
   return data
 }
 
-// Determines if two node colors should be considered equal
-Hue.canvas_node_color_is_equal = function (a1, a2) {
-  let diff = 10
-  let c1 = Math.abs(a1[0] - a2[0]) <= diff
-  let c2 = Math.abs(a1[1] - a2[1]) <= diff
-  let c3 = Math.abs(a1[2] - a2[2]) <= diff
-  let alpha = Math.abs(a1[3] - a2[3]) <= diff
-
-  return c1 && c2 && c3 && alpha
-}
-
 // Toggles between pencil and bucket mode
 Hue.draw_image_change_mode = function () {
   if (Hue.draw_image_mode === "pencil") {
@@ -599,4 +583,12 @@ Hue.draw_image_change_mode = function () {
   } else if (Hue.draw_image_mode === "bucket") {
     Hue.set_draw_image_mode_input("pencil")
   }
+}
+
+// Get the distance between two rgba colors
+Hue.get_color_distance = function (a, b) {
+  return Math.sqrt((  (a[0] - b[0]) * (a[0] - b[0]) + 
+                      (a[1] - b[1]) * (a[1] - b[1]) +
+                      (a[2] - b[2]) * (a[2] - b[2]) +
+                      (a[3] - b[3]) * (a[3] - b[3]) ) / ( 256 * Math.sqrt(4) ))
 }
