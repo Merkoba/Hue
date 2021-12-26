@@ -56,14 +56,6 @@ Hue.on_youtube_tv_player_ready = function () {
   this.clear_activity_bar_items
   Hue.youtube_tv_player = Hue.yt_tv_player
 
-  Hue.youtube_tv_player.addEventListener("onStateChange", function (e) {
-    if (e.data === 5) {
-      if (Hue.youtube_tv_play_on_queue) {
-        Hue.youtube_tv_player.playVideo()
-      }
-    }
-  })
-
   if (Hue.youtube_tv_player_request) {
     Hue.change(Hue.youtube_tv_player_request)
     Hue.youtube_tv_player_request = false
