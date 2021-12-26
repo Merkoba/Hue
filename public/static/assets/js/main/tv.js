@@ -253,10 +253,17 @@ Hue.show_youtube_tv = function (play = true) {
       })
     }
   } else if (id[0] === "list") {
-    Hue.youtube_tv_player.cuePlaylist({
-      list: id[1][0],
-      index: id[1][1]
-    })
+    if (play) {
+      Hue.youtube_tv_player.loadPlaylist({
+        list: id[1][0],
+        index: id[1][1]
+      })
+    } else {
+      Hue.youtube_tv_player.cuePlaylist({
+        list: id[1][0],
+        index: id[1][1]
+      })
+    }   
   } else {
     return false
   }
