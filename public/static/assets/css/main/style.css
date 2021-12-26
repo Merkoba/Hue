@@ -2290,7 +2290,7 @@ pre {
 	margin-right: 0.5rem;
 }
 
-.show_profilepic {
+#show_profilepic {
 	width: var(--bigger_profilepic_size);
 	height: var(--bigger_profilepic_size);
 }
