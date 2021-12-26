@@ -237,13 +237,21 @@ Hue.show_youtube_tv = function (play = true) {
   let item = Hue.loaded_tv
   Hue.before_show_tv(item)
   let id = Hue.utilz.get_youtube_id(item.source)
-  Hue.youtube_tv_play_on_queue = play
 
   if (id[0] === "video") {
-    Hue.youtube_tv_player.cueVideoById({
-      videoId: id[1],
-      startSeconds: Hue.utilz.get_youtube_time(item.source),
-    })
+    let seconds = Hue.utilz.get_youtube_time(item.source)
+
+    if (play) {
+      Hue.youtube_tv_player.loadVideoById({
+        videoId: id[1],
+        startSeconds: seconds,
+      })      
+    } else {
+      Hue.youtube_tv_player.cueVideoById({
+        videoId: id[1],
+        startSeconds: seconds,
+      })
+    }
   } else if (id[0] === "list") {
     Hue.youtube_tv_player.cuePlaylist({
       list: id[1][0],
@@ -692,10 +700,8 @@ Hue.receive_tv_progress = function (data) {
 
     let id = Hue.utilz.get_youtube_id(Hue.loaded_tv.source)
 
-    Hue.youtube_tv_play_on_queue = true
-
     if (id[0] === "video") {
-      Hue.youtube_tv_player.cueVideoById({
+      Hue.youtube_tv_player.loadVideoById({
         videoId: id[1],
         startSeconds: data.progress,
       })

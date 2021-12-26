@@ -45,7 +45,6 @@ Hue.commands_list_sorted = {}
 Hue.commands_list_sorted_2 = {}
 Hue.utilz = Utilz()
 Hue.files = {}
-Hue.youtube_tv_play_on_queue = false
 Hue.message_id = 0
 Hue.chat_content_container_id = 0
 Hue.popup_message_id = 0
