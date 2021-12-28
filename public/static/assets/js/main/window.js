@@ -82,7 +82,11 @@ Hue.on_app_focused = function () {
   Hue.remove_alert_title()
   Hue.show_fresh_messages()
   Hue.focus_input()
-  Hue.focused_once = true
+
+  if (!Hue.focused_once) {
+    Hue.update_last_highlight_date()
+    Hue.focused_once = true
+  }
 
   if (Hue.highlight_date_on_focus) {
     Hue.room_state.last_highlight_date = Hue.highlight_date_on_focus
