@@ -45,11 +45,8 @@ Hue.check_latest_highlight = function () {
     let date = Hue.dataset(latest_highlight, "date")
 
     if (date > Hue.room_state.last_highlight_date) {
-      if (Hue.focused_once) {
-        Hue.room_state.last_highlight_date = date
-        Hue.save_room_state()
-      }
-      
+      Hue.room_state.last_highlight_date = date
+      Hue.save_room_state()
       Hue.show_highlights()
       Hue.on_activity("highlight")
     }
