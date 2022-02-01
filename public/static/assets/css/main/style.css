@@ -399,6 +399,15 @@ body * {
 	flex-basis: 50%;
 }
 
+.middle_scroller {
+	flex-grow: 0;
+	flex-shrink: 0;
+	width: 2rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	flex-basis: unset;
+}
+
 .chat_message {
 	overflow-wrap: break-word;
 	word-break: break-word;
@@ -2297,4 +2306,8 @@ pre {
 
 .profilepic {
 	border-radius: 50%;
+}
+
+.flipped {
+	transform: rotateY(180deg);
 }
