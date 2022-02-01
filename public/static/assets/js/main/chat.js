@@ -1521,7 +1521,19 @@ Hue.scroll_events = function () {
     } else {
       Hue.scroll_timer()
     }
+
+    Hue.update_scroll_percentage()
   })
+}
+
+// Update the scroll percentange on the chat scrollers
+Hue.update_scroll_percentage = function () {
+  let area = Hue.el("#chat_area")
+  let container = Hue.el("#chat_area_parent")
+  let p = (area.scrollTop || container.scrollTop) / ((area.scrollHeight || container.scrollHeight) - area.clientHeight)
+  let percentage = Math.round(p * 100)
+  Hue.el("#top_percentage_scroller").textContent = `${percentage}%`
+  Hue.el("#bottom_percentage_scroller").textContent = `${percentage}%`
 }
 
 // Shows the top scroller

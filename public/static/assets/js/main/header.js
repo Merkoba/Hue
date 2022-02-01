@@ -4,6 +4,10 @@ Hue.setup_header = function () {
     Hue.show_main_menu()
   })
 
+  Hue.el("#header_main_menu").addEventListener("auxclick", function (e) {
+    Hue.flip()
+  })
+
   Hue.el("#header_users").addEventListener("click", function () {
     Hue.show_userlist_window()
   })

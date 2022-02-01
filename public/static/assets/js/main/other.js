@@ -135,3 +135,14 @@ Hue.show_intro = function () {
   let bottomright = Hue.create_popup({position: "bottomright"})
   bottomright.show(["Welcome", "Chat Search | Media Controls"]) 
 }
+
+// Rotate screen
+Hue.flip = function () {
+  if (Hue.flipped) {
+    Hue.el("#main_container").classList.remove("flipped")
+  } else {
+    Hue.el("#main_container").classList.add("flipped")
+  }
+
+  Hue.flipped = !Hue.flipped
+}
