@@ -150,11 +150,6 @@ Hue.check_handle_url_options = function (text) {
 
 // Setups the Open URL picker window
 Hue.setup_open_url = function () {
-  Hue.el("#open_url_menu_open").addEventListener("click", function () {
-    Hue.goto_url(Hue.open_url_data.source, "tab")
-    Hue.msg_open_url.close()
-  })
-
   Hue.el("#open_url_menu_view_url").addEventListener("click", function () {
     Hue.open_view_text(Hue.open_url_data.source)
   })
@@ -175,6 +170,11 @@ Hue.setup_open_url = function () {
     Hue.load_media_picker(Hue.open_url_data.media_type, Hue.open_url_data.source, Hue.open_url_data.comment)
     Hue.msg_open_url.close()
   })
+
+  Hue.el("#open_url_menu_jump").addEventListener("click", function () {
+    Hue.jump_to_chat_message(Hue.open_url_data.message_id) 
+    Hue.msg_open_url.close()
+  })  
 }
 
 // Shows the Open URL menu
