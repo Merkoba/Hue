@@ -44,10 +44,9 @@ module.exports = function (
     )
     data.setter = socket.hue_username
 
-    if (
-      vars.rooms[socket.hue_room_id].current_tv_source === data.src ||
-      vars.rooms[socket.hue_room_id].current_tv_query === data.src
-    ) {
+    let info = db_manager.get_room(["id", socket.hue_room_id], { image_source: 1, image_query: 1 })
+
+    if (info.tv_source === data.src || info.tv_query === data.src) {
       handler.user_emit(socket, "same_tv", {})
       return false
     }

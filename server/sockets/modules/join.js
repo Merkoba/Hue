@@ -19,7 +19,6 @@ module.exports = function (
     socket.hue_locked = false
     socket.hue_info1 = ""
     socket.hue_typing_counter = 0
-    socket.hue_activity_counter = 0
     await handler.add_spam(socket)
   }
 
@@ -75,12 +74,6 @@ module.exports = function (
       }
     }
 
-    let room_fields = {}
-
-    if (vars.rooms[data.room_id]) {
-      room_fields = vars.filtered_fields
-    }
-
     let user_fields = {
       username: 1,
       profilepic_version: 1,
@@ -105,7 +98,7 @@ module.exports = function (
 
       socket.hue_user_id = userinfo.id
 
-      let info = await db_manager.get_room(["id", data.room_id], room_fields)
+      let info = await db_manager.get_room(["id", data.room_id], {})
 
       if (!info) {
         return handler.do_disconnect(socket)
@@ -131,10 +124,7 @@ module.exports = function (
         } else {
           socket.hue_user_id = data.user_id
 
-          let info = await db_manager.get_room(
-            ["id", data.room_id],
-            room_fields
-          )
+          let info = await db_manager.get_room(["id", data.room_id], {})
 
           if (!info) {
             return handler.do_disconnect(socket)
@@ -196,12 +186,6 @@ module.exports = function (
     socket.hue_audioclip_version = userinfo.audioclip_version
 
     if (vars.rooms[socket.hue_room_id] === undefined) {
-      let key = Object.keys(vars.filtered_fields)[0]
-
-      if (info[key] === undefined) {
-        info = await db_manager.get_room(["id", socket.hue_room_id], {})
-      }
-
       vars.rooms[socket.hue_room_id] = handler.create_room_object(info)
     }
 
@@ -271,9 +255,8 @@ module.exports = function (
       user_data.log_messages = []
       user_data.message_board_posts = []
     } else {
-      user_data.log_messages = vars.rooms[socket.hue_room_id].log_messages
-      user_data.message_board_posts =
-        vars.rooms[socket.hue_room_id].message_board_posts
+      user_data.log_messages = info.log_messages
+      user_data.message_board_posts = info.message_board_posts
     }
 
     handler.user_emit(socket, "joined", user_data)

@@ -32,7 +32,6 @@ module.exports = function (
 
   // Pushes pushing room message board posts
   handler.push_message_board_post = function (socket, message) {
-    let room = vars.rooms[socket.hue_room_id]
     let item = {
       user_id: socket.hue_user_id,
       username: socket.hue_username,
@@ -41,18 +40,7 @@ module.exports = function (
       id: handler.generate_message_board_post_id(),
     }
 
-    room.message_board_posts.push(item)
-
-    if (room.message_board_posts.length > config.max_message_board_posts) {
-      room.message_board_posts = room.message_board_posts.slice(
-        room.message_board_posts.length - config.max_message_board_posts
-      )
-    }
-
-    db_manager.update_room(socket.hue_room_id, {
-      message_board_posts: room.message_board_posts,
-    })
-
+    db_manager.push_room_item(socket.hue_room_id, "message_board_posts", item)
     return item
   }
 
@@ -67,10 +55,10 @@ module.exports = function (
       return false
     }
 
-    let room = vars.rooms[socket.hue_room_id]
+    let info = await db_manager.get_room(["id", socket.hue_room_id], { message_board_posts: 1 })
 
-    for (let i = 0; i < room.message_board_posts.length; i++) {
-      let item = room.message_board_posts[i]
+    for (let i = 0; i < info.message_board_posts.length; i++) {
+      let item = info.message_board_posts[i]
 
       if (item.id === data.id) {
         let info = await db_manager.get_room(
@@ -99,10 +87,10 @@ module.exports = function (
           }
         }
 
-        room.message_board_posts.splice(i, 1)
+        info.message_board_posts.splice(i, 1)
 
         db_manager.update_room(socket.hue_room_id, {
-          message_board_posts: room.message_board_posts,
+          message_board_posts: info.message_board_posts,
         })
 
         handler.room_emit(socket, "message_board_post_deleted", {

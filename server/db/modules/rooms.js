@@ -78,22 +78,22 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     return true
   }
 
-  // Updates log messages
-  manager.push_log_messages = function (id, messages) {
+  // Appends an item to a list
+  manager.push_room_item = function (id, list_name, item) {
     return new Promise((resolve, reject) => {
       manager
-        .get_room(["id", id], { log_messages: 1 })
+        .get_room(["id", id], { [list_name]: 1 })
 
         .then((room) => {
-          room.log_messages = messages
+          room[list_name].push(item)
 
-          if (room.log_messages.length > config.max_log_messages) {
-            room.log_messages = room.log_messages.slice(
-              room.log_messages.length - config.max_log_messages
+          if (room[list_name].length > config[`max_${list_name}`]) {
+            room[list_name] = room[list_name].slice(
+              room[list_name].length - config[`max_${list_name}`]
             )
           }
 
-          manager.update_room(id, { log_messages: room.log_messages })
+          manager.update_room(id, { [list_name]: room[list_name] })
           resolve(true)
           return
         })
@@ -103,32 +103,5 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           logger.log_error(err)
         })
     })
-  }
-
-  // Updates admin log messages
-  manager.push_admin_log_messages = function (id, messages) {
-    return new Promise((resolve, reject) => {
-      manager
-        .get_room(["id", id], { admin_log_messages: 1 })
-
-        .then((room) => {
-          room.admin_log_messages = messages
-
-          if (room.admin_log_messages.length > config.max_admin_log_messages) {
-            room.admin_log_messages = room.admin_log_messages.slice(
-              room.admin_log_messages.length - config.max_admin_log_messages
-            )
-          }
-
-          manager.update_room(id, { admin_log_messages: room.admin_log_messages })
-          resolve(true)
-          return
-        })
-
-        .catch(err => {
-          reject(err)
-          logger.log_error(err)
-        })
-    })
-  }
+  }  
 }
