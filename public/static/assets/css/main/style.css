@@ -505,6 +505,14 @@ body * {
 	flex-grow: 1;
 }
 
+.chat_area_clone .announcement_content_container {
+	width: 99%;
+}
+
+.chat_area_clone .message_edit_container {
+	width: 99%;
+}
+
 .brk_container {
 	display: flex;
 	flex-direction: column;

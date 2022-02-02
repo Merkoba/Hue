@@ -23,6 +23,33 @@ Hue.activate_key_detection = function () {
       }
     }
 
+    if (Hue.editing_message) {
+      Hue.focus_edit_area()
+
+      if (e.key === "Enter" && !e.shiftKey) {
+        Hue.send_edit_messsage()
+        e.preventDefault()
+      } else if (e.key === "Escape") {
+        Hue.stop_edit_message()
+        Hue.check_scrollers()
+        e.preventDefault()
+      } else if (e.key === "ArrowUp") {
+        let res = Hue.handle_edit_direction()
+
+        if (res) {
+          e.preventDefault()
+        }
+      } else if (e.key === "ArrowDown") {
+        let res = Hue.handle_edit_direction(true)
+
+        if (res) {
+          e.preventDefault()
+        }
+      }
+
+      return
+    }    
+
     if (Hue.modal_open) {
       if (e.key === "Escape") {
         if (e.shiftKey) {
@@ -214,33 +241,6 @@ Hue.activate_key_detection = function () {
             Hue.send_popup_message()
             e.preventDefault()
           }
-        }
-      }
-
-      return
-    }
-
-    if (Hue.editing_message) {
-      Hue.focus_edit_area()
-
-      if (e.key === "Enter" && !e.shiftKey) {
-        Hue.send_edit_messsage()
-        e.preventDefault()
-      } else if (e.key === "Escape") {
-        Hue.stop_edit_message()
-        Hue.check_scrollers()
-        e.preventDefault()
-      } else if (e.key === "ArrowUp") {
-        let res = Hue.handle_edit_direction()
-
-        if (res) {
-          e.preventDefault()
-        }
-      } else if (e.key === "ArrowDown") {
-        let res = Hue.handle_edit_direction(true)
-
-        if (res) {
-          e.preventDefault()
         }
       }
 
