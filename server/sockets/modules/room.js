@@ -30,8 +30,6 @@ module.exports = function (
       return false
     }
 
-    let room = vars.rooms[socket.hue_room_id]
-
     if (data.topic === room.topic) {
       return false
     }
@@ -50,7 +48,6 @@ module.exports = function (
       username: socket.hue_username
     })
 
-    room.topic = info.topic
     handler.push_admin_log_message(socket, `changed the topic to "${info.topic}"`)
   }
 
@@ -89,7 +86,6 @@ module.exports = function (
         name: info.name,
       })
 
-      vars.rooms[socket.hue_room_id].name = info.name
       handler.push_admin_log_message(socket, `changed the room name to "${info.name}"`)
     }
   }
@@ -98,9 +94,7 @@ module.exports = function (
   handler.create_room_object = function (info) {
     let obj = {
       id: info.id,
-      userlist: {},
-      topic: info.topic,
-      name: info.name
+      userlist: {}
     }
 
     return obj
