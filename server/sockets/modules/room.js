@@ -100,10 +100,7 @@ module.exports = function (
       id: info.id,
       userlist: {},
       topic: info.topic,
-      name: info.name,
-      public: info.public,
-      last_image_change: 0,
-      last_tv_change: 0,
+      name: info.name
     }
 
     return obj

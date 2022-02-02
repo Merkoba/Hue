@@ -44,17 +44,14 @@ module.exports = function (
     )
     data.setter = socket.hue_username
 
-    let info = db_manager.get_room(["id", socket.hue_room_id], { image_source: 1, image_query: 1 })
+    let info = db_manager.get_room(["id", socket.hue_room_id], { tv_source: 1, tv_query: 1, tv_date: 1})
 
     if (info.tv_source === data.src || info.tv_query === data.src) {
       handler.user_emit(socket, "same_tv", {})
       return false
     }
 
-    if (
-      Date.now() - vars.rooms[socket.hue_room_id].last_tv_change <
-      config.tv_change_cooldown
-    ) {
+    if (Date.now() - info.tv_date < config.tv_change_cooldown) {
       handler.user_emit(socket, "tv_cooldown_wait", {})
       return false
     }
