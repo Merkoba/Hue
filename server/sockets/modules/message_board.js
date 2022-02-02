@@ -55,17 +55,12 @@ module.exports = function (
       return false
     }
 
-    let info = await db_manager.get_room(["id", socket.hue_room_id], { message_board_posts: 1 })
+    let info = await db_manager.get_room(["id", socket.hue_room_id], { message_board_posts: 1, keys: 1 })
 
     for (let i = 0; i < info.message_board_posts.length; i++) {
       let item = info.message_board_posts[i]
 
       if (item.id === data.id) {
-        let info = await db_manager.get_room(
-          ["id", socket.hue_room_id],
-          { keys: 1 }
-        )
-        
         let current_role = info.keys[item.user_id] || vars.default_role
 
         if (item.user_id !== socket.hue_user_id) {
