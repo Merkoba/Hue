@@ -300,7 +300,7 @@ module.exports = function (
           }
         }
 
-        manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
+        db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
       }
     }
   }
@@ -325,7 +325,7 @@ module.exports = function (
     })
     
     handler.push_admin_log_message(socket, "cleared the log")
-    manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })  
+    db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })  
   }
 
   // Deletes all messages above a message
@@ -360,7 +360,7 @@ module.exports = function (
         })
         
         handler.push_admin_log_message(socket, "deleted messages above")
-        manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })        
+        db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })        
         return
       }
     }   
@@ -394,7 +394,7 @@ module.exports = function (
         })
         
         handler.push_admin_log_message(socket, "deleted messages below")
-        manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })                
+        db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })                
         return
       }
     }   
