@@ -38,17 +38,14 @@ module.exports = function (
       return false
     }
 
-    let info = db_manager.get_room(["id", socket.hue_room_id], { image_source: 1, image_query: 1 })
+    let info = db_manager.get_room(["id", socket.hue_room_id], { image_source: 1, image_query: 1, image_date: 1})
 
     if (info.image_source === data.src || info.image_query === data.src) {
       handler.user_emit(socket, "same_image", {})
       return false
     }
 
-    if (
-      Date.now() - vars.rooms[socket.hue_room_id].last_image_change <
-      config.image_change_cooldown
-    ) {
+    if (Date.now() - info.image_date < config.image_change_cooldown) {
       handler.user_emit(socket, "image_cooldown_wait", {})
       return false
     }
