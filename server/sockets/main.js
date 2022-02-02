@@ -120,9 +120,7 @@ module.exports = function (
     })
   })
 
-  handler.start_rooms_timeout()
   handler.start_files_timeout()
-
   sockets_api.handler = handler
   sockets_api.vars = vars
 }

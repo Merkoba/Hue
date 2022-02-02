@@ -140,7 +140,7 @@ module.exports = function (
       }
     }
 
-    handler.push_log_message(socket, message)
+    db_manager.push_room_item(socket.hue_room_id, "log_messages", message)
 
     let room = vars.rooms[room_id]
 
@@ -180,10 +180,11 @@ module.exports = function (
   }
 
   // Edit the comment of a media change
-  handler.public.edit_media_comment = function (socket, data, type) {
+  handler.public.edit_media_comment = async function (socket, data, type) {
     let edited = false
     let room_id = socket.hue_room_id
-    let messages = vars.rooms[room_id].log_messages
+    let info = await db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
+    let messages = info.log_messages
 
     for (let i = 0; i < messages.length; i++) {
       let message = messages[i]
@@ -195,8 +196,6 @@ module.exports = function (
       if (message.id === data.id) {
         if (message.data.user_id === socket.hue_user_id) {
           message.data.comment = data.comment
-          vars.rooms[room_id].log_messages_modified = true
-          vars.rooms[room_id].activity = true
           edited = true
           break
         } else {
@@ -219,7 +218,9 @@ module.exports = function (
         type: data.type,
         id: data.id,
         comment: data.comment
-      })      
+      })
+
+      manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
     }
   }
 }

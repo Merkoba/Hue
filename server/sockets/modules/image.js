@@ -38,10 +38,9 @@ module.exports = function (
       return false
     }
 
-    if (
-      vars.rooms[socket.hue_room_id].current_image_source === data.src ||
-      vars.rooms[socket.hue_room_id].current_image_query === data.src
-    ) {
+    let info = db_manager.get_room(["id", socket.hue_room_id], { image_source: 1, image_query: 1 })
+
+    if (info.image_source === data.src || info.image_query === data.src) {
       handler.user_emit(socket, "same_image", {})
       return false
     }

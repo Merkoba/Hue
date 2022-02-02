@@ -8,30 +8,6 @@ module.exports = function (
   utilz,
   logger
 ) {
-  // Pushes a log message
-  handler.push_log_message = function (socket, message) {
-    let room_id
-
-    if (typeof socket === "object") {
-      room_id = socket.hue_room_id
-    } else {
-      room_id = socket
-    }
-
-    let room = vars.rooms[room_id]
-
-    room.log_messages.push(message)
-
-    if (room.log_messages.length > config.max_log_messages) {
-      room.log_messages = room.log_messages.slice(
-        room.log_messages.length - config.max_log_messages
-      )
-    }
-
-    room.log_messages_modified = true
-    room.activity = true
-  }
-
   // Pushes an admin log message
   handler.push_admin_log_message = function (socket, content) {
     let message = {
@@ -43,17 +19,6 @@ module.exports = function (
       date: Date.now(),
     }
 
-    let room = vars.rooms[socket.hue_room_id]
-
-    room.admin_log_messages.push(message)
-
-    if (room.admin_log_messages.length > config.max_admin_log_messages) {
-      room.admin_log_messages = room.admin_log_messages.slice(
-        room.admin_log_messages.length - config.max_admin_log_messages
-      )
-    }
-
-    room.admin_log_messages_modified = true
-    room.activity = true
+    db_manager.push_room_item(socket.hue_room_id, "admin_log_messages", message)
   }
 }

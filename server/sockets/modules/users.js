@@ -118,10 +118,7 @@ module.exports = function (
       role: data.role,
     })
 
-    handler.push_admin_log_message(
-      socket,
-      `changed the role of "${userinfo.username}" to "${data.role}"`
-    )
+    handler.push_admin_log_message(socket, `changed the role of "${userinfo.username}" to "${data.role}"`)
   }
 
   // Handles user kicks
@@ -357,14 +354,13 @@ module.exports = function (
   }
 
   // Sends admin activity list
-  handler.public.get_admin_activity = function (socket, data) {
+  handler.public.get_admin_activity = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
       return false
     }
 
-    let messages = vars.rooms[socket.hue_room_id].admin_log_messages
-
-    handler.user_emit(socket, "receive_admin_activity", { messages: messages })
+    let info = await db_manager.get_room(["id", socket.hue_room_id], { admin_log_messages: 1 })
+    handler.user_emit(socket, "receive_admin_activity", { messages: info.admin_log_messages })
   }
 
   // Sends admin list

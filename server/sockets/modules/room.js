@@ -51,11 +51,7 @@ module.exports = function (
     })
 
     room.topic = info.topic
-
-    handler.push_admin_log_message(
-      socket,
-      `changed the topic to "${info.topic}"`
-    )
+    handler.push_admin_log_message(socket, `changed the topic to "${info.topic}"`)
   }
 
   // Handles room name changes
@@ -94,11 +90,7 @@ module.exports = function (
       })
 
       vars.rooms[socket.hue_room_id].name = info.name
-
-      handler.push_admin_log_message(
-        socket,
-        `changed the room name to "${info.name}"`
-      )
+      handler.push_admin_log_message(socket, `changed the room name to "${info.name}"`)
     }
   }
 
@@ -106,26 +98,12 @@ module.exports = function (
   handler.create_room_object = function (info) {
     let obj = {
       id: info.id,
-      activity: false,
-      log_messages: info.log_messages,
-      admin_log_messages: info.admin_log_messages,
-      log_messages_modified: false,
-      admin_log_messages_modified: false,
       userlist: {},
-      current_image_id: info.image_id,
-      current_image_user_id: info.image_user_id,
-      current_image_source: info.image_source,
-      current_image_query: info.image_query,
-      current_tv_id: info.tv_id,
-      current_tv_user_id: info.tv_user_id,
-      current_tv_source: info.tv_source,
-      current_tv_query: info.tv_query,
       topic: info.topic,
       name: info.name,
       public: info.public,
       last_image_change: 0,
       last_tv_change: 0,
-      message_board_posts: info.message_board_posts
     }
 
     return obj
@@ -159,10 +137,7 @@ module.exports = function (
       username: socket.hue_username
     })
 
-    handler.push_admin_log_message(
-      socket,
-      `changed the background color to "${data.color}"`
-    )
+    handler.push_admin_log_message(socket, `changed the background color to "${data.color}"`)
   }
 
   // Handles text color changes
@@ -193,10 +168,7 @@ module.exports = function (
       username: socket.hue_username
     })
 
-    handler.push_admin_log_message(
-      socket,
-      `changed the text color to "${data.color}"`
-    )
+    handler.push_admin_log_message(socket, `changed the text color to "${data.color}"`)
   }
 
   // Handles uploaded background images

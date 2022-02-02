@@ -22,11 +22,6 @@ module.exports = function (
   vars.media_root = vars.path.join(vars.root_path, config.media_directory)
   vars.roles = ["admin", "op", "voice"]
   vars.media_types = ["image", "tv"]
-  vars.filtered_fields = {
-    log_messages: 0,
-    admin_log_messages: 0,
-    message_board_posts: 0
-  }
   vars.redis_client_ready = false
   vars.redis_client = vars.redis.createClient()
 

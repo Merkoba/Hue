@@ -49,11 +49,12 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   function do_write_file (path) {
     utilz.loginfo(`Writing: ${path.split("/").slice(-2).join("/")}`)
     cache[path].last_write = Date.now()
-    fs.writeFile(path, JSON.stringify(cache[path].obj), "utf8", err => {
-      if (err) {
-        logger.log_error(err)
-      }
-    })
+
+    try {
+      fs.writeFileSync(path, JSON.stringify(cache[path].obj), "utf8")
+    } catch (err) {
+      logger.log_error(err)
+    }
   }
 
   // Find one result

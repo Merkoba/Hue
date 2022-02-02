@@ -51,50 +51,47 @@ module.exports = function (
       return false
     }
 
-    handler.process_message_links(data.message, function (response) {
+    handler.process_message_links(data.message, async function (response) {
       let id, date, edited, username
-      let room = vars.rooms[socket.hue_room_id]
+      
+      if (data.edit_id) {      
+        let info = await db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
 
-      if (data.edit_id) {
-        let messages = room.log_messages
+        if (!info) {
+          return false
+        }
 
-        for (let i = 0; i < messages.length; i++) {
-          let message = messages[i]
-
-          if (message.type !== "chat") {
-            continue
-          }
-
-          if (message.id === data.edit_id) {
-            if (message.data.user_id === socket.hue_user_id) {
-              edited = true
-              date = message.date
-              quote = message.data.quote
-              quote_username = message.data.quote_username
-              quote_user_id = message.data.quote_user_id
-              quote_id = message.data.quote_id
-              username = message.data.username
-              message.data.content = data.message
-              message.data.edited = true
-              message.data.link_title = response.title,
-              message.data.link_description = response.description
-              message.data.link_image = response.image
-              message.data.link_url = response.url
-              room.log_messages_modified = true
-              room.activity = true
-              break
-            } else {
-              return false
+        for (let i=0; i<info.log_messages.length; i++) {
+          if (info.log_messages[i].id === data.edit_id) {
+            if (info.log_messages[i].data.user_id !== socket.hue_user_id) {
+              resolve({})
+              return
             }
+
+            info.log_messages[i].data.edited = true
+            info.log_messages[i].data.content = data.message
+            info.log_messages[i].data.link_title = response.title,
+            info.log_messages[i].data.link_description = response.description
+            info.log_messages[i].data.link_image = response.image
+            info.log_messages[i].data.link_url = response.url
+            
+            edited = true
+            id = data.edit_id
+            date = info.log_messages[i].date
+            quote = info.log_messages[i].data.quote
+            quote_username = info.log_messages[i].data.quote_username
+            quote_user_id = info.log_messages[i].data.quote_user_id
+            quote_id = info.log_messages[i].data.quote_id
+            username = info.log_messages[i].data.username        
+
+            await db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
+            break
           }
         }
 
         if (!edited) {
           return false
         }
-
-        id = data.edit_id
-        edited = true
       } else {
         date = Date.now()
         id = handler.generate_message_id()
@@ -145,7 +142,7 @@ module.exports = function (
           }
         }
 
-        handler.push_log_message(socket, message)
+        db_manager.push_room_item(socket.hue_room_id, "log_messages", message)
       }
     })
   }
@@ -182,8 +179,14 @@ module.exports = function (
       return false
     }
 
-    let room = vars.rooms[socket.hue_room_id]
-    let messages = room.log_messages
+    let info = await db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
+
+    if (!info) {
+      return false
+    }
+
+    let messages = info.log_messages
+
     let message
     let message_id
     let message_user_id
@@ -258,8 +261,6 @@ module.exports = function (
       } else {
         deleted = true
         messages.splice(message_index, 1)
-        room.log_messages_modified = true
-        room.activity = true
       }
 
       if (deleted) {
@@ -283,10 +284,7 @@ module.exports = function (
 
         if (message_user_id !== socket.hue_user_id && message_username) {
           if (message_type === "chat") {
-            handler.push_admin_log_message(
-              socket,
-              `deleted a chat message from "${message_username}"`
-            )
+            handler.push_admin_log_message(socket, `deleted a chat message from "${message_username}"`)
           } else if (
             message_type === "image" ||
             message_type === "tv"
@@ -301,31 +299,37 @@ module.exports = function (
             handler.push_admin_log_message(socket, s)
           }
         }
+
+        manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
       }
     }
   }
 
   // Deletes all messages
-  handler.public.clear_log = function (socket, data) {
+  handler.public.clear_log = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
       return false
     }
 
-    let room = vars.rooms[socket.hue_room_id]
-    room.log_messages = []
-    room.log_messages_modified = true
-    room.activity = true
+    let info = await db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
+
+    if (!info) {
+      return false
+    }
+
+    info.log_messages = []
 
     handler.room_emit(socket, "log_cleared", {
       user_id: socket.hue_user_id,
       username: socket.hue_username
     })
     
-    handler.push_admin_log_message(socket, "cleared the log")    
+    handler.push_admin_log_message(socket, "cleared the log")
+    manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })  
   }
 
   // Deletes all messages above a message
-  handler.public.delete_messages_above = function (socket, data) {
+  handler.public.delete_messages_above = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
       return false
     }
@@ -338,14 +342,16 @@ module.exports = function (
       return false
     }
 
-    let room = vars.rooms[socket.hue_room_id]
+    let info = await db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
 
-    for (let i=0; i<room.log_messages.length; i++) {
-      let message = room.log_messages[i]
+    if (!info) {
+      return false
+    }    
+
+    for (let i=0; i<info.log_messages.length; i++) {
+      let message = info.log_messages[i]
       if (message.id === data.id) {
-        room.log_messages = room.log_messages.slice(i)
-        room.log_messages_modified = true
-        room.activity = true
+        info.log_messages = info.log_messages.slice(i)
 
         handler.room_emit(socket, "deleted_messages_above", {
           user_id: socket.hue_user_id,
@@ -353,14 +359,15 @@ module.exports = function (
           id: data.id
         })
         
-        handler.push_admin_log_message(socket, "deleted messages above")         
+        handler.push_admin_log_message(socket, "deleted messages above")
+        manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })        
         return
       }
     }   
   }
   
   // Deletes all messages above a message
-  handler.public.delete_messages_below = function (socket, data) {
+  handler.public.delete_messages_below = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
       return false
     }
@@ -373,14 +380,12 @@ module.exports = function (
       return false
     }    
 
-    let room = vars.rooms[socket.hue_room_id]
+    info.log_messages = info.log_messages.slice(i)
 
-    for (let i=0; i<room.log_messages.length; i++) {
-      let message = room.log_messages[i]
+    for (let i=0; i<info.log_messages.length; i++) {
+      let message = info.log_messages[i]
       if (message.id === data.id) {
-        room.log_messages = room.log_messages.slice(0, i + 1)
-        room.log_messages_modified = true
-        room.activity = true
+        info.log_messages = info.log_messages.slice(0, i + 1)
 
         handler.room_emit(socket, "deleted_messages_below", {
           user_id: socket.hue_user_id,
@@ -388,7 +393,8 @@ module.exports = function (
           id: data.id
         })
         
-        handler.push_admin_log_message(socket, "deleted messages below")         
+        handler.push_admin_log_message(socket, "deleted messages below")
+        manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })                
         return
       }
     }   
