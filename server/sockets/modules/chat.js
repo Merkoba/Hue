@@ -179,7 +179,7 @@ module.exports = function (
       return false
     }
 
-    let info = await db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
+    let info = await db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1, keys: 1 })
 
     if (!info) {
       return false
@@ -220,11 +220,7 @@ module.exports = function (
         if (!handler.is_admin_or_op(socket)) {
           return false
         }
-
-        let info = await db_manager.get_room(
-          ["id", socket.hue_room_id],
-          { keys: 1 }
-        )
+        
         let userinfo = await db_manager.get_user(
           ["id", message.data.user_id],
           { username: 1 }
