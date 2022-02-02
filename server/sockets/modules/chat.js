@@ -380,7 +380,11 @@ module.exports = function (
       return false
     }    
 
-    info.log_messages = info.log_messages.slice(i)
+    let info = await db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
+
+    if (!info) {
+      return false
+    }    
 
     for (let i=0; i<info.log_messages.length; i++) {
       let message = info.log_messages[i]

@@ -30,20 +30,18 @@ module.exports = function (
       return false
     }
 
-    if (data.topic === room.topic) {
+    let info = await db_manager.get_room(["id", socket.hue_room_id], { topic: 1 })
+
+    if (info.topic === data.topic) {
       return false
     }
 
-    let info = {}
-
-    info.topic = data.topic
-
     db_manager.update_room(socket.hue_room_id, {
-      topic: info.topic,
+      topic: data.topic
     })
 
     handler.room_emit(socket, "topic_changed", {
-      topic: info.topic,
+      topic: data.topic,
       user_id: socket.hue_user_id,
       username: socket.hue_username
     })
