@@ -28,7 +28,7 @@ Hue.setup_footer = function () {
     Hue.show_highlights()
   })
 
-  Hue.el("#footer_game").addEventListener("click", function () {
+  Hue.el("#footer_games").addEventListener("click", function () {
     Hue.show_game_picker()
   })  
 
