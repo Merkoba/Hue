@@ -7,6 +7,7 @@ Hue.setup_games = function () {
 
     if (e.target.classList.contains("game_picker_item")) {
       let index = e.target.dataset.gameindex
+      Hue.msg_game_picker.close()
       Hue.start_game(index)
     } 
   })
