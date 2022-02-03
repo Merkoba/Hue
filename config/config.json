@@ -123,5 +123,5 @@
 	"db_write_file_timeout_limit": 10000,
 	"chat_crop_limit": 500,
 	"game_title": "Archon Tetris",
-	"game_url": "http://tetris.merkoba.com"
+	"game_url": "https://tetris.merkoba.com"
 }
