@@ -29,7 +29,7 @@ Hue.setup_footer = function () {
   })
 
   Hue.el("#footer_game").addEventListener("click", function () {
-    Hue.start_game()
+    Hue.show_game_picker()
   })  
 
   Hue.el("#footer_items").addEventListener("click", function(e) {

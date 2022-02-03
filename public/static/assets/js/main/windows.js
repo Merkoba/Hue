@@ -104,7 +104,15 @@ Hue.start_msg = function () {
       },
       after_close: function (instance) {
         common.after_close(instance)
+        Hue.msg_game.set("")
       },
+    })
+  )
+
+  Hue.msg_game_picker = Msg.factory(
+    Object.assign({}, common, titlebar, {
+      id: "game_picker",
+      window_width: "24rem"
     })
   )  
 
@@ -380,6 +388,12 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_game_picker.set(
+    Hue.template_game_picker({
+      games: Hue.config.games
+    })
+  )  
+
   Hue.msg_main_menu.set(Hue.template_main_menu())
   Hue.msg_room_menu.set(Hue.template_room_menu())
   Hue.msg_user_menu.set(Hue.template_user_menu())
@@ -430,6 +444,7 @@ Hue.start_msg = function () {
   Hue.msg_draw_image.set_title("Draw an Image")
   Hue.msg_image_picker.set_title("Image")
   Hue.msg_tv_picker.set_title("TV")
+  Hue.msg_game_picker.set_title("Pick a Game")
 }
 
 // Sets all info window variables to false
