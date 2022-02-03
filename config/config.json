@@ -122,6 +122,11 @@
 	"db_write_file_timeout": 2000,
 	"db_write_file_timeout_limit": 10000,
 	"chat_crop_limit": 500,
-	"game_title": "Archon Tetris",
-	"game_url": "https://tetris.merkoba.com"
+	"games": [
+		{"name":"Tetris", "url":"https://tetris.merkoba.com"},
+		{"name":"Mines", "url":"https://mines.merkoba.com"},
+		{"name":"Flood", "url":"https://flood.merkoba.com"},
+		{"name":"Snek", "url":"https://snek.merkoba.com"},
+		{"name":"Conway", "url":"https://conway.merkoba.com"}
+	]
 }

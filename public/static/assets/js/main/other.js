@@ -146,13 +146,3 @@ Hue.flip = function () {
 
   Hue.flipped = !Hue.flipped
 }
-
-// Start the game using title and url
-Hue.start_game = function () {
-  let title = Hue.config.game_title
-  let html = "<iframe id='game_frame' frameBorder='0'></iframe>"
-
-  Hue.msg_game.show([title, html], function () {
-    Hue.el("#game_frame").src = Hue.config.game_url
-  })
-}
