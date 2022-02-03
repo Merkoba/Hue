@@ -2319,3 +2319,8 @@ pre {
 .flipped {
 	transform: rotateY(180deg);
 }
+
+#game_frame {
+	width: 100%;
+	height: 100%;
+}

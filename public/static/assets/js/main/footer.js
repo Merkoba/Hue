@@ -16,17 +16,21 @@ Hue.setup_footer = function () {
     })
   }
 
+  Hue.el("#footer_search").addEventListener("click", function () {
+    Hue.show_chat_search()
+  })
+  
+  Hue.el("#footer_links").addEventListener("click", function () {
+    Hue.show_links()
+  })
+
   Hue.el("#footer_highlights").addEventListener("click", function () {
     Hue.show_highlights()
   })
 
-  Hue.el("#footer_search").addEventListener("click", function () {
-    Hue.show_chat_search()
-  })
-
-  Hue.el("#footer_links").addEventListener("click", function () {
-    Hue.show_links()
-  })
+  Hue.el("#footer_game").addEventListener("click", function () {
+    Hue.start_game()
+  })  
 
   Hue.el("#footer_items").addEventListener("click", function(e) {
     if (e.target === this) {

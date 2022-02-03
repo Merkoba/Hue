@@ -92,6 +92,22 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_game = Msg.factory(
+    Object.assign({}, common, titlebar, {
+      id: "game",
+      preset: "window",
+      window_x: "inner_right",
+      overlay_class: "!overlay_same_color",
+      close_on_escape: false,
+      after_show: function (instance) {
+        common.after_show(instance)
+      },
+      after_close: function (instance) {
+        common.after_close(instance)
+      },
+    })
+  )  
+
   Hue.msg_lockscreen = Msg.factory(
     Object.assign({}, common, {
       id: "lockscreen",

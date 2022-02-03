@@ -121,5 +121,7 @@
 	"max_activity_username_length": 8,
 	"db_write_file_timeout": 2000,
 	"db_write_file_timeout_limit": 10000,
-	"chat_crop_limit": 500
+	"chat_crop_limit": 500,
+	"game_title": "Archon Tetris",
+	"game_url": "http://tetris.merkoba.com"
 }
