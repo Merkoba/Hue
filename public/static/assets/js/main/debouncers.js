@@ -72,4 +72,9 @@ Hue.create_debouncers = function () {
   Hue.update_userlist = Hue.create_debouncer(function (prop) {
     Hue.do_update_userlist(prop)
   }, Hue.update_userlist_delay)  
+
+  // Debounce timer for media image scrollwheel for resize
+  Hue.image_resize_wheel_timer = Hue.create_debouncer(function (direction) {
+    Hue.image_resize_wheel(direction)
+  }, Hue.wheel_delay_2)
 }
