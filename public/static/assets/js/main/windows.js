@@ -473,6 +473,10 @@ Hue.after_modal_show = function (instance) {
   Hue.modal_open = true
   Hue.blur_input()
   Hue.focus_modal_filter(instance)
+
+  if (Hue.editing_message) {
+    Hue.stop_edit_message()
+  }
 }
 
 // This is called after a modal is set or shown
@@ -493,6 +497,10 @@ Hue.after_modal_close = function (instance) {
   }
 
   Hue.reset_modal_filter(instance)
+
+  if (Hue.editing_message) {
+    Hue.stop_edit_message()
+  }
 }
 
 // Gets all Msg popup instances
