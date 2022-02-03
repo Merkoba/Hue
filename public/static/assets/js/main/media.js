@@ -77,7 +77,7 @@ Hue.apply_media_percentages = function () {
   }
 
   Hue.fix_frames()
-  Hue.goto_bottom(true)
+  Hue.goto_bottom()
 }
 
 // Applies the image and tv positions based on current state
