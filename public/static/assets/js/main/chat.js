@@ -1644,7 +1644,8 @@ Hue.show_log_messages = function (log_messages) {
   // If there are no media items in the log, show the current room media
 
   if (num_image === 0) {
-    Hue.setup_image(
+    Hue.setup_media_object(
+      "image",
       "show",
       Object.assign(Hue.get_media_object_from_init_data("image"), {
         in_log: false,
@@ -1653,7 +1654,8 @@ Hue.show_log_messages = function (log_messages) {
   }
 
   if (num_tv === 0) {
-    Hue.setup_tv(
+    Hue.setup_media_object(
+      "tv",
       "show",
       Object.assign(Hue.get_media_object_from_init_data("tv"), {
         in_log: false,
@@ -1690,11 +1692,11 @@ Hue.show_log_messages = function (log_messages) {
         } else if (type === "image") {
           data.id = id
           data.date = date
-          Hue.setup_image("show", data)
+          Hue.setup_media_object("image", "show", data)
         } else if (type === "tv") {
           data.id = id
           data.date = date
-          Hue.setup_tv("show", data)
+          Hue.setup_media_object("tv", "show", data)
         }
       }
     }
@@ -1845,8 +1847,8 @@ Hue.announce_log_cleared = function (data) {
   let current_tv = Hue.current_tv()
   Hue.image_changed = []
   Hue.tv_changed = []
-  Hue.setup_image("show", current_image)
-  Hue.setup_tv("show", current_tv)
+  Hue.setup_media_object("image", "show", current_image)
+  Hue.setup_media_object("tv", "show", current_tv)
 }
 
 // Handles delete message
