@@ -44,9 +44,14 @@ Hue.unlock_screen = function () {
 
   clearTimeout(Hue.lockscreen_peek_timeout)
 
-  Hue.screen_locked = false
   Hue.msg_lockscreen.close()
+  Hue.after_unlock()
+}
+
+// What to do after unlock screen
+Hue.after_unlock = function () {
+  Hue.screen_locked = false
   Hue.process_visibility()
   Hue.change({ type: "image", force: false, play: false})
-  Hue.change({ type: "tv", force: false, play: false})
+  Hue.change({ type: "tv", force: false, play: false})  
 }
