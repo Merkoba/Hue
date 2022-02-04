@@ -12,6 +12,10 @@ Hue.setup_main_menu = function () {
     Hue.show_media_menu()
   })
 
+  Hue.el("#main_menu_apps").addEventListener("click", function () {
+    Hue.show_app_picker()
+  })
+
   Hue.el("#main_menu_settings").addEventListener("click", function () {
     Hue.show_settings()
   })

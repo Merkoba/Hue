@@ -527,11 +527,11 @@ Hue.commands = {
     },
     description: `Show posts by a user`,
   },
-  "games": {
+  "apps": {
     action: (arg, ans) => {
-      Hue.show_game_picker()
+      Hue.show_app_picker()
     },
-    description: `Show the game picker`,
+    description: `Show the apps picker`,
   }
 }
 

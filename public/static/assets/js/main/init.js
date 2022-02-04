@@ -212,7 +212,7 @@ Hue.init = function () {
   Hue.start_timeago()
   Hue.setup_draw_image()
   Hue.setup_view_text()
-  Hue.setup_games()
+  Hue.setup_apps()
   
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
