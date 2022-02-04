@@ -72,6 +72,10 @@ Hue.setup_image = function (mode, odata = {}) {
 
   data.message = Hue.get_media_message(data)
 
+  if (data.message) {
+    data.message_id = Hue.announce_image(data).message_id
+  }
+
   if (!data.setter) {
     data.info = "Default Image"
   }
