@@ -926,7 +926,6 @@ Hue.get_media_message = function (data) {
 // This handles media objects received live from the server or from logged messages
 // This is the entry function for media objects to get registered, announced, and be ready for use
 Hue.setup_media_object = function (type, mode, odata = {}) {
-  console.log(type)
   let data = {}
 
   data.id = odata.id
