@@ -526,6 +526,12 @@ Hue.commands = {
       }
     },
     description: `Show posts by a user`,
+  },
+  "games": {
+    action: (arg, ans) => {
+      Hue.show_game_picker()
+    },
+    description: `Show the game picker`,
   }
 }
 
