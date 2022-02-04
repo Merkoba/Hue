@@ -53,8 +53,6 @@ Hue.setup_tv = function (mode, odata = {}) {
     }
   }
 
-  data.message = Hue.get_media_message(data)
-
   let gets = data.id ? `${data.id.slice(-3)} | ` : ""
 
   data.info = `${gets}Setter: ${data.setter}`
@@ -72,6 +70,8 @@ Hue.setup_tv = function (mode, odata = {}) {
   if (!data.date) {
     data.date = Date.now()
   }
+
+  data.message = Hue.get_media_message(data)
 
   if (data.message) {
     data.message_id = Hue.announce_tv(data).message_id
