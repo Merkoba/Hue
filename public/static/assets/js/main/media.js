@@ -834,22 +834,27 @@ Hue.do_edit_media_comment = function (type, id, comment) {
 
 // After response from the server after editing media comment
 Hue.edited_media_comment = function (data) {
+  let oitem = undefined
+
+  for (let item of Hue[`${data.type}_changed`]) {
+    if (item.id === data.id) {
+      item.comment = data.comment
+      item.message = Hue.get_media_message(item)
+      oitem = item
+      break
+    }
+  }
+
   let messages = Hue.els(".media_announcement")
 
   for (let message of messages) {
     if (Hue.dataset(message, "id") === data.id) {
       if (Hue.dataset(message, "type") === `${data.type}_change`) {
         let content = Hue.el(".announcement_content", message)
-        content.textContent = data.comment
+        content.textContent = oitem.message
         let content_container = Hue.el(".announcement_content_container", message)
         Hue.dataset(content_container, "original_message", data.comment)
       }
-    }
-  }
-
-  for (let item of Hue[`${data.type}_changed`]) {
-    if (item.id === data.id) {
-      item.comment = data.comment
     }
   }
 
@@ -877,4 +882,42 @@ Hue.load_media_picker = function (type, source, comment) {
   Hue.show_media_picker(type)
   Hue.el(`#${type}_source_picker_input`).value = source
   Hue.el(`#${type}_source_picker_input_comment`).value = comment
+}
+
+// Generate Image or TV item messages
+Hue.get_media_message = function (data) {
+  let message = ""
+
+  if (data.title) {
+    message = data.title
+    if (data.comment) {
+      message += ` (${data.comment})`
+    }    
+  } else if (data.comment) {
+    message = data.comment
+  }
+
+  if (!message) {
+    if (data.query) {
+      message = data.query
+    }    
+  }  
+
+  if (!message) {
+    if (data.size) {
+      message = "Upload"
+    } else {
+      message = `Link (${new URL(data.source).hostname})`
+    }
+  }
+
+  if (data.type === "youtube") {
+    let time = Hue.utilz.get_youtube_time(data.source)
+
+    if (time !== 0) {
+      message += ` (At ${Hue.utilz.humanize_seconds(time)})`
+    }
+  }
+
+  return message
 }
