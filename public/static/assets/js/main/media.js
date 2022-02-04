@@ -933,6 +933,7 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   data.user_id = odata.user_id
   data.type = odata.type
   data.source = odata.source
+  data.title = odata.title
   data.setter = odata.setter
   data.size = odata.size
   data.date = odata.date
