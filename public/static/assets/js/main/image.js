@@ -101,7 +101,8 @@ Hue.announce_image = function (data) {
     type: "image_change",
     user_id: data.user_id,
     in_log: data.in_log,
-    media_source: data.source
+    media_source: data.source,
+    comment: data.comment
   })
 }
 
