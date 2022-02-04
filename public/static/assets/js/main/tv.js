@@ -53,36 +53,7 @@ Hue.setup_tv = function (mode, odata = {}) {
     }
   }
 
-  if (data.title) {
-    data.message = data.title
-    if (data.comment) {
-      data.message += ` (${data.comment})`
-    }    
-  } else if (data.comment) {
-    data.message = data.comment
-  }
-
-  if (!data.message) {
-    if (data.query) {
-      data.message = data.query
-    }    
-  }  
-
-  if (!data.message) {
-    if (data.size) {
-      data.message = "Upload"
-    } else {
-      data.message = `Link (${new URL(data.source).hostname})`
-    }
-  }
-
-  if (data.type === "youtube") {
-    let time = Hue.utilz.get_youtube_time(data.source)
-
-    if (time !== 0) {
-      data.message += ` (At ${Hue.utilz.humanize_seconds(time)})`
-    }
-  }
+  data.message = Hue.get_media_message(data)
 
   let gets = data.id ? `${data.id.slice(-3)} | ` : ""
 

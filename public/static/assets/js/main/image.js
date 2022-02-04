@@ -70,27 +70,7 @@ Hue.setup_image = function (mode, odata = {}) {
   data.info_html += `<div>${data.nice_date}</div>`
   data.info_html += `<div class='modal_image_timeago'></div>`
 
-  if (data.comment) {
-    data.message = data.comment
-  }
-
-  if (!data.message) {
-    if (data.query) {
-      data.message = data.query
-    }    
-  }
-
-  if (!data.message) {
-    if (data.size) {
-      data.message = "Upload"
-    } else {
-      data.message = `Link (${new URL(data.source).hostname})`
-    }
-  }
-
-  if (data.message) {
-    data.message_id = Hue.announce_image(data).message_id
-  }
+  data.message = Hue.get_media_message(data)
 
   if (!data.setter) {
     data.info = "Default Image"
