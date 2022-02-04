@@ -16,10 +16,10 @@ Hue.server_update_events = {
     Hue.upload_ended(data)
   },
   image_source_changed: (data) => {
-    Hue.setup_image("change", data)
+    Hue.setup_media_object("image", "change", data)
   },
   tv_source_changed: (data) => {
-    Hue.setup_tv("change", data)
+    Hue.setup_media_object("tv", "change", data)
   },
   profilepic_changed: (data) => {
     Hue.profilepic_changed(data)

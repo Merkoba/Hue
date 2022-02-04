@@ -921,3 +921,117 @@ Hue.get_media_message = function (data) {
 
   return message
 }
+
+// Setups a media object
+// This handles media objects received live from the server or from logged messages
+// This is the entry function for media objects to get registered, announced, and be ready for use
+Hue.setup_media_object = function (type, mode, odata = {}) {
+  console.log(type)
+  let data = {}
+
+  data.id = odata.id
+  data.user_id = odata.user_id
+  data.type = odata.type
+  data.source = odata.source
+  data.setter = odata.setter
+  data.size = odata.size
+  data.date = odata.date
+  data.query = odata.query
+  data.comment = odata.comment
+  data.in_log = odata.in_log === undefined ? true : odata.in_log
+  data.media_type = type
+
+  if (data.type === "upload") {
+    data.source = `${Hue.config.public_media_directory}/room/${Hue.room_id}/${type}/${data.source}`
+  }
+
+  data.nice_date = data.date
+    ? Hue.utilz.nice_date(data.date)
+    : Hue.utilz.nice_date()
+
+  if (!data.setter) {
+    data.setter = Hue.config.system_username
+  }
+
+  if (!data.source) {
+    data.source = Hue.config[`default_${type}_source`]
+  }
+
+  if (data.source.startsWith("/")) {
+    data.source = window.location.origin + data.source
+  } else if (data.source.startsWith(window.location.origin)) {
+    if (!data.size) {
+      for (let obj of Hue[`${type}_changed`]) {
+        if (obj.source === data.source) {
+          data.type = obj.type
+          data.size = obj.size
+          break
+        }
+      }
+    }
+  }
+
+  if (!data.date) {
+    data.date = Date.now()
+  }
+
+  let gets = data.id ? `${data.id.slice(-3)} | ` : ""
+
+  data.info = `${gets}Setter: ${data.setter}`
+  data.info_html = `<div>Setter: ${Hue.utilz.make_html_safe(
+    data.setter
+  )}</div>`
+
+  if (data.size) {
+    data.info += ` | Size: ${Hue.utilz.get_size_string(data.size)}`
+    data.info_html += `<div>Size: ${Hue.utilz.get_size_string(data.size)}</div>`
+  }
+
+  if (data.query) {
+    data.info += ` | Search Term: "${data.query}"`
+  }
+
+  data.info += ` | ${data.nice_date}`
+  data.info_html += `<div>${data.nice_date}</div>`
+  data.info_html += `<div class='modal_${type}_timeago'></div>`
+
+  data.message = Hue.get_media_message(data)
+
+  if (data.message) {
+    data.message_id = Hue.announce_media(type, data).message_id
+  }
+
+  if (!data.setter) {
+    data.info = `Default ${Hue.utilz.capitalize_words(type)}`
+  }
+
+  if (mode === "change" || mode === "show") {
+    Hue[`push_${type}_changed`](data)
+  }
+
+  if (mode === "change") {
+    if (Hue[`${type}_locked`]) {
+      Hue.el(`#footer_lock_${type}_icon`).classList.add("blinking")
+    }
+
+    Hue.change({type: type})
+  }
+}
+
+// Announce a media change to the chat
+Hue.announce_media = function (type, data) {
+  return Hue.public_feedback(data.message, {
+    id: data.id,
+    save: true,
+    brk: Hue.get_chat_icon(type),
+    title: data.info,
+    date: data.date,
+    type: data.type,
+    username: data.setter,
+    type: `${type}_change`,
+    user_id: data.user_id,
+    in_log: data.in_log,
+    media_source: data.source,
+    comment: data.comment
+  })
+}
