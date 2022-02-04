@@ -26,11 +26,7 @@ Hue.setup_footer = function () {
 
   Hue.el("#footer_highlights").addEventListener("click", function () {
     Hue.show_highlights()
-  })
-
-  Hue.el("#footer_games").addEventListener("click", function () {
-    Hue.show_game_picker()
-  })  
+  }) 
 
   Hue.el("#footer_items").addEventListener("click", function(e) {
     if (e.target === this) {
