@@ -108,7 +108,8 @@ Hue.announce_tv = function (data) {
     type: "tv_change",
     user_id: data.user_id,
     in_log: data.in_log,
-    media_source: data.source
+    media_source: data.source,
+    comment: data.comment
   })
 }
 

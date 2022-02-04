@@ -268,7 +268,8 @@ Hue.add_chat_announcement = function (args = {}) {
     user_id: false,
     parse_text: false,
     in_log: true,
-    media_source: ""
+    media_source: "",
+    comment: ""
   }
 
   args = Object.assign(def_args, args)
@@ -343,7 +344,7 @@ Hue.add_chat_announcement = function (args = {}) {
   }
 
   let content_container = Hue.el(".announcement_content_container", fmessage)
-  Hue.dataset(content_container, "original_message", args.message)
+  Hue.dataset(content_container, "original_message", args.comment)
 
   let content = Hue.el(".announcement_content", fmessage)
   let split = Hue.el(".announcement_content_split", fmessage)
