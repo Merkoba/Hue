@@ -50,7 +50,7 @@ Hue.activate_key_detection = function () {
       return
     }    
 
-    if (Hue.modal_open) {
+    if (Hue.modal_open && !Hue.app_open) {
       if (e.key === "Escape") {
         if (e.shiftKey) {
           Hue.close_all_modals()
