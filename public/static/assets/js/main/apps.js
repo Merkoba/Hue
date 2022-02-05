@@ -16,8 +16,13 @@ Hue.setup_apps = function () {
 }
 
 // Show the app picker
-Hue.show_app_picker = function () {
-  Hue.msg_app_picker.show()
+Hue.show_app_picker = function (filter) {
+  Hue.msg_app_picker.show(function () {
+    if (filter) {
+      Hue.el("#app_picker_filter").value = filter
+      Hue.do_modal_filter()
+    }
+  })
 }
 
 // Start a app
