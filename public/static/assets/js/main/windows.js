@@ -774,3 +774,14 @@ Hue.show_action_popup = function (args = {}) {
   popup.show([args.title, html])
   return popup
 }
+
+// Get the first visible item in a filtered container
+Hue.get_first_visible_modal_item = function (id) {
+  let items = Hue.els(`#${id} .modal_item`)
+  
+  for (let item of items) {
+    if (!item.classList.contains("nodisplay")) {
+      return item
+    }
+  }
+}
