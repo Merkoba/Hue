@@ -2346,3 +2346,7 @@ pre {
 .app_picker_item {
 	cursor: pointer;
 }
+
+.transparent_background {
+	background-color: rgba(0, 0, 0, 0) !important
+}
