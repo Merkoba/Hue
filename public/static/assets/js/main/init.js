@@ -135,6 +135,9 @@ Hue.dataset_id = 0
 Hue.highlight_date_on_focus = 0
 Hue.focused_once = false
 Hue.flipped = false
+Hue.app_open = false
+Hue.app_counter = 0
+Hue.active_app = 0
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
