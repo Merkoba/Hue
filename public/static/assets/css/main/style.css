@@ -703,7 +703,7 @@ a.generic:hover {
 	color: var(--background_color) !important;
 }
 
-.Msg-window, .overlay_same_color {
+.Msg-window, .Msg-content-container, .overlay_same_color {
 	background-color: var(--background_color) !important;
 	color: var(--font_color) !important;
 }
