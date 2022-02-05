@@ -97,15 +97,16 @@ Hue.start_msg = function () {
       id: "app",
       preset: "window",
       window_x: "inner_right",
-      overlay_class: "!overlay_same_color",
       close_on_escape: false,
+      enable_overlay: false,
+      window_class: "!transparent_background",
       after_show: function (instance) {
         common.after_show(instance)
         Hue.screen_locked = true
       },
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.msg_app.set("")
+        Hue.msg_app.set(Hue.template_app())
         Hue.after_unlock()
       },
     })
@@ -422,6 +423,7 @@ Hue.start_msg = function () {
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_draw_image.set(Hue.template_draw_image())
+  Hue.msg_app.set(Hue.template_app())
 
   Hue.msg_info.create()
   Hue.msg_info2.create()

@@ -13,6 +13,23 @@ Hue.setup_apps = function () {
   })
 
   Hue.vertical_separator(Hue.el("#app_picker_container"))
+
+  Hue.el("#Msg-titlebar-app").addEventListener("mouseenter", function () {
+    Hue.app_peek_timeout = setTimeout(function () {
+      Hue.el("#Msg-content-container-app").classList.add("nodisplay")
+      Hue.app_peek_active = true
+    }, Hue.app_peek_delay)
+  })
+  
+  Hue.el("#Msg-titlebar-app").addEventListener("mouseleave", function () {
+    clearTimeout(Hue.app_peek_timeout)
+  
+    if (Hue.app_peek_active) {
+      Hue.el("#Msg-content-container-app").classList.remove("nodisplay")
+    }
+  
+    Hue.app_peek_active = false
+  })  
 }
 
 // Show the app picker
@@ -27,10 +44,13 @@ Hue.show_app_picker = function (filter) {
 
 // Start a app
 Hue.start_app = function (index) {
+  Hue.close_all_modals()
   let app = Hue.config.applist[index]
-  let html = "<iframe id='app_frame' frameBorder='0'></iframe>"
-  
-  Hue.msg_app.show([app.name, html], function () {
+  Hue.msg_app.set_title(app.name)
+  Hue.app_peek_active = false
+  Hue.el("#Msg-content-container-app").classList.remove("nodisplay")
+
+  Hue.msg_app.show(function () {
     Hue.el("#app_frame").src = app.url
   })
 }
