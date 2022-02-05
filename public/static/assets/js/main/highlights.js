@@ -98,7 +98,7 @@ Hue.on_highlight = function (username) {
     return false
   }
 
-  if (!Hue.app_focused) {
+  if (!Hue.has_focus) {
     Hue.show_highlight_desktop_notification(username)
   }
 

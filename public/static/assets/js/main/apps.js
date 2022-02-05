@@ -17,9 +17,9 @@ Hue.setup_apps = function () {
   Hue.el("#Msg-titlebar-app").addEventListener("mouseenter", function () {
     Hue.app_peek_timeout = setTimeout(function () {
       Hue.el("#Msg-content-container-app").classList.add("nodisplay")
-      Hue.app_peek_active = true
       Hue.app_counter = 0
       Hue.update_app_title()
+      Hue.app_peek_active = true
     }, Hue.app_peek_delay)
   })
   
