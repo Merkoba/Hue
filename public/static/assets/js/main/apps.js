@@ -19,6 +19,7 @@ Hue.setup_apps = function () {
       Hue.el("#Msg-content-container-app").classList.add("nodisplay")
       Hue.app_counter = 0
       Hue.update_app_title()
+      Hue.remove_alert_title()
       Hue.app_peek_active = true
     }, Hue.app_peek_delay)
   })
