@@ -136,8 +136,8 @@ Hue.flipped = false
 Hue.active_app = 0
 Hue.app_open = false
 Hue.app_counter = 0
-Hue.app_peek_delay = 500
 Hue.app_peek_active = false
+Hue.app_height_mode = "full"
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

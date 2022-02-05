@@ -101,15 +101,14 @@ Hue.start_msg = function () {
       enable_overlay: false,
       window_class: "!transparent_background",
       content_container_class: "!msg_background_color",
+      titlebar_class: "!custom_titlebar !pointer",
       after_show: function (instance) {
         common.after_show(instance)
-        Hue.screen_locked = true
         Hue.app_open = true
       },
       after_close: function (instance) {
         common.after_close(instance)
         Hue.msg_app.set(Hue.template_app())
-        Hue.after_unlock()
         Hue.app_open = false
       },
     })
@@ -789,4 +788,24 @@ Hue.get_first_visible_modal_item = function (id) {
       return item
     }
   }
+}
+
+// Change the height of a modal window
+// Modes: full, half, titlebar
+Hue.change_modal_window_height = function (id, mode) {
+  let w = Hue.el(`#Msg-window-${id}`)
+  let t = Hue.el(`#Msg-titlebar-${id}`)
+  let h = ""
+
+  if (mode === "titlebar") {
+    h = `${t.offsetHeight}px`
+  } else if (mode === "half") {
+    h = `${w.offsetHeight / 2}px`
+  } else if (mode === "full") {
+    h = `100vh`
+  }
+
+	w.style.height = h
+	w.style.minHeight = h
+	w.style.maxHeight = h
 }
