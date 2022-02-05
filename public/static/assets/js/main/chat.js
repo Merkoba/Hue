@@ -1379,6 +1379,11 @@ Hue.on_activity = function (type) {
     return false
   }
 
+  if (Hue.app_open) {
+    Hue.app_counter += 1
+    Hue.update_app_title()
+  }
+
   if (!Hue.app_focused || Hue.screen_locked) {
     if (type === "message" || type === "media_change") {
       Hue.alert_title(1)

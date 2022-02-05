@@ -103,11 +103,13 @@ Hue.start_msg = function () {
       after_show: function (instance) {
         common.after_show(instance)
         Hue.screen_locked = true
+        Hue.app_open = true
       },
       after_close: function (instance) {
         common.after_close(instance)
         Hue.msg_app.set(Hue.template_app())
         Hue.after_unlock()
+        Hue.app_open = false
       },
     })
   )
