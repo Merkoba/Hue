@@ -510,7 +510,7 @@ Hue.add_to_chat = function (args = {}) {
 
     if (highlighted) {
       if (Hue.room_state.last_highlight_date < date) {
-        if (Hue.app_focused) {
+        if (Hue.has_focus) {
           Hue.room_state.last_highlight_date = date
           Hue.save_room_state()
         } else {
@@ -534,7 +534,7 @@ Hue.add_to_chat = function (args = {}) {
     }
   }
 
-  if (Hue.started && !Hue.app_focused) {
+  if (Hue.started && !Hue.has_focus) {
     if (content_container) {
       Hue.add_fresh_message(content_container)
     } else {
@@ -1141,7 +1141,7 @@ Hue.get_last_chat_message_by_user_id = function (ouser_id) {
 // Gives or maintains aura classes
 // Starts timeout to remove them
 Hue.show_aura = function (id) {
-  if (!Hue.app_focused) {
+  if (!Hue.has_focus) {
     return false
   }
 
@@ -1379,12 +1379,12 @@ Hue.on_activity = function (type) {
     return false
   }
 
-  if (Hue.app_open) {
+  if (Hue.app_open && !Hue.app_peek_active) {
     Hue.app_counter += 1
     Hue.update_app_title()
   }
 
-  if (!Hue.app_focused || Hue.screen_locked) {
+  if (!Hue.has_focus || Hue.screen_locked) {
     if (type === "message" || type === "media_change") {
       Hue.alert_title(1)
     } else if (type === "highlight" || type === "whisper") {
@@ -1804,7 +1804,7 @@ Hue.activity_notification = function (username) {
     return false
   }
 
-  if (!Hue.app_focused) {
+  if (!Hue.has_focus) {
     Hue.show_activity_desktop_notification(username)
   }
 }

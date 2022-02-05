@@ -68,15 +68,15 @@ Hue.process_visibility = function () {
     return false
   }
 
-  Hue.app_focused = !document.hidden
+  Hue.has_focus = !document.hidden
 
-  if (Hue.app_focused) {
-    Hue.on_app_focused()
+  if (Hue.has_focus) {
+    Hue.on_has_focus()
   }
 }
 
 // This runs when the client regains visibility
-Hue.on_app_focused = function () {
+Hue.on_has_focus = function () {
   Hue.change({type: "image", force: false, play: false})
   Hue.change({type: "tv", force: false, play: false})
   Hue.remove_alert_title()
