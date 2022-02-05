@@ -790,22 +790,35 @@ Hue.get_first_visible_modal_item = function (id) {
   }
 }
 
-// Change the height of a modal window
-// Modes: full, half, titlebar
-Hue.change_modal_window_height = function (id, mode) {
-  let w = Hue.el(`#Msg-window-${id}`)
-  let t = Hue.el(`#Msg-titlebar-${id}`)
+// Change the height and width of a modal window
+// Modes: full, titlebar
+Hue.change_modal_window_mode = function (id, mode) {
+  let win = Hue.el(`#Msg-window-${id}`)
+  let titlebar = Hue.el(`#Msg-titlebar-${id}`)
   let h = ""
+  let w = ""
 
   if (mode === "titlebar") {
-    h = `${t.offsetHeight}px`
-  } else if (mode === "half") {
-    h = `${w.offsetHeight / 2}px`
+    h = `${titlebar.offsetHeight}px`
+    w = "10rem"
+
+    win.style.right = "5px"
+    win.style.left = "unset"
+    win.style.top = `${titlebar.offsetHeight + 10}px`
   } else if (mode === "full") {
     h = `100vh`
+    w = "100vw"
+
+    win.style.right = "unset"
+    win.style.left = "0"
+    win.style.top = "0"
   }
 
-	w.style.height = h
-	w.style.minHeight = h
-	w.style.maxHeight = h
+	win.style.height = h
+	win.style.minHeight = h
+	win.style.maxHeight = h
+
+  win.style.width = w
+	win.style.minWidth = w
+	win.style.maxWidth = w
 }
