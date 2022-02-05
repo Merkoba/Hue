@@ -80,7 +80,7 @@ Hue.change_input = function (s, to_end = true, focus = true) {
 
 // Focuses the input
 Hue.focus_input = function () {
-  if (Hue.modal_open) {
+  if (Hue.modal_open && !Hue.app_open) {
     return false
   }
 

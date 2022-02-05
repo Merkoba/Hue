@@ -5,6 +5,10 @@ Hue.activate_key_detection = function () {
       return
     }
 
+    if (Hue.app_open && Hue.app_mode === "full") {
+      return
+    }
+
     if (e.key === "Tab") {
       if (
         Hue.modal_open &&

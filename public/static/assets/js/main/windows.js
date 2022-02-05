@@ -791,14 +791,14 @@ Hue.get_first_visible_modal_item = function (id) {
 }
 
 // Change the height and width of a modal window
-// Modes: full, titlebar
+// Modes: full, minimized
 Hue.change_modal_window_mode = function (id, mode) {
   let win = Hue.el(`#Msg-window-${id}`)
   let titlebar = Hue.el(`#Msg-titlebar-${id}`)
   let h = ""
   let w = ""
 
-  if (mode === "titlebar") {
+  if (mode === "minimized") {
     h = `${titlebar.offsetHeight}px`
     w = "10rem"
 
