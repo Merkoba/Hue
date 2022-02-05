@@ -29,3 +29,8 @@ Hue.start_app = function (index) {
     Hue.el("#app_frame").src = app.url
   })
 }
+
+// After app picker is filtered
+Hue.after_app_picker_filtered = function () {
+  Hue.vertical_separator(Hue.el("#app_picker_container"))
+}
