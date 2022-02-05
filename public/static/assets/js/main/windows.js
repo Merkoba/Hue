@@ -80,7 +80,7 @@ Hue.start_msg = function () {
     Object.assign({}, common, {
       id: "modal_image",
       preset: "window",
-      overlay_class: "!overlay_same_color",
+      overlay_class: "!msg_background_color",
       after_show: function (instance) {
         common.after_show(instance)
         Hue.restore_modal_image()
@@ -100,6 +100,7 @@ Hue.start_msg = function () {
       close_on_escape: false,
       enable_overlay: false,
       window_class: "!transparent_background",
+      content_container_class: "!msg_background_color",
       after_show: function (instance) {
         common.after_show(instance)
         Hue.screen_locked = true
@@ -126,7 +127,7 @@ Hue.start_msg = function () {
       id: "lockscreen",
       preset: "window",
       close_on_escape: false,
-      overlay_class: "!overlay_same_color"
+      overlay_class: "!msg_background_color"
     })
   )
 
@@ -266,7 +267,7 @@ Hue.start_msg = function () {
     Object.assign({}, common, {
       id: "expand_image",
       preset: "window",
-      overlay_class: "!overlay_same_color"
+      overlay_class: "!msg_background_color"
     })
   )
 
