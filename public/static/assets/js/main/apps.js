@@ -26,7 +26,7 @@ Hue.setup_apps = function () {
     }
 
     Hue.update_app_title()
-    Hue.change_modal_window_height("app", Hue.app_height_mode)
+    Hue.change_modal_window_mode("app", Hue.app_height_mode)
   })
 }
 
@@ -49,7 +49,7 @@ Hue.start_app = function (index) {
   Hue.app_peek_active = false
   Hue.app_counter = 0
   Hue.app_height_mode = "full"
-  Hue.change_modal_window_height("app", "full")
+  Hue.change_modal_window_mode("app", "full")
   Hue.el("#Msg-content-container-app").classList.remove("nodisplay")
 
   Hue.msg_app.show(function () {
