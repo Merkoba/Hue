@@ -244,6 +244,15 @@ Hue.activate_key_detection = function () {
         }
       }
 
+      if (Hue.msg_app_picker.is_open()) {
+        if (Hue.msg_app_picker.is_highest()) {
+          if (e.key === "Enter") {
+            Hue.launch_first_app()
+            e.preventDefault()
+          }
+        }
+      }      
+
       return
     }
 

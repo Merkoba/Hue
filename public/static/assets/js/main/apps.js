@@ -34,3 +34,13 @@ Hue.start_app = function (index) {
 Hue.after_app_picker_filtered = function () {
   Hue.vertical_separator(Hue.el("#app_picker_container"))
 }
+
+// Launch the first app in the filtered list
+Hue.launch_first_app = function () {
+  if (Hue.app_picker_filtered) {
+    let item = Hue.get_first_visible_modal_item("app_picker_container")
+    if (item) {
+      item.click()
+    }
+  }
+}
