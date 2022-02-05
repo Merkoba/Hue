@@ -15,18 +15,18 @@ Hue.setup_apps = function () {
   Hue.vertical_separator(Hue.el("#app_picker_container"))
 
   Hue.el("#Msg-titlebar-app").addEventListener("click", function () {
-    if (Hue.app_height_mode === "full") {
-      Hue.app_height_mode = "titlebar"
+    if (Hue.app_mode === "full") {
+      Hue.app_mode = "minimized"
       Hue.remove_alert_title()
       Hue.app_peek_active = true
       Hue.app_counter = 0
-    } else if (Hue.app_height_mode === "titlebar") {
-      Hue.app_height_mode = "full"
+    } else if (Hue.app_mode === "minimized") {
+      Hue.app_mode = "full"
       Hue.app_peek_active = false
     }
 
     Hue.update_app_title()
-    Hue.change_modal_window_mode("app", Hue.app_height_mode)
+    Hue.change_modal_window_mode("app", Hue.app_mode)
   })
 }
 
@@ -48,7 +48,7 @@ Hue.start_app = function (index) {
   Hue.msg_app.set_title(app.name)
   Hue.app_peek_active = false
   Hue.app_counter = 0
-  Hue.app_height_mode = "full"
+  Hue.app_mode = "full"
   Hue.change_modal_window_mode("app", "full")
   Hue.el("#Msg-content-container-app").classList.remove("nodisplay")
 
