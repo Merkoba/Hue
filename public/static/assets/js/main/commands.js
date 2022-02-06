@@ -538,6 +538,14 @@ Hue.commands = {
       Hue.show_app_picker(arg || "")
     },
     description: `Show the apps picker`,
+  },
+  "open": {
+    action: (arg, ans) => {
+      if (arg) {
+        Hue.open_custom_app(arg)
+      }
+    },
+    description: `Show the apps picker`,
   }
 }
 

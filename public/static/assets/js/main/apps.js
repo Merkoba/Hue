@@ -25,8 +25,12 @@ Hue.setup_apps = function () {
 }
 
 // On custom app picker action
-Hue.open_custom_app = function () {
-  let url = Hue.el("#custom_app_picker_input").value.trim()
+Hue.open_custom_app = function (url = "") {
+  if (url === "") {
+    url = Hue.el("#custom_app_picker_input").value
+  }
+
+  url = url.trim()
 
   if (!url) {
     return
