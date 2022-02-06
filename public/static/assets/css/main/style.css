@@ -2357,3 +2357,9 @@ pre {
 	padding-bottom: 4px !important;
 	cursor: pointer !important;
 }
+
+#custom_app_picker_open {
+	margin-top: 1rem;
+	font-size: 1.2rem;
+	cursor: pointer;
+}

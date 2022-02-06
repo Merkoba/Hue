@@ -54,7 +54,7 @@ Hue.activate_key_detection = function () {
       return
     }    
 
-    if (Hue.modal_open && !Hue.app_open) {
+    if (Hue.modal_open) {
       if (e.key === "Escape") {
         if (e.shiftKey) {
           Hue.close_all_modals()
@@ -255,7 +255,16 @@ Hue.activate_key_detection = function () {
             e.preventDefault()
           }
         }
-      }      
+      }
+      
+      if (Hue.msg_custom_app_picker.is_open()) {
+        if (Hue.msg_custom_app_picker.is_highest()) {
+          if (e.key === "Enter") {
+            Hue.open_custom_app()
+            e.preventDefault()
+          }
+        }
+      }
 
       return
     }
