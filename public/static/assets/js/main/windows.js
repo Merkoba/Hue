@@ -807,13 +807,13 @@ Hue.create_app_window = function () {
 }
 
 // Small popup for a minimized app
-Hue.create_app_popup = function (message, win) {
+Hue.create_app_popup = function (name, win) {
   let obj = {}
   obj.window_class = "!app_popup !action"
   obj.enable_titlebar = false
   obj.window_x = "floating_right"
   obj.position = "bottomright"
-  obj.window_width = "10rem"
+  obj.window_width = "12rem"
   obj.disable_content_padding = true
   obj.close_on_escape = false
   
@@ -832,5 +832,16 @@ Hue.create_app_popup = function (message, win) {
   }
 
   p = Hue.create_popup(obj)
-  p.show(message)
+
+  let h = `
+    <div class="app_popup_container">
+      <canvas class="app_popup_icon" width="20" height="20"></canvas>
+      <div>${name}</div>
+    </div>
+  `
+
+  p.show(h, function () {
+    let el = Hue.el(".app_popup_icon", p.content)
+    jdenticon.update(el, name)
+  })
 }

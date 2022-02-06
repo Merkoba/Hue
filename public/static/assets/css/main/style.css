@@ -2367,6 +2367,19 @@ pre {
 	cursor: pointer !important;
 }
 
+.app_popup_container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+}
+
+.app_popup_icon {
+	margin-right: 0.5rem;
+}
+
 #custom_app_picker_open {
 	margin-top: 1rem;
 	font-size: 1.2rem;
