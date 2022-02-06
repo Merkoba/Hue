@@ -22,6 +22,13 @@ Hue.setup_apps = function () {
   Hue.el("#custom_app_picker_open").addEventListener("click", function () {
     Hue.open_custom_app()
   })
+
+  for (let icon of Hue.els(".app_picker_item_icon")) {
+    let index = icon.parentNode.dataset.appindex
+    let app = Hue.config.applist[index]
+    console.log(app.name)
+    jdenticon.update(icon, app.name)
+  }
 }
 
 // On custom app picker action
