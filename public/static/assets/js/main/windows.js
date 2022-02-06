@@ -791,6 +791,9 @@ Hue.create_app_window = function () {
       },
       on_x_button_click: function (instance) {
         instance.destroy()
+      },
+      after_destroy: function () {
+        Hue.app_open = false
       }
     })
   )
@@ -801,7 +804,7 @@ Hue.create_app_popup = function (message, win) {
   let obj = {}
   obj.window_class = "!app_popup !action"
   obj.enable_titlebar = false
-  obj.window_x = ""
+  obj.window_x = "floating_right"
   obj.position = "bottomright"
   obj.window_width = "10rem"
   obj.disable_content_padding = true
@@ -814,8 +817,11 @@ Hue.create_app_popup = function (message, win) {
 
   obj.on_middle_click = function (instance) {
     win.destroy()
-    Hue.app_open = false
     instance.close()
+  }
+
+  obj.on_x_button_click = function () {
+    win.destroy()
   }
 
   p = Hue.create_popup(obj)
