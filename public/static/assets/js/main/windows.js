@@ -769,6 +769,33 @@ Hue.get_first_visible_modal_item = function (id) {
   }
 }
 
+// Create app window
+Hue.create_app_window = function () {
+  return Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      preset: "window",
+      window_x: "inner_right",
+      close_on_escape: false,
+      enable_overlay: false,
+      window_class: "!transparent_background",
+      content_container_class: "!msg_background_color",
+      titlebar_class: "!custom_titlebar",
+      titlebar_cursor: "pointer",
+      after_show: function (instance) {
+        msgvars.common.after_show(instance)
+        Hue.app_open = true
+      },
+      after_close: function (instance) {
+        msgvars.common.after_close(instance)
+        Hue.app_open = false
+      },
+      on_x_button_click: function (instance) {
+        instance.destroy()
+      }
+    })
+  )
+}
+
 // Small popup for a minimized app
 Hue.create_app_popup = function (message, win) {
   let obj = {}
@@ -787,27 +814,4 @@ Hue.create_app_popup = function (message, win) {
 
   p = Hue.create_popup(obj)
   p.show(message)
-}
-
-// Create app window
-Hue.create_app_window = function () {
-  return Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      preset: "window",
-      window_x: "inner_right",
-      close_on_escape: false,
-      enable_overlay: false,
-      window_class: "!transparent_background",
-      content_container_class: "!msg_background_color",
-      titlebar_class: "!custom_titlebar !pointer",
-      after_show: function (instance) {
-        msgvars.common.after_show(instance)
-        Hue.app_open = true
-      },
-      after_close: function (instance) {
-        msgvars.common.after_close(instance)
-        Hue.app_open = false
-      }
-    })
-  )
 }
