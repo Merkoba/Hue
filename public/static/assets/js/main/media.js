@@ -1001,6 +1001,12 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
     data.message_id = Hue.announce_media(type, data).message_id
   }
 
+  if (type === "tv") {
+    if (data.type === "upload") {
+      data.type = "video"
+    }
+  }
+
   if (!data.setter) {
     data.info = `Default ${Hue.utilz.capitalize_words(type)}`
   }
