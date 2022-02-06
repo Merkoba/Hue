@@ -255,6 +255,18 @@ Msg.factory = function (options = {}) {
       instance.options.on_click = function () {}
     }
 
+    if (instance.options.on_overlay_click === undefined) {
+      instance.options.on_overlay_click = function () {}
+    }
+
+    if (instance.options.on_titlebar_click === undefined) {
+      instance.options.on_titlebar_click = function () {}
+    }
+    
+    if (instance.options.on_x_button_click === undefined) {
+      instance.options.on_x_button_click = function () {}
+    }    
+
     if (instance.options.while_open_interval === undefined) {
       instance.options.while_open_interval = 1000
     } else {
@@ -431,6 +443,10 @@ Msg.factory = function (options = {}) {
 
     if (instance.options.window_cursor === undefined) {
       instance.options.window_cursor = "default"
+    }
+
+    if (instance.options.titlebar_cursor === undefined) {
+      instance.options.titlebar_cursor = "default"
     }
 
     if (instance.options.window_unselectable === undefined) {
@@ -1118,6 +1134,7 @@ Msg.factory = function (options = {}) {
 		font-family:sans-serif;
     font-weight:bold;
     white-space: nowrap;
+    cursor:${instance.options.titlebar_cursor};
 		`
 
     let ix_order, ix_margin
@@ -1459,6 +1476,16 @@ Msg.factory = function (options = {}) {
     if (instance.overlay !== undefined) {
       instance.overlay.addEventListener("click", function () {
         if (instance.options.close_on_overlay_click) {
+          instance.options.on_overlay_click(instance)
+          instance.close()
+        }
+      })
+    }
+
+    if (instance.titlebar !== undefined) {
+      instance.titlebar.addEventListener("click", function () {
+        if (instance.options.close_on_titlebar_click) {
+          instance.options.on_titlebar_click(instance)
           instance.close()
         }
       })
@@ -1494,23 +1521,29 @@ Msg.factory = function (options = {}) {
 
     if (instance.window_inner_x !== undefined) {
       instance.window_inner_x.addEventListener("click", function (e) {
+        instance.options.on_x_button_click(instance)
         instance.close()
         e.stopPropagation()
       })
+
     }
 
     if (instance.window_floating_x !== undefined) {
       instance.window_floating_x.addEventListener("click", function (e) {
+        instance.options.on_x_button_click(instance)
         instance.close()
         e.stopPropagation()
       })
+
     }
 
     if (instance.overlay_x !== undefined) {
       instance.overlay_x.addEventListener("click", function (e) {
+        instance.options.on_x_button_click(instance)
         instance.close()
         e.stopPropagation()
       })
+
     }
 
     instance.options.after_create(instance)

@@ -31,8 +31,6 @@ Hue.start_app = function (index) {
   let app = Hue.config.applist[index]
   Hue.active_app = index
   let win = Hue.create_app_window()
-  console.log(app.name)
-  console.log(win.options.id)
   win.set(Hue.template_app({url: app.url}))
 
   win.titlebar.addEventListener("click", function () {
