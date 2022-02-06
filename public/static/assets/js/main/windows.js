@@ -529,6 +529,11 @@ Hue.after_modal_close = function (instance) {
 }
 
 // Gets all Msg popup instances
+Hue.get_modal_instances = function () {
+  return Hue.msg_main_menu.higher_instances()
+}
+
+// Gets all Msg popup instances
 Hue.get_popup_instances = function () {
   return Hue.msg_main_menu.lower_instances()
 }
@@ -786,7 +791,7 @@ Hue.create_app_window = function () {
       window_x: "inner_right",
       close_on_escape: false,
       enable_overlay: false,
-      window_class: "!transparent_background",
+      window_class: "!transparent_background !app",
       content_container_class: "!msg_background_color",
       titlebar_class: "!custom_titlebar",
       titlebar_cursor: "pointer",
@@ -799,7 +804,8 @@ Hue.create_app_window = function () {
       on_x_button_click: function (instance) {
         instance.destroy()
       },
-      after_destroy: function () {
+      after_destroy: function (instance) {
+        instance.remove()
         Hue.app_open = false
       }
     })
@@ -823,15 +829,18 @@ Hue.create_app_popup = function (name, win) {
   }
 
   obj.on_middle_click = function (instance) {
+    win.close()
     win.destroy()
     instance.close()
   }
 
   obj.on_x_button_click = function () {
+    win.close()
     win.destroy()
   }
 
   p = Hue.create_popup(obj)
+  win.app_popup = p
 
   let h = `
     <div class="app_popup_container">

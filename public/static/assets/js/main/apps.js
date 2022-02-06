@@ -26,7 +26,6 @@ Hue.setup_apps = function () {
   for (let icon of Hue.els(".app_picker_item_icon")) {
     let index = icon.parentNode.dataset.appindex
     let app = Hue.config.applist[index]
-    console.log(app.name)
     jdenticon.update(icon, app.name)
   }
 }
@@ -88,4 +87,19 @@ Hue.launch_first_app = function () {
       item.click()
     }
   }
+}
+
+// Get open apps
+Hue.get_open_apps = function () {
+  let apps = []
+
+  for (let instance of Hue.get_modal_instances()) {
+    if (instance.window) {
+      if (instance.window.classList.contains("app")) {
+        apps.push(instance)
+      }
+    }
+  }
+
+  return apps
 }
