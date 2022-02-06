@@ -814,6 +814,7 @@ Hue.create_app_popup = function (message, win) {
 
   obj.on_middle_click = function (instance) {
     win.destroy()
+    Hue.app_open = false
     instance.close()
   }
 
