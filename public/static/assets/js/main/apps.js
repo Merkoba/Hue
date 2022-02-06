@@ -3,10 +3,10 @@ Hue.setup_apps = function () {
   Hue.el("#app_picker_container").addEventListener("click", function (e) {
     if (!e.target) {
       return
-    }   
+    }
 
-    if (e.target.classList.contains("app_picker_item")) {
-      let index = e.target.dataset.appindex
+    if (e.target.closest(".app_picker_item")) {
+      let index = e.target.closest(".app_picker_item").dataset.appindex
       Hue.start_app(Hue.config.applist[index])
     } 
   })
