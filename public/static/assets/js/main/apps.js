@@ -7,12 +7,36 @@ Hue.setup_apps = function () {
 
     if (e.target.classList.contains("app_picker_item")) {
       let index = e.target.dataset.appindex
-      Hue.msg_app_picker.close()
-      Hue.start_app(index)
+      Hue.start_app(Hue.config.applist[index])
     } 
   })
 
   Hue.vertical_separator(Hue.el("#app_picker_container"))
+
+  Hue.el("#app_picker_custom").addEventListener("click", function (e) {
+    Hue.msg_custom_app_picker.show(function () {
+      Hue.el("#custom_app_picker_input").focus()
+    })
+  })
+
+  Hue.el("#custom_app_picker_open").addEventListener("click", function () {
+    Hue.open_custom_app()
+  })
+}
+
+// On custom app picker action
+Hue.open_custom_app = function () {
+  let url = Hue.el("#custom_app_picker_input").value.trim()
+
+  if (!url) {
+    return
+  }
+
+  if (!url.startsWith("https://") && !url.startsWith("http://")) {
+    url = `https://${url}`
+  }
+
+  Hue.start_app({name: new URL(url).hostname, url: url})
 }
 
 // Show the app picker
@@ -26,10 +50,8 @@ Hue.show_app_picker = function (filter) {
 }
 
 // Start a app
-Hue.start_app = function (index) {
+Hue.start_app = function (app) {
   Hue.close_all_modals()
-  let app = Hue.config.applist[index]
-  Hue.active_app = index
   let win = Hue.create_app_window()
   win.set(Hue.template_app({url: app.url}))
 

@@ -1,6 +1,7 @@
 <script id='template_app_picker' type='text/x-handlebars-template' class='template'>
   <input type="text" id="app_picker_filter" class="filter_input" placeholder="Filter">
   <div id="app_picker_container">
+    <div id="app_picker_custom" class="action modal_item">* Custom *</div>
     {{#each apps}}
     <div class="app_picker_item action modal_item" data-appindex="{{@index}}">{{name}}</div>
     {{/each}}

@@ -532,6 +532,12 @@ Hue.commands = {
       Hue.show_app_picker(arg || "")
     },
     description: `Show the apps picker`,
+  },
+  "app": {
+    action: (arg, ans) => {
+      Hue.show_app_picker(arg || "")
+    },
+    description: `Show the apps picker`,
   }
 }
 

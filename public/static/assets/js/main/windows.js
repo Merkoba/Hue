@@ -99,7 +99,14 @@ Hue.start_msg = function () {
       id: "app_picker",
       window_width: "24rem"
     })
-  )  
+  )
+
+  Hue.msg_custom_app_picker = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "custom_app_picker",
+      window_width: "24rem"
+    })
+  )
 
   Hue.msg_lockscreen = Msg.factory(
     Object.assign({}, msgvars.common, {
@@ -405,6 +412,7 @@ Hue.start_msg = function () {
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_draw_image.set(Hue.template_draw_image())
+  Hue.msg_custom_app_picker.set(Hue.template_custom_app_picker())
 
   Hue.msg_info.create()
   Hue.msg_info2.create()
@@ -430,6 +438,7 @@ Hue.start_msg = function () {
   Hue.msg_image_picker.set_title("Image")
   Hue.msg_tv_picker.set_title("TV")
   Hue.msg_app_picker.set_title("Apps")
+  Hue.msg_custom_app_picker.set_title("Custom App")
 }
 
 // Sets all info window variables to false
@@ -782,11 +791,9 @@ Hue.create_app_window = function () {
       titlebar_class: "!custom_titlebar",
       titlebar_cursor: "pointer",
       after_show: function (instance) {
-        msgvars.common.after_show(instance)
         Hue.app_open = true
       },
       after_close: function (instance) {
-        msgvars.common.after_close(instance)
         Hue.app_open = false
       },
       on_x_button_click: function (instance) {
