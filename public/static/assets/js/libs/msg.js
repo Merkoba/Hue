@@ -1,6 +1,8 @@
-/* Msg v11.5.0 https://github.com/Merkoba/Msg */
+/* Msg v11.5.1 https://github.com/Merkoba/Msg */
 
 const Msg = {}
+
+Msg.num_created = 0
 
 Msg.factory = function (options = {}) {
   const instance = {}
@@ -130,7 +132,7 @@ Msg.factory = function (options = {}) {
     }
 
     if (instance.options.id === undefined) {
-      instance.options.id = Msg.instances.length + 1
+      instance.options.id = Msg.num_created + 1
     }
 
     if (instance.options.class === undefined) {
@@ -3820,7 +3822,7 @@ Msg.factory = function (options = {}) {
         document.addEventListener("keyup", captureKey, true)
       }
 
-      if (e.keyCode === 27) {
+      if (e.key === "Escape") {
         let highest = Msg.msg.highest_instance()
 
         if (!highest) return
@@ -3855,6 +3857,7 @@ Msg.factory = function (options = {}) {
 
   if (instance.options.id !== "__internal_instance__") {
     Msg.instances.push(instance)
+    Msg.num_created += 1
   }
 
   return instance

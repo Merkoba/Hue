@@ -5,7 +5,7 @@ Hue.activate_key_detection = function () {
       return
     }
 
-    if (Hue.app_open && Hue.app_mode === "full") {
+    if (Hue.app_open) {
       return
     }
 

@@ -13,21 +13,6 @@ Hue.setup_apps = function () {
   })
 
   Hue.vertical_separator(Hue.el("#app_picker_container"))
-
-  Hue.el("#Msg-titlebar-app").addEventListener("click", function () {
-    if (Hue.app_mode === "full") {
-      Hue.app_mode = "minimized"
-      Hue.remove_alert_title()
-      Hue.app_peek_active = true
-      Hue.app_counter = 0
-    } else if (Hue.app_mode === "minimized") {
-      Hue.app_mode = "full"
-      Hue.app_peek_active = false
-    }
-
-    Hue.update_app_title()
-    Hue.change_modal_window_mode("app", Hue.app_mode)
-  })
 }
 
 // Show the app picker
@@ -45,16 +30,18 @@ Hue.start_app = function (index) {
   Hue.close_all_modals()
   let app = Hue.config.applist[index]
   Hue.active_app = index
-  Hue.msg_app.set_title(app.name)
-  Hue.app_peek_active = false
-  Hue.app_counter = 0
-  Hue.app_mode = "full"
-  Hue.change_modal_window_mode("app", "full")
-  Hue.el("#Msg-content-container-app").classList.remove("nodisplay")
+  let win = Hue.create_app_window()
+  console.log(app.name)
+  console.log(win.options.id)
+  win.set(Hue.template_app({url: app.url}))
 
-  Hue.msg_app.show(function () {
-    Hue.el("#app_frame").src = app.url
+  win.titlebar.addEventListener("click", function () {
+    win.close()
+    Hue.create_app_popup(app.name, win)
   })
+
+  win.set_title(app.name)
+  win.show()
 }
 
 // After app picker is filtered
@@ -70,16 +57,4 @@ Hue.launch_first_app = function () {
       item.click()
     }
   }
-}
-
-// Update the app title using the activity counter
-Hue.update_app_title = function () {
-  let app = Hue.config.applist[Hue.active_app]
-  let title = app.name
-  
-  if (Hue.app_counter > 0) {
-    title += ` (${Hue.app_counter})`
-  }
-
-  Hue.msg_app.set_title(title)
 }

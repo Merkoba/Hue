@@ -2350,3 +2350,10 @@ pre {
 .transparent_background {
 	background-color: rgba(0, 0, 0, 0) !important
 }
+
+.app_popup {
+	border: 2px solid var(--altcolor) !important;
+	padding-top: 4px !important;
+	padding-bottom: 4px !important;
+	cursor: pointer !important;
+}
