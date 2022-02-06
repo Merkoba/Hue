@@ -5,62 +5,64 @@ Hue.setup_templates = function () {
   })
 }
 
+let msgvars = {}
+
+msgvars.common = {
+  clear_editables: true,
+  class: "modal",
+  show_effect: "none",
+  close_effect: "none",
+  before_show: function (instance) {
+    if (Hue.screen_locked) {
+      if (instance.options.id !== "lockscreen") {
+        return false
+      }
+    }
+  },
+  after_show: function (instance) {
+    Hue.after_modal_show(instance)
+    Hue.after_modal_set_or_show(instance)
+  },
+  after_set: function (instance) {
+    Hue.after_modal_set_or_show(instance)
+  },
+  after_close: function (instance) {
+    Hue.after_modal_close(instance)
+  },
+}
+
+msgvars.titlebar = {
+  enable_titlebar: true,
+  center_titlebar: true,
+  titlebar_class: "!custom_titlebar",
+  window_inner_x_class: "!titlebar_inner_x",
+}
+
 // Starts and configures all Msg modal instances
 Hue.start_msg = function () {
-  let common = {
-    clear_editables: true,
-    class: "modal",
-    show_effect: "none",
-    close_effect: "none",
-    before_show: function (instance) {
-      if (Hue.screen_locked) {
-        if (instance.options.id !== "lockscreen") {
-          return false
-        }
-      }
-    },
-    after_show: function (instance) {
-      Hue.after_modal_show(instance)
-      Hue.after_modal_set_or_show(instance)
-    },
-    after_set: function (instance) {
-      Hue.after_modal_set_or_show(instance)
-    },
-    after_close: function (instance) {
-      Hue.after_modal_close(instance)
-    },
-  }
-
-  let titlebar = {
-    enable_titlebar: true,
-    center_titlebar: true,
-    titlebar_class: "!custom_titlebar",
-    window_inner_x_class: "!titlebar_inner_x",
-  }
-
   // Start the instances
 
   Hue.msg_main_menu = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "main_menu",
       window_width: "22rem"
     })
   )
 
   Hue.msg_room_menu = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "room_menu",
       window_width: "22rem"
     })
   )
 
   Hue.msg_user_menu = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "user_menu",
       clear_editables: false,
       window_width: "22rem",
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         if (Hue.user_menu_audio) {
           Hue.user_menu_audio.pause()
         }
@@ -69,7 +71,7 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_userlist = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "userlist",
       window_min_width: "22rem",
       window_max_width: "45rem"
@@ -77,52 +79,30 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_modal_image = Msg.factory(
-    Object.assign({}, common, {
+    Object.assign({}, msgvars.common, {
       id: "modal_image",
       preset: "window",
       overlay_class: "!msg_background_color",
       after_show: function (instance) {
-        common.after_show(instance)
+        msgvars.common.after_show(instance)
         Hue.restore_modal_image()
       },
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         Hue.clear_modal_image_info()
       },
     })
   )
 
-  Hue.msg_app = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "app",
-      preset: "window",
-      window_x: "inner_right",
-      close_on_escape: false,
-      enable_overlay: false,
-      window_class: "!transparent_background",
-      content_container_class: "!msg_background_color",
-      titlebar_class: "!custom_titlebar !pointer",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.app_open = true
-      },
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.msg_app.set(Hue.template_app())
-        Hue.app_open = false
-      },
-    })
-  )
-
   Hue.msg_app_picker = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "app_picker",
       window_width: "24rem"
     })
   )  
 
   Hue.msg_lockscreen = Msg.factory(
-    Object.assign({}, common, {
+    Object.assign({}, msgvars.common, {
       id: "lockscreen",
       preset: "window",
       close_on_escape: false,
@@ -131,11 +111,11 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_profile = Msg.factory(
-    Object.assign({}, common, {
+    Object.assign({}, msgvars.common, {
       id: "profile",
       window_width: "22rem",
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         Hue.el("#show_profile_username").textContent = "Loading"
         Hue.el("#show_profilepic").src = Hue.config.profilepic_loading_url
         Hue.open_profile_username = false
@@ -146,7 +126,7 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_info = Msg.factory(
-    Object.assign({}, common, {
+    Object.assign({}, msgvars.common, {
       id: "info",
       window_height: "auto",
       before_show: function (instance) {
@@ -154,7 +134,7 @@ Hue.start_msg = function () {
         Hue.info_vars_to_false()
       },
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         instance.content.innerHTML = ""
         Hue.info_vars_to_false()
       },
@@ -162,7 +142,7 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_info2 = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "info2",
       window_height: "auto",
       before_show: function (instance) {
@@ -170,7 +150,7 @@ Hue.start_msg = function () {
         Hue.info2_vars_to_false()
       },
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         instance.content.innerHTML = ""
         instance.titlebar.innerHTML = ""
         Hue.info2_vars_to_false()
@@ -179,11 +159,11 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_image_picker = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "image_picker",
       window_width: "24rem",
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         Hue.el("#image_source_picker_input").value = ""
         Hue.el("#image_source_picker_input_comment").value = ""
         Hue.reset_media_history_filter("image")
@@ -192,11 +172,11 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_tv_picker = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "tv_picker",
       window_width: "24rem",
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         Hue.el("#tv_source_picker_input").value = ""
         Hue.el("#tv_source_picker_input_comment").value = ""
         Hue.reset_media_history_filter("tv")
@@ -205,40 +185,40 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_media_menu = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "media_menu",
       window_width: "22rem"
     })
   )
 
   Hue.msg_message = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "message",
       window_width: "28rem",
       after_show: function (instance) {
-        common.after_show(instance)
+        msgvars.common.after_show(instance)
         Hue.writing_message = true
       },
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         Hue.writing_message = false
       },
     })
   )
 
   Hue.msg_chat_search = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "chat_search",
       window_width: "30rem",
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         Hue.reset_chat_search_filter()
       },
     })
   )
 
   Hue.msg_locked = Msg.factory(
-    Object.assign({}, common, {
+    Object.assign({}, msgvars.common, {
       id: "locked",
       closeable: false,
       window_x: "none",
@@ -250,20 +230,20 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_settings = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "settings",
       window_width: "24rem"
     })
   )
 
   Hue.msg_admin_activity = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "admin_activity",
     })
   )
 
   Hue.msg_expand_image = Msg.factory(
-    Object.assign({}, common, {
+    Object.assign({}, msgvars.common, {
       id: "expand_image",
       preset: "window",
       overlay_class: "!msg_background_color"
@@ -271,10 +251,10 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_image_upload_comment = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "image_upload_comment",
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         Hue.el("#image_upload_comment_input").value = ""
         Hue.image_upload_comment_file = false
         Hue.image_upload_comment_type = false
@@ -283,10 +263,10 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_tv_upload_comment = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "tv_upload_comment",
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         Hue.el("#tv_upload_comment_input").value = ""
         Hue.tv_upload_comment_file = false
         Hue.tv_upload_comment_type = false
@@ -295,85 +275,85 @@ Hue.start_msg = function () {
   )  
 
   Hue.msg_reply = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "reply",
       window_width: "26rem",
       after_show: function (instance) {
-        common.after_show(instance)
+        msgvars.common.after_show(instance)
         Hue.writing_reply = true
       },
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         Hue.writing_reply = false
       },
     })
   )
 
   Hue.msg_handle_url = Msg.factory(
-    Object.assign({}, common, {
+    Object.assign({}, msgvars.common, {
       id: "handle_url"
     })
   )
 
   Hue.msg_open_url = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "open_url",
       window_max_width: "50rem"
     })
   )
 
   Hue.msg_view_text = Msg.factory(
-    Object.assign({}, common, {
+    Object.assign({}, msgvars.common, {
       id: "view_text",
       window_max_width: "40rem"
     })
   )  
 
   Hue.msg_notifications = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "notifications",
       window_width: "26rem",
     })
   )
 
   Hue.msg_whispers = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "whispers",
       window_width: "26rem",
     })
   )
 
   Hue.msg_message_board = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "message_board",
       window_width: "30rem"
     })
   )
 
   Hue.msg_profilepic_cropper = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "profilepic_cropper",
       after_close: function (instance) {
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
       }
     })
   )
 
   Hue.msg_confirm = Msg.factory(
-    Object.assign({}, common, titlebar, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "confirm"
     })
   )
 
   Hue.msg_draw_image = Msg.factory(
-    Object.assign({}, common, titlebar,{
+    Object.assign({}, msgvars.common, msgvars.titlebar,{
       id: "draw_image",
       after_show: function(instance){
-        common.after_show(instance)
+        msgvars.common.after_show(instance)
         Hue.draw_image_open = true
       },
       after_close: function(instance){
-        common.after_close(instance)
+        msgvars.common.after_close(instance)
         Hue.draw_image_open = false
       }
     })
@@ -425,7 +405,6 @@ Hue.start_msg = function () {
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_draw_image.set(Hue.template_draw_image())
-  Hue.msg_app.set(Hue.template_app())
 
   Hue.msg_info.create()
   Hue.msg_info2.create()
@@ -790,35 +769,45 @@ Hue.get_first_visible_modal_item = function (id) {
   }
 }
 
-// Change the height and width of a modal window
-// Modes: full, minimized
-Hue.change_modal_window_mode = function (id, mode) {
-  let win = Hue.el(`#Msg-window-${id}`)
-  let titlebar = Hue.el(`#Msg-titlebar-${id}`)
-  let h = ""
-  let w = ""
-
-  if (mode === "minimized") {
-    h = `${titlebar.offsetHeight}px`
-    w = "10rem"
-
-    win.style.right = "5px"
-    win.style.left = "unset"
-    win.style.top = `${titlebar.offsetHeight + 10}px`
-  } else if (mode === "full") {
-    h = `100vh`
-    w = "100vw"
-
-    win.style.right = "unset"
-    win.style.left = "0"
-    win.style.top = "0"
+// Small popup for a minimized app
+Hue.create_app_popup = function (message, win) {
+  let obj = {}
+  obj.window_class = "!app_popup !action"
+  obj.enable_titlebar = false
+  obj.window_x = ""
+  obj.position = "bottomright"
+  obj.window_width = "10rem"
+  obj.disable_content_padding = true
+  obj.close_on_escape = false
+  
+  obj.on_click = function (instance) {
+    win.show()
+    instance.close() 
   }
 
-	win.style.height = h
-	win.style.minHeight = h
-	win.style.maxHeight = h
+  p = Hue.create_popup(obj)
+  p.show(message)
+}
 
-  win.style.width = w
-	win.style.minWidth = w
-	win.style.maxWidth = w
+// Create app window
+Hue.create_app_window = function () {
+  return Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      preset: "window",
+      window_x: "inner_right",
+      close_on_escape: false,
+      enable_overlay: false,
+      window_class: "!transparent_background",
+      content_container_class: "!msg_background_color",
+      titlebar_class: "!custom_titlebar !pointer",
+      after_show: function (instance) {
+        msgvars.common.after_show(instance)
+        Hue.app_open = true
+      },
+      after_close: function (instance) {
+        msgvars.common.after_close(instance)
+        Hue.app_open = false
+      }
+    })
+  )
 }
