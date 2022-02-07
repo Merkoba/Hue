@@ -137,7 +137,7 @@ Hue.start_msg = function () {
       id: "info",
       window_height: "auto",
       before_show: function (instance) {
-        common.before_show(instance)
+        msgvars.common.before_show(instance)
         Hue.info_vars_to_false()
       },
       after_close: function (instance) {
@@ -153,7 +153,7 @@ Hue.start_msg = function () {
       id: "info2",
       window_height: "auto",
       before_show: function (instance) {
-        common.before_show(instance)
+        msgvars.common.before_show(instance)
         Hue.info2_vars_to_false()
       },
       after_close: function (instance) {
