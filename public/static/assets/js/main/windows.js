@@ -442,7 +442,7 @@ Hue.start_msg = function () {
   Hue.msg_tv_picker.set_title("TV")
   Hue.msg_app_picker.set_title("Apps")
   Hue.msg_open_app.set_title("Open App")
-  Hue.msg_applist.set_title("Open Apps")
+  Hue.msg_applist.set_title("Go to App")
 }
 
 // Sets all info window variables to false
