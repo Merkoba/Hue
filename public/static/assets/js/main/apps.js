@@ -46,7 +46,7 @@ Hue.open_custom_app = function (url = "") {
     url = `https://${url}`
   }
 
-  Hue.start_app({name: "Custom", url: url})
+  Hue.start_app({name: new URL(url).hostname, url: url})
 }
 
 // Show the app picker
@@ -85,9 +85,16 @@ Hue.start_app = function (app) {
     Hue.app_cycle_wheel_timer(e.deltaY > 0 ? "down" : "up")
   })
 
+  let name = app.name
+  let hostname = new URL(app.url).hostname
+
+  if (name !== hostname) {
+    name += ` (${hostname})`
+  }
+
   let title = `
     <div class="app_titlebar_container">
-      <div class="app_titlebar_name">${app.name} (${new URL(app.url).hostname})</div>
+      <div class="app_titlebar_name">${name}</div>
 
       <div class="app_titlebar_buttons">
         <div class="pointer app_titlebar_launch">Launch</div>
