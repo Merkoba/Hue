@@ -318,13 +318,12 @@ Hue.save_app = function (app) {
   for (let [i, item] of Hue.apps.entries()) {
     if (item.url === app.url) {
       Hue.apps.splice(i, 1)
+      Hue.apps.unshift(app)
+      Hue.update_app_picker()
+      Hue.save_apps()
       break
     }
   }
-
-  Hue.apps.unshift(app)
-  Hue.save_apps()
-  Hue.update_app_picker()
 }
 
 // Open app input
@@ -341,11 +340,11 @@ Hue.forget_app = function (app) {
   for (let [i, item] of Hue.apps.entries()) {
     if (item.url === app.url) {
       Hue.apps.splice(i, 1)
+      Hue.update_app_picker()
+      Hue.save_apps()
       break
     }
   }
-
-  Hue.update_app_picker()
 }
 
 // Toggle app picker filter
