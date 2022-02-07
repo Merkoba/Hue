@@ -129,7 +129,7 @@ Hue.launch_first_app = function () {
 Hue.get_open_apps = function () {
   let apps = []
 
-  for (let instance of Hue.get_modal_instances()) {
+  for (let instance of Hue.msg_main_menu.higher_instances()) {
     if (instance.window) {
       if (instance.window.classList.contains("app")) {
         apps.push(instance)
@@ -173,6 +173,8 @@ Hue.cycle_apps = function (direction) {
         ii = apps.length - 1
       }
     }
+
+    console.log(ii)
   
     apps[ii].show()
   })
