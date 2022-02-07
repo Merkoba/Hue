@@ -416,16 +416,13 @@ Hue.minimize_all_apps = function () {
   }
 }
 
-// Load iframe, audio, or video
+// Load iframe or media
 Hue.load_app_content = function (win) {
   let extension = Hue.utilz.get_extension(win.hue_app_url).toLowerCase()
   
-  if (Hue.utilz.audio_extensions.includes(extension)) {
-    win.hue_content_type = "audio"
-    win.set(Hue.template_app_audio({url: win.hue_app_url}))
-  } else if (Hue.utilz.video_extensions.includes(extension)) {
-    win.hue_content_type = "video"
-    win.set(Hue.template_app_video({url: win.hue_app_url}))
+  if (Hue.utilz.audio_extensions.includes(extension) || Hue.utilz.video_extensions.includes(extension)) {
+    win.hue_content_type = "media"
+    win.set(Hue.template_app_media({url: win.hue_app_url}))
   } else {
     win.hue_content_type = "iframe"
     win.set(Hue.template_app({url: win.hue_app_url}))
@@ -441,14 +438,12 @@ Hue.stop_other_app_players = function (win) {
       continue
     }
 
-    if (w.hue_content_type === "audio" || 
-        w.hue_content_type === "video") {
+    if (w.hue_content_type === "media") {
       Hue.el(".app_frame", w.content).pause()
     }
   }
 
-  if (win.hue_content_type === "audio" || 
-      win.hue_content_type === "video") {
+  if (win.hue_content_type === "media") {
     Hue.el(".app_frame", win.content).play()
   }
 }
