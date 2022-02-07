@@ -545,7 +545,7 @@ Hue.commands = {
         Hue.open_custom_app(arg)
       }
     },
-    description: `Show the apps picker`,
+    description: `Open a URL as a custom app`,
   }
 }
 
