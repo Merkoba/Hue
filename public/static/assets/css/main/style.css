@@ -2374,6 +2374,8 @@ pre {
 	justify-content: flex-start;
 	margin-left: 0.5rem;
 	margin-right: 0.5rem;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .app_popup_icon {
