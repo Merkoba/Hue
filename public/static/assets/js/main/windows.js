@@ -528,9 +528,17 @@ Hue.after_modal_close = function (instance) {
   }
 }
 
-// Gets all Msg popup instances
+// Gets all Msg instances excluding apps
 Hue.get_modal_instances = function () {
-  return Hue.msg_main_menu.higher_instances()
+  let modals = []
+
+  for (let instance of Hue.msg_main_menu.higher_instances()) {
+    if (!instance.window.classList.contains("app")) {
+      modals.push(instance)
+    }
+  }
+
+  return modals
 }
 
 // Gets all Msg popup instances
@@ -540,13 +548,9 @@ Hue.get_popup_instances = function () {
 
 // Checks if any Msg modal instance is open
 Hue.any_modal_open = function () {
-  let instances = Hue.get_modal_instances()
-
-  for (let instance of instances) {
-    if (!instance.window.classList.contains("app")) {
-      if (instance.is_open()) {
-        return true
-      }
+  for (let instance of Hue.get_modal_instances()) {
+    if (instance.is_open()) {
+      return true
     }
   }
 
