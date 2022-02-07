@@ -2343,7 +2343,7 @@ pre {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
-	margin-top: 0.25rem;
+	margin-top: 1rem;
 }
 
 .app_picker_item {
@@ -2424,4 +2424,10 @@ pre {
 
 .app_titlebar_buttons:last-child {
 	padding-right: 1rem;
+}
+
+#app_picker_header {
+	font-size: 1rem;
+	margin-bottom: 1rem;
+	font-size: 1.2rem;
 }

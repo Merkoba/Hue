@@ -2,13 +2,21 @@
 Hue.setup_apps = function () {
   Hue.get_apps()
 
+  Hue.el("#app_picker_open").addEventListener("click", function () {
+    Hue.open_app_input()
+  })
+
+  Hue.el("#app_picker_toggle_filter").addEventListener("click", function () {
+    Hue.toggle_app_picker_filter()
+  })
+
+  Hue.horizontal_separator(Hue.el("#app_picker_header"))
+  Hue.vertical_separator(Hue.el("#app_picker_main"))
+
+
   Hue.el("#app_picker_container").addEventListener("click", function (e) {
     if (!e.target) {
       return
-    }
-
-    if (e.target.closest(".app_picker_open")) {
-      Hue.open_app_input()
     }
 
     if (e.target.closest(".app_picker_item")) {
@@ -52,14 +60,6 @@ Hue.find_app_by_url = function (url) {
 Hue.update_app_picker = function () {
   let container = Hue.el("#app_picker_container")
   container.innerHTML = ""
-
-  let el = Hue.div("app_picker_item action modal_item app_picker_open")
-  el.dataset.url = ""
-  el.innerHTML = `
-    <div class="app_picker_item_name">Open New App</div>
-  `
-
-  container.append(el)
 
   for (let app of Hue.apps) {
     let el = Hue.div("app_picker_item action modal_item")
@@ -117,8 +117,11 @@ Hue.open_app = function (url = "") {
 Hue.show_app_picker = function (filter) {
   Hue.msg_app_picker.show(function () {
     if (filter) {
+      Hue.el("#app_picker_filter").classList.remove("nodisplay")
       Hue.el("#app_picker_filter").value = filter
       Hue.do_modal_filter()
+    } else {
+      Hue.el("#app_picker_filter").classList.add("nodisplay")
     }
   })
 }
@@ -317,4 +320,16 @@ Hue.forget_app = function (app) {
   }
 
   Hue.update_app_picker()
+}
+
+// Toggle app picker filter
+Hue.toggle_app_picker_filter = function () {
+  let filter = Hue.el("#app_picker_filter")
+  
+  if (filter.classList.contains("nodisplay")) {
+    filter.classList.remove("nodisplay")
+    filter.focus()
+  } else {
+    filter.classList.add("nodisplay")
+  }
 }
