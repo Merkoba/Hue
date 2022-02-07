@@ -4,6 +4,12 @@ Hue.setup_media = function () {
     Hue.show_modal_image()
   })
 
+  Hue.el("#media_image_frame").addEventListener("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.set_default_tv_size()
+    }
+  })
+
   Hue.el("#media_image_error").addEventListener("click", function () {
     Hue.show_modal_image()
   })
