@@ -101,6 +101,13 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_applist = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "applist",
+      window_width: "24rem"
+    })
+  )
+
   Hue.msg_open_app = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "open_app",
@@ -408,6 +415,7 @@ Hue.start_msg = function () {
   Hue.msg_draw_image.set(Hue.template_draw_image())
   Hue.msg_open_app.set(Hue.template_open_app())
   Hue.msg_app_picker.set(Hue.template_app_picker())
+  Hue.msg_applist.set(Hue.template_applist())
 
   Hue.msg_info.create()
   Hue.msg_info2.create()
@@ -434,6 +442,7 @@ Hue.start_msg = function () {
   Hue.msg_tv_picker.set_title("TV")
   Hue.msg_app_picker.set_title("Apps")
   Hue.msg_open_app.set_title("Open App")
+  Hue.msg_applist.set_title("Open Apps")
 }
 
 // Sets all info window variables to false
@@ -558,11 +567,9 @@ Hue.get_highest_modal = function () {
 }
 
 // Closes all Msg modal instances
-Hue.close_all_modals = function (callback = false) {
-  if (callback) {
-    Hue.msg_main_menu.close_all_higher(callback)
-  } else {
-    Hue.msg_main_menu.close_all_higher()
+Hue.close_all_modals = function () {
+  for (let instance of Hue.get_modal_instances()) {
+    instance.close()
   }
 }
 
@@ -805,6 +812,7 @@ Hue.create_app_window = function () {
       after_show: function (instance) {
         Hue.app_open = true
         Hue.active_app = instance
+        instance.hue_last_open = Date.now()
       },
       after_close: function (instance) {
         if (instance.hue_app_popup) {
@@ -813,9 +821,6 @@ Hue.create_app_window = function () {
         
         Hue.create_app_popup(instance)
         Hue.app_open = false
-      },
-      on_x_button_click: function (instance) {
-        instance.destroy()
       },
       after_destroy: function (instance) {
         if (instance.hue_app_popup) {

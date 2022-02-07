@@ -21,6 +21,7 @@ Hue.setup_apps = function () {
 
     if (e.target.closest(".app_picker_item")) {
       let url = e.target.closest(".app_picker_item").dataset.url
+      Hue.close_all_modals()
       Hue.start_app(Hue.find_app_by_url(url))
     } 
   })
@@ -42,6 +43,18 @@ Hue.setup_apps = function () {
 
   Hue.el("#open_app_open").addEventListener("click", function (e) {
     Hue.open_app()
+  })
+
+  Hue.el("#applist_container").addEventListener("click", function (e) {
+    if (!e.target) {
+      return
+    }
+
+    if (e.target.closest(".applist_item")) {
+      let winid = e.target.closest(".applist_item").dataset.id
+      Hue.close_all_modals()
+      Hue.change_to_app(winid)
+    } 
   })
 
   Hue.update_app_picker()
@@ -141,7 +154,6 @@ Hue.start_app = function (app) {
     return
   }
   
-  Hue.close_all_modals()
   let win = Hue.create_app_window()
   win.hue_app_name = app.name
   win.hue_app_url = app.url
@@ -151,12 +163,12 @@ Hue.start_app = function (app) {
   win.titlebar.addEventListener("click", function (e) {
     if (e.target.classList.contains("app_titlebar_launch")) {
       Hue.show_app_picker()
-    } else if (e.target.classList.contains("app_titlebar_cycle")) {
-      Hue.cycle_apps("down")
+    } else if (e.target.classList.contains("app_titlebar_applist")) {
+      Hue.show_applist()
     } else if (e.target.classList.contains("app_titlebar_refresh")) {
       Hue.refresh_app(win)
     } else if (e.target.classList.contains("app_titlebar_minimize")) {
-      win.close()
+      Hue.minimize_all_apps()
     }
   })
 
@@ -190,7 +202,7 @@ Hue.start_app = function (app) {
 
       <div class="app_titlebar_buttons">
         <div class="action app_titlebar_launch">Launch</div>
-        <div class="action app_titlebar_cycle">Cycle</div>
+        <div class="action app_titlebar_applist">Apps</div>
         <div class="action app_titlebar_refresh">Refresh</div>
         <div class="action app_titlebar_minimize">Minimize</div>
       </div>
@@ -253,25 +265,23 @@ Hue.cycle_apps = function (direction) {
     }
   }
 
-  Hue.active_app.close(function () {
-    let ii = index
-  
-    if (direction === "down") {
-      if (ii + 1 < apps.length) {
-        ii += 1
-      } else {
-        ii = 0
-      }
-    } else if (direction === "up") {
-      if (ii - 1 >= 0) {
-        ii -= 1
-      } else {
-        ii = apps.length - 1
-      }
-    }
+  let ii = index
 
-    apps[ii].show()
-  })
+  if (direction === "down") {
+    if (ii + 1 < apps.length) {
+      ii += 1
+    } else {
+      ii = 0
+    }
+  } else if (direction === "up") {
+    if (ii - 1 >= 0) {
+      ii -= 1
+    } else {
+      ii = apps.length - 1
+    }
+  }
+
+  apps[ii].show()
 }
 
 // Refresh an app's iframe
@@ -343,5 +353,63 @@ Hue.toggle_app_picker_filter = function () {
     filter.focus()
   } else {
     filter.classList.add("nodisplay")
+  }
+}
+
+// Show a list of open apps
+Hue.show_applist = function (filter = "") {
+  let container = Hue.el("#applist_container")
+  container.innerHTML = ""
+
+  let windows = Hue.get_open_apps()
+  windows.sort((a, b) => (a.hue_last_open > b.hue_last_open) ? -1 : 1)
+
+  for (let win of windows) {
+    let el = Hue.div("applist_item action modal_item")
+    el.title = win.hue_app_url
+    el.dataset.url = win.hue_app_url
+    el.dataset.id = win.options.id
+    el.innerHTML = `
+      <canvas class="applist_item_icon" width="40" height="40"></canvas>
+      <div class="applist_item_name">${win.hue_app_name}</div>
+    `
+
+    container.append(el)
+  }
+
+  for (let icon of Hue.els(".applist_item_icon")) {
+    let url = icon.parentNode.dataset.url
+
+    if (url) {
+      let app = Hue.find_app_by_url(url)
+      jdenticon.update(icon, app.name)
+    }
+  }
+
+  Hue.msg_applist.show(function () {
+    if (filter) {
+      filter = Hue.el("#applist_filter")
+      filter.value = filter.trim()
+      Hue.do_modal_filter()
+    }
+  })
+}
+
+// Change to a specific open app
+Hue.change_to_app = function (id) {
+  let winid = parseInt(id)
+
+  for (let win of Hue.get_open_apps()) {
+    if (win.options.id === winid) {
+      win.show()
+      break
+    }
+  }
+}
+
+// Minimize all apps
+Hue.minimize_all_apps = function () {
+  for (let win of Hue.get_open_apps()) {
+    win.close()
   }
 }
