@@ -2399,8 +2399,16 @@ pre {
 	width: 100%;
 }
 
-.app_titlebar_name {
+.app_titlebar_info {
+	display: flex;
+	flex-direction: row;
 	flex-grow: 1;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.app_titlebar_icon {
+	margin-right: 0.5rem;
 }
 
 .app_titlebar_buttons {
@@ -2408,6 +2416,8 @@ pre {
 	flex-direction: row;
 	gap: 1rem;
 	flex-grow: 0;
+	align-items: center;
+	justify-content: flex-end;
 }
 
 .app_titlebar_buttons:last-child {
