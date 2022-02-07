@@ -174,8 +174,6 @@ Hue.cycle_apps = function (direction) {
       }
     }
 
-    console.log(ii)
-  
     apps[ii].show()
   })
 }
