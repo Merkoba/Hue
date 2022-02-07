@@ -810,9 +810,8 @@ Hue.create_app_window = function () {
       content_container_class: "!msg_background_color",
       titlebar_class: "!app_titlebar",
       after_show: function (instance) {
-        if (!instance.hue_iframe_loaded) {
-          instance.set(Hue.template_app({url: instance.hue_app_url}))
-          instance.hue_iframe_loaded = true
+        if (!instance.hue_content_loaded) {
+          Hue.load_app_content(instance)
         }
 
         Hue.app_open = true
