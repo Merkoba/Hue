@@ -57,8 +57,11 @@ Hue.setup_apps = function () {
 
   Hue.update_app_picker()
 
-  if (Hue.settings.autostart_apps) {
-    for (let url of Hue.settings.autostart_apps.split("\n")) {
+  let autostart = Hue.config.autostart_apps
+                  .concat(Hue.settings.autostart_apps.split("\n"))
+
+  if (autostart.length > 0) {
+    for (let url of new Set(autostart)) {
       Hue.open_app(url, false)
     }
   }
