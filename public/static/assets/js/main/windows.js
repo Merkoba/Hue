@@ -797,14 +797,24 @@ Hue.create_app_window = function () {
       titlebar_cursor: "pointer",
       after_show: function (instance) {
         Hue.app_open = true
+        Hue.active_app = instance
       },
       after_close: function (instance) {
+        if (instance.hue_app_popup) {
+          instance.hue_app_popup.close()
+        }
+        
+        Hue.create_app_popup(instance)
         Hue.app_open = false
       },
       on_x_button_click: function (instance) {
         instance.destroy()
       },
       after_destroy: function (instance) {
+        if (instance.hue_app_popup) {
+          instance.hue_app_popup.close()
+        }
+
         instance.remove()
         Hue.app_open = false
       }
@@ -813,7 +823,7 @@ Hue.create_app_window = function () {
 }
 
 // Small popup for a minimized app
-Hue.create_app_popup = function (name, win) {
+Hue.create_app_popup = function (win) {
   let obj = {}
   obj.window_class = "!app_popup !action"
   obj.enable_titlebar = false
@@ -840,17 +850,17 @@ Hue.create_app_popup = function (name, win) {
   }
 
   p = Hue.create_popup(obj)
-  win.app_popup = p
+  win.hue_app_popup = p
 
   let h = `
     <div class="app_popup_container">
       <canvas class="app_popup_icon" width="20" height="20"></canvas>
-      <div>${name}</div>
+      <div>${win.hue_app_name}</div>
     </div>
   `
 
   p.show(h, function () {
     let el = Hue.el(".app_popup_icon", p.content)
-    jdenticon.update(el, name)
+    jdenticon.update(el, win.hue_app_name)
   })
 }

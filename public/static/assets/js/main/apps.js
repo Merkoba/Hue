@@ -63,11 +63,17 @@ Hue.show_app_picker = function (filter) {
 Hue.start_app = function (app) {
   Hue.close_all_modals()
   let win = Hue.create_app_window()
+  win.hue_app_name = app.name
+  win.hue_app_url = app.url
+
   win.set(Hue.template_app({url: app.url}))
 
   win.titlebar.addEventListener("click", function () {
     win.close()
-    Hue.create_app_popup(app.name, win)
+  })
+
+  win.titlebar.addEventListener("wheel", function (e) {
+    Hue.app_cycle_wheel_timer(e.deltaY > 0 ? "down" : "up")
   })
 
   win.set_title(app.name)
@@ -102,4 +108,38 @@ Hue.get_open_apps = function () {
   }
 
   return apps
+}
+
+// Cycle apps up or down
+Hue.cycle_apps = function (direction) {
+  let apps = Hue.get_open_apps()
+
+  if (apps.length <= 1) {
+    return
+  }
+
+  for (let [i, app] of apps.entries()) {
+    if (app === Hue.active_app) {
+      app.close()
+
+      let ii = i
+
+      if (direction === "down") {
+        if (i + 1 < apps.length) {
+          ii += 1
+        } else {
+          ii = 0
+        }
+      } else if (direction === "up") {
+        if (i - 1 >= 0) {
+          ii -= 1
+        } else {
+          ii = apps.length - 1
+        }
+      }
+
+      apps[ii].show()
+      break
+    }
+  }
 }

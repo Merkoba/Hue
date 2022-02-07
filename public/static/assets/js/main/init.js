@@ -134,6 +134,7 @@ Hue.highlight_date_on_focus = 0
 Hue.focused_once = false
 Hue.flipped = false
 Hue.app_open = false
+Hue.active_app = undefined
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

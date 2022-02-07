@@ -77,4 +77,9 @@ Hue.create_debouncers = function () {
   Hue.image_resize_wheel_timer = Hue.create_debouncer(function (direction) {
     Hue.image_resize_wheel(direction)
   }, Hue.wheel_delay_2)
+
+  // Debounce timer for app switch wheel
+  Hue.app_cycle_wheel_timer = Hue.create_debouncer(function (direction) {
+    Hue.cycle_apps(direction)
+  }, Hue.wheel_delay_2)
 }
