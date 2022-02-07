@@ -57,8 +57,10 @@ Hue.setup_apps = function () {
 
   Hue.update_app_picker()
 
-  for (let url of Hue.settings.autostart_apps.split("\n")) {
-    Hue.open_app(url, false)
+  if (Hue.settings.autostart_apps) {
+    for (let url of Hue.settings.autostart_apps.split("\n")) {
+      Hue.open_app(url, false)
+    }
   }
 }
 
