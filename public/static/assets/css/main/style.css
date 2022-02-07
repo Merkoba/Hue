@@ -2394,13 +2394,14 @@ pre {
 }
 
 .app_titlebar_name {
-	width: 100%;
+	flex-grow: 1;
 }
 
 .app_titlebar_buttons {
   display: flex;
 	flex-direction: row;
 	gap: 1rem;
+	flex-grow: 0;
 }
 
 .app_titlebar {
