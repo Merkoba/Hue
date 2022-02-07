@@ -864,10 +864,7 @@ input[type=password],
 input[type=number],
 textarea,
 select {
-	background-color: white;
-	color: #222222;
 	font-family: var(--font_family) !important;
-	border: 0.06rem solid currentColor;
 }
 
 #modal_image_error,
@@ -1125,6 +1122,9 @@ select {
 	text-align: center;
 	overflow-x: hidden;
 	box-sizing: border-box;
+	background-color: var(--altcolor);
+	color: var(--font_color);
+	border: 0px solid white;
 }
 
 .setting_textarea2 {
@@ -1148,26 +1148,9 @@ select {
 	font-size: 1rem;
 	text-align: center;
 	box-sizing: border-box;
-}
-
-.setting_input_text_small {
-	width: 11.76rem;
-	font-size: 1rem;
-	text-align: center;
-}
-
-.setting_input_text_smaller {
-	width: 5.88rem;
-	font-size: 1rem;
-	text-align: center;
-}
-
-.setting_input_text_2 {
-	width: 19rem;
-	resize: none;
-	font-size: 1rem;
-	text-align: center;
-	overflow-x: hidden;
+	background-color: var(--altcolor);
+	color: var(--font_color);
+	border: 0px solid white;
 }
 
 .full_textarea {
