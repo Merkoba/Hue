@@ -97,18 +97,16 @@ Hue.start_app = function (app) {
       <div class="app_titlebar_name">${name}</div>
 
       <div class="app_titlebar_buttons">
-        <div class="pointer app_titlebar_launch">Launch</div>
-        <div class="pointer app_titlebar_separator"> | </div>
-        <div class="pointer app_titlebar_cycle">Cycle</div>
-        <div class="pointer app_titlebar_separator"> | </div>
-        <div class="pointer app_titlebar_minimize">Minimize</div>
-        <div class="pointer app_titlebar_separator"> | </div>
-        <div class="pointer app_titlebar_close">Close</div>
+        <div class="action app_titlebar_launch">Launch</div>
+        <div class="action app_titlebar_cycle">Cycle</div>
+        <div class="action app_titlebar_minimize">Minimize</div>
+        <div class="action app_titlebar_close">Close</div>
       </div>
     </div>
   `
 
   win.set_title(title)
+  Hue.horizontal_separator(Hue.el(".app_titlebar_buttons", win.titlebar))
   win.show()
 }
 
