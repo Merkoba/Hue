@@ -2339,6 +2339,12 @@ pre {
 	height: 100%;
 }
 
+#app_picker_header {
+	font-size: 1rem;
+	margin-bottom: 1rem;
+	font-size: 1.2rem;
+}
+
 #app_picker_container {
 	display: flex;
 	flex-direction: column;
@@ -2354,10 +2360,6 @@ pre {
 	font-size: 1.2rem;
 	margin-top: 0.35rem;
 	margin-bottom: 0.35rem;
-}
-
-.app_picker_item_description {
-	font-size: 1rem;
 }
 
 .app_popup {
@@ -2426,8 +2428,19 @@ pre {
 	padding-right: 1rem;
 }
 
-#app_picker_header {
-	font-size: 1rem;
-	margin-bottom: 1rem;
+#applist_container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-top: 1rem;
+}
+
+.applist_item {
+	cursor: pointer;
+}
+
+.applist_item_name {
 	font-size: 1.2rem;
+	margin-top: 0.35rem;
+	margin-bottom: 0.35rem;
 }

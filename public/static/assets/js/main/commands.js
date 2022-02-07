@@ -548,6 +548,16 @@ Hue.commands = {
       }
     },
     description: `Open a URL as a custom app`,
+  },
+  "applist": {
+    action: (arg, ans) => {
+      if (arg) {
+        Hue.show_applist(arg)
+      } else {
+        Hue.show_applist()
+      }
+    },
+    description: `Open a URL as a custom app`,
   }
 }
 
