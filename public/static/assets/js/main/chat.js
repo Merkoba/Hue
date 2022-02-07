@@ -556,10 +556,14 @@ Hue.start_chat_mouse_events = function () {
     }
 
     if (e.target.tagName === "A") {
-      return false
+      return
     }    
 
     if (e.target.closest(".chat_menu_button")) {
+      return
+    }
+
+    if (!e.target.closest) {
       return
     }
     
@@ -626,7 +630,11 @@ Hue.start_chat_mouse_events = function () {
     }
 
     if (e.target.tagName === "A") {
-      return false
+      return
+    }
+
+    if (!e.target.closest) {
+      return
     }
     
     if (e.target.closest(".chat_area")) {
