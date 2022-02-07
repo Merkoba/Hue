@@ -46,7 +46,15 @@ Hue.open_custom_app = function (url = "") {
     url = `https://${url}`
   }
 
-  Hue.start_app({name: new URL(url).hostname, url: url})
+  let name = ""
+
+  try {
+    name = new URL(url).hostname
+  } catch (err) {
+    return
+  }
+
+  Hue.start_app({name: name, url: url})
 }
 
 // Show the app picker
@@ -61,6 +69,14 @@ Hue.show_app_picker = function (filter) {
 
 // Start a app
 Hue.start_app = function (app) {
+  let hostname = ""
+
+  try {
+    hostname = new URL(app.url).hostname
+  } catch (err) {
+    return
+  }
+  
   Hue.close_all_modals()
   let win = Hue.create_app_window()
   win.hue_app_name = app.name
@@ -88,7 +104,6 @@ Hue.start_app = function (app) {
   })
 
   let name = app.name
-  let hostname = new URL(app.url).hostname
 
   if (name !== hostname) {
     name += ` (${hostname})`
