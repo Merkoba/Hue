@@ -5,7 +5,9 @@ Hue.setup_header = function () {
   })
 
   Hue.el("#header_main_menu").addEventListener("auxclick", function (e) {
-    Hue.flip()
+    if (e.which === 2) {
+      Hue.flip()
+    }
   })
 
   Hue.el("#header_users").addEventListener("click", function () {
