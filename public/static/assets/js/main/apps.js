@@ -17,6 +17,21 @@ Hue.setup_apps = function () {
     } 
   })
 
+  Hue.el("#app_picker_container").addEventListener("auxclick", function (e) {
+    if (e.which !== 2) {
+      return
+    }
+
+    if (!e.target) {
+      return
+    }
+
+    if (e.target.closest(".app_picker_item")) {
+      let url = e.target.closest(".app_picker_item").dataset.url
+      Hue.forget_app(Hue.find_app_by_url(url))
+    } 
+  })
+
   Hue.update_app_picker()
 }
 
@@ -286,4 +301,16 @@ Hue.open_app_input = function () {
   Hue.msg_open_app.show(function () {
     Hue.el("#open_app_input").focus()
   })
+}
+
+// Remove app from the app list
+Hue.forget_app = function (app) {
+  for (let [i, item] of Hue.apps.entries()) {
+    if (item.url === app.url) {
+      Hue.apps.splice(i, 1)
+      break
+    }
+  }
+
+  Hue.update_app_picker()
 }
