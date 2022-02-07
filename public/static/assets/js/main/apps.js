@@ -289,7 +289,7 @@ Hue.cycle_apps = function (direction) {
   apps[ii].show()
 }
 
-// Refresh an app's iframe
+// Refresh an app's content
 Hue.refresh_app = function (win) {
   Hue.load_app_content(win)
 }
@@ -434,5 +434,5 @@ Hue.load_app_content = function (win) {
     win.set(Hue.template_app({url: win.hue_app_url}))
   }
 
-  win.hue_iframe_loaded = true
+  win.hue_content_loaded = true
 }
