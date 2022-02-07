@@ -542,7 +542,9 @@ Hue.commands = {
   "open": {
     action: (arg, ans) => {
       if (arg) {
-        Hue.open_custom_app(arg)
+        Hue.open_app(arg)
+      } else {
+        Hue.open_app_input()
       }
     },
     description: `Open a URL as a custom app`,

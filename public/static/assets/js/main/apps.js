@@ -1,39 +1,74 @@
 // Setup apps
 Hue.setup_apps = function () {
+  Hue.get_apps()
+
   Hue.el("#app_picker_container").addEventListener("click", function (e) {
     if (!e.target) {
       return
     }
 
+    if (e.target.closest(".app_picker_open")) {
+      Hue.open_app_input()
+    }
+
     if (e.target.closest(".app_picker_item")) {
-      let index = e.target.closest(".app_picker_item").dataset.appindex
-      Hue.start_app(Hue.config.applist[index])
+      let url = e.target.closest(".app_picker_item").dataset.url
+      Hue.start_app(Hue.find_app_by_url(url))
     } 
   })
 
-  Hue.vertical_separator(Hue.el("#app_picker_container"))
+  Hue.update_app_picker()
+}
 
-  Hue.el("#app_picker_custom").addEventListener("click", function (e) {
-    Hue.msg_custom_app_picker.show(function () {
-      Hue.el("#custom_app_picker_input").focus()
-    })
-  })
-
-  Hue.el("#custom_app_picker_open").addEventListener("click", function () {
-    Hue.open_custom_app()
-  })
-
-  for (let icon of Hue.els(".app_picker_item_icon")) {
-    let index = icon.parentNode.dataset.appindex
-    let app = Hue.config.applist[index]
-    jdenticon.update(icon, app.name)
+// Get an app by its url
+Hue.find_app_by_url = function (url) {
+  for (let app of Hue.apps) {
+    if (app.url === url) {
+      return app
+    }
   }
 }
 
-// On custom app picker action
-Hue.open_custom_app = function (url = "") {
+// Update the app picker
+Hue.update_app_picker = function () {
+  let container = Hue.el("#app_picker_container")
+  container.innerHTML = ""
+
+  let el = Hue.div("app_picker_item action modal_item app_picker_open")
+  el.dataset.url = ""
+  el.innerHTML = `
+    <div class="app_picker_item_name">Open New App</div>
+  `
+
+  container.append(el)
+
+  for (let app of Hue.apps) {
+    let el = Hue.div("app_picker_item action modal_item")
+    el.dataset.url = app.url
+    el.innerHTML = `
+      <canvas class="app_picker_item_icon" width="40" height="40"></canvas>
+      <div class="app_picker_item_name">${app.name}</div>
+    `
+
+    container.append(el)
+  }
+
+  for (let icon of Hue.els(".app_picker_item_icon")) {
+    let url = icon.parentNode.dataset.url
+
+    if (url) {
+      let app = Hue.find_app_by_url(url)
+      jdenticon.update(icon, app.name)
+    }
+  }
+
+  Hue.vertical_separator(container)
+}
+
+// On open app action
+Hue.open_app = function (url = "") {
   if (url === "") {
-    url = Hue.el("#custom_app_picker_input").value
+    url = Hue.el("#open_app_input").value
   }
 
   url = url.trim()
@@ -54,7 +89,9 @@ Hue.open_custom_app = function (url = "") {
     return
   }
 
-  Hue.start_app({name: name, url: url})
+  let app = {name: name, url: url}
+
+  Hue.start_app(app)
 }
 
 // Show the app picker
@@ -69,6 +106,10 @@ Hue.show_app_picker = function (filter) {
 
 // Start a app
 Hue.start_app = function (app) {
+  if (!app) {
+    return
+  }
+
   let hostname = ""
 
   try {
@@ -128,6 +169,7 @@ Hue.start_app = function (app) {
   jdenticon.update(el, app.name)
 
   win.show()
+  Hue.save_app(app)
 }
 
 // After app picker is filtered
@@ -201,4 +243,47 @@ Hue.cycle_apps = function (direction) {
 // Refresh an app's iframe
 Hue.refresh_app = function (win) {
   win.set(Hue.template_app({url: win.hue_app_url}))
+}
+
+// Gets the apps localStorage object
+Hue.get_apps = function () {
+  Hue.apps = Hue.get_local_storage(Hue.ls_apps)
+
+  if (Hue.apps === null) {
+    Hue.apps = []
+    Hue.save_apps()
+  }
+}
+
+// Saves the apps localStorage object
+Hue.save_apps = function (force = false) {
+  Hue.save_local_storage(Hue.ls_apps, Hue.apps, force)
+}
+
+// Add item to apps
+// Remove duplicate items
+Hue.save_app = function (app) {
+  try {
+    new URL(app.url)
+  } catch (err) {
+    return
+  }
+
+  for (let [i, item] of Hue.apps.entries()) {
+    if (item.url === app.url) {
+      Hue.apps.splice(i, 1)
+      break
+    }
+  }
+
+  Hue.apps.unshift(app)
+  Hue.save_apps()
+  Hue.update_app_picker()
+}
+
+// Open app input
+Hue.open_app_input = function () {
+  Hue.msg_open_app.show(function () {
+    Hue.el("#open_app_input").focus()
+  })
 }

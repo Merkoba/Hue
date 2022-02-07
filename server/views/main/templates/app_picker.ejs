@@ -1,16 +1,4 @@
 <script id='template_app_picker' type='text/x-handlebars-template' class='template'>
   <input type="text" id="app_picker_filter" class="filter_input" placeholder="Filter">
-  <div id="app_picker_container">
-    <div id="app_picker_custom" class="action modal_item">
-      <div class="app_picker_item_name">Custom</div>
-      <div class="app_picker_item_description">Provide your own URL</div>
-    </div>
-    {{#each apps}}
-    <div class="app_picker_item action modal_item" data-appindex="{{@index}}">
-      <canvas class="app_picker_item_icon" width="40" height="40"></canvas>
-      <div class="app_picker_item_name">{{name}}</div>
-      <div class="app_picker_item_description">{{description}}</div>
-    </div>
-    {{/each}}
-  </div>
+  <div id="app_picker_container"></div>
 </script>
