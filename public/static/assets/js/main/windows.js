@@ -540,7 +540,17 @@ Hue.get_popup_instances = function () {
 
 // Checks if any Msg modal instance is open
 Hue.any_modal_open = function () {
-  return Hue.msg_main_menu.any_higher_open()
+  let instances = Hue.get_modal_instances()
+
+  for (let instance of instances) {
+    if (!instance.window.classList.contains("app")) {
+      if (instance.is_open()) {
+        return true
+      }
+    }
+  }
+
+  return false
 }
 
 // Gets the highest open Msg modal
