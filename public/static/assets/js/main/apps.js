@@ -162,7 +162,7 @@ Hue.start_app = function (app, start_maximized = true) {
   let win = Hue.create_app_window()
   win.hue_app_name = app.name
   win.hue_app_url = app.url
-  win.hue_iframe_loaded = false
+  win.hue_content_loaded = false
   win.create()
 
   win.titlebar.addEventListener("click", function (e) {
@@ -291,7 +291,7 @@ Hue.cycle_apps = function (direction) {
 
 // Refresh an app's iframe
 Hue.refresh_app = function (win) {
-  win.set(Hue.template_app({url: win.hue_app_url}))
+  Hue.load_app_content(win)
 }
 
 // Gets the apps localStorage object
@@ -420,4 +420,19 @@ Hue.minimize_all_apps = function () {
   for (let win of Hue.get_open_apps()) {
     win.close()
   }
+}
+
+// Load iframe, audio, or video
+Hue.load_app_content = function (win) {
+  let extension = Hue.utilz.get_extension(win.hue_app_url).toLowerCase()
+  
+  if (Hue.utilz.audio_extensions.includes(extension)) {
+    win.set(Hue.template_app_audio({url: win.hue_app_url}))
+  } else if (Hue.utilz.video_extensions.includes(extension)) {
+    win.set(Hue.template_app_video({url: win.hue_app_url}))
+  } else {
+    win.set(Hue.template_app({url: win.hue_app_url}))
+  }
+
+  win.hue_iframe_loaded = true
 }
