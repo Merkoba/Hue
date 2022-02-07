@@ -32,6 +32,10 @@ Hue.setup_apps = function () {
     } 
   })
 
+  Hue.el("#open_app_open").addEventListener("click", function (e) {
+    Hue.open_app()
+  })
+
   Hue.update_app_picker()
 }
 
