@@ -84,6 +84,7 @@ Hue.update_app_picker = function () {
   for (let app of Hue.apps) {
     let el = Hue.div("app_picker_item action modal_item")
     el.title = app.url
+    el.dataset.name = app.name
     el.dataset.url = app.url
     el.innerHTML = `
       <canvas class="app_picker_item_icon" width="40" height="40"></canvas>
@@ -94,12 +95,7 @@ Hue.update_app_picker = function () {
   }
 
   for (let icon of Hue.els(".app_picker_item_icon")) {
-    let url = icon.parentNode.dataset.url
-
-    if (url) {
-      let app = Hue.find_app_by_url(url)
-      jdenticon.update(icon, app.name)
-    }
+    jdenticon.update(icon, icon.parentNode.dataset.name)
   }
 
   Hue.vertical_separator(container)
@@ -163,6 +159,8 @@ Hue.start_app = function (app, start_maximized = true) {
   win.hue_app_name = app.name
   win.hue_app_url = app.url
   win.hue_content_loaded = false
+  win.hue_content_type = ""
+  win.hue_last_open = 0
   win.create()
 
   win.titlebar.addEventListener("click", function (e) {
@@ -373,6 +371,7 @@ Hue.show_applist = function (filter = "") {
   for (let win of windows) {
     let el = Hue.div("applist_item action modal_item")
     el.title = win.hue_app_url
+    el.dataset.name = win.hue_app_name
     el.dataset.url = win.hue_app_url
     el.dataset.id = win.options.id
     el.innerHTML = `
@@ -384,12 +383,7 @@ Hue.show_applist = function (filter = "") {
   }
 
   for (let icon of Hue.els(".applist_item_icon")) {
-    let url = icon.parentNode.dataset.url
-
-    if (url) {
-      let app = Hue.find_app_by_url(url)
-      jdenticon.update(icon, app.name)
-    }
+    jdenticon.update(icon, icon.parentNode.dataset.name)
   }
 
   Hue.msg_applist.show(function () {
@@ -427,12 +421,34 @@ Hue.load_app_content = function (win) {
   let extension = Hue.utilz.get_extension(win.hue_app_url).toLowerCase()
   
   if (Hue.utilz.audio_extensions.includes(extension)) {
+    win.hue_content_type = "audio"
     win.set(Hue.template_app_audio({url: win.hue_app_url}))
   } else if (Hue.utilz.video_extensions.includes(extension)) {
+    win.hue_content_type = "video"
     win.set(Hue.template_app_video({url: win.hue_app_url}))
   } else {
+    win.hue_content_type = "iframe"
     win.set(Hue.template_app({url: win.hue_app_url}))
   }
 
   win.hue_content_loaded = true
+}
+
+// Stop other multimedia players
+Hue.stop_other_app_players = function (win) {
+  for (let w of Hue.get_open_apps()) {
+    if (w === win) {
+      continue
+    }
+
+    if (w.hue_content_type === "audio" || 
+        w.hue_content_type === "video") {
+      Hue.el(".app_frame", w.content).pause()
+    }
+  }
+
+  if (win.hue_content_type === "audio" || 
+      win.hue_content_type === "video") {
+    Hue.el(".app_frame", win.content).play()
+  }
 }
