@@ -94,7 +94,10 @@ Hue.start_app = function (app) {
 
   let title = `
     <div class="app_titlebar_container">
-      <div class="app_titlebar_name">${name}</div>
+      <div class="app_titlebar_info">
+        <canvas class="app_titlebar_icon" width="20" height="20"></canvas>
+        <div class="app_titlebar_name">${name}</div>
+      </div>
 
       <div class="app_titlebar_buttons">
         <div class="action app_titlebar_launch">Launch</div>
@@ -107,6 +110,9 @@ Hue.start_app = function (app) {
 
   win.set_title(title)
   Hue.horizontal_separator(Hue.el(".app_titlebar_buttons", win.titlebar))
+  let el = Hue.el(".app_titlebar_icon", win.titlebar)
+  jdenticon.update(el, app.name)
+
   win.show()
 }
 
