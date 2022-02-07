@@ -93,9 +93,6 @@ Hue.start_app = function (app) {
       Hue.refresh_app(win)
     } else if (e.target.classList.contains("app_titlebar_minimize")) {
       win.close()
-    } else if (e.target.classList.contains("app_titlebar_close")) {
-      win.close()
-      win.destroy()
     }
   })
 
@@ -121,7 +118,6 @@ Hue.start_app = function (app) {
         <div class="action app_titlebar_cycle">Cycle</div>
         <div class="action app_titlebar_refresh">Refresh</div>
         <div class="action app_titlebar_minimize">Minimize</div>
-        <div class="action app_titlebar_close">Close</div>
       </div>
     </div>
   `
