@@ -63,6 +63,7 @@ Hue.update_app_picker = function () {
 
   for (let app of Hue.apps) {
     let el = Hue.div("app_picker_item action modal_item")
+    el.title = app.url
     el.dataset.url = app.url
     el.innerHTML = `
       <canvas class="app_picker_item_icon" width="40" height="40"></canvas>
