@@ -21,7 +21,6 @@ Hue.setup_apps = function () {
 
     if (e.target.closest(".app_picker_item")) {
       let url = e.target.closest(".app_picker_item").dataset.url
-      Hue.close_all_modals()
       Hue.start_app(Hue.find_app_by_url(url))
     } 
   })
@@ -52,7 +51,6 @@ Hue.setup_apps = function () {
 
     if (e.target.closest(".applist_item")) {
       let winid = e.target.closest(".applist_item").dataset.id
-      Hue.close_all_modals()
       Hue.change_to_app(winid)
     } 
   })
@@ -216,6 +214,7 @@ Hue.start_app = function (app) {
 
   win.show()
   Hue.save_app(app)
+  Hue.close_all_modals()
 }
 
 // After app picker is filtered
@@ -328,7 +327,9 @@ Hue.save_app = function (app) {
 // Open app input
 Hue.open_app_input = function () {
   Hue.msg_open_app.show(function () {
-    Hue.el("#open_app_input").focus()
+    let input = Hue.el("#open_app_input")
+    input.value = ""
+    input.focus()
   })
 }
 
@@ -398,13 +399,15 @@ Hue.show_applist = function (filter = "") {
 // Change to a specific open app
 Hue.change_to_app = function (id) {
   let winid = parseInt(id)
-
+  
   for (let win of Hue.get_open_apps()) {
     if (win.options.id === winid) {
       win.show()
       break
     }
   }
+
+  Hue.close_all_modals()
 }
 
 // Minimize all apps
