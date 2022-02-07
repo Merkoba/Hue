@@ -1,7 +1,7 @@
 <script id='template_settings' type='text/x-handlebars-template' class='template'>
     <input type="text" class="filter_input" placeholder="Filter" id="settings_filter">
     
-    <div id="settings_container" class="grid_column_center">
+    <div id="settings_container">
         <div class='settings_item modal_item' data-setting='show_image_previews'>
             <div class="setting_title">Image Previews</div>
             <input type="checkbox" class="settings_item_control" id="settings_show_image_previews">
@@ -39,6 +39,12 @@
             <div class="setting_title2">Open Whispers</div>
             <div class="setting_title">Automatically</div>
             <input type="checkbox" class="settings_item_control" id="settings_open_whispers_automatically">
+        </div>
+
+        <div class='settings_item modal_item' data-setting='autostart_apps'>
+            <div class="setting_title2">Autostart Apps</div>
+            <div class="setting_title">(One per line)</div>
+            <textarea rows="4" class="settings_item_control setting_textarea nowrap" id="settings_autostart_apps"></textarea>
         </div>
 
         <div id='settings_request_notifications' class='modal_item action'>Desktop Notifications</div>

@@ -663,9 +663,15 @@ a.generic:hover {
 }
 
 #settings_container {
+	display: flex;
+	flex-direction: column;
 	padding-top: 1rem;
-	grid-gap: 1.6rem;
 	padding-bottom: 0.5rem;
+	gap: 1.6rem;
+}
+
+.settings_item {
+	width: 100%;
 }
 
 .setting_title {
@@ -1109,6 +1115,8 @@ select {
 #write_message_send_button {
 	padding-top: 1rem;
 }
+
+
 
 .setting_textarea {
 	width: 100%;
