@@ -788,13 +788,11 @@ Hue.create_app_window = function () {
   return Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       preset: "window",
-      window_x: "inner_right",
       close_on_escape: false,
       enable_overlay: false,
       window_class: "!transparent_background !app",
       content_container_class: "!msg_background_color",
-      titlebar_class: "!custom_titlebar",
-      titlebar_cursor: "pointer",
+      titlebar_class: "!app_titlebar",
       after_show: function (instance) {
         Hue.app_open = true
         Hue.active_app = instance
