@@ -8,7 +8,7 @@ Hue.activate_key_detection = function () {
     if (Hue.app_open) {
 
       if (Hue.modal_open) {
-        
+
         if (Hue.msg_app_picker.is_open()) {
           if (Hue.msg_app_picker.is_highest()) {
             if (e.key === "Enter") {
@@ -20,9 +20,9 @@ Hue.activate_key_detection = function () {
           }
         }
 
-        if (Hue.msg_custom_app_picker.is_highest()) {
+        if (Hue.msg_open_app.is_highest()) {
           if (e.key === "Enter") {
-            Hue.open_custom_app()
+            Hue.open_app()
             e.preventDefault()
           }
   
@@ -287,10 +287,10 @@ Hue.activate_key_detection = function () {
         }
       }
       
-      if (Hue.msg_custom_app_picker.is_open()) {
-        if (Hue.msg_custom_app_picker.is_highest()) {
+      if (Hue.msg_open_app.is_open()) {
+        if (Hue.msg_open_app.is_highest()) {
           if (e.key === "Enter") {
-            Hue.open_custom_app()
+            Hue.open_app()
             e.preventDefault()
           }
 

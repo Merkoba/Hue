@@ -121,47 +121,5 @@
 	"max_activity_username_length": 8,
 	"db_write_file_timeout": 2000,
 	"db_write_file_timeout_limit": 10000,
-	"chat_crop_limit": 500,
-	"applist": [
-		{
-			"name":"Calculator", 
-			"url":"https://calculator.merkoba.com", 
-			"description": "Multi-Line calculator"
-		},
-		{
-			"name":"Mutant", 
-			"url":"https://mutant.merkoba.com",
-			"description": "Create animated gifs"
-		},
-		{
-			"name":"Rigga", 
-			"url":"https://rigga.merkoba.com",
-			"description": "Add text to images"
-		},
-		{
-			"name":"Tetris", 
-			"url":"https://tetris.merkoba.com",
-			"description": "A twist on the classic game"
-		},
-		{
-			"name":"Mines", 
-			"url":"https://mines.merkoba.com",
-			"description": "A minesweeper game"
-		},
-		{
-			"name":"Flood", 
-			"url":"https://flood.merkoba.com",
-			"description": "Simple relaxing game"
-		},
-		{
-			"name":"Snek", 
-			"url":"https://snek.merkoba.com",
-			"description": "A snake game"
-		},
-		{
-			"name":"Conway", 
-			"url":"https://conway.merkoba.com",
-			"description": "Conway's Game of Life"
-		}
-	]
+	"chat_crop_limit": 500
 }

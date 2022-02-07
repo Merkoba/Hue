@@ -101,9 +101,9 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_custom_app_picker = Msg.factory(
+  Hue.msg_open_app = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "custom_app_picker",
+      id: "open_app",
       window_width: "24rem"
     })
   )
@@ -380,12 +380,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_app_picker.set(
-    Hue.template_app_picker({
-      apps: Hue.config.applist
-    })
-  )  
-
   Hue.msg_main_menu.set(Hue.template_main_menu())
   Hue.msg_room_menu.set(Hue.template_room_menu())
   Hue.msg_user_menu.set(Hue.template_user_menu())
@@ -412,7 +406,8 @@ Hue.start_msg = function () {
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_draw_image.set(Hue.template_draw_image())
-  Hue.msg_custom_app_picker.set(Hue.template_custom_app_picker())
+  Hue.msg_open_app.set(Hue.template_open_app())
+  Hue.msg_app_picker.set(Hue.template_app_picker())
 
   Hue.msg_info.create()
   Hue.msg_info2.create()
@@ -438,7 +433,7 @@ Hue.start_msg = function () {
   Hue.msg_image_picker.set_title("Image")
   Hue.msg_tv_picker.set_title("TV")
   Hue.msg_app_picker.set_title("Apps")
-  Hue.msg_custom_app_picker.set_title("Custom App")
+  Hue.msg_open_app.set_title("Open App")
 }
 
 // Sets all info window variables to false

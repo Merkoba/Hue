@@ -331,9 +331,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "chat_crop_limit"
 >Max number of messages to keep on the client.
 
-"applist"
->List of app items [{"name": some_name, "url": some_url, "description": about_the_app}]
-
 
 ## config.secret.json
 
