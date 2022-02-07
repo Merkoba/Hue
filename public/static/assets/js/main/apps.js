@@ -56,6 +56,10 @@ Hue.setup_apps = function () {
   })
 
   Hue.update_app_picker()
+
+  for (let url of Hue.settings.autostart_apps.split("\n")) {
+    Hue.open_app(url, false)
+  }
 }
 
 // Get an app by its url
@@ -97,7 +101,7 @@ Hue.update_app_picker = function () {
 }
 
 // On open app action
-Hue.open_app = function (url = "") {
+Hue.open_app = function (url = "", start_maximized = true) {
   if (url === "") {
     url = Hue.el("#open_app_input").value
   }
@@ -122,7 +126,7 @@ Hue.open_app = function (url = "") {
 
   let app = {name: name, url: url}
 
-  Hue.start_app(app)
+  Hue.start_app(app, start_maximized)
 }
 
 // Show the app picker
@@ -139,15 +143,13 @@ Hue.show_app_picker = function (filter) {
 }
 
 // Start a app
-Hue.start_app = function (app) {
+Hue.start_app = function (app, start_maximized = true) {
   if (!app) {
     return
   }
 
-  let hostname = ""
-
   try {
-    hostname = new URL(app.url).hostname
+    new URL(app.url)
   } catch (err) {
     return
   }
@@ -155,8 +157,8 @@ Hue.start_app = function (app) {
   let win = Hue.create_app_window()
   win.hue_app_name = app.name
   win.hue_app_url = app.url
-
-  win.set(Hue.template_app({url: app.url}))
+  win.hue_iframe_loaded = false
+  win.create()
 
   win.titlebar.addEventListener("click", function (e) {
     if (e.target.classList.contains("app_titlebar_launch")) {
@@ -185,17 +187,11 @@ Hue.start_app = function (app) {
     Hue.app_cycle_wheel_timer(e.deltaY > 0 ? "down" : "up")
   })
 
-  let name = app.name
-
-  if (name !== hostname) {
-    name += ` (${hostname})`
-  }
-
   let title = `
     <div class="app_titlebar_container">
       <div class="app_titlebar_info">
         <canvas class="app_titlebar_icon" width="20" height="20"></canvas>
-        <div class="app_titlebar_name">${name}</div>
+        <div class="app_titlebar_name">${app.name}</div>
       </div>
 
       <div class="app_titlebar_buttons">
@@ -212,7 +208,12 @@ Hue.start_app = function (app) {
   let el = Hue.el(".app_titlebar_icon", win.titlebar)
   jdenticon.update(el, app.name)
 
-  win.show()
+  if (start_maximized) {
+    win.show()
+  } else {
+    Hue.create_app_popup(win)
+  }
+
   Hue.save_app(app)
   Hue.close_all_modals()
 }

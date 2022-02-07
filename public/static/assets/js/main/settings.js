@@ -84,6 +84,19 @@ Hue.user_settings = {
         Hue.save_settings()
       }
     },
+  },
+  autostart_apps: {
+    widget_type: "textarea",
+    description: `Which app URLs to start automatically on join`,
+    action: (save = true) => {
+      let s = Hue.el(`#settings_autostart_apps`).value
+      let items = s.split("\n").map(x => x.trim()).filter(x => x !== "")
+      Hue.settings.autostart_apps = items.join("\n")
+
+      if (save) {
+        Hue.save_settings()
+      }
+    },
   }
 }
 
