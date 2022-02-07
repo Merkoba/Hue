@@ -73,6 +73,8 @@ Hue.start_app = function (app) {
       Hue.show_app_picker()
     } else if (e.target.classList.contains("app_titlebar_cycle")) {
       Hue.cycle_apps("down")
+    } else if (e.target.classList.contains("app_titlebar_refresh")) {
+      Hue.refresh_app(win)
     } else if (e.target.classList.contains("app_titlebar_minimize")) {
       win.close()
     } else if (e.target.classList.contains("app_titlebar_close")) {
@@ -102,6 +104,7 @@ Hue.start_app = function (app) {
       <div class="app_titlebar_buttons">
         <div class="action app_titlebar_launch">Launch</div>
         <div class="action app_titlebar_cycle">Cycle</div>
+        <div class="action app_titlebar_refresh">Refresh</div>
         <div class="action app_titlebar_minimize">Minimize</div>
         <div class="action app_titlebar_close">Close</div>
       </div>
@@ -182,4 +185,9 @@ Hue.cycle_apps = function (direction) {
 
     apps[ii].show()
   })
+}
+
+// Refresh an app's iframe
+Hue.refresh_app = function (win) {
+  win.set(Hue.template_app({url: win.hue_app_url}))
 }
