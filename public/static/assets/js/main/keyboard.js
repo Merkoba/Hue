@@ -6,6 +6,15 @@ Hue.activate_key_detection = function () {
     }
 
     if (Hue.app_open) {
+      if (Hue.msg_custom_app_picker.is_highest()) {
+        if (e.key === "Enter") {
+          Hue.open_custom_app()
+          e.preventDefault()
+        }
+
+        return
+      }
+
       return
     }
 
@@ -236,6 +245,8 @@ Hue.activate_key_detection = function () {
             Hue.submit_message_board_post()
             e.preventDefault()
           }
+
+          return
         }
       }
 
@@ -245,6 +256,8 @@ Hue.activate_key_detection = function () {
             Hue.send_popup_message()
             e.preventDefault()
           }
+
+          return
         }
       }
 
@@ -254,6 +267,8 @@ Hue.activate_key_detection = function () {
             Hue.launch_first_app()
             e.preventDefault()
           }
+
+          return
         }
       }
       
@@ -263,6 +278,8 @@ Hue.activate_key_detection = function () {
             Hue.open_custom_app()
             e.preventDefault()
           }
+
+          return
         }
       }
 

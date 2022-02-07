@@ -46,7 +46,7 @@ Hue.open_custom_app = function (url = "") {
     url = `https://${url}`
   }
 
-  Hue.start_app({name: new URL(url).hostname, url: url})
+  Hue.start_app({name: "Custom", url: url})
 }
 
 // Show the app picker
@@ -68,15 +68,40 @@ Hue.start_app = function (app) {
 
   win.set(Hue.template_app({url: app.url}))
 
-  win.titlebar.addEventListener("click", function () {
-    win.close()
+  win.titlebar.addEventListener("click", function (e) {
+    if (e.target.classList.contains("app_titlebar_launch")) {
+      Hue.show_app_picker()
+    } else if (e.target.classList.contains("app_titlebar_cycle")) {
+      Hue.cycle_apps("down")
+    } else if (e.target.classList.contains("app_titlebar_minimize")) {
+      win.close()
+    } else if (e.target.classList.contains("app_titlebar_close")) {
+      win.close()
+      win.destroy()
+    }
   })
 
   win.titlebar.addEventListener("wheel", function (e) {
     Hue.app_cycle_wheel_timer(e.deltaY > 0 ? "down" : "up")
   })
 
-  win.set_title(app.name)
+  let title = `
+    <div class="app_titlebar_container">
+      <div class="app_titlebar_name">${app.name} (${new URL(app.url).hostname})</div>
+
+      <div class="app_titlebar_buttons">
+        <div class="pointer app_titlebar_launch">Launch</div>
+        <div class="pointer app_titlebar_separator"> | </div>
+        <div class="pointer app_titlebar_cycle">Cycle</div>
+        <div class="pointer app_titlebar_separator"> | </div>
+        <div class="pointer app_titlebar_minimize">Minimize</div>
+        <div class="pointer app_titlebar_separator"> | </div>
+        <div class="pointer app_titlebar_close">Close</div>
+      </div>
+    </div>
+  `
+
+  win.set_title(title)
   win.show()
 }
 
@@ -118,28 +143,32 @@ Hue.cycle_apps = function (direction) {
     return
   }
 
+  let index = 0
+
   for (let [i, app] of apps.entries()) {
     if (app === Hue.active_app) {
-      app.close()
-
-      let ii = i
-
-      if (direction === "down") {
-        if (i + 1 < apps.length) {
-          ii += 1
-        } else {
-          ii = 0
-        }
-      } else if (direction === "up") {
-        if (i - 1 >= 0) {
-          ii -= 1
-        } else {
-          ii = apps.length - 1
-        }
-      }
-
-      apps[ii].show()
+      index = i
       break
     }
   }
+
+  Hue.active_app.close(function () {
+    let ii = index
+  
+    if (direction === "down") {
+      if (ii + 1 < apps.length) {
+        ii += 1
+      } else {
+        ii = 0
+      }
+    } else if (direction === "up") {
+      if (ii - 1 >= 0) {
+        ii -= 1
+      } else {
+        ii = apps.length - 1
+      }
+    }
+  
+    apps[ii].show()
+  })
 }

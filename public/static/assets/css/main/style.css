@@ -2385,3 +2385,26 @@ pre {
 	font-size: 1.2rem;
 	cursor: pointer;
 }
+
+.app_titlebar_container {
+  display: flex;
+	flex-direction: row;
+	gap: 1rem;
+	width: 100%;
+}
+
+.app_titlebar_name {
+	width: 100%;
+}
+
+.app_titlebar_buttons {
+  display: flex;
+	flex-direction: row;
+	gap: 1rem;
+}
+
+.app_titlebar {
+	background-color: var(--altbackground) !important;
+	color: var(--font_color) !important;
+	user-select: none;
+}
