@@ -545,9 +545,17 @@ Hue.get_modal_instances = function () {
   return modals
 }
 
-// Gets all Msg popup instances
+// Gets all Msg popup instances excluding app popups
 Hue.get_popup_instances = function () {
-  return Hue.msg_main_menu.lower_instances()
+  let popups = []
+
+  for (let instance of Hue.msg_main_menu.lower_instances()) {
+    if (!Hue.is_app_popup(instance)) {
+      popups.push(instance)
+    }
+  }
+
+  return popups
 }
 
 // Checks if any Msg modal instance is open
@@ -575,10 +583,8 @@ Hue.close_all_modals = function () {
 
 // Closes all Msg popup instances
 Hue.close_all_popups = function (callback = false) {
-  if (callback) {
-    Hue.msg_main_menu.close_all_lower(callback)
-  } else {
-    Hue.msg_main_menu.close_all_lower()
+  for (let instance of Hue.get_popup_instances()) {
+    instance.close()
   }
 }
 
@@ -807,7 +813,7 @@ Hue.create_app_window = function () {
       close_on_escape: false,
       enable_overlay: false,
       class: "app",
-      window_class: "app !transparent_background",
+      window_class: "app !app_window !transparent_background",
       content_container_class: "app !msg_background_color",
       titlebar_class: "app !app_titlebar",
       after_show: function (instance) {
@@ -844,7 +850,8 @@ Hue.create_app_window = function () {
 // Small popup for a minimized app
 Hue.create_app_popup = function (win) {
   let obj = {}
-  obj.window_class = "!app_popup !action"
+  obj.class = "app_popup"
+  obj.window_class = "app_popup !app_popup_window !action"
   obj.enable_titlebar = false
   obj.window_x = "floating_right"
   obj.position = "bottomright"

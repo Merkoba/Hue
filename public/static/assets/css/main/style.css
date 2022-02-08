@@ -2353,7 +2353,7 @@ pre {
 	margin-bottom: 0.35rem;
 }
 
-.app_popup {
+.app_popup_window {
 	border: 2px solid var(--altcolor) !important;
 	padding-top: 4px !important;
 	padding-bottom: 4px !important;

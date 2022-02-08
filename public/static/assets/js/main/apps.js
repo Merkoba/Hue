@@ -243,7 +243,12 @@ Hue.launch_first_app = function () {
 
 // Check if modal instance is app
 Hue.is_app = function (instance) {
-  return instance.window.classList.contains("Msg-window-app")
+  return instance.window.classList.contains("app_window")
+}
+
+// Check if modal instance is app popup
+Hue.is_app_popup = function (instance) {
+  return instance.window.classList.contains("app_popup_window")
 }
 
 // Get open apps
@@ -483,10 +488,8 @@ Hue.app_playing = function (win) {
   }
 
   if (win.hue_playing) {
-    let p = Hue.el(".app_popup", win.hue_app_popup.container)
-    p.classList.add("app_popup_playing")
+    win.hue_app_popup.window.classList.add("app_popup_playing")
   } else {
-    let p = Hue.el(".app_popup", win.hue_app_popup.container)
-    p.classList.remove("app_popup_playing")
+    win.hue_app_popup.window.classList.remove("app_popup_playing")
   }
 }
