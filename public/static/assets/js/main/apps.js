@@ -257,12 +257,16 @@ Hue.launch_first_app = function () {
 
 // Check if modal instance is app
 Hue.is_app = function (instance) {
-  return instance.window.classList.contains("app_window")
+  if (instance && instance.window) {
+    return instance.window.classList.contains("app_window")
+  }
 }
 
 // Check if modal instance is app popup
 Hue.is_app_popup = function (instance) {
-  return instance.window.classList.contains("app_popup_window")
+  if (instance && instance.window) {
+    return instance.window.classList.contains("app_popup_window")
+  }
 }
 
 // Get open apps
