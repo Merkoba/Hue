@@ -34,9 +34,13 @@ Hue.setup_apps = function () {
       return
     }
 
-    if (e.target.closest(".app_picker_item")) {
-      let url = e.target.closest(".app_picker_item").dataset.url
+    let item = e.target.closest(".app_picker_item")
+
+    if (item) {
+      let url = item.dataset.url
       Hue.forget_app(Hue.find_app_by_url(url))
+      item.remove()
+      Hue.vertical_separator(Hue.el("#app_picker_container"))
     } 
   })
 
@@ -52,10 +56,13 @@ Hue.setup_apps = function () {
     if (e.target.closest(".applist_item")) {
       let winid = e.target.closest(".applist_item").dataset.id
       Hue.change_to_app(winid)
-    } 
+    }
   })
 
-  Hue.update_app_picker()
+  Hue.el("#applist_launch").addEventListener("click", function () {
+    Hue.close_all_modals()
+    Hue.show_app_picker()
+  })
 
   let autostart = Hue.config.autostart_apps
                   .concat(Hue.settings.autostart_apps.split("\n"))
@@ -74,31 +81,6 @@ Hue.find_app_by_url = function (url) {
       return app
     }
   }
-}
-
-// Update the app picker
-Hue.update_app_picker = function () {
-  let container = Hue.el("#app_picker_container")
-  container.innerHTML = ""
-
-  for (let app of Hue.apps) {
-    let el = Hue.div("app_picker_item action modal_item")
-    el.title = app.url
-    el.dataset.name = app.name
-    el.dataset.url = app.url
-    el.innerHTML = `
-      <canvas class="app_picker_item_icon" width="40" height="40"></canvas>
-      <div class="app_picker_item_name">${app.name}</div>
-    `
-
-    container.append(el)
-  }
-
-  for (let icon of Hue.els(".app_picker_item_icon")) {
-    jdenticon.update(icon, icon.parentNode.dataset.name)
-  }
-
-  Hue.vertical_separator(container)
 }
 
 // On open app action
@@ -131,7 +113,29 @@ Hue.open_app = function (url = "", start_maximized = true) {
 }
 
 // Show the app picker
-Hue.show_app_picker = function (filter) {
+Hue.show_app_picker = function (filter = "") {
+  let container = Hue.el("#app_picker_container")
+  container.innerHTML = ""
+
+  for (let app of Hue.apps) {
+    let el = Hue.div("app_picker_item action modal_item")
+    el.title = app.url
+    el.dataset.name = app.name
+    el.dataset.url = app.url
+    el.innerHTML = `
+      <canvas class="app_picker_item_icon" width="40" height="40"></canvas>
+      <div class="app_picker_item_name">${app.name}</div>
+    `
+
+    container.append(el)
+  }
+
+  for (let icon of Hue.els(".app_picker_item_icon")) {
+    jdenticon.update(icon, icon.parentNode.dataset.name)
+  }
+
+  Hue.vertical_separator(container)
+
   Hue.msg_app_picker.show(function () {
     if (filter) {
       Hue.el("#app_picker_filter").classList.remove("nodisplay")
@@ -165,7 +169,9 @@ Hue.start_app = function (app, start_maximized = true) {
   win.create()
 
   win.titlebar.addEventListener("click", function (e) {
-    if (e.target.classList.contains("app_titlebar_launch")) {
+    if (e.target.closest(".app_titlebar_info")) {
+      Hue.show_applist()
+    } else if (e.target.classList.contains("app_titlebar_launch")) {
       Hue.show_app_picker()
     } else if (e.target.classList.contains("app_titlebar_applist")) {
       Hue.show_applist()
@@ -194,12 +200,11 @@ Hue.start_app = function (app, start_maximized = true) {
   let title = `
     <div class="app_titlebar_container">
       <div class="app_titlebar_info">
-        <canvas class="app_titlebar_icon" width="20" height="20"></canvas>
-        <div class="app_titlebar_name">${app.name}</div>
+        <canvas class="app_titlebar_icon actionbox" width="20" height="20"></canvas>
+        <div class="app_titlebar_name action">${app.name}</div>
       </div>
 
       <div class="app_titlebar_buttons">
-        <div class="action app_titlebar_launch">Launch</div>
         <div class="action app_titlebar_applist">Apps</div>
         <div class="action app_titlebar_refresh">Refresh</div>
         <div class="action app_titlebar_minimize">Minimize</div>
@@ -218,7 +223,6 @@ Hue.start_app = function (app, start_maximized = true) {
     Hue.create_app_popup(win)
   }
 
-  Hue.save_app(app)
   Hue.close_all_modals()
 }
 
@@ -315,7 +319,9 @@ Hue.save_apps = function (force = false) {
 
 // Add item to apps
 // Remove duplicate items
-Hue.save_app = function (app) {
+Hue.save_app = function (win) {
+  let app = {name: win.hue_app_name, url: win.hue_app_url}
+
   try {
     new URL(app.url)
   } catch (err) {
@@ -325,12 +331,12 @@ Hue.save_app = function (app) {
   for (let [i, item] of Hue.apps.entries()) {
     if (item.url === app.url) {
       Hue.apps.splice(i, 1)
-      Hue.apps.unshift(app)
-      Hue.update_app_picker()
-      Hue.save_apps()
       break
     }
   }
+
+  Hue.apps.unshift(app)
+  Hue.save_apps()
 }
 
 // Open app input
@@ -347,7 +353,6 @@ Hue.forget_app = function (app) {
   for (let [i, item] of Hue.apps.entries()) {
     if (item.url === app.url) {
       Hue.apps.splice(i, 1)
-      Hue.update_app_picker()
       Hue.save_apps()
       break
     }
@@ -368,6 +373,7 @@ Hue.toggle_app_picker_filter = function () {
 
 // Show a list of open apps
 Hue.show_applist = function (filter = "") {
+  let main = Hue.el("#applist_main")
   let container = Hue.el("#applist_container")
   container.innerHTML = ""
 
@@ -391,6 +397,9 @@ Hue.show_applist = function (filter = "") {
   for (let icon of Hue.els(".applist_item_icon")) {
     jdenticon.update(icon, icon.parentNode.dataset.name)
   }
+
+  Hue.vertical_separator(main)
+  Hue.vertical_separator(container)
 
   Hue.msg_applist.show(function () {
     if (filter) {
