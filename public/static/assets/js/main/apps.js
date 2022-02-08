@@ -504,10 +504,10 @@ Hue.load_app_content = function (win) {
 
   } else {
     win.hue_content_type = "iframe"
-    win.set(Hue.template_app({url: win.hue_app_url}))
+    win.set(Hue.template_app_iframe({url: win.hue_app_url}))
   }
 
-  Hue.el(".Msg-content", win.window).style.backgroundImage = `url(${Hue.config.default_background_url}`
+  Hue.el(".Msg-content-container", win.window).style.backgroundImage = `url(${Hue.config.default_background_url}`
   win.hue_content_loaded = true
 }
 
