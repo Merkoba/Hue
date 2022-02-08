@@ -880,5 +880,6 @@ Hue.create_app_popup = function (win) {
   p.show(h, function () {
     let el = Hue.el(".app_popup_icon", p.content)
     jdenticon.update(el, win.hue_app_name)
+    Hue.app_playing(win)
   })
 }
