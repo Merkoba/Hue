@@ -2396,8 +2396,11 @@ pre {
 
 .Msg-content-container-app {
 	background-repeat: no-repeat !important;
-	background-size: cover;
-	background-color: rgba(0, 0, 0, 0.8)
+	background-size: cover !important;
+}
+
+.Msg-content-app {
+	background-color: rgba(0, 0, 0, 0.8) !important;
 }
 
 .app_titlebar {
