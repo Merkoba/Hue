@@ -825,8 +825,8 @@ Hue.create_app_window = function () {
           instance.hue_app_popup.close()
         }
 
+        Hue.create_app_popup(instance)
         Hue.stop_other_app_players(instance)
-        Hue.show_app_controls(instance)
         Hue.save_app(instance)
         Hue.app_open = true
         Hue.active_app = instance
