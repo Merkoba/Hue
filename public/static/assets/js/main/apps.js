@@ -566,10 +566,3 @@ Hue.toggle_app_popups = function () {
 Hue.show_app_picker_info = function () {
   Hue.showmsg("Middle click items to forget apps")
 }
-
-// Show video controls programatically
-Hue.show_app_controls = function (win) {
-  let player = Hue.el(".app_frame", win.content)
-  player.controls = false
-  player.controls = true
-}
