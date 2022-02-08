@@ -298,7 +298,6 @@ Hue.at_startup = function () {
     Hue.started_safe = true
   }, 2000)
 
-  Hue.process_visibility()
   Hue.load_date_4 = Date.now()
   Hue.compare_load_dates()
 
@@ -317,4 +316,5 @@ Hue.at_startup = function () {
   }
 
   Hue.check_latest_highlight()
+  Hue.process_visibility()
 }
