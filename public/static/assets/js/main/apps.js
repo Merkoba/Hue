@@ -177,14 +177,9 @@ Hue.start_app = function (app, start_maximized = true) {
     return
   }
 
-  let safe_name = Hue.utilz.make_html_safe(app.name)
-  let safe_url = Hue.utilz.make_html_safe(app.url)
-  
   let win = Hue.create_app_window()
   win.hue_app_name = app.name
   win.hue_app_url = app.url
-  win.hue_app_name_safe = safe_name
-  win.hue_app_url_safe = safe_url
   win.hue_content_loaded = false
   win.hue_content_type = ""
   win.hue_last_open = 0
@@ -193,7 +188,7 @@ Hue.start_app = function (app, start_maximized = true) {
 
   win.titlebar.addEventListener("click", function (e) {
     if (e.target.closest(".app_titlebar_icon")) {
-      Hue.show_applist()
+      Hue.show_main_menu()
     } else if (e.target.closest(".app_titlebar_name")) {
       Hue.show_applist()
     }else if (e.target.classList.contains("app_titlebar_launch")) {
@@ -211,7 +206,12 @@ Hue.start_app = function (app, start_maximized = true) {
     Hue.app_cycle_wheel_timer(e.deltaY > 0 ? "down" : "up")
   })
 
-  win.set_title(Hue.template_app_titlebar({name: safe_name, url: safe_url}))
+  win.set_title(Hue.template_app_titlebar())
+
+  let name = Hue.el(".app_titlebar_name", win.titlebar)
+  name.textContent = app.name
+  name.title = app.url
+
   Hue.horizontal_separator(Hue.el(".app_titlebar_buttons", win.titlebar))
   let el = Hue.el(".app_titlebar_icon", win.titlebar)
   jdenticon.update(el, app.name)

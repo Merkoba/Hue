@@ -877,16 +877,16 @@ Hue.create_app_popup = function (win) {
   p = Hue.create_popup(obj)
   win.hue_app_popup = p
 
-  let h = `
-    <div class="app_popup_container" title="${win.hue_app_url_safe}">
-      <canvas class="app_popup_icon" width="20" height="20"></canvas>
-      <div>${win.hue_app_name_safe}</div>
-    </div>
-  `
+  p.show(Hue.template_app_popup(), function () {
+    let container = Hue.el(".app_popup_container", p.content)
+    container.title = win.hue_app_name
 
-  p.show(h, function () {
-    let el = Hue.el(".app_popup_icon", p.content)
-    jdenticon.update(el, win.hue_app_name)
+    let icon = Hue.el(".app_popup_icon", p.content)
+    jdenticon.update(icon, win.hue_app_name)
+
+    let name = Hue.el(".app_popup_name", p.content)
+    name.textContent = win.hue_app_name
+    
     Hue.app_playing(win)
   })
 }
