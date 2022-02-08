@@ -44,6 +44,7 @@ module.exports = function (c, config) {
   c.vars.max_typing_inactivity = config.max_typing_inactivity
   c.vars.default_video_url = config.default_video_url
   c.vars.media_changed_crop_limit = config.media_changed_crop_limit
+  c.vars.apps_crop_limit = config.apps_crop_limit
   c.vars.socket_emit_throttle = config.socket_emit_throttle
   c.vars.safe_limit_1 = config.safe_limit_1
   c.vars.safe_limit_2 = config.safe_limit_2

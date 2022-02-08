@@ -28,6 +28,7 @@
 	"media_changed_crop_limit": 500,
 	"notifications_crop_limit": 500,
 	"notifications_close_delay": 5000,
+	"apps_crop_limit": 500,
 	"whispers_crop_limit": 500,
 	"max_whispers_post_length": 2000,
 	"max_input_length": 2500,
