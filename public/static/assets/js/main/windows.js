@@ -814,17 +814,17 @@ Hue.create_app_window = function () {
           Hue.load_app_content(instance)
         }
 
+        if (instance.hue_app_popup) {
+          instance.hue_app_popup.close()
+        }
+
+        Hue.create_app_popup(instance)
         Hue.stop_other_app_players(instance)
         Hue.app_open = true
         Hue.active_app = instance
         instance.hue_last_open = Date.now()
       },
-      after_close: function (instance) {
-        if (instance.hue_app_popup) {
-          instance.hue_app_popup.close()
-        }
-        
-        Hue.create_app_popup(instance)
+      after_close: function (instance) {        
         Hue.app_open = false
       },
       after_destroy: function (instance) {
