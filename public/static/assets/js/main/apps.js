@@ -200,7 +200,7 @@ Hue.start_app = function (app, start_maximized = true) {
     <div class="app_titlebar_container">
       <div class="app_titlebar_info">
         <canvas class="app_titlebar_icon actionbox" width="20" height="20"></canvas>
-        <div class="app_titlebar_name action">${app.name}</div>
+        <div class="app_titlebar_name action" title="${app.url}">${app.name}</div>
       </div>
 
       <div class="app_titlebar_buttons">
