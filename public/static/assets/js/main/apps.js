@@ -236,13 +236,18 @@ Hue.launch_first_app = function () {
   }
 }
 
+// Check if modal instance is app
+Hue.is_app = function (instance) {
+  return instance.window.classList.contains("Msg-window-app")
+}
+
 // Get open apps
 Hue.get_open_apps = function () {
   let apps = []
 
   for (let instance of Hue.msg_main_menu.higher_instances()) {
     if (instance.window) {
-      if (instance.window.classList.contains("app")) {
+      if (Hue.is_app(instance)) {
         apps.push(instance)
       }
     }
@@ -428,6 +433,7 @@ Hue.load_app_content = function (win) {
     win.set(Hue.template_app({url: win.hue_app_url}))
   }
 
+  Hue.el(".Msg-content", win.window).style.backgroundImage = `url(${Hue.config.default_background_url}`
   win.hue_content_loaded = true
 }
 
