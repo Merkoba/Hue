@@ -849,6 +849,10 @@ Hue.create_app_window = function () {
 
 // Small popup for a minimized app
 Hue.create_app_popup = function (win) {
+  if (!Hue.app_popups_visible) {
+    return
+  }
+  
   let obj = {}
   obj.class = "app_popup"
   obj.window_class = "app_popup !app_popup_window !action"
