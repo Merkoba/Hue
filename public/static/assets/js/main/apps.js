@@ -126,6 +126,7 @@ Hue.show_app_picker = function (filter = "") {
     el.innerHTML = `
       <canvas class="app_picker_item_icon" width="40" height="40"></canvas>
       <div class="app_picker_item_name">${app.name}</div>
+      <div class="app_picker_item_url">${app.url}</div>
     `
 
     appended = true
@@ -228,6 +229,11 @@ Hue.start_app = function (app, start_maximized = true) {
 // After app picker is filtered
 Hue.after_app_picker_filtered = function () {
   Hue.vertical_separator(Hue.el("#app_picker_container"))
+}
+
+// After applist is filtered
+Hue.after_applist_filtered = function () {
+  Hue.vertical_separator(Hue.el("#applist_container"))
 }
 
 // Launch the first app in the filtered list
@@ -414,6 +420,7 @@ Hue.show_applist = function (filter = "", exclude_active = true) {
     el.innerHTML = `
       <canvas class="applist_item_icon" width="40" height="40"></canvas>
       <div class="applist_item_name">${win.hue_app_name}</div>
+      <div class="applist_item_url">${win.hue_app_url}</div>
     `
 
     appended = true

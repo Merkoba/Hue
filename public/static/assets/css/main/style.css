@@ -2350,6 +2350,10 @@ pre {
 .app_picker_item_name {
 	font-size: 1.2rem;
 	margin-top: 0.35rem;
+}
+
+.app_picker_item_url {
+	margin-top: 0.35rem;
 	margin-bottom: 0.35rem;
 }
 
@@ -2441,6 +2445,10 @@ pre {
 
 .applist_item_name {
 	font-size: 1.2rem;
+	margin-top: 0.35rem;
+}
+
+.app_picker_item_url {
 	margin-top: 0.35rem;
 	margin-bottom: 0.35rem;
 }
