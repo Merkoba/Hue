@@ -864,13 +864,8 @@ Hue.create_app_popup = function (win) {
     instance.close() 
   }
 
-  obj.on_middle_click = function (instance) {
-    win.close()
-    win.destroy()
-    instance.close()
-  }
-
   obj.on_x_button_click = function () {
+    win.hue_app_popup = undefined
     win.close()
     win.destroy()
   }
