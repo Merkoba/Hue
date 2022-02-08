@@ -537,7 +537,7 @@ Hue.get_modal_instances = function () {
   let modals = []
 
   for (let instance of Hue.msg_main_menu.higher_instances()) {
-    if (!instance.window.classList.contains("app")) {
+    if (!Hue.is_app(instance)) {
       modals.push(instance)
     }
   }
@@ -806,9 +806,10 @@ Hue.create_app_window = function () {
       preset: "window",
       close_on_escape: false,
       enable_overlay: false,
-      window_class: "!transparent_background !app",
-      content_container_class: "!msg_background_color",
-      titlebar_class: "!app_titlebar",
+      class: "app",
+      window_class: "app !transparent_background",
+      content_container_class: "app !msg_background_color",
+      titlebar_class: "app !app_titlebar",
       after_show: function (instance) {
         if (!instance.hue_content_loaded) {
           Hue.load_app_content(instance)
