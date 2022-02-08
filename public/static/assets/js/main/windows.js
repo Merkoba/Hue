@@ -879,14 +879,14 @@ Hue.create_app_popup = function (win) {
 
   p.show(Hue.template_app_popup(), function () {
     let container = Hue.el(".app_popup_container", p.content)
-    container.title = win.hue_app_name
+    container.title = win.hue_app_url
 
     let icon = Hue.el(".app_popup_icon", p.content)
     jdenticon.update(icon, win.hue_app_name)
 
     let name = Hue.el(".app_popup_name", p.content)
     name.textContent = win.hue_app_name
-    
+
     Hue.app_playing(win)
   })
 }
