@@ -2363,6 +2363,7 @@ pre {
 	padding-top: 4px !important;
 	padding-bottom: 4px !important;
 	cursor: pointer !important;
+	user-select: none;
 }
 
 .app_popup_playing {

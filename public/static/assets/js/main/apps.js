@@ -10,6 +10,10 @@ Hue.setup_apps = function () {
     Hue.toggle_app_picker_filter()
   })
 
+  Hue.el("#app_picker_info").addEventListener("click", function () {
+    Hue.show_app_picker_info()
+  })
+
   Hue.horizontal_separator(Hue.el("#app_picker_header"))
   Hue.vertical_separator(Hue.el("#app_picker_main"))
   Hue.vertical_separator(Hue.el("#applist_main"))
@@ -551,4 +555,9 @@ Hue.toggle_app_popups = function () {
 
     Hue.el("#footer_apps_icon use").href.baseVal = "#icon_star-solid"
   }
+}
+
+// Show information about the app picker
+Hue.show_app_picker_info = function () {
+  Hue.showmsg("Middle click items to forget apps")
 }
