@@ -262,7 +262,23 @@ Hue.get_open_apps = function () {
     }
   }
 
+  apps.sort((a, b) => (a.hue_last_open > b.hue_last_open) ? -1 : 1)
   return apps
+}
+
+// Get open apps
+Hue.get_open_app_popups = function () {
+  let popups = []
+
+  for (let instance of Hue.msg_main_menu.lower_instances()) {
+    if (instance.window) {
+      if (Hue.is_app_popup(instance)) {
+        popups.push(instance)
+      }
+    }
+  }
+
+  return popups
 }
 
 // Cycle apps up or down
@@ -382,7 +398,6 @@ Hue.show_applist = function (filter = "", exclude_active = true) {
   let appended = false
 
   let windows = Hue.get_open_apps()
-  windows.sort((a, b) => (a.hue_last_open > b.hue_last_open) ? -1 : 1)
 
   for (let win of windows) {
     if (exclude_active) {
@@ -502,5 +517,26 @@ Hue.app_playing = function (win) {
     win.hue_app_popup.window.classList.add("app_popup_playing")
   } else {
     win.hue_app_popup.window.classList.remove("app_popup_playing")
+  }
+}
+
+// Make app popups visible or invisible
+Hue.toggle_app_popups = function () {
+  if (Hue.app_popups_visible) {
+    Hue.app_popups_visible = false
+
+    for (let pop of Hue.get_open_app_popups()) {
+      pop.close()
+    }
+
+    Hue.el("#footer_apps_icon use").href.baseVal = "#icon_star"
+  } else {
+    Hue.app_popups_visible = true
+
+    for (let win of Hue.get_open_apps().reverse()) {
+      Hue.create_app_popup(win)
+    }
+
+    Hue.el("#footer_apps_icon use").href.baseVal = "#icon_star-solid"
   }
 }
