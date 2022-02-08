@@ -12,7 +12,7 @@ Hue.setup_apps = function () {
 
   Hue.horizontal_separator(Hue.el("#app_picker_header"))
   Hue.vertical_separator(Hue.el("#app_picker_main"))
-
+  Hue.vertical_separator(Hue.el("#applist_main"))
 
   Hue.el("#app_picker_container").addEventListener("click", function (e) {
     if (!e.target) {
@@ -116,6 +116,7 @@ Hue.open_app = function (url = "", start_maximized = true) {
 Hue.show_app_picker = function (filter = "") {
   let container = Hue.el("#app_picker_container")
   container.innerHTML = ""
+  let appended = false
 
   for (let app of Hue.apps) {
     let el = Hue.div("app_picker_item action modal_item")
@@ -127,9 +128,16 @@ Hue.show_app_picker = function (filter = "") {
       <div class="app_picker_item_name">${app.name}</div>
     `
 
+    appended = true
     container.append(el)
   }
 
+  if (!appended) {
+    let el = Hue.div()
+    el.textContent = "No apps saved yet"
+    container.append(el)
+  }
+  
   for (let icon of Hue.els(".app_picker_item_icon")) {
     jdenticon.update(icon, icon.parentNode.dataset.name)
   }
@@ -169,9 +177,11 @@ Hue.start_app = function (app, start_maximized = true) {
   win.create()
 
   win.titlebar.addEventListener("click", function (e) {
-    if (e.target.closest(".app_titlebar_info")) {
+    if (e.target.closest(".app_titlebar_icon")) {
       Hue.show_applist()
-    } else if (e.target.classList.contains("app_titlebar_launch")) {
+    } else if (e.target.closest(".app_titlebar_name")) {
+      Hue.show_applist()
+    }else if (e.target.classList.contains("app_titlebar_launch")) {
       Hue.show_app_picker()
     } else if (e.target.classList.contains("app_titlebar_applist")) {
       Hue.show_applist()
@@ -377,15 +387,21 @@ Hue.toggle_app_picker_filter = function () {
 }
 
 // Show a list of open apps
-Hue.show_applist = function (filter = "") {
-  let main = Hue.el("#applist_main")
+Hue.show_applist = function (filter = "", exclude_active = true) {
   let container = Hue.el("#applist_container")
   container.innerHTML = ""
+  let appended = false
 
   let windows = Hue.get_open_apps()
   windows.sort((a, b) => (a.hue_last_open > b.hue_last_open) ? -1 : 1)
 
   for (let win of windows) {
+    if (exclude_active) {
+      if (win === Hue.active_app) {
+        continue
+      }
+    }
+
     let el = Hue.div("applist_item action modal_item")
     el.title = win.hue_app_url
     el.dataset.name = win.hue_app_name
@@ -396,6 +412,13 @@ Hue.show_applist = function (filter = "") {
       <div class="applist_item_name">${win.hue_app_name}</div>
     `
 
+    appended = true
+    container.append(el)
+  }
+
+  if (!appended) {
+    let el = Hue.div()
+    el.textContent = "No apps to switch to"
     container.append(el)
   }
 
@@ -403,7 +426,6 @@ Hue.show_applist = function (filter = "") {
     jdenticon.update(icon, icon.parentNode.dataset.name)
   }
 
-  Hue.vertical_separator(main)
   Hue.vertical_separator(container)
 
   Hue.msg_applist.show(function () {
