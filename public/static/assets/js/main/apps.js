@@ -486,10 +486,17 @@ Hue.minimize_all_apps = function () {
 // Load iframe or media
 Hue.load_app_content = function (win) {
   let extension = Hue.utilz.get_extension(win.hue_app_url).toLowerCase()
-  
-  if (Hue.utilz.audio_extensions.includes(extension) || Hue.utilz.video_extensions.includes(extension)) {
+  let is_audio = Hue.utilz.audio_extensions.includes(extension)
+  let is_video = Hue.utilz.video_extensions.includes(extension)
+
+  if (is_audio) {
+    win.set(Hue.template_app_audio({url: win.hue_app_url}))
+  } else if (is_video) {
+    win.set(Hue.template_app_video({url: win.hue_app_url}))
+  }
+
+  if (is_audio || is_video) {
     win.hue_content_type = "media"
-    win.set(Hue.template_app_media({url: win.hue_app_url}))
     let player = Hue.el(".app_frame", win.content)
     
     player.addEventListener("play", function () {
