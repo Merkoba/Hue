@@ -362,6 +362,11 @@ Hue.save_app = function (win) {
   }
 
   Hue.apps.unshift(app)
+
+  if (Hue.apps.length > Hue.config.apps_crop_limit) {
+    Hue.apps = Hue.apps.slice(0, Hue.config.apps_crop_limit)
+  }
+
   Hue.save_apps()
 }
 
