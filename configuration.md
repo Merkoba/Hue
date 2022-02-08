@@ -188,6 +188,12 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_show_activity_notifications"
 >Whether to show activity notifications on highlights, by default.
 
+"settings_default_autostart_apps"
+>A list of apps to autostart on join.
+
+"settings_default_autostart_default_apps"
+>Whether to start the system defined apps on join.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 

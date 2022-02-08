@@ -72,6 +72,7 @@
 	"settings_default_show_highlight_notifications": true,
 	"settings_default_show_activity_notifications": true,
 	"settings_default_autostart_apps": "",
+	"settings_default_autostart_default_apps": true,
 	"room_state_default_image_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_last_highlight_date": 0,

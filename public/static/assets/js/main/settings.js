@@ -97,7 +97,18 @@ Hue.user_settings = {
         Hue.save_settings()
       }
     },
-  }
+  },
+  autostart_default_apps: {
+    widget_type: "checkbox",
+    description: `Whether to start the system defined apps on join`,
+    action: (save = true) => {
+      Hue.settings.autostart_default_apps = Hue.el(`#settings_autostart_default_apps`).checked
+
+      if (save) {
+        Hue.save_settings()
+      }
+    },
+  },
 }
 
 // Gets the settings localStorage object
