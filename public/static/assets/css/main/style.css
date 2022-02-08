@@ -2328,7 +2328,10 @@ pre {
 .app_frame {
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.8)
+}
+
+.app_frame_iframe {
+	background-color: white;
 }
 
 #app_picker_header {
@@ -2391,9 +2394,10 @@ pre {
 	cursor: pointer;
 }
 
-.Msg-content-app {
+.Msg-content-container-app {
 	background-repeat: no-repeat !important;
 	background-size: cover;
+	background-color: rgba(0, 0, 0, 0.8)
 }
 
 .app_titlebar {
