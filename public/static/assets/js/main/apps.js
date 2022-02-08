@@ -161,6 +161,7 @@ Hue.start_app = function (app, start_maximized = true) {
   win.hue_content_loaded = false
   win.hue_content_type = ""
   win.hue_last_open = 0
+  win.hue_playing = false
   win.create()
 
   win.titlebar.addEventListener("click", function (e) {
@@ -428,6 +429,18 @@ Hue.load_app_content = function (win) {
   if (Hue.utilz.audio_extensions.includes(extension) || Hue.utilz.video_extensions.includes(extension)) {
     win.hue_content_type = "media"
     win.set(Hue.template_app_media({url: win.hue_app_url}))
+    let player = Hue.el(".app_frame", win.content)
+    
+    player.addEventListener("play", function () {
+      win.hue_playing = true
+      Hue.app_playing(win)
+    })
+    
+    player.addEventListener("pause", function () {
+      win.hue_playing = false
+      Hue.app_playing(win)
+    })
+
   } else {
     win.hue_content_type = "iframe"
     win.set(Hue.template_app({url: win.hue_app_url}))
@@ -451,5 +464,20 @@ Hue.stop_other_app_players = function (win) {
 
   if (win.hue_content_type === "media") {
     Hue.el(".app_frame", win.content).play()
+  }
+}
+
+// Set an app as playing or not playing
+Hue.app_playing = function (win) {
+  if (!win.hue_app_popup) {
+    return
+  }
+
+  if (win.hue_playing) {
+    let p = Hue.el(".app_popup", win.hue_app_popup.container)
+    p.classList.add("app_popup_playing")
+  } else {
+    let p = Hue.el(".app_popup", win.hue_app_popup.container)
+    p.classList.remove("app_popup_playing")
   }
 }
