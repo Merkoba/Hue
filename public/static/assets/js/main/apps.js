@@ -176,10 +176,15 @@ Hue.start_app = function (app, start_maximized = true) {
   } catch (err) {
     return
   }
+
+  let safe_name = Hue.utilz.make_html_safe(app.name)
+  let safe_url = Hue.utilz.make_html_safe(app.url)
   
   let win = Hue.create_app_window()
   win.hue_app_name = app.name
   win.hue_app_url = app.url
+  win.hue_app_name_safe = safe_name
+  win.hue_app_url_safe = safe_url
   win.hue_content_loaded = false
   win.hue_content_type = ""
   win.hue_last_open = 0
@@ -206,22 +211,7 @@ Hue.start_app = function (app, start_maximized = true) {
     Hue.app_cycle_wheel_timer(e.deltaY > 0 ? "down" : "up")
   })
 
-  let title = `
-    <div class="app_titlebar_container">
-      <div class="app_titlebar_info">
-        <canvas class="app_titlebar_icon actionbox" width="20" height="20"></canvas>
-        <div class="app_titlebar_name action" title="${app.url}">${app.name}</div>
-      </div>
-
-      <div class="app_titlebar_buttons">
-        <div class="action app_titlebar_applist">Apps</div>
-        <div class="action app_titlebar_refresh">Refresh</div>
-        <div class="action app_titlebar_minimize">Minimize</div>
-      </div>
-    </div>
-  `
-
-  win.set_title(title)
+  win.set_title(Hue.template_app_titlebar({name: safe_name, url: safe_url}))
   Hue.horizontal_separator(Hue.el(".app_titlebar_buttons", win.titlebar))
   let el = Hue.el(".app_titlebar_icon", win.titlebar)
   jdenticon.update(el, app.name)
