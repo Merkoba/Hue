@@ -878,9 +878,9 @@ Hue.create_app_popup = function (win) {
   win.hue_app_popup = p
 
   let h = `
-    <div class="app_popup_container" title="${win.hue_app_url}">
+    <div class="app_popup_container" title="${win.hue_app_url_safe}">
       <canvas class="app_popup_icon" width="20" height="20"></canvas>
-      <div>${win.hue_app_name}</div>
+      <div>${win.hue_app_name_safe}</div>
     </div>
   `
 
