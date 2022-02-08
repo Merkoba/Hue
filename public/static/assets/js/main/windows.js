@@ -681,7 +681,7 @@ Hue.create_popup = function (args = {}, ptype = "unset") {
     window_inner_x_class: "!titlebar_inner_x",
     edge_padding_y: edge_padding_y,
     edge_padding_x: 12,
-    persistent: false
+    remove_after_close: true
   }
 
   args = Object.assign(def_args, args)
@@ -706,7 +706,7 @@ Hue.create_modal = function (args = {}, ptype = "unset") {
     center_titlebar: true,
     titlebar_class: "!custom_titlebar",
     window_inner_x_class: "!titlebar_inner_x",
-    persistent: false
+    remove_after_close: true
   }
 
   args = Object.assign(def_args, args)
