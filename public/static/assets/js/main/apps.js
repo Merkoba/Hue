@@ -188,7 +188,7 @@ Hue.start_app = function (app, start_maximized = true) {
 
   win.titlebar.addEventListener("click", function (e) {
     if (e.target.closest(".app_titlebar_icon")) {
-      Hue.show_main_menu()
+      Hue.show_header_menu()
     } else if (e.target.closest(".app_titlebar_name")) {
       Hue.show_applist()
     }else if (e.target.classList.contains("app_titlebar_launch")) {
@@ -526,6 +526,15 @@ Hue.stop_other_app_players = function (win) {
 
   if (win.hue_content_type === "media") {
     Hue.el(".app_frame", win.content).play()
+  }
+}
+
+// Stop all app players
+Hue.stop_app_players = function (win) {
+  for (let w of Hue.get_open_apps()) {
+    if (w.hue_content_type === "media") {
+      Hue.el(".app_frame", w.content).pause()
+    }
   }
 }
 

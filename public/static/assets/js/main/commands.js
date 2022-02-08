@@ -558,6 +558,12 @@ Hue.commands = {
       }
     },
     description: `Open a URL as a custom app`,
+  },
+  "headermenu": {
+    action: (arg, ans) => {
+      Hue.show_header_menu()
+    },
+    description: `Show the header menu`,
   }
 }
 

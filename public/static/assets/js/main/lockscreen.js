@@ -32,6 +32,9 @@ Hue.lock_screen = function () {
   }
 
   Hue.stop_tv()
+  Hue.stop_app_players()
+  Hue.close_all_modals()
+  Hue.minimize_all_apps()
   Hue.screen_locked = true
   Hue.msg_lockscreen.show()
 }
