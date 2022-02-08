@@ -192,17 +192,6 @@ Hue.start_app = function (app, start_maximized = true) {
     }
   })
 
-  win.titlebar.addEventListener("auxclick", function (e) {
-    if (e.which !== 2) {
-      return
-    }
-
-    if (e.target.classList.contains("app_titlebar_minimize")) {
-      win.close()
-      win.destroy()
-    }
-  })
-
   win.titlebar.addEventListener("wheel", function (e) {
     Hue.app_cycle_wheel_timer(e.deltaY > 0 ? "down" : "up")
   })
