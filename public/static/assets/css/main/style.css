@@ -2230,6 +2230,15 @@ pre {
 	margin-bottom: 1.5rem !important;
 }
 
+#header_menu {
+	user-select: none;
+}
+
+#header_menu .vertical_separator {
+	margin-top: 1.5rem !important;
+	margin-bottom: 1.5rem !important;
+}
+
 #draw_image_area {
 	cursor: crosshair;
 	width: 800px;

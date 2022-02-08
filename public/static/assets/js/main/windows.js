@@ -49,6 +49,13 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_header_menu = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "header_menu",
+      window_width: "22rem"
+    })
+  )
+
   Hue.msg_room_menu = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "room_menu",
@@ -416,6 +423,7 @@ Hue.start_msg = function () {
   Hue.msg_open_app.set(Hue.template_open_app())
   Hue.msg_app_picker.set(Hue.template_app_picker())
   Hue.msg_applist.set(Hue.template_applist())
+  Hue.msg_header_menu.set(Hue.template_header_menu())
 
   Hue.msg_info.create()
   Hue.msg_info2.create()
@@ -443,6 +451,7 @@ Hue.start_msg = function () {
   Hue.msg_app_picker.set_title("Apps")
   Hue.msg_open_app.set_title("Open App")
   Hue.msg_applist.set_title("Go to App")
+  Hue.msg_header_menu.set_title("Header Menu")
 }
 
 // Sets all info window variables to false
