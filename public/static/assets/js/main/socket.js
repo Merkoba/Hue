@@ -322,11 +322,13 @@ Hue.on_disconnect = function () {
   Hue.alert_mode = 0
   Hue.update_userlist()
   Hue.update_activity_bar()
-  Hue.generate_favicon(-1)
 
-  if (Hue.focused_once) {
-    Hue.last_message_date = Hue.get_last_message_date()
+  if (Hue.favicon_mode !== -1) {
+    Hue.last_favicon_mode = Hue.favicon_mode
   }
+
+  Hue.last_message_date = Hue.get_last_message_date()
+  Hue.generate_favicon(-1)
 
   if (!Hue.el("#reconnecting_feedback")) {
     Hue.feedback("Reconnecting...", { container_id: "reconnecting_feedback" })

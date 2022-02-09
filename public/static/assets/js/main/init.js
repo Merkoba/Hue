@@ -111,6 +111,7 @@ Hue.confirm_action = function () {}
 Hue.footer_expanded = false
 Hue.last_input_text = ""
 Hue.alert_mode = 0
+Hue.last_favicon_mode = 0
 Hue.favicon_mode = 0
 Hue.top_scroller_visible = false
 Hue.bottom_scroller_visible = false
@@ -132,7 +133,6 @@ Hue.update_userlist_delay = 2000
 Hue.dataset_obj = {}
 Hue.dataset_id = 0
 Hue.highlight_date_on_focus = 0
-Hue.focused_once = false
 Hue.flipped = false
 Hue.app_open = false
 Hue.active_app = undefined
@@ -239,7 +239,6 @@ Hue.on_join = function (data) {
   Hue.image_changed = []
   Hue.tv_changed = []
   Hue.superuser = data.superuser
-  Hue.focused_once = false
 
   Hue.load_date_3 = Date.now()
   Hue.loginfo("Joined Room")
@@ -255,6 +254,8 @@ Hue.on_join = function (data) {
   Hue.room_name = data.room_name
   Hue.user_reg_date = data.reg_date
   Hue.userlist = data.userlist
+  Hue.alert_mode = Hue.last_favicon_mode
+
 
   Hue.setup_commands()
   Hue.set_username(data.username)
