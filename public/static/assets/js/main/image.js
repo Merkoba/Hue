@@ -26,6 +26,7 @@ Hue.show_image = function (force = false) {
   Hue.el("#media_image_spinner").style.display = "block"
   Hue.el("#media_image_error").style.display = "none"
   Hue.el("#media_image_frame").style.display = "none"
+  Hue.el("#media_image_info_container").style.visibility = "hidden"
 
   if (force || Hue.el("#media_image_frame").src !== item.source) {
     Hue.el("#media_image_frame").src = item.source
