@@ -2397,6 +2397,11 @@ pre {
 	margin-right: 0.5rem;
 }
 
+.app_popup_name {
+	width: 100%;
+	text-align: left;
+}
+
 #open_app_open {
 	margin-top: 1rem;
 	font-size: 1.2rem;
@@ -2473,4 +2478,32 @@ pre {
 
 #applist_launch {
 	margin-bottom: 1rem;
+}
+
+.glowing::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  background: linear-gradient(45deg, #e8f74d, #ff6600d9, #00ff66, #13ff13, #ad27ad, #bd2681, #6512b9, #ff3300de, #5aabde);
+  background-size: 400%;
+  width: calc(100% + 5px);
+  height: calc(100% + 5px);
+  z-index: -1;
+  animation: glower 20s linear infinite;
+	opacity: 0.1;
+}
+
+@keyframes glower {
+  0% {
+    background-position: 0 0;
+  }
+  
+  50% {
+    background-position: 400% 0;
+  }
+  
+  100% {
+    background-position: 0 0;
+  }
 }
