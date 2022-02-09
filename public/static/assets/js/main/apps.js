@@ -495,8 +495,7 @@ Hue.load_app_content = function (win) {
   let is_video = Hue.utilz.video_extensions.includes(extension)
   
   if (is_audio || is_video) {
-    let media_url = new URL(win.hue_app_url)
-    media_url.searchParams.set("cache-buster", Date.now())
+    let media_url = Hue.utilz.cache_bust_url(win.hue_app_url)
 
     if (is_audio) {
       win.set(Hue.template_app_audio({url: media_url}))
@@ -592,7 +591,7 @@ Hue.check_app_media = function (win) {
   if (is_playing) {
     player.pause()
   } else {
-    player.src = win.hue_app_url
+    player.src = Hue.utilz.cache_bust_url(win.hue_app_url)
     player.play()
   }
 }

@@ -775,6 +775,12 @@ const Utilz = function () {
 		}
 	}
 
+	utilz.cache_bust_url = function (s) {
+		let url = new URL(s)
+    url.searchParams.set("cache-buster", Date.now())
+		return url
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]
