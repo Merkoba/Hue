@@ -517,23 +517,6 @@ Hue.load_app_content = function (win) {
   win.hue_content_loaded = true
 }
 
-// Stop other multimedia players
-Hue.stop_other_app_players = function (win) {
-  for (let w of Hue.get_open_apps()) {
-    if (w === win) {
-      continue
-    }
-
-    if (w.hue_content_type === "media") {
-      Hue.el(".app_frame", w.content).pause()
-    }
-  }
-
-  if (win.hue_content_type === "media") {
-    Hue.get_app_player(win).play()
-  }
-}
-
 // Stop all app players
 Hue.stop_app_players = function (win) {
   for (let w of Hue.get_open_apps()) {
