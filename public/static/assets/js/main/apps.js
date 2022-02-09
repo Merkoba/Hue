@@ -184,6 +184,7 @@ Hue.start_app = function (app, start_maximized = true) {
   win.hue_content_type = ""
   win.hue_last_open = 0
   win.hue_playing = false
+  win.hue_date_started = Date.now()
   win.create()
 
   win.titlebar.addEventListener("click", function (e) {
@@ -260,7 +261,7 @@ Hue.is_app_popup = function (instance) {
 }
 
 // Get open apps
-Hue.get_open_apps = function () {
+Hue.get_open_apps = function (sortmode = "last_open") {
   let apps = []
 
   for (let instance of Hue.msg_main_menu.higher_instances()) {
@@ -271,7 +272,12 @@ Hue.get_open_apps = function () {
     }
   }
 
-  apps.sort((a, b) => (a.hue_last_open > b.hue_last_open) ? -1 : 1)
+  if (sortmode === "last_open") {
+    apps.sort((a, b) => (a.hue_last_open > b.hue_last_open) ? -1 : 1)
+  } else if (sortmode === " date_started") {
+    apps.sort((a, b) => (a.hue_date_started > b.hue_date_started) ? -1 : 1)
+  }
+
   return apps
 }
 
@@ -555,7 +561,7 @@ Hue.toggle_app_popups = function () {
   } else {
     Hue.app_popups_visible = true
 
-    for (let win of Hue.get_open_apps().reverse()) {
+    for (let win of Hue.get_open_apps("date_started")) {
       Hue.create_app_popup(win)
     }
 
