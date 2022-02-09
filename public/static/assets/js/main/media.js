@@ -15,25 +15,8 @@ Hue.setup_media = function () {
   })
 
   Hue.el("#media_image").addEventListener("wheel", function (e) {
-    Hue.image_resize_wheel_timer(e.deltaY > 0 ? "down" : "up")
+    Hue.image_wheel_timer(e.deltaY > 0 ? "down" : "up")
   })
-}
-
-// Use the media image wheel to resize TV/Image percentages
-Hue.image_resize_wheel = function (direction) {
-  if (Hue.room_state.tv_display_position === "bottom") {
-    if (direction === "down") {
-      Hue.decrease_tv_percentage()
-    } else if (direction === "up") {
-      Hue.increase_tv_percentage()
-    }
-  } else if (Hue.room_state.tv_display_position === "top") {
-    if (direction === "up") {
-      Hue.decrease_tv_percentage()
-    } else if (direction === "down") {
-      Hue.increase_tv_percentage()
-    }    
-  }
 }
 
 // Get min or max media percentage
