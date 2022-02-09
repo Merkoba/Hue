@@ -177,10 +177,6 @@ Hue.start_app = function (app, start_maximized = true) {
     return
   }
 
-  if (!Hue.utilz.is_audio(app.url) && !Hue.utilz.is_video(app.url)) {
-    return
-  }
-
   let win = Hue.create_app_window()
   win.hue_app_name = app.name
   win.hue_app_url = app.url
@@ -497,26 +493,31 @@ Hue.load_app_content = function (win) {
   let is_audio = Hue.utilz.is_audio(win.hue_app_url)
   let is_video = Hue.utilz.is_video(win.hue_app_url)
   
-  let media_url = Hue.utilz.cache_bust_url(win.hue_app_url)
-
-  if (is_audio) {
-    win.set(Hue.template_app_audio({url: media_url}))
-  } else if (is_video) {
-    win.set(Hue.template_app_video({url: media_url}))
+  if (is_audio || is_video) {
+    let media_url = Hue.utilz.cache_bust_url(win.hue_app_url)
+  
+    if (is_audio) {
+      win.set(Hue.template_app_audio({url: media_url}))
+    } else if (is_video) {
+      win.set(Hue.template_app_video({url: media_url}))
+    }
+  
+    win.hue_content_type = "media"
+    let player = Hue.get_app_player(win)
+    
+    player.addEventListener("play", function () {
+      win.hue_playing = true
+      Hue.app_playing(win)
+    })
+    
+    player.addEventListener("pause", function () {
+      win.hue_playing = false
+      Hue.app_playing(win)
+    })
+  } else {
+    win.hue_content_type = "iframe"
+    win.set(Hue.template_app_iframe({url: win.hue_app_url}))
   }
-
-  win.hue_content_type = "media"
-  let player = Hue.get_app_player(win)
-  
-  player.addEventListener("play", function () {
-    win.hue_playing = true
-    Hue.app_playing(win)
-  })
-  
-  player.addEventListener("pause", function () {
-    win.hue_playing = false
-    Hue.app_playing(win)
-  })
 
   Hue.el(".Msg-content-container", win.window).style.backgroundImage = `url(${Hue.config.default_background_url}`
   win.hue_content_loaded = true
