@@ -826,14 +826,7 @@ Hue.create_app_window = function () {
       content_container_class: "app !msg_background_color",
       titlebar_class: "app !app_titlebar",
       after_show: function (instance) {
-        if (!instance.hue_content_loaded) {
-          Hue.load_app_content(instance)
-        }
-
-        if (instance.hue_app_popup) {
-          instance.hue_app_popup.close()
-        }
-
+        Hue.check_app_content_loaded(instance)
         Hue.create_app_popup(instance)
         Hue.stop_other_app_players(instance)
         Hue.save_app(instance)
@@ -862,6 +855,10 @@ Hue.create_app_popup = function (win) {
     return
   }
 
+  if (win.hue_app_popup) {
+    return
+  }
+
   let obj = {}
   obj.class = "app_popup"
   obj.window_class = "app_popup !app_popup_window !action"
@@ -873,14 +870,12 @@ Hue.create_app_popup = function (win) {
   obj.close_on_escape = false
   
   obj.on_click = function (instance) {
-    win.show()
-    instance.close() 
+    Hue.check_app_content_loaded(win)
+    Hue.check_app_media(win)
   }
 
   obj.on_x_button_click = function () {
-    win.hue_app_popup = undefined
-    win.close()
-    win.destroy()
+    Hue.remove_app(win)
   }
 
   p = Hue.create_popup(obj)
@@ -892,6 +887,9 @@ Hue.create_app_popup = function (win) {
 
     let icon = Hue.el(".app_popup_icon", p.content)
     jdenticon.update(icon, win.hue_app_name)
+    icon.addEventListener("click", function () {
+      Hue.app_popup_action(win)
+    })
 
     let name = Hue.el(".app_popup_name", p.content)
     name.textContent = win.hue_app_name
