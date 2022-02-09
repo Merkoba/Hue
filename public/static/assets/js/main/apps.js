@@ -477,6 +477,11 @@ Hue.minimize_all_apps = function () {
   }
 }
 
+// Get app player
+Hue.get_app_player = function (win) {
+  return Hue.el(".app_frame", win.content)
+}
+
 // Load iframe or media
 Hue.load_app_content = function (win) {
   let extension = Hue.utilz.get_extension(win.hue_app_url).toLowerCase()
@@ -491,7 +496,7 @@ Hue.load_app_content = function (win) {
 
   if (is_audio || is_video) {
     win.hue_content_type = "media"
-    let player = Hue.el(".app_frame", win.content)
+    let player = Hue.get_app_player(win)
     
     player.addEventListener("play", function () {
       win.hue_playing = true
@@ -525,7 +530,7 @@ Hue.stop_other_app_players = function (win) {
   }
 
   if (win.hue_content_type === "media") {
-    Hue.el(".app_frame", win.content).play()
+    Hue.get_app_player(win).play()
   }
 }
 
@@ -556,8 +561,9 @@ Hue.toggle_app_popups = function () {
   if (Hue.app_popups_visible) {
     Hue.app_popups_visible = false
 
-    for (let pop of Hue.get_open_app_popups()) {
-      pop.close()
+    for (let win of Hue.get_open_apps()) {
+      win.hue_app_popup.close()
+      win.hue_app_popup = undefined
     }
 
     Hue.el("#footer_apps_icon use").href.baseVal = "#icon_star"
@@ -575,4 +581,42 @@ Hue.toggle_app_popups = function () {
 // Show information about the app picker
 Hue.show_app_picker_info = function () {
   Hue.showmsg("Middle click items to forget apps")
+}
+
+// Pause media or show app
+Hue.check_app_media = function (win) {
+  if (win.hue_content_type !== "media") {
+    Hue.app_popup_action(win)
+    return
+  }
+
+  Hue.stop_app_players()
+
+  let player = Hue.get_app_player(win)
+  let is_playing = win.hue_app_popup.window.classList.contains("app_popup_playing")
+
+  if (is_playing) {
+    player.pause()
+  } else {
+    player.play()
+  }
+}
+
+// Check if app content is loaded
+Hue.check_app_content_loaded = function (win) {
+  if (!win.hue_content_loaded) {
+    Hue.load_app_content(win)
+  }
+}
+
+// App popup action
+Hue.app_popup_action = function (win) {
+  win.show()
+}
+
+// Remove an app modal instance
+Hue.remove_app = function (win) {
+  win.close()
+  win.destroy()
+  win.hue_app_popup = undefined
 }
