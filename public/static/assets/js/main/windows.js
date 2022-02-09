@@ -873,25 +873,27 @@ Hue.create_app_popup = function (win) {
   }
 
   p = Hue.create_popup(obj)
+  p.set(Hue.template_app_popup())
   win.hue_app_popup = p
 
-  p.show(Hue.template_app_popup(), function () {
-    let container = Hue.el(".app_popup_container", p.content)
-    container.title = win.hue_app_url
+  let container = Hue.el(".app_popup_container", p.content)
+  container.title = win.hue_app_url
 
-    let icon = Hue.el(".app_popup_icon", p.content)
-    jdenticon.update(icon, win.hue_app_name)
-    icon.addEventListener("click", function () {
+  let icon = Hue.el(".app_popup_icon", p.content)
+  jdenticon.update(icon, win.hue_app_name)
+  
+  let name = Hue.el(".app_popup_name", p.content)
+  name.textContent = win.hue_app_name
+  
+  p.window.addEventListener("click", function (e) {
+    if (e.target.classList.contains("app_popup_icon")) {
       Hue.app_popup_action(win)
-    })
-
-    let name = Hue.el(".app_popup_name", p.content)
-    name.textContent = win.hue_app_name
-    name.addEventListener("click", function () {
+    } else {
       Hue.check_app_content_loaded(win)
       Hue.check_app_media(win)
-    })
-
-    Hue.app_playing(win)
+    }
   })
+
+  Hue.app_playing(win)
+  p.show()
 }
