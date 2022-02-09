@@ -592,6 +592,7 @@ Hue.check_app_media = function (win) {
   if (is_playing) {
     player.pause()
   } else {
+    player.src = win.hue_app_url
     player.play()
   }
 }
