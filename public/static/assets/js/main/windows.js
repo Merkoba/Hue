@@ -835,6 +835,7 @@ Hue.create_app_window = function () {
       },
       after_close: function (instance) {        
         Hue.app_open = false
+        Hue.remove_alert_title()
       },
       after_destroy: function (instance) {
         if (instance.hue_app_popup) {
