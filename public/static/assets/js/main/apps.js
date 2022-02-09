@@ -493,14 +493,17 @@ Hue.load_app_content = function (win) {
   let extension = Hue.utilz.get_extension(win.hue_app_url).toLowerCase()
   let is_audio = Hue.utilz.audio_extensions.includes(extension)
   let is_video = Hue.utilz.video_extensions.includes(extension)
-
-  if (is_audio) {
-    win.set(Hue.template_app_audio({url: win.hue_app_url}))
-  } else if (is_video) {
-    win.set(Hue.template_app_video({url: win.hue_app_url}))
-  }
-
+  
   if (is_audio || is_video) {
+    let media_url = new URL(win.hue_app_url)
+    media_url.searchParams.set("cache-buster", Date.now())
+
+    if (is_audio) {
+      win.set(Hue.template_app_audio({url: media_url}))
+    } else if (is_video) {
+      win.set(Hue.template_app_video({url: media_url}))
+    }
+
     win.hue_content_type = "media"
     let player = Hue.get_app_player(win)
     
