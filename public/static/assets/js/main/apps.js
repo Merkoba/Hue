@@ -534,8 +534,10 @@ Hue.app_playing = function (win) {
 
   if (win.hue_playing) {
     win.hue_app_popup.window.classList.add("app_popup_playing")
+    win.hue_app_popup.window.classList.add("glowing")
   } else {
     win.hue_app_popup.window.classList.remove("app_popup_playing")
+    win.hue_app_popup.window.classList.remove("glowing")
   }
 }
 
