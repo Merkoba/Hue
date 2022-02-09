@@ -1387,7 +1387,7 @@ Hue.on_activity = function (type) {
     return false
   }
 
-  if (!Hue.has_focus || Hue.screen_locked) {
+  if (!Hue.has_focus || Hue.screen_locked || Hue.app_open) {
     if (type === "message" || type === "media_change") {
       Hue.alert_title(1)
     } else if (type === "highlight" || type === "whisper") {
