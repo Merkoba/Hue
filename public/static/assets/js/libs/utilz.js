@@ -781,6 +781,16 @@ const Utilz = function () {
 		return url
 	}
 
+	utilz.is_audio = function (s) {
+		let extension = utilz.get_extension(s).toLowerCase()
+		return utilz.audio_extensions.includes(extension)
+	}
+
+	utilz.is_video = function (s) {
+		let extension = utilz.get_extension(s).toLowerCase()
+		return utilz.video_extensions.includes(extension)
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]
