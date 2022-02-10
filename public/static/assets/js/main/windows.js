@@ -874,11 +874,11 @@ Hue.create_app_popup = function (win) {
   }
 
   obj.on_wheel_down = function () {
-    Hue.app_volume_down(win)
+    Hue.change_media_app_volume(win, "down")
   }
 
   obj.on_wheel_up = function () {
-    Hue.app_volume_up(win)
+    Hue.change_media_app_volume(win, "up")
   }
 
   p = Hue.create_popup(obj)

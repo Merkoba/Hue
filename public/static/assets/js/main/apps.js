@@ -614,41 +614,35 @@ Hue.remove_app = function (win) {
   win.hue_app_popup = undefined
 }
 
-// Decrease media app volume
-Hue.app_volume_down = function (win) {
+// Increase or decrease media app volume
+Hue.change_media_app_volume = function (win, direction) {
+  Hue.check_app_content_loaded(win)
+
   if (!Hue.is_media_app(win)) {
     return
   }
 
   let player = Hue.get_app_player(win)
-  let new_volume = player.volume - 0.05
-  
-  if (new_volume < 0) {
-    new_volume = 0
+  let new_volume = player.volume
+
+  if (direction === "up") {
+    new_volume += 0.05  
+    
+    if (new_volume > 1) {
+      new_volume = 1
+    }
+  } else if (direction === "down") {
+    new_volume -= 0.05  
+    
+    if (new_volume < 0) {
+      new_volume = 1
+    }
   }
 
   new_volume = Hue.utilz.round(new_volume, 2)
   new_volume_p = Math.round(new_volume * 100)
   player.volume = new_volume
-  Hue.flash_info(`Volume: ${new_volume_p}`)
-}
-
-// Increase media app volume
-Hue.app_volume_up = function (win) {
-  if (!Hue.is_media_app(win)) {
-    return
-  }
-
-  let player = Hue.get_app_player(win)
-  let new_volume = player.volume + 0.05  
-  if (new_volume > 1) {
-    new_volume = 1
-  }
-
-  new_volume = Hue.utilz.round(new_volume, 2)
-  new_volume_p = Math.round(new_volume * 100)
-  player.volume = new_volume
-  Hue.flash_info(`Volume: ${new_volume_p}`)
+  Hue.flash_info(`Volume: ${new_volume_p}%`)
 }
 
 // Check if it's media app
