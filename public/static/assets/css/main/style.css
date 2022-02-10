@@ -2502,3 +2502,16 @@ pre {
     background-position: 0 0;
   }
 }
+
+#flash_info {
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); 
+	color: var(--font_color);
+	background-color:	var(--altbackground);
+	border: 2px solid var(--altcolor);
+	padding: 0.25rem;
+	z-index: 10;
+}

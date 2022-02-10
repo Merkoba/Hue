@@ -873,6 +873,14 @@ Hue.create_app_popup = function (win) {
     Hue.remove_app(win)
   }
 
+  obj.on_wheel_down = function () {
+    Hue.app_volume_down(win)
+  }
+
+  obj.on_wheel_up = function () {
+    Hue.app_volume_up(win)
+  }
+
   p = Hue.create_popup(obj)
   p.set(Hue.template_app_popup())
   win.hue_app_popup = p

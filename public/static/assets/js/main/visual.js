@@ -150,3 +150,17 @@ Hue.timeago_action = function () {
       .textContent = Hue.utilz.timeago(Hue.loaded_modal_image.date)
   }  
 }
+
+// Show a message for a small time and close
+Hue.flash_info = function (s) {
+  let el = Hue.el("#flash_info")
+  el.textContent = s
+  el.style.display = "block"
+  Hue.flash_info_timer()
+}
+
+// Hide the flash info window
+Hue.hide_flash_info = function () {
+  let el = Hue.el("#flash_info")
+  el.style.display = "none"
+}
