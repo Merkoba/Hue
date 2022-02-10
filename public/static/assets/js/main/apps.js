@@ -497,12 +497,13 @@ Hue.load_app_content = function (win) {
     let media_url = Hue.utilz.cache_bust_url(win.hue_app_url)
   
     if (is_audio) {
+      win.hue_content_type = "audio"
       win.set(Hue.template_app_audio({url: media_url}))
     } else if (is_video) {
+      win.hue_content_type = "video"
       win.set(Hue.template_app_video({url: media_url}))
     }
   
-    win.hue_content_type = "media"
     let player = Hue.get_app_player(win)
     
     player.addEventListener("play", function () {
@@ -526,7 +527,7 @@ Hue.load_app_content = function (win) {
 // Stop all app players
 Hue.stop_app_players = function (win) {
   for (let w of Hue.get_open_apps()) {
-    if (w.hue_content_type === "media") {
+    if (Hue.is_media_app(w)) {
       Hue.el(".app_frame", w.content).pause()
     }
   }
@@ -576,7 +577,7 @@ Hue.show_app_picker_info = function () {
 
 // Pause media or show app
 Hue.check_app_media = function (win) {
-  if (win.hue_content_type !== "media") {
+  if (!Hue.is_media_app(win)) {
     Hue.app_popup_action(win)
     return
   }
@@ -615,7 +616,7 @@ Hue.remove_app = function (win) {
 
 // Decrease media app volume
 Hue.app_volume_down = function (win) {
-  if (win.hue_content_type !== "media") {
+  if (!Hue.is_media_app(win)) {
     return
   }
 
@@ -634,7 +635,7 @@ Hue.app_volume_down = function (win) {
 
 // Increase media app volume
 Hue.app_volume_up = function (win) {
-  if (win.hue_content_type !== "media") {
+  if (!Hue.is_media_app(win)) {
     return
   }
 
@@ -648,4 +649,9 @@ Hue.app_volume_up = function (win) {
   new_volume_p = Math.round(new_volume * 100)
   player.volume = new_volume
   Hue.flash_info(`Volume: ${new_volume_p}`)
+}
+
+// Check if it's media app
+Hue.is_media_app = function (win) {
+  return (win.hue_content_type === "audio" || win.hue_content_type === "video")
 }
