@@ -612,3 +612,40 @@ Hue.remove_app = function (win) {
   win.destroy()
   win.hue_app_popup = undefined
 }
+
+// Decrease media app volume
+Hue.app_volume_down = function (win) {
+  if (win.hue_content_type !== "media") {
+    return
+  }
+
+  let player = Hue.get_app_player(win)
+  let new_volume = player.volume - 0.05
+  
+  if (new_volume < 0) {
+    new_volume = 0
+  }
+
+  new_volume = Hue.utilz.round(new_volume, 2)
+  new_volume_p = Math.round(new_volume * 100)
+  player.volume = new_volume
+  Hue.flash_info(`Volume: ${new_volume_p}`)
+}
+
+// Increase media app volume
+Hue.app_volume_up = function (win) {
+  if (win.hue_content_type !== "media") {
+    return
+  }
+
+  let player = Hue.get_app_player(win)
+  let new_volume = player.volume + 0.05  
+  if (new_volume > 1) {
+    new_volume = 1
+  }
+
+  new_volume = Hue.utilz.round(new_volume, 2)
+  new_volume_p = Math.round(new_volume * 100)
+  player.volume = new_volume
+  Hue.flash_info(`Volume: ${new_volume_p}`)
+}

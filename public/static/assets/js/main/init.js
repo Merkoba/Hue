@@ -59,6 +59,7 @@ Hue.resize_delay = 350
 Hue.scroll_delay = 350
 Hue.wheel_delay = 100
 Hue.wheel_delay_2 = 25
+Hue.flash_info_delay = 2000
 Hue.emit_queue = []
 Hue.has_focus = false
 Hue.message_usernames = ""
