@@ -1794,6 +1794,7 @@ a.special_link:hover {
 	margin-bottom: 1rem;
 	text-align: center;
 	width: 99%;
+	resize: none;
 }
 
 .chat_quote {
