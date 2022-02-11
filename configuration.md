@@ -98,9 +98,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_room_id_length"
 >Arbitrary big number to avoid big urls from being considered as valid room ids.
 
-"rooms_loop_interval"
->The interval in milliseconds for the loop that saves iterates through a rooms object which is updated through chat activity and saves it to the database. This loops is to avoid saving data, like log messages, to the database on every message.
-
 "files_loop_interval"
 >Interval of the loop to check for expired files that failed to be uploaded properly and delete them from memory.
 
