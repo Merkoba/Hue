@@ -68,7 +68,7 @@ Hue.setup_apps = function () {
     Hue.show_app_picker()
   })
 
-  Hue.app_launcher_popup = Hue.create_app_utility("Launch an App", function () {
+  Hue.app_launcher_popup = Hue.create_app_utility("Launch App", function () {
     Hue.show_app_picker()
   })
 
