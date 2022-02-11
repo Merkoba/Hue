@@ -166,6 +166,7 @@ Hue.init = function () {
   Hue.setup_templates()
   Hue.get_settings()
   Hue.get_room_state()
+  Hue.get_element_sizes()
   Hue.start_msg()
   Hue.start_settings_widgets()
   Hue.start_settings_widgets_listeners()

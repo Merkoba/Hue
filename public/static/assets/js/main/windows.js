@@ -673,9 +673,6 @@ Hue.create_popup = function (args = {}, ptype = "unset") {
     args.id = `popup_${Hue.popup_id}`
   }
 
-  let panel_size = Hue.el("#footer").offsetHeight
-  let edge_padding_y = panel_size * 1.5
-
   let def_args = {
     preset: "popup",
     class: "popup",
@@ -688,7 +685,7 @@ Hue.create_popup = function (args = {}, ptype = "unset") {
     center_titlebar: true,
     titlebar_class: "!custom_titlebar",
     window_inner_x_class: "!titlebar_inner_x",
-    edge_padding_y: edge_padding_y,
+    edge_padding_y: Hue.panel_height * 1.5,
     edge_padding_x: 12,
     remove_after_close: true
   }
