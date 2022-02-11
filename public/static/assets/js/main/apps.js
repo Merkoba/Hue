@@ -642,7 +642,7 @@ Hue.change_media_app_volume = function (win, direction) {
   new_volume = Hue.utilz.round(new_volume, 2)
   new_volume_p = Math.round(new_volume * 100)
   player.volume = new_volume
-  Hue.flash_info(`Volume: ${new_volume_p}%`)
+  Hue.flash_info(`Volume: ${new_volume_p}%`, win.hue_app_name)
 }
 
 // Check if it's media app
