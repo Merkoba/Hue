@@ -510,11 +510,14 @@ Hue.minimize_all_apps = function () {
 
 // Get app player
 Hue.get_app_player = function (win) {
+  Hue.check_app_content_loaded(win)
   return Hue.el(".app_frame", win.content)
 }
 
 // Load app media
 Hue.load_app_content = function (win) {
+  win.hue_content_loaded = true
+  
   let is_audio = win.hue_content_type === "audio"
   let is_video = win.hue_content_type === "video"
 
@@ -543,13 +546,12 @@ Hue.load_app_content = function (win) {
   }
 
   Hue.el(".Msg-content-container", win.window).style.backgroundImage = `url(${Hue.config.default_background_url}`
-  win.hue_content_loaded = true
 }
 
 // Stop all app players
 Hue.stop_app_players = function (win) {
   for (let w of Hue.get_open_apps()) {
-    if (w.hue_content_loaded && Hue.is_media_app(w)) {
+    if (Hue.is_media_app(w)) {
       Hue.get_app_player(w).pause()
     }
   }
@@ -641,8 +643,6 @@ Hue.remove_app = function (win) {
 
 // Increase or decrease media app volume
 Hue.change_media_app_volume = function (win, direction) {
-  Hue.check_app_content_loaded(win)
-
   if (!Hue.is_media_app(win)) {
     return
   }

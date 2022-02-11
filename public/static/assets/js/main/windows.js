@@ -894,7 +894,6 @@ Hue.create_app_popup = function (win) {
     if (e.target.classList.contains("app_popup_icon")) {
       Hue.app_popup_action(win)
     } else {
-      Hue.check_app_content_loaded(win)
       Hue.check_app_media(win)
     }
   })
