@@ -356,6 +356,10 @@ Hue.cycle_apps = function (direction) {
 // Refresh an app's content
 Hue.refresh_app = function (win) {
   Hue.load_app_content(win)
+
+  if (Hue.is_media_app(win)) {
+    Hue.get_app_player(win).play()
+  }
 }
 
 // Gets the apps localStorage object
