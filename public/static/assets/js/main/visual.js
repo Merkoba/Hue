@@ -169,3 +169,8 @@ Hue.hide_flash_info = function () {
   let el = Hue.el("#flash_info")
   el.style.display = "none"
 }
+
+// Get some element measurements
+Hue.get_element_sizes = function () {
+  Hue.panel_height = Hue.el("#footer").offsetHeight
+}
