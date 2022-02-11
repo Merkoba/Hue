@@ -183,15 +183,25 @@ Hue.start_app = function (app, start_maximized = true) {
     return
   }
 
+  let is_audio = Hue.utilz.is_audio(app.url)
+  let is_video = Hue.utilz.is_video(app.url)
+
   let win = Hue.create_app_window()
   win.hue_app_name = app.name
   win.hue_app_url = app.url
   win.hue_content_loaded = false
-  win.hue_content_type = ""
   win.hue_last_open = 0
   win.hue_playing = false
   win.hue_date_started = Date.now()
   win.create()
+
+  if (is_audio) {
+    win.hue_content_type = "audio"
+  } else if (is_video) {
+    win.hue_content_type = "video"
+  } else {
+    win.hue_content_type = "iframe"
+  }
 
   win.titlebar.addEventListener("click", function (e) {
     if (e.target.closest(".app_titlebar_icon")) {
@@ -222,6 +232,10 @@ Hue.start_app = function (app, start_maximized = true) {
   Hue.horizontal_separator(Hue.el(".app_titlebar_buttons", win.titlebar))
   let el = Hue.el(".app_titlebar_icon", win.titlebar)
   jdenticon.update(el, app.name)
+
+  if (is_audio) {
+    start_maximized = false
+  }
 
   if (start_maximized) {
     win.show()
@@ -497,17 +511,15 @@ Hue.get_app_player = function (win) {
 
 // Load app media
 Hue.load_app_content = function (win) {
-  let is_audio = Hue.utilz.is_audio(win.hue_app_url)
-  let is_video = Hue.utilz.is_video(win.hue_app_url)
-  
+  let is_audio = win.hue_content_type === "audio"
+  let is_video = win.hue_content_type === "video"
+
   if (is_audio || is_video) {
     let media_url = Hue.utilz.cache_bust_url(win.hue_app_url)
   
     if (is_audio) {
-      win.hue_content_type = "audio"
       win.set(Hue.template_app_audio({url: media_url}))
     } else if (is_video) {
-      win.hue_content_type = "video"
       win.set(Hue.template_app_video({url: media_url}))
     }
   
@@ -523,7 +535,6 @@ Hue.load_app_content = function (win) {
       Hue.app_playing(win)
     })
   } else {
-    win.hue_content_type = "iframe"
     win.set(Hue.template_app_iframe({url: win.hue_app_url}))
   }
 
@@ -534,8 +545,8 @@ Hue.load_app_content = function (win) {
 // Stop all app players
 Hue.stop_app_players = function (win) {
   for (let w of Hue.get_open_apps()) {
-    if (Hue.is_media_app(w)) {
-      Hue.el(".app_frame", w.content).pause()
+    if (w.hue_content_loaded && Hue.is_media_app(w)) {
+      Hue.get_app_player(w).pause()
     }
   }
 }
