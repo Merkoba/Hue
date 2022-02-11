@@ -68,6 +68,12 @@ Hue.setup_apps = function () {
     Hue.show_app_picker()
   })
 
+  Hue.app_launcher_popup = Hue.create_app_utility("Launch an App", function () {
+    Hue.show_app_picker()
+  })
+
+  Hue.app_launcher_popup.show()
+
   let autostart = []
 
   if (Hue.settings.autostart_default_apps) {
@@ -550,6 +556,8 @@ Hue.app_playing = function (win) {
 
 // Make app popups visible or invisible
 Hue.toggle_app_popups = function () {
+  Hue.app_launcher_popup.close()
+  
   if (Hue.app_popups_visible) {
     Hue.app_popups_visible = false
 
@@ -561,6 +569,7 @@ Hue.toggle_app_popups = function () {
     Hue.el("#footer_apps_icon use").href.baseVal = "#icon_star"
   } else {
     Hue.app_popups_visible = true
+    Hue.app_launcher_popup.show()
 
     for (let win of Hue.get_open_apps("date_started")) {
       Hue.create_app_popup(win)

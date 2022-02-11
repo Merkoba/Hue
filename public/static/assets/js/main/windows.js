@@ -903,3 +903,32 @@ Hue.create_app_popup = function (win) {
   Hue.app_playing(win)
   p.show()
 }
+
+// Small an app with a certain purpose
+Hue.create_app_utility = function (name, on_click) {
+  if (!Hue.app_popups_visible) {
+    return
+  }
+
+  let obj = {}
+  obj.class = "app_popup"
+  obj.window_class = "app_popup !app_popup_window"
+  obj.enable_titlebar = false
+  obj.window_x = "none"
+  obj.position = "bottomright"
+  obj.window_width = "12rem"
+  obj.disable_content_padding = true
+  obj.close_on_escape = false
+  obj.remove_after_close = false
+
+  obj.on_click = function () {
+    on_click()
+  }
+
+  p = Hue.create_popup(obj)
+  p.set(Hue.template_app_popup())
+  jdenticon.update(Hue.el(".app_popup_icon", p.content), name)
+  Hue.el(".app_popup_name", p.content).textContent = name
+
+  return p
+}
