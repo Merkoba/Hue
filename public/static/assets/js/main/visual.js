@@ -152,10 +152,15 @@ Hue.timeago_action = function () {
 }
 
 // Show a message for a small time and close
-Hue.flash_info = function (s) {
+Hue.flash_info = function (text, title = "Info") {
   let el = Hue.el("#flash_info")
-  el.textContent = s
-  el.style.display = "block"
+  let text_el = Hue.el("#flash_info_text")
+  text_el.textContent = text
+  let title_el = Hue.el("#flash_info_title_text")
+  title_el.textContent = title
+  let icon_el = Hue.el("#flash_info_title_icon")
+  jdenticon.update(icon_el, title)
+  el.style.display = "flex"
   Hue.flash_info_timer()
 }
 
