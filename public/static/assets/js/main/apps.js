@@ -229,6 +229,7 @@ Hue.start_app = function (app, start_maximized = true) {
     Hue.create_app_popup(win)
   }
 
+  Hue.save_app(win)
   Hue.close_all_modals()
 }
 
