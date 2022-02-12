@@ -683,7 +683,7 @@ Hue.check_app_metadata = function (win) {
   }
 
   Hue.loginfo(`Checking metadata: ${win.hue_app_url}`)
-  
+
   let artist_el = Hue.el(".app_audio_metadata_artist", win.content)
   let title_el = Hue.el(".app_audio_metadata_title", win.content)
   artist_el.style.display = "initial"
@@ -723,7 +723,6 @@ Hue.check_app_metadata = function (win) {
     } else {
       artist_el.style.display = "none"
     }
-
 
     if (title) {
       title_el.innerHTML = Hue.utilz.make_html_safe(title)
