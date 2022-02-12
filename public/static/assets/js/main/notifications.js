@@ -94,7 +94,7 @@ Hue.push_notification = function (icon, message, on_click = false) {
     items.slice(-1)[0].remove()
   }
 
-  if (!Hue.msg_notifications.is_open()) {
+  if (!Hue.msg_notifications.is_open() && !Hue.has_focus) {
     if (Hue.notifications_count < 100) {
       Hue.notifications_count += 1
       Hue.el("#header_notifications_count").textContent = `(${Hue.notifications_count})`

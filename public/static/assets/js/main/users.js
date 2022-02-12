@@ -445,6 +445,14 @@ Hue.update_user_profilepic = function (id, version) {
 
 // What to do when a user disconnects
 Hue.user_disconnect = function (data) {
+  if (Hue.userlist.length < Hue.config.max_low_users) {
+    Hue.show_room_notification(
+      data.username,
+      `${data.username} left`,
+      "user-disconnect"
+    )
+  }
+  
   Hue.remove_from_userlist(data.user_id)
 
   let type = data.disconnection_type
@@ -459,15 +467,7 @@ Hue.user_disconnect = function (data) {
     Hue.show_profile(data.username, data.user_id)
   }
 
-  Hue.do_update_activity_bar = true
-
-  if (Hue.userlist.length < Hue.config.max_low_users) {
-    Hue.show_room_notification(
-      data.username,
-      `${data.username} left`,
-      "user-disconnect"
-    )
-  }  
+  Hue.do_update_activity_bar = true  
 }
 
 // Announces that the operation cannot be applied to a certain user
