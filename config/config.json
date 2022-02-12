@@ -130,5 +130,6 @@
 		"https://azuracast.tilderadio.org/radio/8000/radio.ogg",
 		"https://lainon.life/radio/cyberia.mp3",
 		"https://radio.merkoba.com:8764/wok3n.ogg"
-	]
+	],
+	"max_low_users": 50
 }

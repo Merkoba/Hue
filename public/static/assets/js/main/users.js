@@ -22,20 +22,20 @@ Hue.user_join = function (data) {
     Hue.do_update_activity_bar = true
   }
 
-  Hue.make_info_popup_item({
-    message: `${data.username} joined`,
-    on_click: function () {
-      Hue.show_profile(data.username, data.user_id)
-    },
-    icon: "user"
-  })  
+  if (Hue.userlist.length < Hue.config.max_low_users) {
+    Hue.show_room_notification(
+      data.username,
+      `${data.username} joined`,
+      "user"
+    )
+  } 
 }
 
 // Updates the user count in the header and user list
 Hue.update_usercount = function () {
-  let s = `${Hue.utilz.singular_or_plural(Hue.usercount, "Users")} Online`
+  let s = `${Hue.utilz.singular_or_plural(Hue.userlist.length, "Users")} Online`
 
-  Hue.el("#header_users_count").textContent = `(${Hue.usercount})`
+  Hue.el("#header_users_count").textContent = `(${Hue.userlist.length})`
 
   if (Hue.userlist_mode === "normal") {
     Hue.msg_userlist.set_title(s)
@@ -249,7 +249,6 @@ Hue.do_update_userlist = function (prop = "") {
     }
   }
 
-  Hue.usercount = Hue.userlist.length
   Hue.update_usercount()
 }
 
@@ -462,13 +461,13 @@ Hue.user_disconnect = function (data) {
 
   Hue.do_update_activity_bar = true
 
-  Hue.make_info_popup_item({
-    message: `${data.username} left`,
-    on_click: function () {
-      Hue.show_profile(data.username, data.user_id)
-    },
-    icon: "user"
-  })  
+  if (Hue.userlist.length < Hue.config.max_low_users) {
+    Hue.show_room_notification(
+      data.username,
+      `${data.username} left`,
+      "user-disconnect"
+    )
+  }  
 }
 
 // Announces that the operation cannot be applied to a certain user

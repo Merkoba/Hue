@@ -6,8 +6,8 @@ Hue.make_info_popup = function (on_click = function () {}) {
     position: "topright",
     autoclose: true,
     autoclose_delay: autoclose_delay,
-    enable_titlebar: true,
-    window_x: "inner_right",
+    enable_titlebar: false,
+    window_x: "none",
     content_class: "!info_popup",
     window_width: "auto",
     on_click: on_click,
@@ -122,7 +122,7 @@ Hue.show_notifications = function (filter = "") {
 }
 
 // Centralized function for room changes
-Hue.show_room_notification = function (username, message) {
+Hue.show_room_notification = function (username, message, icon = "info") {
   let user = Hue.get_user_by_username(username)
 
   let f = function () {
@@ -136,7 +136,7 @@ Hue.show_room_notification = function (username, message) {
   let item = Hue.make_info_popup_item({
     message: message,
     on_click: f,
-    icon: "info"
+    icon: icon
   })
 
   Hue.show_popup(Hue.make_info_popup(f), item)

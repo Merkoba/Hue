@@ -83,7 +83,6 @@ Hue.image_upload_comment_type = false
 Hue.tv_upload_comment_file = false
 Hue.tv_upload_comment_type = false
 Hue.userlist_mode = "normal"
-Hue.usercount = 0
 Hue.first_media_change = false
 Hue.calc_round_places = 10
 Hue.last_typing_emit = Date.now()
