@@ -2407,14 +2407,14 @@ pre {
 	flex-direction: row;
 	align-items: center;
 	justify-content: flex-start;
-	margin-left: 0.5rem;
 	margin-right: 0.5rem;
 	overflow: hidden;
 	white-space: nowrap;
 }
 
 .app_popup_icon {
-	margin-right: 0.5rem;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
 }
 
 #open_app_open {
