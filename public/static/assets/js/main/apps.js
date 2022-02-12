@@ -687,8 +687,7 @@ Hue.check_app_metadata = function (win) {
     return
   }
 
-  Hue.el(".app_audio_metadata_artist", win.content).textContent = "Loading..."
-  Hue.el(".app_audio_metadata_title", win.content).textContent = ""
+  Hue.loginfo(`Checking metadata: ${win.hue_app_url}`)
 
   fetch(win.hue_app_metadata_url)
   .then(res => res.json())
@@ -741,4 +740,18 @@ Hue.check_app_metadata = function (win) {
 // Try to guess the metadata URL of a radio source
 Hue.get_app_metadata_url = function (url) {
   return url.slice(0, url.lastIndexOf("/")) + "/status-json.xsl"
+}
+
+// Start metadata loop while app audio window is open
+Hue.start_app_metadata_loop = function () {
+  Hue.check_app_metadata(Hue.active_app)
+
+  Hue.app_metadata_loop = setInterval(function () {
+    Hue.check_app_metadata(Hue.active_app)
+  }, Hue.config.app_metadata_check_delay)
+}
+
+// Stop metadata check loop
+Hue.stop_app_metadata_loop = function () {
+  clearInterval(Hue.app_metadata_loop)
 }

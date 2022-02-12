@@ -361,6 +361,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "imgur_client_id"
 >Imgur client id.
 
+"app_metadata_check_delay"
+>How often make a metadata check while app radio window is open
+
 
 ## Join Flags
 
