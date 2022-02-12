@@ -744,6 +744,7 @@ Hue.get_app_metadata_url = function (url) {
 
 // Start metadata loop while app audio window is open
 Hue.start_app_metadata_loop = function () {
+  Hue.stop_app_metadata_loop()
   Hue.check_app_metadata(Hue.active_app)
 
   Hue.app_metadata_loop = setInterval(function () {
