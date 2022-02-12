@@ -635,11 +635,6 @@ Hue.check_app_content_loaded = function (win) {
   }
 }
 
-// App popup action
-Hue.app_popup_action = function (win) {
-  win.show()
-}
-
 // Remove an app modal instance
 Hue.remove_app = function (win) {
   win.close()
@@ -755,4 +750,13 @@ Hue.start_app_metadata_loop = function () {
 // Stop metadata check loop
 Hue.stop_app_metadata_loop = function () {
   clearInterval(Hue.app_metadata_loop)
+}
+
+// Check what to do with app popup click
+Hue.app_popup_action = function (win) {
+  if (win.hue_playing) {
+    win.show()
+  } else {
+    Hue.check_app_media(win)
+  }
 }
