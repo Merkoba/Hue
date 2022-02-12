@@ -541,6 +541,7 @@ Hue.setup_app_player = function (win) {
   let player = Hue.get_app_player(win)
     
   player.addEventListener("play", function () {
+    Hue.stop_app_players(win)
     win.hue_playing = true
     Hue.app_playing(win)
   })
@@ -551,9 +552,13 @@ Hue.setup_app_player = function (win) {
   })  
 }
 
-// Stop all app players
+// Stop all app players except active one
 Hue.stop_app_players = function (win) {
   for (let w of Hue.get_open_apps()) {
+    if (win && w === win) {
+      continue
+    }
+
     if (Hue.is_media_app(w)) {
       Hue.get_app_player(w).pause()
     }
@@ -611,8 +616,6 @@ Hue.check_app_media = function (win) {
     Hue.app_popup_action(win)
     return
   }
-
-  Hue.stop_app_players()
 
   let player = Hue.get_app_player(win)
   let is_playing = win.hue_app_popup.window.classList.contains("app_popup_playing")
