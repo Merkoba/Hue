@@ -1781,6 +1781,14 @@ Hue.setup_chat = function () {
   Hue.el("#activity_down_scroller").addEventListener("click", function () {
     Hue.activity_below()
   })
+
+  Hue.el("#top_percentage_scroller").addEventListener("click", function () {
+    Hue.scroll_up()
+  })
+
+  Hue.el("#bottom_percentage_scroller").addEventListener("click", function () {
+    Hue.scroll_down()
+  })
 }
 
 // Replace things like $id$ with the message id
