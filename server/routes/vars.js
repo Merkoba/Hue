@@ -76,4 +76,5 @@ module.exports = function (c, config) {
   c.vars.public_media_directory = config.public_media_directory
   c.vars.chat_crop_limit = config.chat_crop_limit
   c.vars.autostart_apps = config.autostart_apps
+  c.vars.max_low_users = config.max_low_users
 }

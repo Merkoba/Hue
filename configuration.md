@@ -337,6 +337,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "apps_crop_limit"
 >Max number of apps to save to localStorage.
 
+"max_low_users"
+>After this amount of users consider a room to very populated and do some things differently.
+
 
 ## config.secret.json
 
