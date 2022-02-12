@@ -666,7 +666,7 @@ Hue.change_media_app_volume = function (win, direction) {
     new_volume -= 0.05  
     
     if (new_volume < 0) {
-      new_volume = 1
+      new_volume = 0
     }
   }
 
