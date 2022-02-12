@@ -613,7 +613,7 @@ Hue.show_app_picker_info = function () {
 // Pause media or show app
 Hue.check_app_media = function (win) {
   if (!Hue.is_media_app(win)) {
-    Hue.app_popup_action(win)
+    win.show()
     return
   }
 
