@@ -22,7 +22,7 @@ Hue.user_join = function (data) {
     Hue.do_update_activity_bar = true
   }
 
-  if (Hue.userlist.length < Hue.config.max_low_users) {
+  if (Hue.userlist.length <= Hue.config.max_low_users) {
     Hue.show_room_notification(
       data.username,
       `${data.username} joined`,
@@ -445,7 +445,7 @@ Hue.update_user_profilepic = function (id, version) {
 
 // What to do when a user disconnects
 Hue.user_disconnect = function (data) {
-  if (Hue.userlist.length < Hue.config.max_low_users) {
+  if (Hue.userlist.length <= Hue.config.max_low_users) {
     Hue.show_room_notification(
       data.username,
       `${data.username} left`,
