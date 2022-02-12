@@ -867,10 +867,6 @@ Hue.create_app_popup = function (win) {
   obj.disable_content_padding = true
   obj.close_on_escape = false
 
-  obj.on_click = function () {
-    
-  }
-
   obj.on_x_button_click = function () {
     Hue.remove_app(win)
   }
