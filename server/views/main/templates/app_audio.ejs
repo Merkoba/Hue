@@ -1,3 +1,9 @@
 <script id='template_app_audio' type='text/x-handlebars-template' class='template'>
-  <audio controls class='app_frame app_frame_media' frameBorder='0' src='{{url}}'>
+  <div class="app_audio_container">
+    <div class="app_audio_metadata">
+      <div class='app_audio_metadata_artist'></div>
+      <div class='app_audio_metadata_title'></div>
+    </div>
+    <audio controls class='app_frame app_frame_audio' frameBorder='0' src='{{url}}'>
+  </div>
 </script>

@@ -128,8 +128,8 @@
 	"autostart_apps": [
 		"https://plaza.one/",
 		"https://azuracast.tilderadio.org/radio/8000/radio.ogg",
-		"https://lainon.life/radio/cyberia.mp3",
-		"https://radio.merkoba.com:8764/wok3n.ogg"
+		"https://lainon.life/radio/cyberia.mp3 https://lainon.life/radio/status-json.xsl",
+		"https://radio.merkoba.com:8764/wok3n.ogg https://hue.merkoba.com:8765/status-json.xsl"
 	],
 	"max_low_users": 100
 }

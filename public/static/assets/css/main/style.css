@@ -2335,13 +2335,32 @@ pre {
 	background-color: rgba(0, 0, 0, 0) !important
 }
 
-.app_frame {
+.app_frame_iframe {
 	width: 100%;
 	height: 100%;
+	background-color: white;
 }
 
-.app_frame_iframe {
-	background-color: white;
+.app_audio_container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.app_audio_metadata {
+	flex-grow: 1;	
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.6rem;
+	color: var(--font_color);
+	gap: 2rem;
+}
+
+.app_frame_audio {
+	flex-grow: 0;
 }
 
 #app_picker_header {

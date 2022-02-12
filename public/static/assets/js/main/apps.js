@@ -110,6 +110,14 @@ Hue.open_app = function (url = "", start_maximized = true) {
     return
   }
 
+  let metadata = ""
+  let urls = url.split(" ").filter(x => x !== "")
+
+  if (urls.length >= 2) {
+    url = urls[0]
+    metadata = urls[1]
+  }
+
   if (!url.startsWith("https://") && !url.startsWith("http://")) {
     url = `https://${url}`
   }
@@ -122,7 +130,7 @@ Hue.open_app = function (url = "", start_maximized = true) {
     return
   }
 
-  let app = {name: name, url: url}
+  let app = {name: name, url: url, metadata: metadata}
 
   Hue.start_app(app, start_maximized)
 }
@@ -193,6 +201,7 @@ Hue.start_app = function (app, start_maximized = true) {
   win.hue_last_open = 0
   win.hue_playing = false
   win.hue_date_started = Date.now()
+  win.hue_app_metadata_url = app.metadata
   win.create()
 
   if (is_audio) {
@@ -676,4 +685,47 @@ Hue.change_media_app_volume = function (win, direction) {
 // Check if it's media app
 Hue.is_media_app = function (win) {
   return (win.hue_content_type === "audio" || win.hue_content_type === "video")
+}
+
+// Try to fetch active radio metadata
+Hue.check_app_metadata = function (win) {
+  if (win.hue_content_type !== "audio" || !win.hue_app_metadata_url) {
+    return
+  }
+
+  Hue.el(".app_audio_metadata_artist", win.content).textContent = "Loading..."
+  Hue.el(".app_audio_metadata_title", win.content).textContent = ""
+
+  fetch(win.hue_app_metadata_url)
+  .then(res => res.json())
+  .then(out => {
+    let artist = ""
+    let title = ""
+    if (out.icestats && out.icestats.source) {
+      if (Symbol.iterator in Object(out.icestats.source)) {
+        let p = new URL(win.hue_app_url).pathname.split("/").pop()
+        for (let source of out.icestats.source) {
+          if (source.listenurl.includes(p) && (source.artist || source.title)) {
+            if (source.artist) {
+              artist = source.artist
+            }
+
+            if (source.title) {
+              title = source.title
+            }
+            break
+          }
+        }
+      } else {
+        artist = out.icestats.source.artist
+        title = out.icestats.source.title
+      }
+    }
+
+    Hue.el(".app_audio_metadata_artist", win.content).innerHTML = Hue.utilz.make_html_safe(artist)
+    Hue.el(".app_audio_metadata_title", win.content).innerHTML = Hue.utilz.make_html_safe(title)
+  })
+  .catch(err => {
+    console.error(err)
+  })
 }
