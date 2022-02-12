@@ -867,6 +867,10 @@ Hue.create_app_popup = function (win) {
   obj.disable_content_padding = true
   obj.close_on_escape = false
 
+  obj.on_click = function () {
+    Hue.app_popup_action(win)
+  }
+
   obj.on_x_button_click = function () {
     Hue.remove_app(win)
   }
@@ -891,14 +895,6 @@ Hue.create_app_popup = function (win) {
   
   let name = Hue.el(".app_popup_name", p.content)
   name.textContent = win.hue_app_name
-  
-  p.window.addEventListener("click", function (e) {
-    if (e.target.classList.contains("app_popup_icon")) {
-      Hue.app_popup_action(win)
-    } else {
-      Hue.check_app_media(win)
-    }
-  })
 
   Hue.app_playing(win)
   p.show()
