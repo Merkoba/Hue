@@ -713,6 +713,7 @@ Hue.check_app_metadata = function (win) {
             if (source.title) {
               title = source.title
             }
+            
             break
           }
         }
