@@ -823,16 +823,17 @@ Hue.create_app_window = function () {
       content_container_class: "app !msg_background_color",
       titlebar_class: "app !app_titlebar",
       after_show: function (instance) {
-        Hue.check_app_content_loaded(instance)
-        Hue.check_app_metadata(instance)
-        Hue.create_app_popup(instance)
-        Hue.app_open = true
         Hue.active_app = instance
+        Hue.check_app_content_loaded(instance)
+        Hue.create_app_popup(instance)
+        Hue.start_app_metadata_loop()
+        Hue.app_open = true
         instance.hue_last_open = Date.now()
       },
       after_close: function (instance) {        
         Hue.app_open = false
         Hue.remove_alert_title()
+        Hue.stop_app_metadata_loop()
       },
       after_destroy: function (instance) {
         if (instance.hue_app_popup) {

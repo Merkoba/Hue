@@ -131,5 +131,6 @@
 		"https://lainon.life/radio/cyberia.mp3",
 		"https://radio.merkoba.com:8765/wok3n.ogg"
 	],
-	"max_low_users": 100
+	"max_low_users": 100,
+	"app_metadata_check_delay": 30000
 }
