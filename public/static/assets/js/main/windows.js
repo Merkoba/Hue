@@ -824,6 +824,7 @@ Hue.create_app_window = function () {
       titlebar_class: "app !app_titlebar",
       after_show: function (instance) {
         Hue.check_app_content_loaded(instance)
+        Hue.check_app_metadata(instance)
         Hue.create_app_popup(instance)
         Hue.app_open = true
         Hue.active_app = instance
