@@ -868,7 +868,7 @@ Hue.create_app_popup = function (win) {
   obj.close_on_escape = false
 
   obj.on_click = function () {
-    Hue.app_popup_action(win)
+    
   }
 
   obj.on_x_button_click = function () {
@@ -895,6 +895,14 @@ Hue.create_app_popup = function (win) {
   
   let name = Hue.el(".app_popup_name", p.content)
   name.textContent = win.hue_app_name
+  
+  p.window.addEventListener("click", function (e) {
+    if (e.target.closest(".app_popup_icon_container")) {
+      win.show()
+    } else {
+      Hue.check_app_media(win)
+    }
+  })
 
   Hue.app_playing(win)
   p.show()

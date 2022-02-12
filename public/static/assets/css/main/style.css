@@ -2392,8 +2392,6 @@ pre {
 
 .app_popup_window {
 	border: 2px solid var(--altcolor) !important;
-	padding-top: 4px !important;
-	padding-bottom: 4px !important;
 	cursor: pointer !important;
 	user-select: none;
 }
@@ -2412,9 +2410,14 @@ pre {
 	white-space: nowrap;
 }
 
-.app_popup_icon {
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
+.app_popup_icon_container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-left: 0.25rem;
+	padding-right: 0.35rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 }
 
 #open_app_open {
