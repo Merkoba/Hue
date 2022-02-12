@@ -110,14 +110,6 @@ Hue.open_app = function (url = "", start_maximized = true) {
     return
   }
 
-  let metadata = ""
-  let urls = url.split(" ").filter(x => x !== "")
-
-  if (urls.length >= 2) {
-    url = urls[0]
-    metadata = urls[1]
-  }
-
   if (!url.startsWith("https://") && !url.startsWith("http://")) {
     url = `https://${url}`
   }
@@ -130,9 +122,7 @@ Hue.open_app = function (url = "", start_maximized = true) {
     return
   }
 
-  let app = {name: name, url: url, metadata: metadata}
-
-  Hue.start_app(app, start_maximized)
+  Hue.start_app({name: name, url: url}, start_maximized)
 }
 
 // Show the app picker
@@ -201,11 +191,12 @@ Hue.start_app = function (app, start_maximized = true) {
   win.hue_last_open = 0
   win.hue_playing = false
   win.hue_date_started = Date.now()
-  win.hue_app_metadata_url = app.metadata
+  win.hue_app_metadata_url = ""
   win.create()
 
   if (is_audio) {
     win.hue_content_type = "audio"
+    win.hue_app_metadata_url = Hue.get_app_metadata_url(app.url)
   } else if (is_video) {
     win.hue_content_type = "video"
   } else {
@@ -689,7 +680,7 @@ Hue.is_media_app = function (win) {
 
 // Try to fetch active radio metadata
 Hue.check_app_metadata = function (win) {
-  if (win.hue_content_type !== "audio" || !win.hue_app_metadata_url) {
+  if (win.hue_content_type !== "audio") {
     return
   }
 
@@ -733,7 +724,7 @@ Hue.check_app_metadata = function (win) {
     }
 
     let title_el = Hue.el(".app_audio_metadata_title", win.content)
-    
+
     if (title) {
       title_el.innerHTML = Hue.utilz.make_html_safe(title)
       title_el.style.display = "initial"
@@ -741,7 +732,10 @@ Hue.check_app_metadata = function (win) {
       title_el.style.display = "none"
     }
   })
-  .catch(err => {
-    console.error(err)
-  })
+  .catch(err => {})
+}
+
+// Try to guess the metadata URL of a radio source
+Hue.get_app_metadata_url = function (url) {
+  return url.slice(0, url.lastIndexOf("/")) + "/status-json.xsl"
 }
