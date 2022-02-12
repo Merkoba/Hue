@@ -723,8 +723,23 @@ Hue.check_app_metadata = function (win) {
       }
     }
 
-    Hue.el(".app_audio_metadata_artist", win.content).innerHTML = Hue.utilz.make_html_safe(artist)
-    Hue.el(".app_audio_metadata_title", win.content).innerHTML = Hue.utilz.make_html_safe(title)
+    let artist_el = Hue.el(".app_audio_metadata_artist", win.content)
+
+    if (artist) {
+      artist_el.innerHTML = Hue.utilz.make_html_safe(artist)
+      artist_el.style.display = "initial"
+    } else {
+      artist_el.style.display = "none"
+    }
+
+    let title_el = Hue.el(".app_audio_metadata_title", win.content)
+    
+    if (title) {
+      title_el.innerHTML = Hue.utilz.make_html_safe(title)
+      title_el.style.display = "initial"
+    } else {
+      title_el.style.display = "none"
+    }
   })
   .catch(err => {
     console.error(err)
