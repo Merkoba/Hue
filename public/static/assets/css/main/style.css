@@ -2335,20 +2335,20 @@ pre {
 	background-color: rgba(0, 0, 0, 0) !important
 }
 
-.app_frame_iframe {
+.radio_frame_iframe {
 	width: 100%;
 	height: 100%;
 	background-color: white;
 }
 
-.app_audio_container {
+.radio_audio_container {
 	width: 100%;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 }
 
-.app_audio_metadata {
+.radio_audio_metadata {
 	flex-grow: 1;	
 	display: flex;
 	flex-direction: column;
@@ -2359,48 +2359,48 @@ pre {
 	gap: 2rem;
 }
 
-.app_frame_audio {
+.radio_frame_audio {
 	flex-grow: 0;
 }
 
-#app_picker_header {
+#radio_picker_header {
 	font-size: 1rem;
 	margin-bottom: 1rem;
 	font-size: 1.2rem;
 }
 
-#app_picker_container {
+#radio_picker_container {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
 	margin-top: 1rem;
 }
 
-.app_picker_item {
+.radio_picker_item {
 	cursor: pointer;
 }
 
-.app_picker_item_name {
+.radio_picker_item_name {
 	font-size: 1.2rem;
 	margin-top: 0.35rem;
 }
 
-.app_picker_item_url {
+.radio_picker_item_url {
 	margin-top: 0.35rem;
 	margin-bottom: 0.35rem;
 }
 
-.app_popup_window {
+.radio_popup_window {
 	border: 2px solid var(--altcolor) !important;
 	cursor: pointer !important;
 	user-select: none;
 }
 
-.app_popup_playing {
+.radio_popup_playing {
 	border: 2px solid var(--font_color) !important;
 }
 
-.app_popup_container {
+.radio_popup_container {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -2410,7 +2410,7 @@ pre {
 	white-space: nowrap;
 }
 
-.app_popup_icon_container {
+.radio_popup_icon_container {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -2420,35 +2420,35 @@ pre {
 	padding-bottom: 0.25rem;
 }
 
-#open_app_open {
+#open_radio_open {
 	margin-top: 1rem;
 	font-size: 1.2rem;
 	cursor: pointer;
 }
 
-.Msg-content-container-app {
+.Msg-content-container-radio {
 	background-repeat: no-repeat !important;
 	background-size: cover !important;
 }
 
-.Msg-content-app {
+.Msg-content-radio {
 	background-color: rgba(0, 0, 0, 0.8) !important;
 }
 
-.app_titlebar {
+.radio_titlebar {
 	background-color: var(--altbackground) !important;
 	color: var(--font_color) !important;
 	user-select: none;
 }
 
-.app_titlebar_container {
+.radio_titlebar_container {
   display: flex;
 	flex-direction: row;
 	gap: 1rem;
 	width: 100%;
 }
 
-.app_titlebar_info {
+.radio_titlebar_info {
 	display: flex;
 	flex-direction: row;
 	flex-grow: 1;
@@ -2456,11 +2456,11 @@ pre {
 	justify-content: flex-start;
 }
 
-.app_titlebar_icon {
+.radio_titlebar_icon {
 	margin-right: 0.5rem;
 }
 
-.app_titlebar_buttons {
+.radio_titlebar_buttons {
   display: flex;
 	flex-direction: row;
 	gap: 1rem;
@@ -2469,32 +2469,32 @@ pre {
 	justify-content: flex-end;
 }
 
-.app_titlebar_buttons:last-child {
+.radio_titlebar_buttons:last-child {
 	padding-right: 1rem;
 }
 
-#applist_container {
+#radiolist_container {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
 	margin-top: 1rem;
 }
 
-.applist_item {
+.radiolist_item {
 	cursor: pointer;
 }
 
-.applist_item_name {
+.radiolist_item_name {
 	font-size: 1.2rem;
 	margin-top: 0.35rem;
 }
 
-.app_picker_item_url {
+.radio_picker_item_url {
 	margin-top: 0.35rem;
 	margin-bottom: 0.35rem;
 }
 
-#applist_launch {
+#radiolist_launch {
 	margin-bottom: 1rem;
 }
 

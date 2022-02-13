@@ -28,8 +28,8 @@ Hue.setup_footer = function () {
     Hue.show_highlights()
   })
 
-  Hue.el("#footer_apps_icon_container").addEventListener("click", function () {
-    Hue.toggle_app_popups()
+  Hue.el("#footer_radio_icon_container").addEventListener("click", function () {
+    Hue.toggle_radio_popups()
   }) 
 
   Hue.el("#footer_items").addEventListener("click", function(e) {
