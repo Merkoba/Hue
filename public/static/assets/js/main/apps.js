@@ -578,6 +578,21 @@ Hue.app_playing = function (win) {
     win.hue_app_popup.window.classList.remove("app_popup_playing")
     win.hue_app_popup.window.classList.remove("glowing")
   }
+
+  let any_playing = false
+
+  for (let w of Hue.get_open_apps()) {
+    if (w.hue_playing) {
+      any_playing = true
+      break
+    }
+  }
+
+  if (any_playing) {
+    Hue.el("#footer_apps_icon_container").classList.add("rotate")
+  } else {
+    Hue.el("#footer_apps_icon_container").classList.remove("rotate")
+  }
 }
 
 // Make app popups visible or invisible

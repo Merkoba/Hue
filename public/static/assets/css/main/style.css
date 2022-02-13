@@ -2554,3 +2554,7 @@ pre {
 #flash_info_title_icon {
 	margin-right: 0.25rem;
 }
+
+.rotate {
+	animation: spin 2.5s linear infinite;
+}
