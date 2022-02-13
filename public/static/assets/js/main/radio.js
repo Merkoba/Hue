@@ -174,32 +174,10 @@ Hue.start_radio = function (radio, start_maximized = true) {
   win.hue_radio_metadata_url = Hue.get_radio_metadata_url(radio.url)
   win.create()
 
-  win.titlebar.addEventListener("click", function (e) {
-    if (e.target.classList.contains("radio_titlebar_launch")) {
-      Hue.show_radio_picker()
-    } else if (e.target.classList.contains("radio_titlebar_refresh")) {
-      Hue.refresh_radio(win)
-    } else if (e.target.classList.contains("radio_titlebar_minimize")) {
-      Hue.minimize_all_radios()
-    }
-  })
-
-  win.titlebar.addEventListener("wheel", function (e) {
-    Hue.radio_cycle_wheel_timer(e.deltaY > 0 ? "down" : "up")
-  })
-
-  win.set_title(Hue.template_radio_titlebar())
+  win.set_title(radio.name)
   win.set(Hue.template_radio_audio({url: radio.url}))
   Hue.el(".Msg-content-container", win.window).style.backgroundImage = `url(${Hue.config.default_background_url}`
   Hue.setup_radio_player(win)
-
-  let name = Hue.el(".radio_titlebar_name", win.titlebar)
-  name.textContent = radio.name
-  name.title = radio.url
-
-  Hue.horizontal_separator(Hue.el(".radio_titlebar_buttons", win.titlebar))
-  let el = Hue.el(".radio_titlebar_icon", win.titlebar)
-  jdenticon.update(el, radio.name)
   
   Hue.create_radio_popup(win)
   Hue.save_radio(win)
@@ -307,12 +285,6 @@ Hue.cycle_radios = function (direction) {
   radios[ii].show()
 }
 
-// Refresh an radio's content
-Hue.refresh_radio = function (win) {
-  Hue.load_radio_content(win)
-  Hue.get_radio_player(win).play()
-}
-
 // Gets the radios localStorage object
 Hue.get_radios = function () {
   Hue.radios = Hue.get_local_storage(Hue.ls_radio)
@@ -399,13 +371,6 @@ Hue.change_to_radio = function (id) {
   }
 
   Hue.close_all_modals()
-}
-
-// Minimize all radios
-Hue.minimize_all_radios = function () {
-  for (let win of Hue.get_open_radios()) {
-    win.close()
-  }
 }
 
 // Get radio player
