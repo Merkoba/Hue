@@ -85,24 +85,24 @@ Hue.user_settings = {
       }
     },
   },
-  autostart_apps: {
+  autostart_radios: {
     widget_type: "textarea",
-    description: `Which app URLs to start automatically on join`,
+    description: `Which radio URLs to start automatically on join`,
     action: (save = true) => {
-      let s = Hue.el(`#settings_autostart_apps`).value
+      let s = Hue.el(`#settings_autostart_radios`).value
       let items = s.split("\n").map(x => x.trim()).filter(x => x !== "")
-      Hue.settings.autostart_apps = items.join("\n")
+      Hue.settings.autostart_radios = items.join("\n")
 
       if (save) {
         Hue.save_settings()
       }
     },
   },
-  autostart_default_apps: {
+  autostart_default_radios: {
     widget_type: "checkbox",
-    description: `Whether to start the system defined apps on join`,
+    description: `Whether to start the system defined radios on join`,
     action: (save = true) => {
-      Hue.settings.autostart_default_apps = Hue.el(`#settings_autostart_default_apps`).checked
+      Hue.settings.autostart_default_radios = Hue.el(`#settings_autostart_default_radios`).checked
 
       if (save) {
         Hue.save_settings()

@@ -134,9 +134,9 @@ Hue.dataset_obj = {}
 Hue.dataset_id = 0
 Hue.highlight_date_on_focus = 0
 Hue.flipped = false
-Hue.app_open = false
-Hue.active_app = undefined
-Hue.app_popups_visible = true
+Hue.radio_open = false
+Hue.active_radio = undefined
+Hue.radio_popups_visible = true
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -217,7 +217,7 @@ Hue.init = function () {
   Hue.start_timeago()
   Hue.setup_draw_image()
   Hue.setup_view_text()
-  Hue.setup_apps()
+  Hue.setup_radio()
   
   if (Hue.debug_socket) {
     Hue.start_socket_stats()

@@ -28,7 +28,6 @@
 	"media_changed_crop_limit": 500,
 	"notifications_crop_limit": 500,
 	"notifications_close_delay": 5000,
-	"apps_crop_limit": 500,
 	"whispers_crop_limit": 500,
 	"max_whispers_post_length": 2000,
 	"max_input_length": 2500,
@@ -71,8 +70,8 @@
 	"settings_default_show_link_previews": true,
 	"settings_default_show_highlight_notifications": true,
 	"settings_default_show_activity_notifications": true,
-	"settings_default_autostart_apps": "",
-	"settings_default_autostart_default_apps": true,
+	"settings_default_autostart_radios": "",
+	"settings_default_autostart_default_radios": true,
 	"room_state_default_image_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_last_highlight_date": 0,
@@ -125,11 +124,12 @@
 	"db_write_file_timeout": 2000,
 	"db_write_file_timeout_limit": 10000,
 	"chat_crop_limit": 500,
-	"autostart_apps": [
+	"max_low_users": 100,
+	"autostart_radios": [
 		"https://azuracast.tilderadio.org/radio/8000/radio.ogg",
 		"https://lainon.life/radio/cyberia.mp3",
 		"https://radio.merkoba.com:8765/wok3n.ogg"
 	],
-	"max_low_users": 100,
-	"app_metadata_check_delay": 30000
+	"radios_crop_limit": 500,
+	"radio_metadata_check_delay": 30000
 }

@@ -5,34 +5,6 @@ Hue.activate_key_detection = function () {
       return
     }
 
-    if (Hue.app_open) {
-
-      if (Hue.modal_open) {
-
-        if (Hue.msg_app_picker.is_open()) {
-          if (Hue.msg_app_picker.is_highest()) {
-            if (e.key === "Enter") {
-              Hue.launch_first_app()
-              e.preventDefault()
-            }
-  
-            return
-          }
-        }
-
-        if (Hue.msg_open_app.is_highest()) {
-          if (e.key === "Enter") {
-            Hue.open_app()
-            e.preventDefault()
-          }
-  
-          return
-        }
-      }
-
-      return
-    }
-
     if (e.key === "Tab") {
       if (
         Hue.modal_open &&
@@ -276,10 +248,10 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.msg_app_picker.is_open()) {
-        if (Hue.msg_app_picker.is_highest()) {
+      if (Hue.msg_radio_picker.is_open()) {
+        if (Hue.msg_radio_picker.is_highest()) {
           if (e.key === "Enter") {
-            Hue.launch_first_app()
+            Hue.launch_first_radio()
             e.preventDefault()
           }
 
@@ -287,10 +259,10 @@ Hue.activate_key_detection = function () {
         }
       }
       
-      if (Hue.msg_open_app.is_open()) {
-        if (Hue.msg_open_app.is_highest()) {
+      if (Hue.msg_open_radio.is_open()) {
+        if (Hue.msg_open_radio.is_highest()) {
           if (e.key === "Enter") {
-            Hue.open_app()
+            Hue.open_radio()
             e.preventDefault()
           }
 

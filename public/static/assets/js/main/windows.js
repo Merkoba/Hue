@@ -101,23 +101,23 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_app_picker = Msg.factory(
+  Hue.msg_radio_picker = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "app_picker",
+      id: "radio_picker",
       window_width: "24rem"
     })
   )
 
-  Hue.msg_applist = Msg.factory(
+  Hue.msg_radiolist = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "applist",
+      id: "radiolist",
       window_width: "24rem"
     })
   )
 
-  Hue.msg_open_app = Msg.factory(
+  Hue.msg_open_radio = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "open_app",
+      id: "open_radio",
       window_width: "24rem"
     })
   )
@@ -420,9 +420,9 @@ Hue.start_msg = function () {
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_draw_image.set(Hue.template_draw_image())
-  Hue.msg_open_app.set(Hue.template_open_app())
-  Hue.msg_app_picker.set(Hue.template_app_picker())
-  Hue.msg_applist.set(Hue.template_applist())
+  Hue.msg_open_radio.set(Hue.template_open_radio())
+  Hue.msg_radio_picker.set(Hue.template_radio_picker())
+  Hue.msg_radiolist.set(Hue.template_radiolist())
   Hue.msg_header_menu.set(Hue.template_header_menu())
 
   Hue.msg_info.create()
@@ -448,9 +448,9 @@ Hue.start_msg = function () {
   Hue.msg_draw_image.set_title("Draw an Image")
   Hue.msg_image_picker.set_title("Image")
   Hue.msg_tv_picker.set_title("TV")
-  Hue.msg_app_picker.set_title("Apps")
-  Hue.msg_open_app.set_title("Open App")
-  Hue.msg_applist.set_title("Go to App")
+  Hue.msg_radio_picker.set_title("Radio")
+  Hue.msg_open_radio.set_title("Open Radio")
+  Hue.msg_radiolist.set_title("Go to Radio")
   Hue.msg_header_menu.set_title("Header Menu")
 }
 
@@ -541,25 +541,17 @@ Hue.after_modal_close = function (instance) {
   }
 }
 
-// Gets all Msg instances excluding apps
+// Gets all normal Msg instances
 Hue.get_modal_instances = function () {
-  let modals = []
-
-  for (let instance of Hue.msg_main_menu.higher_instances()) {
-    if (!Hue.is_app(instance)) {
-      modals.push(instance)
-    }
-  }
-
-  return modals
+  return Hue.msg_main_menu.higher_instances()
 }
 
-// Gets all Msg popup instances excluding app popups
+// Gets all Msg popup instances excluding radio popups
 Hue.get_popup_instances = function () {
   let popups = []
 
   for (let instance of Hue.msg_main_menu.lower_instances()) {
-    if (!Hue.is_app_popup(instance)) {
+    if (!Hue.is_radio_popup(instance)) {
       popups.push(instance)
     }
   }
@@ -811,55 +803,53 @@ Hue.get_first_visible_modal_item = function (id) {
   }
 }
 
-// Create app window
-Hue.create_app_window = function () {
+// Create radio window
+Hue.create_radio_window = function () {
   return Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       preset: "window",
-      close_on_escape: false,
       enable_overlay: false,
-      class: "app",
-      window_class: "app !app_window !transparent_background",
-      content_container_class: "app !msg_background_color",
-      titlebar_class: "app !app_titlebar",
+      class: "radio",
+      window_class: "radio !radio_window !transparent_background",
+      content_container_class: "radio !msg_background_color",
+      titlebar_class: "radio !radio_titlebar",
       after_show: function (instance) {
-        Hue.active_app = instance
-        Hue.check_app_content_loaded(instance)
-        Hue.create_app_popup(instance)
-        Hue.start_app_metadata_loop()
-        Hue.app_open = true
+        Hue.after_modal_show(instance)
+        Hue.after_modal_set_or_show(instance)
+        Hue.active_radio = instance
+        Hue.create_radio_popup(instance)
+        Hue.start_radio_metadata_loop()
         instance.hue_last_open = Date.now()
       },
-      after_close: function (instance) {        
-        Hue.app_open = false
+      after_close: function (instance) {     
+        Hue.after_modal_close(instance)
         Hue.remove_alert_title()
-        Hue.stop_app_metadata_loop()
+        Hue.stop_radio_metadata_loop()
       },
       after_destroy: function (instance) {
-        if (instance.hue_app_popup) {
-          instance.hue_app_popup.close()
+        if (instance.hue_radio_popup) {
+          instance.hue_radio_popup.close()
         }
 
         instance.remove()
-        Hue.app_open = false
       }
     })
   )
 }
 
-// Small popup for a minimized app
-Hue.create_app_popup = function (win) {
-  if (!Hue.app_popups_visible) {
+// Small popup for a minimized radio
+Hue.create_radio_popup = function (win) {
+  if (!Hue.radio_popups_visible) {
     return
   }
 
-  if (win.hue_app_popup) {
+  if (win.hue_radio_popup) {
     return
   }
 
   let obj = {}
-  obj.class = "app_popup"
-  obj.window_class = "app_popup !app_popup_window"
+  obj.class = "radio_popup"
+  obj.window_class = "radio_popup !radio_popup_window"
   obj.enable_titlebar = false
   obj.window_x = "floating_right"
   obj.position = "bottomright"
@@ -868,51 +858,51 @@ Hue.create_app_popup = function (win) {
   obj.close_on_escape = false
 
   obj.on_x_button_click = function () {
-    Hue.remove_app(win)
+    Hue.remove_radio(win)
   }
 
   obj.on_wheel_down = function () {
-    Hue.change_media_app_volume(win, "down")
+    Hue.change_media_radio_volume(win, "down")
   }
 
   obj.on_wheel_up = function () {
-    Hue.change_media_app_volume(win, "up")
+    Hue.change_media_radio_volume(win, "up")
   }
 
   p = Hue.create_popup(obj)
-  p.set(Hue.template_app_popup())
-  win.hue_app_popup = p
+  p.set(Hue.template_radio_popup())
+  win.hue_radio_popup = p
 
-  let container = Hue.el(".app_popup_container", p.content)
-  container.title = win.hue_app_url
+  let container = Hue.el(".radio_popup_container", p.content)
+  container.title = win.hue_radio_url
 
-  let icon = Hue.el(".app_popup_icon", p.content)
-  jdenticon.update(icon, win.hue_app_name)
+  let icon = Hue.el(".radio_popup_icon", p.content)
+  jdenticon.update(icon, win.hue_radio_name)
   
-  let name = Hue.el(".app_popup_name", p.content)
-  name.textContent = win.hue_app_name
+  let name = Hue.el(".radio_popup_name", p.content)
+  name.textContent = win.hue_radio_name
   
   p.window.addEventListener("click", function (e) {
-    if (e.target.closest(".app_popup_icon_container")) {
+    if (e.target.closest(".radio_popup_icon_container")) {
       win.show()
     } else {
-      Hue.check_app_media(win)
+      Hue.check_radio_media(win)
     }
   })
 
-  Hue.app_playing(win)
+  Hue.radio_playing(win)
   p.show()
 }
 
-// Small an app with a certain purpose
-Hue.create_app_utility = function (name, on_click) {
-  if (!Hue.app_popups_visible) {
+// Small an radio with a certain purpose
+Hue.create_radio_utility = function (name, on_click) {
+  if (!Hue.radio_popups_visible) {
     return
   }
 
   let obj = {}
-  obj.class = "app_popup"
-  obj.window_class = "app_popup !app_popup_window"
+  obj.class = "radio_popup"
+  obj.window_class = "radio_popup !radio_popup_window"
   obj.enable_titlebar = false
   obj.window_x = "none"
   obj.position = "bottomright"
@@ -926,9 +916,9 @@ Hue.create_app_utility = function (name, on_click) {
   }
 
   p = Hue.create_popup(obj)
-  p.set(Hue.template_app_popup())
-  jdenticon.update(Hue.el(".app_popup_icon", p.content), name)
-  Hue.el(".app_popup_name", p.content).textContent = name
+  p.set(Hue.template_radio_popup())
+  jdenticon.update(Hue.el(".radio_popup_icon", p.content), name)
+  Hue.el(".radio_popup_name", p.content).textContent = name
 
   return p
 }

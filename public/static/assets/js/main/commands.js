@@ -527,37 +527,11 @@ Hue.commands = {
     },
     description: `Show posts by a user`,
   },
-  "apps": {
+  "radio": {
     action: (arg, ans) => {
-      Hue.show_app_picker(arg || "")
+      Hue.show_radio_picker(arg || "")
     },
-    description: `Show the apps picker`,
-  },
-  "app": {
-    action: (arg, ans) => {
-      Hue.show_app_picker(arg || "")
-    },
-    description: `Show the apps picker`,
-  },
-  "open": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.open_app(arg)
-      } else {
-        Hue.open_app_input()
-      }
-    },
-    description: `Open a URL as a custom app`,
-  },
-  "applist": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.show_applist(arg)
-      } else {
-        Hue.show_applist()
-      }
-    },
-    description: `Open a URL as a custom app`,
+    description: `Show the radio picker`,
   },
   "headermenu": {
     action: (arg, ans) => {

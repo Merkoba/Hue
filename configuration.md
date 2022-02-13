@@ -185,11 +185,11 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_show_activity_notifications"
 >Whether to show activity notifications on highlights, by default.
 
-"settings_default_autostart_apps"
->A list of apps to autostart on join.
+"settings_default_autostart_radios"
+>A list of radios to autostart on join.
 
-"settings_default_autostart_default_apps"
->Whether to start the system defined apps on join.
+"settings_default_autostart_default_radios"
+>Whether to start the system defined radios on join.
 
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
@@ -334,8 +334,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "chat_crop_limit"
 >Max number of messages to keep on the client.
 
-"apps_crop_limit"
->Max number of apps to save to localStorage.
+"radios_crop_limit"
+>Max number of radios to save to localStorage.
 
 "max_low_users"
 >After this amount of users consider a room to very populated and do some things differently.
@@ -361,7 +361,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "imgur_client_id"
 >Imgur client id.
 
-"app_metadata_check_delay"
+"radio_metadata_check_delay"
 >How often make a metadata check while app radio window is open
 
 
