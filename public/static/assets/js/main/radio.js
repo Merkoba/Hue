@@ -1,8 +1,6 @@
 // Setup radios
 Hue.setup_radio = function () {
-  Hue.get_radios()
-
-  for (let radio of Hue.config.autostart_radios) {
+  for (let radio of Hue.config.radios) {
     Hue.start_radio(radio)
   }
 }
@@ -39,7 +37,6 @@ Hue.start_radio = function (radio) {
   })
   
   Hue.create_radio_popup(win)
-  Hue.save_radio(win)
   Hue.close_all_modals()
 }
 
@@ -91,48 +88,6 @@ Hue.get_open_radio_popups = function () {
   }
 
   return popups
-}
-
-// Gets the radios localStorage object
-Hue.get_radios = function () {
-  Hue.radios = Hue.get_local_storage(Hue.ls_radio)
-
-  if (Hue.radios === null) {
-    Hue.radios = []
-    Hue.save_radios()
-  }
-}
-
-// Saves the radios localStorage object
-Hue.save_radios = function (force = false) {
-  Hue.save_local_storage(Hue.ls_radio, Hue.radios, force)
-}
-
-// Add item to radios
-// Remove duplicate items
-Hue.save_radio = function (win) {
-  let radio = {name: win.hue_radio_name, url: win.hue_radio_url}
-
-  try {
-    new URL(radio.url)
-  } catch (err) {
-    return
-  }
-
-  for (let [i, item] of Hue.radios.entries()) {
-    if (item.url === radio.url) {
-      Hue.radios.splice(i, 1)
-      break
-    }
-  }
-
-  Hue.radios.unshift(radio)
-
-  if (Hue.radios.length > Hue.config.radios_crop_limit) {
-    Hue.radios = Hue.radios.slice(0, Hue.config.radios_crop_limit)
-  }
-
-  Hue.save_radios()
 }
 
 // Get radio player

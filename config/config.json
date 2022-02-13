@@ -70,8 +70,6 @@
 	"settings_default_show_link_previews": true,
 	"settings_default_show_highlight_notifications": true,
 	"settings_default_show_activity_notifications": true,
-	"settings_default_autostart_radios": "",
-	"settings_default_autostart_default_radios": true,
 	"room_state_default_image_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_last_highlight_date": 0,
@@ -125,11 +123,10 @@
 	"db_write_file_timeout_limit": 10000,
 	"chat_crop_limit": 500,
 	"max_low_users": 100,
-	"autostart_radios": [
+	"radios": [
 		{"name": "Tilde Radio", "url": "https://azuracast.tilderadio.org/radio/8000/radio.ogg"},
 		{"name": "Lainon Cyberia", "url": "https://lainon.life/radio/cyberia.mp3"},
 		{"name": "Wok3n Radio", "url": "https://radio.merkoba.com:8765/wok3n.ogg"}
 	],
-	"radios_crop_limit": 500,
 	"radio_metadata_check_delay": 30000
 }

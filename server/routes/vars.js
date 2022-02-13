@@ -74,8 +74,7 @@ module.exports = function (c, config) {
   c.vars.max_activity_username_length = config.max_activity_username_length
   c.vars.public_media_directory = config.public_media_directory
   c.vars.chat_crop_limit = config.chat_crop_limit
-  c.vars.autostart_radios = config.autostart_radios
   c.vars.max_low_users = config.max_low_users
-  c.vars.radios_crop_limit = config.radios_crop_limit
+  c.vars.radios = config.radios
   c.vars.radio_metadata_check_delay = config.radio_metadata_check_delay
 }
