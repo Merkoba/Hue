@@ -16,7 +16,6 @@ Hue.setup_radio = function () {
 
   Hue.horizontal_separator(Hue.el("#radio_picker_header"))
   Hue.vertical_separator(Hue.el("#radio_picker_main"))
-  Hue.vertical_separator(Hue.el("#radiolist_main"))
 
   Hue.el("#radio_picker_container").addEventListener("click", function (e) {
     if (!e.target) {
@@ -50,22 +49,6 @@ Hue.setup_radio = function () {
 
   Hue.el("#open_radio_open").addEventListener("click", function (e) {
     Hue.open_radio()
-  })
-
-  Hue.el("#radiolist_container").addEventListener("click", function (e) {
-    if (!e.target) {
-      return
-    }
-
-    if (e.target.closest(".radiolist_item")) {
-      let winid = e.target.closest(".radiolist_item").dataset.id
-      Hue.change_to_radio(winid)
-    }
-  })
-
-  Hue.el("#radiolist_launch").addEventListener("click", function () {
-    Hue.close_all_modals()
-    Hue.show_radio_picker()
   })
 
   Hue.radio_launcher_popup = Hue.create_radio_utility("Launch Radio", function () {
@@ -192,14 +175,8 @@ Hue.start_radio = function (radio, start_maximized = true) {
   win.create()
 
   win.titlebar.addEventListener("click", function (e) {
-    if (e.target.closest(".radio_titlebar_icon")) {
-      Hue.show_header_menu()
-    } else if (e.target.closest(".radio_titlebar_name")) {
-      Hue.show_radiolist()
-    }else if (e.target.classList.contains("radio_titlebar_launch")) {
+    if (e.target.classList.contains("radio_titlebar_launch")) {
       Hue.show_radio_picker()
-    } else if (e.target.classList.contains("radio_titlebar_radiolist")) {
-      Hue.show_radiolist()
     } else if (e.target.classList.contains("radio_titlebar_refresh")) {
       Hue.refresh_radio(win)
     } else if (e.target.classList.contains("radio_titlebar_minimize")) {
@@ -232,11 +209,6 @@ Hue.start_radio = function (radio, start_maximized = true) {
 // After radio picker is filtered
 Hue.after_radio_picker_filtered = function () {
   Hue.vertical_separator(Hue.el("#radio_picker_container"))
-}
-
-// After radiolist is filtered
-Hue.after_radiolist_filtered = function () {
-  Hue.vertical_separator(Hue.el("#radiolist_container"))
 }
 
 // Launch the first radio in the filtered list
@@ -413,57 +385,6 @@ Hue.toggle_radio_picker_filter = function () {
   } else {
     filter.classList.add("nodisplay")
   }
-}
-
-// Show a list of open radios
-Hue.show_radiolist = function (filter = "", exclude_active = true) {
-  let container = Hue.el("#radiolist_container")
-  container.innerHTML = ""
-  let appended = false
-
-  let windows = Hue.get_open_radios()
-
-  for (let win of windows) {
-    if (exclude_active) {
-      if (win === Hue.active_radio) {
-        continue
-      }
-    }
-
-    let el = Hue.div("radiolist_item action modal_item")
-    el.title = win.hue_radio_url
-    el.dataset.name = win.hue_radio_name
-    el.dataset.url = win.hue_radio_url
-    el.dataset.id = win.options.id
-    el.innerHTML = `
-      <canvas class="radiolist_item_icon" width="40" height="40"></canvas>
-      <div class="radiolist_item_name">${win.hue_radio_name}</div>
-      <div class="radiolist_item_url">${win.hue_radio_url}</div>
-    `
-
-    appended = true
-    container.append(el)
-  }
-
-  if (!appended) {
-    let el = Hue.div()
-    el.textContent = "No radios to switch to"
-    container.append(el)
-  }
-
-  for (let icon of Hue.els(".radiolist_item_icon")) {
-    jdenticon.update(icon, icon.parentNode.dataset.name)
-  }
-
-  Hue.vertical_separator(container)
-
-  Hue.msg_radiolist.show(function () {
-    if (filter) {
-      filter = Hue.el("#radiolist_filter")
-      filter.value = filter.trim()
-      Hue.do_modal_filter()
-    }
-  })
 }
 
 // Change to a specific open radio

@@ -2231,15 +2231,6 @@ pre {
 	margin-bottom: 1.5rem !important;
 }
 
-#header_menu {
-	user-select: none;
-}
-
-#header_menu .vertical_separator {
-	margin-top: 1.5rem !important;
-	margin-bottom: 1.5rem !important;
-}
-
 #draw_image_area {
 	cursor: crosshair;
 	width: 800px;
@@ -2473,29 +2464,9 @@ pre {
 	padding-right: 1rem;
 }
 
-#radiolist_container {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	margin-top: 1rem;
-}
-
-.radiolist_item {
-	cursor: pointer;
-}
-
-.radiolist_item_name {
-	font-size: 1.2rem;
-	margin-top: 0.35rem;
-}
-
 .radio_picker_item_url {
 	margin-top: 0.35rem;
 	margin-bottom: 0.35rem;
-}
-
-#radiolist_launch {
-	margin-bottom: 1rem;
 }
 
 .glowing::before {

@@ -532,12 +532,6 @@ Hue.commands = {
       Hue.show_radio_picker(arg || "")
     },
     description: `Show the radio picker`,
-  },
-  "headermenu": {
-    action: (arg, ans) => {
-      Hue.show_header_menu()
-    },
-    description: `Show the header menu`,
   }
 }
 

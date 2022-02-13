@@ -49,13 +49,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_header_menu = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "header_menu",
-      window_width: "22rem"
-    })
-  )
-
   Hue.msg_room_menu = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "room_menu",
@@ -104,13 +97,6 @@ Hue.start_msg = function () {
   Hue.msg_radio_picker = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "radio_picker",
-      window_width: "24rem"
-    })
-  )
-
-  Hue.msg_radiolist = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "radiolist",
       window_width: "24rem"
     })
   )
@@ -422,8 +408,6 @@ Hue.start_msg = function () {
   Hue.msg_draw_image.set(Hue.template_draw_image())
   Hue.msg_open_radio.set(Hue.template_open_radio())
   Hue.msg_radio_picker.set(Hue.template_radio_picker())
-  Hue.msg_radiolist.set(Hue.template_radiolist())
-  Hue.msg_header_menu.set(Hue.template_header_menu())
 
   Hue.msg_info.create()
   Hue.msg_info2.create()
@@ -450,8 +434,6 @@ Hue.start_msg = function () {
   Hue.msg_tv_picker.set_title("TV")
   Hue.msg_radio_picker.set_title("Radio")
   Hue.msg_open_radio.set_title("Open Radio")
-  Hue.msg_radiolist.set_title("Go to Radio")
-  Hue.msg_header_menu.set_title("Header Menu")
 }
 
 // Sets all info window variables to false
