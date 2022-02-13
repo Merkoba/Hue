@@ -78,11 +78,6 @@ Hue.create_debouncers = function () {
     Hue.image_wheel_action(direction)
   }, Hue.wheel_delay)
 
-  // Debounce timer for app switch wheel
-  Hue.app_cycle_wheel_timer = Hue.create_debouncer(function (direction) {
-    Hue.cycle_apps(direction)
-  }, Hue.wheel_delay_2)
-
   // Debounce timer to hide the flash info window
   Hue.flash_info_timer = Hue.create_debouncer(function (direction) {
     Hue.hide_flash_info()
