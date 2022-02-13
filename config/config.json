@@ -126,6 +126,7 @@
 	"db_write_file_timeout_limit": 10000,
 	"chat_crop_limit": 500,
 	"autostart_apps": [
+		"https://mines.merkoba.com",
 		"https://azuracast.tilderadio.org/radio/8000/radio.ogg",
 		"https://lainon.life/radio/cyberia.mp3",
 		"https://radio.merkoba.com:8765/wok3n.ogg"
