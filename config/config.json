@@ -126,6 +126,8 @@
 	"radios": [
 		{"name": "Tilde Radio", "url": "https://azuracast.tilderadio.org/radio/8000/radio.ogg"},
 		{"name": "Lainon Cyberia", "url": "https://lainon.life/radio/cyberia.mp3"},
+		{"name": "Lainon Swing", "url": "https://lainon.life/radio/swing.mp3"},
+		{"name": "Lainon Cafe", "url": "https://lainon.life/radio/cafe.mp3"},
 		{"name": "Wok3n Radio", "url": "https://radio.merkoba.com:8765/wok3n.ogg"}
 	],
 	"radio_metadata_check_delay": 30000
