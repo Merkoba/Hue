@@ -2352,33 +2352,6 @@ pre {
 	flex-grow: 0;
 }
 
-#radio_picker_header {
-	font-size: 1rem;
-	margin-bottom: 1rem;
-	font-size: 1.2rem;
-}
-
-#radio_picker_container {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	margin-top: 1rem;
-}
-
-.radio_picker_item {
-	cursor: pointer;
-}
-
-.radio_picker_item_name {
-	font-size: 1.2rem;
-	margin-top: 0.35rem;
-}
-
-.radio_picker_item_url {
-	margin-top: 0.35rem;
-	margin-bottom: 0.35rem;
-}
-
 .radio_popup_window {
 	border: 2px solid var(--altcolor) !important;
 	cursor: pointer !important;
@@ -2407,16 +2380,6 @@ pre {
 	padding-right: 0.35rem;
 	padding-top: 0.25rem;
 	padding-bottom: 0.25rem;
-}
-
-#open_radio_open {
-	margin-top: 1rem;
-	font-size: 1.2rem;
-	cursor: pointer;
-}
-
-#open_radio_name {
-	margin-bottom: 1rem;
 }
 
 .Msg-content-container-radio {
@@ -2464,11 +2427,6 @@ pre {
 
 .radio_titlebar_buttons:last-child {
 	padding-right: 1rem;
-}
-
-.radio_picker_item_url {
-	margin-top: 0.35rem;
-	margin-bottom: 0.35rem;
 }
 
 .glowing::before {
