@@ -2383,7 +2383,7 @@ pre {
 	background-size: cover !important;
 }
 
-.Msg-content-radio {
+.Msg-content-container-radio .Msg-content {
 	background-color: rgba(0, 0, 0, 0.8) !important;
 }
 
