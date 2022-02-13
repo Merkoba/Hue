@@ -28,11 +28,11 @@ Hue.start_radio = function (radio) {
   win.create()
 
   win.set_title(radio.name)
-  win.set(Hue.template_radio_audio({url: radio.url}))
+  win.set(Hue.template_radio({url: radio.url}))
   Hue.el(".Msg-content-container", win.window).style.backgroundImage = `url(${Hue.config.default_background_url}`
   Hue.setup_radio_player(win)
   
-  Hue.el(".radio_audio_metadata", win.window).addEventListener("click", function () {
+  Hue.el(".radio_metadata", win.window).addEventListener("click", function () {
     Hue.check_radio_metadata(win)
   })
   
@@ -208,8 +208,8 @@ Hue.change_radio_volume = function (win, direction) {
 Hue.check_radio_metadata = function (win) {
   Hue.loginfo(`Checking metadata: ${win.hue_radio_url}`)
 
-  let artist_el = Hue.el(".radio_audio_metadata_artist", win.content)
-  let title_el = Hue.el(".radio_audio_metadata_title", win.content)
+  let artist_el = Hue.el(".radio_metadata_artist", win.content)
+  let title_el = Hue.el(".radio_metadata_title", win.content)
   artist_el.style.display = "initial"
   title_el.style.display = "none"
   artist_el.textContent = "Loading..."

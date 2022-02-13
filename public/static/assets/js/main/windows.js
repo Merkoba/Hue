@@ -774,7 +774,6 @@ Hue.create_radio_window = function () {
       class: "radio",
       window_class: "radio !radio_window !transparent_background",
       content_container_class: "radio !msg_background_color",
-      titlebar_class: "radio !radio_titlebar",
       after_show: function (instance) {
         Hue.after_modal_show(instance)
         Hue.after_modal_set_or_show(instance)
