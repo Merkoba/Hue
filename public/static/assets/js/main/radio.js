@@ -423,20 +423,7 @@ Hue.radio_playing = function (win) {
     win.hue_radio_popup.window.classList.remove("glowing")
   }
 
-  let any_playing = false
-
-  for (let w of Hue.get_open_radios()) {
-    if (w.hue_playing) {
-      any_playing = true
-      break
-    }
-  }
-
-  if (any_playing) {
-    Hue.el("#footer_radio_icon_container").classList.add("rotate")
-  } else {
-    Hue.el("#footer_radio_icon_container").classList.remove("rotate")
-  }
+  Hue.check_any_radio_playing()
 }
 
 // Make radio popups visible or invisible
@@ -585,4 +572,22 @@ Hue.start_radio_metadata_loop = function () {
 // Stop metadata check loop
 Hue.stop_radio_metadata_loop = function () {
   clearInterval(Hue.radio_metadata_loop)
+}
+
+// Check if any radio is playing
+Hue.check_any_radio_playing = function () {
+  let any_playing = false
+
+  for (let w of Hue.get_open_radios()) {
+    if (w.hue_playing) {
+      any_playing = true
+      break
+    }
+  }
+
+  if (any_playing) {
+    Hue.el("#footer_radio_icon_container").classList.add("rotate")
+  } else {
+    Hue.el("#footer_radio_icon_container").classList.remove("rotate")
+  }
 }

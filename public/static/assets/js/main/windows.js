@@ -812,6 +812,7 @@ Hue.create_radio_window = function () {
         }
 
         instance.remove()
+        Hue.check_any_radio_playing()
       }
     })
   )
