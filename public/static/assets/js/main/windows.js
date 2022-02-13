@@ -771,7 +771,6 @@ Hue.get_first_visible_modal_item = function (id) {
 Hue.create_radio_window = function () {
   return Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      class: "radio",
       window_class: "radio !radio_window !transparent_background",
       content_container_class: "radio !msg_background_color",
       after_show: function (instance) {
