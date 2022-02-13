@@ -11,8 +11,7 @@ Hue.activate_key_detection = function () {
         Hue.change_user_password_open ||
         Hue.msg_tv_picker.is_open() ||
         Hue.msg_image_picker.is_open() ||
-        Hue.msg_message_board.is_open() ||
-        Hue.msg_open_radio.is_open()
+        Hue.msg_message_board.is_open()
       ) {
         // Continue
       } else {
@@ -242,28 +241,6 @@ Hue.activate_key_detection = function () {
         if (Hue.msg_message.is_highest()) {
           if (e.key === "Enter" && !e.shiftKeky) {
             Hue.send_popup_message()
-            e.preventDefault()
-          }
-
-          return
-        }
-      }
-
-      if (Hue.msg_radio_picker.is_open()) {
-        if (Hue.msg_radio_picker.is_highest()) {
-          if (e.key === "Enter") {
-            Hue.launch_first_radio()
-            e.preventDefault()
-          }
-
-          return
-        }
-      }
-      
-      if (Hue.msg_open_radio.is_open()) {
-        if (Hue.msg_open_radio.is_highest()) {
-          if (e.key === "Enter") {
-            Hue.open_radio()
             e.preventDefault()
           }
 

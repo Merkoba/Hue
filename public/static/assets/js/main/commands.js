@@ -526,12 +526,6 @@ Hue.commands = {
       }
     },
     description: `Show posts by a user`,
-  },
-  "radio": {
-    action: (arg, ans) => {
-      Hue.show_radio_picker(arg || "")
-    },
-    description: `Show the radio picker`,
   }
 }
 
