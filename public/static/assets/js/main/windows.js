@@ -842,11 +842,11 @@ Hue.create_radio_popup = function (win) {
   }
 
   obj.on_wheel_down = function () {
-    Hue.change_media_radio_volume(win, "down")
+    Hue.change_radio_volume(win, "down")
   }
 
   obj.on_wheel_up = function () {
-    Hue.change_media_radio_volume(win, "up")
+    Hue.change_radio_volume(win, "up")
   }
 
   p = Hue.create_popup(obj)
@@ -866,7 +866,7 @@ Hue.create_radio_popup = function (win) {
     if (e.target.closest(".radio_popup_icon_container")) {
       win.show()
     } else {
-      Hue.check_radio_media(win)
+      Hue.check_radio_play(win)
     }
   })
 
