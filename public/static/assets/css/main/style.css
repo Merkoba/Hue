@@ -2415,6 +2415,10 @@ pre {
 	cursor: pointer;
 }
 
+#open_radio_name {
+	margin-bottom: 1rem;
+}
+
 .Msg-content-container-radio {
 	background-repeat: no-repeat !important;
 	background-size: cover !important;
