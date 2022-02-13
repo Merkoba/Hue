@@ -158,3 +158,17 @@ Hue.show_popup = function (popup, html="") {
 
   popup.show()
 }
+
+// Get the number of visible info popups
+Hue.num_open_info_popups = function () {
+  let popups = Hue.get_popup_instances()
+  let num = 0
+
+  for (let popup of popups) {
+    if (popup.hue_type === "info" && popup.is_open()) {
+      num += 1
+    }
+  }
+
+  return num
+}
