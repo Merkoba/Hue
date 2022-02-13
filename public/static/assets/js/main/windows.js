@@ -94,20 +94,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_radio_picker = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "radio_picker",
-      window_width: "24rem"
-    })
-  )
-
-  Hue.msg_open_radio = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "open_radio",
-      window_width: "24rem"
-    })
-  )
-
   Hue.msg_lockscreen = Msg.factory(
     Object.assign({}, msgvars.common, {
       id: "lockscreen",
@@ -406,8 +392,6 @@ Hue.start_msg = function () {
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_draw_image.set(Hue.template_draw_image())
-  Hue.msg_open_radio.set(Hue.template_open_radio())
-  Hue.msg_radio_picker.set(Hue.template_radio_picker())
 
   Hue.msg_info.create()
   Hue.msg_info2.create()
@@ -432,8 +416,6 @@ Hue.start_msg = function () {
   Hue.msg_draw_image.set_title("Draw an Image")
   Hue.msg_image_picker.set_title("Image")
   Hue.msg_tv_picker.set_title("TV")
-  Hue.msg_radio_picker.set_title("Radio")
-  Hue.msg_open_radio.set_title("Open Radio")
 }
 
 // Sets all info window variables to false
@@ -873,33 +855,4 @@ Hue.create_radio_popup = function (win) {
 
   Hue.radio_playing(win)
   p.show()
-}
-
-// Small an radio with a certain purpose
-Hue.create_radio_utility = function (name, on_click) {
-  if (!Hue.radio_popups_visible) {
-    return
-  }
-
-  let obj = {}
-  obj.class = "radio_popup"
-  obj.window_class = "radio_popup !radio_popup_window"
-  obj.enable_titlebar = false
-  obj.window_x = "none"
-  obj.position = "bottomright"
-  obj.window_width = "12rem"
-  obj.disable_content_padding = true
-  obj.close_on_escape = false
-  obj.remove_after_close = false
-
-  obj.on_click = function () {
-    on_click()
-  }
-
-  p = Hue.create_popup(obj)
-  p.set(Hue.template_radio_popup())
-  jdenticon.update(Hue.el(".radio_popup_icon", p.content), name)
-  Hue.el(".radio_popup_name", p.content).textContent = name
-
-  return p
 }
