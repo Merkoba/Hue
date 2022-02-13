@@ -315,7 +315,7 @@ Hue.refresh_radio = function (win) {
 
 // Gets the radios localStorage object
 Hue.get_radios = function () {
-  Hue.radios = Hue.get_local_storage(Hue.ls_radios)
+  Hue.radios = Hue.get_local_storage(Hue.ls_radio)
 
   if (Hue.radios === null) {
     Hue.radios = []
@@ -325,7 +325,7 @@ Hue.get_radios = function () {
 
 // Saves the radios localStorage object
 Hue.save_radios = function (force = false) {
-  Hue.save_local_storage(Hue.ls_radios, Hue.radios, force)
+  Hue.save_local_storage(Hue.ls_radio, Hue.radios, force)
 }
 
 // Add item to radios
