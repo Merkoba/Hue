@@ -2326,12 +2326,6 @@ pre {
 	background-color: rgba(0, 0, 0, 0) !important
 }
 
-.radio_frame_iframe {
-	width: 100%;
-	height: 100%;
-	background-color: white;
-}
-
 .radio_audio_container {
 	width: 100%;
 	height: 100%;
@@ -2347,7 +2341,10 @@ pre {
 	justify-content: center;
 	font-size: 1.6rem;
 	color: var(--font_color);
-	gap: 2rem;
+	gap: 1rem;
+	padding: 2rem;
+	width: 36rem;
+	height: 16rem;
 }
 
 .radio_frame_audio {
