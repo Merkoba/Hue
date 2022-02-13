@@ -67,7 +67,7 @@ Hue.setup_radio = function () {
 
   if (autostart.length > 0) {
     for (let url of new Set(autostart)) {
-      Hue.open_radio(url, false)
+      Hue.open_radio(url)
     }
   }
 }
@@ -82,7 +82,7 @@ Hue.find_radio_by_url = function (url) {
 }
 
 // On open radio action
-Hue.open_radio = function (url = "", start_maximized = true) {
+Hue.open_radio = function (url = "") {
   if (url === "") {
     url = Hue.el("#open_radio_input").value
   }
@@ -105,7 +105,7 @@ Hue.open_radio = function (url = "", start_maximized = true) {
     return
   }
 
-  Hue.start_radio({name: name, url: url}, start_maximized)
+  Hue.start_radio({name: name, url: url})
 }
 
 // Show the radio picker
@@ -153,7 +153,7 @@ Hue.show_radio_picker = function (filter = "") {
 }
 
 // Start a radio
-Hue.start_radio = function (radio, start_maximized = true) {
+Hue.start_radio = function (radio) {
   if (!radio) {
     return
   }
@@ -178,6 +178,10 @@ Hue.start_radio = function (radio, start_maximized = true) {
   win.set(Hue.template_radio_audio({url: radio.url}))
   Hue.el(".Msg-content-container", win.window).style.backgroundImage = `url(${Hue.config.default_background_url}`
   Hue.setup_radio_player(win)
+  
+  Hue.el(".radio_audio_metadata", win.window).addEventListener("click", function () {
+    Hue.check_radio_metadata(win)
+  })
   
   Hue.create_radio_popup(win)
   Hue.save_radio(win)
