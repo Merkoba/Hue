@@ -37,7 +37,6 @@ Hue.start_radio = function (radio) {
   })
   
   Hue.create_radio_popup(win)
-  Hue.close_all_modals()
 }
 
 // Check if modal instance is radio
