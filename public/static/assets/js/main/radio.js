@@ -465,12 +465,11 @@ Hue.show_radio_picker_info = function () {
   Hue.showmsg("Middle click items to forget radios")
 }
 
-// Pause media or show radio
-Hue.check_radio_media = function (win) {
+// Play or pause radio
+Hue.check_radio_play = function (win) {
   let player = Hue.get_radio_player(win)
-  let is_playing = win.hue_radio_popup.window.classList.contains("radio_popup_playing")
 
-  if (is_playing) {
+  if (win.hue_playing) {
     player.pause()
   } else {
     player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
@@ -485,8 +484,8 @@ Hue.remove_radio = function (win) {
   win.hue_radio_popup = undefined
 }
 
-// Increase or decrease media radio volume
-Hue.change_media_radio_volume = function (win, direction) {
+// Increase or decrease radio volume
+Hue.change_radio_volume = function (win, direction) {
   let player = Hue.get_radio_player(win)
   let new_volume = player.volume
 
