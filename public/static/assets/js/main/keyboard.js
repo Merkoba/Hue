@@ -11,7 +11,8 @@ Hue.activate_key_detection = function () {
         Hue.change_user_password_open ||
         Hue.msg_tv_picker.is_open() ||
         Hue.msg_image_picker.is_open() ||
-        Hue.msg_message_board.is_open()
+        Hue.msg_message_board.is_open() ||
+        Hue.msg_open_radio.is_open()
       ) {
         // Continue
       } else {

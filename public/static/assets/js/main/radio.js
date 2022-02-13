@@ -57,18 +57,8 @@ Hue.setup_radio = function () {
 
   Hue.radio_launcher_popup.show()
 
-  let autostart = []
-
-  if (Hue.settings.autostart_default_radios) {
-    autostart = autostart.concat(Hue.config.autostart_radios)
-  }
-
-  autostart = autostart.concat(Hue.settings.autostart_radios.split("\n"))
-
-  if (autostart.length > 0) {
-    for (let url of new Set(autostart)) {
-      Hue.open_radio(url)
-    }
+  for (let radio of Hue.config.autostart_radios) {
+    Hue.start_radio(radio)
   }
 }
 
@@ -82,27 +72,16 @@ Hue.find_radio_by_url = function (url) {
 }
 
 // On open radio action
-Hue.open_radio = function (url = "") {
-  if (url === "") {
-    url = Hue.el("#open_radio_input").value
-  }
+Hue.open_radio = function () {
+  let name = Hue.el("#open_radio_name").value.trim()
+  let url = Hue.el("#open_radio_url").value.trim()
 
-  url = url.trim()
-
-  if (!url) {
+  if (!name || !url) {
     return
   }
 
   if (!url.startsWith("https://") && !url.startsWith("http://")) {
     url = `https://${url}`
-  }
-
-  let name = ""
-
-  try {
-    name = new URL(url).hostname
-  } catch (err) {
-    return
   }
 
   Hue.start_radio({name: name, url: url})
@@ -334,9 +313,11 @@ Hue.save_radio = function (win) {
 // Open radio input
 Hue.open_radio_input = function () {
   Hue.msg_open_radio.show(function () {
-    let input = Hue.el("#open_radio_input")
-    input.value = ""
-    input.focus()
+    let name = Hue.el("#open_radio_name")
+    name.value = ""
+    let url = Hue.el("#open_radio_url")
+    url.value = ""
+    name.focus()
   })
 }
 

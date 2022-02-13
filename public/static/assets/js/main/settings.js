@@ -84,31 +84,7 @@ Hue.user_settings = {
         Hue.save_settings()
       }
     },
-  },
-  autostart_radios: {
-    widget_type: "textarea",
-    description: `Which radio URLs to start automatically on join`,
-    action: (save = true) => {
-      let s = Hue.el(`#settings_autostart_radios`).value
-      let items = s.split("\n").map(x => x.trim()).filter(x => x !== "")
-      Hue.settings.autostart_radios = items.join("\n")
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  autostart_default_radios: {
-    widget_type: "checkbox",
-    description: `Whether to start the system defined radios on join`,
-    action: (save = true) => {
-      Hue.settings.autostart_default_radios = Hue.el(`#settings_autostart_default_radios`).checked
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
+  }
 }
 
 // Gets the settings localStorage object
