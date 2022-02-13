@@ -2345,6 +2345,7 @@ pre {
 	padding: 2rem;
 	width: 36rem;
 	height: 16rem;
+	cursor: pointer;
 }
 
 .radio_frame_audio {
