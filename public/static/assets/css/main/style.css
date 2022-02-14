@@ -2378,15 +2378,6 @@ pre {
 	padding-bottom: 0.25rem;
 }
 
-.Msg-content-container-radio {
-	background-repeat: no-repeat !important;
-	background-size: cover !important;
-}
-
-.Msg-content-container-radio .Msg-content {
-	background-color: rgba(0, 0, 0, 0.8) !important;
-}
-
 .glowing::before {
   content: '';
   position: absolute;

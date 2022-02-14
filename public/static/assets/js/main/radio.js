@@ -28,7 +28,7 @@ Hue.start_radio = function (radio) {
 
   win.set_title(radio.name)
   win.set(Hue.template_radio({url: radio.url}))
-  Hue.el(".Msg-content-container", win.window).style.backgroundImage = `url(${Hue.config.default_background_url}`
+  // Hue.el(".Msg-content-container", win.window).style.backgroundImage = `url(${Hue.config.default_background_url}`
   Hue.setup_radio_player(win)
   
   Hue.el(".radio_metadata", win.window).addEventListener("click", function () {
