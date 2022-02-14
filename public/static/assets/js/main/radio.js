@@ -112,7 +112,7 @@ Hue.setup_radio_player = function (win) {
 // Stop all radio players except active one
 Hue.stop_radio_players = function (win) {
   for (let w of Hue.get_open_radios()) {
-    if (win && w === win) {
+    if (win && win.hue_radio_url === w.hue_radio_url) {
       continue
     }
 
