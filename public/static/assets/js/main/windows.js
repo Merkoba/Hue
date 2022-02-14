@@ -814,7 +814,7 @@ Hue.create_radio_popup = function (win) {
   obj.enable_titlebar = false
   obj.window_x = "none"
   obj.position = "bottomright"
-  obj.window_width = "10rem"
+  obj.window_width = "11rem"
   obj.disable_content_padding = true
   obj.close_on_escape = false
 

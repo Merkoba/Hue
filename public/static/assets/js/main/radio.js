@@ -20,11 +20,10 @@ Hue.start_radio = function (radio) {
   let win = Hue.create_radio_window()
   win.hue_radio_name = radio.name
   win.hue_radio_url = radio.url
+  win.hue_radio_metadata = radio.metadata
   win.hue_last_open = 0
   win.hue_playing = false
   win.hue_date_started = Date.now()
-  win.hue_radio_metadata_url = ""
-  win.hue_radio_metadata_url = Hue.get_radio_metadata_url(radio.url)
   win.create()
 
   win.set_title(radio.name)
@@ -33,7 +32,7 @@ Hue.start_radio = function (radio) {
   Hue.setup_radio_player(win)
   
   Hue.el(".radio_metadata", win.window).addEventListener("click", function () {
-    Hue.check_radio_metadata(win)
+    Hue.get_radio_metadata(win)
   })
   
   Hue.create_radio_popup(win)
@@ -205,7 +204,7 @@ Hue.change_radio_volume = function (win, direction) {
 }
 
 // Try to fetch active radio metadata
-Hue.check_radio_metadata = function (win) {
+Hue.get_radio_metadata = function (win) {
   Hue.loginfo(`Checking metadata: ${win.hue_radio_url}`)
 
   let artist_el = Hue.el(".radio_metadata_artist", win.content)
@@ -214,11 +213,12 @@ Hue.check_radio_metadata = function (win) {
   title_el.style.display = "none"
   artist_el.textContent = "Loading..."
 
-  fetch(win.hue_radio_metadata_url)
+  fetch(win.hue_radio_metadata)
   .then(res => res.json())
   .then(out => {
     let artist = ""
     let title = ""
+
     if (out.icestats && out.icestats.source) {
       if (Symbol.iterator in Object(out.icestats.source)) {
         let p = new URL(win.hue_radio_url).pathname.split("/").pop()
@@ -239,6 +239,14 @@ Hue.check_radio_metadata = function (win) {
         artist = out.icestats.source.artist
         title = out.icestats.source.title
       }
+    } else if (out.song) {
+      if (out.song.artist) {
+        artist = out.song.artist
+      }
+
+      if (out.song.title) {
+        title = out.song.title
+      }
     }
 
     if (artist) {
@@ -258,18 +266,13 @@ Hue.check_radio_metadata = function (win) {
   .catch(err => {})
 }
 
-// Try to guess the metadata URL of a radio source
-Hue.get_radio_metadata_url = function (url) {
-  return url.slice(0, url.lastIndexOf("/")) + "/status-json.xsl"
-}
-
 // Start metadata loop while radio audio window is open
 Hue.start_radio_metadata_loop = function () {
   Hue.stop_radio_metadata_loop()
-  Hue.check_radio_metadata(Hue.active_radio)
+  Hue.get_radio_metadata(Hue.active_radio)
 
   Hue.radio_metadata_loop = setInterval(function () {
-    Hue.check_radio_metadata(Hue.active_radio)
+    Hue.get_radio_metadata(Hue.active_radio)
   }, Hue.config.radio_metadata_check_delay)
 }
 
