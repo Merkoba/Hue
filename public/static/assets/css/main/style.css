@@ -709,7 +709,7 @@ a.generic:hover {
 	color: var(--background_color) !important;
 }
 
-.Msg-window, .msg_background_color {
+.Msg-window {
 	background-color: var(--background_color) !important;
 	color: var(--font_color) !important;
 }
@@ -2320,10 +2320,6 @@ pre {
 
 .flipped {
 	transform: rotateY(180deg);
-}
-
-.transparent_background {
-	background-color: rgba(0, 0, 0, 0) !important
 }
 
 .radio_container {

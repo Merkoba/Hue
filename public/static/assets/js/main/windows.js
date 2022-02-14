@@ -82,7 +82,6 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, {
       id: "modal_image",
       preset: "window",
-      overlay_class: "!msg_background_color",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
         Hue.restore_modal_image()
@@ -98,8 +97,7 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, {
       id: "lockscreen",
       preset: "window",
-      close_on_escape: false,
-      overlay_class: "!msg_background_color"
+      close_on_escape: false
     })
   )
 
@@ -238,8 +236,7 @@ Hue.start_msg = function () {
   Hue.msg_expand_image = Msg.factory(
     Object.assign({}, msgvars.common, {
       id: "expand_image",
-      preset: "window",
-      overlay_class: "!msg_background_color"
+      preset: "window"
     })
   )
 
@@ -771,8 +768,7 @@ Hue.get_first_visible_modal_item = function (id) {
 Hue.create_radio_window = function () {
   return Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      window_class: "radio !radio_window !transparent_background",
-      content_container_class: "radio !msg_background_color",
+      window_class: "radio !radio_window",
       after_show: function (instance) {
         Hue.after_modal_show(instance)
         Hue.after_modal_set_or_show(instance)
