@@ -778,6 +778,7 @@ Hue.create_radio_window = function () {
         Hue.after_modal_set_or_show(instance)
         Hue.active_radio = instance
         Hue.create_radio_popup(instance)
+        Hue.get_radio_metadata(instance)
         Hue.start_radio_metadata_loop()
         instance.hue_last_open = Date.now()
       },
