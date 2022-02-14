@@ -3,7 +3,8 @@ const utilz = Utilz()
 const msg_info = Msg.factory({
 	id: "info",
 	class: "black",
-	after_close: msg_info_after_close
+	after_close: msg_info_after_close,
+	enable_titlebar: true
 })
 
 const Hue = {}
