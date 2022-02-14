@@ -772,16 +772,16 @@ Hue.create_radio_window = function () {
       after_show: function (instance) {
         Hue.after_modal_show(instance)
         Hue.after_modal_set_or_show(instance)
-        Hue.active_radio = instance
         Hue.create_radio_popup(instance)
         Hue.get_radio_metadata(instance)
-        Hue.start_radio_metadata_loop()
+        Hue.start_radio_metadata_loop(instance)
         instance.hue_last_open = Date.now()
       },
       after_close: function (instance) {     
         Hue.after_modal_close(instance)
         Hue.remove_alert_title()
         Hue.stop_radio_metadata_loop()
+        Hue.clear_radio_metadata(instance)
       },
       after_destroy: function (instance) {
         if (instance.hue_radio_popup) {

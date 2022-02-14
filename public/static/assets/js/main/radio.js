@@ -209,9 +209,12 @@ Hue.get_radio_metadata = function (win) {
 
   let artist_el = Hue.el(".radio_metadata_artist", win.content)
   let title_el = Hue.el(".radio_metadata_title", win.content)
-  artist_el.style.display = "initial"
-  title_el.style.display = "none"
-  artist_el.textContent = "Loading..."
+  
+  if (artist_el.textContent === "" && title_el.textContent === "") {
+    artist_el.style.display = "initial"
+    artist_el.textContent = "Loading..."
+    title_el.style.display = "none"
+  }
 
   fetch(win.hue_radio_metadata)
   
@@ -270,11 +273,11 @@ Hue.get_radio_metadata = function (win) {
 }
 
 // Start metadata loop while radio audio window is open
-Hue.start_radio_metadata_loop = function () {
+Hue.start_radio_metadata_loop = function (win) {
   Hue.stop_radio_metadata_loop()
 
   Hue.radio_metadata_interval = setInterval(function () {
-    Hue.get_radio_metadata(Hue.active_radio)
+    Hue.get_radio_metadata(win)
   }, Hue.config.radio_metadata_check_delay)
 }
 
@@ -300,4 +303,10 @@ Hue.check_any_radio_playing = function () {
   } else {
     Hue.el("#footer_radio_icon_container").classList.remove("rotate")
   }
+}
+
+// Clear radio metadata window
+Hue.clear_radio_metadata = function (win) {
+  Hue.el(".radio_metadata_artist", win.content).textContent = ""
+  Hue.el(".radio_metadata_title", win.content).textContent = ""
 }
