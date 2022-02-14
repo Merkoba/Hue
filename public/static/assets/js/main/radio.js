@@ -33,10 +33,7 @@ Hue.start_radio = function (radio) {
   
   Hue.el(".radio_metadata", win.window).addEventListener("click", function () {
     Hue.get_radio_metadata(win)
-    
-    if (Hue.radio_metadata_interval) {
-      Hue.start_radio_metadata_loop()
-    }
+    Hue.start_radio_metadata_loop()
   })
   
   Hue.create_radio_popup(win)
