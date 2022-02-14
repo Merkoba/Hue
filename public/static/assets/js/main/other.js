@@ -118,24 +118,6 @@ Hue.setup_view_text = function () {
   })
 }
 
-// Show intro on first join
-Hue.show_intro = function () {
-  let topleft = Hue.create_popup({position: "topleft"})
-  topleft.show(["Welcome", "Main Menu | User List | Message Board"])
-
-  let topcenter = Hue.create_popup({position: "top"})
-  topcenter.show(["Welcome", "Active Users"])
-
-  let topright = Hue.create_popup({position: "topright"})
-  topright.show(["Welcome", "Whispers | Notifications | Lock Screen"])  
-  
-  let bottomleft = Hue.create_popup({position: "bottomleft"})
-  bottomleft.show(["Welcome", "Chat/Commands Input"])   
-
-  let bottomright = Hue.create_popup({position: "bottomright"})
-  bottomright.show(["Welcome", "Chat Search | Media Controls"]) 
-}
-
 // Rotate screen
 Hue.flip = function () {
   if (Hue.flipped) {

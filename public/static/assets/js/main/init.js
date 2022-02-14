@@ -21,7 +21,6 @@ Hue.load_scripts = true
 Hue.config = {}
 Hue.ls_settings = "settings_v1"
 Hue.ls_room_state = "room_state_v2"
-Hue.ls_first_time = "first_time_v2"
 Hue.roles = ["admin", "op", "voice"]
 Hue.topic = ""
 Hue.colorlib = ColorLib()
@@ -272,7 +271,6 @@ Hue.on_join = function (data) {
   Hue.update_user_menu()
   Hue.clear_chat()
   Hue.show_log_messages(data.log_messages)
-  Hue.check_firstime()
   Hue.show_joined()
   Hue.config_room_menu()
   Hue.config_main_menu()

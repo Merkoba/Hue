@@ -321,19 +321,6 @@ Hue.not_an_op = function () {
   Hue.checkmsg("You are not a room operator")
 }
 
-// Checks if the user is joining for the first time
-// This is site wide, not room wide
-Hue.check_firstime = function () {
-  if (Hue.get_local_storage(Hue.ls_first_time) === null) {
-    Hue.first_time = true
-    Hue.show_intro()
-    Hue.request_desktop_notifications_permission()
-    Hue.save_local_storage(Hue.ls_first_time, false)
-  } else {
-    Hue.first_time = false
-  }
-}
-
 // Shows a feedback message upon joining the room
 Hue.show_joined = function () {
   Hue.feedback(`You joined ${Hue.room_name}`)
