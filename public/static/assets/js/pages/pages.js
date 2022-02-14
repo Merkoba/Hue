@@ -43,4 +43,6 @@ window.onload = function () {
 			set_message(message)
 		}
 	} catch (err) {}
+
+	msg_info.set_title("Info")
 }
