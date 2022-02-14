@@ -353,7 +353,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >Imgur client id.
 
 "radios"
->Radios to autostart [ {name: somename, url: someurl} ]
+>Radios to autostart [ {"name": somename, "url": someurl, "metadata": someurl} ]
 
 "radio_metadata_check_delay"
 >How often make a metadata check while app radio window is open
