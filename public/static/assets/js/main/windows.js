@@ -714,7 +714,7 @@ Hue.show_action_popup = function (args = {}) {
   }
 
   let obj = {
-    position: "bottomright",
+    position: "topleft",
     enable_titlebar: true,
     window_x: "inner_right",
     content_class: "!action_popup",
