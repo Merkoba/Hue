@@ -33,6 +33,10 @@ Hue.start_radio = function (radio) {
   
   Hue.el(".radio_metadata", win.window).addEventListener("click", function () {
     Hue.get_radio_metadata(win)
+    
+    if (Hue.radio_metadata_interval) {
+      Hue.start_radio_metadata_loop()
+    }
   })
   
   Hue.create_radio_popup(win)
@@ -214,7 +218,9 @@ Hue.get_radio_metadata = function (win) {
   artist_el.textContent = "Loading..."
 
   fetch(win.hue_radio_metadata)
+  
   .then(res => res.json())
+  
   .then(out => {
     let artist = ""
     let title = ""
@@ -263,22 +269,23 @@ Hue.get_radio_metadata = function (win) {
       title_el.style.display = "none"
     }
   })
+
   .catch(err => {})
 }
 
 // Start metadata loop while radio audio window is open
 Hue.start_radio_metadata_loop = function () {
   Hue.stop_radio_metadata_loop()
-  Hue.get_radio_metadata(Hue.active_radio)
 
-  Hue.radio_metadata_loop = setInterval(function () {
+  Hue.radio_metadata_interval = setInterval(function () {
     Hue.get_radio_metadata(Hue.active_radio)
   }, Hue.config.radio_metadata_check_delay)
 }
 
 // Stop metadata check loop
 Hue.stop_radio_metadata_loop = function () {
-  clearInterval(Hue.radio_metadata_loop)
+  clearInterval(Hue.radio_metadata_interval)
+  Hue.radio_metadata_interval = undefined
 }
 
 // Check if any radio is playing
