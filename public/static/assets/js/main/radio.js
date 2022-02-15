@@ -39,7 +39,8 @@ Hue.start_radio = function (radio) {
   Hue.el(".radio_clipboard", win.window).addEventListener("click", function () {
     let artist = Hue.el(".radio_metadata_artist", win.content).textContent
     let title = Hue.el(".radio_metadata_title", win.content).textContent
-    Hue.copy_string(`${artist} ${title}`)
+    let s = `${artist} ${title}`.trim()
+    Hue.copy_string(s)
     Hue.showmsg("Copied to clipboard", true)
   })
   
