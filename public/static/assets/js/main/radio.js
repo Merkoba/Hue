@@ -27,7 +27,7 @@ Hue.start_radio = function (radio) {
   win.create()
 
   win.set_title(radio.name)
-  win.set(Hue.template_radio({url: radio.url}))
+  win.set(Hue.template_radio({url: Hue.utilz.cache_bust_url(radio.url)}))
   Hue.setup_radio_player(win)
   
   Hue.el(".radio_reload", win.window).addEventListener("click", function () {
