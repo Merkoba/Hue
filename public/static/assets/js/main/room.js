@@ -343,15 +343,17 @@ Hue.apply_theme = function () {
   }
 
   let background_color = theme
-  let font_color = Hue.text_color
+  let font_color = Hue.colorlib.hex_to_rgb(Hue.text_color)
 
   let altcolor = Hue.colorlib.get_lighter_or_darker(background_color, 0.2)
   let altcolor_a = Hue.colorlib.rgb_to_rgba(altcolor,  0.7)
   let background_color_a = Hue.colorlib.rgb_to_rgba(background_color, 0.95)
   let altbackground = Hue.colorlib.get_lighter_or_darker(background_color, 0.09)
   let altbackground_a = Hue.colorlib.rgb_to_rgba(altbackground, 0.7)
+  let font_color_a = Hue.colorlib.rgb_to_rgba(font_color,  0.7)
 
   document.documentElement.style.setProperty('--font_color', font_color)
+  document.documentElement.style.setProperty('--font_color_a', font_color_a)
   document.documentElement.style.setProperty('--altcolor', altcolor)
   document.documentElement.style.setProperty('--altcolor_a', altcolor_a)
   document.documentElement.style.setProperty('--background_color', background_color)

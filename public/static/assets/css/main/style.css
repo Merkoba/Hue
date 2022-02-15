@@ -2397,7 +2397,7 @@ pre {
 }
 
 .radio_item_playing {
-	outline: 1px solid var(--font_color);
+	outline: 1px solid var(--font_color_a);
 	z-index: 10;
 }
 
