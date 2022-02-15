@@ -957,6 +957,27 @@ Hue.delete_message = function (id) {
   })
 }
 
+// Delete message group
+Hue.delete_message_group = function (id) {
+  if (!id) {
+    return false
+  }
+
+  Hue.show_confirm("Delete Messages", "Delete message group", function () {
+    let message = Hue.get_message_by_id(id)[0].closest(".message")
+  
+    for (let unit of Hue.els(".message_unit", message)) {
+      let id = Hue.dataset(unit, "id")
+      
+      if (id) {
+        Hue.socket_emit("delete_message", {
+          id: id
+        })
+      }
+    }
+  })
+}
+
 // Deletes messages above
 Hue.delete_messages_above = function (id) {
   if (!id) {
@@ -1872,11 +1893,16 @@ Hue.handle_delete_message = function (id, user_id) {
   if (Hue.is_admin_or_op(Hue.role)) {
     Hue.msg_info2.show([
       "Delete Message(s)",
-      Hue.template_delete_messages_select(),
+      Hue.template_delete_messages_select_op(),
     ], function () {
       Hue.el("#delete_messages_select_delete").addEventListener("click", function () {
         Hue.msg_info2.close()
         Hue.delete_message(id)
+      })
+
+      Hue.el("#delete_messages_select_delete_group").addEventListener("click", function () {
+        Hue.msg_info2.close()
+        Hue.delete_message_group(id)
       })
 
       Hue.el("#delete_messages_select_above").addEventListener("click", function () {
@@ -1890,9 +1916,25 @@ Hue.handle_delete_message = function (id, user_id) {
       })
     })
     
-    Hue.horizontal_separator(Hue.el("#delete_messages_select_container"))
+    Hue.horizontal_separator(Hue.el("#delete_messages_select_container_1"))
+    Hue.horizontal_separator(Hue.el("#delete_messages_select_container_2"))
   } else if (user_id === Hue.user_id) {
-    Hue.delete_message(id)
+    Hue.msg_info2.show([
+      "Delete Message(s)",
+      Hue.template_delete_messages_select(),
+    ], function () {
+      Hue.el("#delete_messages_select_delete").addEventListener("click", function () {
+        Hue.msg_info2.close()
+        Hue.delete_message(id)
+      })
+
+      Hue.el("#delete_messages_select_delete_group").addEventListener("click", function () {
+        Hue.msg_info2.close()
+        Hue.delete_message_group(id)
+      })
+    })
+
+    Hue.horizontal_separator(Hue.el("#delete_messages_select_container_1"))
   }
 }
 
