@@ -2375,9 +2375,6 @@ pre {
 	bottom: calc(var(--panel_height) + 1rem);
 	display: flex;
 	flex-direction: column;
-	gap: 0.15rem;
-	max-height: 25rem;
-	overflow: auto;
 }
 
 .radio_item {
@@ -2391,15 +2388,17 @@ pre {
 	white-space: nowrap;
 	background-color: var(--altbackground);
 	color: var(--font_color);
-	border: 2px solid var(--altcolor);
+	outline: 2px solid var(--altcolor);
 	user-select: none;
 	width: 10rem;
 	flex-grow: 0;
 	flex-shrink: 0;
+	padding: 0.25rem;
 }
 
 .radio_item_playing {
-	border: 2px solid var(--font_color) !important;
+	outline: 1px solid var(--font_color);
+	z-index: 10;
 }
 
 .radio_item_icon_container {
