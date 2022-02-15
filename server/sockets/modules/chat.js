@@ -191,7 +191,6 @@ module.exports = function (
     let message_id
     let message_user_id
     let message_index
-    let message_type
     let message_username
     let deleted = false
 
@@ -201,7 +200,6 @@ module.exports = function (
       if (msg.id && msg.id == data.id) {
         message = msg
         message_index = i
-        message_type = msg.type
         message_id = msg.id
         message_user_id = msg.data.user_id
         break
@@ -266,34 +264,8 @@ module.exports = function (
           id: message_id
         })
 
-        if (
-          message_type === "image" ||
-          message_type === "tv"
-        ) {
-          if (room[`current_${message_type}_id`] === message_id) {
-            handler[`do_change_${message_type}`](socket, {
-              src: "",
-              setter: "",
-            })
-          }
-        }
-
         if (message_user_id !== socket.hue_user_id && message_username) {
-          if (message_type === "chat") {
-            handler.push_admin_log_message(socket, `deleted a chat message from "${message_username}"`)
-          } else if (
-            message_type === "image" ||
-            message_type === "tv"
-          ) {
-            let a = "a"
-
-            if (message_type === "image") {
-              a = "an"
-            }
-
-            let s = `deleted ${a} ${message_type} change from "${message_username}"`
-            handler.push_admin_log_message(socket, s)
-          }
+          handler.push_admin_log_message(socket, `deleted a message from "${message_username}"`)
         }
 
         db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
