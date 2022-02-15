@@ -561,7 +561,7 @@ body * {
 
 .media_history_container .chat_message_top {
 	flex-direction: column;
-	margin-bottom: 0.5rem;
+	margin-bottom: 0.35rem;
 }
 
 a.generic:link,
