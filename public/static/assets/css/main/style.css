@@ -564,10 +564,6 @@ body * {
 	margin-bottom: 0.5rem;
 }
 
-.media_history_container .announcement_content_container {
-	cursor: pointer;
-}
-
 a.generic:link,
 a.generic:visited,
 a.generic:hover {
