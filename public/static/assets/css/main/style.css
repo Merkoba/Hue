@@ -2356,6 +2356,10 @@ pre {
 	justify-content: center;
 }
 
+.radio_player {
+	width: 100%;
+}
+
 #radio_items {
 	position: fixed;
 	right: 0.25rem;
