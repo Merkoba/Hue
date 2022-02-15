@@ -329,8 +329,13 @@ Hue.change_radio_volume = function (direction) {
   }
 
   new_volume = Hue.utilz.round(new_volume, 2)
-  new_volume_p = Math.round(new_volume * 100)
+
+  if (new_volume === Hue.radio_volume) {
+    return
+  }
+
   Hue.radio_volume = new_volume
+  new_volume_p = Math.round(new_volume * 100)
 
   for (let win of Hue.get_open_radios()) {
     let player = Hue.get_radio_player(win)
