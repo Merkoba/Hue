@@ -2375,7 +2375,7 @@ pre {
 	bottom: calc(var(--panel_height) + 1rem);
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
+	gap: 0.15rem;
 	max-height: 25rem;
 	overflow: auto;
 }
