@@ -2375,6 +2375,7 @@ pre {
 	bottom: calc(var(--panel_height) + 1rem);
 	display: flex;
 	flex-direction: column;
+	z-index: 10;
 }
 
 .radio_item {
@@ -2394,6 +2395,7 @@ pre {
 	flex-grow: 0;
 	flex-shrink: 0;
 	padding: 0.25rem;
+	z-index: 1;
 }
 
 .radio_item_playing {
