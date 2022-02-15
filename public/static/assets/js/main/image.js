@@ -23,7 +23,6 @@ Hue.current_image = function () {
 // Loads an image with a specified item
 Hue.show_image = function (force = false) {
   let item = Hue.loaded_image
-  
   Hue.el("#media_image_spinner").style.display = "block"
   Hue.el("#media_image_error").style.display = "none"
   Hue.el("#media_image_frame").style.display = "none"
@@ -34,8 +33,6 @@ Hue.show_image = function (force = false) {
   } else {
     Hue.after_image_load(false)
   }
-
-  Hue.apply_media_info("image")
 }
 
 // Attempts to change the image source
@@ -347,6 +344,8 @@ Hue.start_image_events = function () {
 Hue.after_image_load = function (ok = true) {
   Hue.el("#media_image_spinner").style.display = "none"
   Hue.el("#media_image_frame").style.display = "initial"
+
+  Hue.apply_media_info("image")
 
   if (ok) {
     Hue.fix_image_frame()
