@@ -520,6 +520,7 @@ body * {
 
 .chat_area_clone .announcement_content_container {
 	width: 99%;
+	cursor: pointer;
 }
 
 .chat_area_clone .message_edit_container {

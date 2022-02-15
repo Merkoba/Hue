@@ -11,6 +11,35 @@ Hue.setup_media = function () {
   Hue.el("#media_image").addEventListener("wheel", function (e) {
     Hue.image_wheel_timer(e.deltaY > 0 ? "down" : "up")
   })
+
+  Hue.el(".media_picker_content", Hue.msg_image_picker.window).addEventListener("click", function (e) {
+    Hue.media_picker_item_click(e.target)
+  })
+
+  Hue.el(".media_picker_content", Hue.msg_tv_picker.window).addEventListener("click", function (e) {
+    Hue.media_picker_item_click(e.target)
+  })
+}
+
+// On media picker item click
+Hue.media_picker_item_click = function (el) {
+  let container = el.closest(".announcement_content_container")
+
+  if (container) {
+    if (el.closest(".chat_username")) {
+      return
+    }
+
+    if (el.closest(".chat_menu_button")) {
+      return
+    }
+
+    if (el.closest(".announcement_content")) {
+      return
+    }
+
+    Hue.el(".announcement_content", container).click()
+  }
 }
 
 // Get min or max media percentage
