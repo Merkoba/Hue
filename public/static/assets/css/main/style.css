@@ -2344,7 +2344,7 @@ pre {
 	gap: 1rem;
 	padding: 2rem;
 	width: 33rem;
-	height: 11rem;
+	min-height: 11rem;
 }
 
 .radio_buttons {
