@@ -3,6 +3,14 @@ Hue.setup_radio = function () {
   for (let radio of Hue.config.radios) {
     Hue.start_radio(radio)
   }
+
+  Hue.el("#footer_radio_icon_container").addEventListener("wheel", function (e) {
+    Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
+  })
+
+  Hue.el("#radio_items").addEventListener("wheel", function (e) {
+    Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
+  })
 }
 
 // Start a radio
@@ -160,6 +168,7 @@ Hue.check_radio_play = function (win) {
   if (win.hue_playing) {
     player.pause()
   } else {
+    Hue.active_radio = win
     player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
     player.play()
   }
@@ -294,9 +303,39 @@ Hue.create_radio_item = function (win) {
       Hue.check_radio_play(win)
     }
   })
-  
+
   Hue.check_radio_playing(win)
   Hue.check_any_radio_playing()
   Hue.el("#radio_items").append(container)
   win.hue_radio_item = container
+}
+
+// Increase or decrease radio volume
+Hue.change_radio_volume = function (direction) {
+  let new_volume = Hue.radio_volume
+
+  if (direction === "up") {
+    new_volume += 0.1  
+
+    if (new_volume > 1) {
+      new_volume = 1
+    }
+  } else if (direction === "down") {
+    new_volume -= 0.1
+
+    if (new_volume < 0) {
+      new_volume = 0
+    }
+  }
+
+  new_volume = Hue.utilz.round(new_volume, 2)
+  new_volume_p = Math.round(new_volume * 100)
+  Hue.radio_volume = new_volume
+
+  for (let win of Hue.get_open_radios()) {
+    let player = Hue.get_radio_player(win)
+    player.volume = new_volume
+  }
+
+  Hue.flash_info(`Volume: ${new_volume_p}%`, "Radio")
 }
