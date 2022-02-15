@@ -860,6 +860,8 @@ Hue.create_radio_popup = function (win) {
     }
   })
 
-  Hue.radio_playing(win)
+  Hue.check_radio_playing(win)
+  Hue.check_any_radio_playing()
+  
   p.show()
 }

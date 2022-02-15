@@ -29,7 +29,7 @@ Hue.start_radio = function (radio) {
   win.set_title(radio.name)
   win.set(Hue.template_radio({url: Hue.utilz.cache_bust_url(radio.url)}))
   Hue.setup_radio_player(win)
-  
+
   Hue.el(".radio_reload", win.window).addEventListener("click", function () {
     Hue.clear_radio_metadata(win)
     Hue.get_radio_metadata(win)
@@ -110,12 +110,14 @@ Hue.setup_radio_player = function (win) {
   player.addEventListener("play", function () {
     Hue.stop_radio_players(win)
     win.hue_playing = true
-    Hue.radio_playing(win)
+    Hue.check_radio_playing(win)
+    Hue.check_any_radio_playing()
   })
   
   player.addEventListener("pause", function () {
     win.hue_playing = false
-    Hue.radio_playing(win)
+    Hue.check_radio_playing(win)
+    Hue.check_any_radio_playing()
   })  
 }
 
@@ -130,12 +132,12 @@ Hue.stop_radio_players = function (win) {
   }
 }
 
-// Set an radio as playing or not playing
-Hue.radio_playing = function (win) {
+// Apply style to playing radio
+Hue.check_radio_playing = function (win) {
   if (!win.hue_radio_popup) {
     return
   }
-
+  
   if (win.hue_playing) {
     win.hue_radio_popup.window.classList.add("radio_popup_playing")
     win.hue_radio_popup.window.classList.add("glowing")
@@ -143,8 +145,6 @@ Hue.radio_playing = function (win) {
     win.hue_radio_popup.window.classList.remove("radio_popup_playing")
     win.hue_radio_popup.window.classList.remove("glowing")
   }
-
-  Hue.check_any_radio_playing()
 }
 
 // Make radio popups visible or invisible
@@ -311,9 +311,9 @@ Hue.check_any_radio_playing = function () {
   }
 
   if (any_playing) {
-    Hue.el("#footer_radio_icon_container").classList.add("rotate")
+    Hue.el("#footer_radio_icon").classList.add("rotate")
   } else {
-    Hue.el("#footer_radio_icon_container").classList.remove("rotate")
+    Hue.el("#footer_radio_icon").classList.remove("rotate")
   }
 }
 
