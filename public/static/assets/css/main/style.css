@@ -2368,7 +2368,7 @@ pre {
 	flex-direction: column;
 	gap: 0.5rem;
 	max-height: 25rem;
-	overflow: scroll;
+	overflow: auto;
 }
 
 .radio_item {
