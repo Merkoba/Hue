@@ -155,6 +155,25 @@ Hue.timeago_action = function () {
   }  
 }
 
+// Show a message for a small time and close
+Hue.flash_info = function (text, title = "Info") {
+  let el = Hue.el("#flash_info")
+  let text_el = Hue.el("#flash_info_text")
+  text_el.textContent = text
+  let title_el = Hue.el("#flash_info_title_text")
+  title_el.textContent = title
+  let icon_el = Hue.el("#flash_info_title_icon")
+  jdenticon.update(icon_el, title)
+  el.style.display = "flex"
+  Hue.flash_info_timer()
+}
+
+// Hide the flash info window
+Hue.hide_flash_info = function () {
+  let el = Hue.el("#flash_info")
+  el.style.display = "none"
+}
+
 // Get some element measurements
 Hue.get_element_sizes = function () {
   Hue.panel_height = Hue.el("#footer").offsetHeight

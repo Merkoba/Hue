@@ -57,6 +57,7 @@ Hue.resize_delay = 350
 Hue.scroll_delay = 350
 Hue.wheel_delay = 100
 Hue.wheel_delay_2 = 25
+Hue.flash_info_delay = 2000
 Hue.emit_queue = []
 Hue.has_focus = false
 Hue.message_usernames = ""
@@ -132,6 +133,7 @@ Hue.dataset_id = 0
 Hue.highlight_date_on_focus = 0
 Hue.flipped = false
 Hue.radio_items_visible = true
+Hue.radio_volume = 1
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

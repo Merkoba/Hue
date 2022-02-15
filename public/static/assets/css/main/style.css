@@ -2442,3 +2442,32 @@ pre {
 .rotate {
 	animation: spin 2.5s linear infinite;
 }
+
+#flash_info {
+	display: none;
+	flex-direction: column;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); 
+	color: var(--font_color);
+	background-color:	var(--altbackground);
+	border: 2px solid var(--altcolor);
+	padding: 0.25rem;
+	z-index: 10;
+	font-size: 1.2rem;
+	width: 14rem;
+	overflow: hidden;
+}
+
+#flash_info_title {
+	display: flex;
+	flex-direction: row;
+	background-color: var(--altcolor);
+	font-size: 1rem;
+	margin-bottom: 0.25rem;
+}
+
+#flash_info_title_icon {
+	margin-right: 0.25rem;
+}
