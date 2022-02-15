@@ -21,7 +21,6 @@ Hue.start_radio = function (radio) {
   win.hue_radio_name = radio.name
   win.hue_radio_url = radio.url
   win.hue_radio_metadata = radio.metadata
-  win.hue_last_open = 0
   win.hue_playing = false
   win.hue_date_started = Date.now()
   win.create()
@@ -45,7 +44,7 @@ Hue.start_radio = function (radio) {
   })
   
   Hue.horizontal_separator(Hue.el(".radio_buttons", win.content))
-  Hue.create_radio_popup(win)
+  Hue.create_radio_item(win)
 }
 
 // Check if modal instance is radio
@@ -55,15 +54,15 @@ Hue.is_radio = function (instance) {
   }
 }
 
-// Check if modal instance is radio popup
-Hue.is_radio_popup = function (instance) {
+// Check if modal instance is radio item
+Hue.is_radio_item = function (instance) {
   if (instance && instance.window) {
-    return instance.window.classList.contains("radio_popup_window")
+    return instance.window.classList.contains("radio_item_window")
   }
 }
 
 // Get open radios
-Hue.get_open_radios = function (sortmode = "last_open") {
+Hue.get_open_radios = function () {
   let radios = []
 
   for (let instance of Hue.msg_main_menu.higher_instances()) {
@@ -74,28 +73,22 @@ Hue.get_open_radios = function (sortmode = "last_open") {
     }
   }
 
-  if (sortmode === "last_open") {
-    radios.sort((a, b) => (a.hue_last_open > b.hue_last_open) ? -1 : 1)
-  } else if (sortmode === " date_started") {
-    radios.sort((a, b) => (a.hue_date_started > b.hue_date_started) ? -1 : 1)
-  }
-
   return radios
 }
 
 // Get open radios
-Hue.get_open_radio_popups = function () {
-  let popups = []
+Hue.get_open_radio_items = function () {
+  let items = []
 
   for (let instance of Hue.msg_main_menu.lower_instances()) {
     if (instance.window) {
-      if (Hue.is_radio_popup(instance)) {
-        popups.push(instance)
+      if (Hue.is_radio_item(instance)) {
+        items.push(instance)
       }
     }
   }
 
-  return popups
+  return items
 }
 
 // Get radio player
@@ -134,39 +127,30 @@ Hue.stop_radio_players = function (win) {
 
 // Apply style to playing radio
 Hue.check_radio_playing = function (win) {
-  if (!win.hue_radio_popup) {
+  if (!win.hue_radio_item) {
     return
   }
-  
+
   if (win.hue_playing) {
-    win.hue_radio_popup.window.classList.add("radio_popup_playing")
-    win.hue_radio_popup.window.classList.add("glowing")
+    win.hue_radio_item.classList.add("radio_item_playing")
+    win.hue_radio_item.classList.add("glowing")
   } else {
-    win.hue_radio_popup.window.classList.remove("radio_popup_playing")
-    win.hue_radio_popup.window.classList.remove("glowing")
+    win.hue_radio_item.classList.remove("radio_item_playing")
+    win.hue_radio_item.classList.remove("glowing")
   }
 }
 
-// Make radio popups visible or invisible
-Hue.toggle_radio_popups = function () {
-  if (Hue.radio_popups_visible) {
-    Hue.radio_popups_visible = false
-
-    for (let win of Hue.get_open_radios()) {
-      win.hue_radio_popup.close()
-      win.hue_radio_popup = undefined
-    }
-
+// Make radio items visible or invisible
+Hue.toggle_radio_items = function () {
+  if (Hue.radio_items_visible) {
+    Hue.el("#radio_items").classList.add("nodisplay")
     Hue.el("#footer_radio_icon use").href.baseVal = "#icon_star"
   } else {
-    Hue.radio_popups_visible = true
-
-    for (let win of Hue.get_open_radios("date_started")) {
-      Hue.create_radio_popup(win)
-    }
-
+    Hue.el("#radio_items").classList.remove("nodisplay")
     Hue.el("#footer_radio_icon use").href.baseVal = "#icon_star-solid"
   }
+
+  Hue.radio_items_visible = !Hue.radio_items_visible
 }
 
 // Play or pause radio
@@ -179,38 +163,6 @@ Hue.check_radio_play = function (win) {
     player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
     player.play()
   }
-}
-
-// Remove an radio modal instance
-Hue.remove_radio = function (win) {
-  win.close()
-  win.destroy()
-  win.hue_radio_popup = undefined
-}
-
-// Increase or decrease radio volume
-Hue.change_radio_volume = function (win, direction) {
-  let player = Hue.get_radio_player(win)
-  let new_volume = player.volume
-
-  if (direction === "up") {
-    new_volume += 0.05  
-    
-    if (new_volume > 1) {
-      new_volume = 1
-    }
-  } else if (direction === "down") {
-    new_volume -= 0.05  
-    
-    if (new_volume < 0) {
-      new_volume = 0
-    }
-  }
-
-  new_volume = Hue.utilz.round(new_volume, 2)
-  new_volume_p = Math.round(new_volume * 100)
-  player.volume = new_volume
-  Hue.flash_info(`Volume: ${new_volume_p}%`, win.hue_radio_name)
 }
 
 // Try to fetch active radio metadata
@@ -321,4 +273,30 @@ Hue.check_any_radio_playing = function () {
 Hue.clear_radio_metadata = function (win) {
   Hue.el(".radio_metadata_artist", win.content).textContent = ""
   Hue.el(".radio_metadata_title", win.content).textContent = ""
+}
+
+// Create radio item
+Hue.create_radio_item = function (win) {
+  let container = Hue.div("radio_item action")
+  container.innerHTML = Hue.template_radio_item()
+  container.title = win.hue_radio_url
+  
+  let icon = Hue.el(".radio_item_icon", container)
+  jdenticon.update(icon, win.hue_radio_name)
+  
+  let name = Hue.el(".radio_item_name", container)
+  name.textContent = win.hue_radio_name
+  
+  container.addEventListener("click", function (e) {
+    if (e.target.closest(".radio_item_icon_container")) {
+      win.show()
+    } else {
+      Hue.check_radio_play(win)
+    }
+  })
+  
+  Hue.check_radio_playing(win)
+  Hue.check_any_radio_playing()
+  Hue.el("#radio_items").append(container)
+  win.hue_radio_item = container
 }
