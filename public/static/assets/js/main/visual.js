@@ -107,8 +107,12 @@ Hue.on_confirm = function () {
 }
 
 // Simple window for messages
-Hue.showmsg = function (s) {
-  Hue.msg_info.show(s)
+Hue.showmsg = function (s, autoclose = false) {
+  if (autoclose) {
+    Hue.msg_info_autoclose.show(s)
+  } else {
+    Hue.msg_info.show(s)
+  }
 }
 
 // Simple window for messages

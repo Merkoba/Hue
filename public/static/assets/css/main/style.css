@@ -718,6 +718,10 @@ a.generic:hover {
 	background-color: var(--altbackground) !important;
 }
 
+.Msg-progressbar {
+	background-color: var(--altbackground) !important;
+}
+
 .filter_input {
 	top: 0;
 	width: 14rem;
@@ -2341,7 +2345,15 @@ pre {
 	padding: 2rem;
 	width: 36rem;
 	height: 16rem;
-	cursor: pointer;
+}
+
+.radio_buttons {
+	padding: 2rem;
+	font-size: 1.2rem;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
 }
 
 .radio_popup_window {

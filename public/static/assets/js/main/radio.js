@@ -30,11 +30,20 @@ Hue.start_radio = function (radio) {
   win.set(Hue.template_radio({url: radio.url}))
   Hue.setup_radio_player(win)
   
-  Hue.el(".radio_metadata", win.window).addEventListener("click", function () {
+  Hue.el(".radio_reload", win.window).addEventListener("click", function () {
+    Hue.clear_radio_metadata(win)
     Hue.get_radio_metadata(win)
     Hue.start_radio_metadata_loop()
   })
+
+  Hue.el(".radio_clipboard", win.window).addEventListener("click", function () {
+    let artist = Hue.el(".radio_metadata_artist", win.content).textContent
+    let title = Hue.el(".radio_metadata_title", win.content).textContent
+    Hue.copy_string(`${artist} ${title}`)
+    Hue.showmsg("Copied to clipboard", true)
+  })
   
+  Hue.horizontal_separator(Hue.el(".radio_buttons", win.content))
   Hue.create_radio_popup(win)
 }
 
@@ -258,6 +267,7 @@ Hue.get_radio_metadata = function (win) {
       artist_el.innerHTML = Hue.utilz.make_html_safe(artist)
       artist_el.style.display = "initial"
     } else {
+      artist_el.textContent = ""
       artist_el.style.display = "none"
     }
 
@@ -265,6 +275,7 @@ Hue.get_radio_metadata = function (win) {
       title_el.innerHTML = Hue.utilz.make_html_safe(title)
       title_el.style.display = "initial"
     } else {
+      title_el.textContent = ""
       title_el.style.display = "none"
     }
   })

@@ -132,6 +132,17 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_info_autoclose = Msg.factory(
+    Object.assign({}, msgvars.common, {
+      id: "info_autoclose",
+      window_height: "auto",
+      enable_progressbar: true,
+      bind_progressbar_to_autoclose: true,
+      autoclose: true,
+      autoclose_delay: 3000
+    })
+  )
+
   Hue.msg_info2 = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "info2",
@@ -391,6 +402,7 @@ Hue.start_msg = function () {
   Hue.msg_draw_image.set(Hue.template_draw_image())
 
   Hue.msg_info.create()
+  Hue.msg_info_autoclose.create()
   Hue.msg_info2.create()
 
   // Set the titles
