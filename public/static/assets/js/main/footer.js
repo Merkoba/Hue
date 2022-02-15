@@ -29,7 +29,7 @@ Hue.setup_footer = function () {
   })
 
   Hue.el("#footer_radio_icon_container").addEventListener("click", function () {
-    Hue.toggle_radio_popups()
+    Hue.toggle_radio_items()
   }) 
 
   Hue.el("#footer_items").addEventListener("click", function(e) {

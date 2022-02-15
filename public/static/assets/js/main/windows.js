@@ -524,7 +524,7 @@ Hue.get_popup_instances = function () {
   let popups = []
 
   for (let instance of Hue.msg_main_menu.lower_instances()) {
-    if (!Hue.is_radio_popup(instance)) {
+    if (!Hue.is_radio_item(instance)) {
       popups.push(instance)
     }
   }
@@ -784,84 +784,16 @@ Hue.create_radio_window = function () {
       after_show: function (instance) {
         Hue.after_modal_show(instance)
         Hue.after_modal_set_or_show(instance)
-        Hue.create_radio_popup(instance)
+        Hue.create_radio_item(instance)
         Hue.get_radio_metadata(instance)
         Hue.start_radio_metadata_loop(instance)
-        instance.hue_last_open = Date.now()
       },
       after_close: function (instance) {     
         Hue.after_modal_close(instance)
         Hue.remove_alert_title()
         Hue.stop_radio_metadata_loop()
         Hue.clear_radio_metadata(instance)
-      },
-      after_destroy: function (instance) {
-        if (instance.hue_radio_popup) {
-          instance.hue_radio_popup.close()
-        }
-
-        instance.remove()
-        Hue.check_any_radio_playing()
       }
     })
   )
-}
-
-// Small popup for a minimized radio
-Hue.create_radio_popup = function (win) {
-  if (!Hue.radio_popups_visible) {
-    return
-  }
-
-  if (win.hue_radio_popup) {
-    return
-  }
-
-  let obj = {}
-  obj.class = "radio_popup"
-  obj.window_class = "radio_popup !radio_popup_window"
-  obj.enable_titlebar = false
-  obj.window_x = "none"
-  obj.position = "bottomright"
-  obj.window_width = "11rem"
-  obj.disable_content_padding = true
-  obj.close_on_escape = false
-
-  obj.on_x_button_click = function () {
-    Hue.remove_radio(win)
-  }
-
-  obj.on_wheel_down = function () {
-    Hue.change_radio_volume(win, "down")
-  }
-
-  obj.on_wheel_up = function () {
-    Hue.change_radio_volume(win, "up")
-  }
-
-  p = Hue.create_popup(obj)
-  p.set(Hue.template_radio_popup())
-  win.hue_radio_popup = p
-
-  let container = Hue.el(".radio_popup_container", p.content)
-  container.title = win.hue_radio_url
-
-  let icon = Hue.el(".radio_popup_icon", p.content)
-  jdenticon.update(icon, win.hue_radio_name)
-  
-  let name = Hue.el(".radio_popup_name", p.content)
-  name.textContent = win.hue_radio_name
-  
-  p.window.addEventListener("click", function (e) {
-    if (e.target.closest(".radio_popup_icon_container")) {
-      win.show()
-    } else {
-      Hue.check_radio_play(win)
-    }
-  })
-
-  Hue.check_radio_playing(win)
-  Hue.check_any_radio_playing()
-  
-  p.show()
 }
