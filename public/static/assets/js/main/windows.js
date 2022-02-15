@@ -784,7 +784,6 @@ Hue.create_radio_window = function () {
       after_show: function (instance) {
         Hue.after_modal_show(instance)
         Hue.after_modal_set_or_show(instance)
-        Hue.create_radio_item(instance)
         Hue.get_radio_metadata(instance)
         Hue.start_radio_metadata_loop(instance)
       },
