@@ -164,6 +164,7 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "image_picker",
       window_width: "24rem",
+      content_class: "!media_picker_content",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.el("#image_source_picker_input").value = ""
@@ -177,6 +178,7 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "tv_picker",
       window_width: "24rem",
+      content_class: "!media_picker_content",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.el("#tv_source_picker_input").value = ""
