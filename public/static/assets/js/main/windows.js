@@ -523,15 +523,7 @@ Hue.get_modal_instances = function () {
 
 // Gets all Msg popup instances excluding radio popups
 Hue.get_popup_instances = function () {
-  let popups = []
-
-  for (let instance of Hue.msg_main_menu.lower_instances()) {
-    if (!Hue.is_radio_item(instance)) {
-      popups.push(instance)
-    }
-  }
-
-  return popups
+  return Hue.msg_main_menu.lower_instances()
 }
 
 // Checks if any Msg modal instance is open
