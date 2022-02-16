@@ -43,6 +43,7 @@ Hue.start_radio = function (radio) {
   
   Hue.horizontal_separator(Hue.el(".radio_buttons", win.content))
   Hue.create_radio_item(win)
+  Hue.radio_windows.push(win)
 }
 
 // Check if modal instance is radio
@@ -50,21 +51,6 @@ Hue.is_radio = function (instance) {
   if (instance && instance.window) {
     return instance.window.classList.contains("radio_window")
   }
-}
-
-// Get open radio modals
-Hue.get_open_radios = function () {
-  let radios = []
-
-  for (let instance of Hue.msg_main_menu.higher_instances()) {
-    if (instance.window) {
-      if (Hue.is_radio(instance)) {
-        radios.push(instance)
-      }
-    }
-  }
-
-  return radios
 }
 
 // Get radio player element
@@ -92,7 +78,7 @@ Hue.setup_radio_player = function (win) {
 
 // Stop all radio players except active one
 Hue.stop_radio_players = function (win) {
-  for (let w of Hue.get_open_radios()) {
+  for (let w of Hue.radio_windows) {
     if (win && win.hue_radio_url === w.hue_radio_url) {
       continue
     }
@@ -226,7 +212,7 @@ Hue.stop_radio_metadata_loop = function () {
 
 // Check if any radio is playing
 Hue.check_any_radio_playing = function () {
-  if (Hue.get_open_radios().some(x => x.hue_playing)) {
+  if (Hue.radio_windows.some(x => x.hue_playing)) {
     Hue.el("#footer_radio_icon").classList.add("rotate")
   } else {
     Hue.el("#footer_radio_icon").classList.remove("rotate")
@@ -289,7 +275,7 @@ Hue.change_radio_volume = function (direction) {
   if (new_volume !== Hue.radio_volume) {
     Hue.radio_volume = new_volume
     
-    for (let win of Hue.get_open_radios()) {
+    for (let win of Hue.radio_windows) {
       let player = Hue.get_radio_player(win)
       player.volume = new_volume
     }

@@ -94,7 +94,7 @@ module.exports = function (
           }
         }
 
-        handler.public[m](socket, data)
+        await handler.public[m](socket, data)
       } catch (err) {
         logger.log_error(err)
       }

@@ -134,6 +134,7 @@ Hue.highlight_date_on_focus = 0
 Hue.flipped = false
 Hue.radio_items_visible = true
 Hue.radio_volume = 1
+Hue.radio_windows = []
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
