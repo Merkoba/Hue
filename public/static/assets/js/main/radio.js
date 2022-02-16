@@ -262,16 +262,7 @@ Hue.stop_radio_metadata_loop = function () {
 
 // Check if any radio is playing
 Hue.check_any_radio_playing = function () {
-  let any_playing = false
-
-  for (let w of Hue.get_open_radios()) {
-    if (w.hue_playing) {
-      any_playing = true
-      break
-    }
-  }
-
-  if (any_playing) {
+  if (Hue.get_open_radios().some(x => x.hue_playing)) {
     Hue.el("#footer_radio_icon").classList.add("rotate")
   } else {
     Hue.el("#footer_radio_icon").classList.remove("rotate")
