@@ -13,18 +13,8 @@ Hue.setup_radio = function () {
   })
 }
 
-// Start a radio
+// Start a radio from a radio object
 Hue.start_radio = function (radio) {
-  if (!radio) {
-    return
-  }
-
-  try {
-    new URL(radio.url)
-  } catch (err) {
-    return
-  }
-
   let win = Hue.create_radio_window()
   win.hue_radio_name = radio.name
   win.hue_radio_url = radio.url
@@ -62,14 +52,7 @@ Hue.is_radio = function (instance) {
   }
 }
 
-// Check if modal instance is radio item
-Hue.is_radio_item = function (instance) {
-  if (instance && instance.window) {
-    return instance.window.classList.contains("radio_item_window")
-  }
-}
-
-// Get open radios
+// Get open radio modals
 Hue.get_open_radios = function () {
   let radios = []
 
@@ -84,27 +67,12 @@ Hue.get_open_radios = function () {
   return radios
 }
 
-// Get open radios
-Hue.get_open_radio_items = function () {
-  let items = []
-
-  for (let instance of Hue.msg_main_menu.lower_instances()) {
-    if (instance.window) {
-      if (Hue.is_radio_item(instance)) {
-        items.push(instance)
-      }
-    }
-  }
-
-  return items
-}
-
-// Get radio player
+// Get radio player element
 Hue.get_radio_player = function (win) {
   return Hue.el(".radio_player", win.content)
 }
 
-// Setup radio player
+// Setup events on radio player
 Hue.setup_radio_player = function (win) {
   let player = Hue.get_radio_player(win)
     
@@ -135,10 +103,6 @@ Hue.stop_radio_players = function (win) {
 
 // Apply style to playing radio
 Hue.check_radio_playing = function (win) {
-  if (!win.hue_radio_item) {
-    return
-  }
-
   if (win.hue_playing) {
     win.hue_radio_item.classList.add("radio_item_playing")
     win.hue_radio_item.classList.add("glowing")
@@ -174,7 +138,7 @@ Hue.check_radio_play = function (win) {
   }
 }
 
-// Try to fetch active radio metadata
+// Fetch a radio's metadata
 Hue.get_radio_metadata = function (win) {
   Hue.loginfo(`Checking metadata: ${win.hue_radio_url}`)
 
@@ -295,10 +259,10 @@ Hue.create_radio_item = function (win) {
     }
   })
 
+  win.hue_radio_item = container
   Hue.check_radio_playing(win)
   Hue.check_any_radio_playing()
   Hue.el("#radio_items").append(container)
-  win.hue_radio_item = container
 }
 
 // Increase or decrease radio volume
