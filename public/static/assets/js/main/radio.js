@@ -46,13 +46,6 @@ Hue.start_radio = function (radio) {
   Hue.radio_windows.push(win)
 }
 
-// Check if modal instance is radio
-Hue.is_radio = function (instance) {
-  if (instance && instance.window) {
-    return instance.window.classList.contains("radio_window")
-  }
-}
-
 // Get radio player element
 Hue.get_radio_player = function (win) {
   return Hue.el(".radio_player", win.content)

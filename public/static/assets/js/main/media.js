@@ -295,6 +295,12 @@ Hue.show_media_history = function (type, filter = "") {
   }
 
   for (let el of clone) {
+    Hue.el(".profilepic", el).addEventListener("error", function () {
+      if (this.src !== Hue.config.default_profilepic_url) {
+        this.src = Hue.config.default_profilepic_url
+      }
+    })
+
     Hue.el(`#${type}_history_container`).append(el)
   }
 

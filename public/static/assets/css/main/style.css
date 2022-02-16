@@ -775,7 +775,7 @@ a.generic:hover {
 	position: absolute;
 	top: 0;
 	right: 0;
-	z-index: 999;
+	z-index: 50;
 	flex-direction: row;
 	height: 100%;
 }
@@ -2376,7 +2376,7 @@ pre {
 	bottom: calc(var(--panel_height) + 1rem);
 	display: flex;
 	flex-direction: column;
-	z-index: 10;
+	z-index: 100;
 }
 
 .radio_item {
