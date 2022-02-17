@@ -242,7 +242,7 @@ Hue.after_message_board_filtered = function () {
 
 // Remove all message board posts
 Hue.clear_message_board = function () {
-  if (!Hue.is_admin_or_op()) {
+  if (!Hue.is_admin()) {
     return false
   }
 
