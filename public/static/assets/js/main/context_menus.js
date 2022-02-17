@@ -56,7 +56,7 @@ Hue.start_chat_menu_context_menu = function () {
         }
       })
       
-      if ((user_id === Hue.user_id || Hue.is_admin_or_op(Hue.role)) && 
+      if ((user_id === Hue.user_id || Hue.is_admin_or_op()) && 
         (mode === "chat" || type === "image_change" || type === "tv_change")) {
         items.push({
           text: "Delete",
@@ -90,7 +90,7 @@ Hue.start_user_context_menu = function () {
       e.stopPropagation()
       let items = []
 
-      if (Hue.is_admin_or_op(Hue.role)) {
+      if (Hue.is_admin_or_op()) {
         items.push({
           text: "Voice",
           action: function () {

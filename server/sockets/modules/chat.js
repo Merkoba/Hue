@@ -276,16 +276,11 @@ module.exports = function (
   // Deletes all messages
   handler.public.clear_log = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
+      handler.anti_spam_ban(socket)
       return false
     }
 
-    let info = await db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
-
-    if (!info) {
-      return false
-    }
-
-    info.log_messages = []
+    db_manager.update_room(socket.hue_room_id, {log_messages: []})
 
     handler.room_emit(socket, "log_cleared", {
       user_id: socket.hue_user_id,
@@ -293,7 +288,6 @@ module.exports = function (
     })
     
     handler.push_admin_log_message(socket, "cleared the log")
-    db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })  
   }
 
   // Deletes all messages above a message

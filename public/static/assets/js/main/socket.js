@@ -193,6 +193,9 @@ Hue.server_update_events = {
   message_board_post_deleted: (data) => {
     Hue.deleted_message_board_post(data)
   },
+  message_board_cleared: (data) => {
+    Hue.message_board_cleared(data)
+  },  
   audioclip_changed: (data) => {
     Hue.audioclip_changed(data)
   },
