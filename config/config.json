@@ -126,11 +126,14 @@
 	"max_low_users": 100,
 	"radios": [
 		{"name": "Merkoba Radio", "url": "https://radio.merkoba.com:8765/radio.ogg", "metadata": "https://radio.merkoba.com:8765/status-json.xsl"},
-		{"name": "Lainon Cafe", "url": "https://lainon.life/radio/cafe.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},
-		{"name": "Lainon Swing", "url": "https://lainon.life/radio/swing.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},
-		{"name": "Lainon Cyberia", "url": "https://lainon.life/radio/cyberia.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},
-		{"name": "Nightwave Plaza", "url": "http://radio.plaza.one/mp3", "metadata": "https://api.plaza.one/status"},
-		{"name": "Tilde Radio", "url": "https://azuracast.tilderadio.org/radio/8000/radio.ogg", "metadata": "https://azuracast.tilderadio.org/radio/8000/status-json.xsl"}
+		{"name": "Lain Cyberia", "url": "https://lainon.life/radio/cyberia.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},
+		{"name": "Lain Cafe", "url": "https://lainon.life/radio/cafe.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},
+		{"name": "Lain Swing", "url": "https://lainon.life/radio/swing.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},
+		{"name": "Street Lounge", "url": "https://ice2.somafm.com/illstreet-128-mp3", "metadata": "https://somafm.com/songs/illstreet.json"},
+		{"name": "Cliqhop IDM", "url": "https://ice2.somafm.com/cliqhop-128-mp3", "metadata": "https://somafm.com/songs/cliqhop.json"},
+		{"name": "The Trip", "url": "https://ice2.somafm.com/thetrip-128-mp3", "metadata": "https://somafm.com/songs/thetrip.json"},
+		{"name": "Tilde Radio", "url": "https://azuracast.tilderadio.org/radio/8000/radio.ogg", "metadata": "https://azuracast.tilderadio.org/radio/8000/status-json.xsl"},
+		{"name": "Nightwave Plaza", "url": "http://radio.plaza.one/mp3", "metadata": "https://api.plaza.one/status"}
 	],
 	"radio_metadata_check_delay": 30000
 }
