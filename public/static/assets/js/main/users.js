@@ -569,24 +569,13 @@ Hue.setup_show_profile = function () {
 
 // Stars the profile audio
 Hue.play_audioclip = function () {
-  let clip = Hue.get_audioclip(Hue.open_profile_user_id)
-
-  if (Hue.audioclip && !Hue.audioclip.paused) {
-    if (Hue.audioclip_src.startsWith(clip)) {
-      return
-    }
-
-    Hue.stop_audioclip()
-  }
-
   Hue.audioclip = document.createElement("audio")
 
   Hue.audioclip.onended = function () {
     Hue.stop_audioclip()
   }
 
-  Hue.audioclip.src = clip
-  Hue.audioclip_src = clip
+  Hue.audioclip.src = Hue.get_audioclip(Hue.open_profile_user_id)
   Hue.audioclip.play()
 }
 
@@ -632,6 +621,8 @@ Hue.show_profile = function (username, user_id = false) {
   } else {
     Hue.el("#show_profile_details").style.display = "none"
   }
+
+  let same_user = Hue.msg_profile.is_open() && Hue.open_profile_user_id === id
   
   Hue.open_profile_user_id = id
   Hue.open_profile_username = username
@@ -670,7 +661,9 @@ Hue.show_profile = function (username, user_id = false) {
   Hue.el("#show_profile_info").append(item)
 
   Hue.msg_profile.show(function () {
-    Hue.play_audioclip()
+    if (!same_user) {
+      Hue.play_audioclip()
+    }
   })
 }
 
