@@ -122,3 +122,12 @@ Hue.get_input = function () {
 Hue.input_to_thirdperson = function (text) {
   Hue.process_message({message:`* ${text} *`})
 }
+
+// Clear input or restore last value
+Hue.check_clear_input = function () {
+  if (Hue.get_input()) {
+    Hue.clear_input()
+  } else if (Hue.last_input_text) {
+    Hue.change_input(Hue.last_input_text)
+  }
+}
