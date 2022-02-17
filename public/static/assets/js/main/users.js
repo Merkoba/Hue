@@ -10,12 +10,12 @@ Hue.user_join = function (data) {
     audioclip_version: data.audioclip_version
   })
 
-  if(data.username !== Hue.username) {
+  if(data.user_id !== Hue.user_id) {
     Hue.on_activity("join")
   }
 
-  if (Hue.open_profile_username === data.username) {
-    Hue.show_profile(data.username)
+  if (Hue.open_profile_user_id === data.user_id) {
+    Hue.show_profile(data.username, data.user_id)
   }
 
   if (Hue.started) {
@@ -112,8 +112,8 @@ Hue.replace_property_in_userlist_by_username = function (
 
     if (update) {
       Hue.update_userlist(prop)
-      if (Hue.open_profile_username === item.username) {
-        Hue.show_profile(item.username)
+      if (Hue.open_profile_user_id === item.user_id) {
+        Hue.show_profile(item.username, item.user_id)
       }
     }
   }
@@ -134,7 +134,7 @@ Hue.replace_property_in_userlist_by_id = function (
     if (update) {
       Hue.update_userlist(prop)
       if (Hue.open_profile_user_id === item.user_id) {
-        Hue.show_profile(item.username)
+        Hue.show_profile(item.username, item.user_id)
       }
     }
   } 
@@ -259,8 +259,10 @@ Hue.setup_userlist_window = function () {
 
     if (el) {
       let username = Hue.dataset(el, "username")
+      let user_id = Hue.dataset(el, "user_id")
+
       if (Hue.userlist_mode === "normal") {
-        Hue.show_profile(username)
+        Hue.show_profile(username, user_id)
       } else if (Hue.userlist_mode === "whisper") {
         Hue.update_whisper_users(username)
       }
@@ -302,6 +304,7 @@ Hue.update_userlist_window = function () {
     let username = Hue.el(".userlist_item_username", el)
     username.textContent = item.username
     Hue.dataset(el, "username", item.username)
+    Hue.dataset(el, "user_id", item.user_id)
     container.append(el)
   }
 
@@ -932,7 +935,7 @@ Hue.audioclip_changed = function (data) {
   )  
 
   if (data.user_id === Hue.open_profile_user.user_id) {
-    Hue.show_profile(data.username)
+    Hue.show_profile(data.username, data.user_id)
   }
 
   Hue.show_room_notification(
