@@ -309,6 +309,11 @@ module.exports = function (
     return socket.hue_role === "admin" || socket.hue_role === "op"
   }
 
+  // Checks if socket is admin
+  handler.is_admin = function (socket) {
+    return socket.hue_role === "admin"
+  }
+
   // Prepares the user list to be sent on room joins
   handler.prepare_userlist = function (userlist) {
     let userlist2 = []

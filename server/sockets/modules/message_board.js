@@ -97,4 +97,20 @@ module.exports = function (
       }
     }
   }
+
+  // Remove all message board posts
+  handler.public.clear_message_board = function (socket, data) {
+    if (!handler.is_admin_or_op(socket)) {
+      handler.anti_spam_ban(socket)
+      return false
+    }
+    
+    db_manager.update_room(socket.hue_room_id, {message_board_posts: []})
+
+    handler.room_emit(socket, "message_board_cleared", {
+      username: socket.hue_username, user_id: socket.hue_user_id
+    })
+
+    handler.push_admin_log_message(socket, "cleared the message board")
+  }
 }

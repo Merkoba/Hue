@@ -707,7 +707,7 @@ Hue.bio_changed = function (data) {
 
 // Changes a user's role
 Hue.change_role = function (username, role) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     return false
   }
 
@@ -767,7 +767,7 @@ Hue.set_role = function (rol, config = true) {
 
 // Bans a user
 Hue.ban = function (username) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     return false
   }
 
@@ -783,7 +783,7 @@ Hue.ban = function (username) {
 
 // Unbans a user
 Hue.unban = function (username) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     return false
   }
 
@@ -812,7 +812,7 @@ Hue.receive_ban_count = function (data) {
 
 // Kicks a user
 Hue.kick = function (username) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     return false
   }
 

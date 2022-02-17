@@ -58,7 +58,7 @@ Hue.show_room_name = function () {
 
 // Change the name of the room
 Hue.change_room_name = function (arg) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     return false
   }
 
@@ -112,7 +112,7 @@ Hue.set_room_name = function (name) {
 
 // Changes the topic
 Hue.change_topic = function (dtopic) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     return false
   }
 
@@ -155,7 +155,7 @@ Hue.set_topic_info = function (data) {
 
 // Requests the admin activity list from the server
 Hue.request_admin_activity = function (filter = "") {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     Hue.not_an_op()
     return false
   }
@@ -193,7 +193,7 @@ Hue.show_admin_activity = function (messages) {
 
 // Requests the admin list
 Hue.request_admin_list = function () {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     Hue.not_an_op()
     return false
   }
@@ -233,7 +233,7 @@ Hue.show_admin_list = function (data) {
 
 // Requests the ban list
 Hue.request_ban_list = function () {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     Hue.not_an_op()
     return false
   }
@@ -364,7 +364,7 @@ Hue.apply_theme = function () {
 
 // Changes the background color
 Hue.change_background_color = function (color) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     return false
   }
 
@@ -388,10 +388,7 @@ Hue.change_background_color = function (color) {
 
 // Announces background color change
 Hue.announce_background_color_change = function (data) {
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} changed the background color to ${data.color}`
-  )
+  Hue.show_room_notification(data.username, `${data.username} changed the background color to ${data.color}`)
   Hue.set_background_color(data.color)
 }
 
@@ -455,7 +452,7 @@ Hue.background_selected = function (file) {
     return false
   }
 
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     return false
   }
 
@@ -474,7 +471,7 @@ Hue.background_selected = function (file) {
 
 // Change the background image with a URL
 Hue.change_background_source = function (src) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     return false
   }
 
@@ -531,7 +528,7 @@ Hue.announce_background_change = function (data) {
 
 // Changes the text color
 Hue.change_text_color = function (color) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     return false
   }
 

@@ -208,7 +208,7 @@ Hue.update_last_message_post_checked = function () {
 
 // Checks if the user can delete posts in the message board
 Hue.check_message_board_permissions = function () {
-  if (Hue.is_admin_or_op(Hue.role)) {
+  if (Hue.is_admin_or_op()) {
     if (Hue.role === "admin") {
       Hue.el("#message_board_container").classList.add("message_board_container_admin")
     } else {
@@ -238,4 +238,21 @@ Hue.deleted_message_board_post = function (data) {
 // After message board filter
 Hue.after_message_board_filtered = function () {
   Hue.vertical_separator(Hue.el("#message_board_container"))  
+}
+
+// Remove all message board posts
+Hue.clear_message_board = function () {
+  if (!Hue.is_admin_or_op()) {
+    return false
+  }
+
+  Hue.show_confirm("Clear Message Board", "Delete all message board posts", function () {
+    Hue.socket_emit("clear_message_board", {})
+  })
+}
+
+// On message board cleared
+Hue.message_board_cleared = function (data) {
+  Hue.el("#message_board_container").innerHTML = ""
+  Hue.show_room_notification(data.username, `${data.username} cleared the message board`)
 }

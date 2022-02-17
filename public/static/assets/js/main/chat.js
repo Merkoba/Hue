@@ -1861,11 +1861,11 @@ Hue.add_chat_spacer = function () {
 
 // Deletes all chat messages
 Hue.clear_log = function () {
-  if (!Hue.is_admin_or_op(Hue.role)) {
+  if (!Hue.is_admin_or_op()) {
     return false
   }
 
-  Hue.show_confirm("Clear Log", "Delete all messages from the chat log", function () {
+  Hue.show_confirm("Clear Log", "Delete all messages from the log", function () {
     Hue.socket_emit("clear_log", {})
   })  
 }
@@ -1890,7 +1890,7 @@ Hue.announce_log_cleared = function (data) {
 
 // Handles delete message
 Hue.handle_delete_message = function (id, user_id) {
-  if (Hue.is_admin_or_op(Hue.role)) {
+  if (Hue.is_admin_or_op()) {
     Hue.msg_info2.show([
       "Delete Message(s)",
       Hue.template_delete_messages_select_op(),

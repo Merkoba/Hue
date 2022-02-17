@@ -526,6 +526,18 @@ Hue.commands = {
       }
     },
     description: `Show posts by a user`,
+  },
+  "clearmessageboard": {
+    action: (arg, ans) => {
+      Hue.clear_message_board()
+    },
+    description: `Clear the message board`,
+  },
+  "clearlog": {
+    action: (arg, ans) => {
+      Hue.clear_log()
+    },
+    description: `Clear the log`,
   }
 }
 
