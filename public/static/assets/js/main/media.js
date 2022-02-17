@@ -589,15 +589,27 @@ Hue.toggle_media = function (args) {
 
   args = Object.assign(def_args, args)
 
+  let new_val
+
   if (args.what !== undefined) {
     if (Hue.room_state[`${args.type}_enabled`] !== args.what) {
-      Hue.room_state[`${args.type}_enabled`] = args.what
+      new_val = args.what
     } else {
+      new_val = Hue.room_state[`${args.type}_enabled`]
       save = false
     }
   } else {
-    Hue.room_state[`${args.type}_enabled`] = !Hue.room_state[`${args.type}_enabled`]
+    new_val = !Hue.room_state[`${args.type}_enabled`]
   }
+
+  if (new_val === Hue.room_state[`${args.type}_enabled`]) {
+    return
+  }
+
+  Hue.room_state[`${args.type}_enabled`] = new_val
+  let title = Hue.media_string(args.type)
+  let on_off = Hue.utilz.boolword(new_val, "On", "Off")
+  Hue.flash_info(title, `Visibility: ${on_off}`)
 
   if (Hue[`${args.type}_visible`] !== args.what) {
     Hue[`change_${args.type}_visibility`]()
@@ -622,12 +634,22 @@ Hue.change_media_lock = function(args) {
 
   args = Object.assign(def_args, args)
   
+  let new_val
+  
   if (args.what !== undefined) {
-    Hue[`${args.type}_locked`] = args.what
+    new_val = args.what
   } else {
-    Hue[`${args.type}_locked`] = !Hue[`${args.type}_locked`]
+    new_val = !Hue[`${args.type}_locked`]
   }
 
+  if (new_val === Hue[`${args.type}_locked`]) {
+    return
+  }
+
+  Hue[`${args.type}_locked`] = new_val
+  let title = Hue.media_string(args.type)
+  let on_off = Hue.utilz.boolword(new_val, "On", "Off")
+  Hue.flash_info(title, `Lock: ${on_off}`)
   Hue.change_media_lock_icon(args.type)
 }
 
@@ -768,8 +790,8 @@ Hue.media_string = function (what) {
 
 // Load or restart media
 Hue.load_media = function (data) {
-  Hue.toggle_media({type:data.media_type, what:true})
-  Hue.change_media_lock({type:data.media_type, what:true})
+  Hue.toggle_media({type: data.media_type, what: true})
+  Hue.change_media_lock({type: data.media_type, what: true})
   
   Hue.change({
     type: data.media_type,

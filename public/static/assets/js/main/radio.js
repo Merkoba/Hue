@@ -274,5 +274,5 @@ Hue.change_radio_volume = function (direction) {
     }
   }
 
-  Hue.flash_info(`Volume: ${new_volume_p}%`, "Radio")
+  Hue.flash_info("Radio", `Volume: ${new_volume_p}%`)
 }
