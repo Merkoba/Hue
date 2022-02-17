@@ -42,6 +42,10 @@ Hue.setup_input = function () {
     }
   })
 
+  Hue.el("#input").addEventListener("wheel", function (e) {
+    Hue.input_history_change(e.deltaY > 0 ? "down" : "up")
+  })
+
   Hue.old_input_val = Hue.get_input()
 }
 
@@ -66,6 +70,7 @@ Hue.clear_input = function () {
 
 // Changes the input
 Hue.change_input = function (s, to_end = true, focus = true) {
+  Hue.disable_footer_expand()
   Hue.el("#input").value = s
 
   if (to_end) {

@@ -67,7 +67,7 @@ Hue.input_history_change = function (direction) {
     }
 
     v = Hue.input_history[Hue.input_history_index].message
-  } else {
+  } else if (direction === "down") {
     if (Hue.input_history_index < 0) {
       Hue.change_input("")
       return

@@ -288,7 +288,7 @@ Hue.activate_key_detection = function () {
     } else if (e.key === "PageDown") {
       Hue.scroll_down()
     } else if (e.key === "ArrowUp") {
-      if (Hue.footer_expanded) {
+      if (!e.shiftKey && Hue.footer_expanded) {
         return false
       }
 
@@ -303,12 +303,13 @@ Hue.activate_key_detection = function () {
 
       return
     } else if (e.key === "ArrowDown") {
-      if (Hue.footer_expanded) {
+      if (!e.shiftKey && Hue.footer_expanded) {
         return false
       }
       
       if (e.shiftKey) {
         Hue.input_history_change("down")
+        e.preventDefault()
       } else {
         Hue.scroll_down()
       }
