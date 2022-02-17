@@ -110,6 +110,7 @@ Hue.start_msg = function () {
         Hue.el("#show_profile_username").textContent = "Loading"
         Hue.el("#show_profilepic").src = Hue.config.profilepic_loading_url
         Hue.open_profile_username = false
+        Hue.open_profile_user_id = false
         Hue.open_profile_user = false
         Hue.stop_audioclip()
       },
