@@ -100,7 +100,7 @@ module.exports = function (
 
   // Remove all message board posts
   handler.public.clear_message_board = function (socket, data) {
-    if (!handler.is_admin_or_op(socket)) {
+    if (!handler.is_admin(socket)) {
       handler.anti_spam_ban(socket)
       return false
     }

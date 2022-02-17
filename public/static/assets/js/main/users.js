@@ -869,19 +869,14 @@ Hue.is_already = function (who, what) {
 // Checks if a role is that of an admin or an operator
 // Without arguments it checks the user's role
 Hue.is_admin_or_op = function (rol = false) {
-  let r
+  let r = rol ? rol : Hue.role
+  return r === "admin" || r === "op"
+}
 
-  if (rol) {
-    r = rol
-  } else {
-    r = Hue.role
-  }
-
-  if (r === "admin" || r === "op") {
-    return true
-  } else {
-    return false
-  }
+// Checks if a role is that of an admin
+Hue.is_admin = function (rol = false) {  
+  let r = rol ? rol : Hue.role
+  return r === "admin"
 }
 
 // Superuser command to change to any role
