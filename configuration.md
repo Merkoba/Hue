@@ -230,6 +230,18 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "media_changed_crop_limit"
 >How many items are stored in images_changed and tv_changed.
 
+"chat_crop_limit"
+>Max number of messages to keep on the client.
+
+"input_history_crop_limit"
+>Max number of recent input history items saved.
+
+"whispers_crop_limit"
+>Max number of whisper items to show.
+
+"notifications_crop_limit"
+>How many notifications after the notifications items get cropped in the notifications window.
+
 "recaptcha_enabled"
 >Whether recaptcha verification is used at registration.
 
@@ -290,9 +302,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_info_popups"
 >How many info popups (bottom right) can be displayed at once. After this, the older ones get closed.
 
-"notifications_crop_limit"
->How many notifications after the notifications items get cropped in the notifications window.
-
 "max_media_comment_length"
 >Maximum length of comments on media change.
 
@@ -324,9 +333,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "db_write_file_timeout_limit"
 >Max time without saving a file after a write call.
-
-"chat_crop_limit"
->Max number of messages to keep on the client.
 
 "max_low_users"
 >After this amount of users consider a room to very populated and do some things differently.
