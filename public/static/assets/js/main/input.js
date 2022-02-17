@@ -61,6 +61,7 @@ Hue.clear_input = function () {
 
   Hue.change_input("")
   Hue.old_input_val = ""
+  Hue.reset_input_history_index()
 }
 
 // Changes the input

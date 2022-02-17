@@ -317,7 +317,11 @@ Hue.activate_key_detection = function () {
       return
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {
-        Hue.goto_bottom(true)
+        if (Hue.get_input()) {
+          Hue.clear_input()
+        } else {
+          Hue.goto_bottom(true)
+        }
       }
     }
   })
