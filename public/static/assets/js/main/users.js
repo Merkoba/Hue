@@ -611,11 +611,6 @@ Hue.show_profile = function (username, user_id = false) {
     
     role = Hue.get_pretty_role_name(user.role)
     bio = user.bio
-
-    if (user.username === Hue.username) {
-      same_user = true
-    }
-
     username = user.username
     Hue.open_profile_user = user
   } else {
@@ -662,6 +657,7 @@ Hue.show_profile = function (username, user_id = false) {
 
   Hue.msg_profile.show(function () {
     if (!same_user) {
+      Hue.stop_audioclip()
       Hue.play_audioclip()
     }
   })
