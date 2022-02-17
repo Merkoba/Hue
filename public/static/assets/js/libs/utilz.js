@@ -791,6 +791,10 @@ const Utilz = function () {
 		return utilz.video_extensions.includes(extension)
 	}
 
+	utilz.boolword = function (b, w1, w2) {
+		return b ? w1 : w2
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]

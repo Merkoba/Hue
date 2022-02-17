@@ -156,7 +156,7 @@ Hue.timeago_action = function () {
 }
 
 // Show a message for a small time and close
-Hue.flash_info = function (text, title = "Info") {
+Hue.flash_info = function (title, text) {
   let el = Hue.el("#flash_info")
   let text_el = Hue.el("#flash_info_text")
   text_el.textContent = text
