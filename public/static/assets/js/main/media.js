@@ -607,9 +607,6 @@ Hue.toggle_media = function (args) {
   }
 
   Hue.room_state[`${args.type}_enabled`] = new_val
-  let title = Hue.media_string(args.type)
-  let on_off = Hue.utilz.boolword(new_val, "On", "Off")
-  Hue.flash_info(title, `Visibility: ${on_off}`)
 
   if (Hue[`${args.type}_visible`] !== args.what) {
     Hue[`change_${args.type}_visibility`]()
@@ -621,6 +618,12 @@ Hue.toggle_media = function (args) {
     Hue.set_default_tv_size()
   } else if (args.save) {
     Hue.save_room_state()
+  }
+
+  if (args.feedback) {
+    let title = Hue.media_string(args.type)
+    let on_off = Hue.utilz.boolword(new_val, "On", "Off")
+    Hue.flash_info(title, `Visibility: ${on_off}`)
   }
 }
 
@@ -647,10 +650,13 @@ Hue.change_media_lock = function(args) {
   }
 
   Hue[`${args.type}_locked`] = new_val
-  let title = Hue.media_string(args.type)
-  let on_off = Hue.utilz.boolword(new_val, "On", "Off")
-  Hue.flash_info(title, `Lock: ${on_off}`)
   Hue.change_media_lock_icon(args.type)
+
+  if (args.feedback) {
+    let title = Hue.media_string(args.type)
+    let on_off = Hue.utilz.boolword(new_val, "On", "Off")
+    Hue.flash_info(title, `Lock: ${on_off}`)
+  }
 }
 
 // Toggles media locks for any type
@@ -790,8 +796,8 @@ Hue.media_string = function (what) {
 
 // Load or restart media
 Hue.load_media = function (data) {
-  Hue.toggle_media({type: data.media_type, what: true})
-  Hue.change_media_lock({type: data.media_type, what: true})
+  Hue.toggle_media({type: data.media_type, what: true, feedback: true})
+  Hue.change_media_lock({type: data.media_type, what: true, feedback: true})
   
   Hue.change({
     type: data.media_type,

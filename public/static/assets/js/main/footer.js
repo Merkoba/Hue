@@ -8,11 +8,11 @@ Hue.setup_footer = function () {
     })
 
     Hue.el(`#footer_${type}_toggler`).addEventListener("click", function () {
-      Hue.toggle_media({type:type, feedback:true})
+      Hue.toggle_media({type:type})
     })
 
     Hue.el(`#footer_${type}_lock`).addEventListener("click", function () {
-      Hue.change_media_lock({type:type, feedback:true})
+      Hue.change_media_lock({type:type})
     })
   }
 
