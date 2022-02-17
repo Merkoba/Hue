@@ -21,12 +21,10 @@ Hue.load_scripts = true
 Hue.config = {}
 Hue.ls_settings = "settings_v1"
 Hue.ls_room_state = "room_state_v2"
+Hue.ls_input_history = "input_history_v1"
 Hue.roles = ["admin", "op", "voice"]
 Hue.topic = ""
 Hue.colorlib = ColorLib()
-Hue.input_history = []
-Hue.input_history_index = 0
-Hue.input_history_crop_limit = 20
 Hue.userlist = []
 Hue.all_usernames = []
 Hue.role = ""
@@ -185,6 +183,7 @@ Hue.init = function () {
   Hue.setup_input()
   Hue.setup_modal_image()
   Hue.setup_footer()
+  Hue.get_input_history()
   Hue.prepare_media_settings()
   Hue.setup_message_window()
   Hue.setup_autocomplete()

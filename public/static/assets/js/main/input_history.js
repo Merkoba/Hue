@@ -1,3 +1,19 @@
+// Get input history
+Hue.get_input_history = function () {
+  Hue.input_history = Hue.get_local_storage(Hue.ls_input_history)
+
+  if (Hue.input_history === null) {
+    Hue.input_history = []
+  }
+
+  Hue.reset_input_history_index()
+}
+
+// Saves the input history localStorage object
+Hue.save_input_history = function (force = false) {
+  Hue.save_local_storage(Hue.ls_input_history, Hue.input_history, force)
+}
+
 // Adds an item to the input history
 Hue.add_to_input_history = function (message, change_index = true) {
   for (let i = 0; i < Hue.input_history.length; i++) {
@@ -12,15 +28,17 @@ Hue.add_to_input_history = function (message, change_index = true) {
 
   Hue.input_history.push(item)
 
-  if (Hue.input_history.length > Hue.input_history_crop_limit) {
+  if (Hue.input_history.length > Hue.config.input_history_crop_limit) {
     Hue.input_history = Hue.input_history.slice(
-      Hue.input_history.length - Hue.input_history_crop_limit
+      Hue.input_history.length - Hue.config.input_history_crop_limit
     )
   }
 
   if (change_index) {
     Hue.reset_input_history_index()
   }
+
+  Hue.save_input_history()
 }
 
 // Resets the input history item index
