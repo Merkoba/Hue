@@ -125,7 +125,7 @@
 	"db_write_file_timeout_limit": 10000,
 	"max_low_users": 100,
 	"radios": [
-		{"name": "Merkoba Radio", "url": "https://radio.merkoba.com:8765/radio.ogg", "metadata": "https://radio.merkoba.com:8765/status-json.xsl"},
+		{"name": "Merkoba FM", "url": "https://radio.merkoba.com:8765/radio.ogg", "metadata": "https://radio.merkoba.com:8765/status-json.xsl"},
 		{"name": "Lain Cyberia", "url": "https://lainon.life/radio/cyberia.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},
 		{"name": "Lain Cafe", "url": "https://lainon.life/radio/cafe.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},
 		{"name": "Lain Swing", "url": "https://lainon.life/radio/swing.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},
