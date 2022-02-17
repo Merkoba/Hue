@@ -317,10 +317,10 @@ Hue.activate_key_detection = function () {
       return
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {
-        if (Hue.get_input()) {
-          Hue.clear_input()
-        } else {
+        if (Hue.chat_scrolled) {
           Hue.goto_bottom(true)
+        } else {
+          Hue.check_clear_input()
         }
       }
     }
