@@ -1002,6 +1002,8 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
 
   if (!data.source) {
     data.source = Hue.config[`default_${type}_source`]
+    data.type = Hue.config[`default_${type}_type`]
+    data.title = Hue.config[`default_${type}_title`]
   }
 
   if (data.source.startsWith("/")) {
