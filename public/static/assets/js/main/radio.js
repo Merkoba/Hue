@@ -116,7 +116,6 @@ Hue.check_radio_play = function (win) {
   if (win.hue_playing) {
     Hue.pause_radio(win)
   } else {
-    Hue.active_radio = win
     Hue.play_radio(win)
   }
 }
