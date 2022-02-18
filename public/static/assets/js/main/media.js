@@ -620,9 +620,13 @@ Hue.toggle_media = function (args) {
   }
 
   if (args.feedback) {
-    let title = Hue.media_string(args.type)
-    let on_off = Hue.utilz.boolword(new_val, "On", "Off")
-    Hue.flash_info(title, `Visibility: ${on_off}`)
+    let ctype = Hue.media_string(args.type)
+
+    if (new_val) {
+      Hue.flash_info("Info", `${ctype} is now visible`)
+    } else {
+      Hue.flash_info("Info", `${ctype} is now invisible`)
+    }
   }
 }
 
@@ -652,9 +656,13 @@ Hue.change_media_lock = function(args) {
   Hue.change_media_lock_icon(args.type)
 
   if (args.feedback) {
-    let title = Hue.media_string(args.type)
-    let on_off = Hue.utilz.boolword(new_val, "On", "Off")
-    Hue.flash_info(title, `Lock: ${on_off}`)
+    let ctype = Hue.media_string(args.type)
+
+    if (new_val) {
+      Hue.flash_info("Info", `${ctype} is now locked`)
+    } else {
+      Hue.flash_info("Info", `${ctype} is now unlocked`)
+    }
   }
 }
 
