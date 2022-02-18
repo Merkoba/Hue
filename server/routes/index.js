@@ -8,7 +8,6 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   const fetch = require("node-fetch")
   const router = express.Router()
   const view_check_delay = 5000
-  const vars_path = path.join(__dirname, "vars")
   let config_mtime = 0
   let view_mtime = ""
 
@@ -31,6 +30,10 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     // Variables that should go in the config object
     view.vars = {}
 
+    for (let key in config) {
+      view.vars[key] = config[key]
+    }
+
     // Other variables that shouldn't go in the config object
     view.rvars = {}
 
@@ -38,9 +41,6 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     const tvars = {
       commands_prefix: config.commands_prefix,
     }
-
-    // Fill the config variables object
-    requireUncached(vars_path)(view, config)
 
     // Compile all templates
 
@@ -133,8 +133,6 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     walkdir(path.join(__dirname, "../views/main"), function (file) {
       mtime += fs.statSync(file).mtime.toString()
     })
-
-    mtime += fs.statSync(`${vars_path}.js`).mtime.toString()
 
     return mtime
   }
