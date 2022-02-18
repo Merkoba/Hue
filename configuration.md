@@ -170,6 +170,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_case_insensitive_username_highlights"
 >Whether highlights for current username are case insensitive by default.
 
+"settings_default_open_whispers_automatically"
+>Whether popup messages will open automatically when arrived by default.
+
 "settings_default_show_image_previews"
 >Whether image links get a preview on the chat area by default. This only works with certain links, including direct Imgur links.
 
