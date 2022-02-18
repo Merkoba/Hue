@@ -98,7 +98,7 @@ module.exports = function (
       }
     }
 
-    if (file.spam_charge > config.upload_spam_charge) {
+    if (file.spam_charge > sconfig.upload_spam_charge) {
       file.spam_charge = 0
       let spam_ans = await handler.add_spam(socket)
 

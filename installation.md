@@ -18,7 +18,7 @@ Example of how to use user_config.json:
 
 ```javascript
 {
-    "site_root": "https://mysite.com",
+    "max_topic_length": 2000,
     "min_password_length": 3
 }
 ```

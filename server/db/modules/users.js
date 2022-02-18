@@ -49,7 +49,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       })
 
       vars.bcrypt
-        .hash(info.password, config.encryption_cost)
+        .hash(info.password, sconfig.encryption_cost)
 
         .then(hash => {
           let user = {}
@@ -101,7 +101,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Dedicated function to change user password
   manager.change_user_password = function (id, password) {
     return new Promise((resolve, reject) => {
-      vars.bcrypt.hash(password, config.encryption_cost)
+      vars.bcrypt.hash(password, sconfig.encryption_cost)
       
       .then(hash => {
         manager.update_one("users", ["id", id], { password: hash, password_date: Date.now() })

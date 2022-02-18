@@ -29,7 +29,7 @@ module.exports = function (
         }
 
         if (reply) {
-          if (Date.now() - reply.date > config.redis_max_link_age) {
+          if (Date.now() - reply.date > sconfig.redis_max_link_age) {
             return handler.get_link_metadata(url, callback)
           } else {
             return callback(reply)
@@ -70,7 +70,7 @@ module.exports = function (
 
     vars
       .fetch_2(url, {
-        timeout: config.link_fetch_timeout,
+        timeout: sconfig.link_fetch_timeout,
       })
 
       .then((res) => {
@@ -90,11 +90,11 @@ module.exports = function (
         }
 
         let title_add_dots =
-          response.title.length > config.link_max_title_length
+          response.title.length > sconfig.link_max_title_length
 
         if (title_add_dots) {
           response.title =
-            response.title.substring(0, config.link_max_title_length).trim() +
+            response.title.substring(0, sconfig.link_max_title_length).trim() +
             "..."
         }
 
@@ -104,19 +104,19 @@ module.exports = function (
           ) || ""
 
         let description_add_dots =
-          response.description.length > config.link_max_description_length
+          response.description.length > sconfig.link_max_description_length
 
         if (description_add_dots) {
           response.description =
             response.description
-              .substring(0, config.link_max_description_length)
+              .substring(0, sconfig.link_max_description_length)
               .trim() + "..."
         }
 
         response.image =
           $('meta[property="og:image"]').eq(0).attr("content") || ""
 
-        if (response.image.length > config.link_max_image_length) {
+        if (response.image.length > sconfig.link_max_image_length) {
           response.image = ""
         }
 

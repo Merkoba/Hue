@@ -20,7 +20,7 @@ module.exports = function (
 
       let keys = Object.keys(data)
 
-      if (keys.length > config.data_max_items) {
+      if (keys.length > sconfig.data_max_items) {
         return false
       }
 
@@ -41,11 +41,11 @@ module.exports = function (
         let s = JSON.stringify(d)
 
         if (td === "number") {
-          if (s.length > config.data_items_max_number_length) {
+          if (s.length > sconfig.data_items_max_number_length) {
             return false
           }
         } else { 
-          if (s.length > config.data_items_max_string_length) {
+          if (s.length > sconfig.data_items_max_string_length) {
             return false
           }
         }

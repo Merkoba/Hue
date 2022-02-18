@@ -2,23 +2,11 @@
 
 Refer to [config.json](config/config.json) and [config.secret.json](config/config.secret.json) to check defaults.
 
-"https_enabled"
->Defaults to true for security reasons. If deployed in a non-https environment set it to false. In order for it to be really enabled the Node environment must be set to production. If true, some non https media will be blocked. It's recommended to setup a full https site to conform to current standards. Check out Let's Encrypt.
-
-"site_root"
->The root url where the system will work. Needs a slash at the end.
-
 "main_room_id"
 >The name of the main room. This is the room that will be joined when going to the root url. This room is created automatically when first joined.
 
-"media_directory"
->Internal path to were media files (user & rooms images etc) are stored.
-
 "public_media_directory"
 >Public location to access the media files.
-
-"default_main_room_name"
->The default name of the main room. Just like any room, this can be changed later.
 
 "default_room_background_color"
 >The initial background color for new rooms.
@@ -62,12 +50,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_title"
 >The default tab title of a room. This appears before the room information has been gathered to set the first title.
 
-"login_title"
->The title of the login page.
-
-"register_title"
->The title of the registration page.
-
 "default_topic"
 >The shown topic when the room is created.
 
@@ -94,15 +76,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "max_room_name_length"
 >Max length for room names.
-
-"max_room_id_length"
->Arbitrary big number to avoid big urls from being considered as valid room ids.
-
-"files_loop_interval"
->Interval of the loop to check for expired files that failed to be uploaded properly and delete them from memory.
-
-"files_loop_max_diff"
->Amount of time for file upload to be inactive for it to be considered expired.
 
 "upload_slice_size"
 >The size of file slices to be uploaded.
@@ -136,24 +109,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "iframes_enabled"
 >Whether embedded iframes are enabled.
-
-"anti_spam_max_limit"
->The bigger the number the more the anti-spam system tolerates.
-
-"anti_spam_ban_duration"
->How much time in minutes a user is banned from the system after being detected as a spammer by the automatic spam detection system.
-
-"anti_spam_check_delay"
->Checks connections every x ms to unban and reduce levels.
-
-"upload_spam_charge"
->The higher this number is, the slower it adds spam on file upload.
-
-"session_cookie_max_age"
->The amount of time a session cookie is valid. This cookie determines if a user needs to login again when entering.
-
-"encryption_cost"
->This is used for the password hashing. A cost of 12 are 4096 salt rounds. The more rounds, the more secure the hash is, but it takes longer to process.
 
 "max_url_length"
 >Url lengths beyond this are ignored by the system. This is to avoid triggering actions on urls that are likely wrong or meant as an attack.
@@ -206,15 +161,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_media_layout"
 >Default media area (image, tv) layout, either column or row.
 
-"jwt_expiration"
->How long jwt will be valid after login.
-
-"max_message_id_length"
->Maximum length for message ids (like chat message or media change ids)
-
-"max_user_id_length"
->After this length, this is clearly not a user id.
-
 "max_same_post_diff"
 >Maximum difference in time between a message and and another from the same user to be displayed within the same post.
 
@@ -242,23 +188,11 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "notifications_crop_limit"
 >How many notifications after the notifications items get cropped in the notifications window.
 
-"recaptcha_enabled"
->Whether recaptcha verification is used at registration.
-
 "socket_emit_throttle"
 >Throttle on socket emits on the client.
 
 "safe_limit_*"
 >Generic limits used to check data length.
-
-"data_max_items"
->Maximum amount of data items allowed in socket emits.
-
-"data_items_max_string_length"
->Used to check string data.
-
-"data_items_max_number_length"
->Used to check number data.
 
 "profilepic_diameter"
 >The diameter of the cropped profile image selected by the user.
@@ -280,15 +214,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "max_activity_bar_items"
 >Maximum amount of top activity bar items at the same time.
-
-"redis_max_link_age"
->How old link data has to be to be fetched again.
-
-"link_fetch_timeout"
->Maximum time to get a response when fetching link data.
-
-"link_max_title_length"
->After this the title from fetched link metadata gets cropped.
 
 "url_title_max_length"
 >Maximum length for urls to be shown fully in window titles. After this they get cropped and "..." is added.
@@ -325,17 +250,17 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_activity_username_length"
 >How wide usernames on the activity bar can be.
 
-"db_store_path"
->Where the database of users and rooms reside.
-
-"db_write_file_timeout"
->Timeout for DB write file cache.
-
-"db_write_file_timeout_limit"
->Max time without saving a file after a write call.
-
 "max_low_users"
 >After this amount of users consider a room to very populated and do some things differently.
+
+"radios"
+>Radios to autostart [ {"name": somename, "url": someurl, "metadata": someurl} ]
+
+"radio_metadata_check_delay"
+>How often make a metadata check while app radio window is open.
+
+"audioclip_delay"
+>Start playing audioclip after this time in ms.
 
 
 ## config.secret.json
@@ -358,11 +283,98 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "imgur_client_id"
 >Imgur client id.
 
-"radios"
->Radios to autostart [ {"name": somename, "url": someurl, "metadata": someurl} ]
+"db_store_path"
+>Where the database of users and rooms reside.
 
-"radio_metadata_check_delay"
->How often make a metadata check while app radio window is open
+"media_directory"
+>Internal path to were media files (user & rooms images etc) are stored.
+
+"files_loop_interval"
+>Interval of the loop to check for expired files that failed to be uploaded properly and delete them from memory.
+
+"files_loop_max_diff"
+>Amount of time for file upload to be inactive for it to be considered expired.
+
+"max_room_id_length"
+>Arbitrary big number to avoid big urls from being considered as valid room ids.
+
+"anti_spam_max_limit"
+>The bigger the number the more the anti-spam system tolerates.
+
+"anti_spam_ban_duration"
+>How much time in minutes a user is banned from the system after being detected as a spammer by the automatic spam detection system.
+
+"anti_spam_check_delay"
+>Checks connections every x ms to unban and reduce levels.
+
+"upload_spam_charge"
+>The higher this number is, the slower it adds spam on file upload.
+
+"session_cookie_max_age"
+>The amount of time a session cookie is valid. This cookie determines if a user needs to login again when entering.
+
+"encryption_cost"
+>This is used for the password hashing. A cost of 12 are 4096 salt rounds. The more rounds, the more secure the hash is, but it takes longer to process.
+
+"jwt_expiration"
+>How long jwt will be valid after login.
+
+"max_jwt_token_length"
+>Max length of the jwt token.
+
+"max_message_id_length"
+>Maximum length for message ids (like chat message or media change ids)
+
+"max_user_id_length"
+>After this length, this is clearly not a user id.
+
+"recaptcha_enabled"
+>Whether recaptcha verification is used at registration.
+
+"data_max_items"
+>Maximum amount of data items allowed in socket emits.
+
+"data_items_max_string_length"
+>Used to check string data.
+
+"data_items_max_number_length"
+>Used to check number data.
+
+"redis_max_link_age"
+>How old link data has to be to be fetched again.
+
+"link_fetch_timeout"
+>Maximum time to get a response when fetching link data.
+
+"link_max_title_length"
+>After this the title from fetched link metadata gets cropped.
+
+"link_max_description_length"
+>After this the description from fetched link metadata gets cropped.
+
+"link_max_image_length"
+>After this the title from fetched link metadata gets ignored.
+
+"db_write_file_timeout"
+>Timeout for DB write file cache.
+
+"db_write_file_timeout_limit"
+>Max time without saving a file after a write call.
+
+"https_enabled"
+>Defaults to true for security reasons. If deployed in a non-https environment set it to false. In order for it to be really enabled the Node environment must be set to production. If true, some non https media will be blocked. It's recommended to setup a full https site to conform to current standards. Check out Let's Encrypt.
+
+"site_root"
+>The root url where the system will work. Needs a slash at the end.
+
+"default_main_room_name"
+>The default name of the main room. Just like any room, this can be changed later.
+
+"login_title"
+>The title of the login page.
+
+"register_title"
+>The title of the registration page.
 
 
 ## Join Flags

@@ -32,7 +32,7 @@ module.exports = function (
       return handler.do_disconnect(socket)
     }
 
-    if (data.room_id.length > config.max_room_id_length) {
+    if (data.room_id.length > sconfig.max_room_id_length) {
       return handler.do_disconnect(socket)
     }
 
@@ -65,11 +65,11 @@ module.exports = function (
         return handler.do_disconnect(socket)
       }
 
-      if (data.user_id > config.max_user_id_length) {
+      if (data.user_id > sconfig.max_user_id_length) {
         return handler.do_disconnect(socket)
       }
 
-      if (data.token.length > config.max_jwt_token_length) {
+      if (data.token.length > sconfig.max_jwt_token_length) {
         return handler.do_disconnect(socket)
       }
     }

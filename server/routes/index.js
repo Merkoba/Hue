@@ -154,7 +154,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     }
 
     if (req.params.id !== undefined) {
-      let id = req.params.id.substr(0, config.max_room_id_length)
+      let id = req.params.id.substr(0, sconfig.max_room_id_length)
 
       if (id === config.main_room_id) {
         res.redirect(`/`)
@@ -184,7 +184,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
           } else {
             jwt.sign(
               {
-                exp: Math.floor(Date.now() + config.jwt_expiration),
+                exp: Math.floor(Date.now() + sconfig.jwt_expiration),
                 data: { id: req.session.user_id },
               },
               sconfig.jwt_secret,
@@ -215,11 +215,11 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     c.vars.message = decodeURIComponent(req.query.message)
     c.vars.max_max_username_length = config.max_max_username_length
     c.vars.max_max_password_length = config.max_max_password_length
-    c.vars.login_title = config.login_title
-    c.vars.recaptcha_enabled = config.recaptcha_enabled
+    c.vars.login_title = sconfig.login_title
+    c.vars.recaptcha_enabled = sconfig.recaptcha_enabled
     c.vars.form_username = decodeURIComponent(req.query.form_username)
 
-    if (config.recaptcha_enabled) {
+    if (sconfig.recaptcha_enabled) {
       c.vars.recaptcha_key = sconfig.recaptcha_key
     }
 
@@ -242,7 +242,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       return false
     }
 
-    if (config.recaptcha_enabled) {
+    if (sconfig.recaptcha_enabled) {
       check_captcha(req, res, function () {
         do_login(req, res, next)
       })
@@ -293,11 +293,11 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     c.vars.max_username_length = config.max_username_length
     c.vars.min_password_length = config.min_password_length
     c.vars.max_password_length = config.max_password_length
-    c.vars.register_title = config.register_title
-    c.vars.recaptcha_enabled = config.recaptcha_enabled
+    c.vars.register_title = sconfig.register_title
+    c.vars.recaptcha_enabled = sconfig.recaptcha_enabled
     c.vars.form_username = decodeURIComponent(req.query.form_username)
 
-    if (config.recaptcha_enabled) {
+    if (sconfig.recaptcha_enabled) {
       c.vars.recaptcha_key = sconfig.recaptcha_key
     }
 
@@ -330,7 +330,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       return false
     }
 
-    if (config.recaptcha_enabled) {
+    if (sconfig.recaptcha_enabled) {
       check_captcha(req, res, function () {
         do_register(req, res, next)
       })
@@ -454,7 +454,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     res,
     next
   ) {
-    view.rvars.room_id = req.params.id.substr(0, config.max_room_id_length)
+    view.rvars.room_id = req.params.id.substr(0, sconfig.max_room_id_length)
     view.rvars.user_id = req.session.user_id
     view.rvars.jwt_token = req.jwt_token
     res.render("main/main", view)

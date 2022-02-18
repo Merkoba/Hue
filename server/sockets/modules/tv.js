@@ -158,12 +158,12 @@ module.exports = function (
         data.title = ""
 
         if (data.type === "iframe") {
-          if (config.https_enabled && data.src.includes("http://")) {
+          if (sconfig.https_enabled && data.src.includes("http://")) {
             handler.user_emit(socket, "cannot_embed_iframe", {})
             return false
           }
 
-          if ((data.src + "/").includes(config.site_root)) {
+          if ((data.src + "/").includes(sconfig.site_root)) {
             handler.user_emit(socket, "cannot_embed_iframe", {})
             return false
           }

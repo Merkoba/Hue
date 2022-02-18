@@ -585,6 +585,8 @@ Hue.play_audioclip = function () {
 
 // Stops the profile audio
 Hue.stop_audioclip = function () {
+  clearTimeout(Hue.audioclip_timeout)
+
   if (Hue.audioclip) {
     Hue.audioclip.src = ""
     Hue.audioclip = undefined
@@ -662,7 +664,10 @@ Hue.show_profile = function (username, user_id = false) {
   Hue.msg_profile.show(function () {
     if (!same_user) {
       Hue.stop_audioclip()
-      Hue.play_audioclip()
+
+      Hue.audioclip_timeout = setTimeout(function () {
+        Hue.play_audioclip()
+      }, Hue.config.audioclip_delay)
     }
   })
 }
