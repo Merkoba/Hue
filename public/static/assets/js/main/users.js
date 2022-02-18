@@ -552,6 +552,7 @@ Hue.get_matching_usernames = function (s) {
 Hue.setup_show_profile = function () {
   Hue.el("#show_profile_whisper").addEventListener("click", function () {
     Hue.write_popup_message([Hue.open_profile_username])
+    Hue.msg_profile.close()
   })
 
   Hue.el("#show_profile_sync_tv").addEventListener("click", function () {
