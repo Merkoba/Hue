@@ -76,7 +76,7 @@ Hue.commands = {
         Hue.show_media_picker("tv")
       }
     },
-    description: "Changes the TV using a search term or URL",
+    description: "Changes the tv using a search term or URL",
   },
   "image": {
     action: (arg, ans) => {
@@ -86,7 +86,7 @@ Hue.commands = {
         Hue.show_media_picker("image")
       }
     },
-    description: "Changes the image with a URL",
+    description: "Changes the image using a search term or URL",
   },
   "topic": {
     action: (arg, ans) => {
@@ -221,37 +221,37 @@ Hue.commands = {
   },
   "lockimage": {
     action: (arg, ans) => {
-      Hue.change_media_lock({type:"image", what:true, feedback:true})
+      Hue.change_media_lock({type:"image", what:true})
     },
     description: `Locks the image`,
   },
   "locktv": {
     action: (arg, ans) => {
-      Hue.change_media_lock({type:"tv", what:true, feedback:true})
+      Hue.change_media_lock({type:"tv", what:true})
     },
     description: `Locks the tv`,
   },
   "unlockimage": {
     action: (arg, ans) => {
-      Hue.change_media_lock({type:"image", what:false, feedback:true})
+      Hue.change_media_lock({type:"image", what:false})
     },
     description: `Unlocks the image`,
   },
   "unlocktv": {
     action: (arg, ans) => {
-      Hue.change_media_lock({type:"tv", what:false, feedback:true})
+      Hue.change_media_lock({type:"tv", what:false})
     },
     description: `Unlocks the tv`,
   },
   "togglelockimage": {
     action: (arg, ans) => {
-      Hue.change_media_lock({type:"image", feedback:true})
+      Hue.change_media_lock({type:"image"})
     },
     description: `Toggles between lock and unlock the image`,
   },
   "togglelocktv": {
     action: (arg, ans) => {
-      Hue.change_media_lock({type:"tv", feedback:true})
+      Hue.change_media_lock({type:"tv"})
     },
     description: `Toggles between lock and unlock the tv`,
   },
@@ -453,7 +453,7 @@ Hue.commands = {
         Hue.sync_tv(arg)
       }
     },
-    description: `Syncs a TV video with another user's video progress`,
+    description: `Syncs a tv video with another user's video progress`,
   },
   "messageboard": {
     action: (arg, ans) => {
@@ -471,7 +471,7 @@ Hue.commands = {
     action: (arg, ans) => {
       Hue.do_media_tv_size_change(arg)
     },
-    description: `Change the percentage of the TV area`,
+    description: `Change the percentage of the tv area`,
   },
   "swap": {
     action: (arg, ans) => {
@@ -484,6 +484,12 @@ Hue.commands = {
       Hue.swap_media_layout()
     },
     description: `Shortcut to change media layout`,
+  },
+  "revolve": {
+    action: (arg, ans) => {
+      Hue.change_main_layout()
+    },
+    description: `Shortcut to change main layout`,
   },
   "profile": {
     action: (arg, ans) => {
@@ -511,7 +517,7 @@ Hue.commands = {
     action: (arg, ans) => {
       Hue.open_draw_image("image")
     },
-    description: `Open drawing window`,
+    description: `Open the drawing window`,
   },
   "clear": {
     action: (arg, ans) => {
