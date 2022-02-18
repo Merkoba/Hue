@@ -30,17 +30,6 @@ Hue.user_settings = {
       }
     },
   },
-  open_whispers_automatically: {
-    widget_type: "checkbox",
-    description: `Whether messages received should open in a window automatically`,
-    action: (save = true) => {
-      Hue.settings.open_whispers_automatically = Hue.el(`#settings_open_whispers_automatically`).checked
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   show_image_previews: {
     widget_type: "checkbox",
     description: `Whether to show image previews on certain chat image links`,
