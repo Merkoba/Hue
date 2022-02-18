@@ -26,6 +26,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_tv_type"
 >The type of the default_tv_source, either "video", "youtube", "twitch", "soundcloud" or "iframe".
 
+"default_image_type"
+>The type of the default_image_source, either "upload" or "link".
+
 "default_profilepic_url"
 >The location of the default profile image.
 

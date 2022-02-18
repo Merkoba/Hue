@@ -7,6 +7,7 @@
 	"default_tv_title": "Grand Dad Metropolis",
 	"default_tv_type": "youtube",
 	"default_image_source": "/static/assets/img/default_image.jpg",
+	"default_image_type": "link",
 	"default_profilepic_url": "/static/assets/img/profile.jpg",
 	"profilepic_loading_url": "/static/assets/img/profilepic_loading.jpg",
 	"default_background_url": "/static/assets/img/default_background.jpg",
