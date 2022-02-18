@@ -3,6 +3,9 @@ Hue.setup_radio = function () {
   for (let radio of Hue.config.radios) {
     Hue.start_radio(radio)
   }
+  
+  Hue.create_radio_buttons()
+  Hue.make_radio_queue()
 
   Hue.el("#footer_radio_icon_container").addEventListener("wheel", function (e) {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
@@ -247,8 +250,24 @@ Hue.create_radio_item = function (win) {
   })
 
   win.hue_radio_item = container
-  Hue.check_radio_playing(win)
-  Hue.check_any_radio_playing()
+  Hue.el("#radio_items").append(container)
+}
+
+// Create radio buttons
+Hue.create_radio_buttons = function () {
+  let container = Hue.div("radio_item action")
+  container.innerHTML = Hue.template_radio_item()
+  
+  let icon = Hue.el(".radio_item_icon", container)
+  jdenticon.update(icon, "Random")
+  
+  let name = Hue.el(".radio_item_name", container)
+  name.textContent = "Random"
+  
+  container.addEventListener("click", function (e) {
+    Hue.play_random_radio()
+  })
+
   Hue.el("#radio_items").append(container)
 }
 
@@ -283,4 +302,26 @@ Hue.change_radio_volume = function (direction) {
   }
 
   Hue.flash_info("Radio", `Volume: ${new_volume_p}%`)
+}
+
+// Play a random radio station
+Hue.play_random_radio = function () {
+  let win = Hue.radio_queue.pop()
+  
+  if (Hue.radio_queue.length === 0) {
+    Hue.make_radio_queue()
+  }
+
+  if (win.hue_playing) {
+    Hue.play_random_radio()
+    return
+  }
+
+  Hue.get_radio_player(win).play()
+}
+
+// Fill items for the random button
+Hue.make_radio_queue = function () {
+  Hue.radio_queue = Hue.radio_windows.slice(0)
+  Hue.utilz.shuffle_array(Hue.radio_queue)
 }

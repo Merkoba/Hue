@@ -101,6 +101,19 @@ const Utilz = function () {
 		return num
 	}
 
+	utilz.get_random_item = function (items) {
+		return items[utilz.get_random_int(0, items.length - 1)]
+	}
+
+	utilz.shuffle_array = function (array) {
+    for (let i = array.length - 1; i > 0; i--) {
+			let j = Math.floor(Math.random() * (i + 1))
+			let temp = array[i]
+			array[i] = array[j]
+			array[j] = temp
+		}
+	}
+
 	utilz.get_random_string = function (n) {
 		let text = ""
 
