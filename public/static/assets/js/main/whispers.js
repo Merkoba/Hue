@@ -190,16 +190,10 @@ Hue.whisper_received = function (data) {
   let message = `Whisper from ${data.username}`
   let func = function () { Hue.show_whisper(data) }
   let item = Hue.make_info_popup_item({icon: "envelope", message: message, push: false})
-
-  let open = Hue.get_setting("open_whispers_automatically") && !Hue.screen_locked
-  data.notification = Hue.push_whisper(message, func, open, data)
-  
-  if (open) {
-    Hue.show_whisper(data)
-    Hue.on_activity("whisper")
-  } else {
-    Hue.show_popup(Hue.make_info_popup(func), item)
-  }
+  data.notification = Hue.push_whisper(message, func, false, data)
+  Hue.show_popup(Hue.make_info_popup(func), item)
+  Hue.show_whispers()
+  Hue.on_activity("whisper")
 }
 
 // Shows a whisper message
