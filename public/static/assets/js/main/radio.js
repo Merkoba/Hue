@@ -7,9 +7,11 @@ Hue.setup_radio = function () {
   for (let radio of Hue.config.radios) {
     Hue.start_radio(radio)
   }
-  
-  Hue.create_radio_buttons()
-  Hue.make_radio_queue()
+
+  if (Hue.config.radios.length > 1) {
+    Hue.make_radio_random_button()
+    Hue.make_radio_queue()
+  }
 
   Hue.el("#footer_radio_icon_container").addEventListener("wheel", function (e) {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
@@ -266,7 +268,7 @@ Hue.create_radio_item = function (win) {
 }
 
 // Create radio buttons
-Hue.create_radio_buttons = function () {
+Hue.make_radio_random_button = function () {
   let container = Hue.div("radio_item action")
   container.innerHTML = Hue.template_radio_item()
   
