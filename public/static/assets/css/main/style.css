@@ -2460,7 +2460,7 @@ pre {
 	padding: 0.25rem;
 	z-index: 10;
 	font-size: 1.2rem;
-	width: 14rem;
+	min-width: 14rem;
 	overflow: hidden;
 }
 

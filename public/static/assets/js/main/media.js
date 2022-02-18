@@ -583,8 +583,7 @@ Hue.toggle_media = function (args) {
     type: "",
     what: undefined, 
     save: true,
-    feedback: false,
-    mode: ""
+    feedback: false
   }
 
   args = Object.assign(def_args, args)
