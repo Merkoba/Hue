@@ -337,6 +337,11 @@ Hue.setup_message_window = function () {
   })
 
   Hue.el("#write_message_add_user").addEventListener("click", function () {
+    if (Hue.message_usernames.length >= Hue.config.max_whisper_users) {
+      Hue.showmsg("Max whisper users reached")
+      return
+    }
+
     Hue.show_userlist_window("whisper")
   })
 }
