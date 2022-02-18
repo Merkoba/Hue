@@ -19,7 +19,7 @@ module.exports = function (
   vars.he = require("he")
 
   vars.root_path = vars.path.join(__dirname, "../../")
-  vars.media_root = vars.path.join(vars.root_path, config.media_directory)
+  vars.media_root = vars.path.join(vars.root_path, sconfig.media_directory)
   vars.roles = ["admin", "op", "voice"]
   vars.media_types = ["image", "tv"]
   vars.redis_client_ready = false

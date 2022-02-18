@@ -17,7 +17,7 @@ module.exports = function (
       }
 
       handler.files_timeout_action()
-    }, config.files_loop_interval)
+    }, sconfig.files_loop_interval)
   }
 
   // What to do on each room timeout iteration
@@ -26,7 +26,7 @@ module.exports = function (
       for (let key in vars.files) {
         let file = vars.files[key]
 
-        if (Date.now() - file.updated > config.files_loop_max_diff) {
+        if (Date.now() - file.updated > sconfig.files_loop_max_diff) {
           delete vars.files[key]
         }
       }

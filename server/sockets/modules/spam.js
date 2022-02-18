@@ -18,7 +18,7 @@ module.exports = function (
   handler.anti_spam_timeout = function () {
     setTimeout(function () {
       handler.files_timeout_action()
-    }, config.anti_spam_check_delay)
+    }, sconfig.anti_spam_check_delay)
   }
 
   // What to do on each anti spam iteration
@@ -63,7 +63,7 @@ module.exports = function (
 
       user.level += 1
   
-      if (user.level >= config.anti_spam_max_limit) {
+      if (user.level >= sconfig.anti_spam_max_limit) {
         handler.anti_spam_ban(socket)
       }
 
@@ -79,7 +79,7 @@ module.exports = function (
   }
 
   // Ban a user from connecting
-  handler.anti_spam_ban = function (socket, minutes = config.anti_spam_ban_duration) {
+  handler.anti_spam_ban = function (socket, minutes = sconfig.anti_spam_ban_duration) {
     let ip = handler.get_ip_address(socket)
     let user = handler.anti_spam_users[ip]
     

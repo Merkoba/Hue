@@ -8,24 +8,24 @@ let update_calling = false
 module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Get the full file path
   function get_file_path (type, file_name) {
-    return path.join(root_path, `${config.db_store_path}/${type}/${file_name}`)
+    return path.join(root_path, `${sconfig.db_store_path}/${type}/${file_name}`)
   }
 
   // Get the full dir path
   function get_dir_path (type) {
-    return path.join(root_path, `${config.db_store_path}/${type}`)
+    return path.join(root_path, `${sconfig.db_store_path}/${type}`)
   }
 
   // Write to a file
   function write_file (path) {
     clearTimeout(cache[path].timeout)
 
-    if (Date.now() - cache[path].last_write > config.db_write_file_timeout_limit) {
+    if (Date.now() - cache[path].last_write > sconfig.db_write_file_timeout_limit) {
       do_write_file(path)
     } else {
       cache[path].timeout = setTimeout(() => {
         do_write_file(path)
-      }, config.db_write_file_timeout)
+      }, sconfig.db_write_file_timeout)
     }
   }
 

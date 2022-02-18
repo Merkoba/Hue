@@ -34,7 +34,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
   utilz.loginfo(`ENV: ${app.get("env")}`)
 
-  if (app.get("env") === "production" && config.https_enabled) {
+  if (app.get("env") === "production" && sconfig.https_enabled) {
     app.set("trust proxy", 1)
   }
 
@@ -44,7 +44,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       saveUninitialized: false,
       secret: sconfig.session_secret,
       resave: false,
-      cookie: { maxAge: config.session_cookie_max_age }
+      cookie: { maxAge: sconfig.session_cookie_max_age }
     })
   )
 

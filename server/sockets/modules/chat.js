@@ -43,11 +43,11 @@ module.exports = function (
       return false
     }
 
-    if (quote_user_id.length > config.max_user_id_length) {
+    if (quote_user_id.length > sconfig.max_user_id_length) {
       return false
     }
 
-    if (quote_id.length > config.max_message_id_length) {
+    if (quote_id.length > sconfig.max_message_id_length) {
       return false
     }
 
@@ -175,7 +175,7 @@ module.exports = function (
       return false
     }
 
-    if (data.id.length > config.max_message_id_length) {
+    if (data.id.length > sconfig.max_message_id_length) {
       return false
     }
 
@@ -300,7 +300,7 @@ module.exports = function (
       return false
     }
 
-    if (data.id.length > config.max_message_id_length) {
+    if (data.id.length > sconfig.max_message_id_length) {
       return false
     }
 
@@ -338,7 +338,7 @@ module.exports = function (
       return false
     }
 
-    if (data.id.length > config.max_message_id_length) {
+    if (data.id.length > sconfig.max_message_id_length) {
       return false
     }    
 

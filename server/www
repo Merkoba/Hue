@@ -84,7 +84,7 @@ function start_config_check() {
 }
 
 function create_db_backup() {
-	let store_path = path.join(__dirname, `../${config.db_store_path}`)
+	let store_path = path.join(__dirname, `../${sconfig.db_store_path}`)
 
 	tar.c({
 			gzip: true,
@@ -140,11 +140,11 @@ logger.log_error = function (msg) {
 const db_manager = require("./db/main.js")(config, sconfig, utilz, logger)
 
 // Check if main room exists
-let main_room_path = path.join(__dirname, "../", `${config.db_store_path}/rooms/${config.main_room_id}`)
+let main_room_path = path.join(__dirname, "../", `${sconfig.db_store_path}/rooms/${config.main_room_id}`)
 
 // If it doesn't exist then create a minimal room object
 if (!fs.existsSync(main_room_path)) {
-	let obj = {id: config.main_room_id, name: config.default_main_room_name}
+	let obj = {id: config.main_room_id, name: sconfig.default_main_room_name}
 	fs.writeFileSync(main_room_path, JSON.stringify(obj), "utf-8")
 	utilz.loginfo("Main room created")
 }
