@@ -471,9 +471,6 @@ body * {
 	opacity: 0.8;
 	font-size: 0.85rem;
 	white-space: nowrap;
-}
-
-#chat_area .chat_timeago {
 	margin-left: 0.5rem;
 }
 
@@ -1639,6 +1636,10 @@ a.special_link:hover {
 
 .media_history_container .brk {
 	display: none;
+}
+
+.media_history_container .chat_timeago {
+	margin-left: 0;
 }
 
 #media_menu {
