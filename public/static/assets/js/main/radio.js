@@ -1,5 +1,9 @@
 // Setup radios
 Hue.setup_radio = function () {
+  if (Hue.config.radios.length === 0) {
+    return
+  }
+  
   for (let radio of Hue.config.radios) {
     Hue.start_radio(radio)
   }
