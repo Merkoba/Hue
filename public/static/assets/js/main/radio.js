@@ -83,7 +83,7 @@ Hue.stop_radio_players = function (win) {
       continue
     }
 
-    Hue.get_radio_player(w).pause()
+    Hue.pause_radio(w)
   }
 }
 
@@ -113,15 +113,24 @@ Hue.toggle_radio_items = function () {
 
 // Play or pause radio
 Hue.check_radio_play = function (win) {
-  let player = Hue.get_radio_player(win)
-
   if (win.hue_playing) {
-    player.pause()
+    Hue.pause_radio(win)
   } else {
     Hue.active_radio = win
-    player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
-    player.play()
+    Hue.play_radio(win)
   }
+}
+
+// Play the audio player with a cache-busted url
+Hue.play_radio = function (win) {
+  let player = Hue.get_radio_player(win)
+  player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
+  player.play()
+}
+
+// Pause the audio player
+Hue.pause_radio = function (win) {
+  Hue.get_radio_player(win).pause()
 }
 
 // Fetch a radio's metadata
@@ -321,7 +330,7 @@ Hue.play_random_radio = function () {
     return
   }
 
-  Hue.get_radio_player(win).play()
+  Hue.play_radio(win)
 }
 
 // Fill items for the random button
