@@ -195,7 +195,9 @@ Hue.whisper_received = function (data) {
   Hue.on_activity("whisper")
   
   if (Hue.get_setting("open_whispers_automatically")) {
-    Hue.show_whispers()
+    if (!Hue.msg_whispers.is_open()) {
+      Hue.show_whispers()
+    }
   }
 }
 
