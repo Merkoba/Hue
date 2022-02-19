@@ -289,13 +289,13 @@ Hue.change_radio_volume = function (direction) {
   let new_volume = Hue.radio_volume
 
   if (direction === "up") {
-    new_volume += 0.1  
+    new_volume += 0.05  
 
     if (new_volume > 1) {
       new_volume = 1
     }
   } else if (direction === "down") {
-    new_volume -= 0.1
+    new_volume -= 0.05
 
     if (new_volume < 0) {
       new_volume = 0
