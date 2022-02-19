@@ -108,7 +108,7 @@ Hue.submit_input = function () {
   let val = Hue.get_input()
 
   if (val) {
-    Hue.process_message({
+    Hue.process_input({
       message: Hue.get_input()
     })
   
@@ -125,7 +125,7 @@ Hue.get_input = function () {
 
 // Turns this * into this *
 Hue.input_to_thirdperson = function (text) {
-  Hue.process_message({message:`* ${text} *`})
+  Hue.process_input({message:`* ${text} *`})
 }
 
 // Clear input or restore last value
@@ -134,5 +134,66 @@ Hue.check_clear_input = function () {
     Hue.clear_input()
   } else if (Hue.last_input_text) {
     Hue.change_input(Hue.last_input_text)
+  }
+}
+
+// Process user's input messages
+// Checks if it is a command and executes it
+// Or sends a chat message to the server
+Hue.process_input = function (args = {}) {
+  let def_args = {
+    message: "",
+    to_history: true,
+    clr_input: true,
+    edit_id: false,
+    handle_url: true,
+    quote: "",
+    quote_username: "",
+    quote_user_id: "",
+    quote_id: ""
+  }
+
+  args = Object.assign(def_args, args)
+
+  if (!args.message.trim()) {
+    return false
+  }
+
+  args.message = Hue.utilz.remove_pre_empty_lines(args.message)
+  args.message = Hue.utilz.remove_multiple_empty_lines(args.message)
+  args.message = Hue.utilz.untab_string(args.message).trimEnd()
+
+  let message_split = args.message.split("\n")
+  let num_lines = message_split.length
+  
+  if (num_lines === 1 && Hue.is_command(args.message) && !args.edit_id) {
+    let ans = Hue.execute_command(args.message, {
+      to_history: args.to_history,
+      clr_input: args.clr_input,
+    })
+
+    args.to_history = ans.to_history
+    args.clr_input = ans.clr_input
+  } else {
+    if (args.message.length > Hue.config.max_input_length) {
+      args.message = args.message.substring(0, Hue.config.max_input_length)
+    }
+
+    Hue.socket_emit("sendchat", {
+      message: args.message,
+      edit_id: args.edit_id,
+      quote: args.quote,
+      quote_username: args.quote_username,
+      quote_user_id: args.quote_user_id,
+      quote_id: args.quote_id
+    })
+  }
+
+  if (args.to_history) {
+    Hue.add_to_input_history(args.message)
+  }
+
+  if (args.clr_input) {
+    Hue.clear_input()
   }
 }
