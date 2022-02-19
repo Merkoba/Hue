@@ -9,8 +9,11 @@ Hue.setup_radio = function () {
   }
 
   if (Hue.config.radios.length > 1) {
-    Hue.make_radio_random_button()
-    Hue.make_radio_queue()
+    Hue.create_radio_util("Random", function () {
+      Hue.play_random_radio()
+    })
+
+    Hue.fill_radio_queue()
   }
 
   Hue.el("#footer_radio_icon_container").addEventListener("wheel", function (e) {
@@ -33,7 +36,7 @@ Hue.start_radio = function (radio) {
   win.create()
 
   win.set_title(radio.name)
-  win.set(Hue.template_radio({url: Hue.utilz.cache_bust_url(radio.url)}))
+  win.set(Hue.template_radio())
   Hue.setup_radio_player(win)
 
   Hue.el(".radio_reload", win.window).addEventListener("click", function () {
@@ -267,18 +270,17 @@ Hue.create_radio_item = function (win) {
 }
 
 // Make a button to pick a random radio
-Hue.make_radio_random_button = function () {
+Hue.create_radio_util = function (name, on_click) {
   let container = Hue.div("radio_item action")
   container.innerHTML = Hue.template_radio_item()
   
   let icon = Hue.el(".radio_item_icon", container)
-  jdenticon.update(icon, "Random")
+  jdenticon.update(icon, name)
   
-  let name = Hue.el(".radio_item_name", container)
-  name.textContent = "Random"
+  Hue.el(".radio_item_name", container).textContent = name
   
-  container.addEventListener("click", function (e) {
-    Hue.play_random_radio()
+  container.addEventListener("click", function () {
+    on_click()
   })
 
   Hue.el("#radio_items").append(container)
@@ -322,7 +324,7 @@ Hue.play_random_radio = function () {
   let win = Hue.radio_queue.pop()
   
   if (Hue.radio_queue.length === 0) {
-    Hue.make_radio_queue()
+    Hue.fill_radio_queue()
   }
 
   if (win.hue_playing) {
@@ -334,7 +336,7 @@ Hue.play_random_radio = function () {
 }
 
 // Fill items for the random button
-Hue.make_radio_queue = function () {
+Hue.fill_radio_queue = function () {
   Hue.radio_queue = Hue.radio_windows.slice(0)
   Hue.utilz.shuffle_array(Hue.radio_queue)
 }
