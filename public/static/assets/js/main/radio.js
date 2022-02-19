@@ -269,7 +269,7 @@ Hue.create_radio_item = function (win) {
   Hue.el("#radio_items").append(container)
 }
 
-// Make a button to pick a random radio
+// Create a specialized radio button
 Hue.create_radio_util = function (name, on_click) {
   let container = Hue.div("radio_item action")
   container.innerHTML = Hue.template_radio_item()
