@@ -985,7 +985,7 @@ Hue.delete_messages_above = function (id) {
     return false
   }
 
-  Hue.show_confirm("Delete Above", "Delete messages above this message", function () {
+  Hue.show_confirm("Delete Above", "Delete all messages above this message", function () {
     Hue.socket_emit("delete_messages_above", {
       id: id
     })
@@ -998,7 +998,7 @@ Hue.delete_messages_below = function (id) {
     return false
   }
 
-  Hue.show_confirm("Delete Below", "Delete messages below this message", function () {
+  Hue.show_confirm("Delete Below", "Delete all messages below this message", function () {
     Hue.socket_emit("delete_messages_below", {
       id: id
     })
