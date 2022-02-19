@@ -247,7 +247,6 @@ Hue.clear_radio_metadata = function (win) {
 Hue.create_radio_item = function (win) {
   let container = Hue.div("radio_item action")
   container.innerHTML = Hue.template_radio_item()
-  container.title = win.hue_radio_url
   
   let icon = Hue.el(".radio_item_icon", container)
   jdenticon.update(icon, win.hue_radio_name)
