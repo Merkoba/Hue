@@ -1,5 +1,5 @@
 // This generates all user chat messages inserted into the chat
-Hue.add_chat_message = function (args = {}) {
+Hue.make_chat_message = function (args = {}) {
   let def_args = {
     id: false,
     user_id: false,
@@ -227,7 +227,7 @@ Hue.add_chat_message = function (args = {}) {
     Hue.setup_link_preview(fmessage)
   }
 
-  let message_id = Hue.add_to_chat({
+  let message_id = Hue.insert_message({
     id: args.id,
     message: fmessage,
     just_edited: args.just_edited,
@@ -251,7 +251,7 @@ Hue.add_chat_message = function (args = {}) {
 }
 
 // This generates all announcements inserted into the chat
-Hue.add_chat_announcement = function (args = {}) {
+Hue.make_announcement_message = function (args = {}) {
   let def_args = {
     id: false,
     brk: "",
@@ -390,7 +390,7 @@ Hue.add_chat_announcement = function (args = {}) {
   Hue.dataset(fmessage, "in_log", args.in_log)
   Hue.dataset(fmessage, "media_source", args.media_source)
 
-  let message_id = Hue.add_to_chat({
+  let message_id = Hue.insert_message({
     message: fmessage
   }).message_id
 
@@ -405,8 +405,8 @@ Hue.add_chat_announcement = function (args = {}) {
   }
 }
 
-// This is a centralized function to insert all messages or announcements into the chat
-Hue.add_to_chat = function (args = {}) {
+// This is a centralized function to insert all chat messages or announcements into the chat
+Hue.insert_message = function (args = {}) {
   let def_args = {
     id: false,
     message: false,
@@ -506,6 +506,7 @@ Hue.add_to_chat = function (args = {}) {
 
     if (Hue.chat_scrolled) {
       Hue.check_scrollers()
+      Hue.update_scroll_percentage()
     }
 
     if (highlighted) {
@@ -736,7 +737,7 @@ Hue.submit_reply = function () {
     quote += "..."
   }
 
-  Hue.process_message({
+  Hue.process_input({
     message: reply,
     quote: quote,
     quote_username: Hue.quote_username,
@@ -931,7 +932,7 @@ Hue.send_edit_messsage = function (id) {
       return false
     }
 
-    Hue.process_message({
+    Hue.process_input({
       message: new_message,
       edit_id: edit_id,
       to_history: false
@@ -1272,7 +1273,7 @@ Hue.jump_to_chat_message_by_id = function (id) {
 
 // What to do after receiving a chat message from the server
 Hue.on_chat_message = function (data) {
-  Hue.add_chat_message({
+  Hue.make_chat_message({
     id: data.id,
     user_id: data.user_id,
     username: data.username,
@@ -1701,7 +1702,7 @@ Hue.show_log_messages = function (log_messages) {
 
       if (data) {
         if (type === "chat") {
-          Hue.add_chat_message({
+          Hue.make_chat_message({
             id: id,
             user_id: data.user_id,
             username: data.username,
@@ -1734,7 +1735,7 @@ Hue.show_log_messages = function (log_messages) {
 
 // Sends a simple shrug chat message
 Hue.shrug = function () {
-  Hue.process_message({
+  Hue.process_input({
     message: "¯\\_(ツ)_/¯",
     to_history: false,
   })
@@ -1756,7 +1757,7 @@ Hue.feedback = function (message, data = false) {
     obj.brk = `<div class='inline'>${obj.brk}</div>`
   }
 
-  return Hue.add_chat_announcement(obj)
+  return Hue.make_announcement_message(obj)
 }
 
 // Centralized function to show public announcement messages
@@ -1779,7 +1780,7 @@ Hue.public_feedback = function (message, data = false) {
     obj.highlight = true
   }
 
-  return Hue.add_chat_announcement(obj)
+  return Hue.make_announcement_message(obj)
 }
 
 // Setups some chat configs
