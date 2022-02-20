@@ -2378,6 +2378,7 @@ pre {
 	display: flex;
 	flex-direction: column;
 	z-index: 100;
+	color: var(--font_color);
 }
 
 .radio_item {
@@ -2390,7 +2391,6 @@ pre {
 	overflow: hidden;
 	white-space: nowrap;
 	background-color: var(--altbackground);
-	color: var(--font_color);
 	outline: 2px solid var(--altcolor);
 	user-select: none;
 	width: 10rem;
@@ -2414,6 +2414,15 @@ pre {
 	padding-right: 0.35rem;
 	padding-top: 0.25rem;
 	padding-bottom: 0.25rem;
+}
+
+.radio_item_buttons {
+	gap: 0.8rem;
+}
+
+#radio_button_playstop {
+	width: calc(var(--icon_size) * 1.2);
+	height: calc(var(--icon_size) * 1.2);
 }
 
 .glowing::before {

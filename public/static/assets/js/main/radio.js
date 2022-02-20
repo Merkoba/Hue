@@ -8,13 +8,8 @@ Hue.setup_radio = function () {
     Hue.start_radio(radio)
   }
 
-  if (Hue.config.radios.length > 1) {
-    Hue.create_radio_util("Random", function () {
-      Hue.play_random_radio()
-    })
-
-    Hue.fill_radio_queue()
-  }
+  Hue.create_radio_item_buttons()
+  Hue.fill_radio_queue()
 
   Hue.el("#footer_radio_icon_container").addEventListener("wheel", function (e) {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
@@ -127,6 +122,7 @@ Hue.check_radio_play = function (win) {
 
 // Play the audio player with a cache-busted url
 Hue.play_radio = function (win) {
+  Hue.playing_radio = win
   let player = Hue.get_radio_player(win)
   player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
   player.play()
@@ -235,8 +231,10 @@ Hue.stop_radio_metadata_loop = function () {
 Hue.check_any_radio_playing = function () {
   if (Hue.radio_windows.some(x => x.hue_playing)) {
     Hue.el("#footer_radio_icon").classList.add("rotate")
+    Hue.el("#radio_button_playstop use").href.baseVal = "#icon_pause"
   } else {
     Hue.el("#footer_radio_icon").classList.remove("rotate")
+    Hue.el("#radio_button_playstop use").href.baseVal = "#icon_play"
   }
 }
 
@@ -270,17 +268,26 @@ Hue.create_radio_item = function (win) {
 }
 
 // Create a specialized radio button
-Hue.create_radio_util = function (name, on_click) {
-  let container = Hue.div("radio_item action")
-  container.innerHTML = Hue.template_radio_item()
+Hue.create_radio_item_buttons = function (name, on_click) {
+  let container = Hue.div("radio_item radio_item_buttons")
+  container.innerHTML = Hue.template_radio_item_buttons()
+
+  Hue.el("#radio_button_random", container).addEventListener("click", function () {
+    Hue.play_random_radio()
+  })
+
+  Hue.el("#radio_button_playstop", container).addEventListener("click", function () {
+    if (Hue.playing_radio) {
+      Hue.check_radio_play(Hue.playing_radio)
+    } else {
+      Hue.play_random_radio()
+    }
+  })
   
-  let icon = Hue.el(".radio_item_icon", container)
-  jdenticon.update(icon, name)
-  
-  Hue.el(".radio_item_name", container).textContent = name
-  
-  container.addEventListener("click", function () {
-    on_click()
+  Hue.el("#radio_button_info", container).addEventListener("click", function () {
+    if (Hue.playing_radio) {
+      Hue.playing_radio.show()
+    }
   })
 
   Hue.el("#radio_items").append(container)
