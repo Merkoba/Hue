@@ -69,7 +69,10 @@ Hue.urlize = function (el, limit_width = true) {
 }
 
 // Goes to a url
-Hue.goto_url = function (url, mode) {
+Hue.goto_url = function (url, mode, encode = false) {
+  if (encode) {
+    url = encodeURI(url)
+  }
   if (mode === "tab") {
     window.open(url, "_blank")
   } else {

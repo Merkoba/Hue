@@ -41,11 +41,14 @@ Hue.start_radio = function (radio) {
   })
 
   Hue.el(".radio_clipboard", win.window).addEventListener("click", function () {
-    let artist = Hue.el(".radio_metadata_artist", win.content).textContent
-    let title = Hue.el(".radio_metadata_title", win.content).textContent
-    let s = `${artist} ${title}`.trim()
-    Hue.copy_string(s)
+    Hue.copy_string(Hue.get_radio_string(win))
     Hue.showmsg("Copied to clipboard", true)
+  })  
+
+  Hue.el(".radio_search", win.window).addEventListener("click", function () {
+    let s = Hue.get_radio_string(win)
+    let url = `https://www.youtube.com/results?search_query=${s}`
+    Hue.goto_url(url, "tab", true)
   })
   
   Hue.horizontal_separator(Hue.el(".radio_buttons", win.content))
@@ -346,4 +349,11 @@ Hue.play_random_radio = function () {
 Hue.fill_radio_queue = function () {
   Hue.radio_queue = Hue.radio_windows.slice(0)
   Hue.utilz.shuffle_array(Hue.radio_queue)
+}
+
+// Get artist title string
+Hue.get_radio_string = function (win) {
+  let artist = Hue.el(".radio_metadata_artist", win.content).textContent
+  let title = Hue.el(".radio_metadata_title", win.content).textContent
+  return `${artist} ${title}`.trim()
 }
