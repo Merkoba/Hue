@@ -3,6 +3,9 @@ Hue.setup_radio = function () {
   if (Hue.config.radios.length === 0) {
     return
   }
+
+  Hue.create_radio_item_volume()
+  Hue.apply_radio_volume(1)
   
   for (let radio of Hue.config.radios) {
     Hue.start_radio(radio)
@@ -76,7 +79,7 @@ Hue.setup_radio_player = function (win) {
     win.hue_playing = false
     Hue.check_radio_playing(win)
     Hue.check_any_radio_playing()
-  })  
+  }) 
 }
 
 // Stop all radio players except active one
@@ -296,6 +299,13 @@ Hue.create_radio_item_buttons = function (name, on_click) {
   Hue.el("#radio_items").append(container)
 }
 
+// Create volume widget item for radio
+Hue.create_radio_item_volume = function () {
+  let container = Hue.div("radio_item radio_item_volume")
+  container.innerHTML = Hue.template_radio_item_volume()
+  Hue.el("#radio_items").append(container)
+}
+
 // Increase or decrease radio volume
 Hue.change_radio_volume = function (direction) {
   let new_volume = Hue.radio_volume
@@ -315,18 +325,23 @@ Hue.change_radio_volume = function (direction) {
   }
 
   new_volume = Hue.utilz.round(new_volume, 2)
-  new_volume_p = Math.round(new_volume * 100)
   
   if (new_volume !== Hue.radio_volume) {
-    Hue.radio_volume = new_volume
-    
-    for (let win of Hue.radio_windows) {
-      let player = Hue.get_radio_player(win)
-      player.volume = new_volume
-    }
+    Hue.apply_radio_volume(new_volume)
+  }
+}
+
+// Apply radio volume to all players
+Hue.apply_radio_volume = function (volume) {
+  Hue.radio_volume = volume
+  
+  for (let win of Hue.radio_windows) {
+    let player = Hue.get_radio_player(win)
+    player.volume = volume
   }
 
-  Hue.flash_info("Radio", `Volume: ${new_volume_p}%`)
+  let vstring = Math.round(volume * 100)
+  Hue.el("#radio_item_volume_text").textContent = `Volume: ${vstring}%`
 }
 
 // Play a random radio station
