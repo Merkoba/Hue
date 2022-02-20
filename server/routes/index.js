@@ -27,20 +27,11 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       delete view[key]
     })
 
-    // Variables that should go in the config object
+    // Hold all public config here
+    view.config = config
+
+    // Other variables used to init session
     view.vars = {}
-
-    for (let key in config) {
-      view.vars[key] = config[key]
-    }
-
-    // Other variables that shouldn't go in the config object
-    view.rvars = {}
-
-    // Variables sent to templates
-    const tvars = {
-      commands_prefix: config.commands_prefix,
-    }
 
     // Compile all templates
 
@@ -69,7 +60,9 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       templates_html += ejs.compile(fs.readFileSync(template_path, "utf8"), {
         filename: template_path,
       })({
-        vars: tvars,
+        vars: {
+          commands_prefix: config.commands_prefix
+        }
       })
     }
 
@@ -440,9 +433,9 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
   // Enter root
   router.get("/", [check_url, require_login], function (req, res, next) {
-    view.rvars.room_id = config.main_room_id
-    view.rvars.user_id = req.session.user_id
-    view.rvars.jwt_token = req.jwt_token
+    view.vars.room_id = config.main_room_id
+    view.vars.user_id = req.session.user_id
+    view.vars.jwt_token = req.jwt_token
     res.render("main/main", view)
   })
 
@@ -452,9 +445,9 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     res,
     next
   ) {
-    view.rvars.room_id = req.params.id.substr(0, sconfig.max_room_id_length)
-    view.rvars.user_id = req.session.user_id
-    view.rvars.jwt_token = req.jwt_token
+    view.vars.room_id = req.params.id.substr(0, sconfig.max_room_id_length)
+    view.vars.user_id = req.session.user_id
+    view.vars.jwt_token = req.jwt_token
     res.render("main/main", view)
   })
 
