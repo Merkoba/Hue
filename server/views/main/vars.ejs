@@ -1,6 +1,6 @@
 <% 
-	for(let key in vars) {
-		let v = vars[key]
+	for(let key in config) {
+		let v = config[key]
 
 		if(v === undefined) {
 			console.error(`${key} is undefined`)
@@ -18,8 +18,8 @@
 		}
 	}
 
-	for(let key in rvars) {
-		let v = rvars[key]
+	for(let key in vars) {
+		let v = vars[key]
 		
 		if(v === undefined) {
 			console.error(`${key} is undefined`)
