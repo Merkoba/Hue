@@ -17,11 +17,6 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   build_view()
   start_view_check()
 
-  function requireUncached(module) {
-    delete require.cache[require.resolve(module)]
-    return require(module)
-  }
-
   function build_view() {
     Object.keys(view).forEach(function(key) {
       delete view[key]
