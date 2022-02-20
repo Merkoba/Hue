@@ -14,23 +14,13 @@ Hue.get_room_state = function () {
 
   let changed = false
 
-  let settings = [
-    "image_enabled",
-    "tv_enabled",
-    "last_highlight_date",
-    "chat_display_percentage",
-    "tv_display_percentage",
-    "tv_display_position",
-    "media_layout",
-    "last_message_board_post",
-    "main_layout",
-    "chat_enabled"
-  ]
-
-  for (let setting of settings) {
-    if (Hue.room_state[setting] === undefined) {
-      Hue.room_state[setting] = Hue.config[`room_state_default_${setting}`]
-      changed = true
+  for (let key in Hue.config) {
+    if (key.startsWith("room_state_default_")) {
+      let setting = key.replace("room_state_default_", "")
+      if (Hue.room_state[setting] === undefined) {
+        Hue.room_state[setting] = Hue.config[key]
+        changed = true
+      }
     }
   }
 

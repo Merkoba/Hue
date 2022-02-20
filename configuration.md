@@ -164,6 +164,18 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_media_layout"
 >Default media area (image, tv) layout, either column or row.
 
+"room_state_default_radio_volume"
+>Default volume for radio players.
+
+"room_state_default_main_layout"
+>Default main layout, column or row.
+
+"room_state_default_last_message_board_post"
+>Default last message board post.
+
+"room_state_default_chat_enabled"
+>Whether chat is enabled by default.
+
 "max_same_post_diff"
 >Maximum difference in time between a message and and another from the same user to be displayed within the same post.
 
