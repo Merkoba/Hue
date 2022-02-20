@@ -2420,6 +2420,10 @@ pre {
 	gap: 0.8rem;
 }
 
+#radio_button_random {
+	padding-left: 0.1rem;
+}
+
 #radio_button_playstop {
 	width: calc(var(--icon_size) * 1.2);
 	height: calc(var(--icon_size) * 1.2);
