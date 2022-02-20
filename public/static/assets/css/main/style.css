@@ -2416,7 +2416,7 @@ pre {
 	padding-bottom: 0.25rem;
 }
 
-#radio_button_playstop {
+.radio_item_svg {
 	width: 20px;
 	height: 20px;
 	padding-left: 0.1rem;
