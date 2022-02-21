@@ -303,6 +303,15 @@ Hue.create_radio_item_buttons = function (name, on_click) {
 Hue.create_radio_item_volume = function () {
   let container = Hue.div("radio_item radio_item_volume")
   container.innerHTML = Hue.template_radio_item_volume()
+
+  Hue.el("#radio_item_volume_icon", container).addEventListener("click", function () {
+    Hue.change_radio_volume("down")
+  })
+  
+  Hue.el("#radio_item_volume_text", container).addEventListener("click", function () {
+    Hue.change_radio_volume("up")
+  })
+
   Hue.el("#radio_items").append(container)
 }
 
