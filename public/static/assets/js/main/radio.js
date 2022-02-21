@@ -337,6 +337,14 @@ Hue.apply_radio_volume = function (volume) {
     let player = Hue.get_radio_player(win)
     player.volume = volume
   }
+
+  if (volume === 0) {
+    Hue.el("#radio_item_volume_icon use").href.baseVal = "#icon_volume-mute"
+  } else if (volume <= 0.5) {
+    Hue.el("#radio_item_volume_icon use").href.baseVal = "#icon_volume-low"
+  } else {
+    Hue.el("#radio_item_volume_icon use").href.baseVal = "#icon_volume-high"
+  }
   
   let vstring = Math.round(volume * 100)
   Hue.el("#radio_item_volume_text").textContent = `Volume: ${vstring}%`
