@@ -298,9 +298,11 @@ Hue.set_background = function (data, apply = true) {
 
 // Applies the background to all background elements
 Hue.apply_background = function () {
-  Hue.els(".background").forEach(it => {
-    it.src = Hue.background
-  })
+  if (Hue.background) {
+    Hue.els(".background").forEach(it => {
+      it.src = Hue.background
+    })
+  }
 }
 
 // Background color setter
