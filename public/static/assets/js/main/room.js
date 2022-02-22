@@ -277,16 +277,16 @@ Hue.setup_theme = function (data) {
 
 // Sets an applies background images from data
 Hue.set_background = function (data, apply = true) {
-  if (data.background !== "") {
-    if (data.background_type === "hosted") {
-      let ver = `?ver=${data.background_version}`
-      let bg = data.background + ver
-      Hue.background = `${Hue.config.public_media_directory}/room/${Hue.room_id}/${bg}`
-    } else {
-      Hue.background = data.background
-    }
+  if (!data.background) {
+    return
+  }
+
+  if (data.background_type === "hosted") {
+    let ver = `?ver=${data.background_version}`
+    let bg = data.background + ver
+    Hue.background = `${Hue.config.public_media_directory}/room/${Hue.room_id}/${bg}`
   } else {
-    Hue.background = Hue.config.default_background_url
+    Hue.background = data.background
   }
 
   Hue.config_admin_background()
@@ -294,17 +294,6 @@ Hue.set_background = function (data, apply = true) {
   if (apply) {
     Hue.apply_background()
   }
-}
-
-// Setups background
-Hue.setup_background = function () {
-  Hue.els(".background").forEach(it => {
-    it.addEventListener("error", function () {
-      if (this.src !== Hue.config.default_background_url) {
-        this.src = Hue.config.default_background_url
-      }    
-    })
-  })
 }
 
 // Applies the background to all background elements
@@ -492,11 +481,6 @@ Hue.change_background_source = function (src) {
     let extension = Hue.utilz.get_extension(src).toLowerCase()
 
     if (!extension || !Hue.utilz.image_extensions.includes(extension)) {
-      return false
-    }
-  } else {
-    if (Hue.background === Hue.config.default_background_url) {
-      Hue.checkmsg("Background image is already set to that")
       return false
     }
   }

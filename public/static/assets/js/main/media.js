@@ -995,6 +995,10 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   data.in_log = odata.in_log === undefined ? true : odata.in_log
   data.media_type = type
 
+  if (!data.source) {
+    return
+  }
+
   if (data.type === "upload") {
     data.source = `${Hue.config.public_media_directory}/room/${Hue.room_id}/${type}/${data.source}`
   }
@@ -1002,16 +1006,6 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   data.nice_date = data.date
     ? Hue.utilz.nice_date(data.date)
     : Hue.utilz.nice_date()
-
-  if (!data.setter) {
-    data.setter = Hue.config.system_username
-  }
-
-  if (!data.source) {
-    data.source = Hue.config[`default_${type}_source`]
-    data.type = Hue.config[`default_${type}_type`]
-    data.title = Hue.config[`default_${type}_title`]
-  }
 
   if (data.source.startsWith("/")) {
     data.source = window.location.origin + data.source

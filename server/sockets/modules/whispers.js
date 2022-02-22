@@ -79,7 +79,7 @@ module.exports = function (
       }
     } else if (data.type === "system_broadcast") {
       handler.system_emit(socket, "system_broadcast", {
-        username: config.system_username,
+        username: sconfig.system_username,
         message: data.message,
         type: data.type
       })

@@ -4,7 +4,7 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
   vars.path = require("path")
   vars.bcrypt = require("bcrypt")
   vars.reserved_usernames = [
-    config.system_username
+    sconfig.system_username
   ].map((x) => x.toLowerCase())
 
   // Room and User versions
@@ -43,8 +43,8 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       bans: { type: "object", default: [] },
       log_messages: { type: "object", default: [] },
       admin_log_messages: { type: "object", default: [] },
-      background_color: { type: "string", default: config.default_room_background_color },
-      text_color: { type: "string", default: config.default_room_font_color },
+      background_color: { type: "string", default: sconfig.default_room_background_color },
+      text_color: { type: "string", default: sconfig.default_room_font_color },
       background: { type: "string", default: "" },
       background_type: { type: "string", default: "hosted" },
       background_version: { type: "number", default: 0 },

@@ -8,40 +8,16 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "public_media_directory"
 >Public location to access the media files.
 
-"default_room_background_color"
->The initial background color for new rooms.
-
-"default_room_font_color"
->The initial font color for new rooms.
-
-"default_image_source"
->Default source for the image for new rooms or when "/image default" is issued.
-
-"default_tv_source"
->Default source for the tv for new rooms or when "/tv default" is issued.
-
-"default_tv_title"
->The title for the default tv.
-
-"default_tv_type"
->The type of the default_tv_source, either "video", "youtube", "twitch", "soundcloud" or "iframe".
-
-"default_image_type"
->The type of the default_image_source, either "upload" or "link".
-
 "default_profilepic_url"
 >The location of the default profile image.
 
 "profilepic_loading_url"
 >The location of the loading image when the profile image is changing.
 
-"default_background_url"
->The location of the default background image.
-
 "background_loading_url"
 >The location of the loading image when the background image is changing.
 
-"default_video_url"
+"video_poster"
 >Image to show to video element when there's no video image loaded.
 
 "topic_separator"
@@ -251,9 +227,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_message_board_post_length"
 >How long message board posts can be.
 
-"system_username"
->Reserved username for system messages.
-
 "max_displayed_url"
 >Max length of urls in chat.
 
@@ -390,6 +363,15 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "register_title"
 >The title of the registration page.
+
+"default_room_background_color"
+>The initial background color for new rooms.
+
+"default_room_font_color"
+>The initial font color for new rooms.
+
+"system_username"
+>Reserved username for system messages.
 
 
 ## Join Flags
