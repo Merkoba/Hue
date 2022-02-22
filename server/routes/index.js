@@ -98,7 +98,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     // Reserved usernames
     // These can't be used on registration
     view.reserved_usernames = [
-      config.system_username
+      sconfig.system_username
     ].map((x) => x.toLowerCase())
 
     view_mtime = get_view_mtime()

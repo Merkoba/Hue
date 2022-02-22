@@ -260,7 +260,6 @@ Hue.on_join = function (data) {
   Hue.generate_favicon(Hue.alert_mode)
   Hue.update_userlist()
   Hue.setup_theme(data)
-  Hue.setup_background()
   Hue.apply_background()
   Hue.apply_theme()
   Hue.setup_active_media()

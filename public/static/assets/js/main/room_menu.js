@@ -83,8 +83,6 @@ Hue.config_admin_background = function () {
   if (Hue.background !== Hue.el("#admin_background").src) {
     if (Hue.background !== "") {
       Hue.el("#admin_background").src = Hue.background
-    } else {
-      Hue.el("#admin_background").src = Hue.config.default_background_url
     }
   }
 }

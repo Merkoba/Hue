@@ -178,7 +178,7 @@ Hue.show_video_tv = function (play = true) {
   if (!Hue.el("#media_video_tv")) {
     let s = `<video id='media_video_tv'
         class='video_frame' width="640px" height="360px"
-        preload="none" poster="${Hue.config.default_video_url}" controls></video>
+        preload="none" poster="${Hue.config.video_poster}" controls></video>
         ${Hue.get_media_info_html("tv")}`
 
     Hue.el("#media_video_tv_container").innerHTML = s
