@@ -20,9 +20,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "video_poster"
 >Image to show to video element when there's no video image loaded.
 
-"topic_separator"
->Separator used between topic sections. Used when using /topicadd, which adds a new piece of topic at the end of the current topic. Also used when calculating the removal of these topic sections.
-
 "title_separator"
 >Separator used to separate the room name and the topic in the browser tab's title.
 
