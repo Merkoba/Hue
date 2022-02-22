@@ -1881,12 +1881,10 @@ Hue.announce_log_cleared = function (data) {
 
   Hue.feedback(`Log cleared by ${data.username}`)
 
-  let current_image = Hue.current_image()
-  let current_tv = Hue.current_tv()
   Hue.image_changed = []
   Hue.tv_changed = []
-  Hue.setup_media_object("image", "show", current_image)
-  Hue.setup_media_object("tv", "show", current_tv)
+  Hue.loaded_image = {}
+  Hue.loaded_tv = {}
 }
 
 // Handles delete message

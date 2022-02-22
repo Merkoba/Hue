@@ -212,4 +212,31 @@ module.exports = function (
       db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
     }
   }
+
+  // Delete all media files of a certain type from a room
+  handler.delete_media_files = function (room_id, type) {
+    let container = vars.path.join(vars.media_root, "room", room_id, type)
+
+    vars.fs.readdir(container, function (err, files) {
+      try {
+        if (err) {
+          logger.log_error(err)
+          return false
+        }
+
+        for (let file of files) {
+          let path = vars.path.join(container, file)
+
+          vars.fs.unlink(path, function (err) {
+            if (err) {
+              logger.log_error(err)
+            }
+          })
+        }
+
+      } catch (err) {
+        logger.log_error(err)
+      }
+    })
+  }
 }

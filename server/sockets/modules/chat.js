@@ -273,7 +273,7 @@ module.exports = function (
     }
   }
 
-  // Deletes all messages
+  // Deletes all messages and remove media
   handler.public.clear_log = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
       handler.anti_spam_ban(socket)
@@ -287,6 +287,8 @@ module.exports = function (
       username: socket.hue_username
     })
     
+    handler.delete_media_files(socket.hue_room_id, "image")
+    handler.delete_media_files(socket.hue_room_id, "tv")
     handler.push_admin_log_message(socket, "cleared the log")
   }
 
