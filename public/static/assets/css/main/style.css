@@ -1824,8 +1824,9 @@ a.special_link:hover {
 .chat_quote_profilepic {
 	width: var(--small_profilepic_size);
 	height: var(--small_profilepic_size);
-	margin-right: 0.38rem;
+	margin-right: 0.5rem;
 	cursor: pointer;
+	align-self: center;
 }
 
 .chat_quote_username {
