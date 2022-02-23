@@ -68,6 +68,7 @@ Hue.activity_list = []
 Hue.editing_message = false
 Hue.editing_message_container = false
 Hue.editing_message_area = document.createElement("div")
+Hue.editing_message_board_post = false
 Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 250
 Hue.sending_whisper = false
