@@ -1,6 +1,6 @@
 // Setups the message board
 Hue.setup_message_board = function () {
-  Hue.el("#message_board_post_textarea").addEventListener("input blur", function () {
+  Hue.el("#message_board_textarea").addEventListener("input blur", function () {
     this.value = this.value.substring(0, Hue.config.max_message_board_post_length)
   })
 
@@ -254,7 +254,7 @@ Hue.show_message_board = function (filter = "") {
       Hue.el("#message_board_filter").value = filter
       Hue.do_modal_filter()
     } else {
-      Hue.el("#message_board_post_textarea").focus()
+      Hue.el("#message_board_textarea").focus()
     }
   })
 }
@@ -265,13 +265,13 @@ Hue.submit_message_board_post = function () {
     return false
   }
 
-  let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#message_board_post_textarea").value).trim()
+  let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#message_board_textarea").value).trim()
 
   if (!message || message.length > Hue.config.max_message_board_post_length) {
     return false
   }
 
-  Hue.el("#message_board_post_textarea").value = ""
+  Hue.el("#message_board_textarea").value = ""
   Hue.socket_emit("message_board_post", { message: message })
 }
 
