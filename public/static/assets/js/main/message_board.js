@@ -75,9 +75,11 @@ Hue.add_post_to_message_board = function (post) {
   text.innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(post.message))
   Hue.urlize(text)
 
-  if (Hue.utilz.is_image(post.message)) {
+  let first_url = Hue.utilz.get_first_url(post.message)
+
+  if (first_url && Hue.utilz.is_image(first_url)) {
     let image = Hue.el(".message_board_image", item)
-    image.src = post.message
+    image.src = first_url
     image.style.display = "block" 
   }
 
