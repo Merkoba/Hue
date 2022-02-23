@@ -48,23 +48,29 @@ Hue.setup_message_board = function () {
 
     if (el) {
       if (Hue.editing_message_board_post) {
-        Hue.do_message_board_edit()
-      } else {
-        let item = el.closest(".message_board_item")
-        let content = Hue.el(".message_board_content", item)
-        let edit_area = Hue.el(".message_board_edit_area", item)
-        let btns = Hue.el(".message_board_buttons", item)
-        let edit_btns = Hue.el(".message_board_edit_buttons", item)
-        let text = Hue.el(".message_board_text", item)
-
-        content.style.display = "none"
-        edit_area.style.display = "block"
-        edit_area.value = text.textContent
-        btns.style.display = "none"
-        edit_btns.style.display = "flex"
-        Hue.editing_message_board_post_item = item
-        Hue.editing_message_board_post = true
+        Hue.do_message_board_edit(false)
       }
+
+      let item = el.closest(".message_board_item")
+      let content = Hue.el(".message_board_content", item)
+      let edit_area = Hue.el(".message_board_edit_area", item)
+      let btns = Hue.el(".message_board_buttons", item)
+      let edit_btns = Hue.el(".message_board_edit_buttons", item)
+      let text = Hue.el(".message_board_text", item)
+
+      content.style.display = "none"
+      
+      edit_area.style.display = "block"
+      edit_area.value = text.textContent
+      edit_area.focus()
+      edit_area.scrollIntoView({
+        block: "center"
+      })
+
+      btns.style.display = "none"
+      edit_btns.style.display = "flex"
+      Hue.editing_message_board_post_item = item
+      Hue.editing_message_board_post = true
 
       return
     }
