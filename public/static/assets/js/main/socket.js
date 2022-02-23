@@ -190,6 +190,9 @@ Hue.server_update_events = {
   new_message_board_post: (data) => {
     Hue.on_message_board_received(data)
   },
+  edited_message_board_post: (data) => {
+    Hue.on_message_board_received(data, true)
+  },
   message_board_post_deleted: (data) => {
     Hue.deleted_message_board_post(data)
   },
