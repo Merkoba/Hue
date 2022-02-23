@@ -1125,7 +1125,13 @@ select {
 	padding-top: 1rem;
 }
 
-
+.setting_textarea, .setting_input_text, 
+#message_board_textarea, .message_board_edit_area {
+	background-color: var(--altcolor);
+	color: var(--font_color);
+	outline: none;
+	border: 0;
+}
 
 .setting_textarea {
 	width: 100%;
@@ -1134,9 +1140,6 @@ select {
 	text-align: center;
 	overflow-x: hidden;
 	box-sizing: border-box;
-	background-color: var(--altcolor);
-	color: var(--font_color);
-	border: 0px solid white;
 }
 
 .setting_textarea2 {
@@ -1160,9 +1163,6 @@ select {
 	font-size: 1rem;
 	text-align: center;
 	box-sizing: border-box;
-	background-color: var(--altcolor);
-	color: var(--font_color);
-	border: 0px solid white;
 }
 
 .full_textarea {
@@ -2070,7 +2070,7 @@ pre {
 	justify-content: unset !important;
 }
 
-#message_board_post_textarea {
+#message_board_textarea {
 	margin-bottom: 1rem;
 }
 
