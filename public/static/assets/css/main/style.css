@@ -2143,8 +2143,9 @@ pre {
 	justify-content: center;
 	background-color: var(--altcolor_a);
 	white-space: pre-wrap;
-	padding: 0.5rem;
-	gap: 1rem;
+	padding: 1rem;
+	padding-top: 0.5rem;
+	gap: 0.8rem;
 }
 
 .message_board_image {
