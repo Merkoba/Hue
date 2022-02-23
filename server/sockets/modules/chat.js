@@ -52,97 +52,102 @@ module.exports = function (
     }
 
     handler.process_message_links(data.message, async function (response) {
-      let id, date, edited, username
-      
-      if (data.edit_id) {      
-        let info = await db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
-
-        if (!info) {
-          return false
-        }
-
-        for (let i=0; i<info.log_messages.length; i++) {
-          if (info.log_messages[i].id === data.edit_id) {
-            if (info.log_messages[i].data.user_id !== socket.hue_user_id) {
-              resolve({})
-              return
+      try {
+        let id, date, edited, username
+        
+        if (data.edit_id) {      
+          let info = await db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
+  
+          if (!info) {
+            return false
+          }
+  
+          for (let i=0; i<info.log_messages.length; i++) {
+            if (info.log_messages[i].id === data.edit_id) {
+              if (info.log_messages[i].data.user_id !== socket.hue_user_id) {
+                resolve({})
+                return
+              }
+  
+              info.log_messages[i].data.edited = true
+              info.log_messages[i].data.content = data.message
+              info.log_messages[i].data.link_title = response.title,
+              info.log_messages[i].data.link_description = response.description
+              info.log_messages[i].data.link_image = response.image
+              info.log_messages[i].data.link_url = response.url
+              
+              edited = true
+              id = data.edit_id
+              date = info.log_messages[i].date
+              quote = info.log_messages[i].data.quote
+              quote_username = info.log_messages[i].data.quote_username
+              quote_user_id = info.log_messages[i].data.quote_user_id
+              quote_id = info.log_messages[i].data.quote_id
+              username = info.log_messages[i].data.username        
+  
+              await db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
+              break
             }
-
-            info.log_messages[i].data.edited = true
-            info.log_messages[i].data.content = data.message
-            info.log_messages[i].data.link_title = response.title,
-            info.log_messages[i].data.link_description = response.description
-            info.log_messages[i].data.link_image = response.image
-            info.log_messages[i].data.link_url = response.url
-            
-            edited = true
-            id = data.edit_id
-            date = info.log_messages[i].date
-            quote = info.log_messages[i].data.quote
-            quote_username = info.log_messages[i].data.quote_username
-            quote_user_id = info.log_messages[i].data.quote_user_id
-            quote_id = info.log_messages[i].data.quote_id
-            username = info.log_messages[i].data.username        
-
-            await db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
-            break
           }
+  
+          if (!edited) {
+            return false
+          }
+        } else {
+          date = Date.now()
+          id = handler.generate_message_id()
+          username = socket.hue_username
+          edited = false
+          quote = data.quote
+          quote_username = data.quote_username
+          quote_user_id = data.quote_user_id
+          quote_id = data.quote_id
         }
-
-        if (!edited) {
-          return false
-        }
-      } else {
-        date = Date.now()
-        id = handler.generate_message_id()
-        username = socket.hue_username
-        edited = false
-        quote = data.quote
-        quote_username = data.quote_username
-        quote_user_id = data.quote_user_id
-        quote_id = data.quote_id
-      }
-
-      handler.room_emit(socket, "chat_message", {
-        id: id,
-        user_id: socket.hue_user_id,
-        username: username,
-        message: data.message,
-        date: date,
-        link_title: response.title,
-        link_description: response.description,
-        link_image: response.image,
-        link_url: response.url,
-        edited: edited,
-        just_edited: edited,
-        quote: quote,
-        quote_username: quote_username,
-        quote_user_id: quote_user_id,
-        quote_id: quote_id
-      })
-
-      if (!data.edit_id) {
-        let message = {
+  
+        handler.room_emit(socket, "chat_message", {
           id: id,
-          type: "chat",
+          user_id: socket.hue_user_id,
+          username: username,
+          message: data.message,
           date: date,
-          data: {
-            user_id: socket.hue_user_id,
-            username: username,
-            content: data.message,
-            link_title: response.title,
-            link_description: response.description,
-            link_image: response.image,
-            link_url: response.url,
-            edited: edited,
-            quote: quote,
-            quote_username: quote_username,
-            quote_user_id: quote_user_id,
-            quote_id: quote_id
+          link_title: response.title,
+          link_description: response.description,
+          link_image: response.image,
+          link_url: response.url,
+          edited: edited,
+          just_edited: edited,
+          quote: quote,
+          quote_username: quote_username,
+          quote_user_id: quote_user_id,
+          quote_id: quote_id
+        })
+  
+        if (!data.edit_id) {
+          let message = {
+            id: id,
+            type: "chat",
+            date: date,
+            data: {
+              user_id: socket.hue_user_id,
+              username: username,
+              content: data.message,
+              link_title: response.title,
+              link_description: response.description,
+              link_image: response.image,
+              link_url: response.url,
+              edited: edited,
+              quote: quote,
+              quote_username: quote_username,
+              quote_user_id: quote_user_id,
+              quote_id: quote_id
+            }
           }
+  
+          db_manager.push_room_item(socket.hue_room_id, "log_messages", message)
         }
-
-        db_manager.push_room_item(socket.hue_room_id, "log_messages", message)
+      } catch (err) {
+        logger.log_error(err)
+        return
       }
     })
   }
