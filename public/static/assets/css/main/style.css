@@ -2124,6 +2124,7 @@ pre {
 
 .message_board_link_title {
 	display: none;
+	font-weight: bold;
 }
 
 .message_board_link_description {
