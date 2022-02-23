@@ -16,11 +16,13 @@ Hue.start_dropzone = function () {
   })
   
   Hue.dropzone.on("addedfile", function (file) {
-    let ext = file.name.split(".").slice(-1)[0]
+    let is_image = Hue.utilz.is_image(file.name)
+    let is_video = Hue.utilz.is_video(file.name)
+    let is_audio = Hue.utilz.is_audio(file.name)
     
-    if (Hue.utilz.image_extensions.includes(ext)) {
+    if (is_image) {
       Hue.upload_image(file)
-    } else if (Hue.utilz.video_extensions.includes(ext) || Hue.utilz.audio_extensions.includes(ext)) {
+    } else if (is_video || is_audio) {
       Hue.upload_video(file)
     } else {
       Hue.checkmsg("Invalid format")
@@ -58,9 +60,7 @@ Hue.upload_image = function (file) {
     return false
   }
 
-  let ext = file.name.split(".").pop(-1).toLowerCase()
-
-  if (!Hue.utilz.image_extensions.includes(ext)) {
+  if (!Hue.utilz.is_image(file.name)) {
     Hue.dropzone.files = []
     return false
   }
@@ -86,9 +86,10 @@ Hue.upload_video = function (file) {
     return false
   }
 
-  let ext = file.name.split(".").pop(-1).toLowerCase()
+  let is_video = Hue.utilz.is_video(file.name)
+  let is_audio = Hue.utilz.is_audio(file.name)
 
-  if (!Hue.utilz.video_extensions.includes(ext) && !Hue.utilz.audio_extensions.includes(ext)) {
+  if (!is_video && !is_audio) {
     Hue.dropzone.files = []
     return false
   }

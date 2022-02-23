@@ -26,16 +26,27 @@ module.exports = function (
       return false
     }
 
-    let item = handler.push_message_board_post(socket, data.message)
-    handler.room_emit(socket, "new_message_board_post", item)
+    handler.process_message_links(data.message, async function (response) {
+      data.link_title = response.title,
+      data.link_description = response.description
+      data.link_image = response.image
+      data.link_url = response.url
+      
+      let item = handler.push_message_board_post(socket, data)
+      handler.room_emit(socket, "new_message_board_post", item)
+    })
   }
 
   // Pushes pushing room message board posts
-  handler.push_message_board_post = function (socket, message) {
+  handler.push_message_board_post = function (socket, data) {
     let item = {
       user_id: socket.hue_user_id,
       username: socket.hue_username,
-      message: message,
+      message: data.message,
+      link_title: data.link_title,
+      link_description: data.link_description,
+      link_image: data.link_image,
+      link_url: data.link_url,
       date: Date.now(),
       id: handler.generate_message_board_post_id(),
     }
