@@ -48,7 +48,13 @@ Hue.activate_key_detection = function () {
       }
 
       return
-    }    
+    } else if (Hue.editing_message_board_post) {
+      if (e.key === "Enter") {
+        Hue.do_message_board_edit()
+        e.preventDefault()
+        return
+      }
+    }
 
     if (Hue.modal_open) {
       if (e.key === "Escape") {

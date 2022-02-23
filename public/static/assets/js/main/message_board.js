@@ -16,6 +16,8 @@ Hue.setup_message_board = function () {
           Hue.socket_emit("delete_message_board_post", { id: id })
         })
       }
+
+      return
     }
 
     el = e.target.closest(".message_board_user_details")
@@ -24,18 +26,61 @@ Hue.setup_message_board = function () {
       let username = Hue.dataset(el, "username")
       let user_id = Hue.dataset(el, "user_id")
       Hue.show_profile(username, user_id)
+
+      return
     }
 
     el = e.target.closest(".message_board_image")
 
     if (el) {
       Hue.expand_image(el.src)
+      return
     }
 
     el = e.target.closest(".message_board_link_image")
 
     if (el) {
       Hue.expand_image(el.src)
+      return
+    }
+
+    el = e.target.closest(".message_board_edit")
+
+    if (el) {
+      if (Hue.editing_message_board_post) {
+        Hue.do_message_board_edit()
+      } else {
+        let item = el.closest(".message_board_item")
+        let content = Hue.el(".message_board_content", item)
+        let edit_area = Hue.el(".message_board_edit_area", item)
+        let btns = Hue.el(".message_board_buttons", item)
+        let edit_btns = Hue.el(".message_board_edit_buttons", item)
+        let text = Hue.el(".message_board_text", item)
+
+        content.style.display = "none"
+        edit_area.style.display = "block"
+        edit_area.value = text.textContent
+        btns.style.display = "none"
+        edit_btns.style.display = "flex"
+        Hue.editing_message_board_post_item = item
+        Hue.editing_message_board_post = true
+      }
+
+      return
+    }
+
+    el = e.target.closest(".message_board_edit_cancel")
+
+    if (el) {
+      Hue.do_message_board_edit(false)
+      return
+    }
+
+    el = e.target.closest(".message_board_edit_done")
+
+    if (el) {
+      Hue.do_message_board_edit()
+      return
     }
   })
 
@@ -44,9 +89,52 @@ Hue.setup_message_board = function () {
   })
 }
 
+// Do the message board edit
+Hue.do_message_board_edit = function (send = true) {
+  let item = Hue.editing_message_board_post_item
+  let content = Hue.el(".message_board_content", item)
+  let edit_area = Hue.el(".message_board_edit_area", item)
+  let btns = Hue.el(".message_board_buttons", item)
+  let edit_btns = Hue.el(".message_board_edit_buttons", item)
+  let id = Hue.dataset(item, "id")
+  let message = edit_area.value.trim()
+  
+  content.style.display = "flex"
+  edit_area.style.display = "none"
+  btns.style.display = "flex"
+  edit_btns.style.display = "none"
+  Hue.editing_message_board_post = false
+
+  if (send) {
+    if (message.length > Hue.config.max_message_board_post_length) {
+      return false
+    }
+  
+    Hue.socket_emit("message_board_post", {id: id, message: message})
+  }
+}
+
 // Creates and adds an item to the message board
 Hue.add_post_to_message_board = function (post) {
-  let item = Hue.div("message_board_item modal_item")
+  let item
+
+  if (post.edited) {
+    for (let p of Hue.els(".message_board_item")) {
+      let id = Hue.dataset(p, "id")
+
+      if (id === post.id) {
+        item = p
+        break
+      }
+    }
+
+    if (!item) {
+      return
+    }
+  } else {
+    item = Hue.div("message_board_item modal_item")
+  }
+
   item.innerHTML = Hue.template_message_board_post()
   Hue.dataset(item, "id", post.id)
   Hue.dataset(item, "date", post.date)
@@ -118,12 +206,13 @@ Hue.add_post_to_message_board = function (post) {
     delet.style.display = "inline-block"
   }
 
-  Hue.el("#message_board_container").prepend(item)
-
-  let items = Hue.els("#message_board_container .message_board_item")
-
-  if (items.length > Hue.config.max_message_board_posts) {
-    items.slice(-1)[0].remove()
+  if (!post.edited) {
+    Hue.el("#message_board_container").prepend(item)
+    let items = Hue.els("#message_board_container .message_board_item")
+  
+    if (items.length > Hue.config.max_message_board_posts) {
+      items.slice(-1)[0].remove()
+    }
   }
 
   if (Hue.message_board_filtered) {

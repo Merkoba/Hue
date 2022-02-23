@@ -2078,14 +2078,8 @@ pre {
 	margin-bottom: 1.5rem;
 }
 
-.message_board_delete {
-	display: none;
-	font-size: 0.9rem;
-	margin-top: 0.3rem;
-}
-
-.message_board_container_admin .message_board_delete {
-	display: inline-block;
+.message_board_container_admin .message_board_buttons {
+	display: flex;
 }
 
 .message_board_item {
@@ -2153,6 +2147,27 @@ pre {
 	max-width: 100%;
 	max-height: 400px;
 	cursor: pointer;
+}
+
+.message_board_btns {
+	display: flex;
+	flex-direction: row;
+	gap: 0.8rem;
+	font-size: 0.9rem;
+	margin-top: 0.3rem;
+	display: none;
+	align-items: center;
+	justify-content: center;
+}
+
+.message_board_edit_area {
+	display: none;
+	width: 100%;
+	text-align: center;
+}
+
+.message_board_edit_buttons {
+	display: none;
 }
 
 .expanded_modal_image {
