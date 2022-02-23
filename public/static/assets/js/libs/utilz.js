@@ -808,6 +808,21 @@ const Utilz = function () {
 		return b ? w1 : w2
 	}
 
+	utilz.is_image = function (src) {
+		let extension = Hue.utilz.get_extension(src).toLowerCase()
+    return extension && utilz.image_extensions.includes(extension)
+	}
+
+	utilz.is_video = function (src) {
+		let extension = Hue.utilz.get_extension(src).toLowerCase()
+    return extension && utilz.video_extensions.includes(extension)
+	}
+
+	utilz.is_audio = function (src) {
+		let extension = Hue.utilz.get_extension(src).toLowerCase()
+    return extension && utilz.audio_extensions.includes(extension)
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]

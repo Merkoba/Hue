@@ -82,9 +82,8 @@ Hue.change_image_source = function (src, just_check = false, comment = "") {
     return false
   } else if (Hue.utilz.is_url(src)) {
     src = src.replace(/\.gifv/g, ".gif")
-    let extension = Hue.utilz.get_extension(src).toLowerCase()
 
-    if (!extension || !Hue.utilz.image_extensions.includes(extension)) {
+    if (!Hue.utilz.is_image(src)) {
       if (feedback) {
         Hue.checkmsg("That doesn't seem to be an image")
       }

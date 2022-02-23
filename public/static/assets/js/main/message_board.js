@@ -25,6 +25,18 @@ Hue.setup_message_board = function () {
       let user_id = Hue.dataset(el, "user_id")
       Hue.show_profile(username, user_id)
     }
+
+    el = e.target.closest(".message_board_image")
+
+    if (el) {
+      Hue.expand_image(el.src)
+    }
+
+    el = e.target.closest(".message_board_link_image")
+
+    if (el) {
+      Hue.expand_image(el.src)
+    }
   })
 
   Hue.el("#message_board_publish").addEventListener("click", function () {
@@ -62,15 +74,41 @@ Hue.add_post_to_message_board = function (post) {
   let text = Hue.el(".message_board_text", item)
   text.innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(post.message))
   Hue.urlize(text)
+
+  if (Hue.utilz.is_image(post.message)) {
+    let image = Hue.el(".message_board_image", item)
+    image.src = post.message
+    image.style.display = "block" 
+  }
+
+  if (post.link_image) {
+    let link_image = Hue.el(".message_board_link_image", item)
+    link_image.src = post.link_image
+    link_image.style.display = "block" 
+  }
+
+  if (post.link_title) {
+    let link_title = Hue.el(".message_board_link_title", item)
+    link_title.textContent = post.link_title
+    link_title.style.display = "block" 
+  }
+
+  if (post.link_description) {
+    let link_description = Hue.el(".message_board_link_description", item)
+    link_description.textContent = post.link_description
+    link_description.style.display = "block"
+  }
+
   let title = Hue.utilz.nice_date(post.date)
 
   if (post.id) {
     title = `${post.id.slice(-3)} | ${title}`
   }
 
-  text.title = title
-  Hue.dataset(text, "date", post.date)
-  Hue.dataset(text, "otitle", title)
+  let content = Hue.el(".message_board_content", item)
+  content.title = title
+  Hue.dataset(content, "date", post.date)
+  Hue.dataset(content, "otitle", title)
 
   let delet = Hue.el(".message_board_delete", item)
 

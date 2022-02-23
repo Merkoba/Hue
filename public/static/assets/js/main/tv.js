@@ -297,12 +297,12 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
       let extension = Hue.utilz.get_extension(src).toLowerCase()
 
       if (extension) {
-        if (
-          Hue.utilz.video_extensions.includes(extension) ||
-          Hue.utilz.audio_extensions.includes(extension)
-        ) {
+        let is_image = Hue.utilz.is_image(src)
+        let is_video = Hue.utilz.is_video(src)
+
+        if (is_image || is_video) {
           // OK
-        } else if (Hue.utilz.image_extensions.includes(extension)) {
+        } else if (is_image) {
           if (feedback) {
             Hue.checkmsg("That doesn't seem to be a video")
           }

@@ -228,12 +228,16 @@ Hue.remove_urls = function (text) {
   for (let word of split) {
     if (Hue.utilz.is_url(word)) {
       hostname = new URL(word).hostname
-      let ext = Hue.utilz.get_extension(word).toLowerCase()
-      if (Hue.utilz.video_extensions.includes(ext)) {
+
+      let is_image = Hue.utilz.is_image(word)
+      let is_video = Hue.utilz.is_video(word)
+      let is_audio = Hue.utilz.is_audio(word)
+
+      if (is_video) {
         new_words.push("(Video Link)")
-      } else if (Hue.utilz.audio_extensions.includes(ext)) {
+      } else if (is_audio) {
         new_words.push("(Audio Link)")
-      } else if (Hue.utilz.image_extensions.includes(ext)) {
+      } else if (is_image) {
         new_words.push("(Image Link)")
       } else {
         new_words.push("(Link)")

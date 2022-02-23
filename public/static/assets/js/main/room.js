@@ -480,9 +480,7 @@ Hue.change_background_source = function (src) {
       return false
     }
 
-    let extension = Hue.utilz.get_extension(src).toLowerCase()
-
-    if (!extension || !Hue.utilz.image_extensions.includes(extension)) {
+    if (!Hue.utilz.is_image(src)) {
       return false
     }
   }
