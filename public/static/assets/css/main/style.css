@@ -2115,8 +2115,8 @@ pre {
 .message_board_link_image {
 	display: none;
 	cursor: pointer;
-	max-width: 4rem;
-	max-height: 4rem;
+	max-width: 100%;
+	max-height: 400px;
 	object-fit: contain;
 	flex-grow: 0;
 	flex-shrink: 0;
