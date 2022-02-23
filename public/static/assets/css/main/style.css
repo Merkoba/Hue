@@ -1616,6 +1616,7 @@ a.special_link:hover {
 	object-fit: contain;
 	flex-grow: 0;
 	flex-shrink: 0;
+	align-self: center;
 }
 
 .align_left {
