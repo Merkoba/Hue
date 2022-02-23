@@ -96,6 +96,7 @@ Hue.do_message_board_edit = function (send = true) {
   let edit_area = Hue.el(".message_board_edit_area", item)
   let btns = Hue.el(".message_board_buttons", item)
   let edit_btns = Hue.el(".message_board_edit_buttons", item)
+  let text = Hue.el(".message_board_text", item)
   let id = Hue.dataset(item, "id")
   let message = edit_area.value.trim()
   
@@ -107,7 +108,11 @@ Hue.do_message_board_edit = function (send = true) {
 
   if (send) {
     if (message.length > Hue.config.max_message_board_post_length) {
-      return false
+      return
+    }
+
+    if (message === text.textContent) {
+      return
     }
   
     Hue.socket_emit("message_board_post", {id: id, message: message})
@@ -115,10 +120,10 @@ Hue.do_message_board_edit = function (send = true) {
 }
 
 // Creates and adds an item to the message board
-Hue.add_post_to_message_board = function (post) {
+Hue.add_post_to_message_board = function (post, edited) {
   let item
 
-  if (post.edited) {
+  if (edited) {
     for (let p of Hue.els(".message_board_item")) {
       let id = Hue.dataset(p, "id")
 
@@ -206,7 +211,7 @@ Hue.add_post_to_message_board = function (post) {
     delet.style.display = "inline-block"
   }
 
-  if (!post.edited) {
+  if (!edited) {
     Hue.el("#message_board_container").prepend(item)
     let items = Hue.els("#message_board_container .message_board_item")
   
@@ -271,8 +276,8 @@ Hue.submit_message_board_post = function () {
 }
 
 // When a new message board message arrives
-Hue.on_message_board_received = function (data) {
-  Hue.add_post_to_message_board(data)
+Hue.on_message_board_received = function (data, edited = false) {
+  Hue.add_post_to_message_board(data, edited)
   Hue.check_last_message_board_post()
 
   if (data.user_id !== Hue.user_id && !Hue.msg_message_board.is_open()) {

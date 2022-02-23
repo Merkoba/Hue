@@ -51,8 +51,7 @@ module.exports = function (
               message_board_posts: info.message_board_posts,
             })
 
-            post.edited = true
-            handler.room_emit(socket, "new_message_board_post", post)
+            handler.room_emit(socket, "edited_message_board_post", post)
             return
           }
         }
