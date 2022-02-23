@@ -330,16 +330,17 @@ Hue.start_msg = function () {
   Hue.msg_message_board = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "message_board",
-      window_width: "30rem"
+      window_width: "30rem",
+      after_close: function (instance) {
+        msgvars.common.after_close(instance)
+        Hue.do_message_board_edit(false)
+      }
     })
   )
 
   Hue.msg_profilepic_cropper = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "profilepic_cropper",
-      after_close: function (instance) {
-        msgvars.common.after_close(instance)
-      }
+      id: "profilepic_cropper"
     })
   )
 
