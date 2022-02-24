@@ -1,43 +1,34 @@
-module.exports = function (
-  vars,
-  handler,
-  io,
-  db_manager,
-  config,
-  sconfig,
-  utilz,
-  logger
-) {
+module.exports = function (Hue) {
   // Initial declarations
-  vars.fs = require("fs")
-  vars.fsp = require("fs").promises
-  vars.path = require("path")
-  vars.fetch = require("node-fetch")
-  vars.jwt = require("jsonwebtoken")
-  vars.image_dimensions = require("image-size")
-  vars.cheerio = require("cheerio")
-  vars.redis = require("redis")
-  vars.he = require("he")
+  Hue.vars.fs = require("fs")
+  Hue.vars.fsp = require("fs").promises
+  Hue.vars.path = require("path")
+  Hue.vars.fetch = require("node-fetch")
+  Hue.vars.jwt = require("jsonwebtoken")
+  Hue.vars.image_dimensions = require("image-size")
+  Hue.vars.cheerio = require("cheerio")
+  Hue.vars.redis = require("redis")
+  Hue.vars.he = require("he")
 
-  vars.root_path = vars.path.join(__dirname, "../../")
-  vars.media_root = vars.path.join(vars.root_path, sconfig.media_directory)
-  vars.roles = ["admin", "op", "voice"]
-  vars.media_types = ["image", "tv"]
-  vars.redis_client_ready = false
-  vars.redis_client = vars.redis.createClient()
+  Hue.vars.root_path = Hue.vars.path.join(__dirname, "../../")
+  Hue.vars.media_root = Hue.vars.path.join(Hue.vars.root_path, Hue.sconfig.media_directory)
+  Hue.vars.roles = ["admin", "op", "voice"]
+  Hue.vars.media_types = ["image", "tv"]
+  Hue.vars.redis_client_ready = false
+  Hue.vars.redis_client = Hue.vars.redis.createClient()
 
-  vars.redis_client.on("connect", e => {
-    vars.redis_client_ready = true
+  Hue.vars.redis_client.on("connect", e => {
+    Hue.vars.redis_client_ready = true
   })
   
-  vars.redis_client.connect().catch(console.error)
+  Hue.vars.redis_client.connect().catch(console.error)
 
-  vars.rooms = {}
-  vars.user_rooms = {}
-  vars.files = {}
+  Hue.vars.rooms = {}
+  Hue.vars.user_rooms = {}
+  Hue.vars.files = {}
 
   // Struct for file uploads
-  vars.files_struct = {
+  Hue.vars.files_struct = {
     action: null,
     name: null,
     type: null,
@@ -53,25 +44,25 @@ module.exports = function (
     comment: "",
   }
 
-  vars.default_role = "voice"
+  Hue.vars.default_role = "voice"
 
   // Dont check if user has joined with these functions
-  vars.dont_check_joined = ["join_room"]
+  Hue.vars.dont_check_joined = ["join_room"]
 
   // Don't add spam on these functions
   // They add spam manually
-  vars.dont_add_spam = [
+  Hue.vars.dont_add_spam = [
     "slice_upload",
     "typing"
   ]
 
-  vars.fetch_2 = function (url, args = {}) {
+  Hue.vars.fetch_2 = function (url, args = {}) {
     console.info(`Fetching ${url} ...`)
     args.headers = args.headers || {}
     args.headers["user-agent"] = "Mozilla/5.0"
-    return vars.fetch(url, args)
+    return Hue.vars.fetch(url, args)
   }
 
-  vars.tv_link_types = ["youtube", "twitch", "soundcloud", "video", "iframe"]
-  vars.exiting = false
+  Hue.vars.tv_link_types = ["youtube", "twitch", "soundcloud", "video", "iframe"]
+  Hue.vars.exiting = false
 }

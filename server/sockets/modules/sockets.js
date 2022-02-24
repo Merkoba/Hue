@@ -1,21 +1,12 @@
-module.exports = function (
-  handler,
-  vars,
-  io,
-  db_manager,
-  config,
-  sconfig,
-  utilz,
-  logger
-) {
+module.exports = function (Hue) {
   // Checks if the user is already connected through another socket
-  handler.user_already_connected = async function (socket) {
+  Hue.handler.user_already_connected = async function (socket) {
     try {
-      if (io.sockets.adapter.rooms[socket.hue_room_id] === undefined) {
+      if (Hue.io.sockets.adapter.rooms[socket.hue_room_id] === undefined) {
         return false
       }
 
-      let sockets = await handler.get_room_sockets(socket.hue_room_id)
+      let sockets = await Hue.handler.get_room_sockets(socket.hue_room_id)
 
       for (let socc of sockets) {
         if (socc.id !== socket.id && socc.hue_user_id === socket.hue_user_id) {
@@ -25,15 +16,15 @@ module.exports = function (
 
       return false
     } catch (err) {
-      logger.log_error(err)
+      Hue.logger.log_error(err)
     }
   }
 
   // Returns the list of sockets of a user in a room, by user id
-  handler.get_user_sockets_per_room = async function (room_id, user_id) {
+  Hue.handler.get_user_sockets_per_room = async function (room_id, user_id) {
     try {
       let clients = []
-      let sockets = await handler.get_room_sockets(room_id)
+      let sockets = await Hue.handler.get_room_sockets(room_id)
 
       for (let socc of sockets) {
         if (socc.hue_user_id === user_id) {
@@ -43,15 +34,15 @@ module.exports = function (
 
       return clients
     } catch (err) {
-      logger.log_error(err)
+      Hue.logger.log_error(err)
     }
   }
 
   // Returns the list of sockets of a user in a room, by username
-  handler.get_user_sockets_per_room_by_username = async function (room_id, username) {
+  Hue.handler.get_user_sockets_per_room_by_username = async function (room_id, username) {
     try {
       let clients = []
-      let sockets = await handler.get_room_sockets(room_id)
+      let sockets = await Hue.handler.get_room_sockets(room_id)
 
       for (let socc of sockets) {
         if (socc.hue_username.toLowerCase() === username.toLowerCase()) {
@@ -61,14 +52,14 @@ module.exports = function (
 
       return clients
     } catch (err) {
-      logger.log_error(err)
+      Hue.logger.log_error(err)
     }
   }
 
   // Returns the list of sockets of a user in a room, by socket id
-  handler.get_room_socket_by_id = async function (room_id, id) {
+  Hue.handler.get_room_socket_by_id = async function (room_id, id) {
     try {
-      let sockets = await handler.get_room_sockets(room_id)
+      let sockets = await Hue.handler.get_room_sockets(room_id)
 
       for (let socc of sockets) {
         if (socc.id === id) {
@@ -78,45 +69,45 @@ module.exports = function (
 
       return false
     } catch (err) {
-      logger.log_error(err)
+      Hue.logger.log_error(err)
     }
   }
 
   // Gets the list of sockets of a room
-  handler.get_room_sockets = async function (room_id) {
-    return await io.in(room_id).fetchSockets()
+  Hue.handler.get_room_sockets = async function (room_id) {
+    return await Hue.io.in(room_id).fetchSockets()
   }
 
   // Checks if a user exceeds the maximum amounts of sockets allowed per room
-  handler.check_socket_limit = async function (socket) {
+  Hue.handler.check_socket_limit = async function (socket) {
     try {
       let num = 0
-      let rooms = vars.user_rooms[socket.hue_user_id]
+      let rooms = Hue.vars.user_rooms[socket.hue_user_id]
 
       if (!rooms) {
         return false
       }
 
       for (let room_id of rooms) {
-        num += await handler.get_user_sockets_per_room(room_id, socket.hue_user_id)
+        num += await Hue.handler.get_user_sockets_per_room(room_id, socket.hue_user_id)
           .length
       }
 
-      if (num > config.max_sockets_per_user) {
+      if (num > Hue.config.max_sockets_per_user) {
         return true
       } else {
         return false
       }
     } catch (err) {
-      logger.log_error(err)
+      Hue.logger.log_error(err)
       return true
     }
   }
 
   // Checks if a user has multiple simultaneous join attempts
-  handler.check_multipe_joins = async function (socket) {
+  Hue.handler.check_multipe_joins = async function (socket) {
     try {
-      let sockets = await handler.get_room_sockets(socket.hue_room_id)
+      let sockets = await Hue.handler.get_room_sockets(socket.hue_room_id)
 
       for (let socc of sockets) {
         if (socc.hue_user_id !== undefined) {
@@ -131,30 +122,30 @@ module.exports = function (
         }
       }
     } catch (err) {
-      logger.log_error(err)
+      Hue.logger.log_error(err)
       return true
     }
   }
 
   // Sends a pong response
-  handler.public.ping_server = function (socket, data) {
-    handler.user_emit(socket, "pong_received", { date: data.date })
+  Hue.handler.public.ping_server = function (socket, data) {
+    Hue.handler.user_emit(socket, "pong_received", { date: data.date })
   }
 
   // Changes socket properties to all sockets of a user
-  handler.modify_socket_properties = async function (
+  Hue.handler.modify_socket_properties = async function (
     user_id,
     properties = {},
     after_room = false
   ) {
-    if (!vars.user_rooms[user_id]) {
+    if (!Hue.vars.user_rooms[user_id]) {
       return
     }
 
-    for (let room_id of vars.user_rooms[user_id]) {
+    for (let room_id of Hue.vars.user_rooms[user_id]) {
       let first_socc = false
 
-      for (let socc of await handler.get_user_sockets_per_room(
+      for (let socc of await Hue.handler.get_user_sockets_per_room(
         room_id,
         user_id
       )) {
@@ -168,10 +159,10 @@ module.exports = function (
       }
 
       if (first_socc) {
-        handler.update_user_in_userlist(first_socc)
+        Hue.handler.update_user_in_userlist(first_socc)
 
         if (after_room) {
-          handler.room_emit(room_id, after_room.method, after_room.data)
+          Hue.handler.room_emit(room_id, after_room.method, after_room.data)
         }
       }
     }

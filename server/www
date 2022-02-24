@@ -166,9 +166,16 @@ const io = require("socket.io")(server, {
 
 server.listen(port)
 
-const sockets_api = {}
+const Hue = {}
 
-require("./sockets/main")(io, db_manager, config, sconfig, utilz, logger, sockets_api)
+Hue.io = io
+Hue.db_manager = db_manager
+Hue.config = config
+Hue.sconfig = sconfig
+Hue.utilz = utilz
+Hue.logger = logger
+
+require("./sockets/main")(Hue)
 
 function on_error(error) {
 	if (error.syscall !== "listen") {
@@ -206,8 +213,8 @@ function on_listening() {
 }
 
 function do_shutdown() {
-	sockets_api.vars.exiting = true
-	sockets_api.handler.rooms_timeout_action()
+	Hue.vars.exiting = true
+	Hue.handler.rooms_timeout_action()
 
 	io.httpServer.close()
 	io.close()
