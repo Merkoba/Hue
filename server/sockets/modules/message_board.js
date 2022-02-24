@@ -26,45 +26,40 @@ module.exports = function (
       return false
     }
 
-    handler.process_message_links(data.message, async function (response) {
-      try {
-        data.link_title = response.title,
-        data.link_description = response.description
-        data.link_image = response.image
-        data.link_url = response.url
-  
-        if (data.id) {
-          let info = await db_manager.get_room(["id", socket.hue_room_id], { message_board_posts: 1, keys: 1 })
-        
-          for (let post of info.message_board_posts) {
-            if (post.id === data.id) {
-              if (post.user_id !== socket.hue_user_id) {
-                return false
-              }
-  
-              post.message = data.message
-              post.link_title = data.link_title
-              post.link_description = data.link_description
-              post.link_image = data.link_image
-              post.link_url = data.link_url
-  
-              db_manager.update_room(socket.hue_room_id, {
-                message_board_posts: info.message_board_posts,
-              })
-  
-              handler.room_emit(socket, "edited_message_board_post", post)
-              return
-            }
+    let linkdata = await handler.process_message_links(data.message)
+
+    data.link_title = linkdata.title,
+    data.link_description = linkdata.description
+    data.link_image = linkdata.image
+    data.link_url = linkdata.url
+
+    if (data.id) {
+      let info = await db_manager.get_room(["id", socket.hue_room_id], { message_board_posts: 1, keys: 1 })
+    
+      for (let post of info.message_board_posts) {
+        if (post.id === data.id) {
+          if (post.user_id !== socket.hue_user_id) {
+            return false
           }
+
+          post.message = data.message
+          post.link_title = data.link_title
+          post.link_description = data.link_description
+          post.link_image = data.link_image
+          post.link_url = data.link_url
+
+          db_manager.update_room(socket.hue_room_id, {
+            message_board_posts: info.message_board_posts,
+          })
+
+          handler.room_emit(socket, "edited_message_board_post", post)
+          return
         }
-        
-        let item = handler.push_message_board_post(socket, data)
-        handler.room_emit(socket, "new_message_board_post", item)
-      } catch (err) {
-        logger.log_error(err)
-        return
       }
-    })
+    }
+    
+    let item = handler.push_message_board_post(socket, data)
+    handler.room_emit(socket, "new_message_board_post", item)
   }
 
   // Pushes pushing room message board posts

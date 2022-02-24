@@ -4,9 +4,10 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   const path = require("path")
   const routes = require("./routes/index")(db_manager, config, sconfig, utilz)
   const rateLimit = require("express-rate-limit")
-  const redis = require("redis")
   const RedisStore = require("connect-redis")(session)
-  const redisClient = redis.createClient()
+  const redis = require("redis")
+  let redisClient = redis.createClient({ legacyMode: true })
+  redisClient.connect().catch(console.error)
 
   let app = express()
 
