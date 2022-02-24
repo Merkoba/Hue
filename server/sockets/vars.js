@@ -25,9 +25,11 @@ module.exports = function (
   vars.redis_client_ready = false
   vars.redis_client = vars.redis.createClient()
 
-  vars.redis_client.select(10, function () {
+  vars.redis_client.on("connect", e => {
     vars.redis_client_ready = true
   })
+  
+  vars.redis_client.connect().catch(console.error)
 
   vars.rooms = {}
   vars.user_rooms = {}
