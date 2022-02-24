@@ -1130,7 +1130,8 @@ select {
 }
 
 .setting_textarea, .setting_input_text, 
-#message_board_textarea, .message_board_edit_area {
+#message_board_textarea, .message_board_edit_area,
+#write_message_area {
 	background-color: var(--altcolor);
 	color: var(--font_color);
 	outline: none;
