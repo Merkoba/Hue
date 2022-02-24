@@ -9,7 +9,7 @@ module.exports = function (
   logger
 ) {
   // Handles image source changes
-  handler.public.change_image_source = function (socket, data) {
+  handler.public.change_image_source = async function (socket, data) {
     if (data.src === undefined) {
       return false
     }
@@ -73,7 +73,7 @@ module.exports = function (
           return res.json()
         })
 
-        .then(function (response) {
+        .then(async function (response) {
           if (!response.data || !Array.isArray(response.data)) {
             return false
           }
@@ -90,7 +90,7 @@ module.exports = function (
                   obj.type = "link"
                   obj.comment = data.comment
 
-                  handler.do_change_media(socket, obj, "image")
+                  await handler.do_change_media(socket, obj, "image")
 
                   return
                 }
@@ -105,7 +105,7 @@ module.exports = function (
                     obj.type = "link"
                     obj.comment = data.comment
 
-                    handler.do_change_media(socket, obj, "image")
+                    await handler.do_change_media(socket, obj, "image")
 
                     return
                   }
@@ -135,7 +135,7 @@ module.exports = function (
       obj.type = "link"
       obj.comment = data.comment
 
-      handler.do_change_media(socket, obj, "image")
+      await handler.do_change_media(socket, obj, "image")
     }
   }
 }
