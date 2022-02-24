@@ -214,7 +214,6 @@ function on_listening() {
 
 function do_shutdown() {
 	Hue.vars.exiting = true
-	Hue.handler.rooms_timeout_action()
 
 	io.httpServer.close()
 	io.close()
