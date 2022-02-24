@@ -14,7 +14,7 @@ module.exports = function (
   }
 
   // Handles sliced media uploads
-  handler.upload_media = function (socket, data, type) {
+  handler.upload_media = async function (socket, data, type) {
     if (data.file === undefined) {
       return false
     }
@@ -37,36 +37,28 @@ module.exports = function (
     }
 
     let path = vars.path.join(container, file_name)
-
-    vars.fs.writeFile(
-      path,
-      data.file,
-      function (err) {
-        if (err) {
-          handler.user_emit(socket, "upload_error", {})
-        } else {
-          let obj = {}
-
-          obj.src = file_name
-          obj.setter = socket.hue_username
-          obj.size = size
-          obj.type = "upload"
-          obj.comment = data.comment
-          obj.file_name = data.file_name
-
-          try {
-            handler.do_change_media(socket, obj, type)
-          } catch (err) {
-            logger.log_error(err)
-            handler.user_emit(socket, "upload_error", {})
-          }
-        }
-      }
-    )
+    
+    try {
+      await vars.fsp.writeFile(path, data.file)
+  
+      let obj = {}
+  
+      obj.src = file_name
+      obj.setter = socket.hue_username
+      obj.size = size
+      obj.type = "upload"
+      obj.comment = data.comment
+      obj.file_name = data.file_name
+  
+      handler.do_change_media(socket, obj, type)
+    } catch (err) {
+      logger.log_error(err)
+      handler.user_emit(socket, "upload_error", {})
+    }
   }
 
   // Completes media source changes
-  handler.do_change_media = function (socket, data, type) {
+  handler.do_change_media = async function (socket, data, type) {
     let room_id, user_id
 
     if (typeof socket === "object") {
@@ -146,28 +138,23 @@ module.exports = function (
     if (data.type === "upload") {
       let container = vars.path.join(vars.media_root, "room", socket.hue_room_id, type)
 
-      vars.fs.readdir(container, function (err, files) {
-        try {
-          if (err) {
-            logger.log_error(err)
-            return false
-          }
+      try {
+        let files = await vars.fsp.readdir(container)
 
-          files.sort().reverse()
-
-          for (let file of files.slice(config[`max_stored_${type}`])) {
-            let path = vars.path.join(container, file)
-
-            vars.fs.unlink(path, function (err) {
-              if (err) {
-                logger.log_error(err)
-              }
-            })
-          }
-        } catch (err) {
-          logger.log_error(err)
+        files.sort().reverse()
+  
+        for (let file of files.slice(config[`max_stored_${type}`])) {
+          let path = vars.path.join(container, file)
+  
+          vars.fs.unlink(path, function (err) {
+            if (err) {
+              logger.log_error(err)
+            }
+          })
         }
-      })
+      } catch (err) {
+        logger.log_error(err)
+      }
     }
   }
 
@@ -214,29 +201,23 @@ module.exports = function (
   }
 
   // Delete all media files of a certain type from a room
-  handler.delete_media_files = function (room_id, type) {
+  handler.delete_media_files = async function (room_id, type) {
     let container = vars.path.join(vars.media_root, "room", room_id, type)
 
-    vars.fs.readdir(container, function (err, files) {
-      try {
-        if (err) {
-          logger.log_error(err)
-          return false
-        }
+    try {
+      let files = await vars.fsp.readdir(container)
 
-        for (let file of files) {
-          let path = vars.path.join(container, file)
-
-          vars.fs.unlink(path, function (err) {
-            if (err) {
-              logger.log_error(err)
-            }
-          })
-        }
-
-      } catch (err) {
-        logger.log_error(err)
+      for (let file of files) {
+        let path = vars.path.join(container, file)
+  
+        vars.fs.unlink(path, function (err) {
+          if (err) {
+            logger.log_error(err)
+          }
+        })
       }
-    })
+    } catch (err) {
+      logger.log_error(err)
+    }
   }
 }
