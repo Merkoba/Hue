@@ -113,7 +113,7 @@ module.exports = function (
   }
 
   // Handles uploaded profile images
-  handler.upload_profilepic = function (socket, data) {
+  handler.upload_profilepic = async function (socket, data) {
     if (data.image_file === undefined) {
       return false
     }
@@ -141,19 +141,15 @@ module.exports = function (
       vars.fs.mkdirSync(container, { recursive: true })
     }    
 
-    let path = vars.path.join(container, file_name)    
-
-    vars.fs.writeFile(
-      path,
-      data.image_file,
-      function (err, data) {
-        if (err) {
-          handler.user_emit(socket, "upload_error", {})
-        } else {
-          handler.do_change_profilepic(socket, file_name)
-        }
-      }
-    )
+    let path = vars.path.join(container, file_name) 
+    
+    try {
+      await vars.fsp.writeFile(path, data.image_file)
+      handler.do_change_profilepic(socket, file_name)
+    } catch (err) {
+      logger.log_error(err)
+      handler.user_emit(socket, "upload_error", {})
+    }
   }
 
   // Completes profile image changes
@@ -179,7 +175,7 @@ module.exports = function (
   }
 
   // Handles uploaded audio clips
-  handler.upload_audioclip = function (socket, data) {
+  handler.upload_audioclip = async function (socket, data) {
     if (data.audio_file === undefined) {
       return false
     }
@@ -198,19 +194,15 @@ module.exports = function (
       vars.fs.mkdirSync(container, { recursive: true })
     }
 
-    let path = vars.path.join(container, file_name)     
-
-    vars.fs.writeFile(
-      path,
-      data.audio_file,
-      function (err, data) {
-        if (err) {
-          handler.user_emit(socket, "upload_error", {})
-        } else {
-          handler.do_change_audioclip(socket, file_name)
-        }
-      }
-    )
+    let path = vars.path.join(container, file_name) 
+    
+    try {
+      await vars.fsp.writeFile(path, data.audio_file)
+      handler.do_change_audioclip(socket, file_name)
+    } catch (err) {
+      logger.log_error(err)
+      handler.user_emit(socket, "upload_error", {})
+    }
   }
 
   // Remove the audio clip

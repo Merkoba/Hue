@@ -10,6 +10,7 @@ module.exports = function (
 ) {
   // Initial declarations
   vars.fs = require("fs")
+  vars.fsp = require("fs").promises
   vars.path = require("path")
   vars.fetch = require("node-fetch")
   vars.jwt = require("jsonwebtoken")

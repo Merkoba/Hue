@@ -161,7 +161,7 @@ module.exports = function (
   }
 
   // Handles uploaded background images
-  handler.upload_background = function (socket, data) {
+  handler.upload_background = async function (socket, data) {
     if (data.image_file === undefined) {
       return false
     }
@@ -186,17 +186,13 @@ module.exports = function (
 
     let path = vars.path.join(container, file_name)
 
-    vars.fs.writeFile(
-      path,
-      data.image_file,
-      function (err, data) {
-        if (err) {
-          handler.user_emit(socket, "upload_error", {})
-        } else {
-          handler.do_change_background(socket, file_name, "hosted")
-        }
-      }
-    )
+    try {
+      await vars.fsp.writeFile(path, data.image_file)
+      handler.do_change_background(socket, file_name, "hosted")
+    } catch (err) {
+      logger.log_error(err)
+      handler.user_emit(socket, "upload_error", {})
+    }
   }
 
   // Handles background image source changes
@@ -269,29 +265,24 @@ module.exports = function (
     if (type === "hosted") {
       let container = vars.path.join(vars.media_root, "room", socket.hue_room_id)
 
-      vars.fs.readdir(container, function (err, files) {
-        try {
-          if (err) {
-            logger.log_error(err)
-            return false
-          }
+      try {
+        let files = await vars.fsp.readdir(container)
 
-          for (let file of files) {
-            if (file.startsWith("background") && file !== file_name) {
-              let container = vars.path.join(vars.media_root, "room", socket.hue_room_id)
-              let path = vars.path.join(container, file)
+        for (let file of files) {
+          if (file.startsWith("background") && file !== file_name) {
+            let container = vars.path.join(vars.media_root, "room", socket.hue_room_id)
+            let path = vars.path.join(container, file)
 
-              vars.fs.unlink(path, function (err) {
-                if (err) {
-                  logger.log_error(err)
-                }
-              })            
-            }
+            vars.fs.unlink(path, function (err) {
+              if (err) {
+                logger.log_error(err)
+              }
+            })            
           }
-        } catch (err) {
-          logger.log_error(err)
         }
-      })
+      } catch (err) {
+        logger.log_error(err)
+      }
     }
   }  
 }
