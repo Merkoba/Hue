@@ -563,6 +563,10 @@ body * {
 	margin-bottom: 0.35rem;
 }
 
+.media_history_container .announcement_content_container {
+	margin-left: 0;
+}
+
 a.generic:link,
 a.generic:visited,
 a.generic:hover {
