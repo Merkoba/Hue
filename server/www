@@ -225,4 +225,4 @@ process.on("SIGINT", function () {
 	}
 })
 
-// create_db_backup()
+create_db_backup()
