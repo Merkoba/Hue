@@ -65,7 +65,6 @@ module.exports = function (
           for (let i=0; i<info.log_messages.length; i++) {
             if (info.log_messages[i].id === data.edit_id) {
               if (info.log_messages[i].data.user_id !== socket.hue_user_id) {
-                resolve({})
                 return
               }
   
