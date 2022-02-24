@@ -211,10 +211,12 @@ Hue.add_post_to_message_board = function (post, edited) {
   Hue.dataset(content, "date", post.date)
   Hue.dataset(content, "otitle", title)
 
-  let delet = Hue.el(".message_board_delete", item)
+  let btns = Hue.el(".message_board_buttons", item)
 
   if (post.user_id === Hue.user_id) {
-    delet.style.display = "inline-block"
+    btns.style.display = "flex"
+  } else {
+    Hue.el(".message_board_edit", item).style.display = "none"
   }
 
   if (!edited) {
