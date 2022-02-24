@@ -86,7 +86,7 @@ module.exports = function (
       return false
     }
 
-    let sockets = handler.get_user_sockets_per_room(socket.hue_room_id, id)
+    let sockets = await handler.get_user_sockets_per_room(socket.hue_room_id, id)
     let last_socc = false
 
     for (let socc of sockets) {
@@ -122,7 +122,7 @@ module.exports = function (
   }
 
   // Handles user kicks
-  handler.public.kick = function (socket, data) {
+  handler.public.kick = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
       return false
     }
@@ -139,7 +139,7 @@ module.exports = function (
       return false
     }
 
-    let sockets = handler.get_user_sockets_per_room_by_username(
+    let sockets = await handler.get_user_sockets_per_room_by_username(
       socket.hue_room_id,
       data.username
     )
@@ -218,7 +218,7 @@ module.exports = function (
       return false
     }
 
-    let sockets = handler.get_user_sockets_per_room(socket.hue_room_id, id)
+    let sockets = await handler.get_user_sockets_per_room(socket.hue_room_id, id)
 
     if (sockets.length > 0) {
       for (let socc of sockets) {

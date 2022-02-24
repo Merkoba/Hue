@@ -101,7 +101,7 @@ module.exports = function (
     })
 
     // Socket disconnect handler
-    socket.on("disconnect", function (reason) {
+    socket.on("disconnect", async function (reason) {
       try {
         if (!reason) {
           reason = "unknown"
@@ -113,7 +113,7 @@ module.exports = function (
           socket.hue_pinged = true
         }
 
-        handler.disconnect(socket)
+        await handler.disconnect(socket)
       } catch (err) {
         logger.log_error(err)
       }

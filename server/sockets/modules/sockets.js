@@ -9,13 +9,13 @@ module.exports = function (
   logger
 ) {
   // Checks if the user is already connected through another socket
-  handler.user_already_connected = function (socket) {
+  handler.user_already_connected = async function (socket) {
     try {
       if (io.sockets.adapter.rooms[socket.hue_room_id] === undefined) {
         return false
       }
 
-      let sockets = handler.get_room_sockets(socket.hue_room_id)
+      let sockets = await handler.get_room_sockets(socket.hue_room_id)
 
       for (let socc of sockets) {
         if (socc.id !== socket.id && socc.hue_user_id === socket.hue_user_id) {
@@ -30,10 +30,10 @@ module.exports = function (
   }
 
   // Returns the list of sockets of a user in a room, by user id
-  handler.get_user_sockets_per_room = function (room_id, user_id) {
+  handler.get_user_sockets_per_room = async function (room_id, user_id) {
     try {
       let clients = []
-      let sockets = handler.get_room_sockets(room_id)
+      let sockets = await handler.get_room_sockets(room_id)
 
       for (let socc of sockets) {
         if (socc.hue_user_id === user_id) {
@@ -48,10 +48,10 @@ module.exports = function (
   }
 
   // Returns the list of sockets of a user in a room, by username
-  handler.get_user_sockets_per_room_by_username = function (room_id, username) {
+  handler.get_user_sockets_per_room_by_username = async function (room_id, username) {
     try {
       let clients = []
-      let sockets = handler.get_room_sockets(room_id)
+      let sockets = await handler.get_room_sockets(room_id)
 
       for (let socc of sockets) {
         if (socc.hue_username.toLowerCase() === username.toLowerCase()) {
@@ -66,9 +66,9 @@ module.exports = function (
   }
 
   // Returns the list of sockets of a user in a room, by socket id
-  handler.get_room_socket_by_id = function (room_id, id) {
+  handler.get_room_socket_by_id = async function (room_id, id) {
     try {
-      let sockets = handler.get_room_sockets(room_id)
+      let sockets = await handler.get_room_sockets(room_id)
 
       for (let socc of sockets) {
         if (socc.id === id) {
@@ -83,27 +83,12 @@ module.exports = function (
   }
 
   // Gets the list of sockets of a room
-  handler.get_room_sockets = function (room_id) {
-    try {
-      let sockets = []
-      let ids = Object.keys(io.sockets.adapter.rooms[room_id].sockets)
-
-      for (let id of ids) {
-        let socc = io.sockets.connected[id]
-
-        if (socc) {
-          sockets.push(socc)
-        }
-      }
-
-      return sockets
-    } catch (err) {
-      logger.log_error(err)
-    }
+  handler.get_room_sockets = async function (room_id) {
+    return await io.in(room_id).fetchSockets()
   }
 
   // Checks if a user exceeds the maximum amounts of sockets allowed per room
-  handler.check_socket_limit = function (socket) {
+  handler.check_socket_limit = async function (socket) {
     try {
       let num = 0
       let rooms = vars.user_rooms[socket.hue_user_id]
@@ -113,7 +98,7 @@ module.exports = function (
       }
 
       for (let room_id of rooms) {
-        num += handler.get_user_sockets_per_room(room_id, socket.hue_user_id)
+        num += await handler.get_user_sockets_per_room(room_id, socket.hue_user_id)
           .length
       }
 
@@ -129,9 +114,9 @@ module.exports = function (
   }
 
   // Checks if a user has multiple simultaneous join attempts
-  handler.check_multipe_joins = function (socket) {
+  handler.check_multipe_joins = async function (socket) {
     try {
-      let sockets = handler.get_room_sockets(socket.hue_room_id)
+      let sockets = await handler.get_room_sockets(socket.hue_room_id)
 
       for (let socc of sockets) {
         if (socc.hue_user_id !== undefined) {
@@ -157,7 +142,7 @@ module.exports = function (
   }
 
   // Changes socket properties to all sockets of a user
-  handler.modify_socket_properties = function (
+  handler.modify_socket_properties = async function (
     user_id,
     properties = {},
     after_room = false
@@ -169,7 +154,7 @@ module.exports = function (
     for (let room_id of vars.user_rooms[user_id]) {
       let first_socc = false
 
-      for (let socc of handler.get_user_sockets_per_room(
+      for (let socc of await handler.get_user_sockets_per_room(
         room_id,
         user_id
       )) {

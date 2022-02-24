@@ -15,12 +15,12 @@ module.exports = function (
   }
 
   // On disconnect
-  handler.disconnect = function (socket) {
+  handler.disconnect = async function (socket) {
     if (socket.hue_user_id === undefined) {
       return
     }
 
-    if (handler.user_already_connected(socket)) {
+    if (await handler.user_already_connected(socket)) {
       return
     }
 
@@ -71,11 +71,11 @@ module.exports = function (
   }
 
   // Disconnect other sockets from user
-  handler.public.disconnect_others = function (socket, data) {
+  handler.public.disconnect_others = async function (socket, data) {
     let amount = 0
 
     for (let room_id of vars.user_rooms[socket.hue_user_id]) {
-      for (let socc of handler.get_user_sockets_per_room(
+      for (let socc of await handler.get_user_sockets_per_room(
         room_id,
         socket.hue_user_id
       )) {

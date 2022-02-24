@@ -34,7 +34,7 @@ module.exports = function (
     )
 
     if (done) {
-      handler.modify_socket_properties(
+      await handler.modify_socket_properties(
         socket.hue_user_id,
         { hue_username: data.username },
         {
@@ -99,7 +99,7 @@ module.exports = function (
       return false
     }
 
-    handler.modify_socket_properties(socket.hue_user_id, { hue_bio: data.bio })
+    await handler.modify_socket_properties(socket.hue_user_id, { hue_bio: data.bio })
 
     db_manager.update_user(socket.hue_user_id, {
       bio: socket.hue_bio,
@@ -164,7 +164,7 @@ module.exports = function (
       profilepic_version: new_ver
     })
 
-    handler.modify_socket_properties(
+    await handler.modify_socket_properties(
       socket.hue_user_id,
       { hue_profilepic_version: new_ver },
       {
@@ -236,7 +236,7 @@ module.exports = function (
       audioclip_version: new_ver
     })
 
-    handler.modify_socket_properties(
+    await handler.modify_socket_properties(
       socket.hue_user_id,
       { hue_audioclip_version: new_ver },
       {

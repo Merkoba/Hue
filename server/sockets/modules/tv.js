@@ -245,12 +245,12 @@ module.exports = function (
   }
 
   // Receives a request to ask another user for their tv video progress
-  handler.public.sync_tv = function (socket, data) {
+  handler.public.sync_tv = async function (socket, data) {
     if (!data.username) {
       return false
     }
 
-    let sockets = handler.get_user_sockets_per_room_by_username(
+    let sockets = await handler.get_user_sockets_per_room_by_username(
       socket.hue_room_id,
       data.username
     )
@@ -280,12 +280,12 @@ module.exports = function (
   }
 
   // If a user responds this sends the progress to another user
-  handler.public.report_tv_progress = function (socket, data) {
+  handler.public.report_tv_progress = async function (socket, data) {
     if (!data.requester || !data.progress) {
       return false
     }
 
-    let requester_socket = handler.get_room_socket_by_id(
+    let requester_socket = await handler.get_room_socket_by_id(
       socket.hue_room_id,
       data.requester
     )

@@ -153,11 +153,11 @@ module.exports = function (
 
     socket.join(socket.hue_room_id)
 
-    if (handler.check_multipe_joins(socket)) {
+    if (await handler.check_multipe_joins(socket)) {
       return handler.do_disconnect(socket)
     }
 
-    if (handler.check_socket_limit(socket)) {
+    if (await handler.check_socket_limit(socket)) {
       return handler.do_disconnect(socket)
     }
 
@@ -203,7 +203,7 @@ module.exports = function (
       vars.user_rooms[socket.hue_user_id].push(socket.hue_room_id)
     }
 
-    let already_connected = handler.user_already_connected(socket)
+    let already_connected = await handler.user_already_connected(socket)
 
     if (!already_connected) {
       vars.rooms[socket.hue_room_id].userlist[socket.hue_user_id] = {}
