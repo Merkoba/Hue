@@ -50,7 +50,7 @@ module.exports = function (
       obj.comment = data.comment
       obj.file_name = data.file_name
   
-      handler.do_change_media(socket, obj, type)
+      await handler.do_change_media(socket, obj, type)
     } catch (err) {
       logger.log_error(err)
       handler.user_emit(socket, "upload_error", {})

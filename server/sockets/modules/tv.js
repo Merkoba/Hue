@@ -88,11 +88,11 @@ module.exports = function (
               return res.json()
             })
 
-            .then(function (response) {
+            .then(async function (response) {
               if (response.items !== undefined && response.items.length > 0) {
                 data.type = "youtube"
                 data.title = response.items[0].snippet.title
-                handler.do_change_media(socket, data, "tv")
+                await handler.do_change_media(socket, data, "tv")
               } else {
                 handler.user_emit(socket, "video_not_found", {})
                 return false
@@ -114,7 +114,7 @@ module.exports = function (
         if (info && info[0] === "channel") {
           data.type = "twitch"
           data.title = info[1]
-          handler.do_change_media(socket, data, "tv")
+          await handler.do_change_media(socket, data, "tv")
         } else {
           handler.user_emit(socket, 'video_not_found', {})
           return false
@@ -130,7 +130,7 @@ module.exports = function (
           data.title = data.src
         }
 
-        handler.do_change_media(socket, data, "tv")
+        await handler.do_change_media(socket, data, "tv")
       } else {
         let extension = utilz.get_extension(data.src).toLowerCase()
 
@@ -171,7 +171,7 @@ module.exports = function (
           vars
             .fetch_2(data.src)
 
-            .then((res) => {
+            .then(async (res) => {
               let xframe_options = res.headers.get("x-frame-options") || ""
 
               xframe_options = xframe_options.toLowerCase()
@@ -183,7 +183,7 @@ module.exports = function (
                 handler.user_emit(socket, "cannot_embed_iframe", {})
                 return false
               } else {
-                handler.do_change_media(socket, data, "tv")
+                await handler.do_change_media(socket, data, "tv")
               }
             })
 
@@ -191,7 +191,7 @@ module.exports = function (
               handler.user_emit(socket, "cannot_embed_iframe", {})
             })
         } else {
-          handler.do_change_media(socket, data, "tv")
+          await handler.do_change_media(socket, data, "tv")
         }
       }
     } else {
@@ -212,7 +212,7 @@ module.exports = function (
           return res.json()
         })
 
-        .then(function (response) {
+        .then(async function (response) {
           if (response.items !== undefined && response.items.length > 0) {
             for (let item of response.items) {
               if (
@@ -227,7 +227,7 @@ module.exports = function (
               data.query = data.src
               data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
               data.title = response.items[0].snippet.title
-              handler.do_change_media(socket, data, "tv")
+              await handler.do_change_media(socket, data, "tv")
               return
             }
 

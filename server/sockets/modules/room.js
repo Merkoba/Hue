@@ -188,7 +188,7 @@ module.exports = function (
 
     try {
       await vars.fsp.writeFile(path, data.image_file)
-      handler.do_change_background(socket, file_name, "hosted")
+      await handler.do_change_background(socket, file_name, "hosted")
     } catch (err) {
       logger.log_error(err)
       handler.user_emit(socket, "upload_error", {})
@@ -196,7 +196,7 @@ module.exports = function (
   }
 
   // Handles background image source changes
-  handler.public.change_background_source = function (socket, data) {
+  handler.public.change_background_source = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
       return false
     }
@@ -227,7 +227,7 @@ module.exports = function (
       }
     }
 
-    handler.do_change_background(socket, data.src, "external")
+    await handler.do_change_background(socket, data.src, "external")
   }
 
   // Completes background image changes
