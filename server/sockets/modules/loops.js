@@ -1,39 +1,30 @@
-module.exports = function (
-  handler,
-  vars,
-  io,
-  db_manager,
-  config,
-  sconfig,
-  utilz,
-  logger
-) {
+module.exports = function (Hue) {
   // Starts a timeout to check for stale files to be removed
   // These are files that failed to be uploaded
-  handler.start_files_timeout = function () {
+  Hue.handler.start_files_timeout = function () {
     setTimeout(function () {
-      if (vars.exiting) {
+      if (Hue.vars.exiting) {
         return false
       }
 
-      handler.files_timeout_action()
-    }, sconfig.files_loop_interval)
+      Hue.handler.files_timeout_action()
+    }, Hue.sconfig.files_loop_interval)
   }
 
   // What to do on each room timeout iteration
-  handler.files_timeout_action = function () {
+  Hue.handler.files_timeout_action = function () {
     try {
-      for (let key in vars.files) {
-        let file = vars.files[key]
+      for (let key in Hue.vars.files) {
+        let file = Hue.vars.files[key]
 
-        if (Date.now() - file.updated > sconfig.files_loop_max_diff) {
-          delete vars.files[key]
+        if (Date.now() - file.updated > Hue.sconfig.files_loop_max_diff) {
+          delete Hue.vars.files[key]
         }
       }
     } catch (err) {
-      logger.log_error(err)
+      Hue.logger.log_error(err)
     }
 
-    handler.start_files_timeout()
+    Hue.handler.start_files_timeout()
   }
 }

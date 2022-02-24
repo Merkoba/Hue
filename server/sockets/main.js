@@ -1,24 +1,16 @@
-module.exports = function (
-  io,
-  db_manager,
-  config,
-  sconfig,
-  utilz,
-  logger,
-  sockets_api
-) {
+module.exports = function (Hue) {
   // Main handler object
-  const handler = {}
-  handler.public = {}
+  Hue.handler = {}
+  Hue.handler.public = {}
 
   // Object that holds all shared variables
-  const vars = {}
+  Hue.vars = {}
 
   // Fill the vars object
-  require("./vars")(vars, handler, ...arguments)
+  require("./vars")(Hue)
 
   // Get the module file names and arguments
-  const modules = vars.fs.readdirSync(vars.path.join(__dirname, "modules"))
+  const modules = Hue.vars.fs.readdirSync(Hue.vars.path.join(__dirname, "modules"))
 
   // Fill the handler object
   for (let module of modules) {
@@ -26,57 +18,57 @@ module.exports = function (
       continue
     }
 
-    require(`./modules/${module}`)(handler, vars, ...arguments)
+    require(`./modules/${module}`)(Hue)
   }
 
   // Start the anti-spam system
-  vars.anti_spam = handler.start_anti_spam()  
+  Hue.vars.anti_spam = Hue.handler.start_anti_spam()  
 
   // Start socker handler
-  io.on("connection", async function (socket) {
+  Hue.io.on("connection", async function (socket) {
     if (!socket) {
       return false
     }
     
-    if (vars.exiting) {
+    if (Hue.vars.exiting) {
       return false
     }
 
     try {
-      let spam_ans = await handler.add_spam(socket)
+      let spam_ans = await Hue.handler.add_spam(socket)
 
       if (!spam_ans) {
         return false
       }
 
-      handler.connection(socket)
+      Hue.handler.connection(socket)
     } catch (err) {
-      logger.log_error(err)
+      Hue.logger.log_error(err)
     }
 
     // Goes to a public function
     // If there is no such public function the user is kicked out
     socket.on("server_method", async function (data) {
-      if (vars.exiting) {
+      if (Hue.vars.exiting) {
         return false
       }
 
       try {
         let m = data.server_method_name
 
-        if (!vars.dont_add_spam.includes(m)) {
-          let spam_ans = await handler.add_spam(socket)
+        if (!Hue.vars.dont_add_spam.includes(m)) {
+          let spam_ans = await Hue.handler.add_spam(socket)
 
           if (!spam_ans) {
             return false
           }
         }
 
-        if (!handler.check_data(data)) {
+        if (!Hue.handler.check_data(data)) {
           return false
         }
 
-        if (handler.public[m] === undefined) {
+        if (Hue.handler.public[m] === undefined) {
           return false
         }
 
@@ -88,15 +80,15 @@ module.exports = function (
           return false
         }
 
-        if (!vars.dont_check_joined.includes(m)) {
+        if (!Hue.vars.dont_check_joined.includes(m)) {
           if (!socket.hue_joined) {
             return false
           }
         }
 
-        await handler.public[m](socket, data)
+        await Hue.handler.public[m](socket, data)
       } catch (err) {
-        logger.log_error(err)
+        Hue.logger.log_error(err)
       }
     })
 
@@ -113,14 +105,12 @@ module.exports = function (
           socket.hue_pinged = true
         }
 
-        await handler.disconnect(socket)
+        await Hue.handler.disconnect(socket)
       } catch (err) {
-        logger.log_error(err)
+        Hue.logger.log_error(err)
       }
     })
   })
 
-  handler.start_files_timeout()
-  sockets_api.handler = handler
-  sockets_api.vars = vars
+  Hue.handler.start_files_timeout()
 }

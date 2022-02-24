@@ -1,15 +1,6 @@
-module.exports = function (
-  handler,
-  vars,
-  io,
-  db_manager,
-  config,
-  sconfig,
-  utilz,
-  logger
-) {
+module.exports = function (Hue) {
   // Pushes an admin log message
-  handler.push_admin_log_message = function (socket, content) {
+  Hue.handler.push_admin_log_message = function (socket, content) {
     let message = {
       type: "admin_activity",
       data: {
@@ -19,6 +10,6 @@ module.exports = function (
       date: Date.now(),
     }
 
-    db_manager.push_room_item(socket.hue_room_id, "admin_log_messages", message)
+    Hue.db_manager.push_room_item(socket.hue_room_id, "admin_log_messages", message)
   }
 }
