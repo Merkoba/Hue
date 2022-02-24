@@ -9,7 +9,7 @@ module.exports = function (
   logger
 ) {
   // Handles whispers
-  handler.public.whisper = function (socket, data) {
+  handler.public.whisper = async function (socket, data) {
     if (data.type === "system_broadcast") {
       if (!socket.hue_superuser) {
         handler.anti_spam_ban(socket)
@@ -54,7 +54,7 @@ module.exports = function (
 
     if (data.type === "user") {
       for (let username of data.usernames) {
-        let sockets = handler.get_user_sockets_per_room_by_username(
+        let sockets = await handler.get_user_sockets_per_room_by_username(
           socket.hue_room_id,
           username
         )
