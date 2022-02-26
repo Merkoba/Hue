@@ -2,7 +2,7 @@ module.exports = function (Hue) {
   // Checks if the user is already connected through another socket
   Hue.handler.user_already_connected = async function (socket) {
     try {
-      if (Hue.io.sockets.adapter.rooms[socket.hue_room_id] === undefined) {
+      if (!await Hue.io.in(socket.hue_room_id).fetchSockets()) {
         return false
       }
 
