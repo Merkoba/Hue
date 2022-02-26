@@ -1820,7 +1820,7 @@ a.special_link:hover {
 .chat_quote {
 	display: flex;
 	flex-direction: row;
-	padding: 0.25rem;
+	padding: 0.45rem;
 	margin-bottom: 0.25rem;
 	background-color: var(--altcolor_a);
 }
