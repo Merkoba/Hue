@@ -40,21 +40,18 @@ module.exports = function (Hue) {
     }
 
     if (!Hue.utilz.is_url(url)) {
-      resolve(response)
-      return
+      return response
     }
 
     if (url === "http://localhost" || url === "https://localhost") {
-      resolve(response)
-      return
+      return response
     }
 
     let extension = Hue.utilz.get_extension(url).toLowerCase()
 
     if (extension) {
       if (extension !== "html" && extension !== "php") {
-        resolve(response)
-        return
+        return response
       }
     }
 
