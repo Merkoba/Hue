@@ -1613,8 +1613,8 @@ a.special_link:hover {
 
 .link_preview_image {
 	cursor: pointer;
-	max-width: 10rem;
-	max-height: 10rem;
+	max-width: 8rem;
+	max-height: 8rem;
 	object-fit: contain;
 	flex-grow: 0;
 	flex-shrink: 0;
