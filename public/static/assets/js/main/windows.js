@@ -45,14 +45,14 @@ Hue.start_msg = function () {
   Hue.msg_main_menu = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "main_menu",
-      window_width: "22rem"
+      window_width: "244em"
     })
   )
 
   Hue.msg_room_menu = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "room_menu",
-      window_width: "22rem"
+      window_width: "244em"
     })
   )
 
@@ -60,7 +60,7 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "user_menu",
       clear_editables: false,
-      window_width: "22rem",
+      window_width: "244em",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         if (Hue.user_menu_audio) {
@@ -104,7 +104,7 @@ Hue.start_msg = function () {
   Hue.msg_profile = Msg.factory(
     Object.assign({}, msgvars.common, {
       id: "profile",
-      window_width: "22rem",
+      window_width: "244em",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.el("#show_profile_username").textContent = "Loading"
@@ -164,7 +164,7 @@ Hue.start_msg = function () {
   Hue.msg_image_picker = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "image_picker",
-      window_width: "24rem",
+      window_width: "244em",
       content_class: "!media_picker_content",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
@@ -178,7 +178,7 @@ Hue.start_msg = function () {
   Hue.msg_tv_picker = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "tv_picker",
-      window_width: "24rem",
+      window_width: "244em",
       content_class: "!media_picker_content",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
@@ -192,14 +192,14 @@ Hue.start_msg = function () {
   Hue.msg_media_menu = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "media_menu",
-      window_width: "22rem"
+      window_width: "244em"
     })
   )
 
   Hue.msg_message = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "message",
-      window_width: "28rem",
+      window_width: "244em",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
         Hue.writing_message = true
@@ -214,7 +214,7 @@ Hue.start_msg = function () {
   Hue.msg_chat_search = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "chat_search",
-      window_width: "30rem",
+      window_width: "44rem",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.reset_chat_search_filter()
@@ -237,7 +237,7 @@ Hue.start_msg = function () {
   Hue.msg_settings = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "settings",
-      window_width: "24rem"
+      window_width: "244em"
     })
   )
 
@@ -281,7 +281,7 @@ Hue.start_msg = function () {
   Hue.msg_reply = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "reply",
-      window_width: "26rem",
+      window_width: "244em",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
         Hue.writing_reply = true
@@ -316,21 +316,21 @@ Hue.start_msg = function () {
   Hue.msg_notifications = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "notifications",
-      window_width: "26rem",
+      window_width: "244em",
     })
   )
 
   Hue.msg_whispers = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "whispers",
-      window_width: "26rem",
+      window_width: "244em",
     })
   )
 
   Hue.msg_message_board = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "message_board",
-      window_width: "30rem",
+      window_width: "344em",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.do_message_board_edit(false)
@@ -723,7 +723,7 @@ Hue.show_action_popup = function (args = {}) {
     enable_titlebar: true,
     window_x: "inner_right",
     content_class: "!action_popup",
-    window_width: "auto",
+    window_width: "a44o",
     on_click: on_click,
     after_close: args.after_close,
     close_on_escape: false,

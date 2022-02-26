@@ -1452,11 +1452,11 @@ Hue.make_link_preview = function (args = {}) {
   }
 
   let link_preview_s = `<div class='${classes}'>
-    <img class='${image_classes}' src='${args.image}' loading='lazy'>
-    <div class='${text_content_classes}'>
-      <div class='${title_classes}'>${Hue.utilz.make_html_safe(args.title)}</div>
-      <div class='${description_classes}'>${Hue.utilz.make_html_safe(args.description)}</div>
-    </div>
+  <div class='${text_content_classes}'>
+    <div class='${title_classes}'>${Hue.utilz.make_html_safe(args.title)}</div>
+    <div class='${description_classes}'>${Hue.utilz.make_html_safe(args.description)}</div>
+  </div>
+  <img class='${image_classes}' src='${args.image}' loading='lazy'>
   </div>`
 
   ans.link_preview = link_preview_s

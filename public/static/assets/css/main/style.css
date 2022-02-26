@@ -1594,6 +1594,8 @@ a.special_link:hover {
 .link_preview_text_content {
 	display: flex;
 	flex-direction: column;
+	align-self: center;
+	padding: 0.45rem;
 }
 
 .link_preview_text_content_full .link_preview_title {
@@ -1604,11 +1606,6 @@ a.special_link:hover {
 	font-weight: bold;
 }
 
-.link_preview_with_image .link_preview_text_content {
-	margin-left: 0.5rem;
-	margin-right: 0.5rem;
-}
-
 .link_preview_title {
 	overflow-wrap: break-word;
 	word-break: break-word;
@@ -1616,12 +1613,13 @@ a.special_link:hover {
 
 .link_preview_image {
 	cursor: pointer;
-	max-width: 4rem;
-	max-height: 4rem;
+	max-width: 10rem;
+	max-height: 10rem;
 	object-fit: contain;
 	flex-grow: 0;
 	flex-shrink: 0;
 	align-self: center;
+	padding: 0.45rem;
 }
 
 .align_left {
