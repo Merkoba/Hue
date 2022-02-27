@@ -1579,7 +1579,6 @@ a.special_link:hover {
 	flex-direction: row;
 	align-items: flex-start;
 	justify-content: flex-start;
-	padding: 0.25rem;
 	align-self: flex-start;
 	background-color: var(--altcolor_a);
 	color: var(--font_color);
