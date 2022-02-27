@@ -7,7 +7,7 @@ Hue.urlize = function (el, limit_width = true) {
   try {
     let html = el.innerHTML
 
-    if (!html || !Hue.utilz.includes_url(html)) {
+    if (!html) {
       return false
     }
 
