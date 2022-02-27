@@ -2191,6 +2191,7 @@ pre {
 	background-color: rgb(31, 31, 31);
 	padding: var(--small_padding);
 	border: 1px solid currentColor;
+	text-align: left;
 }
 
 .greentext {
