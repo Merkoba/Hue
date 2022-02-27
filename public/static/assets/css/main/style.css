@@ -1443,6 +1443,7 @@ svg.action:hover {
 	background-color: var(--altbackground_a);
 	color: var(--font_color);
 	box-shadow: 0 0 0.12rem currentColor;
+	padding: var(--small_padding);
 }
 
 .fresh_message {
