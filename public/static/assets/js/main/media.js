@@ -1025,9 +1025,8 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
     data.date = Date.now()
   }
 
-  let gets = data.id ? `${data.id.slice(-3)} | ` : ""
+  data.info = data.id ? `${data.id.slice(-3)}` : ""
 
-  data.info = `${gets}Setter: ${data.setter}`
   data.info_html = `<div>Setter: ${Hue.utilz.make_html_safe(
     data.setter
   )}</div>`
