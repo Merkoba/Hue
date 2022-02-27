@@ -9,6 +9,7 @@
 	--big_profilepic_size: 11.5rem;
 	--bigger_profilepic_size: 17.5rem;
 	--panel_profilepic_size: calc(var(--panel_height) * 0.66);
+	--small_padding: 0.35rem;
 }
 
 @font-face {
@@ -1595,7 +1596,7 @@ a.special_link:hover {
 	display: flex;
 	flex-direction: column;
 	align-self: center;
-	padding: 0.45rem;
+	padding: var(--small_padding);
 }
 
 .link_preview_text_content_full .link_preview_title {
@@ -1619,7 +1620,7 @@ a.special_link:hover {
 	flex-grow: 0;
 	flex-shrink: 0;
 	align-self: center;
-	padding: 0.45rem;
+	padding: var(--small_padding);
 }
 
 .align_left {
@@ -1820,7 +1821,7 @@ a.special_link:hover {
 .chat_quote {
 	display: flex;
 	flex-direction: row;
-	padding: 0.45rem;
+	padding: var(--small_padding);
 	margin-bottom: 0.25rem;
 	background-color: var(--altcolor_a);
 }
@@ -2188,6 +2189,7 @@ pre {
 
 .colortext {
 	background-color: rgb(31, 31, 31);
+	padding: var(--small_padding);
 }
 
 .greentext {
