@@ -28,15 +28,22 @@ Hue.setup_footer = function () {
     Hue.show_highlights()
   })
 
-  Hue.el("#footer_radio_icon_container").addEventListener("click", function () {
-    Hue.toggle_radio_items()
-  }) 
+  if (Hue.config.radios.length > 0) {
+    Hue.el("#footer_radio_icon_container").addEventListener("click", function () {
+      Hue.toggle_radio_items()
+    }) 
+  } else {
+    Hue.el("#footer_radio_icon_container").remove()
+  }
 
   Hue.el("#footer_items").addEventListener("click", function(e) {
     if (e.target === this) {
       Hue.el("#input").focus()
     }
   })
+
+  Hue.horizontal_separator(Hue.el("#footer_actions"))
+  Hue.horizontal_separator(Hue.el("#footer_media_items"))
 }
 
 // Enabled footer expand
