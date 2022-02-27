@@ -9,7 +9,7 @@
 	--big_profilepic_size: 11.5rem;
 	--bigger_profilepic_size: 17.5rem;
 	--panel_profilepic_size: calc(var(--panel_height) * 0.66);
-	--small_padding: 0.35rem;
+	--small_padding: 0.25rem;
 }
 
 @font-face {
