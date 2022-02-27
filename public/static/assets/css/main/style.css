@@ -2190,7 +2190,7 @@ pre {
 .colortext {
 	background-color: rgb(31, 31, 31);
 	padding: var(--small_padding);
-	border: 1px solid currentColor;
+	/* border: 1px solid currentColor; */
 }
 
 .greentext {
