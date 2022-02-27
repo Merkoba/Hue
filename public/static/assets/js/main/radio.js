@@ -4,14 +4,13 @@ Hue.setup_radio = function () {
     return
   }
 
-  Hue.create_radio_item_volume()
-  
   for (let radio of Hue.config.radios) {
     Hue.start_radio(radio)
   }
   
-  Hue.apply_radio_volume(Hue.room_state.radio_volume)
   Hue.create_radio_item_buttons()
+  Hue.create_radio_item_volume()
+  Hue.apply_radio_volume(Hue.room_state.radio_volume)
   Hue.fill_radio_queue()
 
   Hue.el("#footer_radio_icon_container").addEventListener("wheel", function (e) {
