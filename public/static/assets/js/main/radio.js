@@ -8,9 +8,10 @@ Hue.setup_radio = function () {
     Hue.start_radio(radio)
   }
   
-  Hue.create_radio_item_buttons()
   Hue.create_radio_item_volume()
   Hue.apply_radio_volume(Hue.room_state.radio_volume)
+  
+  Hue.create_radio_item_buttons()
   Hue.fill_radio_queue()
 
   Hue.el("#footer_radio_icon_container").addEventListener("wheel", function (e) {
