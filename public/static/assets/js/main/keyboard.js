@@ -245,7 +245,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_message.is_open()) {
         if (Hue.msg_message.is_highest()) {
-          if (e.key === "Enter" && !e.shiftKeky) {
+          if (e.key === "Enter" && !e.shiftKey) {
             Hue.send_popup_message()
             e.preventDefault()
           }
