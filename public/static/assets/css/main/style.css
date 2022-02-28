@@ -2188,7 +2188,7 @@ pre {
 }
 
 .colortext {
-	background-color: rgb(31, 31, 31);
+	background-color: rgba(33, 33, 33, 0.8);
 	padding: var(--small_padding);
 	border: 1px solid currentColor;
 	text-align: left;
