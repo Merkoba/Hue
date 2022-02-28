@@ -104,15 +104,13 @@ Hue.make_chat_message = function (args = {}) {
 
   title = title + nd
 
-  if (args.id) {
-    let gets = args.id.slice(-3)
+  let gets = args.id.slice(-3)
 
-    if (Hue.utilz.bingo(gets)) {
-      content_classes += " colortext goldtext"
-    }
-    
-    title = `${gets} | ${title}`
+  if (Hue.utilz.bingo(gets)) {
+    content_classes += " colortext goldtext"
   }
+  
+  title = `${gets} | ${title}`
 
   let s = `
     <div class='chat_left_side'>
@@ -304,7 +302,7 @@ Hue.make_announcement_message = function (args = {}) {
     brk_classes += " pos_absolute"
   }
   
-  if (args.id && is_media) {
+  if (is_media) {
     if (Hue.utilz.bingo(args.id.slice(-3))) {
       content_classes += " colortext goldtext"
     }
