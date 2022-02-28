@@ -303,6 +303,12 @@ Hue.make_announcement_message = function (args = {}) {
   if (args.user_id) {
     brk_classes += " pos_absolute"
   }
+  
+  if (args.id && is_media) {
+    if (Hue.utilz.bingo(args.id.slice(-3))) {
+      content_classes += " colortext goldtext"
+    }
+  }
 
   let announcement_top = ""
 
