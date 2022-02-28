@@ -214,16 +214,17 @@ Hue.show_whisper = function (data) {
     title = `Whisper sent to ${Hue.utilz.nice_list(data.usernames)}`
     usr = data.usernames
   }
-
-  button_html = Hue.utilz.nonbreak("Send Whisper")
-
-  button_func = function () {
-    Hue.write_popup_message(usr)
-  }
   
   let modal = Hue.create_modal({window_class: "!whisper_width"}, "whisper")
   modal.set(Hue.template_sent_message())
   modal.set_title(Hue.utilz.make_html_safe(title))
+
+  button_html = Hue.utilz.nonbreak("Send Whisper")
+
+  button_func = function () {
+    modal.close()
+    Hue.write_popup_message(usr)
+  }
   
   let message_html = Hue.utilz.make_html_safe(data.message)
   message_html = Hue.parse_text(message_html)
