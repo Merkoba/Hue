@@ -276,9 +276,9 @@ module.exports = function (Hue) {
       username: socket.hue_username
     })
     
-    Hue.handler.delete_media_files(socket.hue_room_id, "image")
-    Hue.handler.delete_media_files(socket.hue_room_id, "tv")
-    Hue.handler.push_admin_log_message(socket, "cleared the log")
+    await Hue.handler.delete_media_files(socket.hue_room_id, "image")
+    await Hue.handler.delete_media_files(socket.hue_room_id, "tv")
+    await Hue.handler.push_admin_log_message(socket, "cleared the log")
   }
 
   // Deletes all messages above a message

@@ -105,34 +105,40 @@ module.exports = function (Hue) {
 
       let full_file = Buffer.concat(file.data)
 
-      if (data.action === "image_upload") {
-        Hue.handler.upload_media(socket, {
-          file: full_file,
-          file_name: file.name,
-          extension: file.extension,
-          comment: file.comment,
-        }, "image")
-      } else if (data.action === "tv_upload") {
-        Hue.handler.upload_media(socket, {
-          file: full_file,
-          file_name: file.name,
-          extension: file.extension,
-          comment: file.comment,
-        }, "tv")
-      } else if (data.action === "profilepic_upload") {
-        Hue.handler.upload_profilepic(socket, {
-          image_file: full_file,
-        })
-      } else if (data.action === "background_upload") {
-        Hue.handler.upload_background(socket, {
-          image_file: full_file,
-          extension: file.extension,
-        })
-      } else if (data.action === "audioclip_upload") {
-        Hue.handler.upload_audioclip(socket, {
-          audio_file: full_file,
-          extension: file.extension,
-        })
+      try {
+        if (data.action === "image_upload") {
+          await Hue.handler.upload_media(socket, {
+            file: full_file,
+            file_name: file.name,
+            extension: file.extension,
+            comment: file.comment,
+          }, "image")
+        } else if (data.action === "tv_upload") {
+          await Hue.handler.upload_media(socket, {
+            file: full_file,
+            file_name: file.name,
+            extension: file.extension,
+            comment: file.comment,
+          }, "tv")
+        } else if (data.action === "profilepic_upload") {
+          await Hue.handler.upload_profilepic(socket, {
+            image_file: full_file,
+          })
+        } else if (data.action === "background_upload") {
+          await Hue.handler.upload_background(socket, {
+            image_file: full_file,
+            extension: file.extension,
+          })
+        } else if (data.action === "audioclip_upload") {
+          await Hue.handler.upload_audioclip(socket, {
+            audio_file: full_file,
+            extension: file.extension,
+          })
+        }
+      } catch (err) {
+        delete Hue.vars.files[key]
+        Hue.logger.log_error(err)
+        return
       }
 
       delete Hue.vars.files[key]

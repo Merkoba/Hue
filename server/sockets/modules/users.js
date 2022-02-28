@@ -504,7 +504,7 @@ module.exports = function (Hue) {
     )
   
     if (done) {
-      Hue.handler.modify_socket_properties(
+      await Hue.handler.modify_socket_properties(
         userinfo.id,
         { hue_username: data.new },
         {

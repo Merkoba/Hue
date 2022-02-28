@@ -136,7 +136,7 @@ module.exports = function (Hue) {
     
     try {
       await Hue.vars.fsp.writeFile(path, data.image_file)
-      Hue.handler.do_change_profilepic(socket, file_name)
+      await Hue.handler.do_change_profilepic(socket, file_name)
     } catch (err) {
       Hue.logger.log_error(err)
       Hue.handler.user_emit(socket, "upload_error", {})
@@ -189,7 +189,7 @@ module.exports = function (Hue) {
     
     try {
       await Hue.vars.fsp.writeFile(path, data.audio_file)
-      Hue.handler.do_change_audioclip(socket, file_name)
+      await Hue.handler.do_change_audioclip(socket, file_name)
     } catch (err) {
       Hue.logger.log_error(err)
       Hue.handler.user_emit(socket, "upload_error", {})
