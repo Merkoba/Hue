@@ -280,7 +280,7 @@ Hue.update_userlist_window = function (filter_out = []) {
     if (filter_out.includes(user.username)) {
       continue
     }
-    
+
     let pi = Hue.get_profilepic(user.user_id)
 
     let s = `
@@ -399,7 +399,7 @@ Hue.show_userlist_window = function (mode = "normal", filter = "") {
   if (mode === "normal") {
     Hue.update_usercount()
   } else if (mode === "whisper") {
-    Hue.msg_userlist.set_title("Add or Remove a User")
+    Hue.msg_userlist.set_title("Add User")
   }
 
   Hue.update_userlist_window(Hue.message_usernames)
