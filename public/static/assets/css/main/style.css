@@ -1596,7 +1596,7 @@ a.special_link:hover {
 	display: flex;
 	flex-direction: column;
 	align-self: center;
-	padding: var(--small_padding);
+	padding: calc(var(--small_padding) * 2);
 }
 
 .link_preview_text_content_full .link_preview_title {
@@ -1620,7 +1620,7 @@ a.special_link:hover {
 	flex-grow: 0;
 	flex-shrink: 0;
 	align-self: center;
-	padding: var(--small_padding);
+	padding: calc(var(--small_padding) * 2);
 }
 
 .align_left {
