@@ -151,13 +151,21 @@ Hue.update_whisper_users = function (username) {
       let img = document.createElement("img")
       img.classList.add("profilepic")
       img.classList.add("actionbox")
+      img.title = username
       Hue.dataset(img, "username", username)
       img.src = Hue.get_profilepic(user.user_id)
       profilepics.append(img)
     }
   }
 
-  let title = `Whisper to ${Hue.utilz.nice_list(Hue.message_usernames)}`
+  let title
+
+  if (Hue.message_usernames.length === 1) {
+    title = `Whisper to ${Hue.message_usernames}`
+  } else {
+    title = "Whisper to..."
+  }
+
   Hue.msg_message.set_title(Hue.utilz.make_html_safe(title))
   Hue.msg_userlist.close()
 }
