@@ -35,10 +35,6 @@ Hue.make_chat_message = function (args = {}) {
   let container_classes = "chat_content_container chat_menu_button_main reply_message_container edit_message_container message_unit dynamic_title"
   let content_classes = "chat_content reply_message edit_message"
 
-  if (Hue.utilz.bingo(args.id)) {
-    content_classes += " colortext goldtext"
-  }
-
   let d = args.date ? args.date : Date.now()
   let nd = Hue.utilz.nice_date(d)
   let pi = Hue.get_profilepic(args.user_id)
@@ -109,7 +105,13 @@ Hue.make_chat_message = function (args = {}) {
   title = title + nd
 
   if (args.id) {
-    title = `${args.id.slice(-3)} | ${title}`
+    let gets = args.id.slice(-3)
+
+    if (Hue.utilz.bingo(gets)) {
+      content_classes += " colortext goldtext"
+    }
+    
+    title = `${gets} | ${title}`
   }
 
   let s = `
