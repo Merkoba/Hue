@@ -1139,6 +1139,13 @@ select {
 	border: 0;
 }
 
+#write_message_user_profilepics img {
+	width: var(--profilepic_size);
+	height: var(--profilepic_size);
+	margin: 0.5rem;
+	margin-top: 0;
+}
+
 .setting_textarea {
 	width: 100%;
 	resize: none;

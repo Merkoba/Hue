@@ -108,9 +108,13 @@ Hue.write_popup_message = function (usernames = [], type = "user") {
     Hue.el("#write_message_add_user").style.display = "none"
   }
 
-  Hue.message_usernames = c_usernames
   Hue.msg_message.set_title(Hue.utilz.make_html_safe(title))
   Hue.message_type = type
+  Hue.message_usernames = []
+
+  for (let username of c_usernames) {
+    Hue.update_whisper_users(username)
+  }
 
   Hue.msg_message.show(function () {
     Hue.el("#write_message_area").focus()
@@ -134,6 +138,22 @@ Hue.update_whisper_users = function (username) {
         Hue.message_usernames.splice(i, 1)
         break
       }
+    }
+  }
+
+  let profilepics = Hue.el("#write_message_user_profilepics")
+  
+  profilepics.innerHTML = ""
+
+  if (Hue.message_usernames.length > 1) {
+    for (let username of Hue.message_usernames) {
+      let user = Hue.get_user_by_username(username)
+      let img = document.createElement("img")
+      img.classList.add("profilepic")
+      img.classList.add("actionbox")
+      Hue.dataset(img, "username", username)
+      img.src = Hue.get_profilepic(user.user_id)
+      profilepics.append(img)
     }
   }
 
@@ -344,6 +364,14 @@ Hue.setup_message_window = function () {
     }
 
     Hue.show_userlist_window("whisper")
+  })
+
+  Hue.el("#write_message_user_profilepics").addEventListener("click", function (e) {
+    let el = e.target.closest(".profilepic")
+
+    if (el) {
+      Hue.update_whisper_users(Hue.dataset(el, "username"))
+    }
   })
 }
 
