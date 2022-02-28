@@ -95,7 +95,7 @@ module.exports = function (Hue) {
         return Hue.handler.do_disconnect(socket)
       }
 
-      Hue.handler.do_join(socket, info, userinfo, data)
+      await Hue.handler.do_join(socket, info, userinfo, data)
     } else {
       Hue.vars.jwt.verify(data.token, Hue.sconfig.jwt_secret, async function (
         err,
@@ -130,7 +130,7 @@ module.exports = function (Hue) {
             return Hue.handler.do_disconnect(socket)
           }
 
-          Hue.handler.do_join(socket, info, userinfo, data)
+          await Hue.handler.do_join(socket, info, userinfo, data)
         }
       })
     }

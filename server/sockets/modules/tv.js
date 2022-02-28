@@ -162,7 +162,7 @@ module.exports = function (Hue) {
           Hue.vars
             .fetch_2(data.src)
 
-            .then(async (res) => {
+            .then(async function (res) {
               let xframe_options = res.headers.get("x-frame-options") || ""
 
               xframe_options = xframe_options.toLowerCase()

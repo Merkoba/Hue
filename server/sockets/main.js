@@ -41,7 +41,7 @@ module.exports = function (Hue) {
         return false
       }
 
-      Hue.handler.connection(socket)
+      await Hue.handler.connection(socket)
     } catch (err) {
       Hue.logger.log_error(err)
     }
