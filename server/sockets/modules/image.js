@@ -29,7 +29,7 @@ module.exports = function (Hue) {
       return false
     }
 
-    let info = Hue.db_manager.get_room(["id", socket.hue_room_id], { image_source: 1, image_query: 1, image_date: 1})
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { image_source: 1, image_query: 1, image_date: 1})
 
     if (info.image_source === data.src || info.image_query === data.src) {
       Hue.handler.user_emit(socket, "same_image", {})
