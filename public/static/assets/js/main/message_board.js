@@ -200,16 +200,18 @@ Hue.add_post_to_message_board = function (post, edited) {
     link_description.style.display = "block"
   }
 
-  let title = Hue.utilz.nice_date(post.date)
-
-  if (post.id) {
-    title = `${post.id.slice(-3)} | ${title}`
-  }
+  let gets = post.id.slice(-3)
+  let title = `${gets} | ${Hue.utilz.nice_date(post.date)}`
 
   let content = Hue.el(".message_board_content", item)
   content.title = title
   Hue.dataset(content, "date", post.date)
   Hue.dataset(content, "otitle", title)
+
+  if (Hue.utilz.bingo(gets)) {
+    content.classList.add("colortext")
+    content.classList.add("goldtext")
+  }
 
   let btns = Hue.el(".message_board_buttons", item)
 
