@@ -58,7 +58,6 @@ Hue.wheel_delay_2 = 25
 Hue.flash_info_delay = 3000
 Hue.emit_queue = []
 Hue.has_focus = false
-Hue.message_usernames = ""
 Hue.aura_timeouts = {}
 Hue.mouse_is_down = false
 Hue.user_leaving = false

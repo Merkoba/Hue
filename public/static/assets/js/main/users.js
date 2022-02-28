@@ -271,12 +271,17 @@ Hue.setup_userlist_window = function () {
 }
 
 // Fills the userlist window with user information
-Hue.update_userlist_window = function () {
+Hue.update_userlist_window = function (filter_out = []) {
   let container = Hue.div()
 
   for (let i = 0; i < Hue.userlist.length; i++) {
-    let item = Hue.userlist[i]
-    let pi = Hue.get_profilepic(item.user_id)
+    let user = Hue.userlist[i]
+
+    if (filter_out.includes(user.username)) {
+      continue
+    }
+    
+    let pi = Hue.get_profilepic(user.user_id)
 
     let s = `
       <div class='userlist_column flex_column_center'>
@@ -298,13 +303,13 @@ Hue.update_userlist_window = function () {
       }
     })
 
-    let role_tag = Hue.role_tag(item.role)
+    let role_tag = Hue.role_tag(user.role)
     let role_element = Hue.el(".userlist_item_role", el)
     role_element.textContent = role_tag
     let username = Hue.el(".userlist_item_username", el)
-    username.textContent = item.username
-    Hue.dataset(el, "username", item.username)
-    Hue.dataset(el, "user_id", item.user_id)
+    username.textContent = user.username
+    Hue.dataset(el, "username", user.username)
+    Hue.dataset(el, "user_id", user.user_id)
     container.append(el)
   }
 
@@ -397,7 +402,7 @@ Hue.show_userlist_window = function (mode = "normal", filter = "") {
     Hue.msg_userlist.set_title("Add or Remove a User")
   }
 
-  Hue.update_userlist_window()
+  Hue.update_userlist_window(Hue.message_usernames)
 
   Hue.msg_userlist.show(function () {
     if (filter.trim()) {
