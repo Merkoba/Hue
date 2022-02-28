@@ -200,7 +200,7 @@ Hue.add_post_to_message_board = function (post, edited) {
     link_description.style.display = "block"
   }
 
-  let gets = post.id.slice(-3)
+  let gets = Hue.getcode(post.id)
   let title = `${gets} | ${Hue.utilz.nice_date(post.date)}`
 
   let content = Hue.el(".message_board_content", item)
