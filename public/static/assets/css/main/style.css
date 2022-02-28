@@ -1144,6 +1144,7 @@ select {
 	height: var(--profilepic_size);
 	margin: 0.5rem;
 	margin-top: 0;
+	user-select: none;
 }
 
 .setting_textarea {
