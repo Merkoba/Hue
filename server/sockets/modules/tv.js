@@ -35,7 +35,7 @@ module.exports = function (Hue) {
     )
     data.setter = socket.hue_username
 
-    let info = Hue.db_manager.get_room(["id", socket.hue_room_id], { tv_source: 1, tv_query: 1, tv_date: 1})
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { tv_source: 1, tv_query: 1, tv_date: 1})
 
     if (info.tv_source === data.src || info.tv_query === data.src) {
       Hue.handler.user_emit(socket, "same_tv", {})
