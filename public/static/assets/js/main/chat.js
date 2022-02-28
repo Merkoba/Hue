@@ -104,7 +104,7 @@ Hue.make_chat_message = function (args = {}) {
 
   title = title + nd
 
-  let gets = args.id.slice(-3)
+  let gets = Hue.getcode(args.id)
 
   if (Hue.utilz.bingo(gets)) {
     content_classes += " colortext goldtext"
@@ -303,7 +303,7 @@ Hue.make_announcement_message = function (args = {}) {
   }
   
   if (is_media) {
-    if (Hue.utilz.bingo(args.id.slice(-3))) {
+    if (Hue.utilz.bingo(Hue.getcode(args.id))) {
       content_classes += " colortext goldtext"
     }
   }

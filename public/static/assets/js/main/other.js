@@ -128,3 +128,9 @@ Hue.flip = function () {
 
   Hue.flipped = !Hue.flipped
 }
+
+// Get the last 3 digits of a message id
+// Mainly used to turn things goldtext
+Hue.getcode = function (s) {
+  return s.slice(-3)
+}
