@@ -63,7 +63,7 @@ Hue.password_changed = function () {
 
 // Changes the user's bio
 Hue.change_bio = function (value) {
-  if (value !== Hue.utilz.clean_string12(value)) {
+  if (value !== Hue.utilz.single_linebreak(value)) {
     return false
   }
 
@@ -172,7 +172,7 @@ Hue.setup_user_menu = function () {
   })
 
   Hue.el("#user_menu_bio_textarea").addEventListener("blur", function () {
-    let value = Hue.utilz.clean_string12(this.value)
+    let value = Hue.utilz.single_linebreak(this.value)
 
     if (value !== Hue.bio) {
       let result = Hue.change_bio(value)

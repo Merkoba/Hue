@@ -13,7 +13,7 @@ module.exports = function (Hue) {
       return false
     }
 
-    if (data.name !== Hue.utilz.clean_string2(data.name)) {
+    if (data.name !== Hue.utilz.single_space(data.name)) {
       return false
     }
 

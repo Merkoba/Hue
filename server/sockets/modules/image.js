@@ -25,7 +25,7 @@ module.exports = function (Hue) {
       }
     }
 
-    if (data.src !== Hue.utilz.clean_string2(data.src)) {
+    if (data.src !== Hue.utilz.single_space(data.src)) {
       return false
     }
 

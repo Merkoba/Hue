@@ -265,7 +265,7 @@ Hue.show_media_history = function (type, filter = "") {
   })
 
   if (filter.trim()) {
-    let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
+    let lc_value = Hue.utilz.single_space(filter).toLowerCase()
 
     clone = clone.filter(it => {
       let type2 = Hue.dataset(it, "type")

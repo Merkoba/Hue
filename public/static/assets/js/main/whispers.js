@@ -42,7 +42,7 @@ Hue.send_inline_whisper = function (arg, show = true) {
 
   let username = split[0].trim()
   let usplit = username.split("&&").map(x => x.trim())
-  let message = Hue.utilz.clean_string2(split.slice(1).join(">"))
+  let message = Hue.utilz.single_space(split.slice(1).join(">"))
 
   if (!message) {
     return false
