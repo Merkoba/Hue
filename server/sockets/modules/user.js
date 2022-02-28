@@ -82,7 +82,7 @@ module.exports = function (Hue) {
       return false
     }
 
-    if (data.bio !== Hue.utilz.clean_string12(data.bio)) {
+    if (data.bio !== Hue.utilz.single_linebreak(data.bio)) {
       return false
     }
 

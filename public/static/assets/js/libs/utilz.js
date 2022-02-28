@@ -1,34 +1,22 @@
 const Utilz = function () {
 	const utilz = {}
 
-	utilz.clean_string = function (s) {
-		return s.replace(/</g, '').replace(/\s+/g, ' ').trim()
-	}
-
-	utilz.clean_string2 = function (s) {
+	// Clean string util
+	utilz.single_space = function (s) {
 		return s.replace(/\s+/g, ' ').trim()
 	}
 
-	utilz.clean_string2b = function (s) {
-		return s.replace(/ +/g, ' ').trim()
-	}
-
-	utilz.clean_string3 = function (s) {
-		return s.replace(/[\\"']/g, '')
-	}
-
+	// Clean string util
 	utilz.clean_username = function (s) {
 		return s.replace(/[^a-z0-9]+/gi, "").replace(/ +/g, " ").trim()
 	}
 
-	utilz.clean_string5 = function (s) {
+	// Clean string util
+	utilz.no_space = function (s) {
 		return s.replace(/\s+/g, '').trim()
 	}
 
-	utilz.clean_string6 = function (s) {
-		return s.replace(/\s+/g, ' ')
-	}
-
+	// Replace multiple empty lines with a single one
 	utilz.remove_multiple_empty_lines = function (s, level = 1) {
 		let ns = []
 		let charge = 0
@@ -52,6 +40,7 @@ const Utilz = function () {
 		return pf
 	}
 
+	// Remove empty lines from the start
 	utilz.remove_pre_empty_lines = function (s) {
 		let split = s.split("\n")
 		let counter = 0
@@ -65,26 +54,12 @@ const Utilz = function () {
 		}
 	}
 
-	utilz.clean_string8 = function (s) {
-		return s.replace(/[\n\r]+/g, '\n').trim()
-	}
-
-	utilz.clean_string9 = function (s) {
-		return s.replace(/[\n\r]+/g, '\n')
-	}
-
-	utilz.clean_string10 = function (s) {
-		return s.replace(/[\n\r]+/g, '\n').replace(/\s+$/g, '')
-	}
-
-	utilz.clean_string11 = function (s) {
-		return s.replace(/^\/\s+/g, '/')
-	}
-
-	utilz.clean_string12 = function (s) {
+	// Clean string util
+	utilz.single_linebreak = function (s) {
 		return s.replace(/[\n\r]+/g, '\n').replace(/ +/g, ' ').trim()
 	}
 
+	// Get a random int from min to max. Optional exclude a number
 	utilz.get_random_int = function (min, max, exclude = undefined) {
 		let num = Math.floor(Math.random() * (max - min + 1) + min)
 
@@ -101,10 +76,7 @@ const Utilz = function () {
 		return num
 	}
 
-	utilz.get_random_item = function (items) {
-		return items[utilz.get_random_int(0, items.length - 1)]
-	}
-
+	// Shuffle an array
 	utilz.shuffle_array = function (array) {
     for (let i = array.length - 1; i > 0; i--) {
 			let j = Math.floor(Math.random() * (i + 1))
@@ -114,6 +86,7 @@ const Utilz = function () {
 		}
 	}
 
+	// Get a random string of n length
 	utilz.get_random_string = function (n) {
 		let text = ""
 
@@ -126,6 +99,7 @@ const Utilz = function () {
 		return text
 	}
 
+	// Ge a random sequence of numbers
 	utilz.random_sequence = function (n) {
 		let s = ""
 
@@ -136,21 +110,7 @@ const Utilz = function () {
 		return s
 	}
 
-	utilz.get_random_alphanumeric = function (exclude = false) {
-		let chars = "abcdefghijklmnopqrstuvwxyz1234567890".split("")
-
-		if (exclude) {
-			for (let i = 0; i < chars.length; i++) {
-				if (chars[i] === exclude) {
-					chars.splice(i, 1)
-					break
-				}
-			}
-		}
-
-		return chars[utilz.get_random_int(0, chars.length - 1)]
-	}
-
+	// Get id of youtube video from url
 	utilz.get_youtube_id = function (url) {
 		let v_id = false
 		let list_id = false
@@ -183,6 +143,7 @@ const Utilz = function () {
 		}
 	}
 
+	// Get timestamp of a youtube video from url
 	utilz.get_youtube_time = function (url) {
 		let matches = url.match(/[\?|&]t=(\d+h)?(\d+m)?(\d+s)?(\d+)?/)
 
@@ -240,6 +201,7 @@ const Utilz = function () {
 		}
 	}
 
+	// Get twitch id from url
 	utilz.get_twitch_id = function (url) {
 		let match = url.match(/.*twitch\.tv(?:\/videos)?\/(\w+)/)
 
@@ -256,24 +218,17 @@ const Utilz = function () {
 		}
 	}
 
-	utilz.object_to_array = function (obj) {
-		return Object.keys(obj).map(function (key) {
-			return obj[key]
-		})
-	}
-
+	// Round to specified decimal places
 	utilz.round = function (value, decimals) {
 		return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals)
 	}
 
+	// Round to place or the place below
 	utilz.round2 = function (value, place) {
 		return Math.round(value / place) * place
 	}
 
-	utilz.to_hundred = function (n) {
-		return parseInt(Math.round((n * 100)))
-	}
-
+	// Get a string with nice seconds format
 	utilz.humanize_seconds = function (input, separator = ":") {
 		let pad = function (input) {
 			return input < 10 ? "0" + input : input
@@ -288,10 +243,12 @@ const Utilz = function () {
 		return result
 	}
 
+	// Replace spaces with non-brekable spaces
 	utilz.nonbreak = function (s) {
 		return s.trim().split(" ").join("&nbsp;")
 	}
 
+	// Extract extension from a string
 	utilz.get_extension = function (s) {
 		if (s.startsWith("http://") || s.startsWith("https://")) {
 			let s2 = s.split("//").slice(1).join("//")
@@ -312,32 +269,7 @@ const Utilz = function () {
 		return ""
 	}
 
-	utilz.get_root = function (s) {
-		if (s.startsWith("http://") || s.startsWith("https://")) {
-			let split = s.split("//")
-
-			let s2 = split.slice(1).join("//")
-
-			return [split[0], s2.split("/")[0]].join("//")
-		} else {
-			return s.split("/")[0]
-		}
-
-		return ""
-	}
-
-	utilz.validate_rgb = function (rgb, case_sensitive = true) {
-		let re
-
-		if (case_sensitive) {
-			re = /^[r][g][b][(]([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])[)]$/
-		} else {
-			re = /^[R][G][B][(]([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])[)]$/i
-		}
-
-		return re.test(rgb)
-	}
-
+	// Check if hex value is valid
 	utilz.validate_hex = function (hex, case_sensitive = true) {
 		if (case_sensitive) {
 			re = /^#[0-9a-f]{6}$/
@@ -348,6 +280,7 @@ const Utilz = function () {
 		return re.test(hex)
 	}
 
+	// Get the code from an imgur url
 	utilz.get_imgur_image_code = function (src) {
 		let matches = src.match(/https?\:\/\/(?:i.)?imgur.com\/(\w{7,8})(?:\.\w+)?$/)
 
@@ -358,6 +291,7 @@ const Utilz = function () {
 		}
 	}
 
+	// Capitalize words in a sentence
 	utilz.capitalize_words = function (s) {
 		let ns = s.toLowerCase()
 			.split(' ')
@@ -367,6 +301,7 @@ const Utilz = function () {
 		return ns
 	}
 
+	// Make a string of nicely separated items
 	utilz.nice_list = function (list) {
 		let s = ""
 
@@ -385,7 +320,8 @@ const Utilz = function () {
 		return s
 	}
 
-	utilz.is_url = function (s, case_insensitive = true) {
+	// Check if string is a url
+	utilz.is_url = function (s) {
 		if (s.startsWith("http://") || s.startsWith("https://")) {
 			if (s.endsWith("]")) {
 				return false
@@ -401,24 +337,7 @@ const Utilz = function () {
 		return false
 	}
 
-	utilz.includes_url = function (s, case_insensitive = true) {
-		let split = s.split("\n")
-
-		for (let line of split) {
-			let split2 = line.split(" ")
-
-			for (let word of split2) {
-				if (word) {
-					if (utilz.is_url(word)) {
-						return true
-					}
-				}
-			}
-		}
-
-		return false
-	}
-
+	// Get first url from a string
 	utilz.get_first_url = function (s) {
 		let split = s.split("\n")
 
@@ -456,10 +375,11 @@ const Utilz = function () {
 		return urls
 	}
 
+	// Crop a text from the left and add ...
 	utilz.slice_string_end = function (s, n = 10) {
 		s = s.trim()
 
-		let sliced = s.slice(-20).trim()
+		let sliced = s.slice(-n).trim()
 
 		if (s.length > sliced.length) {
 			return `...${sliced}`
@@ -468,22 +388,22 @@ const Utilz = function () {
 		}
 	}
 
+	// Replace a string between point start and point end with what
 	utilz.replace_between = function (str, start, end, what) {
 		return str.substring(0, start) + what + str.substring(end)
 	}
 
+	// Get a nice date string
 	utilz.nice_date = function (date = Date.now(), mode="normal") {
 		return dateFormat(date, "dd/mmm/yy, H:MM:ss")
 	}
 
-	utilz.clock_time = function (date = Date.now()) {
-		return dateFormat(date, "h:MM TT")
-	}
-
+	// Escape special characters
 	utilz.escape_special_characters = function (s) {
 		return s.replace(/[^A-Za-z0-9]/g, '\\$&')
 	}
 
+	// Get a string with the size in megabytes
 	utilz.get_size_string = function (size, mode = 1) {
 		if (mode === 1) {
 			return `${parseFloat(size / 1024).toFixed(2)} MB`
@@ -492,17 +412,12 @@ const Utilz = function () {
 		}
 	}
 
-	utilz.make_unique_lines = function (s) {
-		let split = s.split('\n')
-		split = split.filter((v, i) => split.indexOf(v) === i)
-		s = split.join('\n')
-		return s
-	}
-
+	// Check if object is empty
 	utilz.is_empty_object = function (obj) {
 		return Object.keys(obj).length === 0 && obj.constructor === Object
 	}
 
+	// Get a nice datetime string
 	utilz.nice_time = function (date1, date2) {
 		let d
 
@@ -533,6 +448,7 @@ const Utilz = function () {
 		return nt
 	}
 
+	// Remove the s from a word if singular
 	utilz.singular_or_plural = function (n, s) {
 		let ss
 
@@ -545,6 +461,7 @@ const Utilz = function () {
 		return ss
 	}
 
+	// Check if it's a text element
 	utilz.is_textbox = function (element) {
 		let tag_name = element.tagName.toLowerCase()
 
@@ -578,6 +495,7 @@ const Utilz = function () {
 		return input_types.includes(type)
 	}
 
+	// Crop a string and add ... to it
 	utilz.get_limited_string = function (s, n) {
 		let title
 
@@ -590,31 +508,12 @@ const Utilz = function () {
 		return title
 	}
 
-	utilz.get_image_type = function (ext) {
-		if (ext === "jpg" || ext === "jpeg") {
-			return "image/jpeg"
-		} else if (ext === "png") {
-			return "image/png"
-		} else if (ext === "gif") {
-			return "image/gif"
-		} else if (ext === "webp") {
-			return "image/webp"
-		} else if (ext === "bmp") {
-			return "image/bmp"
-		} else {
-			return ""
-		}
-	}
-
-	utilz.format_number = function (n) {
-		return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-	}
-
 	// Turn a string into safe HTML by replacing < and > to safe versions
 	utilz.make_html_safe = function (s) {
 		return s.replace(/\</g, "&lt;").replace(/\>/g, "&gt;")
 	}
 
+	// Find the similarity between two strings
 	utilz.string_similarity = function (s1, s2) {
 		let longer = s1
 		let shorter = s2
@@ -633,6 +532,7 @@ const Utilz = function () {
 		return (longer_length - utilz.string_similarity_distance(longer, shorter)) / parseFloat(longer_length)
 	}
 
+	// Find the similarity distance between two strings
 	utilz.string_similarity_distance = function (s1, s2) {
 		s1 = s1.toLowerCase()
 		s2 = s2.toLowerCase()
@@ -668,6 +568,7 @@ const Utilz = function () {
 		return costs[s2.length]
 	}
 
+	// Remove extra tabbing from the left side
 	utilz.untab_string = function (s) {
 		s = s.replace(/\t/gm, "  ")
 		let lines = s.split("\n")
@@ -719,6 +620,7 @@ const Utilz = function () {
 	utilz.DAY = 86400000
 	utilz.YEAR = 31536000000
 
+	// Return a timeago string
 	utilz.timeago = function (date) {
 		let diff = Date.now() - date
 		let s
@@ -762,6 +664,7 @@ const Utilz = function () {
 		return s
 	}
 
+	// Fill from the left with c character to get to n ammount
 	utilz.fillpad = function (s, n, c) {
 		let olen = s.length
 
@@ -772,6 +675,7 @@ const Utilz = function () {
 		return s
 	}
 
+	// Get a nicely formatted time
 	utilz.get_time = function () {
 		let today = new Date()
 		let hours = utilz.fillpad(today.getHours().toString(), 2, "0")
@@ -780,6 +684,7 @@ const Utilz = function () {
 		return `${hours}:${minutes}:${seconds}`
 	}
 
+	// Show information with date
 	utilz.loginfo = function (s) {
 		try {
 			console.info(`[${utilz.get_time()}] ${s}`)
@@ -788,39 +693,35 @@ const Utilz = function () {
 		}
 	}
 
+	// Make a url with a parameter that prevents caching
 	utilz.cache_bust_url = function (s) {
 		let url = new URL(s)
     url.searchParams.set("cache-buster", Date.now())
 		return url
 	}
 
-	utilz.is_audio = function (s) {
-		let extension = utilz.get_extension(s).toLowerCase()
-		return utilz.audio_extensions.includes(extension)
-	}
-
-	utilz.is_video = function (s) {
-		let extension = utilz.get_extension(s).toLowerCase()
-		return utilz.video_extensions.includes(extension)
-	}
-
-	utilz.boolword = function (b, w1, w2) {
-		return b ? w1 : w2
-	}
-
+	// Check if file name is from an image source
 	utilz.is_image = function (src) {
 		let extension = Hue.utilz.get_extension(src).toLowerCase()
     return extension && utilz.image_extensions.includes(extension)
 	}
 
+	// Check if file name is from a video source
 	utilz.is_video = function (src) {
 		let extension = Hue.utilz.get_extension(src).toLowerCase()
     return extension && utilz.video_extensions.includes(extension)
 	}
 
+	// Check if file name is from an audio source
 	utilz.is_audio = function (src) {
 		let extension = Hue.utilz.get_extension(src).toLowerCase()
     return extension && utilz.audio_extensions.includes(extension)
+	}
+
+	// Check if all items in an array are equal
+	utilz.bingo = function (s) {
+		let split = s.split("").filter(x => x !== "")
+		return new Set(split).size === 1
 	}
 
 	utilz.media_types = ["image", "tv"]

@@ -9,7 +9,7 @@ Hue.setup_room_menu = function () {
   })
 
   Hue.el("#admin_room_name").addEventListener("blur", function () {
-    let name = Hue.utilz.clean_string2(this.value)
+    let name = Hue.utilz.single_space(this.value)
 
     if (name === "") {
       Hue.el("#admin_room_name").value = Hue.room_name
@@ -22,7 +22,7 @@ Hue.setup_room_menu = function () {
   })
 
   Hue.el("#admin_topic").addEventListener("blur", function () {
-    let t = Hue.utilz.clean_string2(this.value)
+    let t = Hue.utilz.single_space(this.value)
 
     if (t === "") {
       Hue.el("#admin_topic").value = Hue.topic

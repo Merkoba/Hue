@@ -2210,6 +2210,10 @@ pre {
 	color: rgb(250, 250, 250);
 }
 
+.goldtext {
+	color: rgb(229, 255, 0);
+}
+
 .custom_popup {
 	border: 0.12rem solid var(--altcolor) !important;
 }

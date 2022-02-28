@@ -34,6 +34,11 @@ Hue.make_chat_message = function (args = {}) {
 
   let container_classes = "chat_content_container chat_menu_button_main reply_message_container edit_message_container message_unit dynamic_title"
   let content_classes = "chat_content reply_message edit_message"
+
+  if (Hue.utilz.bingo(args.id)) {
+    content_classes += " colortext goldtext"
+  }
+
   let d = args.date ? args.date : Date.now()
   let nd = Hue.utilz.nice_date(d)
   let pi = Hue.get_profilepic(args.user_id)
@@ -682,7 +687,7 @@ Hue.start_reply = function (target) {
 
   let message = target.closest(".message")
   let unit = target.closest(".message_unit")
-  let text = Hue.remove_urls(Hue.utilz.clean_string2(target.textContent))
+  let text = Hue.remove_urls(Hue.utilz.single_space(target.textContent))
   let username = Hue.dataset(message, "username")
   let user_id = Hue.dataset(message, "user_id")
   let id = Hue.dataset(unit, "id")
@@ -730,7 +735,7 @@ Hue.submit_reply = function () {
   }
 
   Hue.msg_reply.close()
-  let otext = Hue.utilz.clean_string2(Hue.el("#reply_text").value)
+  let otext = Hue.utilz.single_space(Hue.el("#reply_text").value)
   let quote = otext.substring(0, Hue.config.quote_max_length).trim()
 
   if (otext.length > quote.length) {

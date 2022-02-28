@@ -266,7 +266,7 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
     return false
   }
 
-  src = Hue.utilz.clean_string2(src)
+  src = Hue.utilz.single_space(src)
 
   if (src.length > Hue.config.max_media_source_length) {
     return false
@@ -624,7 +624,7 @@ Hue.process_tv_upload_comment = function () {
 
   let file = Hue.tv_upload_comment_file
   let type = Hue.tv_upload_comment_type
-  let comment = Hue.utilz.clean_string2(Hue.el("#tv_upload_comment_input").value)
+  let comment = Hue.utilz.single_space(Hue.el("#tv_upload_comment_input").value)
 
   if (comment.length > Hue.config.max_media_comment_length) {
     return false

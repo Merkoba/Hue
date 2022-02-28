@@ -62,10 +62,10 @@ module.exports = function (Hue) {
       let $ = Hue.vars.cheerio.load(body)
   
       if ($("title").length > 0) {
-        response.title = Hue.utilz.clean_string2($("title").eq(0).text()) || ""
+        response.title = Hue.utilz.single_space($("title").eq(0).text()) || ""
       } else if ($('meta[property="og:title"]').length > 0) {
         response.title =
-        Hue.utilz.clean_string2(
+        Hue.utilz.single_space(
             $('meta[property="og:title"]').eq(0).attr("content")
           ) || ""
       }
@@ -80,7 +80,7 @@ module.exports = function (Hue) {
       }
   
       response.description =
-        Hue.utilz.clean_string2(
+        Hue.utilz.single_space(
           $('meta[property="og:description"]').eq(0).attr("content")
         ) || ""
   

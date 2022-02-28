@@ -17,7 +17,7 @@ module.exports = function (Hue) {
       return false
     }
 
-    if (data.topic !== Hue.utilz.clean_string2(data.topic)) {
+    if (data.topic !== Hue.utilz.single_space(data.topic)) {
       return false
     }
 
@@ -53,7 +53,7 @@ module.exports = function (Hue) {
       return false
     }
 
-    if (data.name !== Hue.utilz.clean_string2(data.name)) {
+    if (data.name !== Hue.utilz.single_space(data.name)) {
       return false
     }
 
@@ -99,7 +99,7 @@ module.exports = function (Hue) {
       return false
     }
 
-    if (data.color !== Hue.utilz.clean_string5(data.color)) {
+    if (data.color !== Hue.utilz.no_space(data.color)) {
       return false
     }
 
@@ -130,7 +130,7 @@ module.exports = function (Hue) {
       return false
     }
 
-    if (data.color !== Hue.utilz.clean_string5(data.color)) {
+    if (data.color !== Hue.utilz.no_space(data.color)) {
       return false
     }
 

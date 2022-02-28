@@ -52,7 +52,7 @@ Hue.change_room_name = function (arg) {
     return false
   }
 
-  arg = Hue.utilz.clean_string2(
+  arg = Hue.utilz.single_space(
     arg.substring(0, Hue.config.max_room_name_length)
   )
 
@@ -106,7 +106,7 @@ Hue.change_topic = function (dtopic) {
     return false
   }
 
-  dtopic = Hue.utilz.clean_string2(
+  dtopic = Hue.utilz.single_space(
     dtopic.substring(0, Hue.config.max_topic_length)
   )
 
@@ -349,7 +349,7 @@ Hue.change_background_color = function (color) {
     return false
   }
 
-  color = Hue.utilz.clean_string5(color).toLowerCase()
+  color = Hue.utilz.no_space(color).toLowerCase()
 
   if (color === undefined) {
     return false
@@ -506,7 +506,7 @@ Hue.change_text_color = function (color) {
     return false
   }
 
-  color = Hue.utilz.clean_string5(color).toLowerCase()
+  color = Hue.utilz.no_space(color).toLowerCase()
 
   if (color === undefined) {
     return false

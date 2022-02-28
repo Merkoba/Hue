@@ -170,7 +170,7 @@ Hue.upload_file = function (args = {}) {
 
   if (args.file.hue_data.name !== undefined) {
     args.file.hue_data.name = Hue.utilz
-      .clean_string5(args.file.hue_data.name)
+      .no_space(args.file.hue_data.name)
       .replace(/.gifv/g, ".gif")
   } else {
     args.file.hue_data.name = "no_name"

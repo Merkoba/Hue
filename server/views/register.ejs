@@ -103,7 +103,7 @@
 					return false
 				}
 
-				if (password !== utilz.clean_string2(password)) {
+				if (password !== utilz.single_space(password)) {
 					set_message("Password contains invalid characters. There can't be spaces at the start or end of the password, or consecutive spaces")
 					return false
 				}

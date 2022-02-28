@@ -586,7 +586,7 @@ Hue.do_modal_filter = function (id = false) {
   let win = Hue.el(`#Msg-content-${id}`)
   let filter = Hue.el(".filter_input", win)
   let value = filter.value.trim()
-  let lc_value = Hue.utilz.clean_string2(value).toLowerCase()
+  let lc_value = Hue.utilz.single_space(value).toLowerCase()
   let items = Hue.els(".modal_item", win)
 
   if (lc_value && items.length) {
