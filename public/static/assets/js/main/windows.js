@@ -281,7 +281,7 @@ Hue.start_msg = function () {
   Hue.msg_reply = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "reply",
-      window_width: "26rem",
+      window_width: "30rem",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
         Hue.writing_reply = true
