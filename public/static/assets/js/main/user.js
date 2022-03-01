@@ -86,13 +86,7 @@ Hue.change_bio = function (value) {
 
 // Shows the change username form
 Hue.show_change_username = function () {
-  let s = `
-    <input type='text' placeholder='New Username' id='change_username_input' class='nice_input_2'>
-    <div class='flex_row_center'>
-        <div class='action bigger details_change_submit' id='change_username_submit'>Change</div>
-    </div>`
-
-  Hue.msg_info2.show(["Change Username", s], function () {
+  Hue.msg_info2.show(["Change Username", Hue.template_change_username()], function () {
     Hue.el("#change_username_input").value = Hue.username
     Hue.el("#change_username_input").focus()
 
@@ -120,16 +114,7 @@ Hue.submit_change_username = function () {
 
 // Shows the change password form
 Hue.show_change_password = function () {
-  let s = `
-    <div class="details_inputbox">
-      <input type='password' placeholder='New Password' id='change_password_input_1' class='nice_input_2'>
-      <input type='password' placeholder='Password Again' id='change_password_input_2' class='nice_input_2'>
-    </div>
-    <div class='flex_row_center'>
-        <div class='action bigger details_change_submit' id='change_password_submit'>Change</div>
-    </div>`
-
-  Hue.msg_info2.show(["Change Password", s], function () {
+  Hue.msg_info2.show(["Change Password", Hue.template_change_password()], function () {
     Hue.el("#change_password_input_1").focus()
 
     Hue.el("#change_password_submit").addEventListener("click", function () {
