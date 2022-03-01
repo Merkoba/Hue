@@ -105,7 +105,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >Whether popup messages will open automatically when arrived by default.
 
 "settings_default_embed_images"
->Whether to embed images in chat by default.
+>Whether to embed other images by default.
 
 "settings_default_show_link_previews"
 >Whether links get a preview on the chat area by default.
