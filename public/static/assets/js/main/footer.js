@@ -30,7 +30,7 @@ Hue.setup_footer = function () {
 
   if (Hue.config.radios.length > 0) {
     Hue.el("#footer_radio_icon_container").addEventListener("click", function () {
-      Hue.toggle_radio_items()
+      Hue.toggle_radio()
     }) 
   } else {
     Hue.el("#footer_radio_icon_container").remove()

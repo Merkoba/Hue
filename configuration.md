@@ -140,6 +140,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_radio_volume"
 >Default volume for radio players.
 
+"room_state_default_radio_enabled"
+>Whether the radio is enabled by default.
+
 "room_state_default_main_layout"
 >Default main layout, column or row.
 
@@ -243,9 +246,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "radio_metadata_check_delay"
 >How often make a metadata check while app radio window is open.
-
-"audioclip_delay"
->Start playing audioclip after this time in ms.
 
 
 ## config.secret.json

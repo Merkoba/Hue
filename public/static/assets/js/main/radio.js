@@ -21,6 +21,8 @@ Hue.setup_radio = function () {
   Hue.el("#radio_items").addEventListener("wheel", function (e) {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
   })
+
+  Hue.change_radio_state(Hue.room_state.radio_enabled)
 }
 
 // Start a radio from a radio object
@@ -105,16 +107,21 @@ Hue.check_radio_playing = function (win) {
 }
 
 // Make radio items visible or invisible
-Hue.toggle_radio_items = function () {
-  if (Hue.radio_items_visible) {
-    Hue.el("#radio_items").classList.add("nodisplay")
-    Hue.el("#footer_radio_icon use").href.baseVal = "#icon_star"
-  } else {
+Hue.toggle_radio = function () {
+  Hue.room_state.radio_enabled = !Hue.room_state.radio_enabled
+  Hue.change_radio_state(Hue.room_state.radio_enabled)
+  Hue.save_room_state()
+}
+
+// Enable or disable radio based on radio enabled
+Hue.change_radio_state = function (what) {
+  if (what) {
     Hue.el("#radio_items").classList.remove("nodisplay")
     Hue.el("#footer_radio_icon use").href.baseVal = "#icon_star-solid"
+  } else {
+    Hue.el("#radio_items").classList.add("nodisplay")
+    Hue.el("#footer_radio_icon use").href.baseVal = "#icon_star"
   }
-
-  Hue.radio_items_visible = !Hue.radio_items_visible
 }
 
 // Play or pause radio
