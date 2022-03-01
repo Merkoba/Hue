@@ -2225,6 +2225,7 @@ pre {
 
 .goldtext {
 	color: rgb(229, 255, 0);
+	border: 1px solid rgba(229, 255, 0, 0.5);
 }
 
 .custom_popup {
