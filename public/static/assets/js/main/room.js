@@ -199,12 +199,8 @@ Hue.show_admin_list = function (data) {
   container.id = "admin_list_container"
 
   for (let user of data.list) {
-    let s = `
-      <div class='flex_row_center'><div class='admin_list_username'>
-      </div>&nbsp;&nbsp;<div class='admin_list_role'></div></div>`
-
     let el = Hue.div("admin_list_item action")
-    el.innerHTML = s
+    el.innerHTML = Hue.template_admin_list_item()
 
     Hue.el(".admin_list_username", el).textContent = user.username
     Hue.el(".admin_list_role", el).textContent = `(${Hue.get_pretty_role_name(user.role)})`
@@ -237,13 +233,8 @@ Hue.show_ban_list = function (data) {
   container.id = "ban_list_container"
 
   for (let user of data.list) {
-    let s = `<div class='flex_row_center ban_list_item'>
-      <div class='ban_list_username action'></div>
-      <div class='ban_list_unban action'>Unban</div>
-    </div>`
-
     let el = Hue.div("ban_list_item")
-    el.innerHTML = s
+    el.innerHTML = Hue.template_ban_list_item()
 
     let username = Hue.el(".ban_list_username", el)
     username.textContent = user.username

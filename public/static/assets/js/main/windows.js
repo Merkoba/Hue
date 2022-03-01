@@ -753,9 +753,11 @@ Hue.show_action_popup = function (args = {}) {
     icon = Hue.get_icon(args.icon, "action_popup_icon")
   }
 
-  let html = `<div class='action_popup_item ${classes}'>${icon}<div class='action_popup_message'>${Hue.utilz.make_html_safe(
-    args.message
-  )}</div></div>`
+  let html = Hue.template_action_popup({
+    classes: classes,
+    icon: icon,
+    message: args.message
+  })
 
   popup.show([args.title, html])
   return popup

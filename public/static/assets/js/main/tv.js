@@ -176,11 +176,7 @@ Hue.show_video_tv = function (play = true) {
   let item = Hue.loaded_tv
 
   if (!Hue.el("#media_video_tv")) {
-    let s = `<video id='media_video_tv'
-        class='video_frame' width="640px" height="360px"
-        preload="none" poster="${Hue.config.video_poster}" controls></video>
-        ${Hue.get_media_info_html("tv")}`
-
+    let s = Hue.template_media_video_tv({info: Hue.get_media_info_html("tv")})
     Hue.el("#media_video_tv_container").innerHTML = s
   }
 
@@ -200,7 +196,7 @@ Hue.show_iframe_tv = function (play = true) {
   let item = Hue.loaded_tv
 
   if (!Hue.el("#media_iframe_tv")) {
-    let s = Hue.template_media_iframe_tv({html: Hue.get_media_info_html("tv")})
+    let s = Hue.template_media_iframe_tv({info: Hue.get_media_info_html("tv")})
     Hue.el("#media_iframe_tv_container").innerHTML = s
     Hue.setup_iframe_tv()
   }
