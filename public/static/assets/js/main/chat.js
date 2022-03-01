@@ -1478,18 +1478,13 @@ Hue.make_image_preview = function (message) {
 
     if (code) {
       let extension = Hue.utilz.get_extension(link)
-
+      ans.image_preview_text = message
       ans.image_preview_src_original = `https://i.imgur.com/${code}.${extension}`
       ans.image_preview_src = `https://i.imgur.com/${code}l.jpg`
-
-      // This is in a single line on purpose
-      ans.image_preview = `<div class='image_preview action'><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}" loading="lazy"></div>`
-
-      let text = Hue.parse_text(Hue.utilz.make_html_safe(message))
-      let stext = `<div class='image_preview_text'>${text}</div>`
-
-      ans.image_preview_text = message
-      ans.image_preview = stext + ans.image_preview
+      ans.image_preview = Hue.template_image_preview({
+        text: message,
+        source: ans.image_preview_src
+      })
     }
   }
 
