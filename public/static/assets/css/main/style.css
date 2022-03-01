@@ -1588,7 +1588,6 @@ a.special_link:hover {
 	flex-direction: row;
 	align-items: flex-start;
 	justify-content: flex-start;
-	align-self: flex-start;
 	background-color: var(--altcolor_a);
 	color: var(--font_color);
 }
@@ -1604,7 +1603,7 @@ a.special_link:hover {
 	display: flex;
 	flex-direction: column;
 	align-self: flex-start;
-	padding: calc(var(--small_padding) * 2);
+	padding: calc(var(--small_padding) * 1.5);
 }
 
 .link_preview_text_content_full .link_preview_title {
@@ -1628,7 +1627,7 @@ a.special_link:hover {
 	flex-grow: 0;
 	flex-shrink: 0;
 	align-self: center;
-	padding: calc(var(--small_padding) * 2);
+	padding: calc(var(--small_padding) * 1.5);
 }
 
 .align_left {
