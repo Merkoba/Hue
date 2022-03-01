@@ -44,7 +44,7 @@
 	"settings_default_highlight_current_username": true,
 	"settings_default_case_insensitive_username_highlights": true,
 	"settings_default_open_whispers_automatically": true,
-	"settings_default_show_image_previews": true,
+	"settings_default_embed_images": true,
 	"settings_default_show_link_previews": true,
 	"settings_default_show_highlight_notifications": true,
 	"settings_default_show_activity_notifications": true,

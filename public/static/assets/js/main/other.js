@@ -122,7 +122,7 @@ Hue.setup_view_text = function () {
 Hue.flip = function () {
   if (Hue.flipped) {
     Hue.el("#main_container").classList.remove("flipped")
-    Hue.flash_info("Info", "You discovered the secret mirror")
+    Hue.flash_info("Secret", "You discovered the mirror")
   } else {
     Hue.el("#main_container").classList.add("flipped")
   }
