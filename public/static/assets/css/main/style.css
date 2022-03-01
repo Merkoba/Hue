@@ -2197,21 +2197,31 @@ pre {
 .colortext {
 	background-color: rgba(33, 33, 33, 0.8);
 	padding: 0.25rem;
-	border: 1px solid currentColor;
 	text-align: left;
 	white-space: pre-wrap;
 }
 
+.contrast {
+	padding: 0.25rem;
+	text-align: left;
+	white-space: pre-wrap;
+	background-color: var(--altbackground);
+	border: 1px solid var(--altcolor_a);
+}
+
 .greentext {
 	color: rgb(91, 218, 91);
+	border: 1px solid rgba(91, 218, 91, 0.5);
 }
 
 .bluetext {
 	color: rgb(119, 119, 240);
+	border: 1px solid rgba(119, 119, 240, 0.5);
 }
 
 .redtext {
 	color: rgb(223, 76, 76);
+	border: 1px solid rgba(223, 76, 76, 0.5);
 }
 
 .whitetext {
