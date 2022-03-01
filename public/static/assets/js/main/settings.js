@@ -43,7 +43,7 @@ Hue.user_settings = {
   },
   embed_images: {
     widget_type: "checkbox",
-    description: `Whether to embed images in chat automatically`,
+    description: `Whether to embed other images automatically`,
     action: (save = true) => {
       Hue.settings.embed_images = Hue.el(`#settings_embed_images`).checked
 
