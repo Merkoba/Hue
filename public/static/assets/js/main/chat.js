@@ -112,7 +112,9 @@ Hue.make_chat_message = function (args = {}) {
   
   title = `${gets} | ${title}`
 
-  let s = Hue.template_chat_message({
+  fmessage = Hue.div("message chat_message user_details")
+
+  fmessage.innerHTML = Hue.template_chat_message({
     container_classes: container_classes,
     content_classes: content_classes,
     profilepic: pi,
@@ -120,8 +122,6 @@ Hue.make_chat_message = function (args = {}) {
     date: d
   })
 
-  fmessage = Hue.div("message chat_message user_details")
-  fmessage.innerHTML = s
   let content = Hue.el(".chat_content", fmessage)
 
   if (image_preview) {
@@ -288,7 +288,9 @@ Hue.make_announcement_message = function (args = {}) {
     top_clasees += " nodisplay"
   }
 
-  let s = Hue.template_announcement_message({
+  let fmessage = Hue.div("message announcement message_unit")
+  
+  fmessage.innerHTML = Hue.template_announcement_message({
     container_classes: container_classes,
     content_classes: content_classes,
     split_classes: split_classes,
@@ -296,10 +298,6 @@ Hue.make_announcement_message = function (args = {}) {
     top_classes: top_clasees,
     brk: args.brk
   })
-
-  let fmessage = Hue.div("message announcement message_unit")
-  
-  fmessage.innerHTML = s
 
   if (args.container_id) {
     fmessage.id = args.container_id

@@ -282,18 +282,8 @@ Hue.update_userlist_window = function (filter_out = []) {
     }
 
     let pi = Hue.get_profilepic(user.user_id)
-
-    let s = `
-      <div class='userlist_column flex_column_center'>
-        <img class='userlist_item_profilepic profilepic actionbox' src='${pi}' loading='lazy'>
-        <div class='userlist_item_details_container action'>
-          <div class='userlist_item_username'></div>
-          <div class='userlist_item_role'></div>
-        </div>
-      </div>`
-
     let el = Hue.div("modal_item userlist_item")
-    el.innerHTML = s
+    el.innerHTML = Hue.template_userlist_item({profilepic: pi})
 
     let image = Hue.el(".userlist_item_profilepic", el)
 
