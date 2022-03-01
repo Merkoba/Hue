@@ -2551,6 +2551,10 @@ pre {
 	overflow: hidden;
 }
 
+#flash_info_title_icon {
+	margin-right: 0.25rem;
+}
+
 #flash_info_title {
 	display: flex;
 	flex-direction: row;
@@ -2559,6 +2563,6 @@ pre {
 	margin-bottom: 0.25rem;
 }
 
-#flash_info_title_icon {
-	margin-right: 0.25rem;
+#flash_info_text {
+	padding: var(--small_padding);
 }
