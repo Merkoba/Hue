@@ -1603,6 +1603,7 @@ a.special_link:hover {
 	flex-direction: column;
 	align-self: flex-start;
 	padding: 0.45rem;
+	flex-grow: 1;
 }
 
 .link_preview_text_content_full .link_preview_title {
