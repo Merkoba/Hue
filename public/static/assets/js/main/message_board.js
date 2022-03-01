@@ -176,16 +176,18 @@ Hue.add_post_to_message_board = function (post, edited) {
 
   let first_url = Hue.utilz.get_first_url(post.message)
 
-  if (first_url && Hue.utilz.is_image(first_url)) {
-    let image = Hue.el(".message_board_image", item)
-    image.src = first_url
-    image.style.display = "block" 
-  }
+  if (Hue.settings.embed_images) {
+    if (first_url && Hue.utilz.is_image(first_url)) {
+      let image = Hue.el(".message_board_image", item)
+      image.src = first_url
+      image.style.display = "block" 
+    }
 
-  if (post.link_image) {
-    let link_image = Hue.el(".message_board_link_image", item)
-    link_image.src = post.link_image
-    link_image.style.display = "block" 
+    if (post.link_image) {
+      let link_image = Hue.el(".message_board_link_image", item)
+      link_image.src = post.link_image
+      link_image.style.display = "block" 
+    }
   }
 
   if (post.link_title) {
