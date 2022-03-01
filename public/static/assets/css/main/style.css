@@ -1603,7 +1603,7 @@ a.special_link:hover {
 .link_preview_text_content {
 	display: flex;
 	flex-direction: column;
-	align-self: center;
+	align-self: flex-start;
 	padding: calc(var(--small_padding) * 2);
 }
 
@@ -1622,8 +1622,8 @@ a.special_link:hover {
 
 .link_preview_image {
 	cursor: pointer;
-	max-width: 8rem;
-	max-height: 8rem;
+	max-width: 6rem;
+	max-height: 6rem;
 	object-fit: contain;
 	flex-grow: 0;
 	flex-shrink: 0;

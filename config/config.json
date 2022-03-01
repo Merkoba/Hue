@@ -59,6 +59,7 @@
 	"room_state_default_last_message_board_post": 0,
 	"room_state_default_chat_enabled": true,
 	"room_state_default_radio_volume": 1,
+	"room_state_default_radio_enabled": true,
 	"max_same_post_diff": 300000,
 	"max_same_post_messages": 20,
 	"typing_delay": 800,

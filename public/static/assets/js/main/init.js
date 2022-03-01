@@ -130,7 +130,6 @@ Hue.dataset_obj = {}
 Hue.dataset_id = 0
 Hue.highlight_date_on_focus = 0
 Hue.flipped = false
-Hue.radio_items_visible = true
 Hue.radio_windows = []
 
 // Initial media-loading variables declarations
