@@ -112,39 +112,13 @@ Hue.make_chat_message = function (args = {}) {
   
   title = `${gets} | ${title}`
 
-  let s = `
-    <div class='chat_left_side'>
-        <img class='chat_profilepic profilepic actionbox' src='${pi}' loading='lazy'>
-    </div>
-    <div class='chat_right_side'>
-        <div class='chat_message_top'>
-          <div class='chat_username action'></div>
-          <div class='chat_timeago'></div>
-        </div>
-        <div class='chat_container'>
-          <div class='${container_classes}' title='${title}' data-otitle='${title}' data-date='${d}'>
-            <div class="chat_quote">
-              <img class="chat_quote_profilepic profilepic actionbox" loading='lazy'>
-              <div class="chat_quote_text action"></div>
-            </div>
-            <div class='chat_menu_button_container'>
-              <svg class='other_icon chat_menu_button chat_menu_button_menu'>
-                <use href='#icon_ellipsis'>
-              </svg>
-            </div>
-
-            <div class='${content_classes}'></div>
-
-            <div class='message_edit_container'>
-                <textarea class='message_edit_area'></textarea>
-                <div class='message_edit_buttons'>
-                  <div class='message_edit_button action message_edit_cancel'>Cancel</div>
-                  <div class='message_edit_button action message_edit_submit'>Submit</div>
-                </div>
-            </div>
-          </div>
-        </div>
-    </div>`
+  let s = Hue.template_chat_message({
+    container_classes: container_classes,
+    content_classes: content_classes,
+    profilepic: pi,
+    title: title,
+    date: d
+  })
 
   fmessage = Hue.div("message chat_message user_details")
   fmessage.innerHTML = s
@@ -308,39 +282,20 @@ Hue.make_announcement_message = function (args = {}) {
     }
   }
 
-  let announcement_top = ""
+  let  top_clasees = "chat_message_top announcement_top"
 
-  if (is_media) {
-    announcement_top = `
-    <div class='chat_message_top announcement_top'>
-      <div class='chat_username action'></div>
-      <div class='chat_timeago'></div>
-    </div>`
+  if (!is_media) {
+    top_clasees += " nodisplay"
   }
 
-  let s = `
-    <div class='brk_container'>
-      <img class='brk_profilepic profilepic actionbox' loading='lazy'>
-      <div class='${brk_classes}'>${args.brk}</div>
-    </div>
-    <div class='${container_classes}'>
-      <div class='chat_menu_button_container'>
-        <svg class='other_icon chat_menu_button chat_menu_button_menu'>
-          <use href='#icon_ellipsis'>
-        </svg>
-      </div>
-      <div class='${split_classes}'>
-        ${announcement_top}
-        <div class='${content_classes}'></div>
-      </div>
-      <div class='message_edit_container'>
-        <textarea class='message_edit_area'></textarea>
-        <div class='message_edit_buttons'>
-          <div class='message_edit_button action message_edit_cancel'>Cancel</div>
-          <div class='message_edit_button action message_edit_submit'>Submit</div>
-        </div>
-      </div>        
-    </div>`
+  let s = Hue.template_announcement_message({
+    container_classes: container_classes,
+    content_classes: content_classes,
+    split_classes: split_classes,
+    brk_classes: brk_classes,
+    top_classes: top_clasees,
+    brk: args.brk
+  })
 
   let fmessage = Hue.div("message announcement message_unit")
   

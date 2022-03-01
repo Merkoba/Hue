@@ -9,7 +9,6 @@
 	--big_profilepic_size: 11.5rem;
 	--bigger_profilepic_size: 17.5rem;
 	--panel_profilepic_size: calc(var(--panel_height) * 0.66);
-	--small_padding: 0.25rem;
 }
 
 @font-face {
@@ -1451,7 +1450,7 @@ svg.action:hover {
 	background-color: var(--altbackground_a);
 	color: var(--font_color);
 	box-shadow: 0 0 0.12rem currentColor;
-	padding: var(--small_padding);
+	padding: 0.25rem;
 }
 
 .fresh_message {
@@ -1603,7 +1602,7 @@ a.special_link:hover {
 	display: flex;
 	flex-direction: column;
 	align-self: flex-start;
-	padding: calc(var(--small_padding) * 1.5);
+	padding: 0.45rem;
 }
 
 .link_preview_text_content_full .link_preview_title {
@@ -1627,7 +1626,7 @@ a.special_link:hover {
 	flex-grow: 0;
 	flex-shrink: 0;
 	align-self: center;
-	padding: calc(var(--small_padding) * 1.5);
+	padding: 0.45rem;
 }
 
 .align_left {
@@ -1708,6 +1707,7 @@ a.special_link:hover {
 	flex-direction: row;
 	position: relative;
 	width: 100%;
+	margin-top: 0.25rem;
 }
 
 .message_edit_button {
@@ -1828,7 +1828,7 @@ a.special_link:hover {
 .chat_quote {
 	display: flex;
 	flex-direction: row;
-	padding: var(--small_padding);
+	padding: 0.25rem;
 	margin-bottom: 0.25rem;
 	background-color: var(--altcolor_a);
 }
@@ -2196,7 +2196,7 @@ pre {
 
 .colortext {
 	background-color: rgba(33, 33, 33, 0.8);
-	padding: var(--small_padding);
+	padding: 0.25rem;
 	border: 1px solid currentColor;
 	text-align: left;
 }
@@ -2551,7 +2551,7 @@ pre {
 }
 
 #flash_info_title_icon {
-	margin-right: calc(var(--small_padding) * 2);
+	margin-right: 0.5rem;
 }
 
 #flash_info_title {
@@ -2559,9 +2559,9 @@ pre {
 	flex-direction: row;
 	background-color: var(--altcolor);
 	font-size: 1rem;
-	padding: var(--small_padding);
+	padding: 0.25rem;
 }
 
 #flash_info_text {
-	padding: calc(var(--small_padding) * 2);
+	padding: 0.5rem;
 }
