@@ -1419,15 +1419,17 @@ Hue.make_link_preview = function (args = {}) {
     text_content_classes = "nodisplay"
   }
 
-  let link_preview_s = `<div class='${classes}'>
-  <div class='${text_content_classes}'>
-    <div class='${title_classes}'>${Hue.utilz.make_html_safe(args.title)}</div>
-    <div class='${description_classes}'>${Hue.utilz.make_html_safe(args.description)}</div>
-  </div>
-  <img class='${image_classes}' src='${args.image}' loading='lazy'>
-  </div>`
+  ans.link_preview = Hue.template_link_preview({
+    classes: classes,
+    text_content_classes: text_content_classes,
+    title_classes: title_classes,
+    title: args.title,
+    description_classes: description_classes,
+    description: args.description,
+    image_classes: image_classes,
+    image: args.image
+  }).trim()
 
-  ans.link_preview = link_preview_s
   let text = Hue.parse_text(Hue.utilz.make_html_safe(args.message))
   let stext = `<div class='link_preview_text'>${text}</div>`
   ans.link_preview_text = text

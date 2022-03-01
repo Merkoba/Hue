@@ -493,7 +493,6 @@ body * {
 
 .chat_content {
 	font-size: 1rem;
-	white-space: pre-wrap;
 	display: inline-block;
 	line-height: 1.2rem;
 }
@@ -2200,6 +2199,7 @@ pre {
 	padding: 0.25rem;
 	border: 1px solid currentColor;
 	text-align: left;
+	white-space: pre-wrap;
 }
 
 .greentext {
