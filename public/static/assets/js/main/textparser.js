@@ -57,7 +57,7 @@ Hue.check_arrows = function (text) {
       text = `<div class='colortext greentext'>${Hue.remove_arrows(text)}</div>`
     }
   } else if (text.includes("\n")) {
-    text = `<div class='contrast'>${text}</div>`
+    text = `<div class='framed'>${text}</div>`
   }
 
   return text
