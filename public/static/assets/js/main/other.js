@@ -135,3 +135,8 @@ Hue.flip = function () {
 Hue.getcode = function (s) {
   return s.slice(-3)
 }
+
+// Show that a command is not allowed
+Hue.not_allowed = function () {
+  Hue.checkmsg("You don't have permission to run that command")
+}
