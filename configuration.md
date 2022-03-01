@@ -104,8 +104,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_open_whispers_automatically"
 >Whether popup messages will open automatically when arrived by default.
 
-"settings_default_show_image_previews"
->Whether image links get a preview on the chat area by default. This only works with certain links, including direct Imgur links.
+"settings_default_embed_images"
+>Whether to embed images in chat by default.
 
 "settings_default_show_link_previews"
 >Whether links get a preview on the chat area by default.

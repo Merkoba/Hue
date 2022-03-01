@@ -41,11 +41,11 @@ Hue.user_settings = {
       }
     },
   },
-  show_image_previews: {
+  embed_images: {
     widget_type: "checkbox",
-    description: `Whether to show image previews on certain chat image links`,
+    description: `Whether to embed images in chat automatically`,
     action: (save = true) => {
-      Hue.settings.show_image_previews = Hue.el(`#settings_show_image_previews`).checked
+      Hue.settings.embed_images = Hue.el(`#settings_embed_images`).checked
 
       if (save) {
         Hue.save_settings()

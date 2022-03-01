@@ -42,7 +42,7 @@ Hue.make_chat_message = function (args = {}) {
   let image_preview_src_original = false
   let image_preview_text = false
 
-  if (Hue.get_setting("show_image_previews")) {
+  if (Hue.get_setting("embed_images")) {
     let ans = Hue.make_image_preview(args.message)
 
     image_preview = ans.image_preview
@@ -1431,6 +1431,10 @@ Hue.on_activity = function (type) {
 
 // Make link preview elements
 Hue.make_link_preview = function (args = {}) {
+  if (!Hue.settings.embed_images) {
+    args.image = ""
+  }
+
   args.message = args.message ? args.message : ""
   args.image = args.image ? args.image : ""
   args.title = args.title ? args.title : ""
