@@ -1,6 +1,7 @@
 // Setup radios
 Hue.setup_radio = function () {
   if (Hue.config.radios.length === 0) {
+    Hue.room_state.radio_enabled = false
     return
   }
 
