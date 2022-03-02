@@ -2469,13 +2469,17 @@ pre {
 
 #radio_stations {
 	position: relative;
-	width: 100%;
 	max-height: calc(100vh - 220px);
 	overflow-y: auto;
 	overflow-x: hidden;
 	margin-bottom: 1rem;
+}
+
+.radio_box {
 	border-top: 1px solid var(--altcolor);
 	border-bottom: 1px solid var(--altcolor);
+	border-left: 1px solid var(--altcolor);
+	border-right: 1px solid var(--altcolor);
 }
 
 .radio_slide .radio_item {
@@ -2503,7 +2507,6 @@ pre {
 	background-color: var(--altbackground);
 	border: 1px solid var(--altcolor);
 	user-select: none;
-	width: 10rem;
 	flex-grow: 0;
 	flex-shrink: 0;
 	padding: 0.25rem;

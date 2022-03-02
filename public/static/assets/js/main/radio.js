@@ -305,7 +305,8 @@ Hue.create_radio_item = function (win) {
 
 // Create a specialized radio button
 Hue.create_radio_item_buttons = function (name, on_click) {
-  let container = Hue.div("radio_item radio_item_buttons")
+  let container = Hue.div("radio_item")
+  container.id = "radio_item_buttons"
   container.innerHTML = Hue.template_radio_item_buttons()
 
   Hue.el("#radio_button_random", container).addEventListener("click", function () {
@@ -322,7 +323,7 @@ Hue.create_radio_item_buttons = function (name, on_click) {
     }
   })
 
-  Hue.el("#radio_items").append(container)
+  Hue.el("#radio_controls").append(container)
 }
 
 // Create volume widget item for radio
@@ -339,7 +340,7 @@ Hue.create_radio_item_volume = function () {
     Hue.change_radio_volume("up")
   })
 
-  Hue.el("#radio_items").append(container)
+  Hue.el("#radio_controls").append(container)
 }
 
 // Increase or decrease radio volume
