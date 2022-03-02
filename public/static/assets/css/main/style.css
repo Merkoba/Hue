@@ -2474,7 +2474,7 @@ pre {
 }
 
 .radioslide .radio_item_icon {
-	padding: 0.5rem;
+	margin: 0.5rem;
 }
 
 .radioslide .radio_content {
@@ -2512,10 +2512,10 @@ pre {
 .radio_item_icon {
 	width: 20px;
 	height: 20px;
-	padding-left: 0.1rem;
-	padding-right: 0.35rem;
-	padding-top: 0.25rem;
-	padding-bottom: 0.25rem;
+	margin-left: 0.1rem;
+	margin-right: 0.35rem;
+	margin-top: 0.25rem;
+	margin-bottom: 0.25rem;
 }
 
 .radio_button_separator {
