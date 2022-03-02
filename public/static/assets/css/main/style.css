@@ -2455,7 +2455,7 @@ pre {
 
 #radio_items {
 	position: fixed;
-	right: 0.25rem;
+	right: 0;
 	bottom: calc(var(--panel_height) + 1rem);
 	display: flex;
 	flex-direction: column;
@@ -2483,7 +2483,6 @@ pre {
 	flex-direction: row;
 	align-items: center;
 	justify-content: flex-start;
-	margin-right: 0.5rem;
 	overflow: hidden;
 	white-space: nowrap;
 	background-color: var(--altbackground);
