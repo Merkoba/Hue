@@ -99,8 +99,8 @@
 		{"name": "Soma Covers", "url": "https://ice2.somafm.com/covers-128-mp3", "metadata": "https://somafm.com/songs/covers.json"},
 		{"name": "Soma BRFM", "url": "https://ice2.somafm.com/brfm-128-mp3", "metadata": "https://somafm.com/songs/brfm.json"},
 		{"name": "Tilde Radio", "url": "https://azuracast.tilderadio.org/radio/8000/radio.ogg", "metadata": "https://azuracast.tilderadio.org/radio/8000/status-json.xsl"},
-		{"name": "Nightwave", "url": "http://radio.plaza.one/mp3", "metadata": "https://api.plaza.one/status"},
-		{"name": "Paradise", "url": "http://stream-dc1.radioparadise.com/mp3-128", "metadata": ""}
+		{"name": "Nightwave Plaza", "url": "http://radio.plaza.one/mp3", "metadata": "https://api.plaza.one/status"},
+		{"name": "Radio Paradise", "url": "http://stream-dc1.radioparadise.com/mp3-128", "metadata": ""}
 	],
 	"radio_metadata_check_delay": 30000,
 	"radio_slide_delay": 1000,
