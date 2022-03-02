@@ -247,8 +247,11 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "radio_metadata_check_delay"
 >How often make a metadata check while app radio window is open.
 
-"radio_autoslide_delay"
+"radio_slide_delay"
 >Slide the radio items to the edge x ms after mouseleave.
+
+"radio_unslide_delay"
+>Show the radio items fully x ms after mouseenter.
 
 
 ## config.secret.json
