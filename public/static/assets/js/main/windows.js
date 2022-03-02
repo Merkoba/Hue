@@ -294,7 +294,7 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_handle_url = Msg.factory(
-    Object.assign({}, msgvars.common, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "handle_url"
     })
   )
@@ -429,6 +429,7 @@ Hue.start_msg = function () {
   Hue.msg_draw_image.set_title("Draw an Image")
   Hue.msg_image_picker.set_title("Image")
   Hue.msg_tv_picker.set_title("TV")
+  Hue.msg_handle_url.set_title("Handle URL")
 }
 
 // Sets all info window variables to false
