@@ -2470,7 +2470,7 @@ pre {
 #radio_stations {
 	position: relative;
 	width: 100%;
-	max-height: 25rem;
+	max-height: calc(100vh - 220px);
 	overflow-y: auto;
 	overflow-x: hidden;
 	margin-bottom: 1rem;
