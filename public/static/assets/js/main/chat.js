@@ -1975,3 +1975,12 @@ Hue.toggle_chat = function (what = undefined) {
 Hue.set_default_chat_enabled = function () {
   Hue.toggle_chat(Hue.config.room_state_default_chat_enabled)
 }
+
+// Check if chat width should be limited
+Hue.check_chat_margin = function () {
+  if (Hue.num_media_elements_visible() === 0 || Hue.room_state.main_layout === "column") {
+    Hue.el("#chat_area").classList.add("chat_margin")
+  } else {
+    Hue.el("#chat_area").classList.remove("chat_margin")
+  }
+}

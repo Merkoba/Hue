@@ -831,6 +831,8 @@ Hue.apply_media_defaults = function () {
   Hue.set_default_tv_position()
   Hue.set_default_main_layout()
   Hue.set_default_chat_enabled()
+  Hue.toggle_media({type: "image", what: true})
+  Hue.toggle_media({type: "tv", what: true})
 
   Hue.save_room_state()
   Hue.change_media_layout()
@@ -1104,13 +1106,8 @@ Hue.change_media_visibility = function (type, play = false) {
   } else {
     Hue.el(`#media_${type}`).style.display = "none"
 
-    let num_visible = Hue.num_media_elements_visible()
-
-    if (num_visible === 0) {
+    if (Hue.num_media_elements_visible() === 0) {
       Hue.hide_media()
-      Hue.el("#chat_area").classList.add("chat_margin")
-    } else {
-      Hue.el("#chat_area").classList.remove("chat_margin")
     }
 
     Hue.el(`#footer_toggle_${type}_icon use`).href.baseVal = "#icon_toggle-off"
@@ -1127,5 +1124,6 @@ Hue.change_media_visibility = function (type, play = false) {
     }
   }
 
+  Hue.check_chat_margin()
   Hue.goto_bottom()
 }
