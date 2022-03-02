@@ -284,11 +284,13 @@ Hue.create_radio_item = function (win) {
   let name = Hue.el(".radio_item_name", container)
   name.textContent = win.hue_radio_name
   
-  container.addEventListener("click", function (e) {
-    if (e.target.closest(".radio_item_icon")) {
+  container.addEventListener("click", function () {
+    Hue.check_radio_play(win)
+  })
+
+  container.addEventListener("auxclick", function (e) {
+    if (e.which === 2) {
       win.show()
-    } else {
-      Hue.check_radio_play(win)
     }
   })
 
@@ -306,7 +308,7 @@ Hue.create_radio_item_buttons = function (name, on_click) {
   })
 
   Hue.el("#radio_button_playstop", container).addEventListener("click", function () {
-    Hue.playstop()
+    Hue.radio_playstop()
   })
   
   Hue.el("#radio_button_info", container).addEventListener("click", function () {
