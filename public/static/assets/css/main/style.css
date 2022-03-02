@@ -2579,7 +2579,6 @@ pre {
 	display: flex;
 	flex-direction: row;
 	background-color: var(--altcolor);
-	font-size: 1rem;
 	padding: 0.25rem;
 }
 
