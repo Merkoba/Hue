@@ -254,32 +254,21 @@ Hue.init_message_board = function (data) {
   Hue.check_last_message_board_post()
   
   if (Hue.unread_message_board_count > 0) {
-    Hue.highlight_unread_message_board_posts()
-    Hue.show_message_board()
+    Hue.fresh_unread_message_board_posts()
+    Hue.show_message_board("$fresh")
   }
 
   Hue.vertical_separator(Hue.el("#message_board_container"))
 }
 
 // Highlight unread message board posts
-Hue.highlight_unread_message_board_posts = function () {
+Hue.fresh_unread_message_board_posts = function () {
   for (let [i, el] of Hue.els(".message_board_post").entries()) {
     if (i < Hue.unread_message_board_count) {
-      el.classList.add("fresh_message")
+      Hue.dataset(el, "fresh", true)
     } else {
       break
     }
-  }
-
-  setTimeout(function () {
-    Hue.remove_highlighted_message_board_posts()
-  }, Hue.fresh_messages_duration)
-}
-
-// Remove highlighted message board posts
-Hue.remove_highlighted_message_board_posts = function () {
-  for (let el of Hue.els("#message_board_container .fresh_message")) {
-    el.classList.remove("fresh_message")
   }
 }
 

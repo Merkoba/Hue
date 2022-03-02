@@ -584,17 +584,35 @@ Hue.do_modal_filter = function (id = false) {
     id = Hue.active_modal.options.id
   }
 
+  let finished = false
+
+  function filtercheck (it) {
+    if (finished) {
+      return false
+    }
+
+    if (filter_value === "$fresh") {
+      let fresh = Hue.dataset(it, "fresh")
+      
+      if (!fresh) {
+        finished = true
+      }
+
+      return fresh
+    } else {
+      return it.textContent.toLowerCase().includes(filter_value_lower)
+    }
+  }  
+
   let win = Hue.el(`#Msg-content-${id}`)
   let filter = Hue.el(".filter_input", win)
-  let value = filter.value.trim()
-  let lc_value = Hue.utilz.single_space(value).toLowerCase()
+  let filter_value = filter.value.trim()
+  let filter_value_lower = Hue.utilz.single_space(filter_value).toLowerCase()
   let items = Hue.els(".modal_item", win)
 
-  if (lc_value && items.length) {
+  if (filter_value_lower && items.length) {
     items.forEach(it => {
-      let item_value = it.textContent.toLowerCase()
-
-      if (item_value.includes(lc_value)) {
+      if (filtercheck(it)) {
         it.classList.remove("nodisplay")
       } else {
         it.classList.add("nodisplay")
