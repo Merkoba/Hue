@@ -6,10 +6,21 @@ Hue.reset_chat_search_filter = function () {
 
 // Shows the chat search window
 Hue.show_chat_search = function (filter = "") {
+  let finished = false
+
   function filtercheck (it) {
+    if (finished) {
+      return false
+    }
+
     if (filter.startsWith("$user:")) {
       return f_username === Hue.dataset(it, "username")
     } else if (filter === "$highlights") {
+      return Hue.dataset(it, "highlighted")
+    } else if (filter === "$new_highlights") {
+      if (Hue.dataset(it, "latest_highlight")) {
+        finished = true
+      }
       return Hue.dataset(it, "highlighted")
     } else if (filter === "$links") {
       let s = it.textContent.toLowerCase()

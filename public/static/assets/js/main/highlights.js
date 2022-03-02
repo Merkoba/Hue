@@ -39,15 +39,16 @@ Hue.check_highlights = function (message) {
 // Checks if there are new highlights since the last load
 // If so, a clickable announcement appears which opens Highlights
 Hue.check_latest_highlight = function () {
-  let latest_highlight = Hue.get_latest_highlight()
+  let highlight = Hue.get_latest_highlight()
 
-  if (latest_highlight) {
-    let date = Hue.dataset(latest_highlight, "date")
+  if (highlight) {
+    Hue.dataset(highlight, "latest_highlight", true)
+    let date = Hue.dataset(highlight, "date")
 
     if (date > Hue.room_state.last_highlight_date) {
       Hue.room_state.last_highlight_date = date
       Hue.save_room_state()
-      Hue.show_highlights()
+      Hue.show_highlights(true)
       Hue.on_activity("highlight")
     }
   }
@@ -75,7 +76,7 @@ Hue.get_latest_highlight = function () {
         break
       }
     }
-  }  
+  }
 
   return latest_highlight
 }
@@ -98,6 +99,10 @@ Hue.on_highlight = function (username) {
 }
 
 // Show and/or filters highlights window
-Hue.show_highlights = function () {
-  Hue.show_chat_search("$highlights")
+Hue.show_highlights = function (only_new = false) {
+  if (only_new) {
+    Hue.show_chat_search("$new_highlights")
+  } else {
+    Hue.show_chat_search("$highlights")
+  }
 }
