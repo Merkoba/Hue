@@ -2474,6 +2474,8 @@ pre {
 	overflow-y: auto;
 	overflow-x: hidden;
 	margin-bottom: 1rem;
+	border-top: 1px solid var(--altcolor);
+	border-bottom: 1px solid var(--altcolor);
 }
 
 .radio_stations_full {
