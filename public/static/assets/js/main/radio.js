@@ -180,6 +180,11 @@ Hue.get_radio_metadata = function (win) {
     title_el.style.display = "none"
   }
 
+  if (!win.hue_radio_metadata) {
+    artist_el.textContent = "Metadata not available"
+    return
+  }
+
   fetch(win.hue_radio_metadata)
   
   .then(res => res.json())
