@@ -2463,6 +2463,20 @@ pre {
 	color: var(--font_color);
 }
 
+.radioslide .radio_item {
+	width: unset;
+	padding: unset;
+	margin: unset;
+}
+
+.radioslide .radio_item_icon {
+	padding: 0.5rem;
+}
+
+.radioslide .radio_content {
+	display: none;
+}
+
 .radio_item {
 	position: relative;
 	display: flex;
@@ -2482,23 +2496,17 @@ pre {
 	z-index: 1;
 }
 
+.radio_content {
+	display: flex;
+	flex-direction: row;
+}
+
 .radio_item_playing {
 	outline: 2px solid var(--font_color_a);
 	z-index: 10;
 }
 
-.radio_item_icon_container {
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding-left: 0.1rem;
-	padding-right: 0.35rem;
-	padding-top: 0.25rem;
-	padding-bottom: 0.25rem;
-}
-
-.radio_item_svg {
+.radio_item_icon {
 	width: 20px;
 	height: 20px;
 	padding-left: 0.1rem;

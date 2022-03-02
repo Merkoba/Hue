@@ -98,5 +98,6 @@
 		{"name": "Nightwave Plaza", "url": "http://radio.plaza.one/mp3", "metadata": "https://api.plaza.one/status"}
 	],
 	"radio_metadata_check_delay": 30000,
+	"radio_autoslide_delay": 1000,
 	"audioclip_delay": 2000
 }
