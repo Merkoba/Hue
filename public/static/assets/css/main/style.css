@@ -2205,22 +2205,24 @@ pre {
 	background-color: rgba(33, 33, 33, 0.8);
 	padding: 0.25rem;
 	text-align: left;
-	white-space: pre-wrap;
 }
 
 .greentext {
 	color: rgb(91, 218, 91);
 	border: 1px solid rgba(91, 218, 91, 0.8);
+	white-space: pre-wrap;
 }
 
 .bluetext {
 	color: rgb(119, 119, 240);
 	border: 1px solid rgba(119, 119, 240, 0.8);
+	white-space: pre-wrap;
 }
 
 .redtext {
 	color: rgb(223, 76, 76);
 	border: 1px solid rgba(223, 76, 76, 0.8);
+	white-space: pre-wrap;
 }
 
 .goldtext {
