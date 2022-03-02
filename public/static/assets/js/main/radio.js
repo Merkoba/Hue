@@ -147,14 +147,19 @@ Hue.check_radio_play = function (win) {
 // Play the audio player with a cache-busted url
 Hue.play_radio = function (win) {
   Hue.playing_radio = win
-  
-  win.hue_radio_item.scrollIntoView({
-    block: "center"
-  })
-
+  Hue.scroll_to_radio_item()
   let player = Hue.get_radio_player(win)
   player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
   player.play()
+}
+
+// Scroll stations list to playing item
+Hue.scroll_to_radio_item = function () {
+  if (Hue.playing_radio) {
+    Hue.playing_radio.hue_radio_item.scrollIntoView({
+      block: "center"
+    })
+  }
 }
 
 // Pause the audio player
@@ -440,6 +445,7 @@ Hue.slide_radio = function () {
   Hue.clear_radio_slide_timeouts()
   Hue.el("#radio_items").classList.add("radio_slide")
   Hue.el("#radio_stations").classList.remove("radio_stations_full")
+  Hue.scroll_to_radio_item()
 }
 
 // Reveal the radio fully 
@@ -447,6 +453,7 @@ Hue.unslide_radio = function () {
   Hue.clear_radio_slide_timeouts()
   Hue.el("#radio_items").classList.remove("radio_slide")
   Hue.el("#radio_stations").classList.add("radio_stations_full")
+  Hue.scroll_to_radio_item()
 }
 
 // Play or stop the radio
