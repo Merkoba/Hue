@@ -2467,17 +2467,31 @@ pre {
 	color: var(--font_color);
 }
 
-.radioslide .radio_item {
+#radio_stations {
+	position: relative;
+	width: 100%;
+	max-height: 25rem;
+	overflow-y: auto;
+	overflow-x: hidden;
+	margin-bottom: 1rem;
+}
+
+.radio_stations_full {
+	scrollbar-width: thin !important;
+	scrollbar-color: grey black !important;
+}
+
+.radio_slide .radio_item {
 	width: unset;
 	padding: unset;
 	margin: unset;
 }
 
-.radioslide .radio_item_icon {
+.radio_slide .radio_item_icon {
 	margin: 0.5rem;
 }
 
-.radioslide .radio_content {
+.radio_slide .radio_content {
 	display: none;
 }
 
@@ -2490,7 +2504,7 @@ pre {
 	overflow: hidden;
 	white-space: nowrap;
 	background-color: var(--altbackground);
-	outline: 2px solid var(--altcolor);
+	border: 1px solid var(--altcolor);
 	user-select: none;
 	width: 10rem;
 	flex-grow: 0;
@@ -2505,7 +2519,7 @@ pre {
 }
 
 .radio_item_playing {
-	outline: 2px solid var(--font_color_a);
+	border: 1px solid var(--font_color_a);
 	z-index: 10;
 }
 

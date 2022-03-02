@@ -19,7 +19,7 @@ Hue.setup_radio = function () {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
   })
 
-  Hue.el("#radio_items").addEventListener("wheel", function (e) {
+  Hue.el("#radio_item_volume").addEventListener("wheel", function (e) {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
   })
 
@@ -46,7 +46,7 @@ Hue.start_radio = function (radio) {
   win.create()
 
   win.set_title(radio.name)
-  win.set(Hue.template_radio())
+  win.set(Hue.template_radio_window())
   Hue.setup_radio_player(win)
 
   Hue.el(".radio_reload", win.window).addEventListener("click", function () {
@@ -147,6 +147,11 @@ Hue.check_radio_play = function (win) {
 // Play the audio player with a cache-busted url
 Hue.play_radio = function (win) {
   Hue.playing_radio = win
+  
+  win.hue_radio_item.scrollIntoView({
+    block: "center"
+  })
+
   let player = Hue.get_radio_player(win)
   player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
   player.play()
@@ -288,7 +293,7 @@ Hue.create_radio_item = function (win) {
   })
 
   win.hue_radio_item = container
-  Hue.el("#radio_items").append(container)
+  Hue.el("#radio_stations").append(container)
 }
 
 // Create a specialized radio button
@@ -315,7 +320,8 @@ Hue.create_radio_item_buttons = function (name, on_click) {
 
 // Create volume widget item for radio
 Hue.create_radio_item_volume = function () {
-  let container = Hue.div("radio_item radio_item_volume")
+  let container = Hue.div("radio_item")
+  container.id = "radio_item_volume"
   container.innerHTML = Hue.template_radio_item_volume()
 
   Hue.el("#radio_item_volume_icon", container).addEventListener("click", function () {
@@ -430,13 +436,15 @@ Hue.start_radio_unslide_timeout = function () {
 // Slide the radio to the side
 Hue.slide_radio = function () {
   Hue.clear_radio_slide_timeouts()
-  Hue.el("#radio_items").classList.add("radioslide")
+  Hue.el("#radio_items").classList.add("radio_slide")
+  Hue.el("#radio_stations").classList.remove("radio_stations_full")
 }
 
 // Reveal the radio fully 
 Hue.unslide_radio = function () {
   Hue.clear_radio_slide_timeouts()
-  Hue.el("#radio_items").classList.remove("radioslide")
+  Hue.el("#radio_items").classList.remove("radio_slide")
+  Hue.el("#radio_stations").classList.add("radio_stations_full")
 }
 
 // Play or stop the radio
