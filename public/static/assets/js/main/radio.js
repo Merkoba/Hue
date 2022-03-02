@@ -23,11 +23,11 @@ Hue.setup_radio = function () {
   })
 
   Hue.el("#radio_items").addEventListener("mouseenter", function () {
-    Hue.unslide_radio()
+    Hue.start_radio_unslide_timeout()
   })
 
   Hue.el("#radio_items").addEventListener("mouseleave", function () {
-    Hue.start_autoslide_timeout()
+    Hue.start_radio_slide_timeout()
   })
 
   Hue.slide_radio()
@@ -407,23 +407,36 @@ Hue.get_radio_string = function (win) {
   return `${artist} ${title}`.trim()
 }
 
-// Start autoslide timeout
-Hue.start_autoslide_timeout = function () {
-  clearTimeout(Hue.radio_autoslide_timeout)
-  
-  Hue.radio_autoslide_timeout = setTimeout(function () {
+// Clear slide timeouts
+Hue.clear_radio_slide_timeouts = function () {
+  clearTimeout(Hue.radio_slide_timeout)
+  clearTimeout(Hue.radio_unslide_timeout)
+}
+
+// Start slide timeout
+Hue.start_radio_slide_timeout = function () {
+  Hue.clear_radio_slide_timeouts()
+  Hue.radio_slide_timeout = setTimeout(function () {
     Hue.slide_radio()
-  }, Hue.config.radio_autoslide_delay)
+  }, Hue.config.radio_slide_delay)
+}
+
+// Start unslide timeout
+Hue.start_radio_unslide_timeout = function () {
+  Hue.clear_radio_slide_timeouts()
+  Hue.radio_unslide_timeout = setTimeout(function () {
+    Hue.unslide_radio()
+  }, Hue.config.radio_unslide_delay)
 }
 
 // Slide the radio to the side
 Hue.slide_radio = function () {
-  clearTimeout(Hue.radio_autoslide_timeout)
+  Hue.clear_radio_slide_timeouts()
   Hue.el("#radio_items").classList.add("radioslide")
 }
 
 // Reveal the radio fully 
 Hue.unslide_radio = function () {
-  clearTimeout(Hue.radio_autoslide_timeout)
+  Hue.clear_radio_slide_timeouts()
   Hue.el("#radio_items").classList.remove("radioslide")
 }
