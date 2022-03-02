@@ -444,7 +444,6 @@ Hue.start_radio_unslide_timeout = function () {
 Hue.slide_radio = function () {
   Hue.clear_radio_slide_timeouts()
   Hue.el("#radio_items").classList.add("radio_slide")
-  Hue.el("#radio_stations").classList.remove("radio_stations_full")
   Hue.scroll_to_radio_item()
 }
 
@@ -452,7 +451,6 @@ Hue.slide_radio = function () {
 Hue.unslide_radio = function () {
   Hue.clear_radio_slide_timeouts()
   Hue.el("#radio_items").classList.remove("radio_slide")
-  Hue.el("#radio_stations").classList.add("radio_stations_full")
   Hue.scroll_to_radio_item()
 }
 

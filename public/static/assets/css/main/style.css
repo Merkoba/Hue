@@ -2478,11 +2478,6 @@ pre {
 	border-bottom: 1px solid var(--altcolor);
 }
 
-.radio_stations_full {
-	scrollbar-width: thin !important;
-	scrollbar-color: grey black !important;
-}
-
 .radio_slide .radio_item {
 	width: unset;
 	padding: unset;
