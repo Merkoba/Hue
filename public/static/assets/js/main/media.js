@@ -392,6 +392,11 @@ Hue.fix_frame = function (frame_id, test_parent_height = false) {
   }
 
   let parent_width = parent.offsetWidth
+
+  if (Hue.room_state.radio_enabled) {
+    parent_width -= 100
+  }
+
   let parent_height = test_parent_height ?
     test_parent_height :
     parent.offsetHeight - info_height
