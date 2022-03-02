@@ -133,39 +133,6 @@ Hue.fix_image_frame = function () {
   Hue.fix_frame("media_image_frame")
 }
 
-// Changes the image visibility based on current state
-Hue.change_image_visibility = function () {
-  if (Hue.room_state.image_enabled) {
-    Hue.el("#media").style.display = "flex"
-    Hue.el("#media_image").style.display = "flex"
-    Hue.el("#footer_toggle_image_icon use").href.baseVal = "#icon_toggle-on"
-
-    if (Hue.first_media_change && Hue.started) {
-      Hue.change({ type: "image", force: true, current_source: Hue.image_locked })
-    }
-
-    Hue.image_visible = true
-    Hue.fix_image_frame()
-  } else {
-    Hue.el("#media_image").style.display = "none"
-
-    let num_visible = Hue.num_media_elements_visible()
-
-    if (num_visible === 0) {
-      Hue.hide_media()
-    }
-
-    Hue.el("#footer_toggle_image_icon use").href.baseVal = "#icon_toggle-off"
-    Hue.image_visible = false
-  }
-
-  if (Hue.tv_visible) {
-    Hue.fix_visible_tv_frame()
-  }
-
-  Hue.goto_bottom()
-}
-
 // When clicking the Previous button in the image modal window
 Hue.modal_image_prev_click = function () {
   if (Hue.image_changed.length < 2) {

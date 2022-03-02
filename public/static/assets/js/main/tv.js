@@ -180,7 +180,7 @@ Hue.show_video_tv = function (play = true) {
       info: Hue.get_media_info_html("tv"),
       poster: Hue.config.video_poster
     })
-    
+
     Hue.el("#media_video_tv_container").innerHTML = s
   }
 
@@ -229,7 +229,7 @@ Hue.before_show_tv = function (item) {
 // This gets called after any tv video is loaded
 Hue.after_show_tv = function () {
   Hue.apply_media_info("tv")
-  Hue.fix_visible_tv_frame()
+  Hue.fix_tv_frame()
   Hue.focus_input()
 }
 
@@ -354,52 +354,6 @@ Hue.do_tv_change = function (src, comment) {
   })
 }
 
-// Changes the tv visibility based on current state
-Hue.change_tv_visibility = function (play = false) {
-  if (Hue.room_state.tv_enabled) {
-    Hue.el("#media").style.display = "flex"
-    Hue.el("#media_tv").style.display = "flex"
-    Hue.el("#footer_toggle_tv_icon use").href.baseVal = "#icon_toggle-on"
-
-    if (!Hue.tv_visible) {
-      Hue.tv_visible = true
-
-      if (Hue.room_state.tv_enabled) {
-        if (Hue.first_media_change && Hue.started) {
-          Hue.change({
-            type: "tv",
-            force: true,
-            play: play,
-            current_source: Hue.tv_locked
-          })
-        }
-      }
-    }
-
-    Hue.fix_visible_tv_frame()
-  } else {
-    Hue.stop_tv()
-    Hue.hide_tv()
-
-    Hue.el("#media_tv").style.display = "none"
-
-    let num_visible = Hue.num_media_elements_visible()
-
-    if (num_visible === 0) {
-      Hue.hide_media()
-    }
-
-    Hue.el("#footer_toggle_tv_icon use").href.baseVal = "#icon_toggle-off"
-    Hue.tv_visible = false
-  }
-
-  if (Hue.image_visible) {
-    Hue.fix_image_frame()
-  }
-
-  Hue.goto_bottom()
-}
-
 // Does the change of tv display percentage
 Hue.do_media_tv_size_change = function (size) {
   if (size === "max") {
@@ -460,7 +414,7 @@ Hue.setup_iframe_tv = function () {
 }
 
 // Updates dimensions of the visible tv frame
-Hue.fix_visible_tv_frame = function () {
+Hue.fix_tv_frame = function () {
   let id = Hue.get_visible_video_frame_id()
 
   if (id) {
