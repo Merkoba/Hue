@@ -119,6 +119,7 @@ Hue.check_radio_playing = function (win) {
 Hue.toggle_radio = function () {
   Hue.room_state.radio_enabled = !Hue.room_state.radio_enabled
   Hue.change_radio_state(Hue.room_state.radio_enabled)
+  Hue.fix_frames()
   Hue.save_room_state()
 }
 
