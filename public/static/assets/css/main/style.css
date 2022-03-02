@@ -2476,10 +2476,7 @@ pre {
 }
 
 .radio_box {
-	border-top: 1px solid var(--altcolor);
-	border-bottom: 1px solid var(--altcolor);
-	border-left: 1px solid var(--altcolor);
-	border-right: 1px solid var(--altcolor);
+	border: 1px solid var(--altcolor);
 }
 
 .radio_slide .radio_item {
