@@ -18,10 +18,13 @@ Hue.show_chat_search = function (filter = "") {
     } else if (filter === "$highlights") {
       return Hue.dataset(it, "highlighted")
     } else if (filter === "$new_highlights") {
-      if (Hue.dataset(it, "latest_highlight")) {
+      let highlighted = Hue.dataset(it, "highlighted")
+
+      if (highlighted && Hue.dataset(it, "latest_highlight")) {
         finished = true
       }
-      return Hue.dataset(it, "highlighted")
+
+      return highlighted
     } else if (filter === "$links") {
       let s = it.textContent.toLowerCase()
       return s.includes("http://") || s.includes("https://")
