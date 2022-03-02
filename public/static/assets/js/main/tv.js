@@ -176,7 +176,11 @@ Hue.show_video_tv = function (play = true) {
   let item = Hue.loaded_tv
 
   if (!Hue.el("#media_video_tv")) {
-    let s = Hue.template_media_video_tv({info: Hue.get_media_info_html("tv")})
+    let s = Hue.template_media_video_tv({
+      info: Hue.get_media_info_html("tv"),
+      poster: Hue.config.video_poster
+    })
+    
     Hue.el("#media_video_tv_container").innerHTML = s
   }
 

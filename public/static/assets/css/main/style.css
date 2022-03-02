@@ -2093,7 +2093,7 @@ pre {
 	display: flex;
 }
 
-.message_board_item {
+.message_board_post {
 	position: relative;
 	width: 100%;
 }
