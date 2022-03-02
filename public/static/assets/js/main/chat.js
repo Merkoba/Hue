@@ -478,8 +478,6 @@ Hue.insert_message = function (args = {}) {
         if (Hue.has_focus) {
           Hue.room_state.last_highlight_date = date
           Hue.save_room_state()
-        } else {
-          Hue.highlight_date_on_focus = date
         }
       }
     } else if (user_id) {
