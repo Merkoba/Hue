@@ -82,12 +82,7 @@ Hue.on_focus = function () {
   Hue.remove_alert_title()
   Hue.show_fresh_messages()
   Hue.focus_input()
-
-  if (Hue.highlight_date_on_focus) {
-    Hue.room_state.last_highlight_date = Hue.highlight_date_on_focus
-    Hue.highlight_date_on_focus = 0
-    Hue.save_room_state()
-  }
+  Hue.check_latest_highlight()
 }
 
 // Starts window resize events

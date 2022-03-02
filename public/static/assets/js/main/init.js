@@ -128,7 +128,6 @@ Hue.last_message_date = 0
 Hue.update_userlist_delay = 2000
 Hue.dataset_obj = {}
 Hue.dataset_id = 0
-Hue.highlight_date_on_focus = 0
 Hue.flipped = false
 Hue.radio_windows = []
 
