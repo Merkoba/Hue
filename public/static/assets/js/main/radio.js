@@ -27,9 +27,7 @@ Hue.setup_radio = function () {
   })
 
   Hue.el("#radio_items").addEventListener("mouseleave", function () {
-    Hue.radio_autoslide_timeout = setTimeout(function () {
-      Hue.slide_radio()
-    }, Hue.config.radio_autoslide_delay)
+    Hue.start_autoslide_timeout()
   })
 
   Hue.slide_radio()
@@ -407,6 +405,15 @@ Hue.get_radio_string = function (win) {
   let artist = Hue.el(".radio_metadata_artist", win.content).textContent
   let title = Hue.el(".radio_metadata_title", win.content).textContent
   return `${artist} ${title}`.trim()
+}
+
+// Start autoslide timeout
+Hue.start_autoslide_timeout = function () {
+  clearTimeout(Hue.radio_autoslide_timeout)
+  
+  Hue.radio_autoslide_timeout = setTimeout(function () {
+    Hue.slide_radio()
+  }, Hue.config.radio_autoslide_delay)
 }
 
 // Slide the radio to the side
