@@ -238,8 +238,8 @@ Hue.setup_active_media = function () {
 
 // Changes media visibility and locks based on current state
 Hue.media_visibility_and_locks = function () {
-  Hue.change_image_visibility()
-  Hue.change_tv_visibility(false)
+  Hue.change_media_visibility("image")
+  Hue.change_media_visibility("tv")
 
   if (Hue.connections === 1) {
     Hue.change_media_lock_icon("image")
@@ -424,7 +424,7 @@ Hue.fix_frame = function (frame_id, test_parent_height = false) {
 
 // Updates dimensions of the image and tv
 Hue.fix_frames = function () {
-  Hue.fix_visible_tv_frame()
+  Hue.fix_tv_frame()
   Hue.fix_image_frame()
 }
 
@@ -608,7 +608,7 @@ Hue.toggle_media = function (args) {
   Hue.room_state[`${args.type}_enabled`] = new_val
 
   if (Hue[`${args.type}_visible`] !== args.what) {
-    Hue[`change_${args.type}_visibility`]()
+    Hue.change_media_visibility(args.type)
   }
 
   let p = Hue.room_state.tv_display_percentage
@@ -1086,4 +1086,46 @@ Hue.announce_media = function (type, data) {
     media_source: data.source,
     comment: data.comment
   })
+}
+
+// Changes the media visibility based on current state
+Hue.change_media_visibility = function (type, play = false) {
+  if (Hue.room_state[`${type}_enabled`]) {
+    Hue.el("#media").style.display = "flex"
+    Hue.el(`#media_${type}`).style.display = "flex"
+    Hue.el(`#footer_toggle_${type}_icon use`).href.baseVal = "#icon_toggle-on"
+
+    if (Hue.first_media_change && Hue.started) {
+      Hue.change({type: type, force: true, current_source: Hue[`${type}_locked`], play: play})
+    }
+
+    Hue[`${type}_visible`] = true
+    Hue[`fix_${type}_frame`]()
+  } else {
+    Hue.el(`#media_${type}`).style.display = "none"
+
+    let num_visible = Hue.num_media_elements_visible()
+
+    if (num_visible === 0) {
+      Hue.hide_media()
+      Hue.el("#chat_area").classList.add("chat_margin")
+    } else {
+      Hue.el("#chat_area").classList.remove("chat_margin")
+    }
+
+    Hue.el(`#footer_toggle_${type}_icon use`).href.baseVal = "#icon_toggle-off"
+    Hue[`${type}_visible`] = false
+  }
+
+  if (type === "image") {
+    if (Hue.tv_visible) {
+      Hue.fix_tv_frame()
+    }
+  } else if (type == "tv") {
+    if (Hue.image_visible) {
+      Hue.fix_image_frame()
+    }
+  }
+
+  Hue.goto_bottom()
 }
