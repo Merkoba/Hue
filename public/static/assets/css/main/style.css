@@ -2210,22 +2210,22 @@ pre {
 
 .greentext {
 	color: rgb(91, 218, 91);
-	border: 1px solid rgba(91, 218, 91, 0.5);
+	border: 1px solid rgba(91, 218, 91, 0.8);
 }
 
 .bluetext {
 	color: rgb(119, 119, 240);
-	border: 1px solid rgba(119, 119, 240, 0.5);
+	border: 1px solid rgba(119, 119, 240, 0.8);
 }
 
 .redtext {
 	color: rgb(223, 76, 76);
-	border: 1px solid rgba(223, 76, 76, 0.5);
+	border: 1px solid rgba(223, 76, 76, 0.8);
 }
 
 .goldtext {
 	color: rgb(229, 255, 0);
-	border: 1px solid rgba(229, 255, 0, 0.5);
+	border: 1px solid rgba(229, 255, 0, 0.8);
 }
 
 .custom_popup {
