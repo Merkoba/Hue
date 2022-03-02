@@ -22,6 +22,17 @@ Hue.setup_radio = function () {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
   })
 
+  Hue.el("#radio_items").addEventListener("mouseenter", function () {
+    Hue.unslide_radio()
+  })
+
+  Hue.el("#radio_items").addEventListener("mouseleave", function () {
+    Hue.radio_autoslide_timeout = setTimeout(function () {
+      Hue.slide_radio()
+    }, Hue.config.radio_autoslide_delay)
+  })
+
+  Hue.slide_radio()
   Hue.change_radio_state(Hue.room_state.radio_enabled)
 }
 
@@ -269,7 +280,7 @@ Hue.create_radio_item = function (win) {
   name.textContent = win.hue_radio_name
   
   container.addEventListener("click", function (e) {
-    if (e.target.closest(".radio_item_icon_container")) {
+    if (e.target.closest(".radio_item_icon")) {
       win.show()
     } else {
       Hue.check_radio_play(win)
@@ -396,4 +407,16 @@ Hue.get_radio_string = function (win) {
   let artist = Hue.el(".radio_metadata_artist", win.content).textContent
   let title = Hue.el(".radio_metadata_title", win.content).textContent
   return `${artist} ${title}`.trim()
+}
+
+// Slide the radio to the side
+Hue.slide_radio = function () {
+  clearTimeout(Hue.radio_autoslide_timeout)
+  Hue.el("#radio_items").classList.add("radioslide")
+}
+
+// Reveal the radio fully 
+Hue.unslide_radio = function () {
+  clearTimeout(Hue.radio_autoslide_timeout)
+  Hue.el("#radio_items").classList.remove("radioslide")
 }
