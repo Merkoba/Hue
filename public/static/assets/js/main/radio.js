@@ -214,12 +214,22 @@ Hue.get_radio_metadata = function (win) {
         title = out.icestats.source.title
       }
     } else if (out.song) {
-      if (out.song.artist) {
-        artist = out.song.artist
-      }
-
-      if (out.song.title) {
-        title = out.song.title
+      if (Array.isArray(out.song)) {
+        if (out.song[0].artist) {
+          artist = out.song[0].artist
+        }
+  
+        if (out.song[0].title) {
+          title = out.song[0].title
+        }
+      } else {
+        if (out.song.artist) {
+          artist = out.song.artist
+        }
+  
+        if (out.song.title) {
+          title = out.song.title
+        }
       }
     } else if (out.songs) {
       if (out.songs[0].artist) {
@@ -248,7 +258,9 @@ Hue.get_radio_metadata = function (win) {
     }
   })
 
-  .catch(err => {})
+  .catch(err => {
+    artist_el.textContent = "Metadata not available"
+  })
 }
 
 // Start metadata loop while radio audio window is open
