@@ -31,7 +31,13 @@ Hue.setup_footer = function () {
   if (Hue.config.radios.length > 0) {
     Hue.el("#footer_radio_icon_container").addEventListener("click", function () {
       Hue.toggle_radio()
-    }) 
+    })
+
+    Hue.el("#footer_radio_icon_container").addEventListener("auxclick", function (e) {
+      if (e.which === 2) {
+        Hue.radio_playstop()
+      }
+    })
   } else {
     Hue.el("#footer_radio_icon_container").remove()
   }

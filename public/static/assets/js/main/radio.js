@@ -299,11 +299,7 @@ Hue.create_radio_item_buttons = function (name, on_click) {
   })
 
   Hue.el("#radio_button_playstop", container).addEventListener("click", function () {
-    if (Hue.playing_radio) {
-      Hue.check_radio_play(Hue.playing_radio)
-    } else {
-      Hue.play_random_radio()
-    }
+    Hue.playstop()
   })
   
   Hue.el("#radio_button_info", container).addEventListener("click", function () {
@@ -439,4 +435,14 @@ Hue.slide_radio = function () {
 Hue.unslide_radio = function () {
   Hue.clear_radio_slide_timeouts()
   Hue.el("#radio_items").classList.remove("radioslide")
+}
+
+// Play or stop the radio
+// Select random item if none is playing
+Hue.radio_playstop = function () {
+  if (Hue.playing_radio) {
+    Hue.check_radio_play(Hue.playing_radio)
+  } else {
+    Hue.play_random_radio()
+  }  
 }
