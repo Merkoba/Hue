@@ -556,15 +556,15 @@ Hue.apply_media_info = function (type) {
     return false
   }
 
-  let message = Hue.utilz.make_html_safe(item.message.substring(0, Hue.media_info_message_max_length).trim())
-
-  let html = `
-    <div class='media_info_username action'>${Hue.utilz.make_html_safe(item.setter)}</div>
-    <div class='media_info_details action'>: ${message}</div>`
-
+  let message = item.message.substring(0, Hue.media_info_message_max_length).trim()
   let container = Hue.el(`#media_${type}_info_container`)
   container.style.visibility = "initial"
-  Hue.el(".media_info", container).innerHTML = html
+  
+  Hue.el(".media_info", container).innerHTML = Hue.template_media_info_inner({
+    setter: item.setter, 
+    message: message
+  })
+  
   Hue.el(".media_info_timeago", container).textContent = Hue.utilz.timeago(item.date)
   container.title = item.info
     

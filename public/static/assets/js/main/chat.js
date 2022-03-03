@@ -143,10 +143,11 @@ Hue.make_chat_message = function (args = {}) {
   let quote = Hue.el(".chat_quote", fmessage)
 
   if (args.quote) {
-    let username_safe = Hue.utilz.make_html_safe(args.quote_username)
-    let quote_username_html = `<div class='chat_quote_username action'>${username_safe}</div>`
-    let content_safe = Hue.utilz.make_html_safe(args.quote)
-    Hue.el(".chat_quote_text", quote).innerHTML = `${quote_username_html}: ${content_safe}`
+    Hue.el(".chat_quote_text", quote).innerHTML = Hue.template_quote({
+      username: args.quote_username,
+      quote: args.quote
+    })
+
     Hue.dataset(quote, "quote_username", args.quote_username)
     Hue.dataset(quote, "quote_user_id", args.quote_user_id)
     Hue.dataset(quote, "quote_id", args.quote_id)
