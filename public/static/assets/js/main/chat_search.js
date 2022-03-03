@@ -17,7 +17,7 @@ Hue.show_chat_search = function (filter = "") {
       return f_username === Hue.dataset(it, "username")
     } else if (filter === "$highlights") {
       return Hue.dataset(it, "highlighted")
-    } else if (filter === "$fresh") {
+    } else if (filter === "$fresh_highlights") {
       if (!Hue.latest_highlight) {
         finished = true
         return false
