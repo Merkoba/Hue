@@ -142,6 +142,17 @@ Hue.show_room_notification = function (username, message, icon = "info") {
   Hue.show_popup(Hue.make_info_popup(f), item)
 }
 
+// Another centralized function for room changes
+Hue.show_action_notification = function (message, icon, f) {
+  let item = Hue.make_info_popup_item({
+    message: message,
+    on_click: f,
+    icon: icon
+  })
+
+  Hue.show_popup(Hue.make_info_popup(f), item)
+}
+
 // Centralized function to show a popup
 Hue.show_popup = function (popup, html="") {
   if (html) {

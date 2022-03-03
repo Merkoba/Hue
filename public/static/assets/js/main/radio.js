@@ -151,6 +151,7 @@ Hue.play_radio = function (win) {
   let player = Hue.get_radio_player(win)
   player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
   player.play()
+  Hue.announce_radio()
 }
 
 // Scroll stations list to playing item
@@ -480,4 +481,30 @@ Hue.radio_playstop = function () {
   } else {
     Hue.play_random_radio()
   }  
+}
+
+// Send a message to others that you started a radio
+Hue.announce_radio = function () {
+  if (Hue.playing_radio) {
+    Hue.socket_emit("announce_radio", {name: Hue.playing_radio.hue_radio_name})
+  }
+}
+
+// Show when another user announces their radio
+Hue.show_announce_radio = function (data) {
+  if (Hue.userlist.length <= Hue.config.max_low_users) {
+    Hue.show_action_notification(`${data.username} is listening to: ${data.name}`, "star", function () {
+      Hue.play_radio_by_name(data.name)
+    })
+  }
+}
+
+// Play a radio by its name
+Hue.play_radio_by_name = function (name) {
+  for (let win of Hue.radio_windows) {
+    if (win.hue_radio_name === name) {
+      Hue.play_radio(win)
+      return
+    }
+  }
 }
