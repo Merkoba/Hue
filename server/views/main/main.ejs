@@ -1,22 +1,22 @@
 <!-- T:004 -->
 
-<%- include('../doctype.ejs'); %>
+<%- include("../doctype.ejs"); %>
 
 <html>
 	<head>
-		<%- include('../meta.ejs'); %>
+		<%- include("../meta.ejs"); %>
 
 		<title><%= vars.default_title %></title>
 
-		<link rel='stylesheet' type='text/css' href='/static/assets/css/build/libs.bundle.css'>
-		<link rel='stylesheet' type='text/css' href='/static/assets/css/main/style.css'>
+		<link rel="stylesheet" type="text/css" href="/static/assets/css/build/libs.bundle.css">
+		<link rel="stylesheet" type="text/css" href="/static/assets/css/main/style.css">
 		
-		<script src='/static/assets/js/build/libs.bundle.js'></script>
-		<script src='/static/assets/js/build/main.bundle.js'></script>
+		<script src="/static/assets/js/build/libs.bundle.js"></script>
+		<script src="/static/assets/js/build/main.bundle.js"></script>
 
 		<script>
 
-			<%- include('vars.ejs'); %>
+			<%- include("vars.ejs"); %>
 
 			window.onload = function () {
 				Hue.init()
