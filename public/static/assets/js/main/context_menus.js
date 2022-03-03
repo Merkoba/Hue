@@ -61,7 +61,7 @@ Hue.start_chat_menu_context_menu = function () {
         items.push({
           text: "Delete",
           action: function () {
-            Hue.handle_delete_message(id, user_id)      
+            Hue.handle_delete_messages(id, user_id)      
           }
         })
       }

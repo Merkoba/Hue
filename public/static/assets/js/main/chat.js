@@ -1825,7 +1825,8 @@ Hue.add_chat_spacer = function () {
 
 // Deletes all chat messages
 Hue.clear_log = function () {
-  if (!Hue.is_admin_or_op()) {
+  if (!Hue.is_admin()) {
+    Hue.not_allowed()
     return false
   }
 
@@ -1850,58 +1851,54 @@ Hue.announce_log_cleared = function (data) {
   Hue.loaded_tv = {}
 }
 
+// Setup delete messages
+Hue.setup_delete_messages = function () {
+  Hue.el("#delete_messages_delete").addEventListener("click", function () {
+    Hue.msg_delete_messages.close()
+    Hue.delete_message(Hue.delete_messages_id)
+  })
+
+  Hue.el("#delete_messages_delete_group").addEventListener("click", function () {
+    Hue.msg_delete_messages.close()
+    Hue.delete_message_group(Hue.delete_messages_id)
+  })
+
+  Hue.el("#delete_messages_above").addEventListener("click", function () {
+    Hue.msg_delete_messages.close()
+    Hue.delete_messages_above(Hue.delete_messages_id)
+  })
+
+  Hue.el("#delete_messages_below").addEventListener("click", function () {
+    Hue.msg_delete_messages.close()
+    Hue.delete_messages_below(Hue.delete_messages_id)
+  })
+
+  Hue.horizontal_separator(Hue.el("#delete_messages_container_1"))
+  Hue.horizontal_separator(Hue.el("#delete_messages_container_2"))
+}
+
 // Handles delete message
-Hue.handle_delete_message = function (id, user_id) {
-  if (Hue.is_admin_or_op()) {
-    Hue.msg_info2.show([
-      "Delete Message(s)",
-      Hue.template_delete_messages_select_op(),
-    ], function () {
-      Hue.el("#delete_messages_select_delete").addEventListener("click", function () {
-        Hue.msg_info2.close()
-        Hue.delete_message(id)
-      })
+Hue.handle_delete_messages = function (id, user_id) {
+  Hue.delete_messages_id = id
 
-      Hue.el("#delete_messages_select_delete_group").addEventListener("click", function () {
-        Hue.msg_info2.close()
-        Hue.delete_message_group(id)
-      })
-
-      Hue.el("#delete_messages_select_above").addEventListener("click", function () {
-        Hue.msg_info2.close()
-        Hue.delete_messages_above(id)
-      })
-
-      Hue.el("#delete_messages_select_below").addEventListener("click", function () {
-        Hue.msg_info2.close()
-        Hue.delete_messages_below(id)
-      })
-    })
-    
-    Hue.horizontal_separator(Hue.el("#delete_messages_select_container_1"))
-    Hue.horizontal_separator(Hue.el("#delete_messages_select_container_2"))
-  } else if (user_id === Hue.user_id) {
-    Hue.msg_info2.show([
-      "Delete Message(s)",
-      Hue.template_delete_messages_select(),
-    ], function () {
-      Hue.el("#delete_messages_select_delete").addEventListener("click", function () {
-        Hue.msg_info2.close()
-        Hue.delete_message(id)
-      })
-
-      Hue.el("#delete_messages_select_delete_group").addEventListener("click", function () {
-        Hue.msg_info2.close()
-        Hue.delete_message_group(id)
-      })
-    })
-
-    Hue.horizontal_separator(Hue.el("#delete_messages_select_container_1"))
+  if (Hue.is_admin()) {
+    Hue.el("#delete_messages_container_2").style.display = "flex"
+  } else if (Hue.is_admin_or_op() || user_id === Hue.user_id) {
+    Hue.el("#delete_messages_container_2").style.display = "none"
+  } else {
+    return
   }
+
+  Hue.msg_delete_messages.show()
 }
 
 // When messages above were deleted
 Hue.deleted_messages_above = function (data) {
+  if (!Hue.is_admin()) {
+    Hue.not_allowed()
+    return
+  }
+
   let ans = Hue.get_message_by_id(data.id)
 
   if (!ans) {
@@ -1926,6 +1923,11 @@ Hue.deleted_messages_above = function (data) {
 
 // When messages below were deleted
 Hue.deleted_messages_below = function (data) {
+  if (!Hue.is_admin()) {
+    Hue.not_allowed()
+    return
+  }
+
   let ans = Hue.get_message_by_id(data.id)
 
   if (!ans) {

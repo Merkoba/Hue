@@ -299,6 +299,12 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_delete_messages = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "delete_messages"
+    })
+  )
+
   Hue.msg_open_url = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "open_url",
@@ -397,6 +403,7 @@ Hue.start_msg = function () {
   Hue.msg_tv_upload_comment.set(Hue.template_tv_upload_comment())
   Hue.msg_reply.set(Hue.template_reply())
   Hue.msg_handle_url.set(Hue.template_handle_url())
+  Hue.msg_delete_messages.set(Hue.template_delete_messages())
   Hue.msg_open_url.set(Hue.template_open_url())
   Hue.msg_view_text.set(Hue.template_view_text())
   Hue.msg_message_board.set(Hue.template_message_board())
@@ -430,6 +437,7 @@ Hue.start_msg = function () {
   Hue.msg_image_picker.set_title("Image")
   Hue.msg_tv_picker.set_title("TV")
   Hue.msg_handle_url.set_title("Handle URL")
+  Hue.msg_delete_messages.set_title("Delete Message(s)")
 }
 
 // Sets all info window variables to false

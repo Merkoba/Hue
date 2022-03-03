@@ -212,6 +212,7 @@ Hue.init = function () {
   Hue.setup_draw_image()
   Hue.setup_view_text()
   Hue.setup_radio()
+  Hue.setup_delete_messages()
   
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
