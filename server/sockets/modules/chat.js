@@ -284,6 +284,7 @@ module.exports = function (Hue) {
   // Deletes all messages above a message
   Hue.handler.public.delete_messages_above = async function (socket, data) {
     if (!Hue.handler.is_admin(socket)) {
+      Hue.handler.anti_spam_ban(socket)
       return false
     }
 
@@ -322,6 +323,7 @@ module.exports = function (Hue) {
   // Deletes all messages above a message
   Hue.handler.public.delete_messages_below = async function (socket, data) {
     if (!Hue.handler.is_admin(socket)) {
+      Hue.handler.anti_spam_ban(socket)
       return false
     }
 
