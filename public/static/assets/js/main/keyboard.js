@@ -106,7 +106,7 @@ Hue.activate_key_detection = function () {
       }      
 
       if (Hue.open_room_open) {
-        if (Hue.msg_info2.is_highest()) {
+        if (Hue.msg_info.is_highest()) {
           if (e.key === "Enter") {
             if (e.shiftKey) {
               Hue.el("#open_room_here").click()
@@ -122,7 +122,7 @@ Hue.activate_key_detection = function () {
       }
 
       if (Hue.background_input_open) {
-        if (Hue.msg_info2.is_highest()) {
+        if (Hue.msg_info.is_highest()) {
           if (e.key === "Enter") {
             Hue.background_input_action()
             e.preventDefault()
@@ -133,7 +133,7 @@ Hue.activate_key_detection = function () {
       }
 
       if (Hue.goto_room_open) {
-        if (Hue.msg_info2.is_highest()) {
+        if (Hue.msg_info.is_highest()) {
           if (e.key === "Enter") {
             Hue.goto_room_action()
             e.preventDefault()
@@ -180,7 +180,7 @@ Hue.activate_key_detection = function () {
       }
 
       if (Hue.change_user_username_open) {
-        if (Hue.msg_info2.is_highest()) {
+        if (Hue.msg_info.is_highest()) {
           if (e.key === "Enter" && !e.shiftKey) {
             Hue.submit_change_username()
             e.preventDefault()
@@ -191,7 +191,7 @@ Hue.activate_key_detection = function () {
       }
 
       if (Hue.change_user_password_open) {
-        if (Hue.msg_info2.is_highest()) {
+        if (Hue.msg_info.is_highest()) {
           if (e.key === "Enter" && !e.shiftKey) {
             Hue.submit_change_password()
             e.preventDefault()

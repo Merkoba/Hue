@@ -563,6 +563,7 @@ Hue.setup_show_profile = function () {
 
   Hue.el("#show_profile_search").addEventListener("click", function () {
     Hue.show_user_posts(Hue.open_profile_username)
+    Hue.msg_profile.close()
   })
 }
 

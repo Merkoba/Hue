@@ -86,7 +86,7 @@ Hue.change_bio = function (value) {
 
 // Shows the change username form
 Hue.show_change_username = function () {
-  Hue.msg_info2.show(["Change Username", Hue.template_change_username()], function () {
+  Hue.msg_info.show(["Change Username", Hue.template_change_username()], function () {
     Hue.el("#change_username_input").value = Hue.username
     Hue.el("#change_username_input").focus()
 
@@ -108,13 +108,13 @@ Hue.submit_change_username = function () {
   }
 
   if (Hue.change_username(username)) {
-    Hue.msg_info2.close()
+    Hue.msg_info.close()
   }
 }
 
 // Shows the change password form
 Hue.show_change_password = function () {
-  Hue.msg_info2.show(["Change Password", Hue.template_change_password()], function () {
+  Hue.msg_info.show(["Change Password", Hue.template_change_password()], function () {
     Hue.el("#change_password_input_1").focus()
 
     Hue.el("#change_password_submit").addEventListener("click", function () {
@@ -131,7 +131,7 @@ Hue.submit_change_password = function () {
   let p2 = Hue.el("#change_password_input_2").value.trim()
 
   if (Hue.change_password(p1, p2)) {
-    Hue.msg_info2.close()
+    Hue.msg_info.close()
   }
 }
 
@@ -241,17 +241,17 @@ Hue.setup_profilepic_cropper = function () {
 
 // Picker window to select how to change the profilepic
 Hue.open_profilepic_select = function () {
-  Hue.msg_info2.show([
+  Hue.msg_info.show([
     "Profile Image",
     Hue.template_profilepic_select(),
   ], function () {
     Hue.el("#profilepic_select_draw").addEventListener("click", function () {
-      Hue.msg_info2.close()
+      Hue.msg_info.close()
       Hue.open_draw_image("profilepic")
     })
 
     Hue.el("#profilepic_select_upload").addEventListener("click", function () {
-      Hue.msg_info2.close()
+      Hue.msg_info.close()
       Hue.open_profilepic_picker()
     })
   })
@@ -332,16 +332,16 @@ Hue.show_others_disconnected = function (data) {
 
 // Shows some options for the audio clip
 Hue.show_audioclip_menu = function () {
-  Hue.msg_info2.show(["Audio Clip", Hue.template_audioclip_menu()], function () {
+  Hue.msg_info.show(["Audio Clip", Hue.template_audioclip_menu()], function () {
     Hue.el("#upload_audioclip").addEventListener("click", function () {
       Hue.select_audioclip()
-      Hue.msg_info2.close()
+      Hue.msg_info.close()
     })
 
     Hue.el("#remove_audioclip").addEventListener("click", function () {
       Hue.needs_confirm_2(function () {
         Hue.socket_emit("remove_audioclip", {})
-        Hue.msg_info2.close()
+        Hue.msg_info.close()
       })
     })
 

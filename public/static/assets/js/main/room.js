@@ -212,7 +212,7 @@ Hue.show_admin_list = function (data) {
     container.append(el)
   }
 
-  Hue.msg_info2.show([`Admin List (${data.list.length})`, container], function () {
+  Hue.msg_info.show([`Admin List (${data.list.length})`, container], function () {
     Hue.admin_list_open = true
   })
 }
@@ -254,7 +254,7 @@ Hue.show_ban_list = function (data) {
     container.append(el)
   }
 
-  Hue.msg_info2.show([`Ban List (${data.list.length})`, container], function () {
+  Hue.msg_info.show([`Ban List (${data.list.length})`, container], function () {
     Hue.ban_list_open = true
   })
 }
@@ -366,12 +366,12 @@ Hue.announce_background_color_change = function (data) {
 
 // Picker window to select how to change the background image
 Hue.open_background_select = function () {
-  Hue.msg_info2.show([
+  Hue.msg_info.show([
     "Background Image",
     Hue.template_background_select(),
   ], function () {
     Hue.el("#background_select_draw").addEventListener("click", function () {
-      Hue.msg_info2.close()
+      Hue.msg_info.close()
       Hue.open_draw_image("background")
     })
 
@@ -380,7 +380,7 @@ Hue.open_background_select = function () {
     })
 
     Hue.el("#background_select_upload").addEventListener("click", function () {
-      Hue.msg_info2.close()
+      Hue.msg_info.close()
       Hue.open_background_picker()
     })
   })
@@ -396,7 +396,7 @@ Hue.open_background_picker = function () {
 // If a URL source is chosen as the method to change the background image
 // this window is opened
 Hue.open_background_input = function () {
-  Hue.msg_info2.show(
+  Hue.msg_info.show(
     ["Change Background", Hue.template_background_input()],
     function () {
       Hue.el("#background_input_submit").addEventListener("click", function () {
@@ -414,7 +414,7 @@ Hue.background_input_action = function () {
   let src = Hue.el("#background_input_text").value.trim()
 
   if (Hue.change_background_source(src)) {
-    Hue.msg_info2.close()
+    Hue.msg_info.close()
   }
 }
 
