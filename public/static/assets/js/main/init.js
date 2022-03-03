@@ -182,7 +182,7 @@ Hue.init = function () {
   Hue.setup_footer()
   Hue.get_input_history()
   Hue.prepare_media_settings()
-  Hue.setup_message_window()
+  Hue.setup_write_whisper()
   Hue.setup_autocomplete()
   Hue.setup_fonts()
   Hue.show_console_message()

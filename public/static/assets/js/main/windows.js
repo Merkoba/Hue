@@ -196,9 +196,9 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_message = Msg.factory(
+  Hue.msg_write_whisper = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "message",
+      id: "write_whisper",
       window_width: "30rem",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
@@ -390,7 +390,7 @@ Hue.start_msg = function () {
   Hue.msg_userlist.set(Hue.template_userlist())
   Hue.msg_image_picker.set(Hue.template_image_picker())
   Hue.msg_tv_picker.set(Hue.template_tv_picker())
-  Hue.msg_message.set(Hue.template_message())
+  Hue.msg_write_whisper.set(Hue.template_write_whisper())
   Hue.msg_chat_search.set(Hue.template_chat_search())
   Hue.msg_modal_image.set(Hue.template_modal_image())
   Hue.msg_lockscreen.set(Hue.template_lockscreen())
