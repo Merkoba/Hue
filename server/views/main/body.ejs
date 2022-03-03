@@ -1,53 +1,53 @@
 <body>
-    <div id="loading">
-        <div id="loading_spinner"></div>
-    </div>
+  <div id="loading">
+    <div id="loading_spinner"></div>
+  </div>
 
-    <div id="main_container" class='bg0'>
-        <img id='background' class='background'>
+  <div id="main_container" class='bg0'>
+      <img id='background' class='background'>
 
-        <div class="columns_container">
+      <div class="columns_container">
 
-            <div id="flash_info">
-                <div id="flash_info_title">
-                    <canvas id="flash_info_title_icon" width="20" height="20"></canvas>
-                    <div id="flash_info_title_text"></div>
-                </div>
-                <div id="flash_info_text"></div>
-            </div>
+        <div id="flash_info">
+          <div id="flash_info_title">
+            <canvas id="flash_info_title_icon" width="20" height="20"></canvas>
+            <div id="flash_info_title_text"></div>
+          </div>
+          <div id="flash_info_text"></div>
+        </div>
 
-            <%- include('header.ejs'); %>
+        <%- include('header.ejs'); %>
 
-            <div class='rows_container bg1' id="main_rows_container">
+        <div class='rows_container bg1' id="main_rows_container">
 
-                <%- include('chat.ejs'); %>
-                <%- include('media.ejs'); %>
-
-            </div>
-
-            <div id="radio_items">
-                <div id="radio_stations" class="radio_box"></div>
-                <div id="radio_controls" class="radio_box"></div>
-            </div>
-
-            <%- include('footer.ejs'); %>
+          <%- include('chat.ejs'); %>
+          <%- include('media.ejs'); %>
 
         </div>
-    </div>
 
-    <div id='file_pickers'>
-        <form>
-            <input type='file' accept='image/jpeg, image/png, image/gif, image/webp, image/bmp' id='background_input' class='nodisplay'>
-        </form>
-        <form>
-            <input type='file' accept='image/jpeg, image/png, image/gif, image/webp, image/bmp' id='profilepic_input' class='nodisplay'>
-        </form>
-        <form>
-            <input type='file' accept='audio/mpeg' id='audioclip_input' class='nodisplay'>
-        </form>
-    </div>
+        <div id="radio_items">
+          <div id="radio_stations" class="radio_box"></div>
+          <div id="radio_controls" class="radio_box"></div>
+        </div>
 
-    <%- templates %>
-    
-    <%- svg %>
+        <%- include('footer.ejs'); %>
+
+      </div>
+  </div>
+
+  <div id='file_pickers'>
+    <form>
+      <input type='file' accept='image/jpeg, image/png, image/gif, image/webp, image/bmp' id='background_input' class='nodisplay'>
+    </form>
+    <form>
+      <input type='file' accept='image/jpeg, image/png, image/gif, image/webp, image/bmp' id='profilepic_input' class='nodisplay'>
+    </form>
+    <form>
+      <input type='file' accept='audio/mpeg' id='audioclip_input' class='nodisplay'>
+    </form>
+  </div>
+
+  <%- templates %>
+  
+  <%- svg %>
 </body>
