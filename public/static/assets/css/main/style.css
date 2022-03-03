@@ -1119,29 +1119,29 @@ select {
 	}
 }
 
-#write_message_info {
+#write_whisper_info {
 	max-width: 30rem;
 }
 
-#write_message_add_user {
+#write_whisper_add_user {
 	padding-bottom: 1.2rem;
 	cursor: pointer;
 }
 
-#write_message_send_button {
+#write_whisper_send_button {
 	padding-top: 1rem;
 }
 
 .setting_textarea, .setting_input_text, 
 #message_board_textarea, .message_board_edit_area,
-#write_message_area {
+#write_whisper_area {
 	background-color: var(--altcolor);
 	color: var(--font_color);
 	outline: none;
 	border: 0;
 }
 
-#write_message_user_profilepics img {
+#write_whisper_user_profilepics img {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
 	margin: 0.5rem;
@@ -2256,11 +2256,11 @@ pre {
 	justify-content: flex-start !important;
 }
 
-.sent_message_container {
+.sent_whisper_container {
 	grid-gap: 1rem;
 }
 
-.sent_message_text {
+.sent_whisper_text {
 	white-space: pre-wrap;
 }
 
@@ -2397,7 +2397,7 @@ pre {
 	margin-top: 1rem;
 }
 
-.sent_message_profilepic {
+.sent_whisper_profilepic {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
 	transition: box-shadow 500ms;

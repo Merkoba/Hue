@@ -243,10 +243,10 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.msg_message.is_open()) {
-        if (Hue.msg_message.is_highest()) {
+      if (Hue.msg_write_whisper.is_open()) {
+        if (Hue.msg_write_whisper.is_highest()) {
           if (e.key === "Enter" && !e.shiftKey) {
-            Hue.send_popup_message()
+            Hue.submit_write_whisper()
             e.preventDefault()
           }
 

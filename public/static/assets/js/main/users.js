@@ -392,7 +392,7 @@ Hue.show_userlist_window = function (mode = "normal", filter = "") {
     Hue.msg_userlist.set_title("Add User")
   }
 
-  Hue.update_userlist_window(Hue.message_usernames)
+  Hue.update_userlist_window(Hue.whisper_users)
 
   Hue.msg_userlist.show(function () {
     if (filter.trim()) {
@@ -546,7 +546,7 @@ Hue.get_matching_usernames = function (s) {
 // Setups user profile windows
 Hue.setup_show_profile = function () {
   Hue.el("#show_profile_whisper").addEventListener("click", function () {
-    Hue.write_popup_message([Hue.open_profile_username])
+    Hue.write_whisper([Hue.open_profile_username])
     Hue.msg_profile.close()
   })
 
@@ -895,7 +895,7 @@ Hue.annex = function (rol = "admin") {
 // Superuser command to send a system broadcast
 Hue.system_broadcast = function () {
   Hue.show_confirm("Superuser Command", "", function () {
-    Hue.write_popup_message([], "system_broadcast")
+    Hue.write_whisper([], "system_broadcast")
   })
 }
 

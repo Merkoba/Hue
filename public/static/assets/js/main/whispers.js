@@ -10,10 +10,10 @@ Hue.process_write_whisper = function (arg, show = true) {
   if (arg.includes(">")) {
     Hue.send_inline_whisper(arg, show)
   } else if (user) {
-    Hue.write_popup_message([user.username], "user")
+    Hue.write_whisper([user.username], "user")
   } else if (arg.includes("&&")) {
     let split = arg.split("&&").map((x) => x.trim())
-    Hue.write_popup_message(split, "user")
+    Hue.write_whisper(split, "user")
   } else {
     let matches = Hue.get_matching_usernames(arg)
     if (matches.length === 1) {
@@ -75,7 +75,7 @@ Hue.send_inline_whisper = function (arg, show = true) {
 }
 
 // Shows the window to write whispers
-Hue.write_popup_message = function (usernames = [], type = "user") {
+Hue.write_whisper = function (usernames = [], type = "user") {
   let c_usernames = []
 
   if (usernames.length === 0) {
@@ -103,50 +103,50 @@ Hue.write_popup_message = function (usernames = [], type = "user") {
   }
 
   if (type === "user") {
-    Hue.el("#write_message_add_user").style.display = "block"
+    Hue.el("#write_whisper_add_user").style.display = "block"
   } else {
-    Hue.el("#write_message_add_user").style.display = "none"
+    Hue.el("#write_whisper_add_user").style.display = "none"
   }
 
-  Hue.msg_message.set_title(Hue.utilz.make_html_safe(title))
+  Hue.msg_write_whisper.set_title(Hue.utilz.make_html_safe(title))
   Hue.message_type = type
-  Hue.message_usernames = []
+  Hue.whisper_users = []
 
   for (let username of c_usernames) {
     Hue.update_whisper_users(username)
   }
 
-  Hue.msg_message.show(function () {
-    Hue.el("#write_message_area").focus()
+  Hue.msg_write_whisper.show(function () {
+    Hue.el("#write_whisper_area").focus()
     Hue.sending_whisper = false
   })
 }
 
 // Updates the user receivers in the whisper window after picking a username in the user list
 Hue.update_whisper_users = function (username) {
-  if (!Hue.message_usernames.includes(username)) {
-    Hue.message_usernames.push(username)
+  if (!Hue.whisper_users.includes(username)) {
+    Hue.whisper_users.push(username)
   } else {
-    if (Hue.message_usernames.length === 1) {
+    if (Hue.whisper_users.length === 1) {
       return false
     }
 
-    for (let i = 0; i < Hue.message_usernames.length; i++) {
-      let u = Hue.message_usernames[i]
+    for (let i = 0; i < Hue.whisper_users.length; i++) {
+      let u = Hue.whisper_users[i]
 
       if (u === username) {
-        Hue.message_usernames.splice(i, 1)
+        Hue.whisper_users.splice(i, 1)
         break
       }
     }
   }
 
-  let profilepics = Hue.el("#write_message_user_profilepics")
+  let profilepics = Hue.el("#write_whisper_user_profilepics")
   
   profilepics.innerHTML = ""
 
-  if (Hue.message_usernames.length > 1) {
-    for (let username of Hue.message_usernames) {
+  if (Hue.whisper_users.length > 1) {
+    for (let username of Hue.whisper_users) {
       let user = Hue.get_user_by_username(username)
       let img = document.createElement("img")
       img.classList.add("profilepic")
@@ -160,26 +160,26 @@ Hue.update_whisper_users = function (username) {
 
   let title
 
-  if (Hue.message_usernames.length === 1) {
-    title = `Whisper to ${Hue.message_usernames}`
+  if (Hue.whisper_users.length === 1) {
+    title = `Whisper to ${Hue.whisper_users}`
   } else {
     title = "Whisper to..."
   }
 
-  Hue.msg_message.set_title(Hue.utilz.make_html_safe(title))
+  Hue.msg_write_whisper.set_title(Hue.utilz.make_html_safe(title))
   Hue.msg_userlist.close()
 }
 
 // Submits the whisper window form
 // Handles different types of whispers
-Hue.send_popup_message = function () {
+Hue.submit_write_whisper = function () {
   if (Hue.sending_whisper) {
     return false
   }
 
   Hue.sending_whisper = true
 
-  let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#write_message_area").value).trim()
+  let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#write_whisper_area").value).trim()
   let diff = Hue.config.max_whispers_post_length - message.length
 
   if (diff === Hue.config.max_whispers_post_length) {
@@ -203,11 +203,11 @@ Hue.send_popup_message = function () {
   let ans = Hue.send_whisper(message)
 
   if (ans) {
-    Hue.msg_message.close(function () {
+    Hue.msg_write_whisper.close(function () {
       Hue.sending_whisper = false
     })
 
-    Hue.el("#write_message_area").value = ""
+    Hue.el("#write_whisper_area").value = ""
   } else {
     Hue.sending_whisper = false
   }
@@ -244,14 +244,14 @@ Hue.show_whisper = function (data) {
   }
   
   let modal = Hue.create_modal({window_class: "!whisper_width"}, "whisper")
-  modal.set(Hue.template_sent_message())
+  modal.set(Hue.template_sent_whisper())
   modal.set_title(Hue.utilz.make_html_safe(title))
 
   button_html = Hue.utilz.nonbreak("Send Whisper")
 
   button_func = function () {
     modal.close()
-    Hue.write_popup_message(usr)
+    Hue.write_whisper(usr)
   }
   
   let message_html = Hue.utilz.make_html_safe(data.message)
@@ -259,14 +259,14 @@ Hue.show_whisper = function (data) {
 
   modal.show(function () {
     let container = modal.content
-    let text_el = Hue.el(".sent_message_text", container)
+    let text_el = Hue.el(".sent_whisper_text", container)
     text_el.classList.add("user_details")
     Hue.dataset(text_el, "username", data.username)
     text_el.innerHTML = message_html
     Hue.urlize(text_el)
-    let button_el = Hue.el(".sent_message_button", container)
+    let button_el = Hue.el(".sent_whisper_button", container)
 
-    let profilepic = Hue.el(".sent_message_profilepic", container)
+    let profilepic = Hue.el(".sent_whisper_profilepic", container)
 
     if (data.user_id) {
       profilepic.src = Hue.get_profilepic(data.user_id)
@@ -307,7 +307,7 @@ Hue.send_whisper = function (message) {
     return true
   }
 
-  let usernames = Hue.message_usernames
+  let usernames = Hue.whisper_users
 
   if (!usernames) {
     return false
@@ -359,14 +359,14 @@ Hue.do_send_whisper = function (data, show = true) {
   }
 }
 
-// Setups the message window
-Hue.setup_message_window = function () {
-  Hue.el("#write_message_send_button").addEventListener("click", function () {
-    Hue.send_popup_message()
+// Setups the write whisper window
+Hue.setup_write_whisper = function () {
+  Hue.el("#write_whisper_send_button").addEventListener("click", function () {
+    Hue.submit_write_whisper()
   })
 
-  Hue.el("#write_message_add_user").addEventListener("click", function () {
-    if (Hue.message_usernames.length >= Hue.config.max_whisper_users) {
+  Hue.el("#write_whisper_add_user").addEventListener("click", function () {
+    if (Hue.whisper_users.length >= Hue.config.max_whisper_users) {
       Hue.showmsg("Max whisper users reached")
       return
     }
@@ -374,7 +374,7 @@ Hue.setup_message_window = function () {
     Hue.show_userlist_window("whisper")
   })
 
-  Hue.el("#write_message_user_profilepics").addEventListener("click", function (e) {
+  Hue.el("#write_whisper_user_profilepics").addEventListener("click", function (e) {
     let el = e.target.closest(".profilepic")
 
     if (el) {
