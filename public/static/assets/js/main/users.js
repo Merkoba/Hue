@@ -869,14 +869,14 @@ Hue.is_already = function (who, what) {
 
 // Checks if a role is that of an admin or an operator
 // Without arguments it checks the user's role
-Hue.is_admin_or_op = function (rol = false) {
-  let r = rol ? rol : Hue.role
+Hue.is_admin_or_op = function (user) {
+  let r = user ? user.role : Hue.role
   return r === "admin" || r === "op"
 }
 
 // Checks if a role is that of an admin
-Hue.is_admin = function (rol = false) {  
-  let r = rol ? rol : Hue.role
+Hue.is_admin = function (user) {
+  let r = user ? user.role : Hue.role
   return r === "admin"
 }
 
