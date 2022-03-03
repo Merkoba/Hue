@@ -47,7 +47,6 @@ Hue.chat_content_container_id = 0
 Hue.popup_message_id = 0
 Hue.popup_id = 0
 Hue.modal_id = 0
-Hue.writing_message = false
 Hue.image_visible = true
 Hue.tv_visible = true
 Hue.filter_delay = 350
