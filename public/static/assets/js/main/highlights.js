@@ -87,7 +87,7 @@ Hue.on_highlight = function (username) {
     return false
   }
 
-  if (!Hue.settings.show_highlight_notifications) {
+  if (!Hue.get_setting("show_highlight_notifications")) {
     return false
   }
 

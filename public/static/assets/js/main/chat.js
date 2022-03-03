@@ -1389,7 +1389,7 @@ Hue.on_activity = function (type) {
 
 // Make link preview elements
 Hue.make_link_preview = function (args = {}) {
-  if (!Hue.settings.embed_images) {
+  if (!Hue.get_setting("embed_images")) {
     args.image = ""
   }
 
@@ -1802,8 +1802,7 @@ Hue.activity_notification = function (username) {
   if (!Hue.started) {
     return false
   }
-
-  if (!Hue.settings.show_activity_notifications) {
+  if (!Hue.get_setting("show_activity_notifications")) {
     return false
   }
 

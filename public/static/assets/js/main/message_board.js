@@ -180,7 +180,7 @@ Hue.add_post_to_message_board = function (data, edited) {
 
   let first_url = Hue.utilz.get_first_url(data.message)
 
-  if (Hue.settings.embed_images) {
+  if (Hue.get_setting("embed_images")) {
     if (first_url && Hue.utilz.is_image(first_url)) {
       let image = Hue.el(".message_board_image", post)
       image.src = first_url
