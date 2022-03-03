@@ -2036,14 +2036,19 @@ pre {
 
 #notifications_container {
 	display: grid;
-	grid-gap: 1.5rem;
+	grid-gap: 0.5rem;
 }
 
 .notifications_item_content {
 	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
+	background-color: var(--altbackground);
+	padding: 0.8rem;
+	width: 100%;
+	position: relative;
+	box-sizing: border-box;
 }
 
 .notifications_icon {
