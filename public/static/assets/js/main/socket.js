@@ -207,6 +207,9 @@ Hue.server_update_events = {
   },
   edited_media_comment: (data) => {
     Hue.edited_media_comment(data)
+  },
+  announce_radio: (data) => {
+    Hue.show_announce_radio(data)
   }
 }
 
