@@ -864,6 +864,7 @@ Hue.change_main_layout = function () {
     Hue.room_state.main_layout = "row" 
   }
 
+  Hue.check_chat_margin()
   Hue.save_room_state()
   Hue.apply_media_percentages()
 }
