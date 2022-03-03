@@ -2034,12 +2034,13 @@ pre {
 	padding: 0.8rem !important;
 }
 
-#notifications_container {
+.nice_rows_container {
 	display: grid;
 	grid-gap: 0.5rem;
+	margin-top: 0.8rem;
 }
 
-.notifications_item_content {
+.nice_row {
 	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
@@ -2057,24 +2058,10 @@ pre {
 
 #whispers_container {
 	display: grid;
-	grid-gap: 1.2rem;
 }
 
 .whisper_info_container {
 	max-width: 24.71rem;
-}
-
-.whispers_item {
-	display: flex;
-	justify-content: center;
-	align-content: center;
-}
-
-.whispers_item_content {
-	display: inline-flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 }
 
 .whispers_icon {
