@@ -21,7 +21,7 @@ Hue.make_info_popup = function (on_click = function () {}) {
 // Makes standard info popup items
 Hue.make_info_popup_item = function (args = {}) {
   let def_args = {
-    icon: "",
+    icon: "info",
     message: "",
     action: true,
     push: true,
@@ -40,31 +40,17 @@ Hue.make_info_popup_item = function (args = {}) {
     Hue.push_notification(args.icon, args.message, args.on_click)
   }
 
-  if (args.icon) {
-    icon = `<svg class='other_icon info_popup_icon'><use href='#icon_${args.icon}'></svg>`
-  }
-
-  return `<div class='info_popup_item ${classes}'>
-  ${icon}
-  <div>${Hue.utilz.make_html_safe(
-    args.message
-  )}</div></div>`
+  return Hue.template_popup_item({
+    icon: args.icon,
+    message: args.message,
+    classes: classes
+  })
 }
 
 // Pushes a new notification to the notifications window
 Hue.push_notification = function (icon, message, on_click = false) {
   let d = Date.now()
   let t = Hue.utilz.nice_date(d)
-
-  let icon_html = ""
-
-  if (icon) {
-    icon_html = `<svg class='other_icon notifications_icon'><use href='#icon_${icon}'></svg>`
-  }
-
-  let message_html = `<div class='notifications_message'>${Hue.utilz.make_html_safe(
-    message
-  )}</div>`
 
   let content_classes = ""
 
@@ -73,7 +59,13 @@ Hue.push_notification = function (icon, message, on_click = false) {
   }
 
   let item = Hue.div("notifications_item modal_item")
-  item.innerHTML = `<div class='notifications_item_content ${content_classes} dynamic_title'>${icon_html}${message_html}</div>`
+
+  item.innerHTML = Hue.template_notification({
+    content_classes: content_classes,
+    icon: icon,
+    message: message
+  })
+
   let content = Hue.el(".notifications_item_content", item)
 
   content.title = t

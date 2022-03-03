@@ -387,7 +387,7 @@ Hue.setup_write_whisper = function () {
 Hue.push_whisper = function (message, on_click, read, data = false) {
   let date = Date.now()
   let title = Hue.utilz.nice_date(date)
-  let item = Hue.div("whispers_item modal_item")
+  let item = Hue.div("whispers_item modal_item nice_row")
 
   if (data && data.user_id) {
     item.innerHTML = `<img class='whispers_item_profilepic profilepic' loading='lazy' src='${Hue.get_profilepic(data.user_id)}'>`
