@@ -19,7 +19,7 @@ Hue.setup_radio = function () {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
   })
 
-  Hue.el("#radio_item_volume").addEventListener("wheel", function (e) {
+  Hue.el("#radio_controls").addEventListener("wheel", function (e) {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
   })
 
