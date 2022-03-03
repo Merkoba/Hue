@@ -1,5 +1,5 @@
 module.exports = function (Hue) {
-  // Handles chat messages
+  // Announces other users of a radio station being played
   Hue.handler.public.announce_radio = async function (socket, data) {
     if (data.name === undefined) {
       return false
