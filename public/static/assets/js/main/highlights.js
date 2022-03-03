@@ -101,7 +101,7 @@ Hue.on_highlight = function (username) {
 // Show and/or filters highlights window
 Hue.show_highlights = function (only_new = false) {
   if (only_new) {
-    Hue.show_chat_search("$fresh")
+    Hue.show_chat_search("$fresh_highlights")
   } else {
     Hue.show_chat_search("$highlights")
   }
