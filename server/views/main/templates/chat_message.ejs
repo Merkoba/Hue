@@ -1,31 +1,31 @@
-<script id='template_chat_message' type='text/x-handlebars-template' class='template'>
-  <div class='chat_left_side'>
-    <img class='chat_profilepic profilepic actionbox' src='{{profilepic}}' loading='lazy'>
+<script id="template_chat_message" type="text/x-handlebars-template" class="template">
+  <div class="chat_left_side">
+    <img class="chat_profilepic profilepic actionbox" src="{{profilepic}}" loading="lazy">
   </div>
-  <div class='chat_right_side'>
-    <div class='chat_message_top'>
-      <div class='chat_username action'></div>
-      <div class='chat_timeago'></div>
+  <div class="chat_right_side">
+    <div class="chat_message_top">
+      <div class="chat_username action"></div>
+      <div class="chat_timeago"></div>
     </div>
-    <div class='chat_container'>
-      <div class='{{container_classes}}' title='{{title}}' data-otitle='{{title}}' data-date='{{date}}'>
+    <div class="chat_container">
+      <div class="{{container_classes}}" title="{{title}}" data-otitle="{{title}}" data-date="{{date}}">
         <div class="chat_quote">
-          <img class="chat_quote_profilepic profilepic actionbox" loading='lazy'>
+          <img class="chat_quote_profilepic profilepic actionbox" loading="lazy">
           <div class="chat_quote_text action"></div>
         </div>
-        <div class='chat_menu_button_container'>
-          <svg class='other_icon chat_menu_button chat_menu_button_menu'>
-            <use href='#icon_ellipsis'>
+        <div class="chat_menu_button_container">
+          <svg class="other_icon chat_menu_button chat_menu_button_menu">
+            <use href="#icon_ellipsis">
           </svg>
         </div>
 
-        <div class='{{content_classes}}'></div>
+        <div class="{{content_classes}}"></div>
 
-        <div class='message_edit_container'>
-          <textarea class='message_edit_area'></textarea>
-          <div class='message_edit_buttons'>
-            <div class='message_edit_button action message_edit_cancel'>Cancel</div>
-            <div class='message_edit_button action message_edit_submit'>Submit</div>
+        <div class="message_edit_container">
+          <textarea class="message_edit_area"></textarea>
+          <div class="message_edit_buttons">
+            <div class="message_edit_button action message_edit_cancel">Cancel</div>
+            <div class="message_edit_button action message_edit_submit">Submit</div>
           </div>
         </div>
       </div>
