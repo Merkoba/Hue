@@ -2037,7 +2037,7 @@ pre {
 .nice_rows_container {
 	display: grid;
 	grid-gap: 0.5rem;
-	margin-top: 0.8rem;
+	margin-top: 0.5rem;
 }
 
 .nice_row {
