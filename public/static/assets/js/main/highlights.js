@@ -42,7 +42,7 @@ Hue.check_latest_highlight = function () {
   let highlight = Hue.get_latest_highlight()
 
   if (highlight) {
-    Hue.dataset(highlight, "latest_highlight", true)
+    Hue.latest_highlight = highlight
     let date = Hue.dataset(highlight, "date")
 
     if (date > Hue.room_state.last_highlight_date) {
@@ -101,7 +101,7 @@ Hue.on_highlight = function (username) {
 // Show and/or filters highlights window
 Hue.show_highlights = function (only_new = false) {
   if (only_new) {
-    Hue.show_chat_search("$new_highlights")
+    Hue.show_chat_search("$fresh")
   } else {
     Hue.show_chat_search("$highlights")
   }
