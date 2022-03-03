@@ -680,7 +680,7 @@ Hue.show_commands = function (filter = "") {
     s += `<div class='info_item modal_item'>${Hue.config.commands_prefix}${key}: ${setting.description}</div>`
   }
 
-  Hue.msg_info2.show(["Commands", commands], function () {
+  Hue.msg_info.show(["Commands", commands], function () {
     Hue.el("#commands_container").innerHTML = s
 
     Hue.el("#commands_filter").addEventListener("input", function () {

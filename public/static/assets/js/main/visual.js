@@ -111,7 +111,7 @@ Hue.showmsg = function (s, autoclose = false) {
   if (autoclose) {
     Hue.msg_info_autoclose.show(s)
   } else {
-    Hue.msg_info.show(s)
+    Hue.msg_info.show(["Info", s])
   }
 }
 

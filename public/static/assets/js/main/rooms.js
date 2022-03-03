@@ -11,17 +11,17 @@ Hue.show_open_room = function (id) {
     id = "/"
   }
 
-  Hue.msg_info2.show(
+  Hue.msg_info.show(
     ["Open Room", Hue.template_open_room({ id: id })],
     function () {
       Hue.el("#open_room_here").addEventListener("click", function () {
         Hue.goto_url(id, "same")
-        Hue.msg_info2.close()
+        Hue.msg_info.close()
       })
 
       Hue.el("#open_room_new_tab").addEventListener("click", function () {
         Hue.goto_url(id, "tab")
-        Hue.msg_info2.close()
+        Hue.msg_info.close()
       })
 
       Hue.open_room_open = true

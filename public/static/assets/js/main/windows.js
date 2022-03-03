@@ -144,19 +144,19 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_info2 = Msg.factory(
+  Hue.msg_info = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "info2",
       window_height: "auto",
       before_show: function (instance) {
         msgvars.common.before_show(instance)
-        Hue.info2_vars_to_false()
+        Hue.info_vars_to_false()
       },
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         instance.content.innerHTML = ""
         instance.titlebar.innerHTML = ""
-        Hue.info2_vars_to_false()
+        Hue.info_vars_to_false()
       },
     })
   )
@@ -406,7 +406,6 @@ Hue.start_msg = function () {
 
   Hue.msg_info.create()
   Hue.msg_info_autoclose.create()
-  Hue.msg_info2.create()
 
   // Set the titles
 
@@ -432,11 +431,8 @@ Hue.start_msg = function () {
   Hue.msg_delete_messages.set_title("Delete Message(s)")
 }
 
-// Sets all info window variables to false
-Hue.info_vars_to_false = function () {}
-
 // Sets all info window 2 variables to false
-Hue.info2_vars_to_false = function () {
+Hue.info_vars_to_false = function () {
   Hue.goto_room_open = false
   Hue.open_room_open = false
   Hue.background_input_open = false
