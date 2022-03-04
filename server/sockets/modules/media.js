@@ -129,6 +129,10 @@ module.exports = function (Hue) {
     if (data.type === "upload") {
       let container = Hue.vars.path.join(Hue.vars.media_root, "room", socket.hue_room_id, type)
 
+      if (!Hue.vars.fs.existsSync(container)) {
+        return
+      }
+
       try {
         let files = await Hue.vars.fsp.readdir(container)
 
@@ -194,6 +198,10 @@ module.exports = function (Hue) {
   // Delete all media files of a certain type from a room
   Hue.handler.delete_media_files = async function (room_id, type) {
     let container = Hue.vars.path.join(Hue.vars.media_root, "room", room_id, type)
+
+    if (!Hue.vars.fs.existsSync(container)) {
+      return
+    }
 
     try {
       let files = await Hue.vars.fsp.readdir(container)
