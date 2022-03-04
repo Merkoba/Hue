@@ -196,6 +196,13 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_commands = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "commands",
+      window_width: "36rem"
+    })
+  )
+
   Hue.msg_write_whisper = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "write_whisper",
@@ -249,6 +256,7 @@ Hue.start_msg = function () {
   Hue.msg_image_upload_comment = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "image_upload_comment",
+      scroll_on_show: false,
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.el("#image_upload_comment_input").value = ""
@@ -376,6 +384,12 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_commands.set(
+    Hue.template_commands({
+      commands: Hue.commands
+    })
+  )
+
   Hue.msg_main_menu.set(Hue.template_main_menu())
   Hue.msg_room_menu.set(Hue.template_room_menu())
   Hue.msg_user_menu.set(Hue.template_user_menu())
@@ -429,6 +443,7 @@ Hue.start_msg = function () {
   Hue.msg_tv_picker.set_title("TV")
   Hue.msg_handle_url.set_title("Handle URL")
   Hue.msg_delete_messages.set_title("Delete Message(s)")
+  Hue.msg_commands.set_title("Commands")
 }
 
 // Sets all info window 2 variables to false
@@ -493,9 +508,11 @@ Hue.after_modal_show = function (instance) {
 
 // This is called after a modal is set or shown
 Hue.after_modal_set_or_show = function (instance) {
-  setTimeout(function () {
-    instance.content_container.scrollTop = 0
-  }, 100)
+  if (instance.options.scroll_on_show) {
+    setTimeout(function () {
+      instance.content_container.scrollTop = 0
+    }, 100)
+  }
 }
 
 // This is called after a modal is closed

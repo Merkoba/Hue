@@ -1979,8 +1979,16 @@ a.special_link:hover {
 	width: 100%;
 }
 
-#commands_container {
-	max-width: 28rem;
+.commands_item {
+	display: flex;
+	flex-direction: row;
+}
+
+.commands_name {
+	font-weight: bold;
+	font-size: 1.1rem;
+	flex-shrink: 0;
+	margin-right: 0.5rem;
 }
 
 #user_menu_bio_textarea {

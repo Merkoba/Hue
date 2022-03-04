@@ -670,23 +670,9 @@ Hue.inspect_command = function (cmd) {
   Hue.checkmsg(s)
 }
 
-// Show the Commands window
+// Show the commands window
 Hue.show_commands = function (filter = "") {
-  let commands = Hue.template_commands()
-  let s = ""
-
-  for (let key in Hue.commands) {
-    let setting = Hue.commands[key]
-    s += `<div class='info_item modal_item'>${Hue.config.commands_prefix}${key}: ${setting.description}</div>`
-  }
-
-  Hue.msg_info.show(["Commands", commands], function () {
-    Hue.el("#commands_container").innerHTML = s
-
-    Hue.el("#commands_filter").addEventListener("input", function () {
-      Hue.do_modal_filter_timer()
-    })
-
+  Hue.msg_commands.show(function () {
     if (filter.trim()) {
       Hue.el("#commands_filter").value = filter
       Hue.do_modal_filter()
