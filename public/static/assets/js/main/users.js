@@ -589,6 +589,13 @@ Hue.play_audioclip = function () {
     Hue.stop_audioclip()
   }
 
+  Hue.audioclip.addEventListener("error", function (e) {
+    if (Hue.audioclip) {
+      Hue.showmsg("User has no audioclip")
+      Hue.stop_audioclip()
+    }
+  })
+
   Hue.audioclip.src = Hue.get_audioclip(Hue.open_profile_user_id)
   Hue.audioclip.play()
 }
@@ -596,7 +603,7 @@ Hue.play_audioclip = function () {
 // Stops the profile audio
 Hue.stop_audioclip = function () {
   if (Hue.audioclip) {
-    Hue.audioclip.src = ""
+    Hue.audioclip.pause()
     Hue.audioclip = undefined
   }
 }
