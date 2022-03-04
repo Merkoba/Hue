@@ -435,6 +435,10 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
 
 // Play a random radio station
 Hue.play_random_radio = function () {
+  if (Hue.radio_dj_on) {
+    Hue.start_radio_dj_loop()
+  }
+
   Hue.play_radio(Hue.get_random_radio())
 }
 
@@ -564,7 +568,9 @@ Hue.toggle_radio_dj = function (what) {
 
 // Start radio dj interval
 Hue.start_radio_dj_loop = function () {
-  setInterval(function () {
+  clearInterval(Hue.radio_dj_interval)
+
+  Hue.radio_dj_interval = setInterval(function () {
     if (Hue.radio_dj_on && Hue.radio_is_playing()) {
       Hue.crossfade_radio(Hue.get_random_radio())
     }
@@ -573,6 +579,12 @@ Hue.start_radio_dj_loop = function () {
 
 // Crossfade two radio stations
 Hue.crossfade_radio = function (win) {
+  if (Hue.radio_crossfading) {
+    return
+  }
+
+  Hue.radio_crossfading = true
+
   let player_1 = Hue.get_radio_player(Hue.playing_radio)
   let player_2 = Hue.get_radio_player(win)
 
@@ -589,6 +601,7 @@ Hue.crossfade_radio = function (win) {
         clearInterval(Hue.crossfade_interval)
         player_2.volume = Hue.room_state.radio_volume
         Hue.play_radio(win, false)
+        Hue.radio_crossfading = false
       }
     }, 200)
   }, 500)
