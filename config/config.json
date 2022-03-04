@@ -105,6 +105,5 @@
 	],
 	"radio_metadata_check_delay": 30000,
 	"radio_slide_delay": 1000,
-	"radio_unslide_delay": 250,
-	"audioclip_delay": 2000
+	"radio_unslide_delay": 250
 }
