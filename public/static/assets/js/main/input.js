@@ -54,7 +54,7 @@ Hue.update_input_placeholder = function (append = "") {
   let s = `Hi ${Hue.username}, welcome to ${Hue.room_name}`
 
   if (append) {
-    s += ` | ${append}`
+    s += `  |  ${append}`
   }
 
   Hue.el("#input").placeholder = s
