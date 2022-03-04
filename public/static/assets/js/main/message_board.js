@@ -186,12 +186,18 @@ Hue.add_post_to_message_board = function (data, edited) {
       let image = Hue.el(".message_board_image", post)
       image.src = first_url
       image.style.display = "block" 
+      image.addEventListener("error", function () {
+        image.remove()
+      })
     }
 
     if (data.link_image) {
       let link_image = Hue.el(".message_board_link_image", post)
       link_image.src = data.link_image
-      link_image.style.display = "block" 
+      link_image.style.display = "block"
+      link_image.addEventListener("error", function () {
+        link_image.remove()
+      }) 
     }
   }
 
