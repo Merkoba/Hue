@@ -153,6 +153,7 @@ Hue.add_post_to_message_board = function (data, edited) {
   post.innerHTML = Hue.template_message_board_post()
   Hue.dataset(post, "id", data.id)
   Hue.dataset(post, "date", data.date)
+  Hue.dataset(post, "username", data.username)
 
   let profilepic = Hue.el(".message_board_profilepic", post)
   
