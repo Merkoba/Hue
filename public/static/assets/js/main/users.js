@@ -555,6 +555,14 @@ Hue.setup_show_profile = function () {
     Hue.msg_profile.close()
   })
 
+  Hue.el("#show_profilepic").addEventListener("click", function () {
+    if (Hue.audioclip) {
+      Hue.stop_audioclip()
+    } else {
+      Hue.play_audioclip()
+    }
+  })
+
   Hue.el("#show_profilepic").addEventListener("error", function () {
     if (this.src !== Hue.config.default_profilepic_url) {
       this.src = Hue.config.default_profilepic_url
@@ -574,6 +582,7 @@ Hue.setup_show_profile = function () {
 
 // Stars the profile audio
 Hue.play_audioclip = function () {
+  Hue.stop_audioclip()
   Hue.audioclip = document.createElement("audio")
 
   Hue.audioclip.onended = function () {
@@ -586,8 +595,6 @@ Hue.play_audioclip = function () {
 
 // Stops the profile audio
 Hue.stop_audioclip = function () {
-  clearTimeout(Hue.audioclip_timeout)
-
   if (Hue.audioclip) {
     Hue.audioclip.src = ""
     Hue.audioclip = undefined
@@ -662,15 +669,7 @@ Hue.show_profile = function (username, user_id = false) {
   item.textContent = `ID: ${id}`
   Hue.el("#show_profile_info").append(item)
 
-  Hue.msg_profile.show(function () {
-    if (!same_user) {
-      Hue.stop_audioclip()
-
-      Hue.audioclip_timeout = setTimeout(function () {
-        Hue.play_audioclip()
-      }, Hue.config.audioclip_delay)
-    }
-  })
+  Hue.msg_profile.show()
 }
 
 // Announces a user's profile image change
