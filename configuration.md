@@ -253,6 +253,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "radio_unslide_delay"
 >Show the radio items fully x ms after mouseenter.
 
+"radio_dj_delay"
+>Change radio station automatically after x ms if radio dj is on.
+
 
 ## config.secret.json
 

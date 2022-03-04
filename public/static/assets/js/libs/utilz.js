@@ -724,6 +724,12 @@ const Utilz = function () {
 		return new Set(split).size === 1
 	}
 
+	// Get minutes from ms timestamp
+	utilz.get_minutes = function (datetime) {
+		let date = new Date(datetime)
+		return date.getMinutes()
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]

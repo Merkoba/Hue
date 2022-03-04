@@ -130,6 +130,7 @@ Hue.dataset_obj = {}
 Hue.dataset_id = 0
 Hue.flipped = false
 Hue.radio_windows = []
+Hue.radio_dj_on = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

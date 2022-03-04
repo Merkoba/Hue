@@ -33,6 +33,7 @@ Hue.setup_radio = function () {
 
   Hue.slide_radio()
   Hue.change_radio_state(Hue.room_state.radio_enabled)
+  Hue.start_radio_dj_loop()
 }
 
 // Start a radio from a radio object
@@ -280,8 +281,13 @@ Hue.stop_radio_metadata_loop = function () {
 }
 
 // Check if any radio is playing
+Hue.radio_is_playing = function () {
+  return Hue.radio_windows.some(x => x.hue_playing)
+}
+
+// Check if any radio is playing and perform actions
 Hue.check_any_radio_playing = function () {
-  if (Hue.radio_windows.some(x => x.hue_playing)) {
+  if (Hue.radio_is_playing()) {
     Hue.el("#footer_radio_icon").classList.add("rotate")
     Hue.el("#radio_button_playstop use").href.baseVal = "#icon_pause"
     Hue.update_input_placeholder(`Listening to ${Hue.playing_radio.hue_radio_name}`)
@@ -331,6 +337,10 @@ Hue.create_radio_item_buttons = function (name, on_click) {
 
   Hue.el("#radio_button_random", container).addEventListener("click", function () {
     Hue.play_random_radio()
+  })
+
+  Hue.el("#radio_button_dj", container).addEventListener("click", function () {
+    Hue.toggle_radio_dj()
   })
 
   Hue.el("#radio_button_playstop", container).addEventListener("click", function () {
@@ -509,4 +519,31 @@ Hue.play_radio_by_name = function (name) {
       return
     }
   }
+}
+
+// Toggle the radio auto dj
+Hue.toggle_radio_dj = function () {
+  Hue.radio_dj_on = !Hue.radio_dj_on
+  
+  if (Hue.radio_dj_on) {
+    Hue.el("#radio_button_dj").classList.add("underlined")
+    
+    if (!Hue.radio_is_playing()) {
+      Hue.play_random_radio()
+    }
+
+    let m = Hue.utilz.get_minutes(Hue.config.radio_dj_delay)
+    Hue.flash_info("Radio DJ", `Radio stations will change automatically after ${m} minutes`)
+  } else {
+    Hue.el("#radio_button_dj").classList.remove("underlined")
+  }
+}
+
+// Start radio dj interval
+Hue.start_radio_dj_loop = function () {
+  setInterval(function () {
+    if (Hue.radio_dj_on) {
+      Hue.play_random_radio()
+    }
+  }, Hue.config.radio_dj_delay)
 }
