@@ -13,7 +13,7 @@ Hue.show_chat_search = function (filter = "") {
       return false
     }
 
-    if (filter.startsWith("$user ")) {
+    if (filter.startsWith("$user")) {
       return f_username === Hue.dataset(it, "username")
     } else if (filter === "$highlights") {
       return Hue.dataset(it, "highlighted")
@@ -44,8 +44,7 @@ Hue.show_chat_search = function (filter = "") {
 
   Hue.el("#chat_search_container").innerHTML = ""
   Hue.el("#chat_search_filter").value = filter
-
-  filter = filter.trim().toLowerCase()
+  filter = Hue.utilz.single_space(filter).trim().toLowerCase()
   let f_username = ""
 
   if (filter) {

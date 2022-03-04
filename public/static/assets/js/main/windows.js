@@ -587,7 +587,9 @@ Hue.do_modal_filter = function (id = false) {
       return false
     }
 
-    if (filter_value === "$fresh") {
+    if (filter.startsWith("$user")) {
+      return f_username === Hue.dataset(it, "username")
+    } else if (filter === "$fresh") {
       let fresh = Hue.dataset(it, "fresh")
       
       if (!fresh) {
@@ -596,17 +598,24 @@ Hue.do_modal_filter = function (id = false) {
 
       return fresh
     } else {
-      return it.textContent.toLowerCase().includes(filter_value_lower)
+      return it.textContent.toLowerCase().includes(filter)
     }
   }  
 
   let win = Hue.el(`#Msg-content-${id}`)
-  let filter = Hue.el(".filter_input", win)
-  let filter_value = filter.value.trim()
-  let filter_value_lower = Hue.utilz.single_space(filter_value).toLowerCase()
+  let filter_el = Hue.el(".filter_input", win)
+  filter = Hue.utilz.single_space(filter_el.value).trim().toLowerCase()
   let items = Hue.els(".modal_item", win)
 
-  if (filter_value_lower && items.length) {
+  if (filter.startsWith("$user")) {
+    if (filter.split(" ").length === 1) {
+      return
+    }
+
+    f_username = filter.replace("$user ", "").trim()
+  }
+
+  if (filter && items.length) {
     items.forEach(it => {
       if (filtercheck(it)) {
         it.classList.remove("nodisplay")
