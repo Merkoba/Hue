@@ -563,13 +563,18 @@ Hue.toggle_radio_dj = function (what) {
     Hue.start_radio_dj_interval()
   } else {
     Hue.el("#radio_button_dj").classList.remove("underlined")
-    clearInterval(Hue.radio_dj_interval)
+    Hue.stop_radio_dj_interval()
   }
+}
+
+// Stop radio dj interval
+Hue.stop_radio_dj_interval = function () {
+  clearInterval(Hue.radio_dj_interval)
 }
 
 // Start the radio dj interval
 Hue.start_radio_dj_interval = function () {
-  clearInterval(Hue.radio_dj_interval)
+  Hue.stop_radio_dj_interval()
 
   Hue.radio_dj_interval = setInterval(function () {
     if (Hue.radio_dj_on && Hue.radio_is_playing()) {
