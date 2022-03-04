@@ -544,6 +544,30 @@ Hue.commands = {
       Hue.clear_log()
     },
     description: `Clear the log`,
+  },
+  "dj": {
+    action: (arg, ans) => {
+      Hue.toggle_radio_dj(true)
+    },
+    description: `Start radio dj`,
+  },
+  "randomradio": {
+    action: (arg, ans) => {
+      Hue.play_random_radio()
+    },
+    description: `Select a random radio station`,
+  },
+  "playradio": {
+    action: (arg, ans) => {
+      Hue.play_radio()
+    },
+    description: `Play the current radio`,
+  },
+  "stopradio": {
+    action: (arg, ans) => {
+      Hue.pause_radio()
+    },
+    description: `Stop the current radio`,
   }
 }
 
