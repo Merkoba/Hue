@@ -542,7 +542,7 @@ Hue.toggle_radio_dj = function () {
 // Start radio dj interval
 Hue.start_radio_dj_loop = function () {
   setInterval(function () {
-    if (Hue.radio_dj_on) {
+    if (Hue.radio_dj_on && Hue.radio_is_playing()) {
       Hue.play_random_radio()
     }
   }, Hue.config.radio_dj_delay)
