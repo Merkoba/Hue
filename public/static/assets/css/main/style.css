@@ -382,6 +382,10 @@ body * {
 	position: relative;
 }
 
+#input::placeholder {
+	color: var(--font_color_a);
+}
+
 .scroller_container {
 	position: absolute;
 	left: 0;
@@ -1132,13 +1136,15 @@ select {
 	padding-top: 1rem;
 }
 
-.setting_textarea, .setting_input_text, 
-#message_board_textarea, .message_board_edit_area,
-#write_whisper_area {
+.shady_text {
 	background-color: var(--altcolor);
 	color: var(--font_color);
 	outline: none;
 	border: 0;
+}
+
+.shady_text::placeholder {
+	color: var(--font_color_a);
 }
 
 #write_whisper_user_profilepics img {
