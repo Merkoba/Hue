@@ -10,7 +10,7 @@ Hue.setup_radio = function () {
   }
   
   Hue.create_radio_item_volume()
-  Hue.apply_radio_volume(Hue.room_state.radio_volume)
+  Hue.apply_radio_volume()
   
   Hue.create_radio_item_buttons()
   Hue.fill_radio_queue()
@@ -153,6 +153,7 @@ Hue.play_radio = function (win = Hue.playing_radio, play = true) {
   Hue.stop_radio_players(win)
 
   Hue.playing_radio = win
+  Hue.apply_radio_volume()
   Hue.scroll_to_radio_item()
   Hue.announce_radio()
 
@@ -411,7 +412,7 @@ Hue.change_radio_volume = function (direction) {
 }
 
 // Apply radio volume to all players
-Hue.apply_radio_volume = function (volume) {
+Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
   for (let win of Hue.radio_windows) {
     let player = Hue.get_radio_player(win)
     player.volume = volume
