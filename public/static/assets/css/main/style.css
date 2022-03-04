@@ -383,7 +383,8 @@ body * {
 }
 
 #input::placeholder {
-	color: var(--font_color_a);
+	color: var(--font_color);
+	opacity: 0.8;
 }
 
 .scroller_container {
@@ -1145,6 +1146,7 @@ select {
 
 .shady_text::placeholder {
 	color: var(--font_color_a);
+	opacity: 0.8;
 }
 
 #write_whisper_user_profilepics img {
