@@ -2050,6 +2050,7 @@ pre {
 	width: 100%;
 	position: relative;
 	box-sizing: border-box;
+	text-align: left;
 }
 
 .notifications_icon {
