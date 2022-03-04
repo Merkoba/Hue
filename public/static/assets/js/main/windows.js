@@ -314,14 +314,14 @@ Hue.start_msg = function () {
   Hue.msg_notifications = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "notifications",
-      window_width: "26rem",
+      window_width: "30rem",
     })
   )
 
   Hue.msg_whispers = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "whispers",
-      window_width: "26rem",
+      window_width: "30rem",
     })
   )
 
