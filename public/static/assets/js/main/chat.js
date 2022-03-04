@@ -536,7 +536,6 @@ Hue.start_chat_mouse_events = function () {
 
       if (message) {
         let id = Hue.dataset(message, "id")
-        let message_id = Hue.dataset(message, "message_id")
         let username = Hue.dataset(message, "username")
         let user_id = Hue.dataset(message, "user_id")
         let type = Hue.dataset(message, "type")
@@ -578,11 +577,6 @@ Hue.start_chat_mouse_events = function () {
           }
         } else if (e.target.closest(".brk_profilepic")) {
           Hue.show_profile(username, user_id)
-        } else {
-          if (e.target.closest("#chat_search_container")) {
-            Hue.jump_to_chat_message(message_id)
-            return
-          }
         }
       }
     }

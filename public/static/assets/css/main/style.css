@@ -207,10 +207,6 @@ body * {
 	animation: fadein linear 600ms;
 }
 
-#chat_search_container .chat_content_container {
-	cursor: pointer;
-}
-
 #chat_area > .message:first-child {
 	padding-top: 1.5rem;
 }
