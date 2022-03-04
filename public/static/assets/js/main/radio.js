@@ -581,14 +581,14 @@ Hue.crossfade_radio = function (win) {
 
   setTimeout(function () {
     Hue.crossfade_interval = setInterval(function () {
-      player_1.volume = Math.max(player_1.volume - 0.05, 0)
-      player_2.volume = Math.min(player_2.volume + 0.05, 1)
+      player_1.volume = Math.max(player_1.volume - 0.025, 0)
+      player_2.volume = Math.min(player_2.volume + 0.025, 1)
   
       if (player_1.volume <= 0 && player_2.volume >= Hue.room_state.radio_volume) {
         clearInterval(Hue.crossfade_interval)
         player_2.volume = Hue.room_state.radio_volume
         Hue.play_radio(win, false)
       }
-    }, 250)
-  }, 250)
+    }, 200)
+  }, 500)
 }
