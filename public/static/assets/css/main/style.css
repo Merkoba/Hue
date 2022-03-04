@@ -1502,19 +1502,11 @@ svg.action:hover {
 }
 
 #show_profile_buttons {
-	grid-gap: 0.5rem;
+	gap: 1.6rem;
 	background-color: var(--altbackground);
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	margin-top: 1.6rem;
-}
-
-#show_profile_sync_tv {
-	margin-bottom: 0.8rem;
-}
-
-#show_profile_whisper {
-	margin-bottom: 0.8rem;
 }
 
 #show_profile_details {

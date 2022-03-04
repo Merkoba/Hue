@@ -565,6 +565,11 @@ Hue.setup_show_profile = function () {
     Hue.show_user_posts(Hue.open_profile_username)
     Hue.msg_profile.close()
   })
+
+  Hue.el("#show_profile_posts").addEventListener("click", function () {
+    Hue.show_message_board(`$user ${Hue.open_profile_username}`)
+    Hue.msg_profile.close()
+  })
 }
 
 // Stars the profile audio
