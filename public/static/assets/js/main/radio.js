@@ -82,7 +82,6 @@ Hue.setup_radio_player = function (win) {
   let player = Hue.get_radio_player(win)
     
   player.addEventListener("play", function () {
-    Hue.stop_radio_players(win)
     win.hue_playing = true
     Hue.check_radio_playing(win)
     Hue.check_any_radio_playing()
@@ -146,17 +145,22 @@ Hue.check_radio_play = function (win) {
 }
 
 // Play the audio player with a cache-busted url
-Hue.play_radio = function (win = Hue.playing_radio) {
+Hue.play_radio = function (win = Hue.playing_radio, play = true) {
   if (!win) {
     return
   }
 
+  Hue.stop_radio_players(win)
+
   Hue.playing_radio = win
   Hue.scroll_to_radio_item()
-  let player = Hue.get_radio_player(win)
-  player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
-  player.play()
   Hue.announce_radio()
+
+  if (play) {
+    let player = Hue.get_radio_player(win)
+    player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
+    player.play()
+  }
 }
 
 // Pause the audio player
@@ -430,18 +434,24 @@ Hue.apply_radio_volume = function (volume) {
 
 // Play a random radio station
 Hue.play_random_radio = function () {
+  Hue.play_radio(Hue.get_random_radio())
+}
+
+// Get random radio station
+Hue.get_random_radio = function () {
   let win = Hue.radio_queue.pop()
   
   if (Hue.radio_queue.length === 0) {
     Hue.fill_radio_queue()
   }
 
-  if (win.hue_playing) {
-    Hue.play_random_radio()
-    return
+  if (Hue.radio_queue.length > 1) {
+    if (win.hue_playing) {
+      return Hue.get_random_radio()
+    }
   }
 
-  Hue.play_radio(win)
+  return win
 }
 
 // Fill items for the random button
@@ -555,7 +565,30 @@ Hue.toggle_radio_dj = function (what) {
 Hue.start_radio_dj_loop = function () {
   setInterval(function () {
     if (Hue.radio_dj_on && Hue.radio_is_playing()) {
-      Hue.play_random_radio()
+      Hue.crossfade_radio(Hue.get_random_radio())
     }
   }, Hue.config.radio_dj_delay)
+}
+
+// Crossfade two radio stations
+Hue.crossfade_radio = function (win) {
+  let player_1 = Hue.get_radio_player(Hue.playing_radio)
+  let player_2 = Hue.get_radio_player(win)
+
+  player_2.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
+  player_2.volume = 0
+  player_2.play()
+
+  setTimeout(function () {
+    Hue.crossfade_interval = setInterval(function () {
+      player_1.volume = Math.max(player_1.volume - 0.05, 0)
+      player_2.volume = Math.min(player_2.volume + 0.05, 1)
+  
+      if (player_1.volume <= 0 && player_2.volume >= Hue.room_state.radio_volume) {
+        clearInterval(Hue.crossfade_interval)
+        player_2.volume = Hue.room_state.radio_volume
+        Hue.play_radio(win, false)
+      }
+    }, 250)
+  }, 250)
 }
