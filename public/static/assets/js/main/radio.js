@@ -33,7 +33,6 @@ Hue.setup_radio = function () {
 
   Hue.slide_radio()
   Hue.change_radio_state(Hue.room_state.radio_enabled)
-  Hue.start_radio_dj_loop()
 }
 
 // Start a radio from a radio object
@@ -436,7 +435,7 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
 // Play a random radio station
 Hue.play_random_radio = function () {
   if (Hue.radio_dj_on) {
-    Hue.start_radio_dj_loop()
+    Hue.start_radio_dj_interval()
   }
 
   Hue.play_radio(Hue.get_random_radio())
@@ -561,13 +560,15 @@ Hue.toggle_radio_dj = function (what) {
 
     let m = Hue.utilz.get_minutes(Hue.config.radio_dj_delay)
     Hue.flash_info("Radio DJ", `Radio stations will change automatically after ${m} minutes`)
+    Hue.start_radio_dj_interval()
   } else {
     Hue.el("#radio_button_dj").classList.remove("underlined")
+    clearInterval(Hue.radio_dj_interval)
   }
 }
 
-// Start radio dj interval
-Hue.start_radio_dj_loop = function () {
+// Start the radio dj interval
+Hue.start_radio_dj_interval = function () {
   clearInterval(Hue.radio_dj_interval)
 
   Hue.radio_dj_interval = setInterval(function () {
