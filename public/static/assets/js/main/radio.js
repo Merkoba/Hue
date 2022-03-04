@@ -284,9 +284,11 @@ Hue.check_any_radio_playing = function () {
   if (Hue.radio_windows.some(x => x.hue_playing)) {
     Hue.el("#footer_radio_icon").classList.add("rotate")
     Hue.el("#radio_button_playstop use").href.baseVal = "#icon_pause"
+    Hue.update_input_placeholder(`Listening to ${Hue.playing_radio.hue_radio_name}`)
   } else {
     Hue.el("#footer_radio_icon").classList.remove("rotate")
     Hue.el("#radio_button_playstop use").href.baseVal = "#icon_play"
+    Hue.update_input_placeholder()
   }
 }
 
