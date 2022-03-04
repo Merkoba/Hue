@@ -1359,6 +1359,16 @@ Hue.scroll_down = function () {
   Hue.el("#chat_area").scrollTop += Hue.chat_scroll_amount
 }
 
+// Scrolls the chat up (more)
+Hue.scroll_up_2 = function () {
+  Hue.el("#chat_area").scrollTop -= Hue.chat_scroll_amount_2
+}
+
+// Scrolls the chat down (more)
+Hue.scroll_down_2 = function () {
+  Hue.el("#chat_area").scrollTop += Hue.chat_scroll_amount_2
+}
+
 // Generates the username mention regex using the highlights regex
 Hue.generate_mentions_regex = function () {
   if (Hue.get_setting("case_insensitive_username_highlights")) {
@@ -1775,11 +1785,11 @@ Hue.setup_chat = function () {
   })
 
   Hue.el("#top_percentage_scroller").addEventListener("click", function () {
-    Hue.scroll_up()
+    Hue.scroll_up_2()
   })
 
   Hue.el("#bottom_percentage_scroller").addEventListener("click", function () {
-    Hue.scroll_down()
+    Hue.scroll_down_2()
   })
 }
 
