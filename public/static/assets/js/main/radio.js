@@ -146,13 +146,26 @@ Hue.check_radio_play = function (win) {
 }
 
 // Play the audio player with a cache-busted url
-Hue.play_radio = function (win) {
+Hue.play_radio = function (win = Hue.playing_radio) {
+  if (!win) {
+    return
+  }
+
   Hue.playing_radio = win
   Hue.scroll_to_radio_item()
   let player = Hue.get_radio_player(win)
   player.src = Hue.utilz.cache_bust_url(win.hue_radio_url)
   player.play()
   Hue.announce_radio()
+}
+
+// Pause the audio player
+Hue.pause_radio = function (win = Hue.playing_radio) {
+  if (!win) {
+    return
+  }
+
+  Hue.get_radio_player(win).pause()
 }
 
 // Scroll stations list to playing item
@@ -162,11 +175,6 @@ Hue.scroll_to_radio_item = function () {
       block: "center"
     })
   }
-}
-
-// Pause the audio player
-Hue.pause_radio = function (win) {
-  Hue.get_radio_player(win).pause()
 }
 
 // Fetch a radio's metadata
@@ -522,8 +530,12 @@ Hue.play_radio_by_name = function (name) {
 }
 
 // Toggle the radio auto dj
-Hue.toggle_radio_dj = function () {
-  Hue.radio_dj_on = !Hue.radio_dj_on
+Hue.toggle_radio_dj = function (what) {
+  if (what !== undefined) {
+    Hue.radio_dj_on = what
+  } else {
+    Hue.radio_dj_on = !Hue.radio_dj_on
+  }
   
   if (Hue.radio_dj_on) {
     Hue.el("#radio_button_dj").classList.add("underlined")
