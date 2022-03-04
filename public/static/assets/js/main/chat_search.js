@@ -45,7 +45,7 @@ Hue.show_chat_search = function (filter = "") {
   Hue.el("#chat_search_container").innerHTML = ""
   Hue.el("#chat_search_filter").value = filter
 
-  filter = filter.trim()
+  filter = filter.trim().toLowerCase()
   let f_username = ""
 
   if (filter) {
