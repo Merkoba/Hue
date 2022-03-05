@@ -297,7 +297,6 @@ Hue.get_radio_metadata = function () {
       }
 
       Hue.set_radio_window_title(radio, "")
-
     } else {
       Hue.set_radio_window_title(radio, "Metadata not available")
     }
