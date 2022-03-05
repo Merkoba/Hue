@@ -147,6 +147,14 @@ Hue.set_radio_player = function (radio) {
   Hue.playing_radio.player.addEventListener("pause", function () {
     Hue.after_stop_radio()
   })
+
+  Hue.playing_radio.player.addEventListener("stalled", function () {
+    Hue.play_random_radio()
+  })
+
+  Hue.playing_radio.player.addEventListener("ended", function () {
+    Hue.play_random_radio()
+  })
 }
 
 // Apply radio item effects
