@@ -291,7 +291,7 @@ Hue.get_radio_metadata = function () {
       if (!exists) {
         let date = Date.now()
         let nice_date = Hue.utilz.nice_date(date)
-        let item = Hue.div("radio_history_item nice_row_center dynamic_title")
+        let item = Hue.div("radio_history_item nice_row_center dynamic_title modal_item")
         item.innerHTML = Hue.template_radio_history_item({content: content})
         item.title = nice_date
         Hue.dataset(item, "date", date)
