@@ -276,6 +276,31 @@ Hue.get_radio_metadata = function () {
       title_el.textContent = ""
       title_el.style.display = "none"
     }
+
+    if (artist || title) {
+      let content = `${radio.name}: ${Hue.get_radio_string()}`
+      let exists = false
+      
+      for (let el of Hue.els(".radio_history_item")) {
+        console.log(el.textContent)
+        if (el.textContent.trim() === content) {
+          exists = true
+          break
+        }
+      }
+
+      if (!exists) {
+        let date = Date.now()
+        let nice_date = Hue.utilz.nice_date(date)
+        let item = Hue.div("radio_history_item nice_row_center dynamic_title")
+        item.innerHTML = Hue.template_radio_history_item({content: content})
+        item.title = nice_date
+        Hue.dataset(item, "date", date)
+        Hue.dataset(item, "otitle", nice_date)
+        Hue.el("#radio_history").append(item)
+        Hue.scroll_radio_history()
+      }
+    }
   })
 
   .catch(err => {
@@ -476,7 +501,7 @@ Hue.fill_radio_queue = function () {
 Hue.get_radio_string = function () {
   let artist = Hue.el("#radio_metadata_artist").textContent
   let title = Hue.el("#radio_metadata_title").textContent
-  return `${artist} ${title}`.trim()
+  return `${artist} - ${title}`.trim()
 }
 
 // Clear slide timeouts
@@ -639,5 +664,12 @@ Hue.show_radio_window = function () {
   Hue.msg_radio_window.show(function () {
     Hue.get_radio_metadata()
     Hue.start_radio_metadata_loop()
+    Hue.scroll_radio_history()
   })
+}
+
+// Scroll radio history to bottom
+Hue.scroll_radio_history = function () {
+  let history = Hue.el("#radio_history")
+  history.scrollTop = history.scrollHeight
 }
