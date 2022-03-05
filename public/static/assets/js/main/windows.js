@@ -239,8 +239,6 @@ Hue.start_msg = function () {
       after_show: function (instance) {
         Hue.after_modal_show(instance)
         Hue.after_modal_set_or_show(instance)
-        Hue.get_radio_metadata(instance)
-        Hue.start_radio_metadata_loop(instance)
       },
       after_close: function (instance) {     
         Hue.after_modal_close(instance)
