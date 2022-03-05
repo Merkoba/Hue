@@ -140,6 +140,14 @@ Hue.set_radio_player = function (radio) {
   Hue.playing_radio.player = new Audio()
   Hue.playing_radio.player.volume = Hue.room_state.radio_volume
   Hue.playing_radio.player.src = Hue.utilz.cache_bust_url(radio.url)
+  
+  Hue.playing_radio.player.addEventListener("play", function () {
+    Hue.after_radio_play()
+  })
+  
+  Hue.playing_radio.player.addEventListener("pause", function () {
+    Hue.after_stop_radio()
+  })
 }
 
 // Apply radio item effects
@@ -169,6 +177,10 @@ Hue.stop_radio = function () {
   }
 
   Hue.playing_radio.player.pause()
+}
+
+// After stop radio
+Hue.after_stop_radio = function () {
   Hue.apply_radio_item_effects()
   Hue.check_radio_playing()
 }
