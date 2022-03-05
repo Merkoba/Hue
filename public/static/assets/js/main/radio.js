@@ -291,7 +291,11 @@ Hue.get_radio_metadata = function () {
         let date = Date.now()
         let nice_date = Hue.utilz.nice_date(date)
         let item = Hue.div("radio_history_item nice_row dynamic_title modal_item action")
-        item.innerHTML = Hue.template_radio_history_item({station: radio.name, info: info})
+        item.innerHTML = Hue.template_radio_history_item({station: radio.name})
+
+        // This is to deal with html unicode like &#12375;&#12375;
+        Hue.el(".radio_history_info", item).innerHTML = Hue.utilz.make_html_safe(info)
+
         item.title = nice_date
         Hue.dataset(item, "date", date)
         Hue.dataset(item, "otitle", nice_date)
