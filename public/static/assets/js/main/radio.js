@@ -282,7 +282,6 @@ Hue.get_radio_metadata = function () {
       let exists = false
       
       for (let el of Hue.els(".radio_history_item")) {
-        console.log(el.textContent)
         if (el.textContent.trim() === content) {
           exists = true
           break
