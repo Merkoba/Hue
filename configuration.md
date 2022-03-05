@@ -179,6 +179,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "notifications_crop_limit"
 >How many notifications after the notifications items get cropped in the notifications window.
 
+"radio_history_crop_limit"
+>How many radio history items can exist at the same time.
+
 "socket_emit_throttle"
 >Throttle on socket emits on the client.
 

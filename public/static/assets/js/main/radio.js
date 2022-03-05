@@ -297,6 +297,12 @@ Hue.get_radio_metadata = function () {
         Hue.dataset(item, "otitle", nice_date)
         Hue.horizontal_separator(item)
         Hue.el("#radio_history").prepend(item)
+
+        let items = Hue.els(".radio_history_item")
+
+        if (items.length > Hue.config.radio_history_crop_limit) {
+          items.slice(-1)[0].remove()
+        }
       }
 
       Hue.set_radio_window_title()

@@ -416,7 +416,7 @@ Hue.push_whisper = function (message, on_click, read, data = false) {
 
   Hue.el("#whispers_container").prepend(item)
   
-  let items = Hue.els("#whispers_container .whispers_item")
+  let items = Hue.els(".whispers_item")
 
   if (items.length > Hue.config.whispers_crop_limit) {
     Hue.els("#whispers_container .whispers_item").slice(-1)[0].remove()
