@@ -4,6 +4,9 @@ Hue.setup_radio = function () {
     Hue.room_state.radio_enabled = false
     return
   }
+
+  Hue.playing_radio = {}
+  Hue.set_radio_player(Hue.config.radios[0])
   
   for (let radio of Hue.config.radios) {
     Hue.create_radio_item(radio)
@@ -117,7 +120,6 @@ Hue.after_radio_play = function () {
 
 // Set radio player
 Hue.set_radio_player = function (radio) {
-  Hue.playing_radio = {}
   Hue.playing_radio.radio = radio
   Hue.playing_radio_date = Date.now()
   Hue.playing_radio.player = new Audio()
@@ -168,10 +170,8 @@ Hue.stop_radio = function () {
 Hue.radio_just_changed = function () {
   let just_changed = false
 
-  if (Hue.playing_radio) {
-    if ( (Date.now() - Hue.playing_radio_date) < ( 10 * 1000) ) {
-      just_changed = true
-    }
+  if ( (Date.now() - Hue.playing_radio_date) < ( 10 * 1000) ) {
+    just_changed = true
   }
 
   return just_changed
@@ -179,12 +179,11 @@ Hue.radio_just_changed = function () {
 
 // Scroll stations list to playing item
 Hue.scroll_to_radio_item = function () {
-  if (Hue.playing_radio) {
-    let item = Hue.get_radio_item(Hue.playing_radio.radio)
-    item.scrollIntoView({
-      block: "center"
-    })
-  }
+  let item = Hue.get_radio_item(Hue.playing_radio.radio)
+  
+  item.scrollIntoView({
+    block: "center"
+  })
 }
 
 // Fetch a radio's metadata
@@ -374,9 +373,7 @@ Hue.create_radio_item_buttons = function (name, on_click) {
   })
   
   Hue.el("#radio_button_info", container).addEventListener("click", function () {
-    if (Hue.playing_radio) {
-      Hue.show_radio_window()
-    }
+    Hue.show_radio_window()
   })
 
   Hue.el("#radio_controls").append(container)
@@ -426,9 +423,7 @@ Hue.change_radio_volume = function (direction) {
 
 // Apply radio volume to all players
 Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
-  if (Hue.playing_radio) {
-    Hue.playing_radio.player.volume = volume
-  }
+  Hue.playing_radio.player.volume = volume
 
   if (volume === 0) {
     Hue.el("#radio_item_volume_icon use").href.baseVal = "#icon_volume-mute"
@@ -533,18 +528,12 @@ Hue.unslide_radio = function () {
 // Play or stop the radio
 // Select random item if none is playing
 Hue.radio_playstop = function () {
-  if (Hue.playing_radio) {
-    Hue.check_radio_play(Hue.playing_radio.radio)
-  } else {
-    Hue.play_random_radio()
-  }  
+  Hue.check_radio_play(Hue.playing_radio.radio) 
 }
 
 // Send a message to others that you started a radio
 Hue.announce_radio = function () {
-  if (Hue.playing_radio) {
-    Hue.socket_emit("announce_radio", {name: Hue.playing_radio.radio.name})
-  }
+  Hue.socket_emit("announce_radio", {name: Hue.playing_radio.radio.name})
 }
 
 // Show when another user announces their radio
@@ -628,6 +617,8 @@ Hue.crossfade_radio = function (radio) {
   
       if (player_1.volume <= 0 && player_2.volume >= Hue.room_state.radio_volume) {
         clearInterval(Hue.radio_crossfade_interval)
+        player_1.pause()
+        player_1 = undefined
         Hue.radio_crossfading = false
         Hue.play_radio(radio, false, false)
       }
