@@ -2420,11 +2420,6 @@ pre {
 	transform: rotateY(180deg);
 }
 
-#radio_container {
-	width: 100%;
-	height: 100%;
-}
-
 .radio_history_station {
 	font-weight: bold;
 	justify-self: flex-start;
