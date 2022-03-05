@@ -2425,11 +2425,6 @@ pre {
 	height: 100%;
 }
 
-#radio_history {
-	max-height: 12rem;
-	overflow: auto;
-}
-
 .radio_history_station {
 	font-weight: bold;
 	justify-self: flex-start;
