@@ -2053,18 +2053,6 @@ pre {
 	text-align: left;
 }
 
-.nice_row_center {
-	display: inline-flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	background-color: var(--altbackground);
-	padding: 0.8rem;
-	width: 100%;
-	position: relative;
-	box-sizing: border-box;
-}
-
 .notifications_icon {
 	margin-right: 0.5rem;
 }
@@ -2442,26 +2430,14 @@ pre {
 	overflow: auto;
 }
 
-#radio_metadata {
-	flex-grow: 1;	
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	font-size: 1.6rem;
-	color: var(--font_color);
-	gap: 1rem;
-	width: 36rem;
-	margin-top: 2rem;
-	margin-bottom: 2rem;
+.radio_history_station {
+	font-weight: bold;
+	margin-right: 1rem;
+	justify-self: flex-start;
 }
 
-#radio_buttons {
-	font-size: 1.2rem;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
+.radio_history_info {
+	justify-self: flex-end;
 }
 
 #radio_items {
