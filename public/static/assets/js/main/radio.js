@@ -67,11 +67,11 @@ Hue.setup_radio_window = function () {
 }
 
 // Setup radio window title
-Hue.set_radio_window_title = function (radio, title = "") {
+Hue.set_radio_window_title = function (title = "") {
   if (title) {
-    Hue.msg_radio_window.set_title(`${radio.name} (${title})`)
+    Hue.msg_radio_window.set_title(`Radio History (${title})`)
   } else {
-    Hue.msg_radio_window.set_title(radio.name)
+    Hue.msg_radio_window.set_title("Radio History")
   }
 }
 
@@ -198,10 +198,10 @@ Hue.get_radio_metadata = function () {
   let radio = Hue.playing_radio.radio
   Hue.loginfo(`Checking metadata: ${radio.metadata}`)
   
-  Hue.set_radio_window_title(radio, "Loading...")
+  Hue.set_radio_window_title("Loading...")
 
   if (!radio.metadata) {
-    Hue.set_radio_window_title(radio, "Metadata not available")
+    Hue.set_radio_window_title("Metadata not available")
     return
   }
 
@@ -284,18 +284,19 @@ Hue.get_radio_metadata = function () {
         item.title = nice_date
         Hue.dataset(item, "date", date)
         Hue.dataset(item, "otitle", nice_date)
+        Hue.horizontal_separator(item)
         Hue.el("#radio_history").append(item)
         Hue.scroll_radio_history()
       }
 
-      Hue.set_radio_window_title(radio)
+      Hue.set_radio_window_title()
     } else {
-      Hue.set_radio_window_title(radio, "Metadata not available")
+      Hue.set_radio_window_title("Metadata not available")
     }
   })
 
   .catch(err => {
-    Hue.set_radio_window_title(radio, "Metadata not available")
+    Hue.set_radio_window_title("Metadata not available")
   })
 }
 
@@ -645,7 +646,7 @@ Hue.cancel_radio_crossfade = function () {
 
 // Show radio metadata window
 Hue.show_radio_window = function () {
-  Hue.msg_radio_window.set_title(Hue.playing_radio.radio.name)
+  Hue.set_radio_window_title()
   Hue.msg_radio_window.show(function () {
     Hue.get_radio_metadata()
     Hue.start_radio_metadata_loop()
