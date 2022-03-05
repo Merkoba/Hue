@@ -237,10 +237,6 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       window_class: "radio !radio_window",
       window_width: "36rem",
-      after_show: function (instance) {
-        Hue.after_modal_show(instance)
-        Hue.after_modal_set_or_show(instance)
-      },
       after_close: function (instance) {     
         Hue.after_modal_close(instance)
         Hue.stop_radio_metadata_loop()

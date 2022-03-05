@@ -296,8 +296,7 @@ Hue.get_radio_metadata = function () {
         Hue.dataset(item, "date", date)
         Hue.dataset(item, "otitle", nice_date)
         Hue.horizontal_separator(item)
-        Hue.el("#radio_history").append(item)
-        Hue.scroll_radio_history()
+        Hue.el("#radio_history").prepend(item)
       }
 
       Hue.set_radio_window_title()
@@ -665,12 +664,5 @@ Hue.show_radio_window = function () {
   Hue.msg_radio_window.show(function () {
     Hue.get_radio_metadata()
     Hue.start_radio_metadata_loop()
-    Hue.scroll_radio_history()
   })
-}
-
-// Scroll radio history to bottom
-Hue.scroll_radio_history = function () {
-  let history = Hue.el("#radio_history")
-  history.scrollTop = history.scrollHeight
 }
