@@ -91,6 +91,14 @@ Hue.setup_radio_player = function (win) {
     Hue.check_radio_playing(win)
     Hue.check_any_radio_playing()
   }) 
+  
+  player.addEventListener("error", function () {
+    if (Hue.radio_dj_on) {
+      Hue.play_random_radio()
+    } else {
+      Hue.pause_radio()
+    }
+  }) 
 }
 
 // Stop all radio players except active one
