@@ -159,10 +159,6 @@ Hue.apply_radio_item_effects = function () {
 
 // Check if it's playing radio
 Hue.is_playing_radio = function (radio) {
-  if (!Hue.playing_radio) {
-    return false
-  }
-
   return Hue.playing_radio.radio.name === radio.name
 }
 
@@ -170,10 +166,6 @@ Hue.is_playing_radio = function (radio) {
 Hue.stop_radio = function () {
   if (Hue.radio_crossfading) {
     Hue.cancel_radio_crossfade()
-  }
-
-  if (!Hue.playing_radio) {
-    return
   }
 
   Hue.playing_radio.player.pause()
@@ -324,10 +316,6 @@ Hue.stop_radio_metadata_loop = function () {
 
 // Check if radio is playing
 Hue.radio_is_playing = function () {
-  if (!Hue.playing_radio) {
-    return false
-  }
-
   return !Hue.playing_radio.player.paused
 }
 
