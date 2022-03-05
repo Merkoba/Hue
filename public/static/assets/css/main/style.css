@@ -2433,6 +2433,7 @@ pre {
 .radio_history_station {
 	font-weight: bold;
 	justify-self: flex-start;
+	flex-shrink: 0;
 }
 
 .radio_history_info {
