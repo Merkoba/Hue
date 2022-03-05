@@ -152,14 +152,25 @@ Hue.check_radio_play = function (win) {
 }
 
 // Play the audio player with a cache-busted url
-Hue.play_radio = function (win = Hue.playing_radio, play = true) {
+Hue.play_radio = function (win = Hue.playing_radio, crossfade = true, play = true) {
   if (!win) {
+    return
+  }
+
+  if (Hue.radio_crossfading) {
+    Hue.cancel_radio_crossfade()
+    crossfade = false
+  }
+
+  if (!Hue.radio_just_changed() && crossfade && Hue.radio_is_playing()) {
+    Hue.crossfade_radio(win)
     return
   }
 
   Hue.stop_radio_players(win)
 
   Hue.playing_radio = win
+  win.hue_radio_date = Date.now()
   Hue.apply_radio_volume()
   Hue.scroll_to_radio_item()
   Hue.announce_radio()
@@ -177,7 +188,32 @@ Hue.pause_radio = function (win = Hue.playing_radio) {
     return
   }
 
+  if (Hue.radio_crossfading) {
+    Hue.cancel_radio_crossfade()
+    return
+  }
+
   Hue.get_radio_player(win).pause()
+}
+
+// Pauses all radio players
+Hue.pause_all_radios = function () {
+  for (let win of Hue.radio_windows) {
+    Hue.get_radio_player(win).pause()
+  }
+}
+
+// Check if radio is freshly played
+Hue.radio_just_changed = function () {
+  let just_changed = false
+
+  if (Hue.playing_radio) {
+    if ( (Date.now() - Hue.playing_radio.hue_radio_date) < ( 10 * 1000) ) {
+      just_changed = true
+    }
+  }
+
+  return just_changed
 }
 
 // Scroll stations list to playing item
@@ -598,6 +634,8 @@ Hue.crossfade_radio = function (win) {
   }
 
   Hue.radio_crossfading = true
+  Hue.playing_radio.hue_playing = false
+  Hue.check_radio_playing(Hue.playing_radio)
 
   let player_1 = Hue.get_radio_player(Hue.playing_radio)
   let player_2 = Hue.get_radio_player(win)
@@ -606,17 +644,24 @@ Hue.crossfade_radio = function (win) {
   player_2.volume = 0
   player_2.play()
 
-  setTimeout(function () {
-    Hue.crossfade_interval = setInterval(function () {
-      player_1.volume = Math.max(player_1.volume - 0.025, 0)
-      player_2.volume = Math.min(player_2.volume + 0.025, 1)
+  Hue.radio_crossfade_timeout = setTimeout(function () {
+    Hue.radio_crossfade_interval = setInterval(function () {
+      player_1.volume = Math.max(player_1.volume - 0.005, 0)
+      player_2.volume = Math.min(player_2.volume + 0.005, 1)
   
       if (player_1.volume <= 0 && player_2.volume >= Hue.room_state.radio_volume) {
-        clearInterval(Hue.crossfade_interval)
-        player_2.volume = Hue.room_state.radio_volume
-        Hue.play_radio(win, false)
+        clearInterval(Hue.radio_crossfade_interval)
         Hue.radio_crossfading = false
+        Hue.play_radio(win, false, false)
       }
-    }, 200)
-  }, 500)
+    }, 50)
+  }, 250)
+}
+
+// Stop a radio crossfade
+Hue.cancel_radio_crossfade = function () {
+  Hue.pause_all_radios()
+  clearTimeout(Hue.radio_crossfade_timeout)
+  clearInterval(Hue.radio_crossfade_interval)
+  Hue.radio_crossfading = false
 }
