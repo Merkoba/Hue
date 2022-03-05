@@ -129,7 +129,6 @@ Hue.update_userlist_delay = 2000
 Hue.dataset_obj = {}
 Hue.dataset_id = 0
 Hue.flipped = false
-Hue.radio_windows = []
 Hue.radio_dj_on = false
 Hue.radio_crossfading = false
 

@@ -565,7 +565,7 @@ Hue.commands = {
   },
   "stopradio": {
     action: (arg, ans) => {
-      Hue.pause_radio()
+      Hue.stop_radio()
     },
     description: `Stop the current radio station`,
   }

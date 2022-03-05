@@ -2419,14 +2419,14 @@ pre {
 	transform: rotateY(180deg);
 }
 
-.radio_container {
+#radio_container {
 	width: 100%;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 }
 
-.radio_metadata {
+#radio_metadata {
 	flex-grow: 1;	
 	display: flex;
 	flex-direction: column;
@@ -2435,22 +2435,17 @@ pre {
 	font-size: 1.6rem;
 	color: var(--font_color);
 	gap: 1rem;
-	padding: 2rem;
 	width: 36rem;
 	min-height: 11rem;
 }
 
-.radio_buttons {
-	padding-bottom: 2rem;
+#radio_buttons {
 	font-size: 1.2rem;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-}
-
-.radio_player {
-	width: 100%;
+	margin-top: 2rem;
 }
 
 #radio_items {
