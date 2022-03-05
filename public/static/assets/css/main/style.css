@@ -2033,7 +2033,7 @@ pre {
 	padding: 0.8rem !important;
 }
 
-.nice_rows_container {
+.nice_row_container {
 	display: grid;
 	grid-gap: 0.5rem;
 	margin-top: 0.5rem;
@@ -2050,6 +2050,18 @@ pre {
 	position: relative;
 	box-sizing: border-box;
 	text-align: left;
+}
+
+.nice_row_center {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--altbackground);
+	padding: 0.8rem;
+	width: 100%;
+	position: relative;
+	box-sizing: border-box;
 }
 
 .notifications_icon {
@@ -2426,6 +2438,11 @@ pre {
 	flex-direction: column;
 }
 
+#radio_history {
+	max-height: 12rem;
+	overflow: auto;
+}
+
 #radio_metadata {
 	flex-grow: 1;	
 	display: flex;
@@ -2436,7 +2453,8 @@ pre {
 	color: var(--font_color);
 	gap: 1rem;
 	width: 36rem;
-	min-height: 11rem;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
 }
 
 #radio_buttons {
@@ -2445,7 +2463,6 @@ pre {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	margin-top: 2rem;
 }
 
 #radio_items {
