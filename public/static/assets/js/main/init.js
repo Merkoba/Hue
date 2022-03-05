@@ -131,6 +131,7 @@ Hue.dataset_id = 0
 Hue.flipped = false
 Hue.radio_dj_on = false
 Hue.radio_crossfading = false
+Hue.radio_slided = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

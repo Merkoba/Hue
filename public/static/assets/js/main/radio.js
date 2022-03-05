@@ -180,7 +180,8 @@ Hue.radio_just_changed = function () {
 // Scroll stations list to playing item
 Hue.scroll_to_radio_item = function () {
   if (Hue.playing_radio) {
-    Hue.playing_radio.player.scrollIntoView({
+    let item = Hue.get_radio_item(Hue.playing_radio.radio)
+    item.scrollIntoView({
       block: "center"
     })
   }
@@ -345,6 +346,15 @@ Hue.create_radio_item = function (radio) {
   Hue.el("#radio_stations").append(container)
 }
 
+// Get radio item
+Hue.get_radio_item = function (radio) {
+  for (let el of Hue.els(".radio_station_item")) {
+    if (Hue.dataset(el, "radio").name === radio.name) {
+      return el
+    }
+  }
+}
+
 // Create a specialized radio button
 Hue.create_radio_item_buttons = function (name, on_click) {
   let container = Hue.div("radio_item")
@@ -498,23 +508,33 @@ Hue.start_radio_unslide_timeout = function () {
 
 // Slide the radio to the side
 Hue.slide_radio = function () {
+  if (Hue.radio_slided) {
+    return
+  }
+
   Hue.clear_radio_slide_timeouts()
   Hue.el("#radio_items").classList.add("radio_slide")
   Hue.scroll_to_radio_item()
+  Hue.radio_slided = true
 }
 
 // Reveal the radio fully 
 Hue.unslide_radio = function () {
+  if (!Hue.radio_slided) {
+    return
+  }
+
   Hue.clear_radio_slide_timeouts()
   Hue.el("#radio_items").classList.remove("radio_slide")
   Hue.scroll_to_radio_item()
+  Hue.radio_slided = false
 }
 
 // Play or stop the radio
 // Select random item if none is playing
 Hue.radio_playstop = function () {
   if (Hue.playing_radio) {
-    Hue.check_radio_play(Hue.playing_radio)
+    Hue.check_radio_play(Hue.playing_radio.radio)
   } else {
     Hue.play_random_radio()
   }  
@@ -625,7 +645,8 @@ Hue.cancel_radio_crossfade = function () {
 // Show radio metadata window
 Hue.show_radio_window = function () {
   Hue.msg_radio_window.set_title(Hue.playing_radio.radio.name)
-  Hue.msg_radio_window.show()
-  Hue.get_radio_metadata()
-  Hue.start_radio_metadata_loop()
+  Hue.msg_radio_window.show(function () {
+    Hue.get_radio_metadata()
+    Hue.start_radio_metadata_loop()
+  })
 }
