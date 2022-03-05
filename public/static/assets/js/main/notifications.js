@@ -80,7 +80,7 @@ Hue.push_notification = function (icon, message, on_click = false) {
   
   Hue.el("#notifications_container").prepend(item)
   
-  let items = Hue.els("#notifications_container .notifications_item")
+  let items = Hue.els(".notifications_item")
 
   if (items.length > Hue.config.notifications_crop_limit) {
     items.slice(-1)[0].remove()
