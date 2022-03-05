@@ -121,7 +121,6 @@ Hue.play_radio = function (radio, crossfade = true, play = true) {
     Hue.apply_radio_item_effects()
     Hue.check_radio_playing()
     Hue.playing_radio.player.play()
-    Hue.after_radio_play()
   }
 }
 
@@ -631,7 +630,6 @@ Hue.crossfade_radio = function (radio) {
   Hue.radio_crossfade_player_2 = Hue.playing_radio.player
   Hue.radio_crossfade_player_2.volume = 0
   Hue.radio_crossfade_player_2.play()
-  Hue.after_radio_play()
 
   Hue.radio_crossfade_timeout = setTimeout(function () {
     Hue.radio_crossfade_interval = setInterval(function () {
