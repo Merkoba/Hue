@@ -75,7 +75,7 @@ Hue.start_chat_menu_context_menu = function () {
         })
       }
       
-      ctxmenu.show(items, e.target)
+      ctxmenu.show(items, e)
       e.preventDefault()
     }
   })
