@@ -236,15 +236,14 @@ Hue.start_msg = function () {
   Hue.msg_radio_window = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       window_class: "radio !radio_window",
+      window_width: "36rem",
       after_show: function (instance) {
         Hue.after_modal_show(instance)
         Hue.after_modal_set_or_show(instance)
       },
       after_close: function (instance) {     
         Hue.after_modal_close(instance)
-        Hue.remove_alert_title()
         Hue.stop_radio_metadata_loop()
-        Hue.clear_radio_metadata(instance)
       }
     })
   )
@@ -312,6 +311,12 @@ Hue.start_msg = function () {
   Hue.msg_handle_url = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "handle_url"
+    })
+  )
+
+  Hue.msg_handle_radio_history = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "handle_radio_history"
     })
   )
 
@@ -425,6 +430,7 @@ Hue.start_msg = function () {
   Hue.msg_tv_upload_comment.set(Hue.template_tv_upload_comment())
   Hue.msg_reply.set(Hue.template_reply())
   Hue.msg_handle_url.set(Hue.template_handle_url())
+  Hue.msg_handle_radio_history.set(Hue.template_handle_radio_history())
   Hue.msg_delete_messages.set(Hue.template_delete_messages())
   Hue.msg_open_url.set(Hue.template_open_url())
   Hue.msg_view_text.set(Hue.template_view_text())
@@ -459,6 +465,7 @@ Hue.start_msg = function () {
   Hue.msg_image_picker.set_title("Image")
   Hue.msg_tv_picker.set_title("TV")
   Hue.msg_handle_url.set_title("Handle URL")
+  Hue.msg_handle_radio_history.set_title("Handle Radio History")
   Hue.msg_delete_messages.set_title("Delete Message(s)")
   Hue.msg_commands.set_title("Commands")
 }

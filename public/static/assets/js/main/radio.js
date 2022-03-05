@@ -40,24 +40,39 @@ Hue.setup_radio = function () {
 
 // Setup the radio window
 Hue.setup_radio_window = function () {
-  Hue.el("#radio_reload").addEventListener("click", function () {
-    Hue.clear_radio_metadata()
-    Hue.get_radio_metadata()
-    Hue.start_radio_metadata_loop()
+  Hue.el("#radio_history").addEventListener("click", function (e) {
+    let el = e.target.closest(".radio_history_item")
+
+    if (el) {
+      Hue.handle_radio_history_item = el
+      Hue.msg_handle_radio_history.show()
+    }
   })
 
-  Hue.el("#radio_clipboard").addEventListener("click", function () {
-    Hue.copy_string(Hue.get_radio_string())
+  Hue.el("#handle_radio_history_copy").addEventListener("click", function (e) {
+    Hue.msg_handle_radio_history.close()
+    let el = Hue.handle_radio_history_item
+    let info = Hue.el(".radio_history_info", el).textContent
+    Hue.copy_string(info)
     Hue.showmsg("Copied to clipboard", true)
-  })  
+  })
 
-  Hue.el("#radio_search").addEventListener("click", function () {
-    let s = Hue.get_radio_string()
-    let url = `https://www.youtube.com/results?search_query=${s}`
+  Hue.el("#handle_radio_history_search").addEventListener("click", function (e) {
+    Hue.msg_handle_radio_history.close()
+    let el = Hue.handle_radio_history_item
+    let info = Hue.el(".radio_history_info", el).textContent
+    let url = `https://www.youtube.com/results?search_query=${info}`
     Hue.goto_url(url, "tab", true)
   })
-  
-  Hue.horizontal_separator(Hue.el("#radio_buttons"))
+}
+
+// Setup radio window title
+Hue.set_radio_window_title = function (radio, title) {
+  if (title) {
+    Hue.msg_radio_window.set_title(`${radio.name} (${title})`)
+  } else {
+    Hue.msg_radio_window.set_title(radio.name)
+  }
 }
 
 // Make radio items visible or invisible
@@ -191,17 +206,10 @@ Hue.get_radio_metadata = function () {
   let radio = Hue.playing_radio.radio
   Hue.loginfo(`Checking metadata: ${radio.metadata}`)
   
-  let artist_el = Hue.el("#radio_metadata_artist")
-  let title_el = Hue.el("#radio_metadata_title")
-  
-  if (artist_el.textContent === "" && title_el.textContent === "") {
-    artist_el.style.display = "initial"
-    artist_el.textContent = "Loading..."
-    title_el.style.display = "none"
-  }
+  Hue.set_radio_window_title(radio, "Loading...")
 
   if (!radio.metadata) {
-    artist_el.textContent = "Metadata not available"
+    Hue.set_radio_window_title(radio, "Metadata not available")
     return
   }
 
@@ -261,28 +269,16 @@ Hue.get_radio_metadata = function () {
       }
     }
 
-    if (artist) {
-      artist_el.innerHTML = Hue.utilz.make_html_safe(artist)
-      artist_el.style.display = "initial"
-    } else {
-      artist_el.textContent = ""
-      artist_el.style.display = "none"
-    }
-
-    if (title) {
-      title_el.innerHTML = Hue.utilz.make_html_safe(title)
-      title_el.style.display = "initial"
-    } else {
-      title_el.textContent = ""
-      title_el.style.display = "none"
-    }
-
     if (artist || title) {
-      let content = `${radio.name}: ${Hue.get_radio_string()}`
+      let info = Hue.get_radio_string(artist, title)
       let exists = false
       
       for (let el of Hue.els(".radio_history_item")) {
-        if (el.textContent.trim() === content) {
+        let station_el = Hue.el(".radio_history_station", el)
+        let info_el = Hue.el(".radio_history_info", el)
+
+        if (station_el.textContent.trim() === radio.name && 
+          info_el.textContent.trim() === info) {
           exists = true
           break
         }
@@ -291,19 +287,24 @@ Hue.get_radio_metadata = function () {
       if (!exists) {
         let date = Date.now()
         let nice_date = Hue.utilz.nice_date(date)
-        let item = Hue.div("radio_history_item nice_row_center dynamic_title modal_item")
-        item.innerHTML = Hue.template_radio_history_item({content: content})
+        let item = Hue.div("radio_history_item nice_row dynamic_title modal_item action")
+        item.innerHTML = Hue.template_radio_history_item({station: radio.name, info: info})
         item.title = nice_date
         Hue.dataset(item, "date", date)
         Hue.dataset(item, "otitle", nice_date)
         Hue.el("#radio_history").append(item)
         Hue.scroll_radio_history()
       }
+
+      Hue.set_radio_window_title(radio, "")
+
+    } else {
+      Hue.set_radio_window_title(radio, "Metadata not available")
     }
   })
 
   .catch(err => {
-    artist_el.textContent = "Metadata not available"
+    Hue.set_radio_window_title(radio, "Metadata not available")
   })
 }
 
@@ -342,12 +343,6 @@ Hue.check_radio_playing = function () {
     Hue.el("#radio_button_playstop use").href.baseVal = "#icon_play"
     Hue.update_input_placeholder()
   }
-}
-
-// Clear radio metadata window
-Hue.clear_radio_metadata = function () {
-  Hue.el("#radio_metadata_artist").textContent = ""
-  Hue.el("#radio_metadata_title").textContent = ""
 }
 
 // Create a radio item
@@ -497,10 +492,14 @@ Hue.fill_radio_queue = function () {
 }
 
 // Get artist title string
-Hue.get_radio_string = function () {
-  let artist = Hue.el("#radio_metadata_artist").textContent
-  let title = Hue.el("#radio_metadata_title").textContent
-  return `${artist} - ${title}`.trim()
+Hue.get_radio_string = function (artist, title) {
+  if (artist && title) {
+    return `${artist} - ${title}`.trim()
+  } else if (artist) {
+    return artist
+  } else if (title) {
+    return title
+  }
 }
 
 // Clear slide timeouts
