@@ -233,6 +233,24 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_radio_window = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      window_class: "radio !radio_window",
+      after_show: function (instance) {
+        Hue.after_modal_show(instance)
+        Hue.after_modal_set_or_show(instance)
+        Hue.get_radio_metadata(instance)
+        Hue.start_radio_metadata_loop(instance)
+      },
+      after_close: function (instance) {     
+        Hue.after_modal_close(instance)
+        Hue.remove_alert_title()
+        Hue.stop_radio_metadata_loop()
+        Hue.clear_radio_metadata(instance)
+      }
+    })
+  )
+
   Hue.msg_settings = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "settings",
@@ -417,6 +435,7 @@ Hue.start_msg = function () {
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_draw_image.set(Hue.template_draw_image())
+  Hue.msg_radio_window.set(Hue.template_radio_window())
 
   Hue.msg_info.create()
   Hue.msg_info_autoclose.create()
@@ -813,25 +832,4 @@ Hue.get_first_visible_modal_item = function (id) {
       return item
     }
   }
-}
-
-// Create radio window
-Hue.create_radio_window = function () {
-  return Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      window_class: "radio !radio_window",
-      after_show: function (instance) {
-        Hue.after_modal_show(instance)
-        Hue.after_modal_set_or_show(instance)
-        Hue.get_radio_metadata(instance)
-        Hue.start_radio_metadata_loop(instance)
-      },
-      after_close: function (instance) {     
-        Hue.after_modal_close(instance)
-        Hue.remove_alert_title()
-        Hue.stop_radio_metadata_loop()
-        Hue.clear_radio_metadata(instance)
-      }
-    })
-  )
 }
