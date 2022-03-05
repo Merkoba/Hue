@@ -626,4 +626,6 @@ Hue.cancel_radio_crossfade = function () {
 Hue.show_radio_window = function () {
   Hue.msg_radio_window.set_title(Hue.playing_radio.radio.name)
   Hue.msg_radio_window.show()
+  Hue.get_radio_metadata()
+  Hue.start_radio_metadata_loop()
 }
