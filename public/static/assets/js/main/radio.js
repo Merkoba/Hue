@@ -67,7 +67,7 @@ Hue.setup_radio_window = function () {
 }
 
 // Setup radio window title
-Hue.set_radio_window_title = function (radio, title) {
+Hue.set_radio_window_title = function (radio, title = "") {
   if (title) {
     Hue.msg_radio_window.set_title(`${radio.name} (${title})`)
   } else {
@@ -296,7 +296,7 @@ Hue.get_radio_metadata = function () {
         Hue.scroll_radio_history()
       }
 
-      Hue.set_radio_window_title(radio, "")
+      Hue.set_radio_window_title(radio)
     } else {
       Hue.set_radio_window_title(radio, "Metadata not available")
     }
