@@ -677,9 +677,6 @@ Hue.crossfade_radio = function (radio) {
       let p = max_volume * 0.01
       Hue.radio_crossfade_player_1.volume = Math.max(Hue.radio_crossfade_player_1.volume - p, 0)
       Hue.radio_crossfade_player_2.volume = Math.min(Hue.radio_crossfade_player_2.volume + p, 1)
-      console.log(p)
-      console.log(Hue.radio_crossfade_player_1.volume)
-      console.log(Hue.radio_crossfade_player_2.volume)
   
       if (Hue.radio_crossfade_player_1.volume <= 0 && 
         Hue.radio_crossfade_player_2.volume >= max_volume) {
