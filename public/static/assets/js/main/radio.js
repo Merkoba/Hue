@@ -126,6 +126,8 @@ Hue.play_radio = function (radio, crossfade = true, play = true) {
     Hue.check_radio_playing()
     Hue.playing_radio.player.play()
   }
+  
+  Hue.announce_radio()
 }
 
 // After radio play
@@ -134,7 +136,6 @@ Hue.after_radio_play = function () {
   Hue.apply_radio_item_effects()
   Hue.check_radio_playing()
   Hue.scroll_to_radio_item()
-  Hue.announce_radio()
 }
 
 // Set radio player
