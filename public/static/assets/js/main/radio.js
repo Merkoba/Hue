@@ -110,6 +110,10 @@ Hue.play_radio = function (radio, crossfade = true, play = true) {
     crossfade = false
   }
 
+  if (Hue.radio_dj_on) {
+    Hue.start_radio_dj_timeout()
+  }
+
   if (crossfade && !Hue.radio_just_changed() && Hue.radio_is_playing()) {
     Hue.crossfade_radio(radio)
     return
@@ -243,7 +247,6 @@ Hue.scroll_to_radio_item = function () {
 Hue.get_radio_metadata = function () {
   let radio = Hue.playing_radio.radio
   Hue.loginfo(`Checking metadata: ${radio.metadata}`)
-  
   Hue.set_radio_window_title("Loading...")
 
   if (!radio.metadata) {
@@ -504,10 +507,6 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
 
 // Play a random radio station
 Hue.play_random_radio = function () {
-  if (Hue.radio_dj_on) {
-    Hue.start_radio_dj_interval()
-  }
-
   Hue.play_radio(Hue.get_random_radio())
 }
 
@@ -638,25 +637,25 @@ Hue.toggle_radio_dj = function (what) {
 
     let m = Hue.utilz.get_minutes(Hue.config.radio_dj_delay)
     Hue.flash_info("Radio DJ", `Radio stations will change automatically after ${m} minutes`)
-    Hue.start_radio_dj_interval()
+    Hue.start_radio_dj_timeout()
   } else {
     Hue.el("#radio_button_dj").classList.remove("underlined")
-    Hue.stop_radio_dj_interval()
+    Hue.stop_radio_dj_timeout()
   }
 }
 
 // Stop radio dj interval
-Hue.stop_radio_dj_interval = function () {
-  clearInterval(Hue.radio_dj_interval)
+Hue.stop_radio_dj_timeout = function () {
+  clearTimeout(Hue.radio_dj_timeout)
 }
 
 // Start the radio dj interval
-Hue.start_radio_dj_interval = function () {
-  Hue.stop_radio_dj_interval()
+Hue.start_radio_dj_timeout = function () {
+  Hue.stop_radio_dj_timeout()
 
-  Hue.radio_dj_interval = setInterval(function () {
+  Hue.radio_dj_timeout = setInterval(function () {
     if (Hue.radio_dj_on && Hue.radio_is_playing()) {
-      Hue.play_radio(Hue.get_random_radio())
+      Hue.play_random_radio()
     }
   }, Hue.config.radio_dj_delay)
 }
