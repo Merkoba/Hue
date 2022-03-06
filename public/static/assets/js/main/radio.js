@@ -142,21 +142,37 @@ Hue.set_radio_player = function (radio) {
   Hue.playing_radio.player.src = Hue.utilz.cache_bust_url(radio.url)
   Hue.playing_radio.playing = false
   
-  Hue.playing_radio.player.addEventListener("play", function () {
+  Hue.playing_radio.player.addEventListener("play", function (e) {
+    if (e.target !== Hue.playing_radio.player) {
+      return
+    }
+
     Hue.after_radio_play()
   })
   
-  Hue.playing_radio.player.addEventListener("pause", function () {
+  Hue.playing_radio.player.addEventListener("pause", function (e) {
+    if (e.target !== Hue.playing_radio.player) {
+      return
+    }
+
     Hue.after_radio_stop()
   })
 
-  Hue.playing_radio.player.addEventListener("stalled", function () {
+  Hue.playing_radio.player.addEventListener("stalled", function (e) {
+    if (e.target !== Hue.playing_radio.player) {
+      return
+    }
+
     if (Hue.playing_radio.playing) {
       Hue.play_random_radio()
     }
   })
 
-  Hue.playing_radio.player.addEventListener("ended", function () {
+  Hue.playing_radio.player.addEventListener("ended", function (e) {
+    if (e.target !== Hue.playing_radio.player) {
+      return
+    }
+
     if (Hue.playing_radio.playing) {
       Hue.play_random_radio()
     }
