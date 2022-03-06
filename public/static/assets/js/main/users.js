@@ -638,8 +638,6 @@ Hue.show_profile = function (username, user_id = false) {
     Hue.el("#show_profile_details").style.display = "none"
   }
 
-  let same_user = Hue.msg_profile.is_open() && Hue.open_profile_user_id === id
-  
   Hue.open_profile_user_id = id
   Hue.open_profile_username = username
   let pi = Hue.get_profilepic(id)
