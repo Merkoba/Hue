@@ -448,28 +448,28 @@ Hue.create_radio_item_volume = function () {
   container.innerHTML = Hue.template_radio_item_volume()
 
   Hue.el("#radio_item_volume_icon", container).addEventListener("click", function () {
-    Hue.change_radio_volume("down")
+    Hue.change_radio_volume("down", 0.25)
   })
   
   Hue.el("#radio_item_volume_text", container).addEventListener("click", function () {
-    Hue.change_radio_volume("up")
+    Hue.change_radio_volume("up", 0.25)
   })
 
   Hue.el("#radio_controls").append(container)
 }
 
 // Increase or decrease radio volume
-Hue.change_radio_volume = function (direction) {
+Hue.change_radio_volume = function (direction, amount = 0.05) {
   let new_volume = Hue.room_state.radio_volume
-
+  
   if (direction === "up") {
-    new_volume += 0.05  
+    new_volume += amount  
 
     if (new_volume > 1) {
       new_volume = 1
     }
   } else if (direction === "down") {
-    new_volume -= 0.05
+    new_volume -= amount
 
     if (new_volume < 0) {
       new_volume = 0
