@@ -152,6 +152,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_chat_enabled"
 >Whether chat is enabled by default.
 
+"room_state_default_radio_dj_delay"
+>Change radio station automatically after x minutes if radio dj is on.
+
 "max_same_post_diff"
 >Maximum difference in time between a message and and another from the same user to be displayed within the same post.
 
@@ -255,9 +258,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "radio_unslide_delay"
 >Show the radio items fully x ms after mouseenter.
-
-"radio_dj_delay"
->Change radio station automatically after x ms if radio dj is on.
 
 
 ## config.secret.json
