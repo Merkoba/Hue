@@ -126,6 +126,7 @@ Hue.play_radio = function (radio, crossfade = true, play = true) {
 
 // After radio play
 Hue.after_radio_play = function () {
+  Hue.playing_radio.playing = true
   Hue.apply_radio_item_effects()
   Hue.check_radio_playing()
   Hue.scroll_to_radio_item()
@@ -139,21 +140,26 @@ Hue.set_radio_player = function (radio) {
   Hue.playing_radio.player = new Audio()
   Hue.playing_radio.player.volume = Hue.room_state.radio_volume
   Hue.playing_radio.player.src = Hue.utilz.cache_bust_url(radio.url)
+  Hue.playing_radio.playing = false
   
   Hue.playing_radio.player.addEventListener("play", function () {
     Hue.after_radio_play()
   })
   
   Hue.playing_radio.player.addEventListener("pause", function () {
-    Hue.after_stop_radio()
+    Hue.after_radio_stop()
   })
 
   Hue.playing_radio.player.addEventListener("stalled", function () {
-    Hue.play_random_radio()
+    if (Hue.playing_radio.playing) {
+      Hue.play_random_radio()
+    }
   })
 
   Hue.playing_radio.player.addEventListener("ended", function () {
-    Hue.play_random_radio()
+    if (Hue.playing_radio.playing) {
+      Hue.play_random_radio()
+    }
   })
 }
 
@@ -187,7 +193,8 @@ Hue.stop_radio = function () {
 }
 
 // After stop radio
-Hue.after_stop_radio = function () {
+Hue.after_radio_stop = function () {
+  Hue.playing_radio.playing = false
   Hue.apply_radio_item_effects()
   Hue.check_radio_playing()
 }
@@ -345,7 +352,7 @@ Hue.stop_radio_metadata_loop = function () {
 
 // Check if radio is playing
 Hue.radio_is_playing = function () {
-  return !Hue.playing_radio.player.paused
+  return Hue.playing_radio.playing
 }
 
 // Check if radio is playing and perform actions
