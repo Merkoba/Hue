@@ -140,7 +140,7 @@ Hue.modify_setting_widget = function (setting_name) {
   } else if (widget_type === "select") {
     Hue.els("option", item).forEach(it => {
       if (it.value == Hue.settings[setting_name]) {
-        it.selected =true
+        it.selected = true
       }
     })
   }

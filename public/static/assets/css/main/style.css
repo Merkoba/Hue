@@ -870,6 +870,10 @@ a.generic:hover {
 
 select {
 	font-size: 0.95rem;
+	border: 0;
+	background-color: var(--altbackground);
+	color: var(--font_color);
+	cursor: pointer;
 }
 
 .modal_select {
@@ -2442,7 +2446,7 @@ pre {
 
 #radio_stations {
 	position: relative;
-	max-height: calc(100vh - 220px);
+	max-height: calc(100vh - 250px);
 	overflow-y: auto;
 	overflow-x: hidden;
 	margin-bottom: 1rem;
@@ -2507,6 +2511,10 @@ pre {
 	opacity: 0.5;
 	margin-left: 0.5rem;
 	margin-right: 0.5rem;
+}
+
+#radio_item_dj {
+	display: none;
 }
 
 .glowing::before {
