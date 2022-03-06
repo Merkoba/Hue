@@ -163,8 +163,10 @@ Hue.set_radio_player = function (radio) {
       return
     }
 
-    if (Hue.playing_radio.playing) {
+    if (Hue.radio_is_playing() && Hue.radio_dj_on) {
       Hue.play_random_radio()
+    } else {
+      Hue.stop_radio()
     }
   })
 
@@ -173,8 +175,10 @@ Hue.set_radio_player = function (radio) {
       return
     }
 
-    if (Hue.playing_radio.playing) {
+    if (Hue.radio_is_playing() && Hue.radio_dj_on) {
       Hue.play_random_radio()
+    } else {
+      Hue.stop_radio()
     }
   })
 }
