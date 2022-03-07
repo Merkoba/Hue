@@ -222,6 +222,7 @@ Hue.stop_radio = function () {
 Hue.after_radio_stop = function () {
   Hue.playing_radio.playing = false
   Hue.apply_radio_item_effects()
+  Hue.stop_radio_dj_timeout()
   Hue.check_radio_playing()
 }
 
