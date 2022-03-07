@@ -685,6 +685,10 @@ Hue.crossfade_radio = function (radio) {
 
 // Do the radio crossfade after the second player starts
 Hue.do_radio_crossfade = function () {
+  if (!Hue.radio_crossfading) {
+    return
+  }
+  
   let max_volume = Hue.room_state.radio_volume
   let volmod = max_volume * 0.01
 
