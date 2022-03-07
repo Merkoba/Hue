@@ -151,16 +151,6 @@ Hue.upload_file = function (args = {}) {
     args.file.hue_data.comment = args.comment
   }
 
-  if (args.file.hue_data.action === "background_upload") {
-    for (let d in Hue.files) {
-      let f = Hue.files[d]
-
-      if (f.hue_data.action === "background_upload") {
-        Hue.cancel_file_upload(d, false)
-      }
-    }
-  }
-
   args.file.hue_data.size = args.file.size
   args.file.hue_data.type = args.file.type
 
@@ -213,7 +203,7 @@ Hue.upload_file = function (args = {}) {
 
 // Cancels a file upload
 // Deletes the local file and sends a signal to the server to try to cancel it on time
-Hue.cancel_file_upload = function (date, check = true) {
+Hue.cancel_file_upload = function (date) {
   let file = Hue.files[date]
 
   if (!file) {
@@ -226,10 +216,10 @@ Hue.cancel_file_upload = function (date, check = true) {
 
   Hue.change_upload_status(file, "Cancelled", true)
 
-  if (check) {
-    if (file.hue_data.action === "background_upload") {
-      Hue.config_admin_background()
-    }
+  if (file.hue_data.action === "background_upload") {
+    Hue.el("#admin_background").src = Hue.background
+  } else if (file.hue_data.action === "profilepic_upload") {
+    Hue.el("#user_menu_profilepic").src = Hue.get_profilepic(Hue.user_id)
   }
 
   delete Hue.files[date]
