@@ -547,9 +547,9 @@ Hue.commands = {
   },
   "dj": {
     action: (arg, ans) => {
-      Hue.toggle_radio_dj(true)
+      Hue.toggle_radio_dj()
     },
-    description: `Start the radio dj`,
+    description: `Start or stop the radio dj`,
   },
   "randomradio": {
     action: (arg, ans) => {
