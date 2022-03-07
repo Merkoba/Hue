@@ -44,3 +44,33 @@ Hue.on_room_created = function (data) {
   Hue.show_popup(Hue.make_info_popup(f), item)
   Hue.show_open_room(data.id)
 }
+
+// Setup room list
+Hue.setup_rooms = function () {
+  let container = Hue.el("#rooms_container")
+
+  for (let room of Hue.config.rooms) {
+    let item = Hue.div("rooms_item flex_column_center action")
+    
+    item.innerHTML = Hue.template_rooms_item({
+      name: room.name, 
+      topic: room.topic || "Not set"
+    })
+    
+    let icon = Hue.el(".rooms_icon", item)
+    jdenticon.update(icon, room.name)
+    
+    item.addEventListener("click", function () {
+      Hue.show_open_room(room.id)
+    })
+
+    container.append(item)
+  }
+
+  Hue.vertical_separator(container)
+}
+
+// Show room list
+Hue.show_rooms = function () {
+  Hue.msg_rooms.show()
+}

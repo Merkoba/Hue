@@ -2580,3 +2580,8 @@ pre {
 #flash_info_text {
 	padding: 0.5rem;
 }
+
+.rooms_item {
+	padding: 1rem;
+	gap: 0.5rem;
+}

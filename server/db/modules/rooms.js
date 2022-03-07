@@ -103,5 +103,30 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           logger.log_error(err)
         })
     })
-  }  
+  }
+
+  // Get room objects to form a room list (sync)
+  manager.get_rooms = function () {
+    try {
+      let objs = []
+      let path = manager.get_dir_path("rooms")
+      let file_names = vars.fs.readdirSync(path)
+      
+      for (let name of file_names) {
+        if (name.startsWith(".")) {
+          continue
+        }
+        
+        let fpath = manager.get_file_path("rooms", name)
+        let text = vars.fs.readFileSync(fpath, "utf8")
+        let o = JSON.parse(text)
+        objs.push({id: o.id, name: o.name, topic: o.topic})
+      }
+
+      return objs
+    } catch (err) {
+      logger.log_error(err)
+      return
+    }
+  }
 }
