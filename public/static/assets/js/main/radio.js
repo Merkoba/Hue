@@ -695,7 +695,7 @@ Hue.crossfade_radio = function (radio) {
         Hue.play_radio(radio, false, false)
       }
     }, 80)
-  }, 250)
+  }, 500)
 }
 
 // Stop a radio crossfade
