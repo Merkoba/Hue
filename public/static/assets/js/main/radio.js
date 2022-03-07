@@ -137,6 +137,10 @@ Hue.after_radio_play = function () {
   Hue.apply_radio_item_effects()
   Hue.check_radio_playing()
   Hue.scroll_to_radio_item()
+
+  if (Hue.radio_crossfading) {
+    Hue.do_radio_crossfade()
+  }
 }
 
 // Set radio player
@@ -672,35 +676,34 @@ Hue.crossfade_radio = function (radio) {
   }
 
   Hue.radio_crossfading = true
-  let max_volume = Hue.room_state.radio_volume
-
   Hue.radio_crossfade_player_1 = Hue.playing_radio.player
   Hue.set_radio_player(radio)
   Hue.radio_crossfade_player_2 = Hue.playing_radio.player
   Hue.radio_crossfade_player_2.volume = 0
   Hue.radio_crossfade_player_2.play()
+}
 
-  Hue.radio_crossfade_timeout = setTimeout(function () {
-    Hue.radio_crossfade_interval = setInterval(function () {
-      let p = max_volume * 0.01
-      Hue.radio_crossfade_player_1.volume = Math.max(Hue.radio_crossfade_player_1.volume - p, 0)
-      Hue.radio_crossfade_player_2.volume = Math.min(Hue.radio_crossfade_player_2.volume + p, 1)
-  
-      if (Hue.radio_crossfade_player_1.volume <= 0 && 
-        Hue.radio_crossfade_player_2.volume >= max_volume) {
-        clearInterval(Hue.radio_crossfade_interval)
-        Hue.radio_crossfade_player_1.pause()
-        Hue.radio_crossfade_player_1 = undefined
-        Hue.radio_crossfading = false
-        Hue.play_radio(radio, false, false)
-      }
-    }, 80)
-  }, 500)
+// Do the radio crossfade after the second player starts
+Hue.do_radio_crossfade = function () {
+  let max_volume = Hue.room_state.radio_volume
+  let volmod = max_volume * 0.01
+
+  Hue.radio_crossfade_interval = setInterval(function () {
+    Hue.radio_crossfade_player_1.volume = Math.max(Hue.radio_crossfade_player_1.volume - volmod, 0)
+    Hue.radio_crossfade_player_2.volume = Math.min(Hue.radio_crossfade_player_2.volume + volmod, 1)
+
+    if (Hue.radio_crossfade_player_1.volume <= 0 && 
+      Hue.radio_crossfade_player_2.volume >= max_volume) {
+      clearInterval(Hue.radio_crossfade_interval)
+      Hue.radio_crossfade_player_1.pause()
+      Hue.radio_crossfade_player_1 = undefined
+      Hue.radio_crossfading = false
+    }
+  }, 100)
 }
 
 // Stop a radio crossfade
 Hue.cancel_radio_crossfade = function () {
-  clearTimeout(Hue.radio_crossfade_timeout)
   clearInterval(Hue.radio_crossfade_interval)
   Hue.radio_crossfade_player_1.pause()
   Hue.radio_crossfade_player_1 = undefined
