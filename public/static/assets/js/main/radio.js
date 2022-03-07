@@ -757,5 +757,5 @@ Hue.create_radio_dj_controls = function () {
 // Show a radio dj flash info
 Hue.radio_dj_flash_info = function () {
   let m = Hue.room_state.radio_dj_delay
-  Hue.flash_info("Radio DJ", `Radio station will change automatically every ${m} minutes`)
+  Hue.flash_info("Radio DJ", `Radio stations will change automatically every ${m} minutes`)
 }
