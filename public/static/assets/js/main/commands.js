@@ -562,6 +562,12 @@ Hue.commands = {
       Hue.radio_playstop()
     },
     description: `Play or stop the current radio station`,
+  },
+  "rooms": {
+    action: (arg, ans) => {
+      Hue.show_rooms(arg)
+    },
+    description: `Show room list`,
   }
 }
 
