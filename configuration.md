@@ -382,6 +382,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "system_username"
 >Reserved username for system messages.
 
+"rooms_check_delay"
+>Update the rooms list every x minutes.
+
 
 ## Join Flags
 

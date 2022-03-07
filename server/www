@@ -231,4 +231,14 @@ process.on("SIGINT", function () {
 	}
 })
 
+// Update rooms list
+config.rooms = db_manager.get_rooms()
+
+// Update rooms list periodically
+setInterval(function () {
+	config.rooms = db_manager.get_rooms()
+	utilz.loginfo("Rooms updated")
+}, sconfig.rooms_check_delay * 60 * 1000)
+
+// Backup db files in case something goes wrong
 create_db_backup()

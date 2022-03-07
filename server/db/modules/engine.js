@@ -6,16 +6,6 @@ const update_calls = []
 let update_calling = false
 
 module.exports = function (manager, vars, config, sconfig, utilz, logger) {
-  // Get the full file path
-  function get_file_path (type, file_name) {
-    return path.join(root_path, `${sconfig.db_store_path}/${type}/${file_name}`)
-  }
-
-  // Get the full dir path
-  function get_dir_path (type) {
-    return path.join(root_path, `${sconfig.db_store_path}/${type}`)
-  }
-
   // Write to a file
   function write_file (path) {
     clearTimeout(cache[path].timeout)
@@ -57,11 +47,21 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     }
   }
 
+  // Get the full dir path
+  manager.get_dir_path = function (type) {
+    return path.join(root_path, `${sconfig.db_store_path}/${type}`)
+  }
+
+  // Get the full file path
+  manager.get_file_path = function (type, file_name) {
+    return path.join(root_path, `${sconfig.db_store_path}/${type}/${file_name}`)
+  }
+
   // Find one result
   manager.find_one = function (type, query, fields) {
     return new Promise((resolve, reject) => {
       if (query[0] === "id") {
-        let path = get_file_path(type, query[1])
+        let path = manager.get_file_path(type, query[1])
 
         check_file(type, path, query, fields)
 
@@ -77,7 +77,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           reject("Nothing found")
         })
       } else {
-        fs.readdir(get_dir_path(type), async (err, file_names) => {
+        fs.readdir(manager.get_dir_path(type), async (err, file_names) => {
           if (err) {
             logger.log_error(err)
             reject("Nothing found")
@@ -89,7 +89,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
               continue
             }
 
-            let path = get_file_path(type, file_name)
+            let path = manager.get_file_path(type, file_name)
 
             try {
               let obj = await check_file(type, path, query, fields)
@@ -226,7 +226,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         obj.id = `${Math.round(new Date() / 1000)}_${utilz.get_random_string(4)}`
       }
 
-      let path = get_file_path(type, obj.id)
+      let path = manager.get_file_path(type, obj.id)
       add_to_cache(path, obj)
       write_file(path)
       resolve(obj)
@@ -301,7 +301,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           obj[key] = call.fields[key]
         }
 
-        let path = get_file_path(call.type, obj.id)
+        let path = manager.get_file_path(call.type, obj.id)
         cache[path].obj = obj
         write_file(path)
         resolve("Ok")
