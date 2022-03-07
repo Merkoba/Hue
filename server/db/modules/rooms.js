@@ -129,4 +129,11 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       return
     }
   }
+
+  // Delete a room file and remove object (sync)
+  manager.delete_room = function (id) {
+    let fpath = manager.get_file_path("rooms", id)
+    vars.fs.rmSync(fpath)
+    manager.remove_from_cache(fpath)
+  }
 }

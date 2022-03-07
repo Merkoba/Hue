@@ -1,28 +1,20 @@
 const fs = require("fs")
 const path = require("path")
 const root_path = path.join(__dirname, "../../../")
-const cache = {}
 const update_calls = []
 let update_calling = false
 
 module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Write to a file
   function write_file (path) {
-    clearTimeout(cache[path].timeout)
+    clearTimeout(manager.cache[path].timeout)
 
-    if (Date.now() - cache[path].last_write > sconfig.db_write_file_timeout_limit) {
+    if (Date.now() - manager.cache[path].last_write > sconfig.db_write_file_timeout_limit) {
       do_write_file(path)
     } else {
-      cache[path].timeout = setTimeout(() => {
+      manager.cache[path].timeout = setTimeout(() => {
         do_write_file(path)
       }, sconfig.db_write_file_timeout)
-    }
-  }
-
-  // Add to memory cache
-  function add_to_cache (path, obj) {
-    if (cache[path] === undefined) {
-      cache[path] = {timeout: undefined, obj: {}, last_write: 0, obj: obj}
     }
   }
 
@@ -38,14 +30,28 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Do the write file operation
   function do_write_file (path) {
     utilz.loginfo(`Writing: ${path.split("/").slice(-2).join("/")}`)
-    cache[path].last_write = Date.now()
+    manager.cache[path].last_write = Date.now()
 
     try {
-      fs.writeFileSync(path, JSON.stringify(cache[path].obj), "utf8")
+      fs.writeFileSync(path, JSON.stringify(manager.cache[path].obj), "utf8")
     } catch (err) {
       logger.log_error(err)
     }
   }
+
+  manager.cache = {}
+
+  // Add to memory cache
+  manager.add_to_cache = function(path, obj) {
+    if (manager.cache[path] === undefined) {
+      manager.cache[path] = {timeout: undefined, obj: {}, last_write: 0, obj: obj}
+    }
+  }
+
+  // Remove from memory cache
+  manager.remove_from_cache = function (path, obj) {
+    manager.cache[path] = undefined
+  }  
 
   // Get the full dir path
   manager.get_dir_path = function (type) {
@@ -126,8 +132,8 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Check if the file matches
   function check_file (type, path, query, fields) {
     return new Promise((resolve, reject) => {
-      if (cache[path] && cache[path].obj) {
-        let obj = check_file_query(type, cache[path].obj, query, fields)
+      if (manager.cache[path] && manager.cache[path].obj) {
+        let obj = check_file_query(type, manager.cache[path].obj, query, fields)
 
         if (obj) {
           resolve(obj)
@@ -150,7 +156,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             return
           }
 
-          add_to_cache(path, original)
+          manager.add_to_cache(path, original)
           check_version(type, path, original)
 
           let obj = check_file_query(type, original, query, fields)
@@ -227,7 +233,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       }
 
       let path = manager.get_file_path(type, obj.id)
-      add_to_cache(path, obj)
+      manager.add_to_cache(path, obj)
       write_file(path)
       resolve(obj)
     })
@@ -302,7 +308,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         }
 
         let path = manager.get_file_path(call.type, obj.id)
-        cache[path].obj = obj
+        manager.cache[path].obj = obj
         write_file(path)
         resolve("Ok")
       })

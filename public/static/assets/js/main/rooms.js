@@ -5,6 +5,13 @@ Hue.create_room = function (name) {
   })
 }
 
+// Superuser command to create a room
+Hue.delete_room = function (name) {
+  Hue.show_confirm("Superuser Command", "", function () {
+    Hue.socket_emit("delete_room")
+  })
+}
+
 // Shows the Open Room window where the user selects how to open a room
 Hue.show_open_room = function (id) {
   if (id === Hue.config.main_room_id) {

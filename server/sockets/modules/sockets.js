@@ -163,4 +163,9 @@ module.exports = function (Hue) {
       }
     }
   }
+
+  // Disconnect room sockets
+  Hue.handler.disconnect_room_sockets = function (socket) {
+    Hue.io.in(socket.hue_room_id).disconnectSockets()
+  }
 }
