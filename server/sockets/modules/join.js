@@ -1,6 +1,6 @@
 module.exports = function (Hue) {
   // Sets initial hue_* variables on connection
-  Hue.handler.connection = async function (socket) {
+  Hue.handler.connection = function (socket) {
     socket.hue_pinged = false
     socket.hue_kicked = false
     socket.hue_banned = false
@@ -10,7 +10,6 @@ module.exports = function (Hue) {
     socket.hue_locked = false
     socket.hue_info1 = ""
     socket.hue_typing_counter = 0
-    await Hue.handler.add_spam(socket)
   }
 
   // Attempts to join a room
