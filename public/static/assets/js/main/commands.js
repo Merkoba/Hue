@@ -182,7 +182,13 @@ Hue.commands = {
       }
     },
     description: `(Only for superusers) Used to create rooms`,
-  },     
+  },   
+  "deleteroom": {
+    action: (arg, ans) => {
+      Hue.delete_room()
+    },
+    description: `(Only for superusers) Used to delete rooms`,
+  },   
   "highlights": {
     action: (arg, ans) => {
       Hue.show_highlights()
@@ -581,7 +587,8 @@ Hue.setup_commands = function () {
     "modusername",
     "modpassword",
     "annex",
-    "createroom"
+    "createroom",
+    "deleteroom"
   ]
 
   Hue.commands_list = []
