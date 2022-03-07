@@ -870,9 +870,6 @@ a.generic:hover {
 
 select {
 	font-size: 0.95rem;
-	border: 0;
-	background-color: var(--altbackground);
-	color: var(--font_color);
 	cursor: pointer;
 }
 
@@ -2515,6 +2512,12 @@ pre {
 
 #radio_item_dj {
 	display: none;
+}
+
+#radio_dj_delay_select {
+	border: 0;
+	background-color: var(--altbackground);
+	color: var(--font_color);
 }
 
 .glowing::before {
