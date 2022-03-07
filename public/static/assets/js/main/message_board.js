@@ -47,21 +47,17 @@ Hue.setup_message_board = function () {
     el = e.target.closest(".message_board_edit")
 
     if (el) {
-      if (Hue.editing_message_board) {
-        Hue.do_message_board_edit(false)
-      }
-
       let post = el.closest(".message_board_post")
       let content = Hue.el(".message_board_content", post)
       let edit_area = Hue.el(".message_board_edit_area", post)
       let btns = Hue.el(".message_board_buttons", post)
       let edit_btns = Hue.el(".message_board_edit_buttons", post)
-      let text = Hue.el(".message_board_text", post)
+      let text = Hue.dataset(post, "original_message")
 
       content.style.display = "none"
       
       edit_area.style.display = "block"
-      edit_area.value = text.textContent
+      edit_area.value = text
       edit_area.focus()
       edit_area.scrollIntoView({
         block: "center"
@@ -154,6 +150,7 @@ Hue.add_post_to_message_board = function (data, edited) {
   Hue.dataset(post, "id", data.id)
   Hue.dataset(post, "date", data.date)
   Hue.dataset(post, "username", data.username)
+  Hue.dataset(post, "original_message", data.message)
 
   let profilepic = Hue.el(".message_board_profilepic", post)
   
