@@ -47,7 +47,7 @@ Hue.setup_message_board = function () {
     el = e.target.closest(".message_board_edit")
 
     if (el) {
-      if (Hue.editing_message_board_post) {
+      if (Hue.editing_message_board) {
         Hue.do_message_board_edit(false)
       }
 
@@ -70,7 +70,7 @@ Hue.setup_message_board = function () {
       btns.style.display = "none"
       edit_btns.style.display = "flex"
       Hue.editing_message_board_post = post
-      Hue.editing_message_board_post = true
+      Hue.editing_message_board = true
 
       return
     }
@@ -97,7 +97,7 @@ Hue.setup_message_board = function () {
 
 // Do the message board edit
 Hue.do_message_board_edit = function (send = true) {
-  if (!Hue.editing_message_board_post) {
+  if (!Hue.editing_message_board) {
     return
   }
 
@@ -114,7 +114,7 @@ Hue.do_message_board_edit = function (send = true) {
   edit_area.style.display = "none"
   btns.style.display = "flex"
   edit_btns.style.display = "none"
-  Hue.editing_message_board_post = false
+  Hue.editing_message_board = false
 
   if (send) {
     if (message.length > Hue.config.max_message_board_post_length) {

@@ -48,7 +48,7 @@ Hue.activate_key_detection = function () {
       }
 
       return
-    } else if (Hue.editing_message_board_post) {
+    } else if (Hue.editing_message_board) {
       if (e.key === "Enter") {
         Hue.do_message_board_edit()
         e.preventDefault()
