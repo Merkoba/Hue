@@ -50,11 +50,11 @@ Hue.check_arrows = function (text) {
     }
     
     if (text.startsWith("&gt;&gt;&gt;")) {
-      text = `<div class='colortext redtext'>${Hue.remove_arrows(text)}</div>`
+      text = `<div class='colortext redtext'>${Hue.remove_arrows(text, 3)}</div>`
     } else if (text.startsWith("&gt;&gt")) {
-      text = `<div class='colortext bluetext'>${Hue.remove_arrows(text)}</div>`
+      text = `<div class='colortext bluetext'>${Hue.remove_arrows(text, 2)}</div>`
     } else {
-      text = `<div class='colortext greentext'>${Hue.remove_arrows(text)}</div>`
+      text = `<div class='colortext greentext'>${Hue.remove_arrows(text, 1)}</div>`
     }
   } else if (text.includes("\n")) {
     text = `<div class='framed'>${text}</div>`
@@ -64,8 +64,16 @@ Hue.check_arrows = function (text) {
 }
 
 // Remove arrows from the start of strings
-Hue.remove_arrows = function (text) {
-  text = text.replace(/(&gt;)+/, "")
+Hue.remove_arrows = function (text, num_arrows) {
+  let regex = new RegExp(`^(&gt;){1,${num_arrows}}`, "gm")
   text = Hue.utilz.untab_string(text).trim()
-  return text
+
+  let lines = text.split("\n")
+  let new_lines = []
+
+  for (let line of lines) {
+    new_lines.push(line.replace(regex, ""))
+  }
+  
+  return new_lines.join("\n")
 }
