@@ -52,11 +52,12 @@ Hue.on_room_created = function (data) {
   Hue.show_open_room(data.id)
 }
 
-// Setup room list
-Hue.setup_rooms = function () {
+// Fill roomlist with data
+Hue.update_roomlist = function (data) {
   let container = Hue.el("#rooms_container")
+  container.innerHTML = ""
 
-  for (let room of Hue.config.rooms) {
+  for (let room of data.roomlist) {
     let item = Hue.div("rooms_item modal_item flex_column_center action")
     
     item.innerHTML = Hue.template_rooms_item({
@@ -77,11 +78,19 @@ Hue.setup_rooms = function () {
   Hue.vertical_separator(container)
 }
 
-// Show room list
-Hue.show_rooms = function (filter = "") {
+// Show roomlist
+Hue.show_roomlist = function (filter = "") {
+  Hue.socket_emit("get_roomlist")
+  Hue.roomlist_filter = filter
+}
+
+// When roomlist is fetched
+Hue.on_roomlist_received = function (data) {
+  Hue.update_roomlist(data)
+
   Hue.msg_rooms.show(function () {
-    if (filter.trim()) {
-      Hue.el("#rooms_filter").value = filter
+    if (Hue.roomlist_filter.trim()) {
+      Hue.el("#rooms_filter").value = Hue.roomlist_filter
       Hue.do_modal_filter()
     }
   })

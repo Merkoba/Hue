@@ -210,6 +210,9 @@ Hue.server_update_events = {
   },
   announce_radio: (data) => {
     Hue.show_announce_radio(data)
+  },
+  receive_roomlist: (data) => {
+    Hue.on_roomlist_received(data)
   }
 }
 

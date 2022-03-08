@@ -8,10 +8,10 @@ module.exports = function (Hue) {
       }
 
       Hue.handler.files_timeout_action()
-    }, Hue.sconfig.files_loop_interval)
+    }, Hue.sconfig.files_loop_delay)
   }
 
-  // What to do on each room timeout iteration
+  // What to do on each files timeout iteration
   Hue.handler.files_timeout_action = function () {
     try {
       for (let key in Hue.vars.files) {
@@ -26,5 +26,27 @@ module.exports = function (Hue) {
     }
 
     Hue.handler.start_files_timeout()
+  }
+
+  // Update the config with current roomlist data
+  Hue.handler.start_roomlist_timeout = function () {
+    setTimeout(function () {
+      if (Hue.vars.exiting) {
+        return false
+      }
+
+      Hue.handler.roomlist_timeout_action()
+    }, Hue.sconfig.roomlist_loop_delay)
+  }
+  
+  // What to do on each roomlist timeout iteration
+  Hue.handler.roomlist_timeout_action = function () {
+    try {
+      Hue.roomlist = Hue.db_manager.get_roomlist()
+    } catch (err) {
+      Hue.logger.log_error(err)
+    }
+
+    Hue.handler.start_roomlist_timeout()
   }
 }

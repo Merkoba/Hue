@@ -38,4 +38,11 @@ module.exports = function (Hue) {
     Hue.vars.fs.rmSync(room_files, {recursive: true, force: true})
     Hue.handler.disconnect_room_sockets(socket)
   }
+
+  // Get rooms data to update in client
+  Hue.handler.public.get_roomlist = function (socket, data) {
+    Hue.handler.user_emit(socket, "receive_roomlist", {
+      roomlist: Hue.roomlist
+    })
+  }
 }

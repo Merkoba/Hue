@@ -3,7 +3,7 @@
 Hue.setup_activity_bar = function () {
   setInterval(function () {
     Hue.update_activity_bar(true)
-  }, Hue.config.activity_bar_interval)
+  }, Hue.config.activity_bar_delay)
 
   Hue.el("#activity_bar").addEventListener("click", function (e) {
     if (e.target.closest(".activity_bar_item")) {
