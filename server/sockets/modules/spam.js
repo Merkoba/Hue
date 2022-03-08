@@ -8,12 +8,12 @@ module.exports = function (Hue) {
   // Starts a timeout to check spam on sockets
   Hue.handler.anti_spam_timeout = function () {
     setTimeout(function () {
-      Hue.handler.files_timeout_action()
+      Hue.handler.anti_spam_timeout_action()
     }, Hue.sconfig.anti_spam_check_delay)
   }
 
   // What to do on each anti spam iteration
-  Hue.handler.files_timeout_action = function () {
+  Hue.handler.anti_spam_timeout_action = function () {
     for (let key in Hue.handler.anti_spam_users) {
       let user = Hue.handler.anti_spam_users[key]
       if (user.banned) {

@@ -106,7 +106,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Get room objects to form a room list (sync)
-  manager.get_rooms = function () {
+  manager.get_roomlist = function () {
     try {
       let objs = []
       let path = manager.get_dir_path("rooms")

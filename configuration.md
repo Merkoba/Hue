@@ -206,7 +206,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_sockets_per_user"
 >How many active sockets a user can have at the same time. After this limit all incoming socket connections are dropped.
 
-"activity_bar_interval"
+"activity_bar_delay"
 >How often to check for obsolete items in the top activity bar to remove them.
 
 "max_activity_bar_items"
@@ -286,8 +286,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "media_directory"
 >Internal path to were media files (user & rooms images etc) are stored.
 
-"files_loop_interval"
->Interval of the loop to check for expired files that failed to be uploaded properly and delete them from memory.
+"files_loop_delay"
+>Interval of the loop (in minutes) to check for expired files that failed to be uploaded properly and delete them from memory.
 
 "files_loop_max_diff"
 >Amount of time for file upload to be inactive for it to be considered expired.
@@ -382,8 +382,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "system_username"
 >Reserved username for system messages.
 
-"rooms_check_delay"
->Update the rooms list every x minutes.
+"roomlist_check_delay"
+>Update the rooms list every x ms.
 
 
 ## Join Flags

@@ -595,7 +595,7 @@ Hue.commands = {
   },
   "rooms": {
     action: (arg, ans) => {
-      Hue.show_rooms(arg)
+      Hue.show_roomlist(arg)
     },
     description: `Show room list`,
   }

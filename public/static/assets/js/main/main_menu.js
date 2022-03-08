@@ -13,7 +13,7 @@ Hue.setup_main_menu = function () {
   })
 
   Hue.el("#main_menu_rooms").addEventListener("click", function () {
-    Hue.show_rooms()
+    Hue.show_roomlist()
   })
 
   Hue.el("#main_menu_settings").addEventListener("click", function () {

@@ -76,7 +76,7 @@
 	"image_change_cooldown": 2500,
 	"tv_change_cooldown": 2500,
 	"max_sockets_per_user": 100,
-	"activity_bar_interval": 10000,
+	"activity_bar_delay": 10000,
 	"max_activity_bar_items": 20,
 	"url_title_max_length": 35,
 	"max_whisper_users": 20,
