@@ -54,18 +54,20 @@ Hue.on_room_created = function (data) {
 
 // Fill roomlist with data
 Hue.update_roomlist = function (data) {
-  let container = Hue.el("#rooms_container")
+  let container = Hue.el("#roomlist_container")
   container.innerHTML = ""
+  data.roomlist.sort((a, b) => (a.modified < b.modified) ? 1 : -1)
 
   for (let room of data.roomlist) {
-    let item = Hue.div("rooms_item modal_item flex_column_center action")
+    let item = Hue.div("roomlist_item modal_item flex_column_center action")
     
-    item.innerHTML = Hue.template_rooms_item({
+    item.innerHTML = Hue.template_roomlist_item({
       name: room.name, 
-      topic: room.topic || "Not set"
+      topic: room.topic || "Not set",
+      modified: Hue.utilz.timeago(room.modified)
     })
-    
-    let icon = Hue.el(".rooms_icon", item)
+
+    let icon = Hue.el(".roomlist_icon", item)
     jdenticon.update(icon, room.name)
     
     item.addEventListener("click", function () {
@@ -88,16 +90,16 @@ Hue.show_roomlist = function (filter = "") {
 Hue.on_roomlist_received = function (data) {
   Hue.update_roomlist(data)
 
-  Hue.msg_rooms.show(function () {
+  Hue.msg_roomlist.show(function () {
     if (Hue.roomlist_filter.trim()) {
-      Hue.el("#rooms_filter").value = Hue.roomlist_filter
+      Hue.el("#roomlist_filter").value = Hue.roomlist_filter
       Hue.do_modal_filter()
     }
   })
 }
 
-// On rooms filtered
-Hue.after_rooms_filtered = function () {
-  let container = Hue.el("#rooms_container")
+// On roomlist filtered
+Hue.after_roomlist_filtered = function () {
+  let container = Hue.el("#roomlist_container")
   Hue.vertical_separator(container)
 }

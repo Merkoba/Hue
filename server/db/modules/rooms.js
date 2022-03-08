@@ -128,7 +128,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             obj = JSON.parse(text)
           }
           
-          objs.push({id: obj.id, name: obj.name, topic: obj.topic})
+          objs.push({id: obj.id, name: obj.name, topic: obj.topic, modified: obj.modified})
         }
   
         resolve(objs)
