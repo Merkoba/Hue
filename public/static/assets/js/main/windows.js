@@ -180,18 +180,18 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_image_link = Msg.factory(
+  Hue.msg_link_image = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "image_link",
+      id: "link_image",
       window_width: "24rem",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
-        Hue.el("#image_link_input").focus()
+        Hue.el("#link_image_input").focus()
       },
       after_close: function (instance) {
         msgvars.common.after_close(instance)
-        Hue.el("#image_link_input").value = ""
-        Hue.el("#image_link_comment").value = ""
+        Hue.el("#link_image_input").value = ""
+        Hue.el("#link_image_comment").value = ""
       },
     })
   )
@@ -208,18 +208,18 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_tv_link = Msg.factory(
+  Hue.msg_link_tv = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "tv_link",
+      id: "link_tv",
       window_width: "24rem",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
-        Hue.el("#tv_link_input").focus()
+        Hue.el("#link_tv_input").focus()
       },
       after_close: function (instance) {
         msgvars.common.after_close(instance)
-        Hue.el("#tv_link_input").value = ""
-        Hue.el("#tv_link_comment").value = ""
+        Hue.el("#link_tv_input").value = ""
+        Hue.el("#link_tv_comment").value = ""
       },
     })
   )
@@ -449,9 +449,9 @@ Hue.start_msg = function () {
   Hue.msg_user_menu.set(Hue.template_user_menu())
   Hue.msg_userlist.set(Hue.template_userlist())
   Hue.msg_image_picker.set(Hue.template_image_picker())
-  Hue.msg_image_link.set(Hue.template_image_link())
+  Hue.msg_link_image.set(Hue.template_link_image())
   Hue.msg_tv_picker.set(Hue.template_tv_picker())
-  Hue.msg_tv_link.set(Hue.template_tv_link())
+  Hue.msg_link_tv.set(Hue.template_link_tv())
   Hue.msg_write_whisper.set(Hue.template_write_whisper())
   Hue.msg_chat_search.set(Hue.template_chat_search())
   Hue.msg_modal_image.set(Hue.template_modal_image())
@@ -499,9 +499,9 @@ Hue.start_msg = function () {
   Hue.msg_confirm.set_title("Confirm Action")
   Hue.msg_draw_image.set_title("Draw an Image")
   Hue.msg_image_picker.set_title("Image")
-  Hue.msg_image_link.set_title("Link Image")
+  Hue.msg_link_image.set_title("Link Image")
   Hue.msg_tv_picker.set_title("TV")
-  Hue.msg_tv_link.set_title("Link TV")
+  Hue.msg_link_tv.set_title("Link TV")
   Hue.msg_handle_url.set_title("Handle URL")
   Hue.msg_handle_radio_history.set_title("Handle Radio History")
   Hue.msg_delete_messages.set_title("Delete Message(s)")

@@ -175,7 +175,7 @@ Hue.num_media_elements_visible = function () {
 // The proper way is to use '/image url > comment'
 // But if the > is ommitted it will still try to determine what each part is
 Hue.get_media_change_inline_comment = function (type, source) {
-  let comment = Hue.el(`#${type}_link_comment`).value
+  let comment = Hue.el(`#link_${type}_comment`).value
 
   if (comment) {
     // OK
@@ -344,7 +344,7 @@ Hue.setup_media_menu = function () {
 Hue.setup_media_pickers = function () {
   Hue.el("#image_picker_link").addEventListener("click", function () {
     Hue.msg_image_picker.close()
-    Hue.msg_image_link.show()
+    Hue.show_link_image()
   })
 
   Hue.el("#image_picker_upload").addEventListener("click", function () {
@@ -358,7 +358,7 @@ Hue.setup_media_pickers = function () {
 
   Hue.el("#tv_picker_link").addEventListener("click", function () {
     Hue.msg_tv_picker.close()
-    Hue.msg_tv_link.show()
+    Hue.show_link_tv()
   }) 
   
   Hue.el("#tv_picker_upload").addEventListener("click", function () {
@@ -368,12 +368,12 @@ Hue.setup_media_pickers = function () {
 
 // Setup tv link window
 Hue.setup_media_link = function () {
-  Hue.el("#image_link_submit").addEventListener("click", function () {
-    Hue.image_link_submit()
+  Hue.el("#link_image_submit").addEventListener("click", function () {
+    Hue.link_image_submit()
   })
 
-  Hue.el("#tv_link_submit").addEventListener("click", function () {
-    Hue.tv_link_submit()
+  Hue.el("#link_tv_submit").addEventListener("click", function () {
+    Hue.link_tv_submit()
   })
 }
 
@@ -945,7 +945,7 @@ Hue.show_media_picker = function (type) {
 Hue.load_media_link = function (type, source, comment) {
   Hue.el(`#${type}_link_comment`).value = comment
   Hue.el(`#${type}_link_input`).value = source
-  Hue[`msg_${type}_link`].show()
+  Hue[`msg_link_${type}`].show()
 }
 
 // Generate Image or TV item messages

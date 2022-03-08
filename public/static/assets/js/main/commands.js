@@ -88,6 +88,12 @@ Hue.commands = {
     },
     description: "Changes the image using a search term or URL",
   },
+  "linkimage": {
+    action: (arg, ans) => {
+      Hue.show_image_
+    },
+    description: "Changes the image using a search term or URL",
+  },
   "topic": {
     action: (arg, ans) => {
       if (arg) {

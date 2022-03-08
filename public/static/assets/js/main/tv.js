@@ -422,8 +422,14 @@ Hue.fix_tv_frame = function () {
   }
 }
 
-Hue.tv_link_submit = function () {
-  let val = Hue.el("#tv_link_input").value.trim()
+// Show link tv
+Hue.show_link_tv = function () {
+  Hue.msg_link_tv.show()
+}
+
+// Submit link tv
+Hue.link_tv_submit = function () {
+  let val = Hue.el("#link_tv_input").value.trim()
 
   if (val !== "") {
     Hue.change_tv_source(val)

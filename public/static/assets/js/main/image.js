@@ -420,8 +420,15 @@ Hue.process_image_upload_comment = function () {
   Hue.close_all_modals()
 }
 
-Hue.image_link_submit = function () {
-  let val = Hue.el("#image_link_input").value.trim()
+// Show link image
+Hue.show_link_image = function () {
+  Hue.msg_link_image.show()
+}
+
+
+// Submit link image
+Hue.link_image_submit = function () {
+  let val = Hue.el("#link_image_input").value.trim()
 
   if (val !== "") {
     Hue.change_image_source(val)

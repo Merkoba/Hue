@@ -12,8 +12,8 @@ Hue.activate_key_detection = function () {
         Hue.msg_tv_picker.is_open() ||
         Hue.msg_image_picker.is_open() ||
         Hue.msg_message_board.is_open() ||
-        Hue.msg_image_link.is_open() ||
-        Hue.msg_tv_link.is_open()
+        Hue.msg_link_image.is_open() ||
+        Hue.msg_link_tv.is_open()
       ) {
         // Continue
       } else {
@@ -67,10 +67,10 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.msg_image_link.is_open()) {
-        if (Hue.msg_image_link.is_highest()) {
+      if (Hue.msg_link_image.is_open()) {
+        if (Hue.msg_link_image.is_highest()) {
           if (e.key === "Enter") {
-            Hue.image_link_submit()
+            Hue.link_image_submit()
             e.preventDefault()
           }
 
@@ -78,10 +78,10 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.msg_tv_link.is_open()) {
-        if (Hue.msg_tv_link.is_highest()) {
+      if (Hue.msg_link_tv.is_open()) {
+        if (Hue.msg_link_tv.is_highest()) {
           if (e.key === "Enter") {
-            Hue.tv_link_submit()
+            Hue.link_tv_submit()
             e.preventDefault()
           }
 
