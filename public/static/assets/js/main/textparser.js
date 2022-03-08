@@ -66,14 +66,14 @@ Hue.check_arrows = function (text) {
 // Remove arrows from the start of strings
 Hue.remove_arrows = function (text, num_arrows) {
   let regex = new RegExp(`^(&gt;){1,${num_arrows}}`, "gm")
-  text = Hue.utilz.untab_string(text).trim()
-
+  
   let lines = text.split("\n")
   let new_lines = []
-
+  
   for (let line of lines) {
     new_lines.push(line.replace(regex, ""))
   }
   
-  return new_lines.join("\n")
+  let new_text = new_lines.join("\n")
+  return Hue.utilz.untab_string(new_text).trim()
 }
