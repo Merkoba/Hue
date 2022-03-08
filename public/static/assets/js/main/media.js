@@ -343,6 +343,7 @@ Hue.setup_media_menu = function () {
 // More media picker configurations
 Hue.setup_media_pickers = function () {
   Hue.el("#image_picker_link").addEventListener("click", function () {
+    Hue.msg_image_picker.close()
     Hue.msg_image_link.show()
   })
 
@@ -356,6 +357,7 @@ Hue.setup_media_pickers = function () {
   })
 
   Hue.el("#tv_picker_link").addEventListener("click", function () {
+    Hue.msg_tv_picker.close()
     Hue.msg_tv_link.show()
   }) 
   
