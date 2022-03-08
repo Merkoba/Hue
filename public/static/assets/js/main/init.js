@@ -196,6 +196,7 @@ Hue.init = function () {
   Hue.setup_drag_events()
   Hue.setup_open_url()
   Hue.setup_media_pickers()
+  Hue.setup_media_link()
   Hue.setup_generic_separators()
   Hue.setup_media_menu()
   Hue.setup_chat()

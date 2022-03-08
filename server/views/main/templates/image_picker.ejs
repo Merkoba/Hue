@@ -1,15 +1,8 @@
 <script id="template_image_picker" type="text/x-handlebars-template" class="template">
-  <div class="media_picker_info">
-    <div title="Use this in the main chat input">Command: <%= vars.commands_prefix %>image x</div>
-  </div>
-  <div class="flex_column_center">
-    <input type="text" id="image_source_picker_input" class="input1 media_picker_input" placeholder="Search Term or URL">
-    <input type="text" id="image_source_picker_input_comment" class="input1 media_picker_input" placeholder="Comment">
-  </div>
   <div class="flex_row_center media_picker_options generic_horizontal_separator" id="image_picker_options">
+    <div id="image_picker_link" class="menu_item action inline">Link</div>
     <div id="image_picker_upload" class="menu_item action inline">Upload</div>
     <div id="image_picker_draw" class="menu_item action inline">Draw</div>
-    <div id="image_picker_submit" class="menu_item action inline">Submit</div>
   </div>
   <input type="text" id="image_history_filter" data-mode="manual" class="filter_input" placeholder="Filter">
   <div id="image_history_container" class="media_history_container chat_area chat_area_clone chat_area_clone_center"></div>

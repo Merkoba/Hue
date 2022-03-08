@@ -1934,17 +1934,13 @@ a.special_link:hover {
 	margin-bottom: 1rem;
 }
 
-.media_picker_info {
-	margin-bottom: 1rem;
-}
-
-.media_picker_input {
-	margin-bottom: 1rem;
-}
-
 .media_picker_options {
 	margin-bottom: 1rem;
 	user-select: none;
+}
+
+.media_link_input {
+	margin-bottom: 1rem;
 }
 
 #user_menu_change_buttons {
