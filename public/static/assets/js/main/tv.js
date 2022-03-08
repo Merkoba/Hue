@@ -602,3 +602,8 @@ Hue.setup_tv_upload_comment = function () {
     Hue.scroll_modal_to_bottom("tv_upload_comment")
   })
 }
+
+// Trigger upload tv picker
+Hue.show_upload_tv = function () {
+  Hue.el("#tv_picker_upload").click()
+}
