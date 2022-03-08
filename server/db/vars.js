@@ -1,6 +1,7 @@
 module.exports = function (vars, manager, config, sconfig, utilz, logger) {
   // Initial declarations
   vars.fs = require("fs")
+  vars.fsp = require("fs").promises
   vars.path = require("path")
   vars.bcrypt = require("bcrypt")
   vars.reserved_usernames = [

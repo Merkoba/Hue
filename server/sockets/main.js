@@ -112,7 +112,6 @@ module.exports = function (Hue) {
     })
   })
 
-  Hue.roomlist = Hue.db_manager.get_roomlist()
   Hue.handler.start_files_timeout()
-  Hue.handler.start_roomlist_timeout()
+  Hue.handler.roomlist_timeout_action()
 }
