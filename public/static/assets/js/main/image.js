@@ -476,3 +476,8 @@ Hue.image_wheel_next = function (e) {
   let next = Hue.image_changed[index]
   Hue.load_media(next)
 }
+
+// Trigger upload image picker
+Hue.show_upload_image = function () {
+  Hue.el("#image_picker_upload").click()
+}

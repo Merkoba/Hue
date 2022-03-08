@@ -78,6 +78,18 @@ Hue.commands = {
     },
     description: "Changes the tv using a search term or URL",
   },
+  "linktv": {
+    action: (arg, ans) => {
+      Hue.show_link_tv()
+    },
+    description: "Show the link tv window",
+  },
+  "uploadtv": {
+    action: (arg, ans) => {
+      Hue.show_upload_tv()
+    },
+    description: "Show the upload tv window",
+  },
   "image": {
     action: (arg, ans) => {
       if (arg) {
@@ -90,9 +102,15 @@ Hue.commands = {
   },
   "linkimage": {
     action: (arg, ans) => {
-      Hue.show_image_
+      Hue.show_link_image()
     },
-    description: "Changes the image using a search term or URL",
+    description: "Show the link image window",
+  },
+  "uploadimage": {
+    action: (arg, ans) => {
+      Hue.show_upload_image()
+    },
+    description: "Show the upload image window",
   },
   "topic": {
     action: (arg, ans) => {
