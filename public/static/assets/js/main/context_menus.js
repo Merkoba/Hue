@@ -2,7 +2,7 @@
 // This is triggered by a normal click
 Hue.start_chat_menu_context_menu = function () {
   document.addEventListener("click", function (e) {
-    if (e.target.closest(".chat_menu_button_container")) {
+    if (e.target.closest("#chat_area .chat_menu_button_container")) {
       e.stopPropagation()
       let items = []
       let message = e.target.closest(".message")
@@ -77,6 +77,19 @@ Hue.start_chat_menu_context_menu = function () {
       
       ctxmenu.show(items, e)
       e.preventDefault()
+    } else if (e.target.closest(".chat_area_clone .chat_menu_button_container")) {
+      let message = e.target.closest(".message")
+      let message_id = Hue.dataset(message, "message_id")
+      let items = []
+
+      items.push({
+        text: "Jump",
+        action: function () {
+          Hue.jump_to_chat_message(message_id)
+        }
+      })
+      
+      ctxmenu.show(items, e)
     }
   })
 }
