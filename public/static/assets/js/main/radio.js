@@ -99,6 +99,10 @@ Hue.change_radio_state = function (what) {
 Hue.check_radio_play = function (radio) {
   if (Hue.is_playing_radio(radio) && Hue.radio_is_playing()) {
     Hue.stop_radio()
+    
+    if (Hue.radio_dj_on) {
+      Hue.toggle_radio_dj(false)
+    }
   } else {
     Hue.play_radio(radio)
   }
@@ -688,7 +692,7 @@ Hue.do_radio_crossfade = function () {
   if (!Hue.radio_crossfading) {
     return
   }
-  
+
   let max_volume = Hue.room_state.radio_volume
   let volmod = max_volume * 0.01
 
