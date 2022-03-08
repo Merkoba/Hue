@@ -239,6 +239,11 @@ body * {
 	justify-content: center;
 }
 
+.chat_area_clone .announcement_content_container {
+	width: 99%;
+	cursor: pointer;
+}
+
 #media {
 	display: flex;
 	width: 100%;
@@ -526,15 +531,6 @@ body * {
 	display: inline-flex;
 	flex-grow: 1;
 	margin-left: var(--chat_side_spacing);
-}
-
-.chat_area_clone .announcement_content_container {
-	width: 99%;
-	cursor: pointer;
-}
-
-.chat_area_clone .message_edit_container {
-	width: 99%;
 }
 
 .brk_container {
