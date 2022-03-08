@@ -40,9 +40,9 @@ module.exports = function (Hue) {
   }
   
   // What to do on each roomlist timeout iteration
-  Hue.handler.roomlist_timeout_action = function () {
+  Hue.handler.roomlist_timeout_action = async function () {
     try {
-      Hue.roomlist = Hue.db_manager.get_roomlist()
+      Hue.roomlist = await Hue.db_manager.get_roomlist()
     } catch (err) {
       Hue.logger.log_error(err)
     }

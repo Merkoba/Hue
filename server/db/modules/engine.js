@@ -44,7 +44,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Add to memory cache
   manager.add_to_cache = function(path, obj) {
     if (manager.cache[path] === undefined) {
-      manager.cache[path] = {timeout: undefined, obj: {}, last_write: 0, obj: obj}
+      manager.cache[path] = {timeout: undefined, last_write: 0, obj: obj}
     }
   }
 
@@ -52,6 +52,11 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.remove_from_cache = function (path, obj) {
     manager.cache[path] = undefined
   }  
+
+  // Check if path is in cache
+  manager.path_in_cache = function (path) {
+    return manager.cache[path] && manager.cache[path].obj
+  }
 
   // Get the full dir path
   manager.get_dir_path = function (type) {
@@ -132,7 +137,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Check if the file matches
   function check_file (type, path, query, fields) {
     return new Promise((resolve, reject) => {
-      if (manager.cache[path] && manager.cache[path].obj) {
+      if (manager.path_in_cache(path)) {
         let obj = check_file_query(type, manager.cache[path].obj, query, fields)
 
         if (obj) {
