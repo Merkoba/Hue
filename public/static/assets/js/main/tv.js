@@ -422,12 +422,12 @@ Hue.fix_tv_frame = function () {
   }
 }
 
-Hue.tv_picker_submit = function () {
-  let val = Hue.el("#tv_source_picker_input").value.trim()
+Hue.tv_link_submit = function () {
+  let val = Hue.el("#tv_link_input").value.trim()
 
   if (val !== "") {
     Hue.change_tv_source(val)
-    Hue.msg_tv_picker.close()
+    Hue.close_all_modals()
   }
 }
 
@@ -558,7 +558,6 @@ Hue.show_tv_upload_comment = function (file, type) {
       })
 
       Hue.el("#tv_upload_comment_input").focus()
-      Hue.scroll_modal_to_bottom("tv_upload_comment")
     })
   }
 
@@ -581,14 +580,19 @@ Hue.process_tv_upload_comment = function () {
   }
 
   Hue.upload_file({ file: file, action: type, comment: comment })
-  Hue.msg_tv_upload_comment.close()
+  Hue.close_all_modals()
 }
 
 // Setups the upload tv comment window
 Hue.setup_tv_upload_comment = function () {
   let video = Hue.el("#tv_upload_comment_video_preview")
+  
   video.addEventListener("error", function () {
     this.style.display = "none"
     Hue.el("#tv_upload_comment_video_feedback").style.display = "inline"
+  })
+
+  video.addEventListener("loadeddata", function () {
+    Hue.scroll_modal_to_bottom("tv_upload_comment")
   })
 }

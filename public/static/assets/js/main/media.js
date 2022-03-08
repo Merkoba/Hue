@@ -175,7 +175,7 @@ Hue.num_media_elements_visible = function () {
 // The proper way is to use '/image url > comment'
 // But if the > is ommitted it will still try to determine what each part is
 Hue.get_media_change_inline_comment = function (type, source) {
-  let comment = Hue.el(`#${type}_source_picker_input_comment`).value
+  let comment = Hue.el(`#${type}_link_comment`).value
 
   if (comment) {
     // OK
@@ -342,6 +342,10 @@ Hue.setup_media_menu = function () {
 
 // More media picker configurations
 Hue.setup_media_pickers = function () {
+  Hue.el("#image_picker_link").addEventListener("click", function () {
+    Hue.msg_image_link.show()
+  })
+
   Hue.el("#image_picker_upload").addEventListener("click", function () {
     Hue.msg_image_picker.close()
   })
@@ -350,24 +354,25 @@ Hue.setup_media_pickers = function () {
     Hue.msg_image_picker.close()
     Hue.open_draw_image("image")
   })
+
+  Hue.el("#tv_picker_link").addEventListener("click", function () {
+    Hue.msg_tv_link.show()
+  }) 
   
-  Hue.el("#image_picker_submit").addEventListener("click", function () {
-    Hue.image_picker_submit()
-  })
-
-  Hue.el("#tv_picker_reload").addEventListener("click", function () {
-    if (Hue.loaded_tv) {
-      Hue.load_media(Hue.loaded_tv)
-    }
-  })
-
-  Hue.el("#tv_picker_submit").addEventListener("click", function () {
-    Hue.tv_picker_submit()
-  })
-
   Hue.el("#tv_picker_upload").addEventListener("click", function () {
     Hue.msg_tv_picker.close()
   })  
+}
+
+// Setup tv link window
+Hue.setup_media_link = function () {
+  Hue.el("#image_link_submit").addEventListener("click", function () {
+    Hue.image_link_submit()
+  })
+
+  Hue.el("#tv_link_submit").addEventListener("click", function () {
+    Hue.tv_link_submit()
+  })
 }
 
 // Updates the dimensions of a specified element
@@ -926,21 +931,19 @@ Hue.edited_media_comment = function (data) {
   }
 }
 
-// Used to change the image
-// Shows the image picker window to input a URL, or upload a file
+// Shows the media picker window
 Hue.show_media_picker = function (type) {
   Hue[`msg_${type}_picker`].show(function () {
-    Hue.el(`#${type}_source_picker_input`).focus()
     Hue.show_media_history(type)
     Hue.scroll_modal_to_top(`${type}_picker`)
   })
 }
 
 // Load media picker
-Hue.load_media_picker = function (type, source, comment) {
-  Hue.show_media_picker(type)
-  Hue.el(`#${type}_source_picker_input`).value = source
-  Hue.el(`#${type}_source_picker_input_comment`).value = comment
+Hue.load_media_link = function (type, source, comment) {
+  Hue.el(`#${type}_link_comment`).value = comment
+  Hue.el(`#${type}_link_input`).value = source
+  Hue[`msg_${type}_link`].show()
 }
 
 // Generate Image or TV item messages

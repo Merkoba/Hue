@@ -381,7 +381,6 @@ Hue.show_image_upload_comment = function (file, type) {
       })
 
       Hue.el("#image_upload_comment_input").focus()
-      Hue.scroll_modal_to_bottom("image_upload_comment")
     })
   }
 
@@ -390,11 +389,15 @@ Hue.show_image_upload_comment = function (file, type) {
 
 // Setups the upload image comment window
 Hue.setup_image_upload_comment = function () {
-  let img = Hue.el("#image_upload_comment_image_preview")
+  let image = Hue.el("#image_upload_comment_image_preview")
 
-  img.addEventListener("error", function () {
+  image.addEventListener("error", function () {
     this.style.display = "none"
     Hue.el("#image_upload_comment_image_feedback").style.display = "inline"
+  })
+
+  image.addEventListener("load", function () {
+    Hue.scroll_modal_to_bottom("image_upload_comment")
   })
 }
 
@@ -414,11 +417,11 @@ Hue.process_image_upload_comment = function () {
   }
 
   Hue.upload_file({ file: file, action: type, comment: comment })
-  Hue.msg_image_upload_comment.close()
+  Hue.close_all_modals()
 }
 
-Hue.image_picker_submit = function () {
-  let val = Hue.el("#image_source_picker_input").value.trim()
+Hue.image_link_submit = function () {
+  let val = Hue.el("#image_link_input").value.trim()
 
   if (val !== "") {
     Hue.change_image_source(val)

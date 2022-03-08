@@ -175,9 +175,23 @@ Hue.start_msg = function () {
       content_class: "!media_picker_content",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
-        Hue.el("#image_source_picker_input").value = ""
-        Hue.el("#image_source_picker_input_comment").value = ""
         Hue.reset_media_history_filter("image")
+      },
+    })
+  )
+
+  Hue.msg_image_link = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "image_link",
+      window_width: "24rem",
+      after_show: function (instance) {
+        msgvars.common.after_show(instance)
+        Hue.el("#image_link_input").focus()
+      },
+      after_close: function (instance) {
+        msgvars.common.after_close(instance)
+        Hue.el("#image_link_input").value = ""
+        Hue.el("#image_link_comment").value = ""
       },
     })
   )
@@ -189,9 +203,23 @@ Hue.start_msg = function () {
       content_class: "!media_picker_content",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
-        Hue.el("#tv_source_picker_input").value = ""
-        Hue.el("#tv_source_picker_input_comment").value = ""
         Hue.reset_media_history_filter("tv")
+      },
+    })
+  )
+
+  Hue.msg_tv_link = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "tv_link",
+      window_width: "24rem",
+      after_show: function (instance) {
+        msgvars.common.after_show(instance)
+        Hue.el("#tv_link_input").focus()
+      },
+      after_close: function (instance) {
+        msgvars.common.after_close(instance)
+        Hue.el("#tv_link_input").value = ""
+        Hue.el("#tv_link_comment").value = ""
       },
     })
   )
@@ -287,6 +315,7 @@ Hue.start_msg = function () {
   Hue.msg_tv_upload_comment = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "tv_upload_comment",
+      scroll_on_show: false,
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.el("#tv_upload_comment_input").value = ""
@@ -420,7 +449,9 @@ Hue.start_msg = function () {
   Hue.msg_user_menu.set(Hue.template_user_menu())
   Hue.msg_userlist.set(Hue.template_userlist())
   Hue.msg_image_picker.set(Hue.template_image_picker())
+  Hue.msg_image_link.set(Hue.template_image_link())
   Hue.msg_tv_picker.set(Hue.template_tv_picker())
+  Hue.msg_tv_link.set(Hue.template_tv_link())
   Hue.msg_write_whisper.set(Hue.template_write_whisper())
   Hue.msg_chat_search.set(Hue.template_chat_search())
   Hue.msg_modal_image.set(Hue.template_modal_image())
@@ -468,7 +499,9 @@ Hue.start_msg = function () {
   Hue.msg_confirm.set_title("Confirm Action")
   Hue.msg_draw_image.set_title("Draw an Image")
   Hue.msg_image_picker.set_title("Image")
+  Hue.msg_image_link.set_title("Link Image")
   Hue.msg_tv_picker.set_title("TV")
+  Hue.msg_tv_link.set_title("Link TV")
   Hue.msg_handle_url.set_title("Handle URL")
   Hue.msg_handle_radio_history.set_title("Handle Radio History")
   Hue.msg_delete_messages.set_title("Delete Message(s)")

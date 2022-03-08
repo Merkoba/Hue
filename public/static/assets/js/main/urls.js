@@ -112,12 +112,12 @@ Hue.setup_drag_events = function () {
   })
 
   Hue.el("#handle_url_image").addEventListener("click", function () {
-    Hue.load_media_picker("image", Hue.handled_url, "")
+    Hue.load_media_link("image", Hue.handled_url, "")
     Hue.msg_handle_url.close()
   })
   
   Hue.el("#handle_url_tv").addEventListener("click", function () {
-    Hue.load_media_picker("tv", Hue.handled_url, "")
+    Hue.load_media_link("tv", Hue.handled_url, "")
     Hue.msg_handle_url.close()
   })
 
@@ -170,7 +170,7 @@ Hue.setup_open_url = function () {
   })
 
   Hue.el("#open_url_menu_change").addEventListener("click", function () {
-    Hue.load_media_picker(Hue.open_url_data.media_type, Hue.open_url_data.source, Hue.open_url_data.comment)
+    Hue.load_media_link(Hue.open_url_data.media_type, Hue.open_url_data.source, Hue.open_url_data.comment)
     Hue.msg_open_url.close()
   })
 
