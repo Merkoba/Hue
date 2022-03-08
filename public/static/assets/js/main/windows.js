@@ -56,9 +56,9 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_rooms = Msg.factory(
+  Hue.msg_roomlist = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "rooms",
+      id: "roomlist",
       window_width: "22rem"
     })
   )
@@ -445,7 +445,7 @@ Hue.start_msg = function () {
 
   Hue.msg_main_menu.set(Hue.template_main_menu())
   Hue.msg_room_menu.set(Hue.template_room_menu())
-  Hue.msg_rooms.set(Hue.template_rooms())
+  Hue.msg_roomlist.set(Hue.template_roomlist())
   Hue.msg_user_menu.set(Hue.template_user_menu())
   Hue.msg_userlist.set(Hue.template_userlist())
   Hue.msg_image_picker.set(Hue.template_image_picker())
@@ -484,7 +484,7 @@ Hue.start_msg = function () {
   Hue.msg_chat_search.set_title("Chat Search")
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_menu.set_title("Room Menu")
-  Hue.msg_rooms.set_title("Rooms")
+  Hue.msg_roomlist.set_title("Rooms")
   Hue.msg_user_menu.set_title("User Menu")
   Hue.msg_settings.set_title("Settings")
   Hue.msg_media_menu.set_title("Media Menu")
