@@ -288,9 +288,7 @@ Hue.update_userlist_window = function (filter_out = []) {
     let image = Hue.el(".userlist_item_profilepic", el)
 
     image.addEventListener("error", function (e) {
-      if (this.src !== Hue.config.default_profilepic_url) {
-        this.src = Hue.config.default_profilepic_url
-      }
+      Hue.fallback_profilepic(this)
     })
 
     let role_tag = Hue.role_tag(user.role)
@@ -1072,4 +1070,11 @@ Hue.check_user_in_room = function (username) {
 // Show user posts
 Hue.show_user_posts = function (username) {
   Hue.show_chat_search(`$user ${username}`)
+}
+
+// Apply fallback profilepic
+Hue.fallback_profilepic = function (el) {
+  if (el.src !== Hue.config.default_profilepic_url) {
+    el.src = Hue.config.default_profilepic_url
+  }
 }

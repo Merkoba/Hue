@@ -152,6 +152,11 @@ Hue.update_whisper_users = function (username) {
       img.classList.add("profilepic")
       img.classList.add("actionbox")
       img.title = username
+
+      img.addEventListener("error", function () {
+        Hue.fallback_profilepic(this)
+      })
+      
       Hue.dataset(img, "username", username)
       img.src = Hue.get_profilepic(user.user_id)
       profilepics.append(img)
@@ -276,10 +281,8 @@ Hue.show_whisper = function (data) {
       })
 
       profilepic.addEventListener("error", function () {
-        if (this.src !== Hue.config.default_profilepic_url) {
-          this.src = Hue.config.default_profilepic_url
-        }
-      })      
+        Hue.fallback_profilepic(this)
+      })
     } else {
       profilepic.style.display = "none"
     }
@@ -403,6 +406,10 @@ Hue.push_whisper = function (message, on_click, read, data = false) {
   Hue.dataset(content, "otitle", title)
   Hue.dataset(content, "date", date)
   Hue.dataset(content, "read", read)
+
+  Hue.el(".profilepic", item).addEventListener("error", function () {
+    Hue.fallback_profilepic(this)
+  })
 
   if (read) {
     content.textContent = message
