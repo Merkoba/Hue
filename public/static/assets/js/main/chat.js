@@ -151,7 +151,16 @@ Hue.make_chat_message = function (args = {}) {
     Hue.dataset(quote, "quote_username", args.quote_username)
     Hue.dataset(quote, "quote_user_id", args.quote_user_id)
     Hue.dataset(quote, "quote_id", args.quote_id)
-    Hue.el(".chat_quote_profilepic", quote).src = Hue.get_profilepic(args.quote_user_id)
+
+    let quote_profilepic = Hue.el(".chat_quote_profilepic", quote)
+    
+    quote_profilepic.addEventListener("error", function () {
+      if (this.src !== Hue.config.default_profilepic_url) {
+        this.src = Hue.config.default_profilepic_url
+      }
+    })
+
+    quote_profilepic.src = Hue.get_profilepic(args.quote_user_id)
   } else {
     quote.style.display = "none"
   }
