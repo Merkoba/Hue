@@ -2330,7 +2330,8 @@ pre {
 	outline: none;
 }
 
-#draw_image_controls {
+#draw_image_info {
+	margin-top: 1rem;
 	margin-bottom: 1rem;
 }
 

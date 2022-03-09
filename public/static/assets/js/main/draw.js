@@ -92,8 +92,13 @@ Hue.draw_image_add_sector = function () {
 Hue.setup_draw_image = function () {
   Hue.draw_image_context = Hue.el("#draw_image_area").getContext("2d")
   Hue.draw_image_context.scale(2, 2)
+  let area = Hue.el("#draw_image_area")
 
-  Hue.el("#draw_image_area").addEventListener("mousedown", function (e) {
+  area.addEventListener("mousedown", function (e) {
+    if (e.button === 2) {
+      return
+    }
+
     if (Hue.draw_image_mode === "pencil") {
       Hue.draw_image_just_entered = false
       Hue.draw_image_check_increase_snapshot()
@@ -103,7 +108,7 @@ Hue.setup_draw_image = function () {
     }
   })
 
-  Hue.el("#draw_image_area").addEventListener("mousemove", function (e) {
+  area.addEventListener("mousemove", function (e) {
     if (Hue.draw_image_mode === "pencil") {
       if (Hue.mouse_is_down) {
         Hue.draw_image_add_click(
@@ -118,11 +123,11 @@ Hue.setup_draw_image = function () {
     }
   })
 
-  Hue.el("#draw_image_area").addEventListener("mouseenter", function (e) {
+  area.addEventListener("mouseenter", function (e) {
     Hue.draw_image_just_entered = true
   })
 
-  Hue.el("#draw_image_area").addEventListener("click", function (e) {
+  area.addEventListener("click", function (e) {
     if (Hue.draw_image_mode === "bucket") {
       let result = Hue.draw_image_bucket_fill(e.offsetX, e.offsetY)
 
@@ -131,6 +136,11 @@ Hue.setup_draw_image = function () {
         Hue.increase_draw_image_snapshot(result)
       }
     }
+  })
+
+  area.addEventListener("contextmenu", function (e) {
+    e.preventDefault()
+    Hue.draw_color_picker(e.offsetX, e.offsetY)
   })
 
   Hue.el("#draw_image_mode_select_pencil").addEventListener("click", function () {
@@ -587,5 +597,24 @@ Hue.draw_image_change_mode = function () {
     Hue.set_draw_image_mode_input("bucket")
   } else if (Hue.draw_image_mode === "bucket") {
     Hue.set_draw_image_mode_input("pencil")
+  }
+}
+
+// Pick the color under the cursor
+Hue.draw_color_picker = function (x, y) {
+  let context = Hue.draw_image_context
+  let w = context.canvas.width
+  let image_data = Hue.draw_image_get_image_data()
+  let data = image_data.data
+  let node = [y * 2, x * 2]
+  let array = Hue.get_canvas_node_color(data, node, w)
+  let hex = Hue.colorlib.rgb_to_hex(array)
+
+  if (Hue.draw_image_mode === "pencil") {
+    Hue.draw_image_pencil_color = hex
+    Hue.el("#draw_image_pencil_color").value = hex
+  } else if (Hue.draw_image_mode === "bucket") {
+    Hue.draw_image_bucket_color = hex
+    Hue.el("#draw_image_bucket_color").value = hex
   }
 }
