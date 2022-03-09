@@ -2333,6 +2333,7 @@ pre {
 #draw_image_controls {
 	margin-bottom: 1rem;
 	gap: 2rem;
+	user-select: none;
 }
 
 #draw_image_pencil_controls {
