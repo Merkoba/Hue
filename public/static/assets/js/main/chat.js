@@ -172,9 +172,7 @@ Hue.make_chat_message = function (args = {}) {
   htimeago.textContent = Hue.utilz.timeago(d)
 
   Hue.el(".profilepic", fmessage).addEventListener("error", function () {
-    if (this.src !== Hue.config.default_profilepic_url) {
-      this.src = Hue.config.default_profilepic_url
-    }
+    Hue.fallback_profilepic(this)
   })
 
   let first_url = false

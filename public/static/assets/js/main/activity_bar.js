@@ -51,9 +51,7 @@ Hue.update_activity_bar = function (check = false) {
     let img_el = Hue.el(".activity_bar_profilepic", el)
 
     img_el.addEventListener("error", function () {
-      if (this.src !== Hue.config.default_profilepic_url) {
-        this.src = Hue.config.default_profilepic_url
-      }
+      Hue.fallback_profilepic(this)
     })
 
     Hue.dataset(img_el, "user_id", user.user_id)

@@ -94,6 +94,14 @@ Hue.show_chat_search = function (filter = "") {
 
     if (messages.length) {
       for (let message of messages) {
+        let profilepics = Hue.els(".profilepic", message)
+
+        for (let pic of profilepics) {
+          pic.addEventListener("error", function (e) {
+            Hue.fallback_profilepic(this)
+          })
+        }
+
         Hue.el("#chat_search_container").append(message)
       }
     } 

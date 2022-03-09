@@ -151,9 +151,7 @@ Hue.set_bio = function (bio) {
 // Setups the user menu
 Hue.setup_user_menu = function () {
   Hue.el("#user_menu_profilepic").addEventListener("error", function () {
-    if (this.src !== Hue.config.default_profilepic_url) {
-      this.src = Hue.config.default_profilepic_url
-    }
+    Hue.fallback_profilepic(this)
   })
 
   Hue.el("#user_menu_bio_textarea").addEventListener("blur", function () {
