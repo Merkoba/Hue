@@ -248,7 +248,7 @@ Hue.start_msg = function () {
   Hue.msg_chat_search = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "chat_search",
-      window_width: "42rem",
+      window_width: "38rem",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.reset_chat_search_filter()
@@ -389,7 +389,7 @@ Hue.start_msg = function () {
   Hue.msg_message_board = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "message_board",
-      window_width: "42rem",
+      window_width: "38rem",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.do_message_board_edit(false)
