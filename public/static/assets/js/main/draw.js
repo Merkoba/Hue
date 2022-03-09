@@ -163,6 +163,10 @@ Hue.setup_draw_image = function () {
     Hue.needs_confirm("clear_draw_image_func")
   })
 
+  Hue.el("#draw_image_info").addEventListener("click", function () {
+    Hue.show_draw_image_info()
+  })
+
   Hue.el("#draw_image_upload").addEventListener("click", function () {
     Hue.upload_draw_image()
   })
@@ -617,4 +621,9 @@ Hue.draw_color_picker = function (x, y) {
     Hue.draw_image_bucket_color = hex
     Hue.el("#draw_image_bucket_color").value = hex
   }
+}
+
+// Show draw image info
+Hue.show_draw_image_info = function () {
+  Hue.showmsg("Use right-click to select the color under the cursor")
 }
