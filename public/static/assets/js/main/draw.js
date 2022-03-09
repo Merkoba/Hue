@@ -90,7 +90,8 @@ Hue.draw_image_add_sector = function () {
 
 // Setups the draw image window
 Hue.setup_draw_image = function () {
-  Hue.draw_image_context =Hue.el("#draw_image_area").getContext("2d")
+  Hue.draw_image_context = Hue.el("#draw_image_area").getContext("2d")
+  Hue.draw_image_context.scale(2, 2)
 
   Hue.el("#draw_image_area").addEventListener("mousedown", function (e) {
     if (Hue.draw_image_mode === "pencil") {
