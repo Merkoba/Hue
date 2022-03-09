@@ -2332,6 +2332,7 @@ pre {
 
 #draw_image_controls {
 	margin-bottom: 1rem;
+	gap: 2rem;
 }
 
 #draw_image_pencil_controls {
@@ -2345,10 +2346,6 @@ pre {
 #draw_image_buttons {
 	margin-top: 1rem;
 	user-select: none;
-}
-
-#draw_image_mode_select_bucket {
-	margin-left: 1.6rem;
 }
 
 #draw_image_bucket_color {

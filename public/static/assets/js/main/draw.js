@@ -99,12 +99,25 @@ Hue.setup_draw_image = function () {
       return
     }
 
+    if (Hue.draw_color_picker_on) {
+      Hue.draw_color_picker(e.offsetX, e.offsetY)
+      Hue.toggle_draw_color_picker()
+      return
+    }
+
     if (Hue.draw_image_mode === "pencil") {
       Hue.draw_image_just_entered = false
       Hue.draw_image_check_increase_snapshot()
       Hue.draw_image_add_sector()
       Hue.draw_image_add_click(e.offsetX, e.offsetY, false)
       Hue.redraw_draw_image()
+    } else if (Hue.draw_image_mode === "bucket") {
+      let result = Hue.draw_image_bucket_fill(e.offsetX, e.offsetY)
+
+      if (result) {
+        Hue.draw_image_check_redo()
+        Hue.increase_draw_image_snapshot(result)
+      }
     }
   })
 
@@ -127,22 +140,6 @@ Hue.setup_draw_image = function () {
     Hue.draw_image_just_entered = true
   })
 
-  area.addEventListener("click", function (e) {
-    if (Hue.draw_image_mode === "bucket") {
-      let result = Hue.draw_image_bucket_fill(e.offsetX, e.offsetY)
-
-      if (result) {
-        Hue.draw_image_check_redo()
-        Hue.increase_draw_image_snapshot(result)
-      }
-    }
-  })
-
-  area.addEventListener("contextmenu", function (e) {
-    e.preventDefault()
-    Hue.draw_color_picker(e.offsetX, e.offsetY)
-  })
-
   Hue.el("#draw_image_mode_select_pencil").addEventListener("click", function () {
     Hue.set_draw_image_mode_input("pencil")
   })
@@ -163,12 +160,12 @@ Hue.setup_draw_image = function () {
     Hue.needs_confirm("clear_draw_image_func")
   })
 
-  Hue.el("#draw_image_info").addEventListener("click", function () {
-    Hue.show_draw_image_info()
-  })
-
   Hue.el("#draw_image_upload").addEventListener("click", function () {
     Hue.upload_draw_image()
+  })
+
+  Hue.el("#draw_image_color_picker").addEventListener("click", function () {
+    Hue.toggle_draw_color_picker()
   })
 
   let select = ""
@@ -623,7 +620,13 @@ Hue.draw_color_picker = function (x, y) {
   }
 }
 
-// Show draw image info
-Hue.show_draw_image_info = function () {
-  Hue.showmsg("Use right-click to select the color under the cursor")
+// Toggle draw color picker
+Hue.toggle_draw_color_picker = function () {
+  Hue.draw_color_picker_on = !Hue.draw_color_picker_on
+
+  if (Hue.draw_color_picker_on) {
+    Hue.el("#draw_image_color_picker").classList.add("underlined")
+  } else {
+    Hue.el("#draw_image_color_picker").classList.remove("underlined")
+  }
 }
