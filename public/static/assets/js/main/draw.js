@@ -511,7 +511,7 @@ Hue.draw_image_bucket_fill = function (x, y) {
   let h = context.canvas.height
   let image_data = Hue.draw_image_get_image_data()
   let data = image_data.data
-  let node = [y, x]
+  let node = [y * 2, x * 2]
   let target_color = Hue.get_canvas_node_color(data, node, w)
   let replacement_color = Hue.colorlib.hex_to_rgb_array(Hue.draw_image_bucket_color)
   replacement_color.push(255)
