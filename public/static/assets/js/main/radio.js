@@ -323,7 +323,6 @@ Hue.get_radio_metadata = function () {
 
     if (artist || title) {
       let info = Hue.get_radio_string(artist, title)
-      let exists = false
       
       for (let el of Hue.els(".radio_history_item")) {
         let station_el = Hue.el(".radio_history_station", el)
@@ -331,31 +330,29 @@ Hue.get_radio_metadata = function () {
 
         if (station_el.textContent.trim() === radio.name && 
           info_el.textContent.trim() === info) {
-          exists = true
-          break
+            el.remove()
+            break
         }
       }
 
-      if (!exists) {
-        let date = Date.now()
-        let nice_date = Hue.utilz.nice_date(date)
-        let item = Hue.div("radio_history_item nice_row dynamic_title modal_item action")
-        item.innerHTML = Hue.template_radio_history_item({station: radio.name})
+      let date = Date.now()
+      let nice_date = Hue.utilz.nice_date(date)
+      let item = Hue.div("radio_history_item nice_row dynamic_title modal_item action")
+      item.innerHTML = Hue.template_radio_history_item({station: radio.name})
 
-        // This is to deal with html unicode like &#12375;&#12375;
-        Hue.el(".radio_history_info", item).innerHTML = Hue.utilz.make_html_safe(info)
+      // This is to deal with html unicode like &#12375;&#12375;
+      Hue.el(".radio_history_info", item).innerHTML = Hue.utilz.make_html_safe(info)
 
-        item.title = nice_date
-        Hue.dataset(item, "date", date)
-        Hue.dataset(item, "otitle", nice_date)
-        Hue.horizontal_separator(item)
-        Hue.el("#radio_history").prepend(item)
+      item.title = nice_date
+      Hue.dataset(item, "date", date)
+      Hue.dataset(item, "otitle", nice_date)
+      Hue.horizontal_separator(item)
+      Hue.el("#radio_history").prepend(item)
 
-        let items = Hue.els(".radio_history_item")
+      let items = Hue.els(".radio_history_item")
 
-        if (items.length > Hue.config.radio_history_crop_limit) {
-          items.slice(-1)[0].remove()
-        }
+      if (items.length > Hue.config.radio_history_crop_limit) {
+        items.slice(-1)[0].remove()
       }
 
       Hue.set_radio_window_title()
