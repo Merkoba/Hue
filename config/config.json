@@ -99,7 +99,12 @@
 		{"name": "Artefaktor", "url": "http://c32.radioboss.fm:8032/autodj", "metadata": "http://c32.radioboss.fm:8032/status-json.xsl"},
 		{"name": "Grooves NYC", "url": "http://136.243.90.85:8060/64", "metadata": "http://136.243.90.85:8060/status-json.xsl"},
 		{"name": "AMP", "url": "http://radio.anothermusicproject.com:8000/idm", "metadata": "http://radio.anothermusicproject.com:8000/status-json.xsl"},
-		{"name": "Channel 1", "url": "http://stream.tilos.hu/karolyi-chill-eclectic", "metadata": "http://stream.tilos.hu/status-json.xsl"}
+		{"name": "Channel 1", "url": "http://stream.tilos.hu/karolyi-chill-eclectic", "metadata": "http://stream.tilos.hu/status-json.xsl"},
+		{"name": "Anima IDM", "url": "http://amoris.sknt.ru/idm.mp3", "metadata": ""},
+		{"name": "Anima Techno", "url": "http://amoris.sknt.ru/techno.mp3", "metadata": ""},
+		{"name": "Anima DubTech", "url": "http://amoris.sknt.ru/dubtechnomix.mp3", "metadata": ""},
+		{"name": "Anima Minimal", "url": "http://amoris.sknt.ru/minimal.mp3", "metadata": ""},
+		{"name": "Anima Goa", "url": "http://amoris.sknt.ru/goa.mp3", "metadata": ""}
 	],
 	"radio_metadata_check_delay": 30000,
 	"radio_slide_delay": 1000,
