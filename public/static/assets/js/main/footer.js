@@ -21,7 +21,7 @@ Hue.setup_footer = function () {
   })
 
   Hue.el("#footer_user").addEventListener("click", function () {
-    Hue.show_chat_search(`$user ${Hue.username}`)
+    Hue.show_user_posts()
   })
   
   Hue.el("#footer_links").addEventListener("click", function () {
