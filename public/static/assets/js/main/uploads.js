@@ -188,11 +188,8 @@ Hue.upload_file = function (args = {}) {
     icon: "image",
     id: `uploading_${date}`,
     title: `Size: ${Hue.utilz.get_size_string(args.file.hue_data.size / 1024)}`,
-    autoclose: false
-  }
-
-  obj.after_close = function () {
-    if (!args.file.hue_data.sending_last_slice) {
+    autoclose: false,
+    on_x_button_click: function () {
       Hue.cancel_file_upload(date)
     }
   }
@@ -205,7 +202,7 @@ Hue.upload_file = function (args = {}) {
 // Deletes the local file and sends a signal to the server to try to cancel it on time
 Hue.cancel_file_upload = function (date) {
   let file = Hue.files[date]
-
+  
   if (!file) {
     return false
   }
