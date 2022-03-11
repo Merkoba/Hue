@@ -268,6 +268,14 @@ Hue.profilepic_selected = function (file) {
     return false
   }
 
+  for (let date in Hue.files) {
+    let f = Hue.files[date]
+
+    if (f.hue_data.action === "profilepic_upload") {
+      Hue.cancel_file_upload(date)
+    }
+  }
+
   let reader = new FileReader()
 
   reader.onload = function (e) {
