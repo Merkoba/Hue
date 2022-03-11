@@ -394,6 +394,10 @@ Hue.push_whisper = function (message, on_click, read, data = false) {
 
   if (data && data.user_id) {
     item.innerHTML = `<img class='whispers_item_profilepic profilepic' loading='lazy' src='${Hue.get_profilepic(data.user_id)}'>`
+    
+    Hue.el(".profilepic", item).addEventListener("error", function () {
+      Hue.fallback_profilepic(this)
+    })
   }
 
   let message_el = Hue.div("whispers_item_content action dynamic_title")
@@ -406,10 +410,6 @@ Hue.push_whisper = function (message, on_click, read, data = false) {
   Hue.dataset(content, "otitle", title)
   Hue.dataset(content, "date", date)
   Hue.dataset(content, "read", read)
-
-  Hue.el(".profilepic", item).addEventListener("error", function () {
-    Hue.fallback_profilepic(this)
-  })
 
   if (read) {
     content.textContent = message
