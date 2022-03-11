@@ -1,0 +1,11 @@
+<script id="template_command_book" type="text/x-handlebars-template" class="template">
+  <input type="text" id="command_book_filter" class="filter_input" placeholder="Filter">
+  <div id="command_book_container" class="nice_row_container">
+    {{#each commands}}
+    <div class="command_book_item modal_item nice_row">
+      <div class="command_book_name">{{@key}}:</div>
+      <div class="command_book_description">{{description}}</div>
+    </div>
+    {{/each}} 
+  </div>
+</script>
