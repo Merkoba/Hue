@@ -49,9 +49,9 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_room_menu = Msg.factory(
+  Hue.msg_room_config = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "room_menu",
+      id: "room_config",
       window_width: "22rem"
     })
   )
@@ -63,15 +63,15 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_user_menu = Msg.factory(
+  Hue.msg_user_profile = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "user_menu",
+      id: "user_profile",
       clear_editables: false,
       window_width: "22rem",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
-        if (Hue.user_menu_audio) {
-          Hue.user_menu_audio.pause()
+        if (Hue.user_profile_audio) {
+          Hue.user_profile_audio.pause()
         }
       }
     })
@@ -224,9 +224,9 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_media_menu = Msg.factory(
+  Hue.msg_media_tweaks = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "media_menu",
+      id: "media_tweaks",
       window_width: "22rem"
     })
   )
@@ -431,8 +431,8 @@ Hue.start_msg = function () {
     })
   )
   
-  Hue.msg_media_menu.set(
-    Hue.template_media_menu({
+  Hue.msg_media_tweaks.set(
+    Hue.template_media_tweaks({
       percentages: Hue.create_media_percentages()
     })
   )
@@ -444,9 +444,9 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_main_menu.set(Hue.template_main_menu())
-  Hue.msg_room_menu.set(Hue.template_room_menu())
+  Hue.msg_room_config.set(Hue.template_room_config())
   Hue.msg_roomlist.set(Hue.template_roomlist())
-  Hue.msg_user_menu.set(Hue.template_user_menu())
+  Hue.msg_user_profile.set(Hue.template_user_profile())
   Hue.msg_userlist.set(Hue.template_userlist())
   Hue.msg_image_picker.set(Hue.template_image_picker())
   Hue.msg_link_image.set(Hue.template_link_image())
@@ -483,11 +483,11 @@ Hue.start_msg = function () {
 
   Hue.msg_chat_search.set_title("Chat Search")
   Hue.msg_main_menu.set_title("Main Menu")
-  Hue.msg_room_menu.set_title("Room Menu")
-  Hue.msg_roomlist.set_title("Rooms")
-  Hue.msg_user_menu.set_title("User Menu")
-  Hue.msg_settings.set_title("Settings")
-  Hue.msg_media_menu.set_title("Media Menu")
+  Hue.msg_room_config.set_title("Room Config")
+  Hue.msg_roomlist.set_title("Room List")
+  Hue.msg_user_profile.set_title("User Profile")
+  Hue.msg_settings.set_title("User Settings")
+  Hue.msg_media_tweaks.set_title("Media Tweaks")
   Hue.msg_admin_activity.set_title("Admin Activity")
   Hue.msg_image_upload_comment.set_title("Add a Comment")
   Hue.msg_tv_upload_comment.set_title("Add a Comment")
@@ -505,7 +505,7 @@ Hue.start_msg = function () {
   Hue.msg_handle_url.set_title("Handle URL")
   Hue.msg_handle_radio_history.set_title("Handle Radio History")
   Hue.msg_delete_messages.set_title("Delete Message(s)")
-  Hue.msg_commands.set_title("Commands")
+  Hue.msg_commands.set_title("Command Book")
 }
 
 // Sets all info window 2 variables to false

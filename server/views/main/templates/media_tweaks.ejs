@@ -1,0 +1,26 @@
+<script id="template_media_tweaks" type="text/x-handlebars-template" class="template">
+  <div id="media_tweaks" class="flex_column_center">
+    <div id="media_tweaks_top" class="full_width">
+      <div class="flex_row_center generic_horizontal_separator">
+        <div id="media_tweaks_swap" class="action bigger">Swap</div>
+        <div id="media_tweaks_rotate" class="action bigger">Rotate</div>
+        <div id="media_tweaks_revolve" class="action bigger">Revolve</div>
+      </div>
+    </div>
+
+    <div class="full_width">
+      <div class="setting_title">TV Size / Image Size</div>
+      <select class="modal_select" id="media_tweaks_tv_size">
+        {{{percentages}}}
+      </select>
+      
+      <div class="setting_title">Chat Size / Media Size</div>
+      <select class="modal_select" id="media_tweaks_chat_size">
+        {{{percentages}}}
+      </select>
+    </div>
+
+    <div id="media_tweaks_toggle_chat" class="action bigger">Toggle Chat</div>
+    <div id="media_tweaks_defaults" class="action bigger">Apply Defaults</div>
+  </div>
+</script>

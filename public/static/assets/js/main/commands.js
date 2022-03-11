@@ -231,24 +231,6 @@ Hue.commands = {
     },
     description: `Shows the main menu`,
   },
-  "roommenu": {
-    action: (arg, ans) => {
-      Hue.show_room_menu()
-    },
-    description: `Shows the room menu`,
-  },
-  "usermenu": {
-    action: (arg, ans) => {
-      Hue.show_user_menu()
-    },
-    description: `Shows the user menu`,
-  },
-  "mediamenu": {
-    action: (arg, ans) => {
-      Hue.show_media_menu()
-    },
-    description: `Shows the media menu`,
-  },
   "lockimage": {
     action: (arg, ans) => {
       Hue.change_media_lock({type:"image", what:true})
@@ -593,7 +575,7 @@ Hue.commands = {
     },
     description: `Play or stop the current radio station`,
   },
-  "rooms": {
+  "roomlist": {
     action: (arg, ans) => {
       Hue.show_roomlist(arg)
     },

@@ -37,10 +37,10 @@ Hue.start_dropzone = function () {
 
 // Handle generic image upload
 Hue.upload_image = function (file) {
-  if (Hue.msg_room_menu.is_open()) {
+  if (Hue.msg_room_config.is_open()) {
     Hue.background_selected(file)
     return
-  } else if (Hue.msg_user_menu.is_open()) {
+  } else if (Hue.msg_user_profile.is_open()) {
     Hue.profilepic_selected(file)
     return
   }
@@ -216,7 +216,7 @@ Hue.cancel_file_upload = function (date) {
   if (file.hue_data.action === "background_upload") {
     Hue.el("#admin_background").src = Hue.background
   } else if (file.hue_data.action === "profilepic_upload") {
-    Hue.el("#user_menu_profilepic").src = Hue.get_profilepic(Hue.user_id)
+    Hue.el("#user_profile_profilepic").src = Hue.get_profilepic(Hue.user_id)
   }
 
   delete Hue.files[date]
