@@ -139,22 +139,22 @@ Hue.submit_change_password = function () {
 Hue.set_username = function (username) {
   Hue.username = username
   Hue.generate_mentions_regex()
-  Hue.el("#user_menu_username").textContent = Hue.username
+  Hue.el("#user_profile_username").textContent = Hue.username
 }
 
 // Bio setter
 Hue.set_bio = function (bio) {
   Hue.bio = bio
-  Hue.el("#user_menu_bio_textarea").value = Hue.bio
+  Hue.el("#user_profile_bio_textarea").value = Hue.bio
 }
 
-// Setups the user menu
-Hue.setup_user_menu = function () {
-  Hue.el("#user_menu_profilepic").addEventListener("error", function () {
+// Setups the user profile
+Hue.setup_user_profile = function () {
+  Hue.el("#user_profile_profilepic").addEventListener("error", function () {
     Hue.fallback_profilepic(this)
   })
 
-  Hue.el("#user_menu_bio_textarea").addEventListener("blur", function () {
+  Hue.el("#user_profile_bio_textarea").addEventListener("blur", function () {
     let value = Hue.utilz.single_linebreak(this.value)
 
     if (value !== Hue.bio) {
@@ -170,40 +170,40 @@ Hue.setup_user_menu = function () {
     }
   })
 
-  Hue.el("#user_menu_reg_date").textContent = Hue.utilz.nice_date(Hue.user_reg_date)
-  Hue.el("#user_menu_id").textContent = `ID: ${Hue.user_id}`
+  Hue.el("#user_profile_reg_date").textContent = Hue.utilz.nice_date(Hue.user_reg_date)
+  Hue.el("#user_profile_id").textContent = `ID: ${Hue.user_id}`
 
-  Hue.el("#user_menu_profilepic").addEventListener("click", function () {
+  Hue.el("#user_profile_profilepic").addEventListener("click", function () {
     Hue.open_profilepic_select()
   })
 
-  Hue.el("#user_menu_audioclip").addEventListener("click", function () {
+  Hue.el("#user_profile_audioclip").addEventListener("click", function () {
     Hue.show_audioclip_menu()
   })
 
-  Hue.el("#user_menu_logout").addEventListener("click", function () {
+  Hue.el("#user_profile_logout").addEventListener("click", function () {
     Hue.needs_confirm("logout")
   })
 
-  Hue.el("#user_menu_change_username").addEventListener("click", function () {
+  Hue.el("#user_profile_change_username").addEventListener("click", function () {
     Hue.show_change_username()    
   })
 
-  Hue.el("#user_menu_change_password").addEventListener("click", function () {
+  Hue.el("#user_profile_change_password").addEventListener("click", function () {
     Hue.show_change_password()    
   })
 }
 
-// Updates some user menu elements
-Hue.update_user_menu = function () {
+// Updates some user profile elements
+Hue.update_user_profile = function () {
   let src = Hue.get_profilepic(Hue.user_id)
-  Hue.el("#user_menu_profilepic").src = src
-  Hue.el("#user_menu_bio_textarea").value = Hue.bio
+  Hue.el("#user_profile_profilepic").src = src
+  Hue.el("#user_profile_bio_textarea").value = Hue.bio
 }
 
-// Shows the user menu
-Hue.show_user_menu = function () {
-  Hue.msg_user_menu.show()
+// Shows the user profile
+Hue.show_user_profile = function () {
+  Hue.msg_user_profile.show()
 }
 
 // Setups the profile image circular cropper
@@ -221,7 +221,7 @@ Hue.setup_profilepic_cropper = function () {
       })
 
       .then(function (blob) {
-        Hue.el("#user_menu_profilepic").src = Hue.config.profilepic_loading_url
+        Hue.el("#user_profile_profilepic").src = Hue.config.profilepic_loading_url
 
         Hue.upload_file({
           file: blob,
@@ -352,11 +352,11 @@ Hue.show_audioclip_menu = function () {
     })
 
     Hue.el("#play_audioclip").addEventListener("click", function () {
-      Hue.user_menu_audio = document.createElement("audio")
+      Hue.user_profile_audio = document.createElement("audio")
       let user = Hue.get_user_profile()
       let src = Hue.get_audioclip(user.user_id)
-      Hue.user_menu_audio.src = src
-      Hue.user_menu_audio.play()
+      Hue.user_profile_audio.src = src
+      Hue.user_profile_audio.play()
     })
 
     Hue.horizontal_separator(Hue.el("#audioclip_select_container"))

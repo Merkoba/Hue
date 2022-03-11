@@ -117,25 +117,25 @@ Hue.swap_display_positions = function () {
   Hue.apply_media_positions()
 }
 
-// Refresh media menu widgets
-Hue.refresh_media_menu = function () {
-  Hue.els("#media_menu_tv_size option").forEach(it => {
+// Refresh media tweaks widgets
+Hue.refresh_media_tweaks = function () {
+  Hue.els("#media_tweaks_tv_size option").forEach(it => {
     if (it.value == Hue.room_state.tv_display_percentage) {
       it.selected = true
     }
   })
 
-  Hue.els("#media_menu_chat_size option").forEach(it => {
+  Hue.els("#media_tweaks_chat_size option").forEach(it => {
     if (it.value == Hue.room_state.chat_display_percentage) {
       it.selected = true
     }
   })
 }
 
-// Shows the media menu
-Hue.show_media_menu = function () {
-  Hue.refresh_media_menu()  
-  Hue.msg_media_menu.show()
+// Shows the media tweaks
+Hue.show_media_tweaks = function () {
+  Hue.refresh_media_tweaks()  
+  Hue.msg_media_tweaks.show()
 }
 
 // Initial change for current media
@@ -305,35 +305,35 @@ Hue.show_media_history = function (type, filter = "") {
   Hue.vertical_separator(Hue.el(`#${type}_history_container`))
 }
 
-// Additional media menu configurations
-Hue.setup_media_menu = function () {
-  Hue.el("#media_menu_swap").addEventListener("click", function () {
+// Additional media tweaks configurations
+Hue.setup_media_tweaks = function () {
+  Hue.el("#media_tweaks_swap").addEventListener("click", function () {
     Hue.swap_media()
   })
 
-  Hue.el("#media_menu_rotate").addEventListener("click", function () {
+  Hue.el("#media_tweaks_rotate").addEventListener("click", function () {
     Hue.rotate_media()
   })
 
-  Hue.el("#media_menu_revolve").addEventListener("click", function () {
+  Hue.el("#media_tweaks_revolve").addEventListener("click", function () {
     Hue.change_main_layout()
   })   
 
-  Hue.el("#media_menu_tv_size").addEventListener("change", function () {
-    let size = Hue.el("#media_menu_tv_size option:checked").value
+  Hue.el("#media_tweaks_tv_size").addEventListener("change", function () {
+    let size = Hue.el("#media_tweaks_tv_size option:checked").value
     Hue.do_media_tv_size_change(size)
   })
 
-  Hue.el("#media_menu_chat_size").addEventListener("change", function () {
-    let size = Hue.el("#media_menu_chat_size option:checked").value
+  Hue.el("#media_tweaks_chat_size").addEventListener("change", function () {
+    let size = Hue.el("#media_tweaks_chat_size option:checked").value
     Hue.do_chat_size_change(size)
   })
 
-  Hue.el("#media_menu_defaults").addEventListener("click", function () {
+  Hue.el("#media_tweaks_defaults").addEventListener("click", function () {
     Hue.apply_media_defaults()
   })
 
-  Hue.el("#media_menu_toggle_chat").addEventListener("click", function () {
+  Hue.el("#media_tweaks_toggle_chat").addEventListener("click", function () {
     Hue.toggle_chat()
   })
 }
@@ -847,10 +847,10 @@ Hue.apply_media_defaults = function () {
   Hue.save_room_state()
   Hue.change_media_layout()
   Hue.apply_media_positions()
-  Hue.refresh_media_menu()
+  Hue.refresh_media_tweaks()
 }
 
-// Media percentages for media menu
+// Media percentages for media tweaks
 Hue.create_media_percentages = function () {
   let html = ""
 

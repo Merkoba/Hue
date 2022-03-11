@@ -1205,29 +1205,29 @@ select {
 	}
 }
 
-#user_menu_username_container {
+#user_profile_username_container {
 	margin-bottom: 1rem;
 }
 
-#user_menu_username {
+#user_profile_username {
 	display: inline-block;
 }
 
-#user_menu_profilepic {
+#user_profile_profilepic {
 	margin-bottom: 2rem;
 	width: var(--big_profilepic_size);
 	height: var(--big_profilepic_size);
 }
 
-.user_menu_items_container {
+.user_profile_items_container {
 	margin-bottom: 0.5rem;
 }
 
-.user_menu_items_container_2 {
+.user_profile_items_container_2 {
 	margin-bottom: 1rem;
 }
 
-.user_menu_icon {
+.user_profile_icon {
 	margin-right: 0.5rem;
 }
 
@@ -1655,17 +1655,17 @@ a.special_link:hover {
 	margin-left: 0;
 }
 
-#media_menu {
+#media_tweaks {
 	margin-top: 0.6rem;
 	margin-bottom: 0.6rem;
 	user-select: none;
 }
 
-#media_menu_top {
+#media_tweaks_top {
 	margin-bottom: 2rem;
 }
 
-#media_menu_tv_size {
+#media_tweaks_tv_size {
 	margin-bottom: 2rem;
 }
 
@@ -1896,25 +1896,25 @@ a.special_link:hover {
 	margin: auto;
 }
 
-#room_menu_more_container {
+#room_config_more_container {
 	margin-top: 1.6rem;
 	grid-gap: 0.8rem;
 }
 
-.room_menu_category {
+.room_config_category {
 	font-size: 1.1rem;
 }
 
-.room_menu_label {
+.room_config_label {
 	padding-bottom: 0.5rem;
 }
 
-#room_menu_theme_container {
+#room_config_theme_container {
 	margin-top: 1.6rem;
 	grid-gap: 1.6rem;
 }
 
-#room_menu_topic_container {
+#room_config_topic_container {
 	margin-top: 1.6rem;
 }
 
@@ -1939,7 +1939,7 @@ a.special_link:hover {
 	margin-bottom: 1rem;
 }
 
-#user_menu_change_buttons {
+#user_profile_change_buttons {
 	margin-bottom: 1rem;
 	grid-gap: 0.8rem;
 }
@@ -1979,7 +1979,7 @@ a.special_link:hover {
 	margin-right: 0.5rem;
 }
 
-#user_menu_bio_textarea {
+#user_profile_bio_textarea {
 	margin-bottom: 1rem;
 	border: 0 solid grey;
 	outline: none;
@@ -1987,7 +1987,7 @@ a.special_link:hover {
 	color: var(--font_color);
 }
 
-#user_menu_audioclip {
+#user_profile_audioclip {
 	margin-bottom: 1.5rem;
 }
 
@@ -2305,11 +2305,11 @@ pre {
 	text-align: center;
 }
 
-#media_menu_defaults {
+#media_tweaks_defaults {
 	margin-top: 1rem;
 }
 
-#media_menu_toggle_chat {
+#media_tweaks_toggle_chat {
 	margin-top: 2rem;
 }
 

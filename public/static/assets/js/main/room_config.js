@@ -1,5 +1,5 @@
-// Setups change events for the room menu widgets
-Hue.setup_room_menu = function () {
+// Setups change events for the room config widgets
+Hue.setup_room_config = function () {
   Hue.el("#admin_background_color").addEventListener("change", function () {
     Hue.change_background_color(this.value)
   })
@@ -40,15 +40,15 @@ Hue.setup_room_menu = function () {
     }
   })
 
-  Hue.el("#room_menu_more_admin_activity").addEventListener("click", function () {
+  Hue.el("#room_config_more_admin_activity").addEventListener("click", function () {
     Hue.request_admin_activity()
   })
 
-  Hue.el("#room_menu_more_admin_list").addEventListener("click", function () {
+  Hue.el("#room_config_more_admin_list").addEventListener("click", function () {
     Hue.request_admin_list()
   })
 
-  Hue.el("#room_menu_more_ban_list").addEventListener("click", function () {
+  Hue.el("#room_config_more_ban_list").addEventListener("click", function () {
     Hue.request_ban_list()
   }) 
 
@@ -57,14 +57,14 @@ Hue.setup_room_menu = function () {
   })
 }
 
-// Shows the room menu
-Hue.show_room_menu = function () {
-  Hue.msg_room_menu.show()
+// Shows the room config
+Hue.show_room_config = function () {
+  Hue.msg_room_config.show()
 }
 
-// Configures the room menu
+// Configures the room config
 // Updates all widgets with current state
-Hue.config_room_menu = function () {
+Hue.config_room_config = function () {
   if (Hue.is_admin_or_op()) {
     Hue.config_admin_background_color()
     Hue.config_admin_background()
@@ -74,7 +74,7 @@ Hue.config_room_menu = function () {
   }
 }
 
-// Updates the background image widget in the room menu based on current state
+// Updates the background image widget in the room config based on current state
 Hue.config_admin_background = function () {
   if (!Hue.is_admin_or_op()) {
     return false
@@ -87,7 +87,7 @@ Hue.config_admin_background = function () {
   }
 }
 
-// Updates the text color widget in the room menu based on current state
+// Updates the text color widget in the room config based on current state
 Hue.config_admin_text_color = function () {
   if (!Hue.is_admin_or_op()) {
     return false
@@ -96,7 +96,7 @@ Hue.config_admin_text_color = function () {
   Hue.el("#admin_text_color").value = Hue.text_color
 }
 
-// Updates the background color widget in the room menu based on current state
+// Updates the background color widget in the room config based on current state
 Hue.config_admin_background_color = function () {
   if (!Hue.is_admin_or_op()) {
     return false
@@ -105,7 +105,7 @@ Hue.config_admin_background_color = function () {
   Hue.el("#admin_background_color").value = Hue.background_color
 }
 
-// Updates the room name widget in the room menu based on current state
+// Updates the room name widget in the room config based on current state
 Hue.config_admin_room_name = function () {
   if (!Hue.is_admin_or_op()) {
     return false
@@ -114,7 +114,7 @@ Hue.config_admin_room_name = function () {
   Hue.el("#admin_room_name").value = Hue.room_name
 }
 
-// Updates the topic widget in the room menu based on current state
+// Updates the topic widget in the room config based on current state
 Hue.config_admin_topic = function () {
   if (!Hue.is_admin_or_op()) {
     return false

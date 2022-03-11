@@ -687,7 +687,7 @@ Hue.profilepic_changed = function (data) {
   let src = Hue.get_profilepic(data.user_id)
 
   if (data.user_id === Hue.user_id) {
-    Hue.el("#user_menu_profilepic").src = src
+    Hue.el("#user_profile_profilepic").src = src
   }
 
   Hue.show_room_notification(
@@ -767,11 +767,11 @@ Hue.set_role = function (rol, config = true) {
   Hue.check_message_board_permissions()
   
   if (config) {
-    Hue.config_room_menu()
+    Hue.config_room_config()
     Hue.config_main_menu()
   }
 
-  Hue.el("#user_menu_role").textContent = `(${Hue.get_pretty_role_name(rol)})`
+  Hue.el("#user_profile_role").textContent = `(${Hue.get_pretty_role_name(rol)})`
 }
 
 // Bans a user
