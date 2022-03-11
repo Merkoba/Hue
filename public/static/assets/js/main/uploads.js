@@ -191,8 +191,8 @@ Hue.upload_file = function (args = {}) {
     autoclose: false
   }
 
-  if (!args.file.hue_data.sending_last_slice) {
-    obj.after_close = function () {
+  obj.after_close = function () {
+    if (!args.file.hue_data.sending_last_slice) {
       Hue.cancel_file_upload(date)
     }
   }
