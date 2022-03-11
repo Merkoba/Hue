@@ -808,6 +808,7 @@ Hue.show_action_popup = function (args = {}) {
     on_click: false,
     after_close: function () {},
     autoclose: true,
+    on_x_button_click: function () {}
   }
 
   args = Object.assign(def_args, args)
@@ -832,6 +833,7 @@ Hue.show_action_popup = function (args = {}) {
     close_on_escape: false,
     autoclose: args.autoclose,
     autoclose_delay: 5000,
+    on_x_button_click: args.on_x_button_click
   }
 
   if (!args.title) {
