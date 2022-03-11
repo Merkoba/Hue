@@ -21,7 +21,7 @@ Hue.setup_main_menu = function () {
   })
 
   Hue.el("#main_menu_commands").addEventListener("click", function () {
-    Hue.show_commands()
+    Hue.show_command_book()
   })
 }
 

@@ -122,13 +122,9 @@ Hue.commands = {
     },
     description: `Changes the topic of the room`,
   },
-  "commands": {
+  "commandbook": {
     action: (arg, ans) => {
-      if (arg) {
-        Hue.show_commands(arg)
-      } else {
-        Hue.show_commands()
-      }
+      Hue.show_command_book(arg)
     },
     description: `Shows Commands`,
   },
@@ -707,11 +703,11 @@ Hue.inspect_command = function (cmd) {
   Hue.checkmsg(s)
 }
 
-// Show the commands window
-Hue.show_commands = function (filter = "") {
-  Hue.msg_commands.show(function () {
+// Show the command book
+Hue.show_command_book = function (filter = "") {
+  Hue.msg_command_book.show(function () {
     if (filter.trim()) {
-      Hue.el("#commands_filter").value = filter
+      Hue.el("#command_book_filter").value = filter
       Hue.do_modal_filter()
     }
   })

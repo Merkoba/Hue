@@ -231,9 +231,9 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_commands = Msg.factory(
+  Hue.msg_command_book = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "commands",
+      id: "command_book",
       window_width: "36rem"
     })
   )
@@ -437,8 +437,8 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_commands.set(
-    Hue.template_commands({
+  Hue.msg_command_book.set(
+    Hue.template_command_book({
       commands: Hue.commands
     })
   )
@@ -505,7 +505,7 @@ Hue.start_msg = function () {
   Hue.msg_handle_url.set_title("Handle URL")
   Hue.msg_handle_radio_history.set_title("Handle Radio History")
   Hue.msg_delete_messages.set_title("Delete Message(s)")
-  Hue.msg_commands.set_title("Command Book")
+  Hue.msg_command_book.set_title("Command Book")
 }
 
 // Sets all info window 2 variables to false
