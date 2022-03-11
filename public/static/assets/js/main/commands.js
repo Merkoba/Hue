@@ -537,6 +537,8 @@ Hue.commands = {
     action: (arg, ans) => {
       if (arg) {
         Hue.show_user_posts(arg)
+      } else {
+        Hue.show_user_posts()
       }
     },
     description: `Show posts by a user`,
@@ -576,7 +578,19 @@ Hue.commands = {
       Hue.show_roomlist(arg)
     },
     description: `Show room list`,
-  }
+  },
+  "userprofile": {
+    action: (arg, ans) => {
+      Hue.show_user_profile()
+    },
+    description: `Select a random radio station`,
+  },
+  "roomconfig": {
+    action: (arg, ans) => {
+      Hue.show_room_config()
+    },
+    description: `Select a random radio station`,
+  },
 }
 
 // Setups commands based on the commands object

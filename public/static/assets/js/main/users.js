@@ -1068,7 +1068,7 @@ Hue.check_user_in_room = function (username) {
 }
 
 // Show user posts
-Hue.show_user_posts = function (username) {
+Hue.show_user_posts = function (username = Hue.username) {
   Hue.show_chat_search(`$user ${username}`)
 }
 
