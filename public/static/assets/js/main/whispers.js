@@ -358,7 +358,12 @@ Hue.do_send_whisper = function (data, show = true) {
 
     let item = Hue.make_info_popup_item({icon: "envelope", message: msg, push: false})
     Hue.show_popup(Hue.make_info_popup(func), item)
-    data.notification = Hue.push_whisper(msg, func, true)
+    
+    data.notification = Hue.push_whisper(msg, func, true, {
+      username: Hue.username, 
+      user_id: Hue.user_id,
+      message: msg
+    })
   }
 }
 
@@ -387,7 +392,7 @@ Hue.setup_write_whisper = function () {
 }
 
 // Pushes a new whisper to the whispers window
-Hue.push_whisper = function (message, on_click, read, data = false) {
+Hue.push_whisper = function (message, on_click, read, data) {
   let date = Date.now()
   let title = Hue.utilz.nice_date(date)
   let item = Hue.div("whispers_item modal_item nice_row")
