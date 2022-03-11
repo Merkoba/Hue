@@ -591,6 +591,12 @@ Hue.commands = {
     },
     description: `Select a random radio station`,
   },
+  "mediatweaks": {
+    action: (arg, ans) => {
+      Hue.show_media_tweaks()
+    },
+    description: `Select a random radio station`,
+  },
 }
 
 // Setups commands based on the commands object
