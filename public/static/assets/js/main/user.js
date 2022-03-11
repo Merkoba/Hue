@@ -192,6 +192,11 @@ Hue.setup_user_profile = function () {
   Hue.el("#user_profile_change_password").addEventListener("click", function () {
     Hue.show_change_password()    
   })
+
+  if (Hue.get_self_user().profilepic_version === 0) {
+    Hue.show_user_profile()
+    Hue.showmsg("You can select a profile image here")
+  }
 }
 
 // Updates some user profile elements
@@ -353,7 +358,7 @@ Hue.show_audioclip_menu = function () {
 
     Hue.el("#play_audioclip").addEventListener("click", function () {
       Hue.user_profile_audio = document.createElement("audio")
-      let user = Hue.get_user_profile()
+      let user = Hue.get_self_user()
       let src = Hue.get_audioclip(user.user_id)
       Hue.user_profile_audio.src = src
       Hue.user_profile_audio.play()
@@ -392,6 +397,6 @@ Hue.audioclip_selected = function (file) {
 }
 
 // Get the user profile
-Hue.get_user_profile = function () {
+Hue.get_self_user = function () {
   return Hue.get_user_by_username(Hue.username)
 }
