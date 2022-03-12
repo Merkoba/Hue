@@ -724,6 +724,14 @@ const Utilz = function () {
 		return new Set(split).size === 1
 	}
 
+	// To minutes including seconds
+	utilz.to_minutes = function (ms) {
+		let date = new Date(ms)
+		let minutes = date.getMinutes()
+		let seconds = date.getSeconds()
+		return `${minutes} : ${seconds}`
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]

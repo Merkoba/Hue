@@ -668,6 +668,8 @@ Hue.start_radio_dj_timeout = function () {
       Hue.play_random_radio()
     }
   }, Hue.room_state.radio_dj_delay * 60 * 1000)
+
+  Hue.radio_dj_timeout_date = Date.now()
 }
 
 // Crossfade two radio stations
@@ -760,6 +762,11 @@ Hue.create_radio_dj_controls = function () {
   })
 
   Hue.el("#radio_controls").append(container)
+
+  Hue.el("#radio_dj_icon").addEventListener("mouseover", function () {
+    let diff = (Hue.room_state.radio_dj_delay * 60 * 1000) - (Date.now() - Hue.radio_dj_timeout_date)
+    Hue.el("#radio_dj_icon title").textContent = Hue.utilz.to_minutes(diff)
+  })
 }
 
 // Show a radio dj flash info
