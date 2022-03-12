@@ -1,3 +1,18 @@
+// Setup chat search
+Hue.setup_chat_search = function () {
+  Hue.el("#chat_search_highlights").addEventListener("click", function () {
+    Hue.show_highlights()
+  })
+
+  Hue.el("#chat_search_links").addEventListener("click", function () {
+    Hue.show_links()
+  })
+
+  Hue.el("#chat_search_user").addEventListener("click", function () {
+    Hue.show_user_messages()
+  })
+}
+
 // Resets chat search filter state
 Hue.reset_chat_search_filter = function () {
   Hue.el("#chat_search_filter").value = ""
@@ -105,8 +120,6 @@ Hue.show_chat_search = function (filter = "") {
         Hue.el("#chat_search_container").append(message)
       }
     } 
-  } else {
-    Hue.el("#chat_search_container").innerHTML = "<div class='center'>Search recent messages</div>"
   }
 
   Hue.msg_chat_search.show(function () {

@@ -20,16 +20,8 @@ Hue.setup_footer = function () {
     Hue.show_chat_search()
   })
 
-  Hue.el("#footer_user").addEventListener("click", function () {
-    Hue.show_user_posts()
-  })
-  
-  Hue.el("#footer_links").addEventListener("click", function () {
-    Hue.show_links()
-  })
-
-  Hue.el("#footer_highlights").addEventListener("click", function () {
-    Hue.show_highlights()
+  Hue.el("#footer_tweaks").addEventListener("click", function () {
+    Hue.show_media_tweaks()
   })
 
   if (Hue.config.radios.length > 0) {

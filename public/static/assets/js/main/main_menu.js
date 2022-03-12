@@ -8,10 +8,6 @@ Hue.setup_main_menu = function () {
     Hue.show_room_config()
   })
 
-  Hue.el("#main_menu_media_tweaks").addEventListener("click", function () {
-    Hue.show_media_tweaks()
-  })
-
   Hue.el("#main_menu_rooms").addEventListener("click", function () {
     Hue.show_roomlist()
   })

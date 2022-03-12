@@ -217,6 +217,7 @@ Hue.init = function () {
   Hue.setup_view_text()
   Hue.setup_radio()
   Hue.setup_delete_messages()
+  Hue.setup_chat_search()
   
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
