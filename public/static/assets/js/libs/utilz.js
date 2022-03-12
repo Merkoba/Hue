@@ -394,7 +394,7 @@ const Utilz = function () {
 	}
 
 	// Get a nice date string
-	utilz.nice_date = function (date = Date.now(), mode="normal") {
+	utilz.nice_date = function (date = Date.now()) {
 		return dateFormat(date, "dd/mmm/yy, H:MM:ss")
 	}
 

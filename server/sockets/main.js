@@ -35,6 +35,7 @@ module.exports = function (Hue) {
     }
 
     try {
+      socket.hue_ip_address = Hue.handler.get_ip_address(socket)
       let spam_ans = await Hue.handler.add_spam(socket)
 
       if (!spam_ans) {
