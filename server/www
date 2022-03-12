@@ -112,15 +112,9 @@ const logger = winston.createLogger({
 			filename: path.join(__dirname, "../logs/error.log"),
 			level: "error",
 			timestamp: (new Date()).toLocaleTimeString()
-		})
-	]
-})
-
-const ip_logger = winston.createLogger({
-	format: winston.format.simple(),
-	transports: [
+		}),
 		new winston.transports.File({
-			filename: path.join(__dirname, "../logs/ip.log"),
+			filename: path.join(__dirname, "../logs/info.log"),
 			level: "info",
 			timestamp: (new Date()).toLocaleTimeString()
 		})
@@ -185,7 +179,6 @@ Hue.config = config
 Hue.sconfig = sconfig
 Hue.utilz = utilz
 Hue.logger = logger
-Hue.ip_logger = ip_logger
 
 require("./sockets/main")(Hue)
 
