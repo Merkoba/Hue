@@ -677,11 +677,8 @@ const Utilz = function () {
 
 	// Get a nicely formatted time
 	utilz.get_time = function () {
-		let today = new Date()
-		let hours = utilz.fillpad(today.getHours().toString(), 2, "0")
-		let minutes = utilz.fillpad(today.getMinutes().toString(), 2, "0")
-		let seconds = utilz.fillpad(today.getSeconds().toString(), 2, "0")
-		return `${hours}:${minutes}:${seconds}`
+		let c = utilz.time_components(new Date())
+		return `${c.hours}:${c.minutes}:${c.seconds}`
 	}
 
 	// Show information with date
@@ -724,12 +721,13 @@ const Utilz = function () {
 		return new Set(split).size === 1
 	}
 
-	// To minutes including seconds
-	utilz.to_minutes = function (ms) {
+	// Get date time components, hours, minutes, seconds
+	utilz.time_components = function (ms) {
 		let date = new Date(ms)
-		let minutes = date.getMinutes()
-		let seconds = date.getSeconds()
-		return `${minutes} : ${seconds}`
+		let hours = utilz.fillpad(date.getHours().toString(), 2, "0")
+		let minutes = utilz.fillpad(date.getMinutes().toString(), 2, "0")
+		let seconds = utilz.fillpad(date.getSeconds().toString(), 2, "0")
+		return {hours: hours, minutes: minutes, seconds:seconds}
 	}
 
 	utilz.media_types = ["image", "tv"]
