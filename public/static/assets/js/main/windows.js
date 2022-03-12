@@ -437,12 +437,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_command_book.set(
-    Hue.template_command_book({
-      commands: Hue.commands
-    })
-  )
-
   Hue.msg_main_menu.set(Hue.template_main_menu())
   Hue.msg_room_config.set(Hue.template_room_config())
   Hue.msg_roomlist.set(Hue.template_roomlist())
@@ -475,6 +469,7 @@ Hue.start_msg = function () {
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_draw_image.set(Hue.template_draw_image())
   Hue.msg_radio_window.set(Hue.template_radio_window())
+  Hue.msg_command_book.set(Hue.template_command_book())
 
   Hue.msg_info.create()
   Hue.msg_info_autoclose.create()

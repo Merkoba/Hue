@@ -641,27 +641,29 @@ Hue.commands = {
   },
 }
 
+// Commands reserved to superusers
+// Invisible to normal users
+Hue.superuser_commands = [
+  "systembroadcast",
+  "systemrestart",
+  "modusername",
+  "modpassword",
+  "annex",
+  "createroom",
+  "deleteroom",
+  "banuserid",
+  "banipaddress",
+  "unbanuserid",
+  "unbanipaddress",
+  "getuserid",
+  "getipaddress",
+  "disconnectuser"
+]
+
 // Setups commands based on the commands object
 // Makes sorted variations
 // Checks if anagrams collide
 Hue.setup_commands = function () {
-  Hue.superuser_commands = [
-    "systembroadcast",
-    "systemrestart",
-    "modusername",
-    "modpassword",
-    "annex",
-    "createroom",
-    "deleteroom",
-    "banuserid",
-    "banipaddress",
-    "unbanuserid",
-    "unbanipaddress",
-    "getuserid",
-    "getipaddress",
-    "disconnectuser"
-  ]
-
   Hue.commands_list = []
   Hue.commands_list_with_prefix = []
 
@@ -772,8 +774,34 @@ Hue.inspect_command = function (cmd) {
   Hue.checkmsg(s)
 }
 
+// Get command book commands
+Hue.get_command_book_commands = function () {
+
+
+  return commands
+}
+
 // Show the command book
 Hue.show_command_book = function (filter = "") {
+  if (!Hue.command_book_created) {
+    let commands = {}
+
+    for (let key in Hue.commands) {
+      if (Hue.superuser_commands.includes(key)) {
+        if (!Hue.superuser) {
+          continue
+        }
+      }
+  
+      commands[key] = Hue.commands[key]
+    }
+  
+    Hue.el("#command_book_container").innerHTML = 
+      Hue.template_command_book_commands({commands: commands})
+
+    Hue.command_book_created = true
+  }
+
   Hue.msg_command_book.show(function () {
     if (filter.trim()) {
       Hue.el("#command_book_filter").value = filter
