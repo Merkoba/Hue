@@ -133,6 +133,7 @@ Hue.radio_dj_on = false
 Hue.radio_dj_timeout_date = 0
 Hue.radio_crossfading = false
 Hue.radio_slided = false
+Hue.command_book_created = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
