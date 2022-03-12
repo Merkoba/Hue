@@ -130,6 +130,7 @@ Hue.dataset_obj = {}
 Hue.dataset_id = 0
 Hue.flipped = false
 Hue.radio_dj_on = false
+Hue.radio_dj_timeout_date = 0
 Hue.radio_crossfading = false
 Hue.radio_slided = false
 
