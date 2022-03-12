@@ -1665,10 +1665,6 @@ a.special_link:hover {
 	margin-bottom: 2rem;
 }
 
-#media_tweaks_tv_size {
-	margin-bottom: 2rem;
-}
-
 .highlights_item .image_preview,
 .chat_search_result_item .image_preview {
 	align-items: center;
@@ -2576,6 +2572,10 @@ pre {
 	gap: 0.5rem;
 }
 
-#chat_search_buttons {
+.rem1_gap {
+	gap: 1rem;
+}
 
+.rem2_gap {
+	gap: 2rem;
 }

@@ -8,16 +8,28 @@
       </div>
     </div>
 
-    <div class="full_width">
-      <div class="setting_title">TV Size / Image Size</div>
-      <select class="modal_select" id="media_tweaks_tv_size">
-        {{{percentages}}}
-      </select>
-      
-      <div class="setting_title">Chat Size / Media Size</div>
-      <select class="modal_select" id="media_tweaks_chat_size">
-        {{{percentages}}}
-      </select>
+    <div class="full_width flex_column_center rem2_gap">
+      <div>
+        <div class="setting_title">TV Size / Image Size</div>
+        <div class="flex_row_center">
+          <svg id="media_tweaks_tv_size_minus" class="panel_icon action"><use href="#icon_minus"></svg>
+          <select class="modal_select" id="media_tweaks_tv_size">
+            {{{percentages}}}
+          </select>
+          <svg id="media_tweaks_tv_size_plus" class="panel_icon action"><use href="#icon_plus"></svg>
+        </div>
+      </div>
+
+      <div>
+        <div class="setting_title">Chat Size / Media Size</div>
+        <div class="flex_row_center">
+          <svg id="media_tweaks_chat_size_minus" class="panel_icon action"><use href="#icon_minus"></svg>
+          <select class="modal_select" id="media_tweaks_chat_size">
+            {{{percentages}}}
+          </select>
+          <svg id="media_tweaks_chat_size_plus" class="panel_icon action"><use href="#icon_plus"></svg>
+        </div>
+      </div>
     </div>
 
     <div id="media_tweaks_toggle_chat" class="action bigger">Toggle Chat</div>

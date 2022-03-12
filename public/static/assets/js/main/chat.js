@@ -2012,3 +2012,19 @@ Hue.check_chat_margin = function () {
     Hue.el("#chat_area").classList.remove("chat_margin")
   }
 }
+
+// Increases the chat display percentage
+Hue.increase_chat_percentage = function () {
+  let size = Hue.room_state.chat_display_percentage
+  size += 5
+  size = Hue.utilz.round2(size, 5)
+  Hue.do_chat_size_change(size)
+}
+
+// Decreases the chat display percentage
+Hue.decrease_chat_percentage = function () {
+  let size = Hue.room_state.chat_display_percentage
+  size -= 5
+  size = Hue.utilz.round2(size, 5)
+  Hue.do_chat_size_change(size)
+}
