@@ -119,7 +119,11 @@ Hue.show_chat_search = function (filter = "") {
 
         Hue.el("#chat_search_container").append(message)
       }
+    } else {
+      Hue.el("#chat_search_container").innerHTML = "<div class='center'>Nothing found</div>"
     } 
+  } else {
+    Hue.el("#chat_search_container").innerHTML = "<div class='center'>Search recent messages</div>"
   }
 
   Hue.msg_chat_search.show(function () {
