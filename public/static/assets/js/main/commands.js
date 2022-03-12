@@ -536,9 +536,9 @@ Hue.commands = {
   "user": {
     action: (arg, ans) => {
       if (arg) {
-        Hue.show_user_posts(arg)
+        Hue.show_user_messages(arg)
       } else {
-        Hue.show_user_posts()
+        Hue.show_user_messages()
       }
     },
     description: `Show posts by a user`,

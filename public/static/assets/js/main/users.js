@@ -568,7 +568,7 @@ Hue.setup_show_profile = function () {
   })
 
   Hue.el("#show_profile_search").addEventListener("click", function () {
-    Hue.show_user_posts(Hue.open_profile_username)
+    Hue.show_user_messages(Hue.open_profile_username)
     Hue.msg_profile.close()
   })
 
@@ -1068,7 +1068,7 @@ Hue.check_user_in_room = function (username) {
 }
 
 // Show user posts
-Hue.show_user_posts = function (username = Hue.username) {
+Hue.show_user_messages = function (username = Hue.username) {
   Hue.show_chat_search(`$user ${username}`)
 }
 

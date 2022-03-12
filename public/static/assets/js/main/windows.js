@@ -481,7 +481,7 @@ Hue.start_msg = function () {
 
   // Set the titles
 
-  Hue.msg_chat_search.set_title("Chat Search")
+  Hue.msg_chat_search.set_title(Hue.template_chat_search_titlebar())
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_roomlist.set_title("Room List")
