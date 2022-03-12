@@ -88,6 +88,11 @@ module.exports = function (Hue) {
 
       socket.hue_user_id = userinfo.id
 
+      if (Hue.handler.user_is_banned(socket)) {
+        Hue.handler.get_out(socket)
+        return false
+      }
+
       let info = await Hue.db_manager.get_room(["id", data.room_id], {})
 
       if (!info) {
@@ -113,6 +118,11 @@ module.exports = function (Hue) {
           return Hue.handler.do_disconnect(socket)
         } else {
           socket.hue_user_id = data.user_id
+
+          if (Hue.handler.user_is_banned(socket)) {
+            Hue.handler.get_out(socket)
+            return false
+          }
 
           let info = await Hue.db_manager.get_room(["id", data.room_id], {})
 

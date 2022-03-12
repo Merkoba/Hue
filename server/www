@@ -26,12 +26,15 @@ const user_sconfig_path = path.join(__dirname, "../config/user_config.secret.jso
 const config = {}
 const sconfig = {}
 const config_check_delay = 5000
+const banlist_path = path.join(__dirname, "../config/banlist.json")
+const banlist = {}
 
 let config_mtime = ""
 
 function build_config() {
 	let xconfig = JSON.parse(fs.readFileSync(config_path, "utf8"))
 	let xsconfig = JSON.parse(fs.readFileSync(sconfig_path, "utf8"))
+	let xbanlist = JSON.parse(fs.readFileSync(banlist_path, "utf8"))
 
 	if (fs.existsSync(user_config_path)) {
 		let user_config = JSON.parse(fs.readFileSync(user_config_path, "utf8"))
@@ -58,6 +61,12 @@ function build_config() {
 	})
 
 	Object.assign(sconfig, xsconfig)
+
+	Object.keys(banlist).forEach(function(key) {
+		delete banlist[key]
+	})
+
+	Object.assign(banlist, xbanlist)
 
 	config.mtime = Date.now()
 	config_mtime = get_config_mtime()
@@ -179,6 +188,8 @@ Hue.config = config
 Hue.sconfig = sconfig
 Hue.utilz = utilz
 Hue.logger = logger
+Hue.banlist = banlist
+Hue.banlist_path = banlist_path
 
 require("./sockets/main")(Hue)
 

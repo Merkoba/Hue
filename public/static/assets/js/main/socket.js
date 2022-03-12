@@ -213,6 +213,27 @@ Hue.server_update_events = {
   },
   receive_roomlist: (data) => {
     Hue.on_roomlist_received(data)
+  },
+  item_already_included: (data) => {
+    Hue.item_already_included()
+  },
+  item_included: (data) => {
+    Hue.item_included()
+  },
+  item_not_included: (data) => {
+    Hue.item_not_included()
+  },
+  item_removed: (data) => {
+    Hue.item_removed()
+  },
+  user_id_received: (data) => {
+    Hue.user_id_received(data)
+  },
+  ip_address_received: (data) => {
+    Hue.ip_address_received(data)
+  },
+  data_not_found: (data) => {
+    Hue.checkmsg("Data couldn't be found")
   }
 }
 

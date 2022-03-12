@@ -208,7 +208,49 @@ Hue.commands = {
       Hue.delete_room()
     },
     description: `(Only for superusers) Used to delete rooms`,
-  },   
+  }, 
+  "banuserid": {
+    action: (arg, ans) => {
+      Hue.ban_user_id(arg)
+    },
+    description: `(Only for superusers) Used to ban a user id`,
+  }, 
+  "banipaddress": {
+    action: (arg, ans) => {
+      Hue.ban_ip_address(arg)
+    },
+    description: `(Only for superusers) Used to ban an ip address`,
+  },
+  "unbanuserid": {
+    action: (arg, ans) => {
+      Hue.unban_user_id(arg)
+    },
+    description: `(Only for superusers) Used to unban a user id`,
+  },
+  "unbanipaddress": {
+    action: (arg, ans) => {
+      Hue.unban_ip_address(arg)
+    },
+    description: `(Only for superusers) Used to unban an ip address`,
+  },
+  "getuserid": {
+    action: (arg, ans) => {
+      Hue.get_user_id(arg)
+    },
+    description: `(Only for superusers) Get the user id of a user`,
+  },
+  "getipaddress": {
+    action: (arg, ans) => {
+      Hue.get_ip_address(arg)
+    },
+    description: `(Only for superusers) Get the ip address of a user`,
+  },
+  "disconnectuser": {
+    action: (arg, ans) => {
+      Hue.disconnect_user(arg)
+    },
+    description: `(Only for superusers) Disconnect all sockets of a user`,
+  },
   "highlights": {
     action: (arg, ans) => {
       Hue.show_highlights()
@@ -610,7 +652,14 @@ Hue.setup_commands = function () {
     "modpassword",
     "annex",
     "createroom",
-    "deleteroom"
+    "deleteroom",
+    "banuserid",
+    "banipaddress",
+    "unbanuserid",
+    "unbanipaddress",
+    "getuserid",
+    "getipaddress",
+    "disconnectuser"
   ]
 
   Hue.commands_list = []
