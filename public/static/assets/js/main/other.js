@@ -140,3 +140,23 @@ Hue.getcode = function (s) {
 Hue.not_allowed = function () {
   Hue.checkmsg("You don't have permission to run that command")
 }
+
+// Item already included
+Hue.item_already_included = function () {
+  Hue.checkmsg("Item already included")
+}
+
+// Item included just now
+Hue.item_included = function () {
+  Hue.checkmsg("Item included successfully")
+}
+
+// Item is not included
+Hue.item_not_included = function () {
+  Hue.checkmsg("Item is not included")
+}
+
+// Item removed just now
+Hue.item_removed = function () {
+  Hue.checkmsg("Item removed successfully")
+}

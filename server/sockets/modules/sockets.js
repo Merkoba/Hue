@@ -168,4 +168,26 @@ module.exports = function (Hue) {
   Hue.handler.disconnect_room_sockets = function (socket) {
     Hue.io.in(socket.hue_room_id).disconnectSockets()
   }
+
+  // Get all socket ids
+  Hue.handler.get_socket_ids = async function () {
+    return await Hue.io.allSockets()
+  }
+
+  // Get socket by id
+  Hue.handler.get_socket_by_id = function (id) {
+    return Hue.io.sockets.sockets.get(id)
+  }
+
+  // Get all sockets
+  Hue.handler.get_all_sockets = async function () {
+    let sockets = []
+    let ids = await Hue.handler.get_socket_ids()
+
+    for (let id of ids) {
+      sockets.push(Hue.handler.get_socket_by_id(id))
+    }
+
+    return sockets
+  }
 }

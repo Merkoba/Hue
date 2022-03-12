@@ -43,6 +43,11 @@ module.exports = function (Hue) {
       }
 
       Hue.handler.connection(socket)
+
+      if (Hue.handler.user_is_banned(socket)) {
+        Hue.handler.get_out(socket)
+        return false
+      }
     } catch (err) {
       Hue.logger.log_error(err)
     }
