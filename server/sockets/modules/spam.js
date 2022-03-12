@@ -34,18 +34,16 @@ module.exports = function (Hue) {
 
   // Add a spam point and check if user is banned
   Hue.handler.add_spam = async function (socket) {
-    return new Promise((resolve, reject) => {
-      let ip = Hue.handler.get_ip_address(socket)
-      
-      if (!Hue.handler.anti_spam_users[ip]) {
-        Hue.handler.anti_spam_users[ip] = {
+    return new Promise((resolve, reject) => {      
+      if (!Hue.handler.anti_spam_users[socket.hue_ip_address]) {
+        Hue.handler.anti_spam_users[socket.hue_ip_address] = {
           level: 0,
           banned: false,
           banned_until: 0
         }
       }
   
-      let user = Hue.handler.anti_spam_users[ip]
+      let user = Hue.handler.anti_spam_users[socket.hue_ip_address]
 
       if (user.banned) {
         Hue.handler.anti_spam_kick(socket)
@@ -71,8 +69,7 @@ module.exports = function (Hue) {
 
   // Ban a user from connecting
   Hue.handler.anti_spam_ban = function (socket, minutes = Hue.sconfig.anti_spam_ban_duration) {
-    let ip = Hue.handler.get_ip_address(socket)
-    let user = Hue.handler.anti_spam_users[ip]
+    let user = Hue.handler.anti_spam_users[socket.hue_ip_address]
     
     if (!user) {
       return
@@ -80,12 +77,7 @@ module.exports = function (Hue) {
 
     user.banned = true
     user.banned_until = Date.now() + (minutes * 1000 * 60)
-    Hue.logger.log_error(`IP banned: ${ip}`)
+    Hue.logger.log_error(`IP banned: ${socket.hue_ip_address}`)
     Hue.handler.anti_spam_kick(socket)
-  }
-
-  // Get ip address
-  Hue.handler.get_ip_address = function (socket) {
-    return socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
   }
 }

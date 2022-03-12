@@ -116,6 +116,17 @@ const logger = winston.createLogger({
 	]
 })
 
+const ip_logger = winston.createLogger({
+	format: winston.format.simple(),
+	transports: [
+		new winston.transports.File({
+			filename: path.join(__dirname, "../logs/ip.log"),
+			level: "info",
+			timestamp: (new Date()).toLocaleTimeString()
+		})
+	]
+})
+
 if (logger.log_error !== undefined) {
 	console.error("logger.log_error is reserved")
 }
@@ -174,6 +185,7 @@ Hue.config = config
 Hue.sconfig = sconfig
 Hue.utilz = utilz
 Hue.logger = logger
+Hue.ip_logger = ip_logger
 
 require("./sockets/main")(Hue)
 

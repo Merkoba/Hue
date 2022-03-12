@@ -140,7 +140,6 @@ module.exports = function (Hue) {
     socket.hue_room_id = info.id
     socket.hue_bio = userinfo.bio
     socket.hue_joining = true
-
     socket.join(socket.hue_room_id)
 
     if (await Hue.handler.check_multipe_joins(socket)) {
@@ -156,10 +155,6 @@ module.exports = function (Hue) {
     }
 
     socket.hue_username = userinfo.username
-
-    socket.hue_ip =
-      socket.client.request.headers["x-forwarded-for"] ||
-      socket.client.conn.remoteAddress
 
     if (!socket.hue_superuser && info.bans.includes(socket.hue_user_id)) {
       socket.leave(socket.hue_room_id)
@@ -262,5 +257,7 @@ module.exports = function (Hue) {
         date_joined: Date.now()
       })
     }
+
+    Hue.handler.log_user_ip_address(socket)
   }
 }
