@@ -76,13 +76,13 @@ Hue.get_user_id = function (username) {
 }
 
 // Get the username of a user_id
-Hue.get_username = function (username) {
-  if (!username) {
+Hue.get_username = function (user_id) {
+  if (!user_id) {
     return
   }
 
   Hue.show_confirm("Superuser Command", "", function () {
-    Hue.socket_emit("get_username", {user_id: username})
+    Hue.socket_emit("get_username", {user_id: user_id})
   })
 }
 
