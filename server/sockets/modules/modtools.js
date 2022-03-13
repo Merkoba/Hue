@@ -221,10 +221,14 @@ module.exports = function (Hue) {
       { username: 1 }
     )
 
-    Hue.handler.user_emit(socket, "user_id_received", {
-      user_id: userinfo.id,
-      username: userinfo.username
-    })
+    if (userinfo) {
+      Hue.handler.user_emit(socket, "user_id_received", {
+        user_id: userinfo.id,
+        username: userinfo.username
+      })
+    } else {
+      Hue.handler.user_emit(socket, "data_not_found", {})
+    }
   }
 
   // Send the username of a user_id
@@ -247,10 +251,14 @@ module.exports = function (Hue) {
       { username: 1 }
     )
 
-    Hue.handler.user_emit(socket, "username_received", {
-      user_id: userinfo.id,
-      username: userinfo.username
-    })
+    if (userinfo) {
+      Hue.handler.user_emit(socket, "username_received", {
+        user_id: userinfo.id,
+        username: userinfo.username
+      })
+    } else {
+      Hue.handler.user_emit(socket, "data_not_found", {})
+    }
   }
 
   // Send the ip address of a connected user
