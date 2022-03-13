@@ -68,18 +68,32 @@ function build_config() {
 	}
 	
 	let xbanlist = JSON.parse(fs.readFileSync(banlist_path, "utf8"))
+	let changed = false
 
-	if (Object.keys(xbanlist).length === 0) {
-		banlist.usernames = []
-		banlist.user_ids = []
-		banlist.ip_addresses = []
-	} else {
-		Object.keys(banlist).forEach(function(key) {
-			delete banlist[key]
-		})
-	
-		Object.assign(banlist, xbanlist)
+	if (xbanlist.usernames === undefined) {
+		xbanlist.usernames = []
+		changed = true
 	}
+
+	if (xbanlist.user_ids === undefined) {
+		xbanlist.user_ids = []
+		changed = true
+	}
+
+	if (xbanlist.ip_addresses === undefined) {
+		xbanlist.ip_addresses = []
+		changed = true
+	}
+
+	if (changed) {
+		fs.writeFileSync(banlist_path, JSON.stringify(xbanlist), "utf-8")
+	}
+
+	Object.keys(banlist).forEach(function(key) {
+		delete banlist[key]
+	})
+
+	Object.assign(banlist, xbanlist)
 
 	config.mtime = Date.now()
 	config_mtime = get_config_mtime()
