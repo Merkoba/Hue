@@ -1898,7 +1898,7 @@ Hue.setup_delete_messages = function () {
 Hue.handle_delete_messages = function (id, user_id) {
   let user = Hue.get_user_by_user_id(user_id)
 
-  if (Hue.user_id !== user_id) {
+  if (Hue.user_id !== user_id && !Hue.superuser) {
     if (user && Hue.is_admin(user)) {
       Hue.forbidden_user()
       return

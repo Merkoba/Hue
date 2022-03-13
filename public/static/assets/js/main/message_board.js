@@ -404,7 +404,7 @@ Hue.delete_message_board_post = function (post) {
   let user_id = Hue.dataset(post, "user_id")
   let user = Hue.get_user_by_user_id(user_id)
 
-  if (Hue.user_id !== user_id) {
+  if (Hue.user_id !== user_id && !Hue.superuser) {
     if (user && Hue.is_admin(user)) {
       Hue.forbidden_user()
       return
