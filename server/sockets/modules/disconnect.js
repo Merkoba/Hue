@@ -80,7 +80,7 @@ module.exports = function (Hue) {
     Hue.handler.user_emit(socket, "others_disconnected", { amount: amount })
   }
 
-  // Tries to redirect the user elsewhere and disconnects the socket
+  // Disconnect a socket
   Hue.handler.get_out = function (socket) {
     try {
       Hue.handler.do_disconnect(socket)

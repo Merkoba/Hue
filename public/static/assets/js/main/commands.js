@@ -214,18 +214,30 @@ Hue.commands = {
       Hue.ban_user_id(arg)
     },
     description: `(Only for superusers) Used to ban a user id`,
-  }, 
-  "banipaddress": {
-    action: (arg, ans) => {
-      Hue.ban_ip_address(arg)
-    },
-    description: `(Only for superusers) Used to ban an ip address`,
   },
   "unbanuserid": {
     action: (arg, ans) => {
       Hue.unban_user_id(arg)
     },
     description: `(Only for superusers) Used to unban a user id`,
+  },
+  "banusername": {
+    action: (arg, ans) => {
+      Hue.ban_username(arg)
+    },
+    description: `(Only for superusers) Used to ban a username`,
+  },
+  "unbanusername": {
+    action: (arg, ans) => {
+      Hue.unban_username(arg)
+    },
+    description: `(Only for superusers) Used to unban a username`,
+  },
+  "banipaddress": {
+    action: (arg, ans) => {
+      Hue.ban_ip_address(arg)
+    },
+    description: `(Only for superusers) Used to ban an ip address`,
   },
   "unbanipaddress": {
     action: (arg, ans) => {
@@ -652,8 +664,10 @@ Hue.superuser_commands = [
   "createroom",
   "deleteroom",
   "banuserid",
-  "banipaddress",
   "unbanuserid",
+  "banusername",
+  "unbanusername",
+  "banipaddress",
   "unbanipaddress",
   "getuserid",
   "getipaddress",

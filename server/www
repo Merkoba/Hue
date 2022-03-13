@@ -34,7 +34,6 @@ let config_mtime = ""
 function build_config() {
 	let xconfig = JSON.parse(fs.readFileSync(config_path, "utf8"))
 	let xsconfig = JSON.parse(fs.readFileSync(sconfig_path, "utf8"))
-	let xbanlist = JSON.parse(fs.readFileSync(banlist_path, "utf8"))
 
 	if (fs.existsSync(user_config_path)) {
 		let user_config = JSON.parse(fs.readFileSync(user_config_path, "utf8"))
@@ -62,11 +61,25 @@ function build_config() {
 
 	Object.assign(sconfig, xsconfig)
 
-	Object.keys(banlist).forEach(function(key) {
-		delete banlist[key]
-	})
+	//Banlist
 
-	Object.assign(banlist, xbanlist)
+	if (!fs.existsSync(banlist_path)) {
+		fs.writeFileSync(banlist_path, "{}", "utf-8")
+	}
+	
+	let xbanlist = JSON.parse(fs.readFileSync(banlist_path, "utf8"))
+
+	if (Object.keys(xbanlist).length === 0) {
+		banlist.usernames = []
+		banlist.user_ids = []
+		banlist.ip_addresses = []
+	} else {
+		Object.keys(banlist).forEach(function(key) {
+			delete banlist[key]
+		})
+	
+		Object.assign(banlist, xbanlist)
+	}
 
 	config.mtime = Date.now()
 	config_mtime = get_config_mtime()

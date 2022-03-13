@@ -9,17 +9,6 @@ Hue.ban_user_id = function (user_id) {
   })
 }
 
-// Ban an ip address globally
-Hue.ban_ip_address = function (ip_address) {
-  if (!ip_address) {
-    return
-  }
-
-  Hue.show_confirm("Superuser Command", "", function () {
-    Hue.socket_emit("ban_ip_address", {ip_address: ip_address})
-  })
-}
-
 // Unban a user id globally
 Hue.unban_user_id = function (user_id) {
   if (!user_id) {
@@ -28,6 +17,39 @@ Hue.unban_user_id = function (user_id) {
 
   Hue.show_confirm("Superuser Command", "", function () {
     Hue.socket_emit("unban_user_id", {user_id: user_id})
+  })
+}
+
+// Ban a username globally
+Hue.ban_username = function (username) {
+  if (!username) {
+    return
+  }
+
+  Hue.show_confirm("Superuser Command", "", function () {
+    Hue.socket_emit("ban_username", {username: username})
+  })
+}
+
+// Unban a user id globally
+Hue.unban_username = function (username) {
+  if (!username) {
+    return
+  }
+
+  Hue.show_confirm("Superuser Command", "", function () {
+    Hue.socket_emit("unban_username", {username: username})
+  })
+}
+
+// Ban an ip address globally
+Hue.ban_ip_address = function (ip_address) {
+  if (!ip_address) {
+    return
+  }
+
+  Hue.show_confirm("Superuser Command", "", function () {
+    Hue.socket_emit("ban_ip_address", {ip_address: ip_address})
   })
 }
 

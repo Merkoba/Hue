@@ -19,48 +19,48 @@ module.exports = function (Hue) {
     }
 
     if (data.room_id === undefined) {
-      return Hue.handler.do_disconnect(socket)
+      return Hue.handler.get_out(socket)
     }
 
     if (data.room_id.length > Hue.sconfig.max_room_id_length) {
-      return Hue.handler.do_disconnect(socket)
+      return Hue.handler.get_out(socket)
     }
 
     if (data.alternative) {
       socket.hue_login_method = "alternative"
       
       if (!data.username || !data.password) {
-        return Hue.handler.do_disconnect(socket)
+        return Hue.handler.get_out(socket)
       }
 
       data.username = data.username.trim()
       data.password = data.password.trim()
 
       if (data.username === undefined || data.password === undefined) {
-        return Hue.handler.do_disconnect(socket)
+        return Hue.handler.get_out(socket)
       }
 
       if (data.username > Hue.config.max_max_username_length) {
-        return Hue.handler.do_disconnect(socket)
+        return Hue.handler.get_out(socket)
       }
 
       if (data.password.length > Hue.config.max_max_password_length) {
-        return Hue.handler.do_disconnect(socket)
+        return Hue.handler.get_out(socket)
       }
     } else {
       socket.hue_login_method = "normal"
       data.user_id = data.user_id.trim()
 
       if (data.user_id === undefined || data.token === undefined) {
-        return Hue.handler.do_disconnect(socket)
+        return Hue.handler.get_out(socket)
       }
 
       if (data.user_id > Hue.sconfig.max_user_id_length) {
-        return Hue.handler.do_disconnect(socket)
+        return Hue.handler.get_out(socket)
       }
 
       if (data.token.length > Hue.sconfig.max_jwt_token_length) {
-        return Hue.handler.do_disconnect(socket)
+        return Hue.handler.get_out(socket)
       }
     }
 
@@ -81,22 +81,17 @@ module.exports = function (Hue) {
 
       if (!ans.valid) {
         Hue.handler.anti_spam_ban(socket, 2)
-        return Hue.handler.do_disconnect(socket)
+        return Hue.handler.get_out(socket)
       }
 
       let userinfo = ans.user
 
       socket.hue_user_id = userinfo.id
 
-      if (Hue.handler.user_is_banned(socket)) {
-        Hue.handler.get_out(socket)
-        return false
-      }
-
       let info = await Hue.db_manager.get_room(["id", data.room_id], {})
 
       if (!info) {
-        return Hue.handler.do_disconnect(socket)
+        return Hue.handler.get_out(socket)
       }
 
       await Hue.handler.do_join(socket, info, userinfo, data)
@@ -106,28 +101,23 @@ module.exports = function (Hue) {
         decoded
       ) {
         if (err) {
-          return Hue.handler.do_disconnect(socket)
+          return Hue.handler.get_out(socket)
         } else if (
           decoded.data === undefined ||
           decoded.data.id === undefined
         ) {
-          return Hue.handler.do_disconnect(socket)
+          return Hue.handler.get_out(socket)
         }
 
         if (decoded.data.id !== data.user_id) {
-          return Hue.handler.do_disconnect(socket)
+          return Hue.handler.get_out(socket)
         } else {
           socket.hue_user_id = data.user_id
-
-          if (Hue.handler.user_is_banned(socket)) {
-            Hue.handler.get_out(socket)
-            return false
-          }
 
           let info = await Hue.db_manager.get_room(["id", data.room_id], {})
 
           if (!info) {
-            return Hue.handler.do_disconnect(socket)
+            return Hue.handler.get_out(socket)
           }
 
           let userinfo = await Hue.db_manager.get_user(
@@ -136,7 +126,7 @@ module.exports = function (Hue) {
           )
 
           if (!userinfo) {
-            return Hue.handler.do_disconnect(socket)
+            return Hue.handler.get_out(socket)
           }
 
           await Hue.handler.do_join(socket, info, userinfo, data)
@@ -147,24 +137,28 @@ module.exports = function (Hue) {
 
   // Does a room join after successful authentication
   Hue.handler.do_join = async function (socket, info, userinfo, data) {
+    socket.hue_username = userinfo.username
+
+    if (Hue.handler.user_is_banned(socket)) {
+      return Hue.handler.get_out(socket)
+    }
+
     socket.hue_room_id = info.id
     socket.hue_bio = userinfo.bio
     socket.hue_joining = true
     socket.join(socket.hue_room_id)
 
     if (await Hue.handler.check_multipe_joins(socket)) {
-      return Hue.handler.do_disconnect(socket)
+      return Hue.handler.get_out(socket)
     }
 
     if (await Hue.handler.check_socket_limit(socket)) {
-      return Hue.handler.do_disconnect(socket)
+      return Hue.handler.get_out(socket)
     }
 
     if (Hue.sconfig.superuser_usernames.includes(userinfo.username)) {
       socket.hue_superuser = true
     }
-
-    socket.hue_username = userinfo.username
 
     if (!socket.hue_superuser && info.bans.includes(socket.hue_user_id)) {
       socket.leave(socket.hue_room_id)
