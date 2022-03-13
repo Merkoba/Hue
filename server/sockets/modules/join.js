@@ -262,6 +262,6 @@ module.exports = function (Hue) {
       })
     }
 
-    Hue.handler.log_user_ip_address(socket)
+    Hue.handler.log_user_data(socket)
   }
 }
