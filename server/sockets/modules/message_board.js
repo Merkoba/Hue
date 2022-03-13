@@ -101,7 +101,7 @@ module.exports = function (Hue) {
                 return
               }
             } else {
-              if (Hue.handler.is_admin_or_op(socket)) {
+              if (!Hue.handler.is_admin_or_op(socket)) {
                 Hue.handler.user_emit(socket, "forbidden_user", {})
                 return
               }
