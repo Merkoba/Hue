@@ -1712,6 +1712,7 @@ a.special_link:hover {
 	cursor: pointer;
 	margin-left: 1rem;
 	font-size: 0.85rem;
+	text-decoration: underline;
 }
 
 #media_iframe_poster {
