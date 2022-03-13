@@ -229,6 +229,9 @@ Hue.server_update_events = {
   user_id_received: (data) => {
     Hue.user_id_received(data)
   },
+  username_received: (data) => {
+    Hue.username_received(data)
+  },
   ip_address_received: (data) => {
     Hue.ip_address_received(data)
   },

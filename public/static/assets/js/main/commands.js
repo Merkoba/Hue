@@ -249,7 +249,13 @@ Hue.commands = {
     action: (arg, ans) => {
       Hue.get_user_id(arg)
     },
-    description: `(Only for superusers) Get the user id of a user`,
+    description: `(Only for superusers) Get the user id of a username`,
+  },
+  "getusername": {
+    action: (arg, ans) => {
+      Hue.get_username(arg)
+    },
+    description: `(Only for superusers) Get the username of a user id`,
   },
   "getipaddress": {
     action: (arg, ans) => {
@@ -670,6 +676,7 @@ Hue.superuser_commands = [
   "banipaddress",
   "unbanipaddress",
   "getuserid",
+  "getusername",
   "getipaddress",
   "disconnectuser"
 ]
