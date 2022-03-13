@@ -64,7 +64,7 @@ Hue.unban_ip_address = function (ip_address) {
   })
 }
 
-// Get the user id of a user
+// Get the user_id of a username
 Hue.get_user_id = function (username) {
   if (!username) {
     return
@@ -75,9 +75,25 @@ Hue.get_user_id = function (username) {
   })
 }
 
+// Get the username of a user_id
+Hue.get_username = function (username) {
+  if (!username) {
+    return
+  }
+
+  Hue.show_confirm("Superuser Command", "", function () {
+    Hue.socket_emit("get_username", {user_id: username})
+  })
+}
+
 // When user id is received
 Hue.user_id_received = function (data) {
   Hue.checkmsg(`The user id of ${data.username} is ${data.user_id}`)
+}
+
+// When username is received
+Hue.username_received = function (data) {
+  Hue.checkmsg(`The username of ${data.user_id} is ${data.username}`)
 }
 
 // Get the ip address of a username
