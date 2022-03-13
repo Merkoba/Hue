@@ -319,6 +319,10 @@ Hue.get_radio_metadata = function () {
       if (out.songs[0].title) {
         title = out.songs[0].title
       }
+    } else {
+      if (out.songtitle) {
+        title = out.songtitle
+      }
     }
 
     if (artist || title) {
