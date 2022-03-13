@@ -33,6 +33,62 @@ module.exports = function (Hue) {
     return false
   }  
 
+  // Bans a username globally
+  Hue.handler.public.ban_username = async function (socket, data) {
+    if (!socket.hue_superuser) {
+      Hue.handler.anti_spam_ban(socket)
+      return false
+    }
+
+    if (data.username === undefined) {
+      return false
+    }
+
+    if (data.username.length === 0) {
+      return false
+    }
+
+    if (Hue.banlist.usernames.includes(data.username)) {
+      Hue.handler.user_emit(socket, "item_already_included", {})
+      return false
+    }
+
+    Hue.banlist.usernames.push(data.username)
+    await Hue.handler.write_banlist_file()
+    Hue.handler.user_emit(socket, "item_included", {})
+  }
+
+  // Unbans a username globally
+  Hue.handler.public.unban_username = async function (socket, data) {
+    if (!socket.hue_superuser) {
+      Hue.handler.anti_spam_ban(socket)
+      return false
+    }
+
+    if (data.username === undefined) {
+      return false
+    }
+
+    if (data.username.length === 0) {
+      return false
+    }
+
+    if (!Hue.banlist.usernames.includes(data.username)) {
+      Hue.handler.user_emit(socket, "item_not_included", {})
+      return false
+    }
+
+    for (let i=0; i<Hue.banlist.usernames.length; i++) {
+      if (Hue.banlist.usernames[i] === data.username) {
+        Hue.banlist.usernames.splice(i, 1)
+        break
+      }
+    }
+    
+    await Hue.handler.write_banlist_file()
+    Hue.handler.user_emit(socket, "item_removed", {})
+  }  
+
   // Bans a user_id globally
   Hue.handler.public.ban_user_id = async function (socket, data) {
     if (!socket.hue_superuser) {
@@ -145,64 +201,8 @@ module.exports = function (Hue) {
     Hue.handler.user_emit(socket, "item_removed", {})
   }
 
-  // Bans a username globally
-  Hue.handler.public.ban_username = async function (socket, data) {
-    if (!socket.hue_superuser) {
-      Hue.handler.anti_spam_ban(socket)
-      return false
-    }
-
-    if (data.username === undefined) {
-      return false
-    }
-
-    if (data.username.length === 0) {
-      return false
-    }
-
-    if (Hue.banlist.usernames.includes(data.username)) {
-      Hue.handler.user_emit(socket, "item_already_included", {})
-      return false
-    }
-
-    Hue.banlist.usernames.push(data.username)
-    await Hue.handler.write_banlist_file()
-    Hue.handler.user_emit(socket, "item_included", {})
-  }
-
-  // Unbans a username globally
-  Hue.handler.public.unban_username = async function (socket, data) {
-    if (!socket.hue_superuser) {
-      Hue.handler.anti_spam_ban(socket)
-      return false
-    }
-
-    if (data.username === undefined) {
-      return false
-    }
-
-    if (data.username.length === 0) {
-      return false
-    }
-
-    if (!Hue.banlist.usernames.includes(data.username)) {
-      Hue.handler.user_emit(socket, "item_not_included", {})
-      return false
-    }
-
-    for (let i=0; i<Hue.banlist.usernames.length; i++) {
-      if (Hue.banlist.usernames[i] === data.username) {
-        Hue.banlist.usernames.splice(i, 1)
-        break
-      }
-    }
-    
-    await Hue.handler.write_banlist_file()
-    Hue.handler.user_emit(socket, "item_removed", {})
-  }
-
   // Send the user_id of a username
-  Hue.handler.public.get_user_id = async function (socket, data) {
+  Hue.handler.public.get_user_id_by_username = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
       return false
@@ -232,7 +232,7 @@ module.exports = function (Hue) {
   }
 
   // Send the username of a user_id
-  Hue.handler.public.get_username = async function (socket, data) {
+  Hue.handler.public.get_username_by_user_id = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
       return false
@@ -262,7 +262,7 @@ module.exports = function (Hue) {
   }
 
   // Send the ip address of a connected user
-  Hue.handler.public.get_ip_address = async function (socket, data) {
+  Hue.handler.public.get_ip_address_by_username = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
       return false

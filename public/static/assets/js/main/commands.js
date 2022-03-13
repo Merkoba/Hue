@@ -247,19 +247,19 @@ Hue.commands = {
   },
   "getuserid": {
     action: (arg, ans) => {
-      Hue.get_user_id(arg)
+      Hue.get_user_id_by_username(arg)
     },
     description: `(Only for superusers) Get the user id of a username`,
   },
   "getusername": {
     action: (arg, ans) => {
-      Hue.get_username(arg)
+      Hue.get_username_by_user_id(arg)
     },
     description: `(Only for superusers) Get the username of a user id`,
   },
   "getipaddress": {
     action: (arg, ans) => {
-      Hue.get_ip_address(arg)
+      Hue.get_ip_address_by_username(arg)
     },
     description: `(Only for superusers) Get the ip address of a user`,
   },
