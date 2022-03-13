@@ -9,14 +9,7 @@ Hue.setup_message_board = function () {
 
     if (el) {
       let post = el.closest(".message_board_post")
-      let id = Hue.dataset(post, "id")
-
-      if (id) {
-        Hue.show_confirm("Delete Message", "Delete message from the message board", function () {
-          Hue.socket_emit("delete_message_board_post", { id: id })
-        })
-      }
-
+      Hue.delete_message_board_post(post)
       return
     }
 
@@ -26,7 +19,6 @@ Hue.setup_message_board = function () {
       let username = Hue.dataset(el, "username")
       let user_id = Hue.dataset(el, "user_id")
       Hue.show_profile(username, user_id)
-
       return
     }
 
@@ -48,26 +40,7 @@ Hue.setup_message_board = function () {
 
     if (el) {
       let post = el.closest(".message_board_post")
-      let content = Hue.el(".message_board_content", post)
-      let edit_area = Hue.el(".message_board_edit_area", post)
-      let btns = Hue.el(".message_board_buttons", post)
-      let edit_btns = Hue.el(".message_board_edit_buttons", post)
-      let text = Hue.dataset(post, "original_message")
-
-      content.style.display = "none"
-      
-      edit_area.style.display = "block"
-      edit_area.value = text
-      edit_area.focus()
-      edit_area.scrollIntoView({
-        block: "center"
-      })
-
-      btns.style.display = "none"
-      edit_btns.style.display = "flex"
-      Hue.editing_message_board_post = post
-      Hue.editing_message_board = true
-
+      Hue.edit_message_board_post(post)
       return
     }
 
@@ -150,6 +123,7 @@ Hue.add_post_to_message_board = function (data, edited) {
   Hue.dataset(post, "id", data.id)
   Hue.dataset(post, "date", data.date)
   Hue.dataset(post, "username", data.username)
+  Hue.dataset(post, "user_id", data.user_id)
   Hue.dataset(post, "original_message", data.message)
 
   let profilepic = Hue.el(".message_board_profilepic", post)
@@ -422,4 +396,47 @@ Hue.clear_message_board = function () {
 Hue.message_board_cleared = function (data) {
   Hue.el("#message_board_container").innerHTML = ""
   Hue.show_room_notification(data.username, `${data.username} cleared the message board`)
+}
+
+// Delete a message board post
+Hue.delete_message_board_post = function (post) {
+  let id = Hue.dataset(post, "id")
+  let user_id = Hue.dataset(post, "user_id")
+  let user = Hue.get_user_by_user_id(user_id)
+
+  if (Hue.user_id !== user_id) {
+    if (user && Hue.is_admin(user)) {
+      Hue.forbidden_user()
+      return
+    }
+  }
+
+  if (id) {
+    Hue.show_confirm("Delete Message", "Delete message from the message board", function () {
+      Hue.socket_emit("delete_message_board_post", { id: id })
+    })
+  }
+}
+
+// Edit message board post
+Hue.edit_message_board_post = function (post) {
+  let content = Hue.el(".message_board_content", post)
+  let edit_area = Hue.el(".message_board_edit_area", post)
+  let btns = Hue.el(".message_board_buttons", post)
+  let edit_btns = Hue.el(".message_board_edit_buttons", post)
+  let text = Hue.dataset(post, "original_message")
+
+  content.style.display = "none"
+  
+  edit_area.style.display = "block"
+  edit_area.value = text
+  edit_area.focus()
+  edit_area.scrollIntoView({
+    block: "center"
+  })
+
+  btns.style.display = "none"
+  edit_btns.style.display = "flex"
+  Hue.editing_message_board_post = post
+  Hue.editing_message_board = true
 }

@@ -92,20 +92,20 @@ module.exports = function (Hue) {
 
         if (item.user_id !== socket.hue_user_id) {
           if (!socket.hue_superuser) {
-            if (
-              (current_role === "admin" || current_role === "op") &&
-              socket.hue_role !== "admin"
-            ) {
+            if (current_role === "admin") {
               Hue.handler.user_emit(socket, "forbidden_user", {})
-              return false
+              return
+            } else if (current_role === "op") {
+              if (socket.hue_role !== "admin") {
+                Hue.handler.user_emit(socket, "forbidden_user", {})
+                return
+              }
+            } else {
+              if (Hue.handler.is_admin_or_op(socket)) {
+                Hue.handler.user_emit(socket, "forbidden_user", {})
+                return
+              }
             }
-          }
-
-          if (
-            !Hue.handler.is_admin_or_op(socket) &&
-            !socket.hue_superuser
-          ) {
-            return false
           }
         }
 
