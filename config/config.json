@@ -50,6 +50,7 @@
 	"settings_default_show_link_previews": true,
 	"settings_default_show_highlight_notifications": true,
 	"settings_default_show_activity_notifications": true,
+	"settings_default_send_radio_notifications": true,
 	"settings_default_show_radio_notifications": true,
 	"settings_default_show_user_join_notifications": true,
 	"settings_default_show_user_leave_notifications": true,

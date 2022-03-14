@@ -116,8 +116,11 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_show_activity_notifications"
 >Whether to show activity notifications on highlights, by default.
 
+"settings_default_send_radio_notifications"
+>Whether to send radio station changes to other users by default.
+
 "settings_default_show_radio_notifications"
->Whether to show radio station change by other users by default.
+>Whether to show radio station changes by other users by default.
 
 "settings_default_show_user_join_notifications"
 >Whether to show notifications when users join by default.

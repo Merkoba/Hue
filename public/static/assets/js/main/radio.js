@@ -610,6 +610,10 @@ Hue.radio_playstop = function () {
 
 // Send a message to others that you started a radio
 Hue.announce_radio = function () {
+  if (!Hue.get_setting("send_radio_notifications")) {
+    return
+  }
+  
   Hue.socket_emit("announce_radio", {name: Hue.playing_radio.radio.name})
 }
 
