@@ -95,6 +95,28 @@ Hue.user_settings = {
         Hue.save_settings()
       }
     },
+  },
+  show_user_join_notifications: {
+    widget_type: "checkbox",
+    description: `Whether to show notifications when users join`,
+    action: (save = true) => {
+      Hue.settings.show_user_join_notifications = Hue.el(`#settings_show_user_join_notifications`).checked
+
+      if (save) {
+        Hue.save_settings()
+      }
+    },
+  },
+  show_user_leave_notifications: {
+    widget_type: "checkbox",
+    description: `Whether to show notifications when users leave`,
+    action: (save = true) => {
+      Hue.settings.show_user_leave_notifications = Hue.el(`#settings_show_user_leave_notifications`).checked
+
+      if (save) {
+        Hue.save_settings()
+      }
+    },
   }
 }
 

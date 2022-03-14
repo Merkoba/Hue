@@ -888,6 +888,11 @@ select {
 	font-family: var(--font_family) !important;
 }
 
+input[type=checkbox] {
+	width: 1.1rem;
+	height: 1.1rem;
+}
+
 #modal_image_error,
 #expand_image_error {
 	font-size: 1.2rem;
