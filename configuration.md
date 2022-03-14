@@ -149,6 +149,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_media_layout"
 >Default media area (image, tv) layout, either column or row.
 
+"room_state_default_chat_font_size"
+>Default chat font size
+
 "room_state_default_radio_volume"
 >Default volume for radio players.
 

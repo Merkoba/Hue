@@ -577,7 +577,7 @@ Hue.commands = {
   },
   "default": {
     action: (arg, ans) => {
-      Hue.apply_media_defaults()
+      Hue.apply_media_tweaks_defaults()
     },
     description: `Restore media defaults`,
   },

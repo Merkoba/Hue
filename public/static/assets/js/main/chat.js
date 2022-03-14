@@ -1808,6 +1808,11 @@ Hue.set_default_chat_size = function () {
   Hue.do_chat_size_change("default")
 }
 
+// Set the default chat font size
+Hue.set_default_chat_font_size = function (size) {
+  Hue.do_chat_font_size_change("default")
+}
+
 // Shows an alert when a message follows a user's message
 Hue.activity_notification = function (username) {
   if (!Hue.started) {
@@ -2027,4 +2032,35 @@ Hue.decrease_chat_percentage = function () {
   size -= 5
   size = Hue.utilz.round2(size, 5)
   Hue.do_chat_size_change(size)
+}
+
+// Increase chat font size
+Hue.increase_chat_font_size = function () {
+  Hue.do_chat_font_size_change(Hue.room_state.chat_font_size + 0.1)
+}
+
+// Decrease chat font size
+Hue.decrease_chat_font_size = function () {
+  Hue.do_chat_font_size_change(Hue.room_state.chat_font_size - 0.1)
+}
+
+// Do chat font size change
+Hue.do_chat_font_size_change = function (size) {
+  if (size === "max") {
+    size = Hue.max_chat_font_size
+  } else if (size === "min") {
+    size = Hue.min_chat_font_size
+  } else if (size === "default") {
+    size = Hue.config.room_state_default_chat_font_size
+  }
+
+  size = Hue.utilz.round(size, 1)
+
+  if (size < Hue.min_chat_font_size || size > Hue.max_chat_font_size) {
+    return
+  }
+
+  Hue.room_state.chat_font_size = size
+  Hue.apply_theme()
+  Hue.save_room_state()
 }
