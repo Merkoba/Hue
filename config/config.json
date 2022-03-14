@@ -42,6 +42,7 @@
 	"imgur_enabled": true,
 	"iframes_enabled": true,
 	"max_url_length": 1000,
+
 	"settings_default_highlight_current_username": true,
 	"settings_default_case_insensitive_username_highlights": true,
 	"settings_default_open_whispers_automatically": true,
@@ -49,6 +50,8 @@
 	"settings_default_show_link_previews": true,
 	"settings_default_show_highlight_notifications": true,
 	"settings_default_show_activity_notifications": true,
+	"settings_default_show_radio_notifications": true,
+
 	"room_state_default_image_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_last_highlight_date": 0,
@@ -62,15 +65,18 @@
 	"room_state_default_radio_volume": 1,
 	"room_state_default_radio_enabled": true,
 	"room_state_default_radio_dj_delay": 10,
+
 	"max_same_post_diff": 300000,
 	"max_same_post_messages": 20,
 	"typing_delay": 800,
 	"max_typing_inactivity": 2000,
 	"socket_emit_throttle": 10,
+
 	"safe_limit_1": 100,
 	"safe_limit_2": 500,
 	"safe_limit_3": 1000,
 	"safe_limit_4": 200,
+
 	"profilepic_diameter": 300,
 	"max_num_newlines": 100,
 	"image_change_cooldown": 2500,
@@ -88,6 +94,7 @@
 	"max_displayed_url": 65,
 	"max_activity_username_length": 8,
 	"max_low_users": 100,
+
 	"radios": [
 		{"name": "Merkoba FM", "url": "https://radio.merkoba.com:8765/radio.ogg", "metadata": "https://radio.merkoba.com:8765/status-json.xsl"},
 		{"name": "Lain Cyberia", "url": "https://lainon.life/radio/cyberia.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},

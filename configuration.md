@@ -116,6 +116,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_show_activity_notifications"
 >Whether to show activity notifications on highlights, by default.
 
+"settings_default_show_radio_notifications"
+>Whether to show radio station change by other users by default.
+
 "room_state_default_image_enabled"
 >Whether images will be enabled by default.
 

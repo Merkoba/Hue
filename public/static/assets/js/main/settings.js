@@ -84,6 +84,17 @@ Hue.user_settings = {
         Hue.save_settings()
       }
     },
+  },
+  show_radio_notifications: {
+    widget_type: "checkbox",
+    description: `Whether to show radio station change by other users`,
+    action: (save = true) => {
+      Hue.settings.show_radio_notifications = Hue.el(`#settings_show_radio_notifications`).checked
+
+      if (save) {
+        Hue.save_settings()
+      }
+    },
   }
 }
 
