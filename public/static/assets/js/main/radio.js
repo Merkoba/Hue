@@ -615,6 +615,10 @@ Hue.announce_radio = function () {
 
 // Show when another user announces their radio
 Hue.show_announce_radio = function (data) {
+  if (!Hue.get_setting("show_radio_notifications")) {
+    return
+  }
+
   if (Hue.userlist.length <= Hue.config.max_low_users) {
     Hue.show_action_notification(`${data.username} is listening to: ${data.name}`, "star", function () {
       Hue.play_radio_by_name(data.name)
