@@ -23,12 +23,14 @@ Hue.user_join = function (data) {
   }
 
   if (Hue.get_setting("show_user_join_notifications")) {
-    Hue.show_room_notification(
-      data.username,
-      `${data.username} joined`,
-      "user"
-    )
-  } 
+    if (Hue.userlist.length <= Hue.config.max_low_users) {
+      Hue.show_room_notification(
+        data.username,
+        `${data.username} joined`,
+        "user"
+      )
+    }
+  }
 }
 
 // Updates the user count in the header and user list
@@ -442,11 +444,13 @@ Hue.update_user_profilepic = function (id, version) {
 // What to do when a user disconnects
 Hue.user_disconnect = function (data) {
   if (Hue.get_setting("show_user_leave_notifications")) {
-    Hue.show_room_notification(
-      data.username,
-      `${data.username} left`,
-      "user-disconnect"
-    )
+    if (Hue.userlist.length <= Hue.config.max_low_users) {
+      Hue.show_room_notification(
+        data.username,
+        `${data.username} left`,
+        "user-disconnect"
+      )
+    }
   }
   
   Hue.remove_from_userlist(data.user_id)
