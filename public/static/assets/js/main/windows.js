@@ -433,7 +433,8 @@ Hue.start_msg = function () {
   
   Hue.msg_media_tweaks.set(
     Hue.template_media_tweaks({
-      percentages: Hue.create_media_percentages()
+      percentages: Hue.create_tweaks_percentages(),
+      chat_font_sizes: Hue.create_tweaks_chat_font_sizes()
     })
   )
 

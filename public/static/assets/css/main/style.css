@@ -192,6 +192,10 @@ body * {
 	max-height: 100%;
 }
 
+#chat_area .chat_content {
+	font-size: var(--chat_font_size);
+}
+
 .chat_area {
 	display: grid;
 	grid-gap: 1rem;
