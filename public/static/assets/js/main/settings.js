@@ -139,17 +139,6 @@ Hue.user_settings = {
         Hue.save_settings()
       }
     },
-  },
-  show_media_info: {
-    widget_type: "checkbox",
-    description: `Whether to show media info below image and tv.`,
-    action: (save = true) => {
-      Hue.settings.show_media_info = Hue.el(`#settings_show_media_info`).checked
-      Hue.check_media_info()
-      if (save) {
-        Hue.save_settings()
-      }
-    },
   }
 }
 

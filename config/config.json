@@ -55,8 +55,7 @@
 	"settings_default_show_user_join_notifications": true,
 	"settings_default_show_user_leave_notifications": true,
 	"settings_default_stop_radio_on_tv_play": true,
-	"settings_default_show_media_info": true,
-
+	
 	"room_state_default_image_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_last_highlight_date": 0,
@@ -71,6 +70,7 @@
 	"room_state_default_radio_enabled": true,
 	"room_state_default_radio_dj_delay": 10,
 	"room_state_default_chat_font_size": 1,
+	"room_state_default_media_info_enabled": true,
 
 	"max_same_post_diff": 300000,
 	"max_same_post_messages": 20,
