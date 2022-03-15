@@ -319,8 +319,10 @@ Hue.not_an_op = function () {
 
 // Shows a feedback message upon joining the room
 Hue.show_joined = function () {
-  Hue.feedback(`You joined ${Hue.room_name}`)
-  Hue.show_topic()
+  Hue.make_info_popup_item({
+    message: "You joined the room",
+    increase_counter: false
+  })
 }
 
 // Disconnect other clients of the same account
