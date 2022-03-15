@@ -54,6 +54,7 @@
 	"settings_default_show_radio_notifications": true,
 	"settings_default_show_user_join_notifications": true,
 	"settings_default_show_user_leave_notifications": true,
+	"settings_default_stop_radio_on_tv_play": true,
 
 	"room_state_default_image_enabled": true,
 	"room_state_default_tv_enabled": true,
