@@ -112,7 +112,7 @@ Hue.show_info = function (s, title = "Info") {
 }
 
 // Show autoclose window
-Hue.show_autoclose = function (s, title = "Info") {
+Hue.show_info_autoclose = function (s, title = "Info") {
   Hue.msg_info_autoclose.show([title, s])
 }
 
