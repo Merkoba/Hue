@@ -1079,12 +1079,7 @@ Hue.set_default_media_info_enabled = function () {
 
 // Check media info
 Hue.check_media_info = function () {
-  let display = "grid"
-  
-  if (!Hue.room_state.media_info_enabled) {
-    display = "none"
-  }
-
+  let display = Hue.room_state.media_info_enabled ? "grid" : "none"
   document.documentElement.style.setProperty('--media_info_display', display)
   Hue.fix_frames()
 }
