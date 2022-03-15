@@ -529,12 +529,13 @@ Hue.announce_text_color_change = function (data) {
     data.username,
     `${data.username} changed the text color to ${data.color}`
   )
+
   Hue.set_text_color(data.color)
-  Hue.apply_theme()
 }
 
 // Text color setter
 Hue.set_text_color = function (color) {
   Hue.text_color = color
+  Hue.apply_theme()
   Hue.config_admin_text_color()
 }
