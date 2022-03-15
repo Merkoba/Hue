@@ -283,6 +283,7 @@ Hue.on_join = function (data) {
   Hue.start_active_media()
   Hue.update_input_placeholder()
   Hue.fix_media_info()
+  Hue.check_media_info()
   Hue.update_activity_bar()
   Hue.check_chat_enabled()
   Hue.setup_user_profile()

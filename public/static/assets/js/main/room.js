@@ -323,8 +323,7 @@ Hue.apply_theme = function () {
   let altbackground = Hue.colorlib.get_lighter_or_darker(background_color, 0.09)
   let altbackground_a = Hue.colorlib.rgb_to_rgba(altbackground, 0.7)
   let font_color_a = Hue.colorlib.rgb_to_rgba(font_color,  0.7)
-  let chat_font_size = `${Hue.room_state.chat_font_size}em`
-
+  
   document.documentElement.style.setProperty('--font_color', font_color)
   document.documentElement.style.setProperty('--font_color_a', font_color_a)
   document.documentElement.style.setProperty('--altcolor', altcolor)
@@ -333,7 +332,6 @@ Hue.apply_theme = function () {
   document.documentElement.style.setProperty('--background_color_a', background_color_a)
   document.documentElement.style.setProperty('--altbackground', altbackground)
   document.documentElement.style.setProperty('--altbackground_a', altbackground_a)
-  document.documentElement.style.setProperty('--chat_font_size', chat_font_size)
 }
 
 // Changes the background color

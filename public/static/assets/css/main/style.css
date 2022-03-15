@@ -2270,7 +2270,7 @@ pre {
 
 .media_info_container {
 	margin-top: 0.1rem;
-	display: grid;
+	display: var(--media_info_display);
 }
 
 .media_info {
