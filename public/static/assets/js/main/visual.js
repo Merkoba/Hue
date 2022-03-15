@@ -107,18 +107,19 @@ Hue.on_confirm = function () {
 }
 
 // Simple window for messages
-Hue.showmsg = function (s, autoclose = false) {
-  if (autoclose) {
-    Hue.msg_info_autoclose.show(s)
-  } else {
-    Hue.msg_info.show(["Info", s])
-  }
+Hue.show_info = function (s, title = "Info") {
+  Hue.msg_info.show([title, s])
+}
+
+// Show autoclose window
+Hue.show_autoclose = function (s, title = "Info") {
+  Hue.msg_info_autoclose.show([title, s])
 }
 
 // Simple window for messages
 Hue.checkmsg = function (s) {
   if (Hue.modal_open) {
-    Hue.showmsg(s)
+    Hue.show_info(s)
   } else {
     Hue.feedback(s)
   }

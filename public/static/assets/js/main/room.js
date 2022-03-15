@@ -77,7 +77,7 @@ Hue.get_topic = function () {
 
 // Shows the topic
 Hue.show_topic = function () {
-  Hue.feedback(`Topic: ${Hue.get_topic()}`)
+  Hue.show_info(Hue.get_topic(), "Topic")
 }
 
 // Announces room name changes

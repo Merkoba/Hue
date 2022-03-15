@@ -376,7 +376,7 @@ Hue.setup_write_whisper = function () {
 
   Hue.el("#write_whisper_add_user").addEventListener("click", function () {
     if (Hue.whisper_users.length >= Hue.config.max_whisper_users) {
-      Hue.showmsg("Max whisper users reached")
+      Hue.show_info("Max whisper users reached")
       return
     }
 

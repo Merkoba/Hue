@@ -195,7 +195,7 @@ Hue.setup_user_profile = function () {
 
   if (Hue.get_self_user().profilepic_version === 0) {
     Hue.show_user_profile()
-    Hue.showmsg("You can select a profile image here")
+    Hue.show_info("You can select a profile image here")
   }
 }
 
