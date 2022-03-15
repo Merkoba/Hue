@@ -1070,6 +1070,13 @@ Hue.toggle_media_info = function () {
   Hue.save_room_state()
 }
 
+// Set default media info enabled
+Hue.set_default_media_info_enabled = function () {
+  Hue.room_state.media_info_enabled = Hue.config.room_state_default_media_info_enabled
+  Hue.check_media_info()
+  Hue.save_room_state()
+}
+
 // Check media info
 Hue.check_media_info = function () {
   let display = "grid"

@@ -131,6 +131,7 @@ Hue.apply_media_tweaks_defaults = function () {
   Hue.set_default_tv_position()
   Hue.set_default_main_layout()
   Hue.set_default_chat_enabled()
+  Hue.set_default_media_info_enabled()
   Hue.toggle_media({type: "image", what: true})
   Hue.toggle_media({type: "tv", what: true})
 
