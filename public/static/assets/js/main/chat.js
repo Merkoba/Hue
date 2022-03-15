@@ -1237,7 +1237,7 @@ Hue.jump_to_chat_message_by_id = function (id) {
     let message_id = Hue.dataset(message, "message_id")
     Hue.jump_to_chat_message(message_id)
   } else {
-    Hue.showmsg("Message no longer in chat")
+    Hue.show_info("Message no longer in chat")
   }
 }
 

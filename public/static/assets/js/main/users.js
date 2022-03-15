@@ -593,7 +593,7 @@ Hue.play_audioclip = function () {
 
   Hue.audioclip.addEventListener("error", function (e) {
     if (Hue.audioclip) {
-      Hue.showmsg("User has no audioclip")
+      Hue.show_info("User has no audioclip")
       Hue.stop_audioclip()
     }
   })

@@ -55,7 +55,7 @@ Hue.setup_radio_window = function () {
     let el = Hue.handle_radio_history_item
     let info = Hue.el(".radio_history_info", el).textContent
     Hue.copy_string(info)
-    Hue.showmsg("Copied to clipboard", true)
+    Hue.show_autoclose("Copied to clipboard")
   })
 
   Hue.el("#handle_radio_history_search").addEventListener("click", function (e) {
@@ -613,7 +613,7 @@ Hue.announce_radio = function () {
   if (!Hue.get_setting("send_radio_notifications")) {
     return
   }
-  
+
   Hue.socket_emit("announce_radio", {name: Hue.playing_radio.radio.name})
 }
 
