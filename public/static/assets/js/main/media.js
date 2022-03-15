@@ -1063,11 +1063,18 @@ Hue.change_media_visibility = function (type, play = false) {
   Hue.goto_bottom()
 }
 
+// Toggle media info
+Hue.toggle_media_info = function () {
+  Hue.room_state.media_info_enabled = !Hue.room_state.media_info_enabled
+  Hue.check_media_info()
+  Hue.save_room_state()
+}
+
 // Check media info
 Hue.check_media_info = function () {
   let display = "grid"
   
-  if (!Hue.get_setting("show_media_info")) {
+  if (!Hue.room_state.media_info_enabled) {
     display = "none"
   }
 

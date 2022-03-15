@@ -131,9 +131,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_stop_radio_on_tv_play"
 >Whether to stop the radio when the tv starts playing.
 
-"settings_default_show_media_info"
->Whether to show media info below image and tv.
-
 "room_state_default_image_enabled"
 >Whether images will be enabled by default.
 
@@ -175,6 +172,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "room_state_default_radio_dj_delay"
 >Change radio station automatically after x minutes if radio dj is on.
+
+"room_state_default_media_info_enabled"
+>Whether to show media info below image and tv.
 
 "max_same_post_diff"
 >Maximum difference in time between a message and and another from the same user to be displayed within the same post.

@@ -35,6 +35,10 @@ Hue.setup_media_tweaks = function () {
     Hue.toggle_chat()
   })
 
+  Hue.el("#media_tweaks_toggle_info").addEventListener("click", function () {
+    Hue.toggle_media_info()
+  })
+
   Hue.el("#media_tweaks_tv_size_minus").addEventListener("click", function () {
     Hue.decrease_tv_percentage()
     Hue.refresh_media_tweaks()
