@@ -500,6 +500,7 @@ module.exports = function (Hue) {
 
     let done = await Hue.db_manager.change_username(
       userinfo.id,
+      data.original,
       data.new
     )
   

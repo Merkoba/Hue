@@ -18,9 +18,14 @@ module.exports = function (Hue) {
     }
 
     let old_username = socket.hue_username
+
+    if (old_username === data.username) {
+      return
+    }
     
     let done = await Hue.db_manager.change_username(
       socket.hue_user_id,
+      old_username,
       data.username
     )
 
