@@ -233,6 +233,13 @@ Hue.after_show_tv = function () {
   Hue.focus_input()
 }
 
+// After a tv was set to play
+Hue.after_tv_play = function () {
+  if (Hue.get_setting("stop_radio_on_tv_play")) {
+    Hue.stop_radio()
+  }
+}
+
 // Attempts to change the tv source
 // It considers room state and permissions
 // It considers text or url to determine if it's valid

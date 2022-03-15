@@ -487,6 +487,10 @@ Hue.change = function (args = {}) {
 
     Hue[`show_${item.type}_tv`](args.play)
 
+    if (args.play) {
+      Hue.after_tv_play()
+    }
+
     if (!args.item || args.item === Hue.current_tv()) {
       Hue.el("#footer_lock_tv_icon").classList.remove("blinking")
     }
@@ -859,8 +863,8 @@ Hue.show_media_picker = function (type) {
 
 // Load media picker
 Hue.load_media_link = function (type, source, comment) {
-  Hue.el(`#${type}_link_comment`).value = comment
-  Hue.el(`#${type}_link_input`).value = source
+  Hue.el(`#link_${type}_comment`).value = comment
+  Hue.el(`#link_${type}_input`).value = source
   Hue[`msg_link_${type}`].show()
 }
 

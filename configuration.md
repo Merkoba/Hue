@@ -128,6 +128,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_show_user_leave_notifications"
 >Whether to show notifications when users leave by default.
 
+"settings_default_stop_radio_on_tv_play"
+>Whether to stop the radio when the tv starts playing.
+
 "room_state_default_image_enabled"
 >Whether images will be enabled by default.
 
