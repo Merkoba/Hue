@@ -25,7 +25,8 @@ Hue.make_info_popup_item = function (args = {}) {
     message: "",
     action: true,
     push: true,
-    on_click: false
+    on_click: false,
+    increase_counter: true
   }
 
   args = Object.assign(def_args, args)
@@ -37,7 +38,12 @@ Hue.make_info_popup_item = function (args = {}) {
   }
 
   if (args.push) {
-    Hue.push_notification(args.icon, args.message, args.on_click)
+    Hue.push_notification({
+      icon: args.icon,
+      message: args.message,
+      on_click: args.on_click,
+      increase_counter: args.increase_counter
+    })
   }
 
   return Hue.template_popup_item({
@@ -48,13 +54,22 @@ Hue.make_info_popup_item = function (args = {}) {
 }
 
 // Pushes a new notification to the notifications window
-Hue.push_notification = function (icon, message, on_click = false) {
+Hue.push_notification = function (args) {
+  let def_args = {
+    icon: "info",
+    message: "",
+    on_click: false,
+    increase_counter: true
+  }
+
+  args = Object.assign(def_args, args)
+
   let d = Date.now()
   let t = Hue.utilz.nice_date(d)
 
   let content_classes = ""
 
-  if (on_click) {
+  if (args.on_click) {
     content_classes = "action"
   }
 
@@ -62,8 +77,8 @@ Hue.push_notification = function (icon, message, on_click = false) {
 
   item.innerHTML = Hue.template_notification({
     content_classes: content_classes,
-    icon: icon,
-    message: message
+    icon: args.icon,
+    message: args.message
   })
 
   let content = Hue.el(".notifications_item_content", item)
@@ -72,9 +87,9 @@ Hue.push_notification = function (icon, message, on_click = false) {
   Hue.dataset(content, "otitle", t)
   Hue.dataset(content, "date", d)
 
-  if (on_click) {
+  if (args.on_click) {
     content.addEventListener("click", function () {
-      on_click()
+      args.on_click()
     })
   }
   
@@ -86,7 +101,7 @@ Hue.push_notification = function (icon, message, on_click = false) {
     items.slice(-1)[0].remove()
   }
 
-  if (!Hue.msg_notifications.is_open() && !Hue.has_focus) {
+  if (args.increase_counter && !Hue.msg_notifications.is_open() && !Hue.has_focus) {
     if (Hue.notifications_count < 100) {
       Hue.notifications_count += 1
       Hue.el("#header_notifications_count").textContent = `(${Hue.notifications_count})`
