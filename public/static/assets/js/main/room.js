@@ -195,7 +195,7 @@ Hue.request_admin_list = function () {
 Hue.show_admin_list = function (data) {
   data.list.sort(Hue.compare_userlist)
 
-  let container = Hue.div("grid_column_center")
+  let container = Hue.div("flex_column_center")
   container.id = "admin_list_container"
 
   for (let user of data.list) {
@@ -229,7 +229,7 @@ Hue.request_ban_list = function () {
 
 // Shows the ban list
 Hue.show_ban_list = function (data) {
-  let container = Hue.div("grid_column_center")
+  let container = Hue.div("flex_column_center")
   container.id = "ban_list_container"
 
   for (let user of data.list) {
