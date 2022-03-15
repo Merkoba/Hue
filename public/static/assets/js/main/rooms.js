@@ -60,10 +60,11 @@ Hue.update_roomlist = function (data) {
 
   for (let room of data.roomlist) {
     let item = Hue.div("roomlist_item modal_item flex_column_center action")
+    let topic = room.topic.substring(0, 200).trim()
     
     item.innerHTML = Hue.template_roomlist_item({
       name: room.name, 
-      topic: room.topic || "Not set",
+      topic: topic || "Not set",
       modified: Hue.utilz.timeago(room.modified)
     })
 
