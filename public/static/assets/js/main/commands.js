@@ -637,25 +637,25 @@ Hue.commands = {
     action: (arg, ans) => {
       Hue.show_roomlist(arg)
     },
-    description: `Show room list`,
+    description: `Show the room list`,
   },
   "userprofile": {
     action: (arg, ans) => {
       Hue.show_user_profile()
     },
-    description: `Select a random radio station`,
+    description: `Show the user profile window`,
   },
   "roomconfig": {
     action: (arg, ans) => {
       Hue.show_room_config()
     },
-    description: `Select a random radio station`,
+    description: `Show the room config window`,
   },
   "mediatweaks": {
     action: (arg, ans) => {
       Hue.show_media_tweaks()
     },
-    description: `Select a random radio station`,
+    description: `Show the media tweaks window`,
   },
 }
 
