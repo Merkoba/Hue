@@ -380,6 +380,10 @@ Hue.fix_frame = function (frame_id, test_parent_height = false) {
 
 // Updates dimensions of the image and tv
 Hue.fix_frames = function () {
+  if (!Hue.started) {
+    return
+  }
+
   Hue.fix_tv_frame()
   Hue.fix_image_frame()
 }
@@ -1057,4 +1061,16 @@ Hue.change_media_visibility = function (type, play = false) {
 
   Hue.check_chat_margin()
   Hue.goto_bottom()
+}
+
+// Check media info
+Hue.check_media_info = function () {
+  let display = "grid"
+  
+  if (!Hue.get_setting("show_media_info")) {
+    display = "none"
+  }
+
+  document.documentElement.style.setProperty('--media_info_display', display)
+  Hue.fix_frames()
 }
