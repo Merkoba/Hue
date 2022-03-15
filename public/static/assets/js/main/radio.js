@@ -98,11 +98,7 @@ Hue.change_radio_state = function (what) {
 // Play or pause radio
 Hue.check_radio_play = function (radio) {
   if (Hue.is_playing_radio(radio) && Hue.radio_is_playing()) {
-    Hue.stop_radio()
-    
-    if (Hue.radio_dj_on) {
-      Hue.toggle_radio_dj(false)
-    }
+    Hue.stop_radio_and_dj()
   } else {
     Hue.play_radio(radio)
   }
@@ -224,6 +220,15 @@ Hue.stop_radio = function () {
   }
 
   Hue.playing_radio.player.pause()
+}
+
+// Stop radio and dj
+Hue.stop_radio_and_dj = function () {
+  Hue.stop_radio()
+    
+  if (Hue.radio_dj_on) {
+    Hue.toggle_radio_dj(false)
+  }
 }
 
 // After stop radio
