@@ -154,11 +154,21 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Changes the username
-  // Checks if the username contains a reserved username
-  manager.change_username = function (id, username) {
+  manager.change_username = function (id, current_username, new_username) {
     return new Promise((resolve, reject) => {
-      if (vars.reserved_usernames.includes(username.toLowerCase())) {
+      if (vars.reserved_usernames.includes(new_username.toLowerCase())) {
         resolve(false)
+        return
+      }
+      
+      if (current_username === new_username) {
+        resolve(false)
+        return
+      }
+
+      if (current_username.toLowerCase() === new_username.toLowerCase()) {
+        manager.update_user(id, { username: new_username })
+        resolve(true)
         return
       }
 
@@ -171,14 +181,14 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             return
           } else {
             manager
-              .get_user(["username", username], { username: 1 })
+              .get_user(["username", new_username], { username: 1 })
 
               .then((user2) => {
                 if (user2) {
                   resolve(false)
                   return
                 } else {
-                  manager.update_user(id, { username: username })
+                  manager.update_user(id, { username: new_username })
                   resolve(true)
                   return
                 }
