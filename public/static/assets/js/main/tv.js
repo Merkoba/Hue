@@ -236,7 +236,7 @@ Hue.after_show_tv = function () {
 // After a tv was set to play
 Hue.after_tv_play = function () {
   if (Hue.get_setting("stop_radio_on_tv_play")) {
-    Hue.stop_radio()
+    Hue.stop_radio_and_dj()
   }
 }
 
