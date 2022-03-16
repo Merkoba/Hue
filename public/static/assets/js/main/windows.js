@@ -109,18 +109,23 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_profile = Msg.factory(
-    Object.assign({}, msgvars.common, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "profile",
       window_width: "22rem",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
-        Hue.el("#show_profile_username").textContent = "Loading"
         Hue.el("#show_profilepic").src = Hue.config.profilepic_loading_url
         Hue.open_profile_username = false
         Hue.open_profile_user_id = false
         Hue.open_profile_user = false
         Hue.stop_audioclip()
       },
+    })
+  )
+
+  Hue.msg_change_role = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "change_role"
     })
   )
 
@@ -466,6 +471,7 @@ Hue.start_msg = function () {
   Hue.msg_view_text.set(Hue.template_view_text())
   Hue.msg_message_board.set(Hue.template_message_board())
   Hue.msg_profilepic_cropper.set(Hue.template_profilepic_cropper())
+  Hue.msg_change_role.set(Hue.template_change_role())
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_draw_image.set(Hue.template_draw_image())
@@ -481,7 +487,6 @@ Hue.start_msg = function () {
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_roomlist.set_title("Room List")
-  Hue.msg_user_profile.set_title("User Profile")
   Hue.msg_settings.set_title("User Settings")
   Hue.msg_media_tweaks.set_title("Media Tweaks")
   Hue.msg_admin_activity.set_title("Admin Activity")
@@ -492,6 +497,7 @@ Hue.start_msg = function () {
   Hue.msg_whispers.set_title("Whispers")
   Hue.msg_message_board.set_title("Message Board")
   Hue.msg_profilepic_cropper.set_title("Crop A Circle")
+  Hue.msg_change_role.set_title("Change Role")
   Hue.msg_confirm.set_title("Confirm Action")
   Hue.msg_draw_image.set_title("Draw an Image")
   Hue.msg_image_picker.set_title("Image")

@@ -177,7 +177,6 @@ Hue.init = function () {
   Hue.resize_events()
   Hue.start_chat_mouse_events()
   Hue.start_body_events()
-  Hue.start_user_context_menu()
   Hue.start_chat_menu_context_menu()
   Hue.start_msg_close_buttons_context_menu()
   Hue.setup_show_profile()
@@ -222,6 +221,7 @@ Hue.init = function () {
   Hue.setup_delete_messages()
   Hue.setup_chat_search()
   Hue.responsive_check()
+  Hue.setup_change_role()
   
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
