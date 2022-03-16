@@ -176,6 +176,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_media_info_enabled"
 >Whether to show media info below image and tv.
 
+"room_state_default_auto_tweaks"
+>Whether auto tweaks is enabled by default.
+
 "max_same_post_diff"
 >Maximum difference in time between a message and and another from the same user to be displayed within the same post.
 

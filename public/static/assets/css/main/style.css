@@ -1666,8 +1666,9 @@ a.special_link:hover {
 	user-select: none;
 }
 
-#media_tweaks_top {
+#media_tweaks_checkboxes {
 	margin-bottom: 2rem;
+	margin-top: 2rem;
 }
 
 .highlights_item .image_preview,

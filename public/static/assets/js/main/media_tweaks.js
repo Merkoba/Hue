@@ -68,6 +68,10 @@ Hue.setup_media_tweaks = function () {
     Hue.increase_chat_font_size()
     Hue.refresh_media_tweaks()
   })
+
+  Hue.el("#auto_tweaks_checkbox").addEventListener("change", function () {
+    Hue.change_auto_tweaks()
+  })
 }
 
 // Percentages for media tweaks
@@ -139,6 +143,8 @@ Hue.refresh_media_tweaks = function () {
       it.selected = true
     }
   })
+
+  Hue.el("#auto_tweaks_checkbox").checked = Hue.room_state.auto_tweaks
 }
 
 // Apply media defaults
@@ -158,4 +164,10 @@ Hue.apply_media_tweaks_defaults = function () {
   Hue.change_media_layout()
   Hue.apply_media_positions()
   Hue.refresh_media_tweaks()
+}
+
+// Set the value for auto tweaks
+Hue.change_auto_tweaks = function () {
+  Hue.room_state.auto_tweaks = Hue.el("#auto_tweaks_checkbox").checked
+  Hue.save_room_state()
 }
