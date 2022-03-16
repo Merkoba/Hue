@@ -820,7 +820,7 @@ Hue.change_main_layout = function (what = "") {
 
   Hue.check_chat_margin()
   Hue.apply_media_percentages()
-  Hue.scroll_to_bottom(true)
+  Hue.goto_bottom(true)
   Hue.save_room_state()
 }
 
