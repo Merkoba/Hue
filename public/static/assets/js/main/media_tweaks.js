@@ -130,20 +130,20 @@ Hue.refresh_media_tweaks = function () {
 
 // Apply media defaults
 Hue.apply_media_tweaks_defaults = function () {
-  Hue.set_default_chat_size()
   Hue.set_default_chat_font_size()
-  Hue.set_default_tv_size()
   Hue.set_default_tv_position()
   Hue.set_default_chat_enabled()
   Hue.set_default_media_info_enabled()
   Hue.toggle_media({type: "image", what: true})
   Hue.toggle_media({type: "tv", what: true})
-
+  
   if (Hue.room_state.auto_tweaks) {
     Hue.responsive_check()
   } else {
     Hue.set_default_main_layout()
     Hue.set_default_media_layout()
+    Hue.set_default_tv_size()
+    Hue.set_default_chat_size()
   }
 
   Hue.save_room_state()
