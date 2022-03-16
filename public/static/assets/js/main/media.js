@@ -813,13 +813,14 @@ Hue.change_main_layout = function (what = "") {
       Hue.do_chat_size_change(Hue.config.chat_display_percentage_row)
       Hue.do_media_tv_size_change(Hue.config.tv_display_percentage_row)
     }
-    
+
     Hue.refresh_media_tweaks()
     Hue.change_media_layout()
   }
 
   Hue.check_chat_margin()
   Hue.apply_media_percentages()
+  Hue.scroll_to_bottom(true)
   Hue.save_room_state()
 }
 
