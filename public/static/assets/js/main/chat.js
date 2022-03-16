@@ -1793,6 +1793,7 @@ Hue.setup_chat = function () {
     Hue.scroll_down_2()
   })
 
+  Hue.check_chat_enabled()
   Hue.do_chat_font_size_change()
 }
 

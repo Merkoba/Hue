@@ -72,6 +72,10 @@ Hue.setup_media_tweaks = function () {
   Hue.el("#auto_tweaks_checkbox").addEventListener("change", function () {
     Hue.change_auto_tweaks()
   })
+
+  Hue.apply_media_percentages()
+  Hue.apply_media_positions()
+  Hue.change_media_layout()
 }
 
 // Percentages for media tweaks
