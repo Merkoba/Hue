@@ -583,6 +583,7 @@ Hue.setup_show_profile = function () {
 
   Hue.el("#show_profile_edit").addEventListener("click", function () {
     Hue.show_user_profile()
+    Hue.msg_profile.close()
   })
 
   Hue.el("#show_profile_change_role").addEventListener("click", function () {
