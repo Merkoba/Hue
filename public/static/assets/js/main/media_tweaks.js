@@ -75,24 +75,11 @@ Hue.setup_media_tweaks = function () {
 }
 
 // Percentages for media tweaks
-Hue.create_tweaks_percentages = function (type) {
+Hue.create_tweaks_percentages = function () {
   let html = ""
-  let def 
-  
-  if (type === "tv") {
-    def = Hue.config.room_state_default_tv_display_percentage
-  } else if (type === "chat") {
-    def = Hue.config.room_state_default_chat_display_percentage
-  }
 
   for (let p = Hue.media_max_percentage; p >= Hue.media_min_percentage; p -= 5) {
-    let s = `${p}%`
-
-    if (p === def) {
-      s = `- ${s} -`
-    }
-
-    html += `<option value='${p}'>${s}</option>`
+    html += `<option value='${p}'>${p}%</option>`
   }
 
   return html
@@ -105,13 +92,7 @@ Hue.create_tweaks_chat_font_sizes = function () {
 
   while(size >= Hue.min_chat_font_size) {
     let n = Hue.utilz.round(size, 1)
-    let s = `${n}x`
-    
-    if (n === 1 || n === 1.0) {
-      s = `- ${s}- `
-    }
-
-    html += `<option value='${n}'>${s}</option>`
+    html += `<option value='${n}'>${n}x</option>`
     size = Hue.utilz.round(size - 0.1, 1)
   }
 
@@ -152,13 +133,18 @@ Hue.apply_media_tweaks_defaults = function () {
   Hue.set_default_chat_size()
   Hue.set_default_chat_font_size()
   Hue.set_default_tv_size()
-  Hue.set_default_media_layout()
   Hue.set_default_tv_position()
-  Hue.set_default_main_layout()
   Hue.set_default_chat_enabled()
   Hue.set_default_media_info_enabled()
   Hue.toggle_media({type: "image", what: true})
   Hue.toggle_media({type: "tv", what: true})
+
+  if (Hue.room_state.auto_tweaks) {
+    Hue.responsive_check()
+  } else {
+    Hue.set_default_main_layout()
+    Hue.set_default_media_layout()
+  }
 
   Hue.save_room_state()
   Hue.change_media_layout()

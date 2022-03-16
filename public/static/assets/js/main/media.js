@@ -790,10 +790,6 @@ Hue.get_media_item = function (type, id) {
 // Change the main layout row|column
 Hue.change_main_layout = function (what = "") {
   if (what) {
-    if (Hue.room_state.main_layout === what) {
-      return
-    }
-
     Hue.room_state.main_layout = what
   } else {
     if (Hue.room_state.main_layout === "row") {
