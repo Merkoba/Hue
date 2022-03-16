@@ -557,7 +557,7 @@ Hue.setup_show_profile = function () {
     Hue.msg_profile.close()
   })
 
-  Hue.el("#show_profilepic").addEventListener("click", function () {
+  Hue.el("#show_profile_profilepic").addEventListener("click", function () {
     if (Hue.audioclip) {
       Hue.stop_audioclip()
     } else {
@@ -565,7 +565,7 @@ Hue.setup_show_profile = function () {
     }
   })
 
-  Hue.el("#show_profilepic").addEventListener("error", function () {
+  Hue.el("#show_profile_profilepic").addEventListener("error", function () {
     if (this.src !== Hue.config.default_profilepic_url) {
       this.src = Hue.config.default_profilepic_url
     }
@@ -672,7 +672,7 @@ Hue.show_profile = function (username, user_id = false) {
     Hue.utilz.make_html_safe(bio).replace(/\n+/g, " <br> ")
   Hue.urlize(Hue.el("#show_profile_bio"))
 
-  Hue.el("#show_profilepic").src = pi
+  Hue.el("#show_profile_profilepic").src = pi
 
   if (user) {
     Hue.el("#show_profile_whisper").style.display = "block"

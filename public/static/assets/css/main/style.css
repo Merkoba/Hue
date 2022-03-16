@@ -1507,6 +1507,17 @@ svg.action:hover {
 	font-size: 1rem;
 }
 
+#show_profile_edit {
+	margin-bottom: 1rem;
+	text-decoration: underline;
+}
+
+#show_profile_profilepic {
+	margin-top: 0.6rem;
+	width: var(--bigger_profilepic_size);
+	height: var(--bigger_profilepic_size);
+}
+
 #show_profile_buttons {
 	gap: 1.6rem;
 	background-color: var(--altbackground);
@@ -2379,18 +2390,8 @@ pre {
 	margin-right: 0.5rem;
 }
 
-#show_profilepic {
-	width: var(--bigger_profilepic_size);
-	height: var(--bigger_profilepic_size);
-}
-
 .profilepic {
 	border-radius: 50%;
-}
-
-#show_profile_edit {
-	margin-bottom: 1.6rem;
-	text-decoration: underline;
 }
 
 .flipped {
