@@ -650,7 +650,10 @@ Hue.show_profile = function (username, user_id = false) {
     id = user.user_id
   }
 
+  let same_user = false
+
   if (user) {
+    same_user = user.user_id === Hue.user_id
     Hue.el("#show_profile_details").style.display = "block"
     role = Hue.get_pretty_role_name(user.role)
     bio = user.bio
@@ -681,7 +684,7 @@ Hue.show_profile = function (username, user_id = false) {
 
   Hue.dataset(Hue.el("#show_profile_change_role"), "username", username)
 
-  if (Hue.is_admin_or_op()) {
+  if (Hue.is_admin_or_op() && !same_user) {
     Hue.el("#show_profile_admin_area").classList.remove("nodisplay")
   } else {
     Hue.el("#show_profile_admin_area").classList.add("nodisplay")
@@ -698,7 +701,7 @@ Hue.show_profile = function (username, user_id = false) {
     item.title = nicedate
     Hue.el("#show_profile_info").append(item)
     
-    if (user.user_id === Hue.user_id) {
+    if (same_user) {
       Hue.el("#show_profile_edit").classList.remove("nodisplay")
     }
   }
