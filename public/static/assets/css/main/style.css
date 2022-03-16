@@ -4,8 +4,8 @@
 	--font_family: imported_font, sans-serif;
 	--icon_size: 1.2em;
 	--chat_side_spacing: 0.8rem;
-	--profilepic_size: 1.8rem;
-	--small_profilepic_size: 1.2rem;
+	--profilepic_size: 1.8em;
+	--small_profilepic_size: 1.2em;
 	--big_profilepic_size: 11.5rem;
 	--bigger_profilepic_size: 17.5rem;
 	--panel_profilepic_size: calc(var(--panel_height) * 0.66);
