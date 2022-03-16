@@ -1831,15 +1831,15 @@ a.special_link:hover {
 .chat_quote {
 	display: flex;
 	flex-direction: row;
-	padding: 0.25rem;
-	margin-bottom: 0.25rem;
+	padding: 0.25em;
+	margin-bottom: 0.25em;
 	background-color: var(--altcolor_a);
 }
 
 .chat_quote_profilepic {
 	width: var(--small_profilepic_size);
 	height: var(--small_profilepic_size);
-	margin-right: 0.5rem;
+	margin-right: 0.5em;
 	cursor: pointer;
 	align-self: center;
 }
