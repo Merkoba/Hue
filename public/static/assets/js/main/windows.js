@@ -508,6 +508,7 @@ Hue.start_msg = function () {
   Hue.msg_handle_radio_history.set_title("Handle Radio History")
   Hue.msg_delete_messages.set_title("Delete Message(s)")
   Hue.msg_command_book.set_title("Command Book")
+  Hue.msg_user_profile.set_title("User Profile")
 }
 
 // Sets all info window 2 variables to false
