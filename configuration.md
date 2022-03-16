@@ -280,6 +280,12 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "radio_unslide_delay"
 >Show the radio items fully x ms after mouseenter.
 
+"chat_display_percentage_column"
+>Chat display percentage when revolving to column mode.
+
+"chat_display_percentage_row"
+>Chat display percentage when revolving to row mode.
+
 
 ## config.secret.json
 
