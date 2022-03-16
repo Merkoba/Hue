@@ -1792,6 +1792,8 @@ Hue.setup_chat = function () {
   Hue.el("#bottom_percentage_scroller").addEventListener("click", function () {
     Hue.scroll_down_2()
   })
+
+  Hue.do_chat_font_size_change()
 }
 
 // Replace things like $id$ with the message id
@@ -2045,7 +2047,7 @@ Hue.decrease_chat_font_size = function () {
 }
 
 // Do chat font size change
-Hue.do_chat_font_size_change = function (size) {
+Hue.do_chat_font_size_change = function (size = Hue.room_state.chat_font_size) {
   if (size === "max") {
     size = Hue.max_chat_font_size
   } else if (size === "min") {
