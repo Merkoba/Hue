@@ -102,6 +102,8 @@
 	"max_low_users": 100,
 	"chat_display_percentage_column": 60,
 	"chat_display_percentage_row": 40,
+	"tv_display_percentage_column": 65,
+	"tv_display_percentage_row": 60,
 
 	"radios": [
 		{"name": "Merkoba FM", "url": "https://radio.merkoba.com:8765/radio.ogg", "metadata": "https://radio.merkoba.com:8765/status-json.xsl"},

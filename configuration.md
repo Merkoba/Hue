@@ -286,6 +286,12 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "chat_display_percentage_row"
 >Chat display percentage when revolving to row mode.
 
+"tv_display_percentage_column"
+>TV display percentage when revolving to column mode.
+
+"tv_display_percentage_row"
+>TV display percentage when revolving to row mode.
+
 
 ## config.secret.json
 
