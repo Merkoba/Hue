@@ -795,8 +795,15 @@ Hue.change_main_layout = function () {
     Hue.room_state.main_layout = "row" 
   }
 
+  if (Hue.room_state.main_layout === "column") {
+    Hue.room_state.media_layout = "row"
+  } else if (Hue.room_state.main_layout === "row") {
+    Hue.room_state.media_layout = "column"
+  }
+
   Hue.check_chat_margin()
   Hue.save_room_state()
+  Hue.change_media_layout()
   Hue.apply_media_percentages()
 }
 
