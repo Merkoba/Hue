@@ -1573,7 +1573,7 @@ a.special_link:hover {
 
 .image_preview_text,
 .link_preview_text {
-	margin-bottom: 0.35rem;
+	margin-bottom: 0.35em;
 	overflow-wrap: break-word;
 	word-break: break-word;
 	display: inline-block;
@@ -1581,7 +1581,7 @@ a.special_link:hover {
 
 .image_preview_image {
 	max-width: 100%;
-	max-height: 12rem;
+	max-height: 12em;
 	object-fit: contain;
 	flex-grow: 0;
 	flex-shrink: 0;
@@ -1607,12 +1607,12 @@ a.special_link:hover {
 	display: flex;
 	flex-direction: column;
 	align-self: flex-start;
-	padding: 0.45rem;
+	padding: 0.45em;
 	flex-grow: 1;
 }
 
 .link_preview_text_content_full .link_preview_title {
-	margin-bottom: 0.2rem;
+	margin-bottom: 0.2em;
 }
 
 .link_preview_text_content_full .link_preview_title {
@@ -1626,13 +1626,13 @@ a.special_link:hover {
 
 .link_preview_image {
 	cursor: pointer;
-	max-width: 6rem;
-	max-height: 6rem;
+	max-width: 6em;
+	max-height: 6em;
 	object-fit: contain;
 	flex-grow: 0;
 	flex-shrink: 0;
 	align-self: center;
-	padding: 0.45rem;
+	padding: 0.45em;
 }
 
 .align_left {
