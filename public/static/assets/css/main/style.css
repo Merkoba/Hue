@@ -1508,12 +1508,12 @@ svg.action:hover {
 }
 
 #show_profile_edit {
-	margin-bottom: 1rem;
+	margin-bottom: 0.8rem;
 	text-decoration: underline;
 }
 
 #show_profile_profilepic {
-	margin-top: 0.6rem;
+	margin-top: 0.5rem;
 	width: var(--bigger_profilepic_size);
 	height: var(--bigger_profilepic_size);
 }

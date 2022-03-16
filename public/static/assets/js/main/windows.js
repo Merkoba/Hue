@@ -114,7 +114,7 @@ Hue.start_msg = function () {
       window_width: "22rem",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
-        Hue.el("#show_profilepic").src = Hue.config.profilepic_loading_url
+        Hue.el("#show_profile_profilepic").src = Hue.config.profilepic_loading_url
         Hue.open_profile_username = false
         Hue.open_profile_user_id = false
         Hue.open_profile_user = false
