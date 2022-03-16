@@ -186,7 +186,6 @@ Hue.init = function () {
   Hue.setup_modal_image()
   Hue.setup_footer()
   Hue.get_input_history()
-  Hue.prepare_media_settings()
   Hue.setup_write_whisper()
   Hue.setup_autocomplete()
   Hue.setup_fonts()
@@ -204,7 +203,6 @@ Hue.init = function () {
   Hue.setup_media_tweaks()
   Hue.setup_chat()
   Hue.setup_message_board()
-  Hue.change_media_layout()
   Hue.setup_profilepic_cropper()
   Hue.setup_userlist_window()
   Hue.setup_header()
@@ -286,7 +284,6 @@ Hue.on_join = function (data) {
   Hue.fix_media_info()
   Hue.check_media_info()
   Hue.update_activity_bar()
-  Hue.check_chat_enabled()
   Hue.setup_user_profile()
 
   Hue.at_startup()

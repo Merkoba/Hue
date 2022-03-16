@@ -249,7 +249,6 @@ Hue.reset_settings = function (empty = true) {
   Hue.start_settings_widgets()
   Hue.call_setting_actions(false)
   Hue.call_setting_actions(false)
-  Hue.prepare_media_settings()
 }
 
 // Show the settings window
@@ -289,10 +288,4 @@ Hue.set_user_settings_titles = function () {
     let title = `${setting.description} (${key}) (Default: ${value})`
     Hue.el(`#settings_${key}`).closest(".settings_item").title = title
   }
-}
-
-// Apply media percentages and positions
-Hue.prepare_media_settings = function () {
-  Hue.apply_media_percentages()
-  Hue.apply_media_positions()
 }
