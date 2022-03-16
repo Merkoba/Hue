@@ -71,11 +71,24 @@ Hue.setup_media_tweaks = function () {
 }
 
 // Percentages for media tweaks
-Hue.create_tweaks_percentages = function () {
+Hue.create_tweaks_percentages = function (type) {
   let html = ""
+  let def 
+  
+  if (type === "tv") {
+    def = Hue.config.room_state_default_tv_display_percentage
+  } else if (type === "chat") {
+    def = Hue.config.room_state_default_chat_display_percentage
+  }
 
   for (let p = Hue.media_max_percentage; p >= Hue.media_min_percentage; p -= 5) {
-    html += `<option value='${p}'>${p}%</option>`
+    let s = `${p}%`
+
+    if (p === def) {
+      s = `- ${s} -`
+    }
+
+    html += `<option value='${p}'>${s}</option>`
   }
 
   return html
@@ -88,7 +101,13 @@ Hue.create_tweaks_chat_font_sizes = function () {
 
   while(size >= Hue.min_chat_font_size) {
     let n = Hue.utilz.round(size, 1)
-    html += `<option value='${n}'>${n}x</option>`
+    let s = `${n}x`
+    
+    if (n === 1 || n === 1.0) {
+      s = `- ${s}- `
+    }
+
+    html += `<option value='${n}'>${s}</option>`
     size = Hue.utilz.round(size - 0.1, 1)
   }
 
