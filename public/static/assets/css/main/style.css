@@ -196,12 +196,12 @@ body * {
 .chat_area {
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
+	gap: 1em;
 }
 
 #chat_area > .message {
-	margin-left: 0.6rem;
-	margin-right: 0.6rem;
+	margin-left: 0.6em;
+	margin-right: 0.6em;
 }
 
 #chat_area .chat_content_container,
@@ -210,11 +210,11 @@ body * {
 }
 
 #chat_area > .message:first-child {
-	padding-top: 1.5rem;
+	padding-top: 1.5em;
 }
 
 #chat_area > .message:last-child {
-	padding-bottom: 1.5rem;
+	padding-bottom: 1.5em;
 }
 
 .chat_area_clone {
