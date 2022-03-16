@@ -2170,7 +2170,7 @@ pre {
 }
 
 .framed {
-	padding: 0.25rem;
+	padding: 0.25em;
 	text-align: left;
 	white-space: pre-wrap;
 	border: 1px solid var(--altcolor);
