@@ -41,9 +41,11 @@ Hue.responsive_check = function () {
   let h = Hue.el("#main_container").offsetHeight
   let ratio = w / h
 
-  if (ratio <= 1.2) {
-    Hue.change_main_layout("column")
-  } else {
-    Hue.change_main_layout("row")
+  if (Hue.room_state.auto_tweaks) {
+    if (ratio <= 1.2) {
+      Hue.change_main_layout("column")
+    } else {
+      Hue.change_main_layout("row")
+    }
   }
 }
