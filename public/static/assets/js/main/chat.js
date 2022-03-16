@@ -2064,6 +2064,6 @@ Hue.do_chat_font_size_change = function (size = Hue.room_state.chat_font_size) {
 
   Hue.room_state.chat_font_size = size
   document.documentElement.style.setProperty('--chat_font_size', `${size}em`)
-  Hue.check_scrollers()
+  Hue.goto_bottom(true)
   Hue.save_room_state()
 }
