@@ -1,13 +1,11 @@
 <script id="template_profile" type="text/x-handlebars-template" class="template">
   <div id="show_profile_container">
-    <div id="show_profile_user" class="action inline">
-      <div id="show_profile_username" class="bigger">Loading</div>
-      <div id="show_profile_role"></div>
-    </div>
-
+    <div id="show_profile_edit" class="action">Edit Profile</div>
+    
     <img id="show_profilepic" class="profilepic actionbox" src="{{profilepic}}">
-
+    
     <div id="show_profile_details">
+      <div id="show_profile_role"></div>
       <div id="show_profile_bio"></div>
     </div>        
 
@@ -31,6 +29,12 @@
         <svg class="other_icon profile_icon"><use href="#icon_comment"></svg>
         <div>Board Posts</div>
       </div>
+    </div>
+
+    <div id="show_profile_admin_area" class="flex_column_center rem1_gap">
+      <div id="show_profile_change_role" class="action underlined">Change Role</div>
+      <div id="show_profile_kick" class="action underlined">Kick User</div>
+      <div id="show_profile_ban" class="action underlined">Ban User</div>
     </div>
 
     <div id="show_profile_info" class="flex_column_center"></div>

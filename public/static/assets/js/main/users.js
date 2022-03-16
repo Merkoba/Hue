@@ -580,6 +580,27 @@ Hue.setup_show_profile = function () {
     Hue.show_message_board(`$user ${Hue.open_profile_username}`)
     Hue.msg_profile.close()
   })
+
+  Hue.el("#show_profile_edit").addEventListener("click", function () {
+    Hue.show_user_profile()
+  })
+
+  Hue.el("#show_profile_change_role").addEventListener("click", function () {
+    Hue.change_role_username = Hue.open_profile_username
+    Hue.msg_change_role.show()
+  })
+
+  Hue.el("#show_profile_kick").addEventListener("click", function () {
+    Hue.show_confirm("Kick User", "Disconnect the user from the room", function () {
+      Hue.kick(Hue.open_profile_username)
+    })
+  })
+
+  Hue.el("#show_profile_ban").addEventListener("click", function () {
+    Hue.show_confirm("Ban User", "Ban the user from joining the room", function () {
+      Hue.ban(Hue.open_profile_username)
+    })
+  })
 }
 
 // Stars the profile audio
@@ -631,7 +652,6 @@ Hue.show_profile = function (username, user_id = false) {
 
   if (user) {
     Hue.el("#show_profile_details").style.display = "block"
-    
     role = Hue.get_pretty_role_name(user.role)
     bio = user.bio
     username = user.username
@@ -643,9 +663,8 @@ Hue.show_profile = function (username, user_id = false) {
   Hue.open_profile_user_id = id
   Hue.open_profile_username = username
   let pi = Hue.get_profilepic(id)
+  Hue.el("#show_profile_role").textContent = `Role: ${role}`
 
-  Hue.el("#show_profile_username").textContent = username
-  Hue.el("#show_profile_role").textContent = `(${role})`
   Hue.el("#show_profile_bio").innerHTML =
     Hue.utilz.make_html_safe(bio).replace(/\n+/g, " <br> ")
   Hue.urlize(Hue.el("#show_profile_bio"))
@@ -660,8 +679,16 @@ Hue.show_profile = function (username, user_id = false) {
     Hue.el("#show_profile_sync_tv").style.display = "none"
   }
 
-  Hue.dataset(Hue.el("#show_profile_user"), "username", username)
+  Hue.dataset(Hue.el("#show_profile_change_role"), "username", username)
+
+  if (Hue.is_admin_or_op()) {
+    Hue.el("#show_profile_admin_area").classList.remove("nodisplay")
+  } else {
+    Hue.el("#show_profile_admin_area").classList.add("nodisplay")
+  }
+
   Hue.el("#show_profile_info").innerHTML = ""
+  Hue.el("#show_profile_edit").classList.add("nodisplay")
 
   if (user) {
     let item = Hue.div()
@@ -670,12 +697,17 @@ Hue.show_profile = function (username, user_id = false) {
     item.textContent = `Got Online: ${timeago}`
     item.title = nicedate
     Hue.el("#show_profile_info").append(item)
+    
+    if (user.user_id === Hue.user_id) {
+      Hue.el("#show_profile_edit").classList.remove("nodisplay")
+    }
   }
 
   let item = Hue.div()
   item.textContent = `ID: ${id}`
   Hue.el("#show_profile_info").append(item)
 
+  Hue.msg_profile.set_title(username)
   Hue.msg_profile.show()
 }
 
@@ -1081,4 +1113,31 @@ Hue.fallback_profilepic = function (el) {
   if (el.src !== Hue.config.default_profilepic_url) {
     el.src = Hue.config.default_profilepic_url
   }
+}
+
+// Setup change role
+Hue.setup_change_role = function () {
+  Hue.el("#change_role_admin").addEventListener("click", function () {
+    Hue.show_confirm("Give Admin Role", "Operator abilities plus can add/remove operators ", function () {
+      Hue.change_role(Hue.change_role_username, "admin")
+    })
+
+    Hue.msg_change_role.close()
+  })
+
+  Hue.el("#change_role_op").addEventListener("click", function () {
+    Hue.show_confirm("Give Op Role", "Enables access to operator features and commands", function () {
+      Hue.change_role(Hue.change_role_username, "op")
+    })
+
+    Hue.msg_change_role.close()
+  })
+
+  Hue.el("#change_role_voice").addEventListener("click", function () {
+    Hue.show_confirm("Give Voice Role", "Can interact with users and change media but no operator abilities", function () {
+      Hue.change_role(Hue.change_role_username, "voice")
+    })
+
+    Hue.msg_change_role.close()
+  })
 }
