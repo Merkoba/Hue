@@ -85,28 +85,6 @@ Hue.user_settings = {
       }
     },
   },
-  send_radio_notifications: {
-    widget_type: "checkbox",
-    description: `Whether to send radio station changes to other users`,
-    action: (save = true) => {
-      Hue.settings.send_radio_notifications = Hue.el(`#settings_send_radio_notifications`).checked
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  show_radio_notifications: {
-    widget_type: "checkbox",
-    description: `Whether to show radio station changes by other users`,
-    action: (save = true) => {
-      Hue.settings.show_radio_notifications = Hue.el(`#settings_show_radio_notifications`).checked
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   show_user_join_notifications: {
     widget_type: "checkbox",
     description: `Whether to show notifications when users join`,
