@@ -127,8 +127,6 @@ Hue.play_radio = function (radio, crossfade = true, play = true) {
     Hue.check_radio_playing()
     Hue.playing_radio.player.play()
   }
-
-  Hue.announce_radio()
 }
 
 // After radio play
@@ -602,38 +600,6 @@ Hue.unslide_radio = function () {
 // Select random item if none is playing
 Hue.radio_playstop = function () {
   Hue.check_radio_play(Hue.playing_radio.radio) 
-}
-
-// Send a message to others that you started a radio
-Hue.announce_radio = function () {
-  if (!Hue.get_setting("send_radio_notifications")) {
-    return
-  }
-
-  Hue.socket_emit("announce_radio", {name: Hue.playing_radio.radio.name})
-}
-
-// Show when another user announces their radio
-Hue.show_announce_radio = function (data) {
-  if (!Hue.get_setting("show_radio_notifications")) {
-    return
-  }
-
-  if (Hue.userlist.length <= Hue.config.max_low_users) {
-    Hue.show_action_notification(`${data.username} is listening to: ${data.name}`, "star", function () {
-      Hue.play_radio_by_name(data.name)
-    })
-  }
-}
-
-// Play a radio by its name
-Hue.play_radio_by_name = function (name) {
-  for (let radio of Hue.config.radios) {
-    if (radio.name === name) {
-      Hue.play_radio(radio)
-      return
-    }
-  }
 }
 
 // Toggle the radio auto dj
