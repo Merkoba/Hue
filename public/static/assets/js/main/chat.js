@@ -248,8 +248,6 @@ Hue.make_announcement_message = function (args = {}) {
     container_id: false,
     date: false,
     type: "normal",
-    info1: "",
-    info2: "",
     username: false,
     public: false,
     user_id: false,
@@ -354,8 +352,6 @@ Hue.make_announcement_message = function (args = {}) {
   Hue.dataset(fmessage, "date", d)
   Hue.dataset(fmessage, "highlighted", highlighted)
   Hue.dataset(fmessage, "type", args.type)
-  Hue.dataset(fmessage, "info1", args.info1)
-  Hue.dataset(fmessage, "info2", args.info2)
   Hue.dataset(fmessage, "username", args.username)
   Hue.dataset(fmessage, "mode", "announcement")
   Hue.dataset(fmessage, "user_id", args.user_id)
