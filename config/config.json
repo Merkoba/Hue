@@ -106,7 +106,6 @@
 		{"name": "Merkoba FM", "url": "https://radio.merkoba.com:8765/radio.ogg", "metadata": "https://radio.merkoba.com:8765/status-json.xsl"},
 		{"name": "Lain Cyberia", "url": "https://lainon.life/radio/cyberia.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},
 		{"name": "Tilde Radio", "url": "https://azuracast.tilderadio.org/radio/8000/radio.ogg", "metadata": "https://azuracast.tilderadio.org/radio/8000/status-json.xsl"},
-		{"name": "Soul Live", "url": "http://radio.soullive.ru:8000/soul", "metadata": "https://radio.soullive.ru:8000/status-json.xsl"},
 		{"name": "NTR", "url": "http://carol.epichosts.co.uk:8240", "metadata": "http://carol.epichosts.co.uk:8240/status-json.xsl"},
 		{"name": "The Beat", "url": "http://c5.radioboss.fm:8024/autodj", "metadata": "http://c5.radioboss.fm:8024/status-json.xsl"},
 		{"name": "AMP IDM", "url": "http://radio.anothermusicproject.com:8000/idm", "metadata": "http://radio.anothermusicproject.com:8000/status-json.xsl"},
