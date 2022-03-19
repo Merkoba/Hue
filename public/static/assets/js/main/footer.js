@@ -16,14 +16,6 @@ Hue.setup_footer = function () {
     })
   }
 
-  Hue.el("#footer_search").addEventListener("click", function () {
-    Hue.show_chat_search()
-  })
-
-  Hue.el("#footer_tweaks").addEventListener("click", function () {
-    Hue.show_media_tweaks()
-  })
-
   if (Hue.config.radios.length > 0) {
     Hue.el("#footer_radio_icon_container").addEventListener("click", function () {
       Hue.toggle_radio()
@@ -44,7 +36,6 @@ Hue.setup_footer = function () {
     }
   })
 
-  Hue.horizontal_separator(Hue.el("#footer_actions"))
   Hue.horizontal_separator(Hue.el("#footer_media_items"))
 }
 
