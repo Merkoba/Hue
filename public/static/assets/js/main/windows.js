@@ -403,7 +403,8 @@ Hue.start_msg = function () {
 
   Hue.msg_profilepic_cropper = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "profilepic_cropper"
+      id: "profilepic_cropper",
+      scroll_on_show: false
     })
   )
 
