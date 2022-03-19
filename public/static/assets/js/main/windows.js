@@ -312,7 +312,6 @@ Hue.start_msg = function () {
         msgvars.common.after_close(instance)
         Hue.el("#image_upload_comment_input").value = ""
         Hue.image_upload_comment_file = false
-        Hue.image_upload_comment_type = false
       },
     })
   )

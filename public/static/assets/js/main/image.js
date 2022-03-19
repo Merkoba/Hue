@@ -364,6 +364,12 @@ Hue.show_image_upload_comment = function (file, type) {
     Hue.image_upload_comment_file = file
     Hue.image_upload_comment_type = type
 
+    if (type === "drawing") {
+      Hue.el("#image_upload_comment_change").textContent = "Re-Draw"
+    } else if (type === "upload") {
+      Hue.el("#image_upload_comment_change").textContent = "Re-Choose"
+    }
+
     Hue.el("#image_upload_comment_image_preview").src = e.target.result
 
     Hue.msg_image_upload_comment.set_title(
@@ -376,10 +382,6 @@ Hue.show_image_upload_comment = function (file, type) {
     Hue.el("#Msg-titlebar-image_upload_comment").title = file.name
 
     Hue.msg_image_upload_comment.show(function () {
-      Hue.el("#image_upload_comment_submit").addEventListener("click", function () {
-        Hue.process_image_upload_comment()
-      })
-
       Hue.el("#image_upload_comment_input").focus()
     })
   }
@@ -399,6 +401,20 @@ Hue.setup_image_upload_comment = function () {
   image.addEventListener("load", function () {
     Hue.scroll_modal_to_bottom("image_upload_comment")
   })
+
+  Hue.el("#image_upload_comment_submit").addEventListener("click", function () {
+    Hue.process_image_upload_comment()
+  })
+
+  Hue.el("#image_upload_comment_change").addEventListener("click", function () {
+    if (Hue.image_upload_comment_type === "drawing") {
+      Hue.msg_image_upload_comment.close()
+      Hue.open_draw_image("image")
+    } else if (Hue.image_upload_comment_type === "upload") {
+      Hue.msg_image_upload_comment.close()
+      Hue.show_upload_image()
+    }
+  })
 }
 
 // Submits the upload image comment window
@@ -409,14 +425,13 @@ Hue.process_image_upload_comment = function () {
   }
 
   let file = Hue.image_upload_comment_file
-  let type = Hue.image_upload_comment_type
   let comment = Hue.utilz.single_space(Hue.el("#image_upload_comment_input").value)
 
   if (comment.length > Hue.config.max_media_comment_length) {
     return false
   }
 
-  Hue.upload_file({ file: file, action: type, comment: comment })
+  Hue.upload_file({ file: file, action: "image_upload", comment: comment })
   Hue.close_all_modals()
 }
 
@@ -424,7 +439,6 @@ Hue.process_image_upload_comment = function () {
 Hue.show_link_image = function () {
   Hue.msg_link_image.show()
 }
-
 
 // Submit link image
 Hue.link_image_submit = function () {

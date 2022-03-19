@@ -23,7 +23,7 @@ Hue.start_body_events = function () {
   })
 
   Hue.el("#profilepic_input").addEventListener("change", function () {
-    Hue.profilepic_selected(this.files[0])
+    Hue.profilepic_selected(this.files[0], "upload")
   })
 
   Hue.el("#background_input").addEventListener("change", function () {

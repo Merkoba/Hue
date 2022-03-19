@@ -11,7 +11,7 @@ Hue.start_dropzone = function () {
     maxFiles: 1,
     maxFilesize: Hue.config.max_image_size / 1024,
     autoProcessQueue: false,
-    clickable: "#image_picker_upload, #image_upload_comment_change, #tv_picker_upload, #tv_upload_comment_change",
+    clickable: "#image_picker_upload, #tv_picker_upload, #tv_upload_comment_change",
     acceptedFiles: types.join(",")
   })
   
@@ -41,7 +41,7 @@ Hue.upload_image = function (file) {
     Hue.background_selected(file)
     return
   } else if (Hue.msg_user_profile.is_open()) {
-    Hue.profilepic_selected(file)
+    Hue.profilepic_selected(file, "upload")
     return
   }
 
@@ -66,7 +66,7 @@ Hue.upload_image = function (file) {
   }
 
   Hue.dropzone.files = []
-  Hue.show_image_upload_comment(file, "image_upload")
+  Hue.show_image_upload_comment(file, "upload")
 }
 
 // Handle generic video upload
