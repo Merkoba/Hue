@@ -238,7 +238,13 @@ Hue.setup_profilepic_cropper = function () {
   })
 
   Hue.el("#profilepic_cropper_change").addEventListener("click", function () {
-    Hue.open_profilepic_picker()
+    if (Hue.profilepic_cropper_type === "drawing") {
+      Hue.msg_profilepic_cropper.close()
+      Hue.open_draw_image("profilepic")
+    } else if (Hue.profilepic_cropper_type === "upload") {
+      Hue.msg_profilepic_cropper.close()
+      Hue.open_profilepic_picker()
+    }
   })
 }
 
@@ -268,7 +274,7 @@ Hue.open_profilepic_picker = function () {
 }
 
 // This is executed after a profile image has been selected in the file dialog
-Hue.profilepic_selected = function (file) {
+Hue.profilepic_selected = function (file, type) {
   if (!file) {
     return false
   }
@@ -282,8 +288,16 @@ Hue.profilepic_selected = function (file) {
   }
 
   let reader = new FileReader()
-
+  
   reader.onload = function (e) {
+    if (type === "drawing") {
+      Hue.el("#profilepic_cropper_change").textContent = "Re-Draw"
+    } else if (type === "upload") {
+      Hue.el("#profilepic_cropper_change").textContent = "Re-Choose"
+    }
+
+    Hue.profilepic_cropper_type = type
+
     Hue.msg_profilepic_cropper.show(function () {
       Hue.el("#profilepic_input").closest("form").reset()
 

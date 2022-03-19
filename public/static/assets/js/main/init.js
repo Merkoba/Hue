@@ -74,7 +74,6 @@ Hue.chat_scrolled = false
 Hue.lockscreen_peek_delay = 500
 Hue.lockscreen_peek_active = false
 Hue.image_upload_comment_file = false
-Hue.image_upload_comment_type = false
 Hue.tv_upload_comment_file = false
 Hue.tv_upload_comment_type = false
 Hue.userlist_mode = "normal"

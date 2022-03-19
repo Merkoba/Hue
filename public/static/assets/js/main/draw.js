@@ -427,9 +427,9 @@ Hue.upload_draw_image = function () {
       blob.name = "draw_image.png"
       
       if (Hue.draw_image_target === "image") {
-        Hue.show_image_upload_comment(blob, "image_upload")
+        Hue.show_image_upload_comment(blob, "drawing")
       } else if (Hue.draw_image_target === "profilepic") {
-        Hue.profilepic_selected(blob)
+        Hue.profilepic_selected(blob, "drawing")
       } else if (Hue.draw_image_target === "background") {
         Hue.background_selected(blob)
       }
