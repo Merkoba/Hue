@@ -803,21 +803,6 @@ Hue.change_main_layout = function (what = "") {
     }    
   }
 
-  if (Hue.room_state.auto_tweaks) {
-    if (Hue.room_state.main_layout === "column") {
-      Hue.room_state.media_layout = "row"
-      Hue.do_chat_size_change(Hue.config.chat_display_percentage_column)
-      Hue.do_media_tv_size_change(Hue.config.tv_display_percentage_column)
-    } else if (Hue.room_state.main_layout === "row") {
-      Hue.room_state.media_layout = "column"
-      Hue.do_chat_size_change(Hue.config.chat_display_percentage_row)
-      Hue.do_media_tv_size_change(Hue.config.tv_display_percentage_row)
-    }
-
-    Hue.refresh_media_tweaks()
-    Hue.change_media_layout()
-  }
-
   Hue.check_chat_margin()
   Hue.apply_media_percentages()
   Hue.goto_bottom(true)

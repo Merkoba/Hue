@@ -69,10 +69,6 @@ Hue.setup_media_tweaks = function () {
     Hue.refresh_media_tweaks()
   })
 
-  Hue.el("#auto_tweaks_checkbox").addEventListener("change", function () {
-    Hue.change_auto_tweaks()
-  })
-
   Hue.apply_media_percentages()
   Hue.apply_media_positions()
   Hue.change_media_layout()
@@ -128,8 +124,6 @@ Hue.refresh_media_tweaks = function () {
       it.selected = true
     }
   })
-
-  Hue.el("#auto_tweaks_checkbox").checked = Hue.room_state.auto_tweaks
 }
 
 // Apply media defaults
@@ -140,24 +134,12 @@ Hue.apply_media_tweaks_defaults = function () {
   Hue.set_default_media_info_enabled()
   Hue.toggle_media({type: "image", what: true})
   Hue.toggle_media({type: "tv", what: true})
-  
-  if (Hue.room_state.auto_tweaks) {
-    Hue.responsive_check()
-  } else {
-    Hue.set_default_main_layout()
-    Hue.set_default_media_layout()
-    Hue.set_default_tv_size()
-    Hue.set_default_chat_size()
-  }
-
+  Hue.set_default_main_layout()
+  Hue.set_default_media_layout()
+  Hue.set_default_tv_size()
+  Hue.set_default_chat_size()
   Hue.save_room_state()
   Hue.change_media_layout()
   Hue.apply_media_positions()
   Hue.refresh_media_tweaks()
-}
-
-// Set the value for auto tweaks
-Hue.change_auto_tweaks = function () {
-  Hue.room_state.auto_tweaks = Hue.el("#auto_tweaks_checkbox").checked
-  Hue.save_room_state()
 }

@@ -34,18 +34,3 @@ Hue.start_body_events = function () {
     Hue.audioclip_selected(this.files[0])
   })
 }
-
-// Check window width and do changes accordingly
-Hue.responsive_check = function () {
-  let w = Hue.el("#main_container").offsetWidth
-  let h = Hue.el("#main_container").offsetHeight
-  let ratio = w / h
-
-  if (Hue.room_state.auto_tweaks) {
-    if (ratio <= 1.2) {
-      Hue.change_main_layout("column")
-    } else {
-      Hue.change_main_layout("row")
-    }
-  }
-}
