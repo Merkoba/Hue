@@ -158,7 +158,7 @@ Hue.start_msg = function () {
 
   Hue.msg_info = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "info2",
+      id: "info",
       window_height: "auto",
       before_show: function (instance) {
         msgvars.common.before_show(instance)
@@ -548,7 +548,7 @@ Hue.reset_modal_filter = function (instance) {
   let filter = Hue.el(`#Msg-content-${id} .filter_input`)
 
   if (filter) {
-    if (id === "info" || id === "info2" || filter.dataset.mode === "manual") {
+    if (id === "info" || filter.dataset.mode === "manual") {
       return false
     }
 
