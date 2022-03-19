@@ -1676,14 +1676,11 @@ a.special_link:hover {
 }
 
 #media_tweaks {
-	margin-top: 0.6rem;
-	margin-bottom: 0.6rem;
 	user-select: none;
 }
 
-#auto_tweaks_container {
+#media_tweaks_top {
 	margin-bottom: 2rem;
-	margin-top: 2rem;
 }
 
 .highlights_item .image_preview,

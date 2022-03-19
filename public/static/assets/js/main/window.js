@@ -98,6 +98,5 @@ Hue.on_resize = function () {
   Hue.resize_activity_bar()
   Hue.check_scrollers(250)
   Hue.scroll_to_radio_item()
-  Hue.responsive_check()
   Hue.goto_bottom()
 }
