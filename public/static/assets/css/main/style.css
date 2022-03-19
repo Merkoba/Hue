@@ -366,13 +366,6 @@ body * {
 	margin-right: 0.4rem;
 }
 
-#footer_actions {
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
-	margin-right: 1rem;
-	user-select: none;
-}
-
 #input {
 	font-size: var(--panel_font_size);
 	border: 0 solid black;
