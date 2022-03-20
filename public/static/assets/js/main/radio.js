@@ -115,6 +115,8 @@ Hue.play_radio = function (radio, crossfade = true, play = true) {
     Hue.start_radio_dj_timeout()
   }
 
+  Hue.push_radio_queue(radio)
+  
   if (crossfade && !Hue.radio_just_changed() && Hue.radio_is_playing()) {
     Hue.crossfade_radio(radio)
     return
@@ -516,21 +518,19 @@ Hue.play_random_radio = function () {
   Hue.play_radio(Hue.get_random_radio())
 }
 
-// Get random radio station
+// Get first random radio queue item
 Hue.get_random_radio = function () {
-  let radio = Hue.radio_queue.pop()
-  
-  if (Hue.radio_queue.length === 0) {
-    Hue.fill_radio_queue()
-  }
+  return Hue.radio_queue[0]
+}
 
-  if (Hue.radio_queue.length > 1) {
-    if (Hue.is_playing_radio(radio)) {
-      return Hue.get_random_radio()
+// Push back played item to end of radio queue
+Hue.push_radio_queue = function (radio) {
+  for (let [i, r] of Hue.radio_queue.entries()) {
+    if (r.name === radio.name) {
+      Hue.radio_queue.push(Hue.radio_queue.splice(i, 1)[0])
+      break
     }
   }
-
-  return radio
 }
 
 // Fill items for the random button
