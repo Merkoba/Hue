@@ -11,8 +11,12 @@ module.exports = function (Hue) {
 
   // Check if user is banned
   Hue.handler.user_is_banned = function (socket) {
-    if (socket.hue_username && Hue.banlist.usernames.includes(socket.hue_username)) {
-      return true
+    if (socket.hue_username) {
+      let username = socket.hue_username.toLowerCase()
+      
+      if (Hue.banlist.usernames.some(x => x.toLowerCase() === username)) {
+        return true
+      }
     }
 
     if (socket.hue_user_id && Hue.banlist.user_ids.includes(socket.hue_user_id)) {
@@ -41,12 +45,14 @@ module.exports = function (Hue) {
       return false
     }
 
-    if (Hue.banlist.usernames.includes(data.username)) {
+    let username = data.username.toLowerCase()
+
+    if (Hue.banlist.usernames.some(x => x.toLowerCase() === username)) {
       Hue.handler.user_emit(socket, "item_already_included", {})
       return false
     }
 
-    Hue.banlist.usernames.push(data.username)
+    Hue.banlist.usernames.push(username)
     await Hue.handler.write_banlist_file()
     Hue.handler.user_emit(socket, "item_included", {})
   }
@@ -66,13 +72,15 @@ module.exports = function (Hue) {
       return false
     }
 
-    if (!Hue.banlist.usernames.includes(data.username)) {
+    let username = data.username.toLowerCase()
+
+    if (!Hue.banlist.usernames.some(x => x.toLowerCase() === username)) {
       Hue.handler.user_emit(socket, "item_not_included", {})
       return false
     }
 
     for (let i=0; i<Hue.banlist.usernames.length; i++) {
-      if (Hue.banlist.usernames[i] === data.username) {
+      if (Hue.banlist.usernames[i].toLowerCase() === username) {
         Hue.banlist.usernames.splice(i, 1)
         break
       }
