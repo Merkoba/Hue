@@ -261,7 +261,5 @@ module.exports = function (Hue) {
         date_joined: Date.now()
       })
     }
-
-    Hue.handler.log_user_data(socket)
   }
 }

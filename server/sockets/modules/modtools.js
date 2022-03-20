@@ -4,13 +4,6 @@ module.exports = function (Hue) {
     return socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
   }
 
-  // Store user data incase abuse/attacks happen
-  Hue.handler.log_user_data = function (socket) {
-    let date = new Date().toISOString()
-    let info = `date: ${date} | username: ${socket.hue_username} | user_id: ${socket.hue_user_id} | ip: ${socket.hue_ip_address}`
-    Hue.logger.info(info)
-  }
-
   // Write banlist file
   Hue.handler.write_banlist_file = async function () {
     await Hue.vars.fsp.writeFile(Hue.banlist_path, JSON.stringify(Hue.banlist))

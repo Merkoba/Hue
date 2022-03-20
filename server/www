@@ -148,11 +148,6 @@ const logger = winston.createLogger({
 			filename: path.join(__dirname, "../logs/error.log"),
 			level: "error",
 			timestamp: (new Date()).toLocaleTimeString()
-		}),
-		new winston.transports.File({
-			filename: path.join(__dirname, "../logs/info.log"),
-			level: "info",
-			timestamp: (new Date()).toLocaleTimeString()
 		})
 	]
 })
