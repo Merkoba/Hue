@@ -104,7 +104,6 @@ body * {
 #activity_bar_inner {
 	position: relative;
 	align-items: center;
-	font-size: 0.85rem;
 	overflow: hidden;
 	flex-grow: 0;
 	height: 100%;
@@ -481,7 +480,6 @@ body * {
 
 .chat_timeago {
 	opacity: 0.8;
-	font-size: 0.85em;
 	white-space: nowrap;
 	margin-left: 0.5em;
 }
@@ -637,7 +635,6 @@ a.generic:hover {
 }
 
 .userlist_item_role {
-	font-size: 0.85rem;
 	flex-shrink: 0;
 	margin-left: 0.5rem;
 	cursor: pointer;
@@ -769,7 +766,6 @@ a.generic:hover {
 	visibility: hidden;
 	cursor: pointer;
 	font-weight: bold;
-	font-size: 0.85rem;
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -857,7 +853,7 @@ a.generic:hover {
 }
 
 select {
-	font-size: 0.95rem;
+	font-size: 1rem;
 	cursor: pointer;
 }
 
@@ -1047,10 +1043,6 @@ input[type=checkbox] {
 
 .small_padding_bottom {
 	padding-bottom: 0.5rem;
-}
-
-.smaller_font_size {
-	font-size: 0.9rem;
 }
 
 .nowrap {
@@ -1492,10 +1484,6 @@ svg.action:hover {
 	gap: 1.6rem;
 }
 
-.admin_activity_date {
-	font-size: 0.85rem;
-}
-
 .show_profile_button {
 	font-size: 1rem;
 }
@@ -1721,7 +1709,6 @@ a.special_link:hover {
 .message_edit_button {
 	cursor: pointer;
 	margin-left: 1rem;
-	font-size: 0.85rem;
 	text-decoration: underline;
 }
 
@@ -2101,7 +2088,6 @@ pre {
 .message_board_date {
 	opacity: 0.8;
 	margin-bottom: 0.4rem;
-	font-size: 0.9rem;
 }
 
 .message_board_link_image {
@@ -2146,7 +2132,6 @@ pre {
 	display: flex;
 	flex-direction: row;
 	gap: 0.8rem;
-	font-size: 0.9rem;
 	margin-top: 0.3rem;
 	display: none;
 	align-items: center;
@@ -2274,7 +2259,6 @@ pre {
 .media_info_timeago {
 	margin-left: 0.5rem;
 	opacity: 0.8;
-	font-size: 0.85rem;
 	white-space: nowrap;
 }
 
