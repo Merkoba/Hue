@@ -508,6 +508,10 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
   
   let vstring = Math.round(volume * 100)
   Hue.el("#radio_item_volume_text").textContent = `Volume: ${vstring}%`
+
+  if (Hue.radio_slided) {
+    Hue.flash_info("Radio", `Volume: ${vstring}%`)
+  }
   
   Hue.room_state.radio_volume = volume
   Hue.save_room_state()
