@@ -676,6 +676,8 @@ Hue.do_radio_crossfade = function () {
     if (Hue.radio_crossfade_player_1.volume <= 0 && 
       Hue.radio_crossfade_player_2.volume >= max_volume) {
       clearInterval(Hue.radio_crossfade_interval)
+      Hue.radio_crossfade_player_1.volume = 0
+      Hue.radio_crossfade_player_2.volume = max_volume
       Hue.radio_crossfade_player_1.pause()
       Hue.radio_crossfade_player_1 = undefined
       Hue.radio_crossfading = false
