@@ -155,11 +155,11 @@ Hue.role_tag = function (p) {
   let s
 
   if (p === "admin") {
-    s = "[A]"
+    s = "(A)"
   } else if (p === "op") {
-    s = "[Op]"
+    s = "(Op)"
   } else if (p === "voice") {
-    s = "[V]"
+    s = "(V)"
   } else {
     s = ""
   }
