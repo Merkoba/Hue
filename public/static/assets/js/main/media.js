@@ -984,8 +984,7 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   }
 
   data.info += ` | ${data.nice_date}`
-  data.info_html += `<div>${data.nice_date}</div>`
-  data.info_html += `<div class='modal_${type}_timeago'></div>`
+  data.info_html += `<div title='${data.nice_date}' class='modal_${type}_timeago'></div>`
 
   data.message = Hue.get_media_message(data)
 
