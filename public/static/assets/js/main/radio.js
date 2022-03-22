@@ -228,6 +228,10 @@ Hue.after_radio_stop = function () {
   Hue.apply_radio_item_effects()
   Hue.stop_radio_dj_timeout()
   Hue.check_radio_playing()
+
+  if (Hue.radio_crossfading) {
+    Hue.cancel_radio_crossfade()
+  }
 }
 
 // Check if radio is freshly played
