@@ -744,9 +744,13 @@ Hue.create_radio_dj_controls = function () {
   Hue.el("#radio_controls").append(container)
 
   Hue.el("#radio_dj_icon").addEventListener("mouseover", function () {
-    let diff = (Hue.room_state.radio_dj_delay * 60 * 1000) - (Date.now() - Hue.radio_dj_timeout_date)
-    let c = Hue.utilz.time_components(diff)
-    Hue.el("#radio_dj_icon title").textContent = `${c.minutes} : ${c.seconds}`
+    if (Hue.radio_is_playing()) {
+      let diff = (Hue.room_state.radio_dj_delay * 60 * 1000) - (Date.now() - Hue.radio_dj_timeout_date)
+      let c = Hue.utilz.time_components(diff)
+      Hue.el("#radio_dj_icon title").textContent = `${c.minutes} : ${c.seconds}`
+    } else {
+      Hue.el("#radio_dj_icon title").textContent = `Not playing`
+    }
   })
 }
 
