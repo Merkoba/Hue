@@ -244,6 +244,8 @@ Hue.setup_profilepic_cropper = function () {
     } else if (Hue.profilepic_cropper_type === "upload") {
       Hue.msg_profilepic_cropper.close()
       Hue.open_profilepic_picker()
+    } else if (Hue.profilepic_cropper_type === "random_canvas") {
+      Hue.make_random_drawing("profilepic")
     }
   })
 }
@@ -257,6 +259,11 @@ Hue.open_profilepic_select = function () {
     Hue.el("#profilepic_select_draw").addEventListener("click", function () {
       Hue.msg_info.close()
       Hue.open_draw_image("profilepic")
+    })
+
+    Hue.el("#profilepic_select_random").addEventListener("click", function () {
+      Hue.msg_info.close()
+      Hue.make_random_drawing("profilepic")
     })
 
     Hue.el("#profilepic_select_upload").addEventListener("click", function () {
@@ -294,6 +301,8 @@ Hue.profilepic_selected = function (file, type) {
       Hue.el("#profilepic_cropper_change").textContent = "Re-Draw"
     } else if (type === "upload") {
       Hue.el("#profilepic_cropper_change").textContent = "Re-Choose"
+    } else if (type === "random_canvas") {
+      Hue.el("#profilepic_cropper_change").textContent = "Re-Generate"
     }
 
     Hue.profilepic_cropper_type = type

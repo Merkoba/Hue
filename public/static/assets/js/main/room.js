@@ -376,6 +376,11 @@ Hue.open_background_select = function () {
       Hue.open_draw_image("background")
     })
 
+    Hue.el("#background_select_random").addEventListener("click", function () {
+      Hue.msg_info.close()
+      Hue.make_random_drawing("background")
+    })
+
     Hue.el("#background_select_url").addEventListener("click", function () {
       Hue.open_background_input()
     })
