@@ -168,6 +168,10 @@ Hue.setup_draw_image = function () {
     Hue.toggle_draw_color_picker()
   })
 
+  Hue.el("#draw_image_random").addEventListener("click", function () {
+    Hue.make_random_drawing()
+  })
+
   let select = ""
 
   for (let i=Hue.draw_image_pencil_size_step; i<=Hue.draw_image_max_pencil_size; i+=Hue.draw_image_pencil_size_step) {
@@ -421,8 +425,8 @@ Hue.draw_image_add_click = function (x, y, dragging) {
 }
 
 // Turns the canvas drawing into a Blob and sends it to the server as an image upload
-Hue.upload_draw_image = function () {
-  Hue.el("#draw_image_area").toBlob(
+Hue.upload_draw_image = function (canvas = "#draw_image_area") {
+  Hue.el(canvas).toBlob(
     function (blob) {
       blob.name = "draw_image.png"
       
@@ -629,4 +633,10 @@ Hue.toggle_draw_color_picker = function () {
   } else {
     Hue.el("#draw_image_color_picker").classList.remove("underlined")
   }
+}
+
+// Make a random drawing
+Hue.make_random_drawing = function () {
+  jdenticon.update(Hue.el("#draw_random_canvas"), Hue.utilz.random_sequence(9))
+  Hue.upload_draw_image("#draw_random_canvas")
 }
