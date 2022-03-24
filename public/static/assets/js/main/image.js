@@ -368,6 +368,8 @@ Hue.show_image_upload_comment = function (file, type) {
       Hue.el("#image_upload_comment_change").textContent = "Re-Draw"
     } else if (type === "upload") {
       Hue.el("#image_upload_comment_change").textContent = "Re-Choose"
+    } else if (type === "random_canvas") {
+      Hue.el("#image_upload_comment_change").textContent = "Re-Generate"
     }
 
     Hue.el("#image_upload_comment_image_preview").src = e.target.result
@@ -413,6 +415,8 @@ Hue.setup_image_upload_comment = function () {
     } else if (Hue.image_upload_comment_type === "upload") {
       Hue.msg_image_upload_comment.close()
       Hue.show_upload_image()
+    } else if (Hue.image_upload_comment_type === "random_canvas") {
+      Hue.make_random_drawing("image")
     }
   })
 }
