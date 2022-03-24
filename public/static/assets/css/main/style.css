@@ -2544,3 +2544,8 @@ pre {
 .rem2_gap {
 	gap: 2rem;
 }
+
+.text_button {
+	padding: 0.35rem;
+	border: 2px solid var(--font_color);
+}
