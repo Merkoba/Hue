@@ -55,6 +55,10 @@ Hue.setup_room_config = function () {
   Hue.el("#admin_background").addEventListener("click", function () {
     Hue.open_background_select()
   })
+
+  Hue.el("#admin_random_theme").addEventListener("click", function () {
+    Hue.select_random_theme()
+  })
 }
 
 // Shows the room config
@@ -121,4 +125,18 @@ Hue.config_admin_topic = function () {
   }
 
   Hue.el("#admin_topic").value = Hue.topic
+}
+
+// Select random dark or light theme
+Hue.select_random_theme = function () {
+  let bg_color = Hue.colorlib.get_random_hex()
+
+  if (Hue.colorlib.is_light(bg_color)) {
+    bg_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.5)
+  }
+
+  let text_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.77)
+
+  Hue.change_background_color(bg_color)
+  Hue.change_text_color(text_color)
 }

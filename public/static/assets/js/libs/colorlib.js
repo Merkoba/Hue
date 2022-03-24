@@ -130,6 +130,11 @@ const ColorLib = (function () {
     }
 
     instance.is_light = function (rgb) {
+      if (rgb.startsWith("#")) {
+				mode = "hex"
+				rgb = instance.hex_to_rgb(rgb)
+			}
+      
       rgb = instance.check_rgb(rgb)
 
       let r = rgb[0]
@@ -152,11 +157,7 @@ const ColorLib = (function () {
     }
 
     instance.is_dark = function (rgb) {
-      if (instance.is_light(rgb)) {
-        return false
-      }
-
-      return true
+      return !instance.is_light(rgb)
     }
 
     instance.get_proper_font = function (rgb) {
