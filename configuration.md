@@ -277,6 +277,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "chat_display_percentage_row"
 >Chat display percentage when revolving to row mode.
 
+"max_media_info_length"
+>Max length for info under media.
+
 
 ## config.secret.json
 

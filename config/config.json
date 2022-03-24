@@ -18,6 +18,7 @@
 	"radio_history_crop_limit": 500,
 	"notifications_close_delay": 5000,
 	"max_whispers_post_length": 2000,
+	"max_media_info_length": 60,
 	"max_input_length": 2500,
 	"max_topic_length": 2000,
 	"max_username_length": 20,

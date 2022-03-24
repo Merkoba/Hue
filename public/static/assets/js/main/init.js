@@ -92,7 +92,6 @@ Hue.typing = false
 Hue.screen_locked = false
 Hue.num_socket_in = 0
 Hue.num_socket_out = 0
-Hue.media_info_message_max_length = 50
 Hue.image_locked = false
 Hue.tv_locked = false
 Hue.fresh_messages_list = []
