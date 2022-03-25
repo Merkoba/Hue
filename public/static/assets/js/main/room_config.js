@@ -186,7 +186,7 @@ Hue.get_random_themes = function (n, mode = "dark") {
       }
     }
   
-    let text_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.77)
+    let text_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.6)
     themes.push({bg_color: bg_color, text_color: text_color})
   }
 
