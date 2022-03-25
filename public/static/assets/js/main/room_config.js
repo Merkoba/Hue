@@ -88,10 +88,10 @@ Hue.config_admin_background = function () {
     return false
   }
 
-  if (Hue.background !== Hue.el("#admin_background").src) {
-    if (Hue.background !== "") {
-      Hue.el("#admin_background").src = Hue.background
-    }
+  if (Hue.background) {
+    Hue.el("#admin_background").src = Hue.background
+  } else {
+    Hue.el("#admin_background").src = Hue.config.background_loading_url
   }
 }
 
@@ -141,7 +141,6 @@ Hue.select_random_theme = function () {
     item.textContent = "This is some sample text"
 
     item.addEventListener("click", function () {
-      console.log(theme)
       Hue.change_background_color(theme.bg_color)
       Hue.change_text_color(theme.text_color)
       Hue.msg_random_theme.close()
