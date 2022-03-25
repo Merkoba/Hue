@@ -196,29 +196,27 @@ module.exports = function (Hue) {
       return false
     }
 
-    if (data.src.length === 0) {
-      return false
-    }
-
     if (data.src.length > Hue.config.max_media_source_length) {
       return false
     }
 
-    if (data.src !== "default") {
+    if (data.src === "") {
+      await Hue.handler.do_change_background(socket, "", "hosted")
+    } else {
       if (!Hue.utilz.is_url(data.src)) {
         return false
       }
-
+  
       data.src = data.src.replace(/\s/g, "").replace(/\.gifv/g, ".gif")
-
+  
       let extension = Hue.utilz.get_extension(data.src).toLowerCase()
-
+  
       if (!extension || !Hue.utilz.image_extensions.includes(extension)) {
         return false
       }
+  
+      await Hue.handler.do_change_background(socket, data.src, "external")
     }
-
-    await Hue.handler.do_change_background(socket, data.src, "external")
   }
 
   // Completes background image changes

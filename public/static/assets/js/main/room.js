@@ -270,15 +270,15 @@ Hue.setup_theme = function (data) {
 // Sets an applies background images from data
 Hue.set_background = function (data, apply = true) {
   if (!data.background) {
-    return
-  }
-
-  if (data.background_type === "hosted") {
-    let ver = `?ver=${data.background_version}`
-    let bg = data.background + ver
-    Hue.background = `${Hue.config.public_media_directory}/room/${Hue.room_id}/${bg}`
+    Hue.background = ""
   } else {
-    Hue.background = data.background
+    if (data.background_type === "hosted") {
+      let ver = `?ver=${data.background_version}`
+      let bg = data.background + ver
+      Hue.background = `${Hue.config.public_media_directory}/room/${Hue.room_id}/${bg}`
+    } else {
+      Hue.background = data.background
+    }
   }
 
   Hue.config_admin_background()
@@ -290,11 +290,9 @@ Hue.set_background = function (data, apply = true) {
 
 // Applies the background to all background elements
 Hue.apply_background = function () {
-  if (Hue.background) {
-    Hue.els(".background").forEach(it => {
-      it.src = Hue.background
-    })
-  }
+  Hue.els(".background").forEach(it => {
+    it.src = Hue.background
+  })
 }
 
 // Background color setter
@@ -385,6 +383,11 @@ Hue.open_background_select = function () {
       Hue.open_background_input()
     })
 
+    Hue.el("#background_select_remove").addEventListener("click", function () {
+      Hue.msg_info.close()
+      Hue.change_background_source("")
+    })
+
     Hue.el("#background_select_upload").addEventListener("click", function () {
       Hue.msg_info.close()
       Hue.open_background_picker()
@@ -465,7 +468,7 @@ Hue.change_background_source = function (src) {
     return false
   }
 
-  if (src !== "default") {
+  if (src !== "") {
     if (!Hue.utilz.is_url(src)) {
       return false
     }
@@ -491,7 +494,6 @@ Hue.change_background_source = function (src) {
   }
 
   Hue.socket_emit("change_background_source", { src: src })
-
   return true
 }
 
