@@ -59,6 +59,10 @@ Hue.setup_room_config = function () {
   Hue.el("#admin_random_theme").addEventListener("click", function () {
     Hue.select_random_theme()
   })
+
+  Hue.el("#random_theme_regenerate").addEventListener("click", function () {
+    Hue.select_random_theme()
+  })
 }
 
 // Shows the room config
@@ -127,8 +131,34 @@ Hue.config_admin_topic = function () {
   Hue.el("#admin_topic").value = Hue.topic
 }
 
-// Select random dark or light theme
+// Show a window to select random themes
 Hue.select_random_theme = function () {
+  let container = Hue.el("#random_theme_container")
+  container.innerHTML = ""
+
+  for (let i=0; i<10; i++) {
+    let theme = Hue.get_random_theme()
+
+    let item = Hue.div("random_theme_item action")
+
+    item.style.backgroundColor = theme.bg_color
+    item.style.color = theme.text_color
+    item.textContent = "This is some sample text"
+
+    item.addEventListener("click", function () {
+      Hue.change_background_color(theme.bg_color)
+      Hue.change_text_color(theme.text_color)
+      Hue.msg_random_theme.close()
+    })
+
+    container.append(item)
+  }
+
+  Hue.msg_random_theme.show()
+}
+
+// Get random dark or light theme
+Hue.get_random_theme = function () {
   let bg_color = Hue.colorlib.get_random_hex()
 
   if (Hue.colorlib.is_light(bg_color)) {
@@ -136,7 +166,5 @@ Hue.select_random_theme = function () {
   }
 
   let text_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.77)
-
-  Hue.change_background_color(bg_color)
-  Hue.change_text_color(text_color)
+  return {bg_color: bg_color, text_color: text_color}
 }

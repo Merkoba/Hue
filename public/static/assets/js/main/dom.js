@@ -48,7 +48,7 @@ Hue.dataset = function (el, value, setvalue) {
 }
 
 // Create an empty div
-Hue.div = function (classes = "") {
+Hue.div = function (classes = "", id = "") {
   let new_div = document.createElement("div")
 
   if (classes) {
@@ -57,6 +57,10 @@ Hue.div = function (classes = "") {
     for (let cls of classlist) {
       new_div.classList.add(cls)
     }
+  }
+
+  if (id) {
+    new_div.id = id
   }
 
   return new_div

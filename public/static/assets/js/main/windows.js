@@ -414,6 +414,12 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_random_theme = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "random_theme"
+    })
+  )
+
   Hue.msg_draw_image = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar,{
       id: "draw_image",
@@ -474,6 +480,7 @@ Hue.start_msg = function () {
   Hue.msg_change_role.set(Hue.template_change_role())
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
+  Hue.msg_random_theme.set(Hue.template_random_theme())
   Hue.msg_draw_image.set(Hue.template_draw_image())
   Hue.msg_radio_window.set(Hue.template_radio_window())
   Hue.msg_command_book.set(Hue.template_command_book())
@@ -499,6 +506,7 @@ Hue.start_msg = function () {
   Hue.msg_profilepic_cropper.set_title("Crop A Circle")
   Hue.msg_change_role.set_title("Change Role")
   Hue.msg_confirm.set_title("Confirm Action")
+  Hue.msg_random_theme.set_title("Random Theme")
   Hue.msg_draw_image.set_title("Draw an Image")
   Hue.msg_image_picker.set_title("Image")
   Hue.msg_link_image.set_title("Link Image")
