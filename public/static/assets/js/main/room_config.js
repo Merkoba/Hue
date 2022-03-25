@@ -157,7 +157,6 @@ Hue.select_random_theme = function (text_mode = "normal") {
   let amount = 20
 
   for (let i=0; i<amount; i++) {
-    console.log(modi)
     if (modes[modi] === "normal_dark") {
       themes.push(Hue.get_random_theme_normal("dark"))
     }
