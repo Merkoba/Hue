@@ -176,17 +176,22 @@ Hue.get_random_themes = function (n, mode = "dark") {
   let colors = Hue.colorlib.get_palette(n)
 
   for (let bg_color of colors) {
+    let text_color
+
     if (mode === "dark") {
       if (Hue.colorlib.is_light(bg_color)) {
         bg_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.6)
       }
+      
+      text_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.66)
     } else {
       if (Hue.colorlib.is_dark(bg_color)) {
         bg_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.6)
       }
+      
+      text_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.5)
     }
   
-    let text_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.66)
     themes.push({bg_color: bg_color, text_color: text_color})
   }
 
