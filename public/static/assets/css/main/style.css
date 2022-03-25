@@ -2559,6 +2559,6 @@ pre {
 }
 
 .random_theme_item {
-	padding: 1rem;
+	padding: 0.8rem;
 	border: 1px solid var(--font_color);
 }
