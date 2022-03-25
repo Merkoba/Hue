@@ -2537,6 +2537,10 @@ pre {
 	gap: 0.5rem;
 }
 
+.rem05_gap {
+	gap: 0.5rem;
+}
+
 .rem1_gap {
 	gap: 1rem;
 }
@@ -2550,20 +2554,8 @@ pre {
 	border: 1px solid var(--font_color);
 }
 
-#random_theme_regenerate {
-	margin-bottom: 1rem;
-}
-
-.random_theme_container {
-	gap: 0.5rem;
-}
-
 .random_theme_item {
 	padding: 0.8rem;
 	border: 1px solid var(--font_color);
 	white-space: nowrap;
-}
-
-.random_theme_label {
-	margin-bottom: 1rem;
 }

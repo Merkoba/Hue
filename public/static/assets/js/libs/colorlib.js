@@ -481,22 +481,6 @@ const ColorLib = (function () {
                           (a[3] - b[3]) * (a[3] - b[3]) ) / ( 256 * Math.sqrt(4) ))      
     }
 
-    instance.get_palette = function (n) {
-      function rand(frm, to) {
-        return ~~(Math.random() * (to - frm)) + frm
-      }
-
-      let colors = []
-      
-      for (let i=0; i<n; i++) {
-        let rgb_array = [rand(0, 255), rand(0, 255), rand(0, 255)]
-        let hex = instance.rgb_to_hex(rgb_array)
-        colors.push(hex)
-      }
-
-      return colors
-    }
-
     return instance
   }
 
