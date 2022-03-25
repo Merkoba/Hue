@@ -133,12 +133,7 @@ Hue.config_admin_topic = function () {
 
 // Show a window to select random themes
 Hue.select_random_theme = function () {
-  let container = Hue.el("#random_theme_container")
-  container.innerHTML = ""
-
-  for (let i=0; i<10; i++) {
-    let theme = Hue.get_random_theme()
-
+  function create_item (theme) {
     let item = Hue.div("random_theme_item action")
 
     item.style.backgroundColor = theme.bg_color
@@ -146,25 +141,54 @@ Hue.select_random_theme = function () {
     item.textContent = "This is some sample text"
 
     item.addEventListener("click", function () {
+      console.log(theme)
       Hue.change_background_color(theme.bg_color)
       Hue.change_text_color(theme.text_color)
       Hue.msg_random_theme.close()
     })
 
-    container.append(item)
+    return item
+  }
+
+  let dark_container = Hue.el("#random_theme_dark_container")
+  dark_container.innerHTML = ""
+
+  let light_container = Hue.el("#random_theme_light_container")
+  light_container.innerHTML = ""
+
+  let dark_themes = Hue.get_random_themes(10, "dark")
+  let light_themes = Hue.get_random_themes(10, "light")
+
+  for (let theme of dark_themes) {
+    dark_container.append(create_item(theme))
+  }
+
+  for (let theme of light_themes) {
+    light_container.append(create_item(theme))
   }
 
   Hue.msg_random_theme.show()
 }
 
-// Get random dark or light theme
-Hue.get_random_theme = function () {
-  let bg_color = Hue.colorlib.get_random_hex()
+// Get random dark or light themes 
+Hue.get_random_themes = function (n, mode = "dark") {
+  let themes = []
+  let colors = Hue.colorlib.get_palette(n)
 
-  if (Hue.colorlib.is_light(bg_color)) {
-    bg_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.5)
+  for (let bg_color of colors) {
+    if (mode === "dark") {
+      if (Hue.colorlib.is_light(bg_color)) {
+        bg_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.6)
+      }
+    } else {
+      if (Hue.colorlib.is_dark(bg_color)) {
+        bg_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.6)
+      }
+    }
+  
+    let text_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.77)
+    themes.push({bg_color: bg_color, text_color: text_color})
   }
 
-  let text_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.77)
-  return {bg_color: bg_color, text_color: text_color}
+  return themes
 }

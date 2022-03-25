@@ -134,7 +134,7 @@ const ColorLib = (function () {
 				mode = "hex"
 				rgb = instance.hex_to_rgb(rgb)
 			}
-      
+
       rgb = instance.check_rgb(rgb)
 
       let r = rgb[0]
@@ -479,6 +479,22 @@ const ColorLib = (function () {
                           (a[1] - b[1]) * (a[1] - b[1]) +
                           (a[2] - b[2]) * (a[2] - b[2]) +
                           (a[3] - b[3]) * (a[3] - b[3]) ) / ( 256 * Math.sqrt(4) ))      
+    }
+
+    instance.get_palette = function (n) {
+      function rand(frm, to) {
+        return ~~(Math.random() * (to - frm)) + frm
+      }
+
+      let colors = []
+      
+      for (let i=0; i<n; i++) {
+        let rgb_array = [rand(0, 255), rand(0, 255), rand(0, 255)]
+        let hex = instance.rgb_to_hex(rgb_array)
+        colors.push(hex)
+      }
+
+      return colors
     }
 
     return instance
