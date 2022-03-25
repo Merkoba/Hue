@@ -59,6 +59,10 @@ Hue.setup_room_config = function () {
   Hue.el("#admin_random_theme").addEventListener("click", function () {
     Hue.select_random_theme()
   })
+
+  Hue.el("#random_theme_regenerate").addEventListener("click", function () {
+    Hue.select_random_theme()
+  })
 }
 
 // Shows the room config
