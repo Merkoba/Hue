@@ -2561,6 +2561,11 @@ pre {
 .random_theme_item {
 	padding: 0.8rem;
 	border: 1px solid var(--font_color);
+	white-space: nowrap;
+}
+
+.random_theme_label {
+	margin-bottom: 1rem;
 }
 
 .random_theme_label {
