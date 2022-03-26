@@ -678,15 +678,27 @@ Hue.do_modal_filter = function (id = false) {
     }
 
     if (filter.startsWith("$user")) {
-      return f_username === Hue.dataset(it, "username")
-    } else if (filter === "$fresh") {
-      let fresh = Hue.dataset(it, "fresh")
-      
-      if (!fresh) {
+      let match = first_arg === Hue.dataset(it, "username")
+
+      if (match) {
+        if (tail) {
+          match = it.textContent.toLowerCase().includes(tail)
+        }
+      }
+
+      return match
+    } else if (filter.startsWith("$fresh")) {
+      let match = Hue.dataset(it, "fresh")
+
+      if (match) {
+        if (args) {
+          match = it.textContent.toLowerCase().includes(args)
+        }
+      } else {
         finished = true
       }
 
-      return fresh
+      return match
     } else {
       return it.textContent.toLowerCase().includes(filter)
     }
@@ -696,16 +708,22 @@ Hue.do_modal_filter = function (id = false) {
   let filter_el = Hue.el(".filter_input", win)
   filter = Hue.utilz.single_space(filter_el.value).trim().toLowerCase()
   let items = Hue.els(".modal_item", win)
-
-  if (filter.startsWith("$user")) {
-    if (filter.split(" ").length === 1) {
-      return
-    }
-
-    f_username = filter.replace("$user ", "").trim()
-  }
+  let args, first_arg, tail
 
   if (filter && items.length) {
+    if (filter.startsWith("$")) {
+      let split = filter.split(" ").filter(x => x !== "")
+      first_arg = split[1]
+      args = split.slice(1).join(" ")
+      tail = split.slice(2).join(" ")
+    }
+    
+    if (filter.startsWith("$user")) {
+      if (!first_arg) {
+        return
+      }
+    }
+
     items.forEach(it => {
       if (filtercheck(it)) {
         it.classList.remove("nodisplay")

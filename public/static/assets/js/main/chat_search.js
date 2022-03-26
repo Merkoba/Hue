@@ -101,7 +101,7 @@ Hue.show_chat_search = function (filter = "") {
     }
 
     if (filter.startsWith("$user")) {
-      if (filter.split(" ").length === 1) {
+      if (!first_arg) {
         return
       }
     }
@@ -168,5 +168,5 @@ Hue.show_chat_search = function (filter = "") {
 
 // Show links in chat search
 Hue.show_links = function () {
-  Hue.show_chat_search("$links")
+  Hue.show_chat_search("$links ")
 }
