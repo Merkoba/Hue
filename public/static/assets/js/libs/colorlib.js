@@ -481,6 +481,22 @@ const ColorLib = (function () {
                           (a[3] - b[3]) * (a[3] - b[3]) ) / ( 256 * Math.sqrt(4) ))      
     }
 
+    instance.get_dark_color = function () {
+      let n = 66
+
+      return instance.rgb_to_hex([
+        get_random_int(0, n), get_random_int(0, n), get_random_int(0, n)
+      ])
+    }
+
+    instance.get_light_color = function () {
+      let n = 66
+
+      return instance.rgb_to_hex([
+        255 - get_random_int(0, n), 255 - get_random_int(0, n), 255 - get_random_int(0, n)
+      ])
+    }
+
     return instance
   }
 
