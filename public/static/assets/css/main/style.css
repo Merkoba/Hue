@@ -173,10 +173,6 @@ body * {
 	flex-grow: 1;
 }
 
-.chat_margin {
-	width: calc(100vw - 50px);
-}
-
 #chat_area_parent {
 	flex-grow: 1;
 	max-width: 100%;
@@ -2562,4 +2558,8 @@ pre {
 	padding: 0.8rem;
 	border: 1px solid var(--font_color);
 	white-space: nowrap;
+}
+
+.reduced_width {
+	width: calc(100% - 50px);
 }

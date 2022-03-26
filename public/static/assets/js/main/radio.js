@@ -89,9 +89,15 @@ Hue.change_radio_state = function (what) {
   if (what) {
     Hue.el("#radio_items").classList.remove("nodisplay")
     Hue.el("#footer_radio_icon use").href.baseVal = "#icon_star-solid"
+    Hue.el("#main_rows_container").classList.add("reduced_width")
+    Hue.fix_frames()
+    Hue.goto_bottom(true)
   } else {
     Hue.el("#radio_items").classList.add("nodisplay")
     Hue.el("#footer_radio_icon use").href.baseVal = "#icon_star"
+    Hue.el("#main_rows_container").classList.remove("reduced_width")
+    Hue.fix_frames()
+    Hue.goto_bottom(true)
   }
 }
 
