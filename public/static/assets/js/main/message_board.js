@@ -233,7 +233,7 @@ Hue.init_message_board = function (data) {
   
   if (Hue.unread_message_board_count > 0) {
     Hue.fresh_unread_message_board_posts()
-    Hue.show_message_board("$fresh")
+    Hue.show_message_board("$fresh ")
   }
 
   Hue.vertical_separator(Hue.el("#message_board_container"))
