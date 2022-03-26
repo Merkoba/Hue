@@ -29,18 +29,40 @@ Hue.show_chat_search = function (filter = "") {
     }
 
     if (filter.startsWith("$user")) {
-      return f_username === Hue.dataset(it, "username")
-    } else if (filter === "$highlights") {
-      return Hue.dataset(it, "highlighted")
-    } else if (filter === "$fresh_highlights") {
+      let match = first_arg === Hue.dataset(it, "username")
+      
+      if (match) {
+        if (tail) {
+          match = it.textContent.toLowerCase().includes(tail)
+        }
+      }
+
+      return match
+    } else if (filter.startsWith("$highlights")) {
+      let match = Hue.dataset(it, "highlighted")
+
+      if (match) {
+        if (args) {
+          match = it.textContent.toLowerCase().includes(args)
+        }
+      }
+
+      return match
+    } else if (filter.startsWith("$fresh_highlights")) {
       if (!Hue.latest_highlight) {
         finished = true
         return false
       }
 
-      let highlighted = Hue.dataset(it, "highlighted")
+      let match = Hue.dataset(it, "highlighted")
 
-      if (highlighted) {
+      if (match) {
+        if (args) {
+          match = it.textContent.toLowerCase().includes(args)
+        }
+      }
+
+      if (match) {
         let id1 = Hue.dataset(it, "id")
         let id2 = Hue.dataset(Hue.latest_highlight, "id")
         if (id1 === id2) {
@@ -48,10 +70,18 @@ Hue.show_chat_search = function (filter = "") {
         }
       }
 
-      return highlighted
-    } else if (filter === "$links") {
+      return match
+    } else if (filter.startsWith("$links")) {
       let s = it.textContent.toLowerCase()
-      return s.includes("http://") || s.includes("https://")
+      let match = s.includes("http://") || s.includes("https://")
+
+      if (match) {
+        if (args) {
+          match = it.textContent.toLowerCase().includes(args)
+        }
+      }
+
+      return match
     } else {
       return it.textContent.toLowerCase().includes(filter)
     }
@@ -60,15 +90,20 @@ Hue.show_chat_search = function (filter = "") {
   Hue.el("#chat_search_container").innerHTML = ""
   Hue.el("#chat_search_filter").value = filter
   filter = Hue.utilz.single_space(filter).trim().toLowerCase()
-  let f_username = ""
+  let args, first_arg, tail
 
   if (filter) {
+    if (filter.startsWith("$")) {
+      let split = filter.split(" ").filter(x => x !== "")
+      first_arg = split[1]
+      args = split.slice(1).join(" ")
+      tail = split.slice(2).join(" ")
+    }
+
     if (filter.startsWith("$user")) {
       if (filter.split(" ").length === 1) {
         return
       }
-
-      f_username = filter.replace("$user ", "").trim()
     }
 
     let messages = Hue.clone_children("#chat_area").reverse()
