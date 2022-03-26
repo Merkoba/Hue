@@ -482,7 +482,7 @@ const ColorLib = (function () {
     }
 
     instance.get_dark_color = function () {
-      let n = 66
+      let n = 55
 
       return instance.rgb_to_hex([
         get_random_int(0, n), get_random_int(0, n), get_random_int(0, n)
@@ -490,7 +490,7 @@ const ColorLib = (function () {
     }
 
     instance.get_light_color = function () {
-      let n = 66
+      let n = 55
 
       return instance.rgb_to_hex([
         255 - get_random_int(0, n), 255 - get_random_int(0, n), 255 - get_random_int(0, n)
