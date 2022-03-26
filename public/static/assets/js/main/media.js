@@ -344,10 +344,6 @@ Hue.fix_frame = function (frame_id, test_parent_height = false) {
 
   let parent_width = parent.offsetWidth
 
-  if (Hue.room_state.radio_enabled && parent_width > 100) {
-    parent_width -= 100
-  }
-
   let parent_height = test_parent_height ?
     test_parent_height :
     parent.offsetHeight - info_height
@@ -803,7 +799,6 @@ Hue.change_main_layout = function (what = "") {
     }    
   }
 
-  Hue.check_chat_margin()
   Hue.apply_media_percentages()
   Hue.goto_bottom(true)
   Hue.save_room_state()
@@ -1067,7 +1062,6 @@ Hue.change_media_visibility = function (type, play = false) {
     }
   }
 
-  Hue.check_chat_margin()
   Hue.goto_bottom()
 }
 
