@@ -302,37 +302,6 @@ Hue.set_background_color = function (color) {
   Hue.config_admin_background_color()
 }
 
-// This is where the color theme gets built and applied
-// This builds CSS declarations based on the current background color
-// The CSS declarations are inserted into the DOM
-// Older declarations get removed
-Hue.apply_theme = function () {
-  let theme = Hue.background_color
-
-  if (theme.startsWith("#")) {
-    theme = Hue.colorlib.hex_to_rgb(theme)
-  }
-
-  let background_color = theme
-  let font_color = Hue.colorlib.hex_to_rgb(Hue.text_color)
-
-  let altcolor = Hue.colorlib.get_lighter_or_darker(background_color, 0.2)
-  let altcolor_a = Hue.colorlib.rgb_to_rgba(altcolor,  0.7)
-  let background_color_a = Hue.colorlib.rgb_to_rgba(background_color, 0.95)
-  let altbackground = Hue.colorlib.get_lighter_or_darker(background_color, 0.09)
-  let altbackground_a = Hue.colorlib.rgb_to_rgba(altbackground, 0.7)
-  let font_color_a = Hue.colorlib.rgb_to_rgba(font_color,  0.7)
-  
-  document.documentElement.style.setProperty('--font_color', font_color)
-  document.documentElement.style.setProperty('--font_color_a', font_color_a)
-  document.documentElement.style.setProperty('--altcolor', altcolor)
-  document.documentElement.style.setProperty('--altcolor_a', altcolor_a)
-  document.documentElement.style.setProperty('--background_color', background_color)
-  document.documentElement.style.setProperty('--background_color_a', background_color_a)
-  document.documentElement.style.setProperty('--altbackground', altbackground)
-  document.documentElement.style.setProperty('--altbackground_a', altbackground_a)
-}
-
 // Changes the background color
 Hue.change_background_color = function (color) {
   if (!Hue.is_admin_or_op()) {
