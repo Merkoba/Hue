@@ -253,6 +253,10 @@ Hue.radio_just_changed = function () {
 
 // Scroll stations list to playing item
 Hue.scroll_to_radio_item = function () {
+  if (!Hue.radio_is_playing()) {
+    return
+  }
+  
   let item = Hue.get_radio_item(Hue.playing_radio.radio)
   
   item.scrollIntoView({
