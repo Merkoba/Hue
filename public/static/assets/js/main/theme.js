@@ -74,7 +74,7 @@ Hue.select_random_theme = function (text_mode = "normal") {
 }
 
 // Get a random dark theme
-Hue.get_dark_theme = function (mode) {
+Hue.get_dark_theme = function () {
   bg_color = Hue.colorlib.get_dark_color()
   text_color = Hue.colorlib.get_random_hex()
   
@@ -86,7 +86,7 @@ Hue.get_dark_theme = function (mode) {
 }
 
 // Get a random light theme
-Hue.get_light_theme = function (mode) {
+Hue.get_light_theme = function () {
   bg_color = Hue.colorlib.get_light_color()
   text_color = Hue.colorlib.get_random_hex()
   
