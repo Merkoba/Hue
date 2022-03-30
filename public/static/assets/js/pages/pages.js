@@ -23,10 +23,6 @@ function msg_info_after_close(instance) {
 	Hue.el("form").querySelector("input").focus()
 }
 
-function set_message(s) {
-	msg_info.show(s)
-}
-
 document.addEventListener("keydown", function (e) {
 	if (msg_info.is_open()) {
 		if (e.key === "Enter") {
@@ -41,7 +37,7 @@ document.addEventListener("keydown", function (e) {
 window.onload = function () {
 	try {
 		if (message && message !== "undefined") {
-			set_message(message)
+			show_info((message)
 		}
 	} catch (err) {}
 
