@@ -29,7 +29,6 @@ Hue.userlist = []
 Hue.all_usernames = []
 Hue.role = ""
 Hue.tab_info = {}
-Hue.background_input_open = false
 Hue.writing_reply = false
 Hue.modal_open = false
 Hue.commands_list_sorted = {}
