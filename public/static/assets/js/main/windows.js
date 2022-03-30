@@ -147,6 +147,18 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_change_username = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "change_username"
+    })
+  )
+
+  Hue.msg_change_password = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "change_password"
+    })
+  )
+
   Hue.msg_info = Msg.factory(
     Object.assign({}, msgvars.common, {
       id: "info",
@@ -499,6 +511,8 @@ Hue.start_msg = function () {
   Hue.msg_message_board.set(Hue.template_message_board())
   Hue.msg_profilepic_cropper.set(Hue.template_profilepic_cropper())
   Hue.msg_change_role.set(Hue.template_change_role())
+  Hue.msg_change_username.set(Hue.template_change_username())
+  Hue.msg_change_password.set(Hue.template_change_password())
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_random_theme.set(Hue.template_random_theme())
@@ -529,6 +543,8 @@ Hue.start_msg = function () {
   Hue.msg_message_board.set_title("Message Board")
   Hue.msg_profilepic_cropper.set_title("Crop A Circle")
   Hue.msg_change_role.set_title("Change Role")
+  Hue.msg_change_username.set_title("Change Username")
+  Hue.msg_change_password.set_title("Change Password")
   Hue.msg_confirm.set_title("Confirm Action")
   Hue.msg_random_theme.set_title("Random Theme")
   Hue.msg_draw_image.set_title("Draw an Image")
@@ -545,12 +561,9 @@ Hue.start_msg = function () {
 
 // Sets all info window 2 variables to false
 Hue.info_vars_to_false = function () {
-  Hue.open_room_open = false
   Hue.background_input_open = false
   Hue.admin_list_open = false
   Hue.ban_list_open = false
-  Hue.change_user_username_open = false
-  Hue.change_user_password_open = false
 }
 
 // Starts automatic modal filters

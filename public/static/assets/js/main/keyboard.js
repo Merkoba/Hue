@@ -8,7 +8,7 @@ Hue.activate_key_detection = function () {
     if (e.key === "Tab") {
       if (
         Hue.modal_open &&
-        Hue.change_user_password_open ||
+        Hue.msg_change_password.is_open() ||
         Hue.msg_message_board.is_open() ||
         Hue.msg_link_image.is_open() ||
         Hue.msg_link_tv.is_open()
@@ -168,8 +168,8 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.change_user_username_open) {
-        if (Hue.msg_info.is_highest()) {
+      if (Hue.msg_change_username.is_open()) {
+        if (Hue.msg_change_username.is_highest()) {
           if (e.key === "Enter" && !e.shiftKey) {
             Hue.submit_change_username()
             e.preventDefault()
@@ -179,8 +179,8 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.change_user_password_open) {
-        if (Hue.msg_info.is_highest()) {
+      if (Hue.msg_change_password.is_open()) {
+        if (Hue.msg_change_password.is_highest()) {
           if (e.key === "Enter" && !e.shiftKey) {
             Hue.submit_change_password()
             e.preventDefault()

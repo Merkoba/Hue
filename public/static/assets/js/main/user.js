@@ -86,15 +86,9 @@ Hue.change_bio = function (value) {
 
 // Shows the change username form
 Hue.show_change_username = function () {
-  Hue.msg_info.show(["Change Username", Hue.template_change_username()], function () {
+  Hue.msg_change_username.show(function () {
     Hue.el("#change_username_input").value = Hue.username
     Hue.el("#change_username_input").focus()
-
-    Hue.el("#change_username_submit").addEventListener("click", function () {
-      Hue.submit_change_username()
-    })
-
-    Hue.change_user_username_open = true
   })
 }
 
@@ -108,20 +102,16 @@ Hue.submit_change_username = function () {
   }
 
   if (Hue.change_username(username)) {
-    Hue.msg_info.close()
+    Hue.msg_change_username.close()
   }
 }
 
 // Shows the change password form
 Hue.show_change_password = function () {
-  Hue.msg_info.show(["Change Password", Hue.template_change_password()], function () {
+  Hue.msg_change_password.show(function () {
+    Hue.el("#change_password_input_1").value = ""
+    Hue.el("#change_password_input_2").value = ""
     Hue.el("#change_password_input_1").focus()
-
-    Hue.el("#change_password_submit").addEventListener("click", function () {
-      Hue.submit_change_password()
-    })
-
-    Hue.change_user_password_open = true
   })
 }
 
@@ -131,7 +121,7 @@ Hue.submit_change_password = function () {
   let p2 = Hue.el("#change_password_input_2").value.trim()
 
   if (Hue.change_password(p1, p2)) {
-    Hue.msg_info.close()
+    Hue.msg_change_password.close()
   }
 }
 
@@ -199,6 +189,22 @@ Hue.setup_user_profile = function () {
   }
 
   Hue.setup_profilepic_select()
+  Hue.setup_change_username()
+  Hue.setup_change_password()
+}
+
+// Setup change username
+Hue.setup_change_username = function () {
+  Hue.el("#change_username_submit").addEventListener("click", function () {
+    Hue.submit_change_username()
+  })
+}
+
+// Setup change password
+Hue.setup_change_password = function () {
+  Hue.el("#change_password_submit").addEventListener("click", function () {
+    Hue.submit_change_password()
+  })
 }
 
 // Updates some user profile elements
