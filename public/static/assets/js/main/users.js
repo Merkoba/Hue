@@ -454,7 +454,7 @@ Hue.user_disconnect = function (data) {
   let type = data.disconnection_type
 
   if (type === "banned") {
-    if (Hue.ban_list_open) {
+    if (Hue.msg_ban_list.is_open()) {
       Hue.request_ban_list()
     }
   }
@@ -496,7 +496,7 @@ Hue.announce_new_username = function (data) {
     )
   }
 
-  if (Hue.admin_list_open) {
+  if (Hue.msg_admin_list.is_open()) {
     Hue.request_admin_list()
   }
 
@@ -792,7 +792,7 @@ Hue.announce_role_change = function (data) {
     data.role
   )
 
-  if (Hue.admin_list_open) {
+  if (Hue.msg_admin_list.is_open()) {
     Hue.request_admin_list()
   }
 }
@@ -889,7 +889,7 @@ Hue.announce_ban = function (data) {
     `${data.username1} banned ${data.username2}`
   )
 
-  if (Hue.ban_list_open) {
+  if (Hue.msg_ban_list.is_open()) {
     Hue.request_ban_list()
   }
 }
@@ -901,7 +901,7 @@ Hue.announce_unban = function (data) {
     `${data.username1} unbanned ${data.username2}`
   )
 
-  if (Hue.ban_list_open) {
+  if (Hue.msg_ban_list.is_open()) {
     Hue.request_ban_list()
   }
 }
