@@ -168,7 +168,7 @@ Hue.setup_user_profile = function () {
   })
 
   Hue.el("#user_profile_audioclip").addEventListener("click", function () {
-    Hue.show_audioclip_menu()
+    Hue.msg_audioclip_select.show()
   })
 
   Hue.el("#user_profile_logout").addEventListener("click", function () {
@@ -189,6 +189,7 @@ Hue.setup_user_profile = function () {
   }
 
   Hue.setup_profilepic_select()
+  Hue.setup_audioclip_select()
   Hue.setup_change_username()
   Hue.setup_change_password()
 }
@@ -368,30 +369,22 @@ Hue.show_others_disconnected = function (data) {
   Hue.checkmsg(s)
 }
 
-// Shows some options for the audio clip
-Hue.show_audioclip_menu = function () {
-  Hue.msg_info.show(["Audio Clip", Hue.template_audioclip_menu()], function () {
-    Hue.el("#upload_audioclip").addEventListener("click", function () {
-      Hue.select_audioclip()
-      Hue.msg_info.close()
-    })
+// Setup change audioclip select
+Hue.setup_audioclip_select = function () {
+  Hue.el("#upload_audioclip").addEventListener("click", function () {
+    Hue.select_audioclip()
+    Hue.msg_audioclip_select.close()
+  })
 
-    Hue.el("#remove_audioclip").addEventListener("click", function () {
-      Hue.needs_confirm_2(function () {
-        Hue.socket_emit("remove_audioclip", {})
-        Hue.msg_info.close()
-      })
+  Hue.el("#remove_audioclip").addEventListener("click", function () {
+    Hue.needs_confirm_2(function () {
+      Hue.socket_emit("remove_audioclip", {})
+      Hue.msg_audioclip_select.close()
     })
+  })
 
-    Hue.el("#play_audioclip").addEventListener("click", function () {
-      Hue.user_profile_audio = document.createElement("audio")
-      let user = Hue.get_self_user()
-      let src = Hue.get_audioclip(user.user_id)
-      Hue.user_profile_audio.src = src
-      Hue.user_profile_audio.play()
-    })
-
-    Hue.horizontal_separator(Hue.el("#audioclip_select_container"))
+  Hue.el("#play_audioclip").addEventListener("click", function () {
+    Hue.play_audioclip(Hue.user_id)
   })
 }
 
