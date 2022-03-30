@@ -332,40 +332,6 @@ Hue.announce_background_color_change = function (data) {
   Hue.set_background_color(data.color)
 }
 
-// Picker window to select how to change the background image
-Hue.open_background_select = function () {
-  Hue.msg_info.show([
-    "Background Image",
-    Hue.template_background_select(),
-  ], function () {
-    Hue.el("#background_select_draw").addEventListener("click", function () {
-      Hue.msg_info.close()
-      Hue.open_draw_image("background")
-    })
-
-    Hue.el("#background_select_random").addEventListener("click", function () {
-      Hue.msg_info.close()
-      Hue.make_random_drawing("background")
-    })
-
-    Hue.el("#background_select_url").addEventListener("click", function () {
-      Hue.open_background_input()
-    })
-
-    Hue.el("#background_select_remove").addEventListener("click", function () {
-      Hue.msg_info.close()
-      Hue.change_background_source("")
-    })
-
-    Hue.el("#background_select_upload").addEventListener("click", function () {
-      Hue.msg_info.close()
-      Hue.open_background_picker()
-    })
-  })
-  
-  Hue.horizontal_separator(Hue.el("#background_select_container"))
-}
-
 // If upload is chosen as the method to change the background image
 Hue.open_background_picker = function () {
   Hue.el("#background_input").click()

@@ -53,7 +53,7 @@ Hue.setup_room_config = function () {
   }) 
 
   Hue.el("#admin_background").addEventListener("click", function () {
-    Hue.open_background_select()
+    Hue.msg_background_select.show()
   })
 
   Hue.el("#admin_random_theme").addEventListener("click", function () {
@@ -63,6 +63,8 @@ Hue.setup_room_config = function () {
   Hue.el("#random_theme_regenerate").addEventListener("click", function () {
     Hue.select_random_theme()
   })
+
+  Hue.setup_background_select()
 }
 
 // Shows the room config
@@ -129,4 +131,32 @@ Hue.config_admin_topic = function () {
   }
 
   Hue.el("#admin_topic").value = Hue.topic
+}
+
+// Setup background select
+Hue.setup_background_select = function () {  
+  Hue.el("#background_select_draw").addEventListener("click", function () {
+    Hue.msg_background_select.close()
+    Hue.open_draw_image("background")
+  })
+
+  Hue.el("#background_select_random").addEventListener("click", function () {
+    Hue.msg_background_select.close()
+    Hue.make_random_drawing("background")
+  })
+  
+  Hue.el("#background_select_url").addEventListener("click", function () {
+    Hue.msg_background_select.close()
+    Hue.open_background_input()
+  })
+
+  Hue.el("#background_select_remove").addEventListener("click", function () {
+    Hue.msg_background_select.close()
+    Hue.change_background_source("")
+  })
+
+  Hue.el("#background_select_upload").addEventListener("click", function () {
+    Hue.msg_background_select.close()
+    Hue.open_background_picker()
+  })
 }
