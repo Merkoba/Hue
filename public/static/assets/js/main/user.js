@@ -174,7 +174,7 @@ Hue.setup_user_profile = function () {
   Hue.el("#user_profile_id").textContent = `ID: ${Hue.user_id}`
 
   Hue.el("#user_profile_profilepic").addEventListener("click", function () {
-    Hue.open_profilepic_select()
+    Hue.msg_profilepic_select.show()
   })
 
   Hue.el("#user_profile_audioclip").addEventListener("click", function () {
@@ -197,6 +197,8 @@ Hue.setup_user_profile = function () {
     Hue.show_user_profile()
     Hue.show_info("You can select a profile image here")
   }
+
+  Hue.setup_profilepic_select()
 }
 
 // Updates some user profile elements
@@ -250,29 +252,22 @@ Hue.setup_profilepic_cropper = function () {
   })
 }
 
-// Picker window to select how to change the profilepic
-Hue.open_profilepic_select = function () {
-  Hue.msg_info.show([
-    "Profile Image",
-    Hue.template_profilepic_select(),
-  ], function () {
-    Hue.el("#profilepic_select_draw").addEventListener("click", function () {
-      Hue.msg_info.close()
-      Hue.open_draw_image("profilepic")
-    })
-
-    Hue.el("#profilepic_select_random").addEventListener("click", function () {
-      Hue.msg_info.close()
-      Hue.make_random_drawing("profilepic")
-    })
-
-    Hue.el("#profilepic_select_upload").addEventListener("click", function () {
-      Hue.msg_info.close()
-      Hue.open_profilepic_picker()
-    })
+// Setup profilepic select
+Hue.setup_profilepic_select = function () {
+  Hue.el("#profilepic_select_draw").addEventListener("click", function () {
+    Hue.msg_profilepic_select.close()
+    Hue.open_draw_image("profilepic")
   })
-  
-  Hue.horizontal_separator(Hue.el("#profilepic_select_container"))
+
+  Hue.el("#profilepic_select_random").addEventListener("click", function () {
+    Hue.msg_profilepic_select.close()
+    Hue.make_random_drawing("profilepic")
+  })
+
+  Hue.el("#profilepic_select_upload").addEventListener("click", function () {
+    Hue.msg_profilepic_select.close()
+    Hue.open_profilepic_picker()
+  })
 }
 
 // If upload is chosen as the method to change the profilepic
