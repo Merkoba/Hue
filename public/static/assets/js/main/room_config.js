@@ -65,6 +65,7 @@ Hue.setup_room_config = function () {
   })
 
   Hue.setup_background_select()
+  Hue.setup_background_input()
 }
 
 // Shows the room config
@@ -158,5 +159,20 @@ Hue.setup_background_select = function () {
   Hue.el("#background_select_upload").addEventListener("click", function () {
     Hue.msg_background_select.close()
     Hue.open_background_picker()
+  })
+}
+
+// Setup background input
+Hue.setup_background_input = function () {
+  Hue.el("#background_input_submit").addEventListener("click", function () {
+    Hue.background_input_action()
+  })
+}
+
+// Setup background input
+Hue.open_background_input = function () {
+  Hue.el("#background_input_text").value = ""
+  Hue.msg_background_input.show(function () {
+    Hue.el("#background_input_text").focus()
   })
 }

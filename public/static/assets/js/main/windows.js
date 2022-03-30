@@ -78,6 +78,12 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_background_input = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "background_input"
+    })
+  )
+
   Hue.msg_admin_list = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "admin_list"
@@ -181,22 +187,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_info = Msg.factory(
-    Object.assign({}, msgvars.common, {
-      id: "info",
-      window_height: "auto",
-      before_show: function (instance) {
-        msgvars.common.before_show(instance)
-        Hue.info_vars_to_false()
-      },
-      after_close: function (instance) {
-        msgvars.common.after_close(instance)
-        instance.content.innerHTML = ""
-        Hue.info_vars_to_false()
-      },
-    })
-  )
-
   Hue.msg_info_autoclose = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "info_autoclose",
@@ -212,15 +202,10 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "info",
       window_height: "auto",
-      before_show: function (instance) {
-        msgvars.common.before_show(instance)
-        Hue.info_vars_to_false()
-      },
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         instance.content.innerHTML = ""
         instance.titlebar.innerHTML = ""
-        Hue.info_vars_to_false()
       },
     })
   )
@@ -506,6 +491,7 @@ Hue.start_msg = function () {
   Hue.msg_background_select.set(Hue.template_background_select())
   Hue.msg_profilepic_select.set(Hue.template_profilepic_select())
   Hue.msg_audioclip_select.set(Hue.template_audioclip_select())
+  Hue.msg_background_input.set(Hue.template_background_input())
   Hue.msg_admin_list.set(Hue.template_admin_list())
   Hue.msg_ban_list.set(Hue.template_ban_list())
   Hue.msg_open_room.set(Hue.template_open_room())
@@ -556,6 +542,7 @@ Hue.start_msg = function () {
   Hue.msg_background_select.set_title("Background Image")
   Hue.msg_profilepic_select.set_title("Profile Image")
   Hue.msg_audioclip_select.set_title("Audio Clip")
+  Hue.msg_background_input.set_title("Change Background")
   Hue.msg_admin_list.set_title("Admin List")
   Hue.msg_ban_list.set_title("Ban List")
   Hue.msg_open_room.set_title("Open Room")
@@ -585,11 +572,6 @@ Hue.start_msg = function () {
   Hue.msg_delete_messages.set_title("Delete Message(s)")
   Hue.msg_command_book.set_title("Command Book")
   Hue.msg_user_profile.set_title("User Profile")
-}
-
-// Sets all info window 2 variables to false
-Hue.info_vars_to_false = function () {
-  Hue.background_input_open = false
 }
 
 // Starts automatic modal filters

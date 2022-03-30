@@ -332,28 +332,12 @@ Hue.open_background_picker = function () {
   Hue.el("#background_input").click()
 }
 
-// If a URL source is chosen as the method to change the background image
-// this window is opened
-Hue.open_background_input = function () {
-  Hue.msg_info.show(
-    ["Change Background", Hue.template_background_input()],
-    function () {
-      Hue.el("#background_input_submit").addEventListener("click", function () {
-        Hue.background_input_action()
-      })
-
-      Hue.el("#background_input_text").focus()
-      Hue.background_input_open = true
-    }
-  )
-}
-
 // On background image source input change
 Hue.background_input_action = function () {
   let src = Hue.el("#background_input_text").value.trim()
 
   if (Hue.change_background_source(src)) {
-    Hue.msg_info.close()
+    Hue.msg_background_input.close()
   }
 }
 
