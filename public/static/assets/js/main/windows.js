@@ -68,6 +68,16 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_audioclip_select = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "audioclip_select",
+      after_close: function (instance) {
+        msgvars.common.after_close(instance)
+        Hue.stop_audioclip()
+      }
+    })
+  )
+
   Hue.msg_admin_list = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "admin_list"
@@ -495,6 +505,7 @@ Hue.start_msg = function () {
   Hue.msg_room_config.set(Hue.template_room_config())
   Hue.msg_background_select.set(Hue.template_background_select())
   Hue.msg_profilepic_select.set(Hue.template_profilepic_select())
+  Hue.msg_audioclip_select.set(Hue.template_audioclip_select())
   Hue.msg_admin_list.set(Hue.template_admin_list())
   Hue.msg_ban_list.set(Hue.template_ban_list())
   Hue.msg_open_room.set(Hue.template_open_room())
@@ -544,6 +555,7 @@ Hue.start_msg = function () {
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_background_select.set_title("Background Image")
   Hue.msg_profilepic_select.set_title("Profile Image")
+  Hue.msg_audioclip_select.set_title("Audio Clip")
   Hue.msg_admin_list.set_title("Admin List")
   Hue.msg_ban_list.set_title("Ban List")
   Hue.msg_open_room.set_title("Open Room")

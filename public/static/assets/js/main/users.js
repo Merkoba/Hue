@@ -601,7 +601,7 @@ Hue.setup_show_profile = function () {
 }
 
 // Stars the profile audio
-Hue.play_audioclip = function () {
+Hue.play_audioclip = function (user_id = Hue.open_profile_user_id) {
   Hue.stop_audioclip()
   Hue.audioclip = document.createElement("audio")
 
@@ -616,7 +616,7 @@ Hue.play_audioclip = function () {
     }
   })
 
-  Hue.audioclip.src = Hue.get_audioclip(Hue.open_profile_user_id)
+  Hue.audioclip.src = Hue.get_audioclip(user_id)
   Hue.audioclip.play()
 }
 
