@@ -56,6 +56,12 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_background_select = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "background_select"
+    })
+  )
+
   Hue.msg_roomlist = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "roomlist",
@@ -451,6 +457,7 @@ Hue.start_msg = function () {
 
   Hue.msg_main_menu.set(Hue.template_main_menu())
   Hue.msg_room_config.set(Hue.template_room_config())
+  Hue.msg_background_select.set(Hue.template_background_select())
   Hue.msg_roomlist.set(Hue.template_roomlist())
   Hue.msg_user_profile.set(Hue.template_user_profile())
   Hue.msg_userlist.set(Hue.template_userlist())
@@ -493,6 +500,7 @@ Hue.start_msg = function () {
   Hue.msg_chat_search.set_title(Hue.template_chat_search_titlebar())
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
+  Hue.msg_background_select.set_title("Background Image")
   Hue.msg_roomlist.set_title("Room List")
   Hue.msg_settings.set_title("User Settings")
   Hue.msg_media_tweaks.set_title("Media Tweaks")
