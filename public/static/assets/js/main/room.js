@@ -194,10 +194,9 @@ Hue.request_admin_list = function () {
 
 // Shows the admin list
 Hue.show_admin_list = function (data) {
+  let container = Hue.el("#admin_list_container")
+  container.innerHTML = ""
   data.list.sort(Hue.compare_userlist)
-
-  let container = Hue.div("flex_column_center")
-  container.id = "admin_list_container"
 
   for (let user of data.list) {
     let el = Hue.div("admin_list_item action")
@@ -213,9 +212,7 @@ Hue.show_admin_list = function (data) {
     container.append(el)
   }
 
-  Hue.msg_info.show([`Admin List (${data.list.length})`, container], function () {
-    Hue.admin_list_open = true
-  })
+  Hue.msg_admin_list.show()
 }
 
 // Requests the ban list
@@ -230,8 +227,8 @@ Hue.request_ban_list = function () {
 
 // Shows the ban list
 Hue.show_ban_list = function (data) {
-  let container = Hue.div("flex_column_center")
-  container.id = "ban_list_container"
+  let container = Hue.el("#ban_list_container")
+  container.innerHTML = ""
 
   for (let user of data.list) {
     let el = Hue.div("ban_list_item")
@@ -255,9 +252,7 @@ Hue.show_ban_list = function (data) {
     container.append(el)
   }
 
-  Hue.msg_info.show([`Ban List (${data.list.length})`, container], function () {
-    Hue.ban_list_open = true
-  })
+  Hue.msg_ban_list.show()
 }
 
 // Setups theme and background variables from initial data
