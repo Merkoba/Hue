@@ -105,8 +105,8 @@ Hue.activate_key_detection = function () {
         }
       }      
 
-      if (Hue.open_room_open) {
-        if (Hue.msg_info.is_highest()) {
+      if (Hue.msg_open_room.is_open()) {
+        if (Hue.msg_open_room.is_highest()) {
           if (e.key === "Enter") {
             if (e.shiftKey) {
               Hue.el("#open_room_here").click()
@@ -125,17 +125,6 @@ Hue.activate_key_detection = function () {
         if (Hue.msg_info.is_highest()) {
           if (e.key === "Enter") {
             Hue.background_input_action()
-            e.preventDefault()
-          }
-
-          return
-        }
-      }
-
-      if (Hue.goto_room_open) {
-        if (Hue.msg_info.is_highest()) {
-          if (e.key === "Enter") {
-            Hue.goto_room_action()
             e.preventDefault()
           }
 

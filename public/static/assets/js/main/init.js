@@ -30,7 +30,6 @@ Hue.all_usernames = []
 Hue.role = ""
 Hue.tab_info = {}
 Hue.open_room_open = false
-Hue.goto_room_open = false
 Hue.background_input_open = false
 Hue.admin_list_open = false
 Hue.ban_list_open = false
@@ -282,6 +281,7 @@ Hue.on_join = function (data) {
   Hue.check_media_info()
   Hue.update_activity_bar()
   Hue.setup_user_profile()
+  Hue.setup_rooms()
 
   Hue.at_startup()
 }
