@@ -31,6 +31,14 @@ html {
 	background-position: center;
 }
 
+#chat_area {
+	scrollbar-width: none !important;
+}
+
+#chat_area::-webkit-scrollbar {
+	width: 0 !important;
+}
+
 #main_container {
 	opacity: 0;
 	transition: opacity 1.6s linear;
