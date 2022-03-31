@@ -29,22 +29,22 @@
 				let password = Hue.el("#login_password").value
 
 				if (username.length === 0) {
-					show_info(("Username can't be empty")
+					show_info("Username can't be empty")
 					return false
 				}
 
 				if (password.length === 0) {
-					show_info(("Password can't be empty")
+					show_info("Password can't be empty")
 					return false
 				}
 
 				if (username.length > max_max_username_length) {
-					show_info(("Username is too long")
+					show_info("Username is too long")
 					return false
 				}
 
 				if (password.length > max_max_password_length) {
-					show_info(("Password is too long")
+					show_info("Password is too long")
 					return false
 				}
 
