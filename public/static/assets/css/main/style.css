@@ -61,7 +61,6 @@ body * {
 	flex-direction: row;
 	flex-shrink: 0;
 	overflow: hidden;
-	user-select: none;
 }
 
 .header_side {
@@ -297,10 +296,6 @@ body * {
 	position: relative;
 }
 
-#footer_media_items {
-	user-select: none;
-}
-
 .footer_expanded {
 	height: 10rem;
 }
@@ -389,7 +384,6 @@ body * {
 	display: flex;
 	flex-direction: row;
 	visibility: hidden;
-	user-select: none;
 }
 
 .top_scroller_container {
@@ -920,11 +914,6 @@ input[type=checkbox] {
 	align-items: center;
 	height: 100%;
 	position: relative;
-	user-select: none;
-}
-
-.modal_image_button {
-	user-select: none;
 }
 
 #modal_image_container {
@@ -1136,7 +1125,6 @@ input[type=checkbox] {
 	height: var(--profilepic_size);
 	margin: 0.5rem;
 	margin-top: 0;
-	user-select: none;
 }
 
 .setting_textarea {
@@ -1292,7 +1280,6 @@ svg.action:hover {
 	color: var(--font_color);
 	background-color: var(--background-color);
 	flex-direction: column;
-	user-select: none;
 }
 
 #lockscreen_header {
@@ -1652,10 +1639,6 @@ a.special_link:hover {
 	margin-left: 0;
 }
 
-#media_tweaks {
-	user-select: none;
-}
-
 #media_tweaks_top {
 	margin-bottom: 2rem;
 }
@@ -1901,7 +1884,6 @@ a.special_link:hover {
 
 .media_picker_options {
 	margin-bottom: 1rem;
-	user-select: none;
 }
 
 .media_link_input {
@@ -2206,7 +2188,6 @@ pre {
 .custom_titlebar {
 	background-color: var(--altbackground) !important;
 	color: var(--font_color) !important;
-	user-select: none;
 }
 
 .flex_start {
@@ -2275,10 +2256,6 @@ pre {
 	margin-top: 2rem;
 }
 
-#main_menu {
-	user-select: none;
-}
-
 #main_menu .vertical_separator {
 	margin-top: 1.5rem !important;
 	margin-bottom: 1.5rem !important;
@@ -2295,7 +2272,6 @@ pre {
 #draw_image_controls {
 	margin-bottom: 1rem;
 	gap: 2rem;
-	user-select: none;
 }
 
 #draw_image_pencil_controls {
@@ -2308,7 +2284,6 @@ pre {
 
 #draw_image_buttons {
 	margin-top: 1rem;
-	user-select: none;
 }
 
 #draw_image_bucket_color {
@@ -2424,7 +2399,6 @@ pre {
 	white-space: nowrap;
 	background-color: var(--altbackground);
 	border: 1px solid var(--altcolor);
-	user-select: none;
 	flex-grow: 0;
 	flex-shrink: 0;
 	padding: 0.25rem;
