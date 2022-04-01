@@ -360,6 +360,7 @@ Hue.start_msg = function () {
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.el("#tv_upload_comment_input").value = ""
+        Hue.el("#tv_upload_comment_video_preview").pause()
         Hue.tv_upload_comment_file = false
         Hue.tv_upload_comment_type = false
       },
