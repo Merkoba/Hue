@@ -1611,7 +1611,7 @@ a.special_link:hover {
 	flex-grow: 0;
 	flex-shrink: 0;
 	align-self: center;
-	padding: 0.45em;
+	margin: 0.45em;
 }
 
 .align_left {
