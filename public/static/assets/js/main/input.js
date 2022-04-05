@@ -42,10 +42,6 @@ Hue.setup_input = function () {
     }
   })
 
-  Hue.el("#input").addEventListener("wheel", function (e) {
-    Hue.input_history_change(e.deltaY > 0 ? "down" : "up")
-  })
-
   Hue.old_input_val = Hue.get_input()
 }
 
