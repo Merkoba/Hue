@@ -117,6 +117,17 @@ Hue.user_settings = {
         Hue.save_settings()
       }
     },
+  },
+  stop_tv_on_radio_play: {
+    widget_type: "checkbox",
+    description: `Whether to stop the tv when the radio starts playing`,
+    action: (save = true) => {
+      Hue.settings.stop_tv_on_radio_play = Hue.el(`#settings_stop_tv_on_radio_play`).checked
+
+      if (save) {
+        Hue.save_settings()
+      }
+    },
   }
 }
 

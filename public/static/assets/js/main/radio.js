@@ -122,6 +122,10 @@ Hue.play_radio = function (radio, crossfade = true, play = true) {
   }
 
   Hue.push_radio_queue(radio)
+
+  if (Hue.get_setting("stop_tv_on_radio_play")) {
+    Hue.stop_tv()
+  }
   
   if (crossfade && !Hue.radio_just_changed() && Hue.radio_is_playing()) {
     Hue.crossfade_radio(radio)
