@@ -408,7 +408,7 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_view_text = Msg.factory(
-    Object.assign({}, msgvars.common, {
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "view_text",
       window_max_width: "40rem"
     })
@@ -559,6 +559,7 @@ Hue.start_msg = function () {
   Hue.msg_message_board.set_title("Message Board")
   Hue.msg_profilepic_cropper.set_title("Crop A Circle")
   Hue.msg_change_role.set_title("Change Role")
+  Hue.msg_view_text.set_title("Info")
   Hue.msg_change_username.set_title("Change Username")
   Hue.msg_change_password.set_title("Change Password")
   Hue.msg_confirm.set_title("Confirm Action")
