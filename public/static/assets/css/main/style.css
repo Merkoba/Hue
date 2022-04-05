@@ -1223,7 +1223,7 @@ input[type=checkbox] {
 .action2,
 .action3,
 .actionbox {
-	transition: text-shadow 500ms, box-shadow 500ms;
+	transition: text-shadow 250ms, box-shadow 250ms;
 	cursor: pointer;
 }
 
