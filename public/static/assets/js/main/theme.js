@@ -33,7 +33,7 @@ Hue.select_random_theme = function () {
   let num_col_items = 10
 
   function create_item (theme) {
-    let item = Hue.div("action text_button nowrap")
+    let item = Hue.div("random_theme_item action")
 
     item.style.backgroundColor = theme.bg_color
     item.style.color = theme.text_color
@@ -73,6 +73,13 @@ Hue.select_random_theme = function () {
   Hue.msg_random_theme.show()
 }
 
+// Cancel random theme
+Hue.cancel_random_theme = function () {
+  Hue.random_theme_to_apply = undefined
+  Hue.apply_theme()
+  Hue.msg_random_theme.close()
+}
+
 // Get a random dark theme
 Hue.get_dark_theme = function () {
   bg_color = Hue.colorlib.get_dark_color()
@@ -105,4 +112,19 @@ Hue.apply_random_theme = function () {
     Hue.change_text_color(theme.text_color)
     Hue.random_theme_to_apply = undefined
   }
+}
+
+// Setup random theme
+Hue.setup_random_theme = function () {
+  Hue.el("#random_theme_regenerate").addEventListener("click", function () {
+    Hue.select_random_theme()
+  })
+
+  Hue.el("#random_theme_cancel").addEventListener("click", function () {
+    Hue.cancel_random_theme()
+  })
+
+  Hue.el("#random_theme_done").addEventListener("click", function () {
+    Hue.msg_random_theme.close()
+  })
 }
