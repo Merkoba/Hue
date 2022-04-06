@@ -484,6 +484,7 @@ Hue.setup_background_peek = function () {
   })
 
   Hue.el("#background_peek_choose").addEventListener("click", function () {
+    Hue.apply_background()
     Hue.msg_background_peek.close()
     Hue.msg_background_select.show()
   })
