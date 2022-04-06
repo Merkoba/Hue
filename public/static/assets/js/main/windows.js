@@ -337,7 +337,11 @@ Hue.start_msg = function () {
   Hue.msg_expand_image = Msg.factory(
     Object.assign({}, msgvars.common, {
       id: "expand_image",
-      preset: "window"
+      preset: "window",
+      after_close: function (instance) {
+        msgvars.common.after_close(instance)
+        Hue.clear_expand_image_info()
+      },
     })
   )
 
