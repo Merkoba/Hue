@@ -965,7 +965,7 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
 
   data.info = data.id ? `${Hue.getcode(data.id)}` : ""
 
-  data.info_html = `<div>Setter: ${Hue.utilz.make_html_safe(
+  data.info_html = `<div>By: ${Hue.utilz.make_html_safe(
     data.setter
   )}</div>`
 

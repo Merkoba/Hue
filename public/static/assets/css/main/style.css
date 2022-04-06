@@ -924,7 +924,7 @@ input[type=checkbox] {
 	position: relative;
 }
 
-#modal_image_container {
+.show_image_container {
 	overflow: hidden;
 	flex-grow: 1;
 	display: flex;
@@ -936,7 +936,7 @@ input[type=checkbox] {
 	position: relative;
 }
 
-#modal_image {
+.show_image {
 	display: none;
 	object-fit: contain;
 	width: calc(100% - 4rem);
