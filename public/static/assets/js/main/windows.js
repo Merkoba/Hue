@@ -454,7 +454,11 @@ Hue.start_msg = function () {
 
   Hue.msg_random_theme = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "random_theme"
+      id: "random_theme",
+      after_close: function (instance) {
+        msgvars.common.after_close(instance)
+        Hue.apply_random_theme()
+      }
     })
   )
 

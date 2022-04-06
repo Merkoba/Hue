@@ -400,8 +400,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_room_background_color"
 >The initial background color for new rooms.
 
-"default_room_font_color"
->The initial font color for new rooms.
+"default_room_text_color"
+>The initial text color for new rooms.
 
 "system_username"
 >Reserved username for system messages.
