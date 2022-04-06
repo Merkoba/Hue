@@ -131,7 +131,7 @@ Hue.apply_selected_theme = function () {
 
 // Setup random theme
 Hue.setup_theme_picker = function () {
-  Hue.el("#theme_picker_regenerate").addEventListener("click", function () {
+  Hue.el("#theme_picker_random").addEventListener("click", function () {
     Hue.generate_random_themes()
   })
 
