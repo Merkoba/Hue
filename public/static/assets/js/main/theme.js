@@ -102,8 +102,8 @@ Hue.get_dark_theme = function () {
 
 // Get a random light theme
 Hue.get_light_theme = function () {
-  bg_color = Hue.colorlib.get_light_color()
-  text_color = Hue.colorlib.get_random_hex()
+  let bg_color = Hue.colorlib.get_light_color()
+  let text_color = Hue.colorlib.get_random_hex()
   
   if (Hue.colorlib.is_light(text_color)) {
     text_color = Hue.colorlib.get_lighter_or_darker(text_color, 0.66)
