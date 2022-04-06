@@ -368,6 +368,9 @@ Hue.expand_image = function (src) {
   Hue.el("#expand_image_error").style.display = "none"
   Hue.el("#expand_image").src = src
 
+  let hostname = Hue.utilz.get_hostname(src)
+  Hue.el("#expand_image_subheader").textContent = hostname
+
   let dummy_image = new Image()
 
   dummy_image.onload = function() {
@@ -548,5 +551,7 @@ Hue.apply_expand_image_resolution = function (image, src) {
     return
   }
 
-  Hue.el("#expand_image_subheader").textContent = `${image.width} x ${image.height}`
+  let subheader = Hue.el("#expand_image_subheader")
+  let text = subheader.textContent
+  subheader.textContent = `${text} (${image.width} x ${image.height})`
 }
