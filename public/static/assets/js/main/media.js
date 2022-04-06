@@ -892,14 +892,14 @@ Hue.get_media_message = function (data) {
   if (!message) {
     if (data.query) {
       message = data.query
-    }    
-  }  
+    } 
+  }
 
   if (!message) {
     if (data.size) {
       message = "Upload"
     } else {
-      message = `Link (${new URL(data.source).hostname})`
+      message = `Link (${data.hostname})`
     }
   }
 
@@ -982,6 +982,7 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   data.info_html += `<div title='${data.nice_date}' class='modal_${type}_timeago'></div>`
 
   data.message = Hue.get_media_message(data)
+  data.hostname = Hue.utilz.get_hostname(data.source)
 
   if (data.message) {
     data.message_id = Hue.announce_media(type, data).message_id
