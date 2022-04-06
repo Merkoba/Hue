@@ -250,6 +250,11 @@ Hue.clear_modal_image_info = function () {
   Hue.el("#modal_image_header_info").innerHTML = ""
 }
 
+// Clears information in the expand image window
+Hue.clear_expand_image_info = function () {
+  Hue.el("#expand_image_subheader").textContent = ""
+}
+
 // Shows the modal image window
 Hue.show_modal_image = function (id = 0) {
   let data
