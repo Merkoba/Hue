@@ -224,26 +224,27 @@ Hue.show_user_profile = function () {
 Hue.setup_profilepic_cropper = function () {
   Hue.el("#profilepic_cropper_upload").addEventListener("click", function () {
     Hue.profilepic_cropper.result({
-        type: "blob",
-        size: {
-          width: Hue.config.profilepic_diameter,
-          height: Hue.config.profilepic_diameter,
-        },
-        format: "png",
-        circle: true,
-        quality: 0.95,
-      })
+      type: "blob",
+      size: {
+        width: Hue.config.profilepic_diameter,
+        height: Hue.config.profilepic_diameter,
+      },
+      format: "png",
+      circle: true,
+      quality: 0.95,
+    })
 
-      .then(function (blob) {
-        Hue.el("#user_profile_profilepic").src = Hue.config.profilepic_loading_url
+    .then(function (blob) {
+      Hue.el("#user_profile_profilepic").src = Hue.config.profilepic_loading_url
 
-        Hue.upload_file({
-          file: blob,
-          action: "profilepic_upload",
-          name: "profile.png",
-        })
-        Hue.msg_profilepic_cropper.close()
+      Hue.upload_file({
+        file: blob,
+        action: "profilepic_upload",
+        name: "profile.png",
       })
+      
+      Hue.msg_profilepic_cropper.close()
+    })
   })
 
   Hue.el("#profilepic_cropper_change").addEventListener("click", function () {
