@@ -31,6 +31,8 @@ Hue.apply_theme = function () {
 
 // Show a window to select random themes
 Hue.select_random_theme = function () {
+  let num_col_items = 10
+
   function create_item (theme) {
     let item = Hue.div("action text_button nowrap")
 
@@ -50,7 +52,7 @@ Hue.select_random_theme = function () {
   function fill_column(col) {
     let dark = true
 
-    for (let i=0; i<10; i++) {
+    for (let i=0; i<num_col_items; i++) {
       if (dark) {
         col.append(create_item(Hue.get_dark_theme()))
       } else {
