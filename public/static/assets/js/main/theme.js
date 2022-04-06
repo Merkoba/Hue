@@ -114,18 +114,18 @@ Hue.get_light_theme = function () {
 
 // Apply the selected theme
 Hue.apply_selected_theme = function () {
-  Hue.change_background_color(Hue.el("#admin_background_color").value)
-  Hue.change_text_color(Hue.el("#admin_text_color").value)
+  Hue.show_confirm("Change Theme", "Apply selected theme", function () {
+    Hue.change_background_color(Hue.el("#admin_background_color").value)
+    Hue.change_text_color(Hue.el("#admin_text_color").value)    
+  }, function () {
+    Hue.cancel_change_theme()
+  })
 }
 
 // Setup random theme
 Hue.setup_theme_picker = function () {
   Hue.el("#theme_picker_regenerate").addEventListener("click", function () {
     Hue.generate_random_themes()
-  })
-
-  Hue.el("#theme_picker_cancel").addEventListener("click", function () {
-    Hue.cancel_change_theme()
   })
 
   Hue.el("#theme_picker_peek").addEventListener("click", function () {
