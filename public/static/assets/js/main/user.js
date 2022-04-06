@@ -222,7 +222,7 @@ Hue.show_user_profile = function () {
 
 // Setups the profile image circular cropper
 Hue.setup_profilepic_cropper = function () {
-  Hue.el("#profilepic_cropper_upload").addEventListener("click", function () {
+  Hue.el("#profilepic_cropper_crop").addEventListener("click", function () {
     Hue.profilepic_cropper.result({
       type: "blob",
       size: {
