@@ -965,9 +965,10 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
 
   data.info = data.id ? `${Hue.getcode(data.id)}` : ""
 
-  data.info_html = `<div>By: ${Hue.utilz.make_html_safe(
+  data.info_html = `<div class="flex_row_center"><img class="modal_image_profilepic profilepic actionbox" 
+    src="${Hue.get_profilepic(data.user_id)}"><div class="modal_image_username action">${Hue.utilz.make_html_safe(
     data.setter
-  )}</div>`
+  )}</div></div>`
 
   if (data.size) {
     data.info += ` | Size: ${Hue.utilz.get_size_string(data.size)}`
