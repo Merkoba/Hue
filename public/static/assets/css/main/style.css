@@ -2507,13 +2507,14 @@ pre {
 	gap: 2rem;
 }
 
-.text_button {
-	padding: 0.35rem;
-	border: 1px solid var(--text_color_a);
+#random_theme_container {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 }
 
-#random_theme_regenerate {
-	margin-bottom: 0.8rem;
+.random_theme_item {
+	padding: 0.8rem;
+	white-space: nowrap;
 }
 
 .reduced_width {
