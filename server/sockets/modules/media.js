@@ -35,7 +35,7 @@ module.exports = function (Hue) {
       let obj = {}
   
       obj.src = file_name
-      obj.setter = socket.hue_username
+      obj.username = socket.hue_username
       obj.size = size
       obj.type = "upload"
       obj.comment = data.comment
@@ -73,7 +73,7 @@ module.exports = function (Hue) {
       data.query = ""
     }
 
-    if (!data.setter) {
+    if (!data.username) {
       user_id = ""
     }
 
@@ -84,7 +84,7 @@ module.exports = function (Hue) {
     obj[`${type}_id`] = id,
     obj[`${type}_user_id`] = user_id,
     obj[`${type}_source`] = data.src,
-    obj[`${type}_setter`] = data.setter,
+    obj[`${type}_username`] = data.username,
     obj[`${type}_title`] = title,
     obj[`${type}_size`] = size,
     obj[`${type}_date`] = date,
@@ -98,7 +98,7 @@ module.exports = function (Hue) {
       id: id,
       user_id: user_id,
       source: data.src,
-      setter: data.setter,
+      username: data.username,
       title: title,
       size: size,
       date: date,
@@ -114,7 +114,7 @@ module.exports = function (Hue) {
       data: {
         user_id: user_id,
         source: data.src,
-        setter: data.setter,
+        username: data.username,
         title: title,
         size: size,
         type: data.type,

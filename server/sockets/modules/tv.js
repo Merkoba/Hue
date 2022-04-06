@@ -33,7 +33,7 @@ module.exports = function (Hue) {
       /youtu\.be\/(\w{11})/,
       "www.youtube.com/watch?v=$1"
     )
-    data.setter = socket.hue_username
+    data.username = socket.hue_username
 
     let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { tv_source: 1, tv_query: 1, tv_date: 1})
 
