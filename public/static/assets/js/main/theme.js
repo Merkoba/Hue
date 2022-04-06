@@ -136,7 +136,7 @@ Hue.setup_theme_picker = function () {
   })
 
   Hue.el("#theme_picker_peek").addEventListener("click", function () {
-    Hue.hide_windows_temporarily(2000)
+    Hue.hide_windows_temporarily()
   })
 }
 
