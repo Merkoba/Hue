@@ -450,7 +450,8 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "confirm",
       window_x: "none",
-      close_on_escape: false
+      close_on_escape: false,
+      close_on_overlay_click: false
     })
   )
 
@@ -468,7 +469,8 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "background_peek",
       window_x: "none",
-      close_on_escape: false
+      close_on_escape: false,
+      close_on_overlay_click: false
     })
   )
 

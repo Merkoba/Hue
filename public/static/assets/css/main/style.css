@@ -2189,6 +2189,8 @@ pre {
 .custom_titlebar {
 	background-color: var(--altbackground) !important;
 	color: var(--text_color) !important;
+	padding-top: 0.25rem !important;
+	padding-bottom: 0.25rem !important;
 }
 
 .flex_start {
