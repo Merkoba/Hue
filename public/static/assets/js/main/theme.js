@@ -30,7 +30,7 @@ Hue.apply_theme = function (background_color = "", text_color = "") {
 
 // Show a window to select random themes
 Hue.select_random_theme = function () {
-  let num_col_items = 10
+  let num_col_items = 8
 
   function create_item (theme) {
     let item = Hue.div("random_theme_item action")
