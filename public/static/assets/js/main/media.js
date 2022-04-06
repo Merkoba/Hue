@@ -410,7 +410,7 @@ Hue.change = function (args = {}) {
   }
 
   if (!Hue.has_focus || Hue.screen_locked) {
-    if (args.notify && item.setter !== Hue.username) {
+    if (args.notify && item.username !== Hue.username) {
       Hue.on_activity("media_change")
     }
     
@@ -516,7 +516,7 @@ Hue.apply_media_info = function (type) {
   container.style.visibility = "initial"
   
   Hue.el(".media_info", container).innerHTML = Hue.template_media_info_inner({
-    setter: item.setter, 
+    username: item.username, 
     message: message
   })
   
@@ -527,7 +527,7 @@ Hue.apply_media_info = function (type) {
   Hue.dataset(container, "date", item.date)
   Hue.dataset(container, "type", type)
   Hue.dataset(container, "id", item.id)
-  Hue.dataset(container, "setter", item.setter)
+  Hue.dataset(container, "username", item.username)
   Hue.dataset(container, "user_id", item.user_id)
 }
 
@@ -729,7 +729,7 @@ Hue.start_media_info = function () {
     let el = e.target.closest(".media_info_username")
 
     if (el) {
-      let username = Hue.dataset(el.closest(".media_info_container"), "setter")
+      let username = Hue.dataset(el.closest(".media_info_container"), "username")
       let user_id = Hue.dataset(el.closest(".media_info_container"), "user_id")
       Hue.show_profile(username, user_id)
     }
@@ -925,7 +925,7 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   data.type = odata.type
   data.source = odata.source
   data.title = odata.title
-  data.setter = odata.setter
+  data.username = odata.username
   data.size = odata.size
   data.date = odata.date
   data.query = odata.query
@@ -965,10 +965,7 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
 
   data.info = data.id ? `${Hue.getcode(data.id)}` : ""
 
-  data.info_html = `<div class="flex_row_center"><img class="modal_image_profilepic profilepic actionbox" 
-    src="${Hue.get_profilepic(data.user_id)}"><div class="modal_image_username action">${Hue.utilz.make_html_safe(
-    data.setter
-  )}</div></div>`
+  data.info_html = ""
 
   if (data.size) {
     data.info += ` | Size: ${Hue.utilz.get_size_string(data.size)}`
@@ -995,7 +992,7 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
     }
   }
 
-  if (!data.setter) {
+  if (!data.username) {
     data.info = `Default ${Hue.utilz.capitalize_words(type)}`
   }
 
@@ -1021,7 +1018,7 @@ Hue.announce_media = function (type, data) {
     title: data.info,
     date: data.date,
     type: data.type,
-    username: data.setter,
+    username: data.username,
     type: `${type}_change`,
     user_id: data.user_id,
     in_log: data.in_log,

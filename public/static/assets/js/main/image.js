@@ -232,14 +232,14 @@ Hue.setup_modal_image = function () {
     Hue.open_view_text(this.textContent)
   })
 
-  Hue.el("#modal_image_header_info").addEventListener("click", function (e) {
-    if (e.target.closest(".modal_image_profilepic")) {
-      let data = Hue.loaded_modal_image
-      Hue.show_profile(data.username, data.user_id)
-    } else if (e.target.closest(".modal_image_username")) {
-      let data = Hue.loaded_modal_image
-      Hue.show_profile(data.username, data.user_id)
-    }
+  Hue.el("#modal_image_profilepic").addEventListener("click", function (e) {
+    let data = Hue.loaded_modal_image
+    Hue.show_profile(data.username, data.user_id)
+  })
+
+  Hue.el("#modal_image_username").addEventListener("click", function (e) {
+    let data = Hue.loaded_modal_image
+    Hue.show_profile(data.username, data.user_id)
   })
 }
 
@@ -318,6 +318,14 @@ Hue.show_modal_image = function (id = 0) {
   }
 
   dummy_image.src = data.source
+
+  let profilepic = Hue.el("#modal_image_profilepic")
+  profilepic.src = Hue.get_profilepic(data.user_id)
+  profilepic.addEventListener("error", function () {
+    Hue.fallback_profilepic(this)
+  })
+
+  Hue.el("#modal_image_username").textContent = data.username
 
   Hue.horizontal_separator(Hue.el("#modal_image_header_info_container"))
   Hue.msg_modal_image.show()

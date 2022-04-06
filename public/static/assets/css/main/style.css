@@ -139,7 +139,7 @@ html {
 	transition: box-shadow 500ms;
 }
 
-.modal_image_profilepic {
+#modal_image_profilepic {
 	width: var(--panel_profilepic_size);
 	height: var(--panel_profilepic_size);
 	margin-right: 0.5rem;
