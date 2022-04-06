@@ -874,6 +874,10 @@ select {
 	font-family: var(--font_family) !important;
 }
 
+input[type=text], textarea {
+	padding: 0.2rem;
+}
+
 input[type=checkbox] {
 	width: 1rem;
 	height: 1rem;
