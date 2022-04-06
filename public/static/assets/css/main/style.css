@@ -727,7 +727,7 @@ a.generic:hover {
 
 .filter_input {
 	top: 0;
-	width: 14rem;
+	width: 15rem;
 	border: 0.06rem solid grey;
 	font-size: 1rem;
 	text-align: center;
@@ -872,10 +872,6 @@ input[type=number],
 textarea,
 select {
 	font-family: var(--font_family) !important;
-}
-
-input[type=text], textarea {
-	padding: 0.2rem;
 }
 
 input[type=checkbox] {
@@ -1134,6 +1130,14 @@ input[type=checkbox] {
 	height: var(--profilepic_size);
 	margin: 0.5rem;
 	margin-top: 0;
+}
+
+.setting_input_text,
+.setting_textarea,
+.nice_input,
+.nice_input_2,
+.filter_input {
+	padding: 0.2rem;
 }
 
 .setting_textarea {
