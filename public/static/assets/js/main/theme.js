@@ -114,9 +114,16 @@ Hue.get_light_theme = function () {
 
 // Apply the selected theme
 Hue.apply_selected_theme = function () {
+  let bg_color = Hue.el("#admin_background_color").value
+  let text_color = Hue.el("#admin_text_color").value
+
+  if (bg_color === Hue.background_color && text_color === Hue.text_color) {
+    return
+  }
+
   Hue.show_confirm("Change Theme", "Apply selected theme", function () {
-    Hue.change_background_color(Hue.el("#admin_background_color").value)
-    Hue.change_text_color(Hue.el("#admin_text_color").value)    
+    Hue.change_background_color(bg_color)
+    Hue.change_text_color(text_color)    
   }, function () {
     Hue.cancel_change_theme()
   })
