@@ -346,6 +346,7 @@ Hue.background_input_action = function () {
     Hue.change_background_source(src)
   }
 
+  Hue.msg_background_input.close()
   Hue.show_background_peek()
 }
 
