@@ -1863,7 +1863,7 @@ a.special_link:hover {
 }
 
 #theme_picker_controls {
-	margin-top: 1.6rem;
+	margin-bottom: 1.6rem;
 	gap: 1.6rem;
 }
 
@@ -2523,7 +2523,7 @@ pre {
 }
 
 #random_theme_container {
-	margin-bottom: 1rem;
+	margin-top: 1rem;
 }
 
 .random_theme_item {
