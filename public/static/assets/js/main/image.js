@@ -185,7 +185,7 @@ Hue.setup_modal_image = function () {
       return false
     }
 
-    if (Hue.el("#modal_image_container").classList.contains("expanded_modal_image")) {
+    if (Hue.el("#modal_image_container").classList.contains("expanded_image")) {
       return false
     }
 
@@ -201,7 +201,7 @@ Hue.setup_modal_image = function () {
   Hue.el("#Msg-window-modal_image").addEventListener("wheel", f)
 
   Hue.el("#modal_image_container").addEventListener("click", function () {
-    if (Hue.el("#modal_image_container").classList.contains("expanded_modal_image")) {
+    if (Hue.el("#modal_image_container").classList.contains("expanded_image")) {
       Hue.restore_modal_image()
     } else {
       Hue.msg_modal_image.close()
@@ -217,7 +217,7 @@ Hue.setup_modal_image = function () {
   })
 
   Hue.el("#modal_image_toolbar_expand").addEventListener("click", function (e) {
-    if (Hue.el("#modal_image_container").classList.contains("expanded_modal_image")) {
+    if (Hue.el("#modal_image_container").classList.contains("expanded_image")) {
       Hue.restore_modal_image()
     } else {
       Hue.expand_modal_image()
@@ -245,14 +245,26 @@ Hue.setup_modal_image = function () {
 
 // Expand modal image to give it full height
 Hue.expand_modal_image = function () {
-  Hue.el("#modal_image_container").classList.add("expanded_modal_image")
+  Hue.el("#modal_image_container").classList.add("expanded_image")
   Hue.el("#modal_image_toolbar_expand").textContent = "Restore"
 }
 
 // Restore expanded modal image
 Hue.restore_modal_image = function () {
-  Hue.el("#modal_image_container").classList.remove("expanded_modal_image")
+  Hue.el("#modal_image_container").classList.remove("expanded_image")
   Hue.el("#modal_image_toolbar_expand").textContent = "Expand"
+}
+
+// Expand expand image to give it full height
+Hue.expand_expand_image = function () {
+  Hue.el("#expand_image_container").classList.add("expanded_image")
+  Hue.el("#expand_image_toolbar_expand").textContent = "Restore"
+}
+
+// Restore expanded expand image
+Hue.restore_expand_image = function () {
+  Hue.el("#expand_image_container").classList.remove("expanded_image")
+  Hue.el("#expand_image_toolbar_expand").textContent = "Expand"
 }
 
 // Clears image information in the modal image window
@@ -359,6 +371,18 @@ Hue.setup_expand_image = function () {
   Hue.el("#expand_image_container").addEventListener("click", function () {
     Hue.hide_expand_image()
   })
+
+  Hue.el("#expand_image_toolbar_expand").addEventListener("click", function (e) {
+    if (Hue.el("#expand_image_container").classList.contains("expanded_image")) {
+      Hue.restore_expand_image()
+    } else {
+      Hue.expand_expand_image()
+    }
+  })
+
+  Hue.el("#expand_image_toolbar_url").addEventListener("click", function () {
+    Hue.open_view_text(Hue.expand_image_source)
+  })
 }
 
 // Shows a window with an image at full size
@@ -378,7 +402,7 @@ Hue.expand_image = function (src) {
   }
 
   dummy_image.src = src
-
+  Hue.expand_image_source = src
   Hue.msg_expand_image.show()
 }
 
