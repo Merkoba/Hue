@@ -163,7 +163,7 @@ html {
 	justify-content: center;
 	align-items: center;
 	background-color: var(--altbackground);
-	color: var(--font_color);
+	color: var(--text_color);
 }
 
 #chat_main {
@@ -376,7 +376,7 @@ html {
 }
 
 #input::placeholder {
-	color: var(--font_color);
+	color: var(--text_color);
 	opacity: 0.8;
 }
 
@@ -409,7 +409,7 @@ html {
 	padding-right: 2rem;
 	border: 0.06rem solid var(--altcolor_a);
 	background-color: var(--altbackground_a);
-	color: var(--font_color);
+	color: var(--text_color);
 	flex-grow: 1;
 	flex-basis: 50%;
 }
@@ -536,7 +536,7 @@ html {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
 	opacity: 0.25;
-	outline: 1px solid var(--font_color);
+	outline: 1px solid var(--text_color);
 }
 
 .media_history_container .brk_profilepic {
@@ -709,7 +709,7 @@ a.generic:hover {
 
 .Msg-window {
 	background-color: var(--background_color) !important;
-	color: var(--font_color) !important;
+	color: var(--text_color) !important;
 }
 
 .Msg-window-inner-x:hover {
@@ -1110,13 +1110,13 @@ input[type=checkbox] {
 
 .shady_text {
 	background-color: var(--altcolor);
-	color: var(--font_color);
+	color: var(--text_color);
 	outline: none;
 	border: 0;
 }
 
 .shady_text::placeholder {
-	color: var(--font_color_a);
+	color: var(--text_color_a);
 	opacity: 0.8;
 }
 
@@ -1277,7 +1277,7 @@ svg.action:hover {
 	justify-content: center;
 	width: 100%;
 	height: 100%;
-	color: var(--font_color);
+	color: var(--text_color);
 	background-color: var(--background-color);
 	flex-direction: column;
 }
@@ -1572,7 +1572,7 @@ a.special_link:hover {
 	align-items: flex-start;
 	justify-content: flex-start;
 	background-color: var(--altcolor_a);
-	color: var(--font_color);
+	color: var(--text_color);
 }
 
 .link_preview_image_with_title {
@@ -1673,7 +1673,7 @@ a.special_link:hover {
 	position: relative;
 	width: 100%;
 	background-color: var(--altcolor_a);
-	color: var(--font_color);
+	color: var(--text_color);
 }
 
 .message_edit_buttons {
@@ -1698,7 +1698,7 @@ a.special_link:hover {
 }
 
 #media_iframe_tv {
-	border: 1px solid var(--font_color);
+	border: 1px solid var(--text_color);
 }
 
 .noborder {
@@ -1773,7 +1773,7 @@ a.special_link:hover {
 #reply_text {
 	width: 99%;
 	background-color: var(--altbackground);
-	color: var(--font_color);
+	color: var(--text_color);
 	text-align: center;
 	border-color: var(--altcolor_a);
 	font-size: 1rem;
@@ -1923,7 +1923,7 @@ a.special_link:hover {
 	border: 0 solid grey;
 	outline: none;
 	background-color: var(--altbackground);
-	color: var(--font_color);
+	color: var(--text_color);
 }
 
 #user_profile_audioclip {
@@ -2175,7 +2175,7 @@ pre {
 
 .custom_titlebar {
 	background-color: var(--altbackground) !important;
-	color: var(--font_color) !important;
+	color: var(--text_color) !important;
 }
 
 .flex_start {
@@ -2196,7 +2196,7 @@ pre {
 
 .bg1 {
 	background-color: var(--background_color_a);
-	color: var(--font_color);
+	color: var(--text_color);
 }
 
 .media_info_separator {
@@ -2348,7 +2348,7 @@ pre {
 	display: flex;
 	flex-direction: column;
 	z-index: 100;
-	color: var(--font_color);
+	color: var(--text_color);
 }
 
 #radio_stations {
@@ -2400,7 +2400,7 @@ pre {
 }
 
 .radio_item_playing {
-	border: 1px solid var(--font_color_a);
+	border: 1px solid var(--text_color_a);
 	z-index: 10;
 }
 
@@ -2426,7 +2426,7 @@ pre {
 #radio_dj_delay_select {
 	border: 0;
 	background-color: var(--altbackground);
-	color: var(--font_color);
+	color: var(--text_color);
 }
 
 .glowing::before {
@@ -2467,7 +2467,7 @@ pre {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%); 
-	color: var(--font_color);
+	color: var(--text_color);
 	background-color:	var(--altbackground);
 	border: 2px solid var(--altcolor);
 	z-index: 10;
@@ -2509,7 +2509,7 @@ pre {
 
 .text_button {
 	padding: 0.35rem;
-	border: 1px solid var(--font_color_a);
+	border: 1px solid var(--text_color_a);
 }
 
 #random_theme_regenerate {

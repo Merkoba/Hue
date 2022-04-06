@@ -45,7 +45,7 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       log_messages: { type: "object", default: [] },
       admin_log_messages: { type: "object", default: [] },
       background_color: { type: "string", default: sconfig.default_room_background_color },
-      text_color: { type: "string", default: sconfig.default_room_font_color },
+      text_color: { type: "string", default: sconfig.default_room_text_color },
       background: { type: "string", default: "" },
       background_type: { type: "string", default: "hosted" },
       background_version: { type: "number", default: 0 },

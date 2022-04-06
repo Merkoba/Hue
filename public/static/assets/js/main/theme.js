@@ -1,26 +1,25 @@
-// This is where the color theme gets built and applied
-// This builds CSS declarations based on the current background color
-// The CSS declarations are inserted into the DOM
-// Older declarations get removed
-Hue.apply_theme = function () {
-  let theme = Hue.background_color
-
-  if (theme.startsWith("#")) {
-    theme = Hue.colorlib.hex_to_rgb(theme)
+// This sets CSS variables based on the current colors
+Hue.apply_theme = function (background_color = "", text_color = "") {
+  if (!background_color) {
+    background_color = Hue.background_color
   }
 
-  let background_color = theme
-  let font_color = Hue.colorlib.hex_to_rgb(Hue.text_color)
+  if (!text_color) {
+    text_color = Hue.text_color
+  }
+
+  background_color = Hue.colorlib.hex_to_rgb(background_color)
+  text_color = Hue.colorlib.hex_to_rgb(text_color)
 
   let altcolor = Hue.colorlib.get_lighter_or_darker(background_color, 0.2)
   let altcolor_a = Hue.colorlib.rgb_to_rgba(altcolor,  0.7)
   let background_color_a = Hue.colorlib.rgb_to_rgba(background_color, 0.95)
   let altbackground = Hue.colorlib.get_lighter_or_darker(background_color, 0.09)
   let altbackground_a = Hue.colorlib.rgb_to_rgba(altbackground, 0.7)
-  let font_color_a = Hue.colorlib.rgb_to_rgba(font_color,  0.7)
+  let text_color_a = Hue.colorlib.rgb_to_rgba(text_color,  0.7)
   
-  document.documentElement.style.setProperty('--font_color', font_color)
-  document.documentElement.style.setProperty('--font_color_a', font_color_a)
+  document.documentElement.style.setProperty('--text_color', text_color)
+  document.documentElement.style.setProperty('--text_color_a', text_color_a)
   document.documentElement.style.setProperty('--altcolor', altcolor)
   document.documentElement.style.setProperty('--altcolor_a', altcolor_a)
   document.documentElement.style.setProperty('--background_color', background_color)
@@ -41,9 +40,8 @@ Hue.select_random_theme = function () {
     item.textContent = "This is some sample text"
 
     item.addEventListener("click", function () {
-      Hue.change_background_color(theme.bg_color)
-      Hue.change_text_color(theme.text_color)
-      Hue.msg_random_theme.close()
+      Hue.apply_theme(theme.bg_color, theme.text_color)
+      Hue.random_theme_to_apply = theme
     })
 
     return item
@@ -97,4 +95,14 @@ Hue.get_light_theme = function () {
   }
 
   return {bg_color: bg_color, text_color: text_color}
+}
+
+// Apply the selected random theme
+Hue.apply_random_theme = function () {
+  if (Hue.random_theme_to_apply) {
+    let theme = Hue.random_theme_to_apply
+    Hue.change_background_color(theme.bg_color)
+    Hue.change_text_color(theme.text_color)
+    Hue.random_theme_to_apply = undefined
+  }
 }
