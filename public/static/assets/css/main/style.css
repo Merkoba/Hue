@@ -1863,11 +1863,8 @@ a.special_link:hover {
 }
 
 #admin_theme_picker {
-	margin-top: 1.4rem;
-}
-
-#admin_background {
-	margin-top: 1.8rem;
+	margin-top: 1.6rem;
+	margin-bottom: 1.6rem;
 }
 
 #theme_picker_controls {
