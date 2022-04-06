@@ -9,6 +9,7 @@
 	--big_profilepic_size: 11.5rem;
 	--bigger_profilepic_size: 17.5rem;
 	--panel_profilepic_size: calc(var(--panel_height) * 0.66);
+	--msg_display: block;
 }
 
 @font-face {
@@ -682,6 +683,10 @@ a.generic:hover {
 
 .setting_title3 {
 	padding-bottom: 0.8rem;
+}
+
+.Msg-container {
+	display: var(--msg_display) !important;
 }
 
 .Msg-content {
@@ -1849,7 +1854,15 @@ a.special_link:hover {
 	padding-bottom: 0.5rem;
 }
 
-#room_config_theme_container {
+#admin_theme_picker {
+	margin-top: 1.6rem;
+}
+
+#admin_background {
+	margin-top: 1.8rem;
+}
+
+#theme_picker_controls {
 	margin-top: 1.6rem;
 	gap: 1.6rem;
 }

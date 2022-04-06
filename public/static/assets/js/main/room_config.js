@@ -1,11 +1,11 @@
 // Setups change events for the room config widgets
 Hue.setup_room_config = function () {
   Hue.el("#admin_background_color").addEventListener("change", function () {
-    Hue.change_background_color(this.value)
+    Hue.apply_theme_controls()
   })
 
   Hue.el("#admin_text_color").addEventListener("change", function () {
-    Hue.change_text_color(this.value)
+    Hue.apply_theme_controls()
   })
 
   Hue.el("#admin_room_name").addEventListener("blur", function () {
@@ -56,13 +56,13 @@ Hue.setup_room_config = function () {
     Hue.msg_background_select.show()
   })
 
-  Hue.el("#admin_random_theme").addEventListener("click", function () {
-    Hue.select_random_theme()
+  Hue.el("#admin_theme_picker").addEventListener("click", function () {
+    Hue.show_theme_picker()
   })
 
   Hue.setup_background_select()
   Hue.setup_background_input()
-  Hue.setup_random_theme()
+  Hue.setup_theme_picker()
 }
 
 // Shows the room config
