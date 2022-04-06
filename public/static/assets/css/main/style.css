@@ -2514,6 +2514,7 @@ pre {
 .random_theme_item {
 	padding: 0.8rem;
 	white-space: nowrap;
+	border: 1px solid var(--altcolor_a);
 }
 
 .reduced_width {

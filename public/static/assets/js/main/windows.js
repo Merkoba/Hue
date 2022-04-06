@@ -542,6 +542,7 @@ Hue.start_msg = function () {
   // Set the titles
 
   Hue.msg_chat_search.set_title(Hue.template_chat_search_titlebar())
+  Hue.msg_random_theme.set_title(Hue.template_random_theme_titlebar())
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_background_select.set_title("Background Image")
@@ -567,7 +568,6 @@ Hue.start_msg = function () {
   Hue.msg_change_username.set_title("Change Username")
   Hue.msg_change_password.set_title("Change Password")
   Hue.msg_confirm.set_title("Confirm Action")
-  Hue.msg_random_theme.set_title("Random Theme")
   Hue.msg_draw_image.set_title("Draw an Image")
   Hue.msg_image_picker.set_title("Image")
   Hue.msg_link_image.set_title("Link Image")
