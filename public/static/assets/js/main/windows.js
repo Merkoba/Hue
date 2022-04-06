@@ -448,7 +448,13 @@ Hue.start_msg = function () {
 
   Hue.msg_confirm = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "confirm"
+      id: "confirm",
+      on_close: function (instance) {
+        msgvars.common.after_close(instance)
+        if (Hue.confirm_action_cancel) {
+          Hue.confirm_action_cancel()
+        }
+      }
     })
   )
 

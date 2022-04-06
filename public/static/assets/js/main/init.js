@@ -93,7 +93,6 @@ Hue.fresh_messages_duration = 3000
 Hue.old_input_val = ""
 Hue.old_reply_input_val = ""
 Hue.notifications_count = 0
-Hue.confirm_action = function () {}
 Hue.footer_expanded = false
 Hue.last_input_text = ""
 Hue.alert_mode = 0

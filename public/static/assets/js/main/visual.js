@@ -81,12 +81,12 @@ Hue.setup_confirm = function () {
   })
 
   Hue.el("#confirm_button_cancel").addEventListener("click", function () {
-    Hue.msg_confirm.close()
+    Hue.on_confirm_cancel()
   })
 }
 
 // Shows the confirm window
-Hue.show_confirm = function (title, message, action) {
+Hue.show_confirm = function (title, message, action, action_2) {
   if (message) {
     Hue.el("#confirm_message").textContent = message
     Hue.el("#confirm_message").style.display = "block"
@@ -96,14 +96,29 @@ Hue.show_confirm = function (title, message, action) {
   }
 
   Hue.confirm_action = action
+  Hue.confirm_action_cancel = action_2
   Hue.msg_confirm.set_title(title)
   Hue.msg_confirm.show()
 }
 
 // On confirm action
 Hue.on_confirm = function () {
+  if (Hue.confirm_action) {
+    Hue.confirm_action()
+    Hue.confirm_action = function () {}
+  }
+
   Hue.msg_confirm.close()
-  Hue.confirm_action()
+}
+
+// On confirm cancel action
+Hue.on_confirm_cancel = function () {
+  if (Hue.confirm_action_cancel) {
+    Hue.confirm_action_cancel()
+    Hue.confirm_action_cancel = function () {}
+  }
+  
+  Hue.msg_confirm.close()
 }
 
 // Simple window for messages
