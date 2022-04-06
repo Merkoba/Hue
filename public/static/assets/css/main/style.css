@@ -2509,17 +2509,11 @@ pre {
 
 .text_button {
 	padding: 0.35rem;
-	border: 1px solid var(--font_color);
+	border: 1px solid var(--font_color_a);
 }
 
 #random_theme_regenerate {
 	margin-bottom: 1rem;
-}
-
-.random_theme_item {
-	padding: 0.8rem;
-	border: 1px solid var(--font_color);
-	white-space: nowrap;
 }
 
 .reduced_width {
