@@ -231,6 +231,16 @@ Hue.setup_modal_image = function () {
   Hue.el("#modal_image_subheader").addEventListener("click", function () {
     Hue.open_view_text(this.textContent)
   })
+
+  Hue.el("#modal_image_header_info").addEventListener("click", function (e) {
+    if (e.target.closest(".modal_image_profilepic")) {
+      let data = Hue.loaded_modal_image
+      Hue.show_profile(data.username, data.user_id)
+    } else if (e.target.closest(".modal_image_username")) {
+      let data = Hue.loaded_modal_image
+      Hue.show_profile(data.username, data.user_id)
+    }
+  })
 }
 
 // Expand modal image to give it full height
