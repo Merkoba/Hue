@@ -289,7 +289,7 @@ Hue.show_modal_image = function (id = 0) {
   let dummy_image = new Image()
 
   dummy_image.onload = function() {
-    Hue.apply_modal_image_resolution(this)
+    Hue.apply_modal_image_resolution(this, data.source)
   }
 
   dummy_image.src = data.source
@@ -358,7 +358,7 @@ Hue.expand_image = function (src) {
   let dummy_image = new Image()
 
   dummy_image.onload = function() {
-    Hue.apply_expand_image_resolution(this)
+    Hue.apply_expand_image_resolution(this, src)
   }
 
   dummy_image.src = src
@@ -519,13 +519,21 @@ Hue.show_upload_image = function () {
 }
 
 // Apply modal image resolution to modal image
-Hue.apply_modal_image_resolution = function (image) {
+Hue.apply_modal_image_resolution = function (image, src) {
+  if (image.src !== src) {
+    return
+  }
+
   let subheader = Hue.el("#modal_image_subheader")
   let text = subheader.textContent
   subheader.textContent = `${text} (${image.width} x ${image.height})`
 }
 
 // Apply modal image resolution to expand image
-Hue.apply_expand_image_resolution = function (image) {
+Hue.apply_expand_image_resolution = function (image, src) {
+  if (image.src !== src) {
+    return
+  }
+
   Hue.el("#expand_image_subheader").textContent = `${image.width} x ${image.height}`
 }
