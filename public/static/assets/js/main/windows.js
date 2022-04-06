@@ -460,7 +460,7 @@ Hue.start_msg = function () {
 
   Hue.msg_theme_picker = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "random_theme",
+      id: "theme_picker",
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.apply_selected_theme()
@@ -965,7 +965,7 @@ Hue.get_first_visible_modal_item = function (id) {
 }
 
 // Make windows invisible temporarily
-Hue.hide_windows_temporarily = function (delay) {
+Hue.hide_windows_temporarily = function (delay = 1000) {
   document.documentElement.style.setProperty("--msg_display", "none");
 
   setTimeout(function () {
