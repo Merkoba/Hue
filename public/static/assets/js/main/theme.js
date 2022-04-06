@@ -18,30 +18,31 @@ Hue.apply_theme = function (background_color = "", text_color = "") {
   let altbackground_a = Hue.colorlib.rgb_to_rgba(altbackground, 0.7)
   let text_color_a = Hue.colorlib.rgb_to_rgba(text_color,  0.7)
   
-  document.documentElement.style.setProperty('--text_color', text_color)
-  document.documentElement.style.setProperty('--text_color_a', text_color_a)
-  document.documentElement.style.setProperty('--altcolor', altcolor)
-  document.documentElement.style.setProperty('--altcolor_a', altcolor_a)
-  document.documentElement.style.setProperty('--background_color', background_color)
-  document.documentElement.style.setProperty('--background_color_a', background_color_a)
-  document.documentElement.style.setProperty('--altbackground', altbackground)
-  document.documentElement.style.setProperty('--altbackground_a', altbackground_a)
+  document.documentElement.style.setProperty("--text_color", text_color)
+  document.documentElement.style.setProperty("--text_color_a", text_color_a)
+  document.documentElement.style.setProperty("--altcolor", altcolor)
+  document.documentElement.style.setProperty("--altcolor_a", altcolor_a)
+  document.documentElement.style.setProperty("--background_color", background_color)
+  document.documentElement.style.setProperty("--background_color_a", background_color_a)
+  document.documentElement.style.setProperty("--altbackground", altbackground)
+  document.documentElement.style.setProperty("--altbackground_a", altbackground_a)
 }
 
 // Show a window to select random themes
-Hue.select_random_theme = function () {
-  let num_col_items = 8
+Hue.generate_random_themes = function () {
+  let num_col_items = 6
 
   function create_item (theme) {
     let item = Hue.div("random_theme_item action")
 
     item.style.backgroundColor = theme.bg_color
     item.style.color = theme.text_color
-    item.textContent = "This is some sample text"
+    item.textContent = "This is a random theme"
 
     item.addEventListener("click", function () {
+      Hue.el("#admin_background_color").value = theme.bg_color
+      Hue.el("#admin_text_color").value = theme.text_color
       Hue.apply_theme(theme.bg_color, theme.text_color)
-      Hue.random_theme_to_apply = theme
     })
 
     return item
@@ -69,15 +70,22 @@ Hue.select_random_theme = function () {
 
   fill_column(container_1)
   fill_column(container_2)
+}
 
-  Hue.msg_random_theme.show()
+// Show theme picker
+Hue.show_theme_picker = function () {
+  Hue.original_background_color = Hue.el("#admin_background_color").value
+  Hue.original_text_color = Hue.el("#admin_text_color").value
+  Hue.generate_random_themes()
+  Hue.msg_theme_picker.show()
 }
 
 // Cancel random theme
-Hue.cancel_random_theme = function () {
-  Hue.random_theme_to_apply = undefined
+Hue.cancel_change_theme = function () {
+  Hue.el("#admin_background_color").value = Hue.original_background_color
+  Hue.el("#admin_text_color").value = Hue.original_text_color
   Hue.apply_theme()
-  Hue.msg_random_theme.close()
+  Hue.msg_theme_picker.close()
 }
 
 // Get a random dark theme
@@ -104,27 +112,28 @@ Hue.get_light_theme = function () {
   return {bg_color: bg_color, text_color: text_color}
 }
 
-// Apply the selected random theme
-Hue.apply_random_theme = function () {
-  if (Hue.random_theme_to_apply) {
-    let theme = Hue.random_theme_to_apply
-    Hue.change_background_color(theme.bg_color)
-    Hue.change_text_color(theme.text_color)
-    Hue.random_theme_to_apply = undefined
-  }
+// Apply the selected theme
+Hue.apply_selected_theme = function () {
+  Hue.change_background_color(Hue.el("#admin_background_color").value)
+  Hue.change_text_color(Hue.el("#admin_text_color").value)
 }
 
 // Setup random theme
-Hue.setup_random_theme = function () {
-  Hue.el("#random_theme_regenerate").addEventListener("click", function () {
-    Hue.select_random_theme()
+Hue.setup_theme_picker = function () {
+  Hue.el("#theme_picker_regenerate").addEventListener("click", function () {
+    Hue.generate_random_themes()
   })
 
-  Hue.el("#random_theme_cancel").addEventListener("click", function () {
-    Hue.cancel_random_theme()
+  Hue.el("#theme_picker_cancel").addEventListener("click", function () {
+    Hue.cancel_change_theme()
   })
 
-  Hue.el("#random_theme_done").addEventListener("click", function () {
-    Hue.msg_random_theme.close()
+  Hue.el("#theme_picker_peek").addEventListener("click", function () {
+    Hue.hide_windows_temporarily(2000)
   })
+}
+
+// Apply theme controls
+Hue.apply_theme_controls = function () {
+  Hue.apply_theme(Hue.el("#admin_background_color").value, Hue.el("#admin_text_color").value)
 }
