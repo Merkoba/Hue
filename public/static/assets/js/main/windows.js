@@ -449,12 +449,8 @@ Hue.start_msg = function () {
   Hue.msg_confirm = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "confirm",
-      on_close: function (instance) {
-        msgvars.common.after_close(instance)
-        if (Hue.confirm_action_cancel) {
-          Hue.confirm_action_cancel()
-        }
-      }
+      window_x: "none",
+      close_on_escape: false
     })
   )
 
@@ -465,6 +461,14 @@ Hue.start_msg = function () {
         msgvars.common.after_close(instance)
         Hue.apply_selected_theme()
       }
+    })
+  )
+
+  Hue.msg_background_peek = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "background_peek",
+      window_x: "none",
+      close_on_escape: false
     })
   )
 
@@ -538,6 +542,7 @@ Hue.start_msg = function () {
   Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_theme_picker.set(Hue.template_theme_picker())
+  Hue.msg_background_peek.set(Hue.template_background_peek())
   Hue.msg_draw_image.set(Hue.template_draw_image())
   Hue.msg_radio_window.set(Hue.template_radio_window())
   Hue.msg_command_book.set(Hue.template_command_book())
@@ -549,6 +554,7 @@ Hue.start_msg = function () {
 
   Hue.msg_chat_search.set_title(Hue.template_chat_search_titlebar())
   Hue.msg_theme_picker.set_title(Hue.template_theme_picker_titlebar())
+  Hue.msg_background_peek.set_title("Background Peek")
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_background_select.set_title("Background Image")
@@ -965,7 +971,7 @@ Hue.get_first_visible_modal_item = function (id) {
 }
 
 // Make windows invisible temporarily
-Hue.hide_windows_temporarily = function (delay = 1000) {
+Hue.hide_windows_temporarily = function (delay = 3000) {
   document.documentElement.style.setProperty("--msg_display", "none");
 
   setTimeout(function () {

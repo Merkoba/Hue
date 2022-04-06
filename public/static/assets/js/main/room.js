@@ -284,9 +284,9 @@ Hue.set_background = function (data, apply = true) {
 }
 
 // Applies the background to all background elements
-Hue.apply_background = function () {
+Hue.apply_background = function (background = Hue.background) {
   Hue.els(".background").forEach(it => {
-    it.src = Hue.background
+    it.src = background
   })
 }
 
@@ -336,9 +336,17 @@ Hue.open_background_picker = function () {
 Hue.background_input_action = function () {
   let src = Hue.el("#background_input_text").value.trim()
 
-  if (Hue.change_background_source(src)) {
-    Hue.msg_background_input.close()
+  if (!src) {
+    return
   }
+
+  Hue.background_peek_url = src
+
+  Hue.background_peek_action = function () {
+    Hue.change_background_source(src)
+  }
+
+  Hue.show_background_peek()
 }
 
 // On background image selected for upload
@@ -368,8 +376,14 @@ Hue.background_selected = function (file) {
     return false
   }
 
-  Hue.el("#admin_background").src = Hue.config.background_loading_url
-  Hue.upload_file({ file: file, action: "background_upload" })
+  Hue.background_peek_url = URL.createObjectURL(file)
+
+  Hue.background_peek_action = function () {
+    Hue.el("#admin_background").src = Hue.config.background_loading_url
+    Hue.upload_file({file: file, action: "background_upload"})
+  }
+
+  Hue.show_background_peek()
 }
 
 // Change the background image with a URL
@@ -460,4 +474,33 @@ Hue.set_text_color = function (color) {
   Hue.text_color = color
   Hue.apply_theme()
   Hue.config_admin_text_color()
+}
+
+// Setup background peek
+Hue.setup_background_peek = function () {
+  Hue.el("#background_peek_peek").addEventListener("click", function () {
+    Hue.apply_background(Hue.background_peek_url)
+    Hue.hide_windows_temporarily()
+  })
+
+  Hue.el("#background_peek_choose").addEventListener("click", function () {
+    Hue.msg_background_peek.close()
+    Hue.msg_background_select.show()
+  })
+
+  Hue.el("#background_peek_confirm").addEventListener("click", function () {
+    Hue.background_peek_action()
+    Hue.msg_background_peek.close()
+  })
+
+  Hue.el("#background_peek_cancel").addEventListener("click", function () {
+    Hue.apply_background()
+    Hue.msg_background_peek.close()
+  })
+}
+
+// Show background peek
+Hue.show_background_peek = function () {
+  Hue.msg_background_select.close()
+  Hue.msg_background_peek.show()
 }
