@@ -973,7 +973,7 @@ Hue.get_first_visible_modal_item = function (id) {
 }
 
 // Make windows invisible temporarily
-Hue.hide_windows_temporarily = function (delay = 3000) {
+Hue.hide_windows_temporarily = function (delay = 2500) {
   document.documentElement.style.setProperty("--msg_display", "none");
 
   setTimeout(function () {
