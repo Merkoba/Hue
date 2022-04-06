@@ -2535,3 +2535,7 @@ pre {
 .reduced_width {
 	width: calc(100% - 50px);
 }
+
+#profilepic_preview_image {
+	margin-right: var(--chat_side_spacing);
+}

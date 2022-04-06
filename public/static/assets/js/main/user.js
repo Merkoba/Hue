@@ -235,15 +235,9 @@ Hue.setup_profilepic_cropper = function () {
     })
 
     .then(function (blob) {
-      Hue.el("#user_profile_profilepic").src = Hue.config.profilepic_loading_url
-
-      Hue.upload_file({
-        file: blob,
-        action: "profilepic_upload",
-        name: "profile.png",
-      })
-      
-      Hue.msg_profilepic_cropper.close()
+      Hue.profilepic_preview_blob = blob
+      Hue.el("#profilepic_preview_image").src = URL.createObjectURL(blob)
+      Hue.msg_profilepic_preview.show()
     })
   })
 
@@ -258,6 +252,19 @@ Hue.setup_profilepic_cropper = function () {
       Hue.make_random_drawing("profilepic")
     }
   })
+}
+
+// Upload profilepic
+Hue.upload_profilepic = function () {
+  Hue.el("#user_profile_profilepic").src = Hue.config.profilepic_loading_url
+
+  Hue.upload_file({
+    file: Hue.profilepic_preview_blob,
+    action: "profilepic_upload",
+    name: "profile.png",
+  })
+  
+  Hue.msg_profilepic_cropper.close()
 }
 
 // Setup profilepic select
@@ -275,6 +282,16 @@ Hue.setup_profilepic_select = function () {
   Hue.el("#profilepic_select_upload").addEventListener("click", function () {
     Hue.msg_profilepic_select.close()
     Hue.open_profilepic_picker()
+  })
+
+  Hue.el("#profilepic_preview_choose").addEventListener("click", function () {
+    Hue.msg_profilepic_preview.close()
+    Hue.msg_profilepic_select.show()
+  })
+
+  Hue.el("#profilepic_preview_confirm").addEventListener("click", function () {
+    Hue.msg_profilepic_preview.close()
+    Hue.upload_profilepic()
   })
 }
 

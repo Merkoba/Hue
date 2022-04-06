@@ -474,6 +474,12 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_profilepic_preview = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "profilepic_preview"
+    })
+  )
+
   Hue.msg_draw_image = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar,{
       id: "draw_image",
@@ -545,6 +551,7 @@ Hue.start_msg = function () {
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_theme_picker.set(Hue.template_theme_picker())
   Hue.msg_background_peek.set(Hue.template_background_peek())
+  Hue.msg_profilepic_preview.set(Hue.template_profilepic_preview())
   Hue.msg_draw_image.set(Hue.template_draw_image())
   Hue.msg_radio_window.set(Hue.template_radio_window())
   Hue.msg_command_book.set(Hue.template_command_book())
@@ -556,6 +563,7 @@ Hue.start_msg = function () {
 
   Hue.msg_chat_search.set_title(Hue.template_chat_search_titlebar())
   Hue.msg_theme_picker.set_title(Hue.template_theme_picker_titlebar())
+  Hue.msg_profilepic_preview.set_title(Hue.template_profilepic_preview_titlebar())
   Hue.msg_background_peek.set_title("Background Peek")
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
