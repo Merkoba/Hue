@@ -289,7 +289,7 @@ Hue.show_modal_image = function (id = 0) {
   let dummy_image = new Image()
 
   dummy_image.onload = function() {
-    Hue.apply_modal_image_resolution(this, data.source)
+    Hue.apply_modal_image_resolution(dummy_image, data.source)
   }
 
   dummy_image.src = data.source
@@ -358,7 +358,7 @@ Hue.expand_image = function (src) {
   let dummy_image = new Image()
 
   dummy_image.onload = function() {
-    Hue.apply_expand_image_resolution(this, src)
+    Hue.apply_expand_image_resolution(dummy_image, src)
   }
 
   dummy_image.src = src
@@ -520,6 +520,10 @@ Hue.show_upload_image = function () {
 
 // Apply modal image resolution to modal image
 Hue.apply_modal_image_resolution = function (image, src) {
+  console.log("--")
+  console.log(image.src)
+  console.log(src)
+  console.log("--")
   if (image.src !== src) {
     return
   }
