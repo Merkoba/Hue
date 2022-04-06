@@ -248,6 +248,7 @@ Hue.restore_modal_image = function () {
 // Clears image information in the modal image window
 Hue.clear_modal_image_info = function () {
   Hue.el("#modal_image_header_info").innerHTML = ""
+  Hue.el("#modal_image_subheader").textContent = ""
 }
 
 // Clears information in the expand image window
@@ -282,8 +283,10 @@ Hue.show_modal_image = function (id = 0) {
 
   Hue.horizontal_separator(Hue.el("#modal_image_header_info"))
 
-  if (data.comment || data.query) {
-    Hue.el("#modal_image_subheader").textContent = data.comment || data.query
+  if (data.comment || data.query || data.hostname) {
+    Hue.el("#modal_image_subheader").textContent = data.comment || data.query || data.hostname
+  } else {
+    Hue.el("#modal_image_subheader").textContent = ""
   }
 
   let dummy_image = new Image()
@@ -520,10 +523,6 @@ Hue.show_upload_image = function () {
 
 // Apply modal image resolution to modal image
 Hue.apply_modal_image_resolution = function (image, src) {
-  console.log("--")
-  console.log(image.src)
-  console.log(src)
-  console.log("--")
   if (image.src !== src) {
     return
   }

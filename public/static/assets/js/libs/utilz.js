@@ -730,6 +730,11 @@ const Utilz = function () {
 		return {hours: hours, minutes: minutes, seconds:seconds}
 	}
 
+	// Get hostname from url
+	utilz.get_hostname = function (url) {
+		return new URL(url).hostname
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]
