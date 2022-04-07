@@ -377,7 +377,11 @@ Hue.setup_expand_image = function () {
   })
 
   Hue.el("#expand_image_container").addEventListener("click", function () {
-    Hue.hide_expand_image()
+    if (Hue.el("#expand_image_container").classList.contains("expanded_image")) {
+      Hue.restore_expand_image()
+    } else {
+      Hue.msg_expand_image.close()
+    }
   })
 
   Hue.el("#expand_image_toolbar_expand").addEventListener("click", function (e) {
@@ -412,11 +416,6 @@ Hue.expand_image = function (src) {
   dummy_image.src = src
   Hue.expand_image_source = src
   Hue.msg_expand_image.show()
-}
-
-// Hides the expand image window
-Hue.hide_expand_image = function () {
-  Hue.msg_expand_image.close()
 }
 
 // Shows the window to add a comment to an image upload
