@@ -255,16 +255,16 @@ Hue.restore_modal_image = function () {
   Hue.el("#modal_image_toolbar_expand").textContent = "Expand"
 }
 
-// Expand expand image to give it full height
-Hue.expand_expand_image = function () {
-  Hue.el("#expand_image_container").classList.add("expanded_image")
-  Hue.el("#expand_image_toolbar_expand").textContent = "Restore"
+// Expand view image to give it full height
+Hue.expand_view_image = function () {
+  Hue.el("#view_image_container").classList.add("expanded_image")
+  Hue.el("#view_image_toolbar_expand").textContent = "Restore"
 }
 
-// Restore expanded expand image
-Hue.restore_expand_image = function () {
-  Hue.el("#expand_image_container").classList.remove("expanded_image")
-  Hue.el("#expand_image_toolbar_expand").textContent = "Expand"
+// Restore expanded view image
+Hue.restore_view_image = function () {
+  Hue.el("#view_image_container").classList.remove("expanded_image")
+  Hue.el("#view_image_toolbar_expand").textContent = "Expand"
 }
 
 // Clears image information in the modal image window
@@ -273,9 +273,9 @@ Hue.clear_modal_image_info = function () {
   Hue.el("#modal_image_subheader").textContent = ""
 }
 
-// Clears information in the expand image window
-Hue.clear_expand_image_info = function () {
-  Hue.el("#expand_image_subheader").textContent = ""
+// Clears information in the view image window
+Hue.clear_view_image_info = function () {
+  Hue.el("#view_image_subheader").textContent = ""
 }
 
 // Shows the modal image window
@@ -360,62 +360,62 @@ Hue.after_image_load = function (ok = true) {
   }
 }
 
-// Setups image expansions when clicked
+// Setups image view when clicked
 // When an image in the chat is clicked the image is shown full sized in a window
-Hue.setup_expand_image = function () {
-  let img = Hue.el("#expand_image")
+Hue.setup_view_image = function () {
+  let img = Hue.el("#view_image")
 
   img.addEventListener("load", function () {
     img.style.display = "block"
-    Hue.el("#expand_image_spinner").style.display = "none"
+    Hue.el("#view_image_spinner").style.display = "none"
   })
 
   img.addEventListener("error", function () {
-    Hue.el("#expand_image_spinner").style.display = "none"
-    Hue.el("#expand_image").style.display = "none"
-    Hue.el("#expand_image_error").style.display = "block"
+    Hue.el("#view_image_spinner").style.display = "none"
+    Hue.el("#view_image").style.display = "none"
+    Hue.el("#view_image_error").style.display = "block"
   })
 
-  Hue.el("#expand_image_container").addEventListener("click", function () {
-    if (Hue.el("#expand_image_container").classList.contains("expanded_image")) {
-      Hue.restore_expand_image()
+  Hue.el("#view_image_container").addEventListener("click", function () {
+    if (Hue.el("#view_image_container").classList.contains("expanded_image")) {
+      Hue.restore_view_image()
     } else {
-      Hue.msg_expand_image.close()
+      Hue.msg_view_image.close()
     }
   })
 
-  Hue.el("#expand_image_toolbar_expand").addEventListener("click", function (e) {
-    if (Hue.el("#expand_image_container").classList.contains("expanded_image")) {
-      Hue.restore_expand_image()
+  Hue.el("#view_image_toolbar_expand").addEventListener("click", function (e) {
+    if (Hue.el("#view_image_container").classList.contains("expanded_image")) {
+      Hue.restore_view_image()
     } else {
-      Hue.expand_expand_image()
+      Hue.expand_view_image()
     }
   })
 
-  Hue.el("#expand_image_toolbar_url").addEventListener("click", function () {
-    Hue.open_view_text(Hue.expand_image_source)
+  Hue.el("#view_image_toolbar_url").addEventListener("click", function () {
+    Hue.open_view_text(Hue.view_image_source)
   })
 }
 
 // Shows a window with an image at full size
-Hue.expand_image = function (src) {
-  Hue.el("#expand_image").style.display = "none"
-  Hue.el("#expand_image_spinner").style.display = "block"
-  Hue.el("#expand_image_error").style.display = "none"
-  Hue.el("#expand_image").src = src
+Hue.view_image = function (src) {
+  Hue.el("#view_image").style.display = "none"
+  Hue.el("#view_image_spinner").style.display = "block"
+  Hue.el("#view_image_error").style.display = "none"
+  Hue.el("#view_image").src = src
 
   let hostname = Hue.utilz.get_hostname(src)
-  Hue.el("#expand_image_subheader").textContent = hostname
+  Hue.el("#view_image_subheader").textContent = hostname
 
   let dummy_image = new Image()
 
   dummy_image.onload = function() {
-    Hue.apply_expand_image_resolution(dummy_image, src)
+    Hue.apply_view_image_resolution(dummy_image, src)
   }
 
   dummy_image.src = src
-  Hue.expand_image_source = src
-  Hue.msg_expand_image.show()
+  Hue.view_image_source = src
+  Hue.msg_view_image.show()
 }
 
 // Shows the window to add a comment to an image upload
@@ -576,13 +576,13 @@ Hue.apply_modal_image_resolution = function (image, src) {
   subheader.textContent = `${text} (${image.width} x ${image.height})`
 }
 
-// Apply modal image resolution to expand image
-Hue.apply_expand_image_resolution = function (image, src) {
+// Apply modal image resolution to view image
+Hue.apply_view_image_resolution = function (image, src) {
   if (image.src !== src) {
     return
   }
 
-  let subheader = Hue.el("#expand_image_subheader")
+  let subheader = Hue.el("#view_image_subheader")
   let text = subheader.textContent
   subheader.textContent = `${text} (${image.width} x ${image.height})`
 }

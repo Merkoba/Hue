@@ -25,14 +25,14 @@ Hue.setup_message_board = function () {
     el = e.target.closest(".message_board_image")
 
     if (el) {
-      Hue.expand_image(el.src)
+      Hue.view_image(el.src)
       return
     }
 
     el = e.target.closest(".message_board_link_image")
 
     if (el) {
-      Hue.expand_image(el.src)
+      Hue.view_image(el.src)
       return
     }
 
