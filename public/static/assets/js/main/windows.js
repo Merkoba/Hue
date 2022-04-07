@@ -38,6 +38,12 @@ msgvars.titlebar = {
   window_inner_x_class: "!titlebar_inner_x",
 }
 
+msgvars.unclosable = {
+  window_x: "none",
+  close_on_escape: false,
+  close_on_overlay_click: false
+}
+
 // Starts and configures all Msg modal instances
 Hue.start_msg = function () {
   // Start the instances
@@ -147,10 +153,9 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_lockscreen = Msg.factory(
-    Object.assign({}, msgvars.common, {
+    Object.assign({}, msgvars.common, msgvars.unclosable, {
       id: "lockscreen",
-      preset: "window",
-      close_on_escape: false
+      preset: "window"
     })
   )
 
@@ -455,11 +460,8 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_confirm = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "confirm",
-      window_x: "none",
-      close_on_escape: false,
-      close_on_overlay_click: false
+    Object.assign({}, msgvars.common, msgvars.titlebar, msgvars.unclosable, {
+      id: "confirm"
     })
   )
 
@@ -474,11 +476,8 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_background_peek = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "background_peek",
-      window_x: "none",
-      close_on_escape: false,
-      close_on_overlay_click: false
+    Object.assign({}, msgvars.common, msgvars.titlebar, msgvars.unclosable, {
+      id: "background_peek"
     })
   )
 
