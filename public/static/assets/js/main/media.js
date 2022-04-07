@@ -969,7 +969,6 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   }
 
   data.info = data.id ? `${Hue.getcode(data.id)}` : ""
-
   data.info_html = ""
 
   if (data.size) {
@@ -983,9 +982,8 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
 
   data.info += ` | ${data.nice_date}`
   data.info_html += `<div title='${data.nice_date}' class='modal_${type}_timeago'></div>`
-
-  data.message = Hue.get_media_message(data)
   data.hostname = Hue.utilz.get_hostname(data.source)
+  data.message = Hue.get_media_message(data)
 
   if (data.message) {
     data.message_id = Hue.announce_media(type, data).message_id
