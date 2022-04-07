@@ -2,14 +2,10 @@
 	--panel_height: 2.2rem;
 	--panel_font_size: 1rem;
 	--font_family: imported_font, sans-serif;
-	--icon_size: 1.2em;
+	--icon_size: calc(var(--panel_height) * 0.5);
 	--chat_side_spacing: 0.8rem;
 	--profilepic_size: 1.8em;
-	--small_profilepic_size: 1.2em;
-	--tiny_profilepic_size: 1em;
-	--big_profilepic_size: 11.5rem;
-	--bigger_profilepic_size: 17.5rem;
-	--panel_profilepic_size: calc(var(--panel_height) * 0.5);
+	--big_profilepic_size: 16rem;
 	--msg_display: block;
 }
 
@@ -135,13 +131,13 @@ html {
 }
 
 .activity_bar_profilepic {
-	width: var(--panel_profilepic_size);
-	height: var(--panel_profilepic_size);
+	width: var(--icon_size);
+	height: var(--icon_size);
 }
 
 #modal_image_profilepic {
-	width: var(--panel_profilepic_size);
-	height: var(--panel_profilepic_size);
+	width: var(--icon_size);
+	height: var(--icon_size);
 	margin-right: 0.5rem;
 }
 
@@ -1497,8 +1493,8 @@ svg.action:hover {
 
 #show_profile_profilepic {
 	margin-top: 0.5rem;
-	width: var(--bigger_profilepic_size);
-	height: var(--bigger_profilepic_size);
+	width: var(--big_profilepic_size);
+	height: var(--big_profilepic_size);
 }
 
 #show_profile_buttons {
@@ -1800,8 +1796,8 @@ a.special_link:hover {
 }
 
 .chat_quote_profilepic {
-	width: var(--small_profilepic_size);
-	height: var(--small_profilepic_size);
+	width: var(--icon_size);
+	height: var(--icon_size);
 	margin-right: 0.5em;
 	cursor: pointer;
 	align-self: center;
@@ -2236,8 +2232,8 @@ pre {
 }
 
 .media_info_profilepic {
-	width: var(--tiny_profilepic_size);
-	height: var(--tiny_profilepic_size);
+	width: var(--icon_size);
+	height: var(--icon_size);
 	margin-right: 0.5rem;
 }
 
@@ -2330,8 +2326,8 @@ pre {
 }
 
 .whispers_item_profilepic {
-	width: var(--small_profilepic_size);
-	height: var(--small_profilepic_size);
+	width: var(--icon_size);
+	height: var(--icon_size);
 	margin-right: 0.5rem;
 }
 
