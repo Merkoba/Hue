@@ -1137,8 +1137,7 @@ input[type=checkbox] {
 .setting_input_text,
 .setting_textarea,
 .nice_input,
-.nice_input_2,
-.filter_input {
+.nice_input_2 {
 	padding: 0.2rem;
 }
 
