@@ -137,14 +137,12 @@ html {
 .activity_bar_profilepic {
 	width: var(--panel_profilepic_size);
 	height: var(--panel_profilepic_size);
-	transition: box-shadow 500ms;
 }
 
 #modal_image_profilepic {
 	width: var(--panel_profilepic_size);
 	height: var(--panel_profilepic_size);
 	margin-right: 0.5rem;
-	transition: box-shadow 500ms;
 }
 
 .columns_container {
@@ -2241,7 +2239,6 @@ pre {
 	width: var(--tiny_profilepic_size);
 	height: var(--tiny_profilepic_size);
 	margin-right: 0.5rem;
-	transition: box-shadow 500ms;
 }
 
 #confirm_message {
@@ -2330,13 +2327,11 @@ pre {
 .sent_whisper_profilepic {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
-	transition: box-shadow 500ms;
 }
 
 .whispers_item_profilepic {
 	width: var(--small_profilepic_size);
 	height: var(--small_profilepic_size);
-	transition: box-shadow 500ms;
 	margin-right: 0.5rem;
 }
 

@@ -399,7 +399,7 @@ Hue.push_whisper = function (message, on_click, read, data) {
   let item = Hue.div("whispers_item modal_item nice_row")
 
   if (data && data.user_id) {
-    item.innerHTML = `<img class='whispers_item_profilepic profilepic' loading='lazy' src='${Hue.get_profilepic(data.user_id)}'>`
+    item.innerHTML = `<img class='whispers_item_profilepic profilepic actionbox' loading='lazy' src='${Hue.get_profilepic(data.user_id)}'>`
     
     Hue.el(".profilepic", item).addEventListener("error", function () {
       Hue.fallback_profilepic(this)
