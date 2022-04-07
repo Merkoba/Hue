@@ -2,7 +2,7 @@
 	--panel_height: 2.2rem;
 	--panel_font_size: 1rem;
 	--font_family: imported_font, sans-serif;
-	--icon_size: calc(var(--panel_height) * 0.51);
+	--icon_size: 1.15rem;
 	--chat_side_spacing: 0.8rem;
 	--profilepic_size: 1.8em;
 	--big_profilepic_size: 16rem;
