@@ -566,11 +566,11 @@ Hue.start_chat_mouse_events = function () {
           Hue.show_profile(username, user_id)
         } else if (e.target.classList.contains("link_preview_image")) {
           e.stopPropagation()
-          Hue.expand_image(e.target.src.replace(".gifv", ".gif"))
+          Hue.view_image(e.target.src.replace(".gifv", ".gif"))
         } else if (e.target.classList.contains("image_preview_image")) {
           e.stopPropagation()
           let src = Hue.dataset(e.target, "image_preview_src_original")
-          Hue.expand_image(src.replace(".gifv", ".gif"))
+          Hue.view_image(src.replace(".gifv", ".gif"))
         } else if (e.target.classList.contains("announcement_content") ||
           e.target.closest(".brk")) {
           if (type === "image_change") {

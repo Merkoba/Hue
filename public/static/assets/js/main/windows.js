@@ -339,17 +339,17 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_expand_image = Msg.factory(
+  Hue.msg_view_image = Msg.factory(
     Object.assign({}, msgvars.common, {
-      id: "expand_image",
+      id: "view_image",
       preset: "window",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
-        Hue.restore_expand_image()
+        Hue.restore_view_image()
       },
       after_close: function (instance) {
         msgvars.common.after_close(instance)
-        Hue.clear_expand_image_info()
+        Hue.clear_view_image_info()
       },
     })
   )
@@ -540,7 +540,7 @@ Hue.start_msg = function () {
   Hue.msg_notifications.set(Hue.template_notifications())
   Hue.msg_whispers.set(Hue.template_whispers())
   Hue.msg_admin_activity.set(Hue.template_admin_activity())
-  Hue.msg_expand_image.set(Hue.template_expand_image())
+  Hue.msg_view_image.set(Hue.template_view_image())
   Hue.msg_image_upload_comment.set(Hue.template_image_upload_comment())
   Hue.msg_tv_upload_comment.set(Hue.template_tv_upload_comment())
   Hue.msg_reply.set(Hue.template_reply())
