@@ -517,11 +517,16 @@ Hue.apply_media_info = function (type) {
   
   Hue.el(".media_info", container).innerHTML = Hue.template_media_info_inner({
     username: item.username, 
-    message: message
+    message: message,
+    profilepic: Hue.get_profilepic(item.user_id)
   })
   
   Hue.el(".media_info_timeago", container).textContent = Hue.utilz.timeago(item.date)
   container.title = item.info
+
+  Hue.el(".media_info_profilepic", container).addEventListener("error", function () {
+    Hue.fallback_profilepic(this)
+  })
     
   Hue.dataset(container, "otitle", item.info)
   Hue.dataset(container, "date", item.date)
@@ -726,7 +731,7 @@ Hue.start_media_info = function () {
   Hue.append_media_info("#media_image_container", "image")
   
   Hue.el("#media").addEventListener("click", function (e) {
-    let el = e.target.closest(".media_info_username")
+    let el = e.target.closest(".media_info_user")
 
     if (el) {
       let username = Hue.dataset(el.closest(".media_info_container"), "username")

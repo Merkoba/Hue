@@ -6,6 +6,7 @@
 	--chat_side_spacing: 0.8rem;
 	--profilepic_size: 1.8em;
 	--small_profilepic_size: 1.2em;
+	--tiny_profilepic_size: 0.9em;
 	--big_profilepic_size: 11.5rem;
 	--bigger_profilepic_size: 17.5rem;
 	--panel_profilepic_size: calc(var(--panel_height) * 0.66);
@@ -2223,8 +2224,6 @@ pre {
 .media_info {
 	white-space: nowrap;
 	cursor: pointer;
-	flex-direction: row;
-	display: flex;
 	line-height: 1.8rem;
 }
 
@@ -2236,6 +2235,13 @@ pre {
 	margin-left: 0.5rem;
 	opacity: 0.8;
 	white-space: nowrap;
+}
+
+.media_info_profilepic {
+	width: var(--tiny_profilepic_size);
+	height: var(--tiny_profilepic_size);
+	margin-right: 0.5rem;
+	transition: box-shadow 500ms;
 }
 
 #confirm_message {
