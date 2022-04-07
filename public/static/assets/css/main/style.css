@@ -6,7 +6,7 @@
 	--chat_side_spacing: 0.8rem;
 	--profilepic_size: 1.8em;
 	--small_profilepic_size: 1.2em;
-	--tiny_profilepic_size: 0.9em;
+	--tiny_profilepic_size: 1em;
 	--big_profilepic_size: 11.5rem;
 	--bigger_profilepic_size: 17.5rem;
 	--panel_profilepic_size: calc(var(--panel_height) * 0.66);
