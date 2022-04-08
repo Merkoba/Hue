@@ -2008,7 +2008,6 @@ pre {
 #handle_url_url {
 	text-align: center;
 	margin-bottom: 0.25rem;
-	margin-bottom: 1rem;
 }
 
 #message_board_container {
@@ -2303,10 +2302,6 @@ pre {
 	position: absolute;
 }
 
-#view_text_copy {
-	margin-top: 0.8rem;
-}
-
 .justify_self_center {
 	justify-self: center;
 }
@@ -2522,4 +2517,8 @@ pre {
 
 #profilepic_preview_image {
 	margin-right: var(--chat_side_spacing);
+}
+
+.titlebar_action {
+	text-decoration: underline;
 }
