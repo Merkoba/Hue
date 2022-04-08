@@ -682,14 +682,27 @@ Hue.start_msg = function () {
   Hue.msg_user_profile.set_title("User Profile")
 }
 
-// Starts automatic modal filters
-Hue.start_modal_filters = function () {
-  Hue.els(".filter_input").forEach(it => {
-    if (it.dataset.mode !== "manual") {
-      it.addEventListener("input", function () {
+// Setup window controls
+Hue.setup_window_controls = function () {
+  Hue.els(".window_controls").forEach(it => {
+    let container = it.closest(".Msg-content-container")
+    let filter = Hue.el(".filter_input", it)
+    let bottom = Hue.el(".window_to_bottom", it)
+    let top = Hue.el(".window_to_top", it)
+
+    if (filter.dataset.mode !== "manual") {
+      filter.addEventListener("input", function () {
         Hue.do_modal_filter_timer()
       })
     }
+    
+    bottom.addEventListener("click", function () {
+      container.scrollTop = container.scrollHeight
+    })
+
+    top.addEventListener("click", function () {
+      container.scrollTop = 0
+    })
   })
 }
 
