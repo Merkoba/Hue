@@ -1800,7 +1800,11 @@ a.special_link:hover {
 	width: var(--icon_size);
 	height: var(--icon_size);
 	vertical-align: top;
-	margin-right: 0.1rem;
+	margin-right: 0.35rem;
+}
+
+.chat_quote_text {
+	margin-left: 0.35rem;
 }
 
 .popup_message_text {
