@@ -169,7 +169,7 @@ Hue.setup_open_url = function () {
     Hue.load_media(Hue.open_url_data)
   })
 
-  Hue.el("#open_url_menu_change").addEventListener("click", function () {
+  Hue.el("#open_url_menu_submit_link").addEventListener("click", function () {
     Hue.load_media_link(Hue.open_url_data.media_type, Hue.open_url_data.source, Hue.open_url_data.comment)
     Hue.msg_open_url.close()
   })
@@ -202,9 +202,9 @@ Hue.open_url_menu = function (data) {
   }
 
   if (Hue[`change_${data.media_type}_source`](data.source, true)) {
-    Hue.el("#open_url_menu_change").style.display = "inline-block"
+    Hue.el("#open_url_menu_submit_link").style.display = "inline-block"
   } else {
-    Hue.el("#open_url_menu_change").style.display = "none"
+    Hue.el("#open_url_menu_submit_link").style.display = "none"
   }
 
   Hue.horizontal_separator(Hue.el("#open_url_container"))
