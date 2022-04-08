@@ -184,11 +184,11 @@ Hue.make_chat_message = function (args = {}) {
     first_url = Hue.utilz.get_first_url(args.message)
   }
 
+  Hue.dataset(fmessage, "username", args.username)
   Hue.dataset(fmessage, "user_id", args.user_id)
   Hue.dataset(fmessage, "public", args.public)
   Hue.dataset(fmessage, "date", d)
   Hue.dataset(fmessage, "highlighted", highlighted)
-  Hue.dataset(fmessage, "username", args.username)
   Hue.dataset(fmessage, "mode", "chat")
   
   let content_container = Hue.el(".chat_content_container", fmessage)

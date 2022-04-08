@@ -148,11 +148,6 @@ Hue.activate_key_detection = function () {
             e.preventDefault()
           }
 
-          if (e.key === "Enter") {
-            Hue.show_media_history("image")
-            e.preventDefault()
-          }
-
           return
         }
       }

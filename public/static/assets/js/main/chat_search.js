@@ -11,6 +11,14 @@ Hue.setup_chat_search = function () {
   Hue.el("#chat_search_user").addEventListener("click", function () {
     Hue.show_user_messages()
   })
+
+  Hue.el("#chat_search_image").addEventListener("click", function () {
+    Hue.show_image_history()
+  })
+
+  Hue.el("#chat_search_tv").addEventListener("click", function () {
+    Hue.show_tv_history()
+  })
 }
 
 // Resets chat search filter state
@@ -75,6 +83,28 @@ Hue.show_chat_search = function (filter = "") {
       let s = it.textContent.toLowerCase()
       let match = s.includes("http://") || s.includes("https://")
 
+      if (match) {
+        if (args) {
+          match = it.textContent.toLowerCase().includes(args)
+        }
+      }
+
+      return match
+    } else if (filter.startsWith("$image")) {
+      let match = (Hue.dataset(it, "mode") === "announcement" && 
+                  Hue.dataset(it, "type") === "image_change")
+      
+      if (match) {
+        if (args) {
+          match = it.textContent.toLowerCase().includes(args)
+        }
+      }
+
+      return match
+    } else if (filter.startsWith("$tv")) {
+      let match = (Hue.dataset(it, "mode") === "announcement" && 
+                  Hue.dataset(it, "type") === "tv_change")
+      
       if (match) {
         if (args) {
           match = it.textContent.toLowerCase().includes(args)
@@ -169,4 +199,14 @@ Hue.show_chat_search = function (filter = "") {
 // Show links in chat search
 Hue.show_links = function () {
   Hue.show_chat_search("$links ")
+}
+
+// Show image messages
+Hue.show_image_history = function () {
+  Hue.show_chat_search("$image ")
+}
+
+// Show tv messages
+Hue.show_tv_history = function () {
+  Hue.show_chat_search("$tv ")
 }

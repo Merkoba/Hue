@@ -205,11 +205,7 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "image_picker",
       window_width: "24rem",
-      content_class: "!media_picker_content",
-      after_close: function (instance) {
-        msgvars.common.after_close(instance)
-        Hue.reset_media_history_filter("image")
-      },
+      content_class: "!media_picker_content"
     })
   )
 
@@ -233,11 +229,7 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "tv_picker",
       window_width: "24rem",
-      content_class: "!media_picker_content",
-      after_close: function (instance) {
-        msgvars.common.after_close(instance)
-        Hue.reset_media_history_filter("tv")
-      },
+      content_class: "!media_picker_content"
     })
   )
 
@@ -511,26 +503,6 @@ Hue.start_msg = function () {
       })
     })
   )
-
-  Hue.msg_image_picker.set(
-    Hue.template_image_picker({
-      window_controls: Hue.template_window_controls({
-        filter_mode: "manual",
-        filter_id: "image_history_filter",
-        filter_placeholder: "Filter"
-      })
-    })
-  )
-
-  Hue.msg_tv_picker.set(
-    Hue.template_tv_picker({
-      window_controls: Hue.template_window_controls({
-        filter_mode: "manual",
-        filter_id: "tv_history_filter",
-        filter_placeholder: "Filter"
-      })
-    })
-  )
   
   Hue.msg_message_board.set(
     Hue.template_message_board({
@@ -655,6 +627,8 @@ Hue.start_msg = function () {
   Hue.msg_background_peek.set(Hue.template_background_peek())
   Hue.msg_profilepic_preview.set(Hue.template_profilepic_preview())
   Hue.msg_draw_image.set(Hue.template_draw_image())
+  Hue.msg_image_picker.set(Hue.template_image_picker())
+  Hue.msg_tv_picker.set(Hue.template_tv_picker())
 
   Hue.msg_info.create()
   Hue.msg_info_autoclose.create()
@@ -834,14 +808,6 @@ Hue.close_all_popups = function (callback = false) {
 Hue.start_filters = function () {
   Hue.el("#chat_search_filter").addEventListener("input", function () {
     Hue.chat_search_timer()
-  })
-
-  Hue.el("#image_history_filter").addEventListener("input", function () {
-    Hue.media_history_filter_timer("image")
-  })
-
-  Hue.el("#tv_history_filter").addEventListener("input", function () {
-    Hue.media_history_filter_timer("tv")
   })
 }
 
