@@ -46,4 +46,10 @@ Hue.set_notifications_enabled_icon = function () {
 Hue.toggle_notifications_enabled = function () {
   Hue.room_state.notifications_enabled = !Hue.room_state.notifications_enabled
   Hue.set_notifications_enabled_icon()
+
+  if (Hue.room_state.notifications_enabled) {
+    Hue.flash_info("Info", "Notification popups are now enabled")
+  } else {
+    Hue.flash_info("Info", "Notification popups are now disabled")
+  }
 }
