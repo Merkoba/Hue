@@ -161,6 +161,7 @@ Hue.setup_draw_image = function () {
   })
 
   Hue.el("#draw_image_upload").addEventListener("click", function () {
+    Hue.msg_draw_image.close()
     Hue.upload_draw_image()
   })
 
@@ -433,8 +434,6 @@ Hue.upload_draw_image = function (canvas = "#draw_image_area", type = "drawing")
       } else if (Hue.draw_image_target === "background") {
         Hue.background_selected(blob)
       }
-
-      Hue.msg_draw_image.close()
     },
     "image/png",
     0.95
