@@ -144,7 +144,7 @@ Hue.setup_background_select = function () {
     Hue.make_random_drawing("background")
   })
   
-  Hue.el("#background_select_url").addEventListener("click", function () {
+  Hue.el("#background_select_link").addEventListener("click", function () {
     Hue.msg_background_select.close()
     Hue.open_background_input()
   })
