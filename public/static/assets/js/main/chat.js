@@ -1999,6 +1999,7 @@ Hue.toggle_chat = function (what = undefined) {
   Hue.save_room_state()
   Hue.check_chat_enabled()
   Hue.fix_frames()
+  Hue.set_media_tweaks_toggles()
   Hue.goto_bottom(true)
 }
 

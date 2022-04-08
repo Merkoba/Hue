@@ -1025,6 +1025,7 @@ Hue.change_media_visibility = function (type, play = false) {
 Hue.toggle_media_info = function () {
   Hue.room_state.media_info_enabled = !Hue.room_state.media_info_enabled
   Hue.check_media_info()
+  Hue.set_media_tweaks_toggles()
   Hue.save_room_state()
 }
 
