@@ -266,7 +266,7 @@ html {
 
 #media_image_error {
 	display: none;
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 }
 
 #media_image_spinner {
@@ -554,41 +554,23 @@ a.generic:hover {
 }
 
 .menu_item {
-	font-size: 1.2rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	font-size: 1.1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	cursor: pointer;
-}
-
-.menu_item2 {
-	font-size: 1.2rem;
-	padding-top: 0.5rem;
-	cursor: pointer;
-}
-
-.menu_item_smaller {
-	font-size: 1rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
-	cursor: pointer;
-}
-
-.menu_item_smaller_2 {
-	font-size: 1rem;
-	padding-top: 0.5rem;
-	cursor: pointer;
+	white-space: nowrap;
 }
 
 .nice_input {
 	width: 18rem;
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 	text-align: center;
 	border: 0.06rem solid grey;
 }
 
 .nice_input_2 {
 	width: 14rem;
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 	text-align: center;
 	border: 0.06rem solid grey;
 }
@@ -799,7 +781,7 @@ a.generic:hover {
 }
 
 #pick_username_welcome {
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 	padding-bottom: 0.3rem;
 }
 
@@ -808,7 +790,7 @@ a.generic:hover {
 }
 
 #pick_username_input {
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 	border: 0.06rem solid grey;
 	text-align: center;
 }
@@ -825,7 +807,7 @@ a.generic:hover {
 }
 
 .info_title2 {
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 	font-weight: bold;
 	padding-bottom: 0.3rem;
 }
@@ -870,7 +852,7 @@ input[type=checkbox] {
 
 #modal_image_error,
 #view_image_error {
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 }
 
 #modal_image_header_info_container {
@@ -974,12 +956,8 @@ input[type=checkbox] {
 	resize: vertical;
 }
 
-.bitbigger {
-	font-size: 1.1rem;
-}
-
 .bigger {
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 }
 
 .underlined {
@@ -1016,7 +994,7 @@ input[type=checkbox] {
 }
 
 .profilepic_cropper_button {
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 }
 
 .profile_icon {
@@ -1385,7 +1363,7 @@ svg.action:hover {
 
 .admin_list_item,
 .ban_list_item {
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 	cursor: pointer;
 }
 
@@ -1545,7 +1523,7 @@ a.special_link:hover {
 #media_iframe_poster {
 	position: absolute;
 	display: none;
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 }
 
 #media_iframe_tv {
@@ -1763,6 +1741,7 @@ a.special_link:hover {
 }
 
 #user_profile_audioclip {
+	margin-top: 0.8rem;
 	margin-bottom: 1.5rem;
 }
 

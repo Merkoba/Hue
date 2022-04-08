@@ -108,7 +108,6 @@ Hue.max_chat_font_size = 1.8
 Hue.draw_image_just_entered = false
 Hue.draw_image_num_strokes_save = 500
 Hue.draw_image_max_levels = 200
-Hue.draw_image_open = false
 Hue.draw_image_max_pencil_size = 40
 Hue.draw_image_default_pencil_size = 16
 Hue.draw_image_pencil_size_step = 4

@@ -204,7 +204,6 @@ Hue.start_msg = function () {
   Hue.msg_image_picker = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "image_picker",
-      window_width: "24rem",
       content_class: "!media_picker_content"
     })
   )
@@ -228,7 +227,6 @@ Hue.start_msg = function () {
   Hue.msg_tv_picker = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "tv_picker",
-      window_width: "24rem",
       content_class: "!media_picker_content"
     })
   )
@@ -467,15 +465,7 @@ Hue.start_msg = function () {
 
   Hue.msg_draw_image = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar,{
-      id: "draw_image",
-      after_show: function(instance){
-        msgvars.common.after_show(instance)
-        Hue.draw_image_open = true
-      },
-      after_close: function(instance){
-        msgvars.common.after_close(instance)
-        Hue.draw_image_open = false
-      }
+      id: "draw_image"
     })
   )
 
