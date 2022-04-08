@@ -226,64 +226,6 @@ Hue.media_visibility_and_locks = function () {
   }
 }
 
-// Resets media history filter of a certain type
-Hue.reset_media_history_filter = function (type) {
-  Hue.el(`#${type}_history_filter`).value = ""
-  Hue.el(`#${type}_history_container`).innerHTML = ""
-}
-
-// Shows and/or filters media history of a certain type
-Hue.show_media_history = function (type, filter = "") {
-  Hue.el(`#${type}_history_container`).innerHTML = ""
-  Hue.el(`#${type}_history_filter`).value = filter ? filter : ""
-
-  let clone = Hue.clone_children("#chat_area").reverse()
-
-  clone.forEach(it => {
-    it.removeAttribute("id")
-  })
-
-  if (filter.trim()) {
-    let lc_value = Hue.utilz.single_space(filter).toLowerCase()
-
-    clone = clone.filter(it => {
-      let type2 = Hue.dataset(it, "type")
-
-      if (type2 !== `${type}_change`) {
-        return false
-      }
-
-      let text = it.textContent.toLowerCase()
-
-      if (!text) {
-        return false
-      }
-
-      return text.includes(lc_value)
-    })
-  } else {
-    clone = clone.filter(it => {
-      let type2 = Hue.dataset(it, "type")
-
-      if (type2 !== `${type}_change`) {
-        return false
-      }
-
-      return true
-    })
-  }
-
-  for (let el of clone) {
-    Hue.el(".profilepic", el).addEventListener("error", function () {
-      Hue.fallback_profilepic(this)
-    })
-
-    Hue.el(`#${type}_history_container`).append(el)
-  }
-
-  Hue.vertical_separator(Hue.el(`#${type}_history_container`))
-}
-
 // More media picker configurations
 Hue.setup_media_pickers = function () {
   Hue.el("#image_picker_link").addEventListener("click", function () {
@@ -300,6 +242,11 @@ Hue.setup_media_pickers = function () {
     Hue.open_draw_image("image")
   })
 
+  Hue.el("#image_picker_history").addEventListener("click", function () {
+    Hue.msg_image_picker.close()
+    Hue.show_image_history()
+  })
+  
   Hue.el("#tv_picker_link").addEventListener("click", function () {
     Hue.msg_tv_picker.close()
     Hue.show_link_tv()
@@ -307,7 +254,12 @@ Hue.setup_media_pickers = function () {
   
   Hue.el("#tv_picker_upload").addEventListener("click", function () {
     Hue.msg_tv_picker.close()
-  })  
+  })
+  
+  Hue.el("#tv_picker_history").addEventListener("click", function () {
+    Hue.msg_tv_picker.close()
+    Hue.show_tv_history()
+  })
 }
 
 // Setup tv link window
@@ -868,10 +820,7 @@ Hue.edited_media_comment = function (data) {
 
 // Shows the media picker window
 Hue.show_media_picker = function (type) {
-  Hue[`msg_${type}_picker`].show(function () {
-    Hue.show_media_history(type)
-    Hue.scroll_modal_to_top(`${type}_picker`)
-  })
+  Hue[`msg_${type}_picker`].show()
 }
 
 // Load media picker

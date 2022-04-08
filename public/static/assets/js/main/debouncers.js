@@ -47,12 +47,6 @@ Hue.create_debouncers = function () {
     Hue.hide_typing()
   }, Hue.config.max_typing_inactivity)
 
-  // Debounce timer for media history filters
-  Hue.media_history_filter_timer = Hue.create_debouncer(function (type) {
-    let filter = Hue.el(`#${type}_history_filter`).value
-    Hue.show_media_history(type, filter)
-  }, Hue.filter_delay)
-
   // Debounce timer for image modal scrollwheel in the 'previous' direction
   Hue.modal_image_prev_wheel_timer = Hue.create_debouncer(function () {
     Hue.modal_image_prev_click()

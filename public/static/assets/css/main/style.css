@@ -542,21 +542,6 @@ html {
 	outline: 1px solid var(--text_color);
 }
 
-.media_history_container .brk_profilepic {
-	opacity: 1;
-	margin-bottom: 0.5rem;
-	outline: unset;
-}
-
-.media_history_container .chat_message_top {
-	flex-direction: column;
-	margin-bottom: 0.35rem;
-}
-
-.media_history_container .announcement_content_container {
-	margin-left: 0;
-}
-
 a.generic:link,
 a.generic:visited,
 a.generic:hover {
@@ -1500,25 +1485,9 @@ a.special_link:hover {
 	text-align: left;
 }
 
-.media_history_container {
-	margin-top: 0.8rem;
-}
-
 .media_container .vertical_separator {
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
-}
-
-.media_history_container .announcement_content_split {
-	align-items: center;
-}
-
-.media_history_container .brk {
-	display: none;
-}
-
-.media_history_container .chat_timeago {
-	margin-left: 0;
 }
 
 #media_tweaks_top {
@@ -1741,10 +1710,6 @@ a.special_link:hover {
 	margin-bottom: 1rem;
 }
 
-.media_picker_options {
-	margin-bottom: 1rem;
-}
-
 .media_link_input {
 	margin-bottom: 1rem;
 }
@@ -1903,18 +1868,14 @@ pre {
 }
 
 .message_board_user_details {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 	margin-bottom: 0.35rem;
 }
 
 .message_board_profilepic {
-	width: var(--profilepic_size);
-	height: var(--profilepic_size);
+	width: var(--icon_size);
+	height: var(--icon_size);
 	opacity: 1;
-	margin-bottom: 0.45rem;
+	margin-right: 0.5rem;
 }
 
 .message_board_username {
