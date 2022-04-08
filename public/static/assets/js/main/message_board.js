@@ -5,10 +5,23 @@ Hue.setup_message_board = function () {
   })
 
   Hue.el("#message_board_container").addEventListener("click", function (e) {
-    let el = e.target.closest(".message_board_delete")
+    let post
+    let username = ""
+    let user_id = ""
+
+    let el = e.target.closest(".message_board_post")
+
+    if (!el) {
+      return
+    }
+
+    post = e.target.closest(".message_board_post")
+    username = Hue.dataset(post, "username")
+    user_id = Hue.dataset(post, "user_id")
+
+    el = e.target.closest(".message_board_delete")
 
     if (el) {
-      let post = el.closest(".message_board_post")
       Hue.delete_message_board_post(post)
       return
     }
@@ -16,8 +29,6 @@ Hue.setup_message_board = function () {
     el = e.target.closest(".message_board_user_details")
     
     if (el) {
-      let username = Hue.dataset(el, "username")
-      let user_id = Hue.dataset(el, "user_id")
       Hue.show_profile(username, user_id)
       return
     }
@@ -25,21 +36,20 @@ Hue.setup_message_board = function () {
     el = e.target.closest(".message_board_image")
 
     if (el) {
-      Hue.view_image(el.src)
+      Hue.view_image(el.src, username, user_id)
       return
     }
 
     el = e.target.closest(".message_board_link_image")
 
     if (el) {
-      Hue.view_image(el.src)
+      Hue.view_image(el.src, username, user_id)
       return
     }
 
     el = e.target.closest(".message_board_edit")
 
     if (el) {
-      let post = el.closest(".message_board_post")
       Hue.edit_message_board_post(post)
       return
     }
@@ -135,10 +145,6 @@ Hue.add_post_to_message_board = function (data, edited) {
   })
 
   profilepic.src = Hue.get_profilepic(data.user_id)
-
-  let user_details = Hue.el(".message_board_user_details", post)
-  Hue.dataset(user_details, "username", data.username)
-  Hue.dataset(user_details, "user_id", data.user_id)
 
   let username = Hue.el(".message_board_username", post)
   username.textContent = data.username
