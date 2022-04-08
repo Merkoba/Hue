@@ -1,7 +1,13 @@
 <script id="template_window_controls" type="text/x-handlebars-template" class="template">
   <div class="window_controls flex_row_center" data-parent-id="{{parent_id}}">
-    <svg class="window_to_bottom panel_icon action"><use href="#icon_arrow-down"></svg>
+    <div class="window_to_bottom action" title="Go To Bottom">
+      <svg class="panel_icon"><use href="#icon_arrow-down"></svg>
+    </div>
+
     <input type="text" id="{{filter_id}}" class="filter_input" placeholder="{{filter_placeholder}}" data-mode="{{filter_mode}}">
-    <svg class="window_to_top panel_icon action"><use href="#icon_arrow-up"></svg>
+
+    <div class="window_to_top action" title="Go To Top">
+      <svg class="panel_icon"><use href="#icon_arrow-up"></svg>
+    </div>
   </div>
 </script>
