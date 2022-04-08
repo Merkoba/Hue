@@ -413,12 +413,6 @@ Hue.commands = {
     },
     description: `Pings the server and shows the delay from the moment it was sent to the moment it was received`,
   },
-  "lockscreen": {
-    action: (arg, ans) => {
-      Hue.lock_screen()
-    },
-    description: `Locks the screen`,
-  },
   "top": {
     action: (arg, ans) => {
       Hue.goto_top()

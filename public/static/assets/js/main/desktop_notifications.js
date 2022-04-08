@@ -23,10 +23,6 @@ Hue.has_desktop_notifications_permission = function () {
 
 // Shows a browser notification
 Hue.show_desktop_notification = function (s) {
-  if (Hue.screen_locked) {
-    return false
-  }
-  
   if (typeof Notification === "undefined") {
     return false
   }

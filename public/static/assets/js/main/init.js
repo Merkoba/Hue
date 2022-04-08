@@ -64,8 +64,6 @@ Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 250
 Hue.sending_whisper = false
 Hue.chat_scrolled = false
-Hue.lockscreen_peek_delay = 500
-Hue.lockscreen_peek_active = false
 Hue.image_upload_comment_file = false
 Hue.tv_upload_comment_file = false
 Hue.tv_upload_comment_type = false
@@ -82,7 +80,6 @@ Hue.connections = 0
 Hue.connecting = true
 Hue.recent_scroll_time = 1000
 Hue.typing = false
-Hue.screen_locked = false
 Hue.num_socket_in = 0
 Hue.num_socket_out = 0
 Hue.image_locked = false
@@ -182,7 +179,6 @@ Hue.init = function () {
   Hue.show_console_message()
   Hue.setup_view_image()
   Hue.setup_local_storage()
-  Hue.setup_lockscreen()
   Hue.setup_image_upload_comment()
   Hue.setup_tv_upload_comment()
   Hue.setup_drag_events()

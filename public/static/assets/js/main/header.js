@@ -26,7 +26,24 @@ Hue.setup_header = function () {
     Hue.show_whispers()
   })
 
-  Hue.el("#header_lock_screen").addEventListener("click", function () {
-    Hue.lock_screen()
+  Hue.el("#header_notifications_enabled").addEventListener("click", function () {
+    Hue.toggle_notifications_enabled()
   })
+
+  Hue.set_notifications_enabled_icon()
+}
+
+// Apply notifications enabled icon
+Hue.set_notifications_enabled_icon = function () {
+  if (Hue.room_state.notifications_enabled) {
+    Hue.el("#header_notifications_enabled use").href.baseVal = "#icon_unlocked"
+  } else {
+    Hue.el("#header_notifications_enabled use").href.baseVal = "#icon_locked"
+  }
+}
+
+// Toggle notifications enabled
+Hue.toggle_notifications_enabled = function () {
+  Hue.room_state.notifications_enabled = !Hue.room_state.notifications_enabled
+  Hue.set_notifications_enabled_icon()
 }

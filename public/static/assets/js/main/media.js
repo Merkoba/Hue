@@ -409,7 +409,7 @@ Hue.change = function (args = {}) {
     item = Hue[`current_${args.type}`]()
   }
 
-  if (!Hue.has_focus || Hue.screen_locked) {
+  if (!Hue.has_focus) {
     if (args.notify && item.username !== Hue.username) {
       Hue.on_activity("media_change")
     }

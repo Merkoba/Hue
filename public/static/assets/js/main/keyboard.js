@@ -201,15 +201,6 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.screen_locked) {
-        if (e.key === "Enter" || e.key === "Escape") {
-          Hue.unlock_screen()
-          e.preventDefault()
-        }
-
-        return
-      }
-
       if (Hue.msg_confirm.is_open()) {
         if (Hue.msg_confirm.is_highest()) {
           if (e.key === "Enter" && !e.shiftKey) {
