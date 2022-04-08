@@ -1787,24 +1787,26 @@ a.special_link:hover {
 }
 
 .chat_quote {
-	display: flex;
-	flex-direction: row;
 	padding: 0.25em;
 	margin-bottom: 0.25em;
 	background-color: var(--altcolor_a);
 }
 
+.chat_quote * {
+	display: inline;
+}
+
 .chat_quote_profilepic {
 	width: var(--icon_size);
 	height: var(--icon_size);
-	margin-right: 0.5em;
 	cursor: pointer;
-	align-self: center;
+	align-self: flex-start;
+	vertical-align: top;
 }
 
 .chat_quote_username {
-	text-decoration: underline;
-	display: inline-block;
+	margin-left: 0.25em;
+	margin-right: 0.25rem;
 }
 
 .popup_message_text {

@@ -143,9 +143,10 @@ Hue.make_chat_message = function (args = {}) {
   let quote = Hue.el(".chat_quote", fmessage)
 
   if (args.quote) {
-    Hue.el(".chat_quote_text", quote).innerHTML = Hue.template_quote({
+    quote.innerHTML = Hue.template_chat_quote({
       username: args.quote_username,
-      quote: args.quote
+      quote: args.quote,
+      profilepic: Hue.get_profilepic(args.quote_user_id)
     })
 
     Hue.dataset(quote, "quote_username", args.quote_username)
@@ -159,8 +160,6 @@ Hue.make_chat_message = function (args = {}) {
         this.src = Hue.config.default_profilepic_url
       }
     })
-
-    quote_profilepic.src = Hue.get_profilepic(args.quote_user_id)
   } else {
     quote.style.display = "none"
   }
