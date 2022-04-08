@@ -1800,7 +1800,7 @@ a.special_link:hover {
 	width: var(--icon_size);
 	height: var(--icon_size);
 	vertical-align: top;
-	margin-right: 0.2rem;
+	margin-right: 0.1rem;
 }
 
 .popup_message_text {
@@ -2229,7 +2229,7 @@ pre {
 .media_info_profilepic {
 	width: var(--icon_size);
 	height: var(--icon_size);
-	margin-right: 0.5rem;
+	margin-right: 0.35rem;
 }
 
 #confirm_message {
