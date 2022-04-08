@@ -723,17 +723,23 @@ a.generic:hover {
 	background-color: var(--altbackground) !important;
 }
 
-.filter_input {
+.window_controls {
 	top: 0;
+	position: sticky;
+	margin-bottom: 1rem;
+	z-index: 99;
+	background-color: var(--background_color);
+}
+
+.filter_input {
 	width: 15rem;
 	border: 0.06rem solid grey;
 	font-size: 1rem;
 	text-align: center;
-	position: sticky;
-	z-index: 99;
-	margin-bottom: 1rem;
 	border-radius: 1.76rem;
 	outline: none;
+	margin-left: 0.35rem;
+	margin-right: 0.35rem;
 }
 
 .chat_search_result_item {

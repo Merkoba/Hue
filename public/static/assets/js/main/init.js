@@ -196,7 +196,7 @@ Hue.init = function () {
   Hue.setup_activity_bar()
   Hue.setup_reply()
   Hue.start_media_info()
-  Hue.start_modal_filters()
+  Hue.setup_window_controls()
   Hue.setup_confirm()
   Hue.start_timeago()
   Hue.setup_draw_image()

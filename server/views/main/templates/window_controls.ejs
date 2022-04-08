@@ -1,3 +1,7 @@
 <script id="template_window_controls" type="text/x-handlebars-template" class="template">
-  <input type="text" id="{{filter_id}}" class="filter_input" placeholder="Filter" data-mode="{{mode}}">
+  <div class="window_controls flex_row_center" data-parent-id="{{parent_id}}">
+    <svg class="window_to_bottom panel_icon action"><use href="#icon_arrow-down"></svg>
+    <input type="text" id="{{filter_id}}" class="filter_input" placeholder="Filter" data-mode="{{mode}}">
+    <svg class="window_to_top panel_icon action"><use href="#icon_arrow-up"></svg>
+  </div>
 </script>
