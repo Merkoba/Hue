@@ -168,10 +168,6 @@ Hue.setup_draw_image = function () {
     Hue.toggle_draw_color_picker()
   })
 
-  Hue.el("#draw_image_random").addEventListener("click", function () {
-    Hue.make_random_drawing()
-  })
-
   let select = ""
 
   for (let i=Hue.draw_image_pencil_size_step; i<=Hue.draw_image_max_pencil_size; i+=Hue.draw_image_pencil_size_step) {

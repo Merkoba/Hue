@@ -242,6 +242,11 @@ Hue.setup_media_pickers = function () {
     Hue.open_draw_image("image")
   })
 
+  Hue.el("#image_picker_random").addEventListener("click", function () {
+    Hue.msg_image_picker.close()
+    Hue.make_random_drawing("image")
+  })
+
   Hue.el("#image_picker_history").addEventListener("click", function () {
     Hue.msg_image_picker.close()
     Hue.show_image_history()
