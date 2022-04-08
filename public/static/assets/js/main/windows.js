@@ -501,6 +501,105 @@ Hue.start_msg = function () {
       chat_font_sizes: Hue.create_tweaks_chat_font_sizes()
     })
   )
+  
+  Hue.msg_message_board.set(
+    Hue.template_message_board({
+      window_controls: Hue.template_window_controls({
+        mode: "auto",
+        filter_id: "message_board_filter"
+      })
+    })
+  )
+
+  Hue.msg_admin_activity.set(
+    Hue.template_admin_activity({
+      window_controls: Hue.template_window_controls({
+        mode: "auto",
+        filter_id: "admin_activity_filter"
+      })
+    })
+  )
+
+  Hue.msg_command_book.set(
+    Hue.template_command_book({
+      window_controls: Hue.template_window_controls({
+        mode: "auto",
+        filter_id: "command_book_filter"
+      })
+    })
+  )
+
+  Hue.msg_image_picker.set(
+    Hue.template_image_picker({
+      window_controls: Hue.template_window_controls({
+        mode: "manual",
+        filter_id: "image_history_filter"
+      })
+    })
+  )
+
+  Hue.msg_tv_picker.set(
+    Hue.template_tv_picker({
+      window_controls: Hue.template_window_controls({
+        mode: "manual",
+        filter_id: "tv_history_filter"
+      })
+    })
+  )
+
+  Hue.msg_notifications.set(
+    Hue.template_notifications({
+      window_controls: Hue.template_window_controls({
+        mode: "auto",
+        filter_id: "notifications_filter"
+      })
+    })
+  )
+
+  Hue.msg_radio_window.set(
+    Hue.template_radio_window({
+      window_controls: Hue.template_window_controls({
+        mode: "auto",
+        filter_id: "radio_history_filter"
+      })
+    })
+  )
+
+  Hue.msg_roomlist.set(
+    Hue.template_roomlist({
+      window_controls: Hue.template_window_controls({
+        mode: "auto",
+        filter_id: "roomlist_filter"
+      })
+    })
+  )
+
+  Hue.msg_settings.set(
+    Hue.template_settings({
+      window_controls: Hue.template_window_controls({
+        mode: "auto",
+        filter_id: "settings_filter"
+      })
+    })
+  )
+
+  Hue.msg_userlist.set(
+    Hue.template_userlist({
+      window_controls: Hue.template_window_controls({
+        mode: "auto",
+        filter_id: "userlist_filter"
+      })
+    })
+  )
+
+  Hue.msg_whispers.set(
+    Hue.template_whispers({
+      window_controls: Hue.template_window_controls({
+        mode: "auto",
+        filter_id: "whispers_filter"
+      })
+    })
+  )
 
   Hue.msg_main_menu.set(Hue.template_main_menu())
   Hue.msg_room_config.set(Hue.template_room_config())
@@ -511,20 +610,13 @@ Hue.start_msg = function () {
   Hue.msg_admin_list.set(Hue.template_admin_list())
   Hue.msg_ban_list.set(Hue.template_ban_list())
   Hue.msg_open_room.set(Hue.template_open_room())
-  Hue.msg_roomlist.set(Hue.template_roomlist())
   Hue.msg_user_profile.set(Hue.template_user_profile())
-  Hue.msg_userlist.set(Hue.template_userlist())
-  Hue.msg_image_picker.set(Hue.template_image_picker())
   Hue.msg_link_image.set(Hue.template_link_image())
-  Hue.msg_tv_picker.set(Hue.template_tv_picker())
   Hue.msg_link_tv.set(Hue.template_link_tv())
   Hue.msg_write_whisper.set(Hue.template_write_whisper())
   Hue.msg_chat_search.set(Hue.template_chat_search())
   Hue.msg_modal_image.set(Hue.template_modal_image())
   Hue.msg_locked.set(Hue.template_locked_menu())
-  Hue.msg_notifications.set(Hue.template_notifications())
-  Hue.msg_whispers.set(Hue.template_whispers())
-  Hue.msg_admin_activity.set(Hue.template_admin_activity())
   Hue.msg_view_image.set(Hue.template_view_image())
   Hue.msg_image_upload_comment.set(Hue.template_image_upload_comment())
   Hue.msg_tv_upload_comment.set(Hue.template_tv_upload_comment())
@@ -534,19 +626,15 @@ Hue.start_msg = function () {
   Hue.msg_delete_messages.set(Hue.template_delete_messages())
   Hue.msg_open_url.set(Hue.template_open_url())
   Hue.msg_view_text.set(Hue.template_view_text())
-  Hue.msg_message_board.set(Hue.template_message_board())
   Hue.msg_profilepic_cropper.set(Hue.template_profilepic_cropper())
   Hue.msg_change_role.set(Hue.template_change_role())
   Hue.msg_change_username.set(Hue.template_change_username())
   Hue.msg_change_password.set(Hue.template_change_password())
-  Hue.msg_settings.set(Hue.template_settings())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_theme_picker.set(Hue.template_theme_picker())
   Hue.msg_background_peek.set(Hue.template_background_peek())
   Hue.msg_profilepic_preview.set(Hue.template_profilepic_preview())
   Hue.msg_draw_image.set(Hue.template_draw_image())
-  Hue.msg_radio_window.set(Hue.template_radio_window())
-  Hue.msg_command_book.set(Hue.template_command_book())
 
   Hue.msg_info.create()
   Hue.msg_info_autoclose.create()
