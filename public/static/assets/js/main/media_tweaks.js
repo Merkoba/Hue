@@ -72,6 +72,7 @@ Hue.setup_media_tweaks = function () {
   Hue.apply_media_percentages()
   Hue.apply_media_positions()
   Hue.change_media_layout()
+  Hue.set_media_tweaks_toggles()
 }
 
 // Percentages for media tweaks
@@ -142,4 +143,12 @@ Hue.apply_media_tweaks_defaults = function () {
   Hue.change_media_layout()
   Hue.apply_media_positions()
   Hue.refresh_media_tweaks()
+}
+// Set media tweaks toggles
+Hue.set_media_tweaks_toggles = function () {
+  let s = Hue.room_state.media_info_enabled ? "Disable Info" : "Enable Info"
+  Hue.el("#media_tweaks_toggle_info").textContent = s
+
+  s = Hue.room_state.chat_enabled ? "Disable Chat" : "Enable Chat"
+  Hue.el("#media_tweaks_toggle_chat").textContent = s
 }
