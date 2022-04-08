@@ -135,7 +135,7 @@ html {
 	height: var(--icon_size);
 }
 
-#modal_image_profilepic {
+.show_image_profilepic {
 	width: var(--icon_size);
 	height: var(--icon_size);
 	margin-right: 0.5rem;

@@ -400,10 +400,19 @@ Hue.setup_view_image = function () {
     Hue.load_media_link("image", Hue.view_image_source, "")
     Hue.msg_open_url.close()
   })
+
+  Hue.el("#view_image_profilepic").addEventListener("click", function (e) {
+    Hue.show_profile(Hue.view_image_username, Hue.view_image_user_id)
+  })
+
+  Hue.el("#view_image_username").addEventListener("click", function (e) {
+    Hue.show_profile(Hue.view_image_username, Hue.view_image_user_id)
+  })
 }
 
 // Shows a window with an image at full size
-Hue.view_image = function (src) {
+Hue.view_image = function (src, username, user_id) {
+  src = src.replace(".gifv", ".gif")
   Hue.el("#view_image").style.display = "none"
   Hue.el("#view_image_spinner").style.display = "block"
   Hue.el("#view_image_error").style.display = "none"
@@ -418,8 +427,18 @@ Hue.view_image = function (src) {
     Hue.apply_view_image_resolution(dummy_image, src)
   }
 
+  let profilepic = Hue.el("#view_image_profilepic")
+  profilepic.src = Hue.get_profilepic(user_id)
+  profilepic.addEventListener("error", function () {
+    Hue.fallback_profilepic(this)
+  })
+
+  Hue.el("#view_image_username").textContent = username
+
   dummy_image.src = src
   Hue.view_image_source = src
+  Hue.view_image_username = username
+  Hue.view_image_user_id = user_id
   Hue.msg_view_image.show()
 }
 
