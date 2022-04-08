@@ -1799,14 +1799,8 @@ a.special_link:hover {
 .chat_quote_profilepic {
 	width: var(--icon_size);
 	height: var(--icon_size);
-	cursor: pointer;
-	align-self: flex-start;
 	vertical-align: top;
-}
-
-.chat_quote_username {
-	margin-left: 0.25em;
-	margin-right: 0.25rem;
+	margin-right: 0.2rem;
 }
 
 .popup_message_text {
