@@ -408,6 +408,10 @@ Hue.setup_view_image = function () {
   Hue.el("#view_image_username").addEventListener("click", function (e) {
     Hue.show_profile(Hue.view_image_username, Hue.view_image_user_id)
   })
+
+  Hue.el("#view_image_subheader").addEventListener("click", function () {
+    Hue.open_view_text(this.textContent)
+  })
 }
 
 // Shows a window with an image at full size
