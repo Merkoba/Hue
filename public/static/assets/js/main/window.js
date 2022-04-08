@@ -64,10 +64,6 @@ Hue.activate_visibility_listener = function () {
 // This runs after a visibility change
 // Does things depending if the client is visible or not
 Hue.process_visibility = function () {
-  if (Hue.screen_locked) {
-    return false
-  }
-
   Hue.has_focus = !document.hidden
 
   if (Hue.has_focus) {

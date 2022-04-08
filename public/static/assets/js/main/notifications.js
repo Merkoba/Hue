@@ -162,6 +162,10 @@ Hue.show_action_notification = function (message, icon, f) {
 
 // Centralized function to show a popup
 Hue.show_popup = function (popup, html="") {
+  if (!Hue.room_state.notifications_enabled) {
+    return
+  }
+
   if (html) {
     popup.set(html)
   }

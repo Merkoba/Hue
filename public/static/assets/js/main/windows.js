@@ -12,13 +12,6 @@ msgvars.common = {
   class: "modal",
   show_effect: "none",
   close_effect: "none",
-  before_show: function (instance) {
-    if (Hue.screen_locked) {
-      if (instance.options.id !== "lockscreen") {
-        return false
-      }
-    }
-  },
   after_show: function (instance) {
     Hue.after_modal_show(instance)
     Hue.after_modal_set_or_show(instance)
@@ -149,13 +142,6 @@ Hue.start_msg = function () {
         msgvars.common.after_close(instance)
         Hue.clear_modal_image_info()
       },
-    })
-  )
-
-  Hue.msg_lockscreen = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.unclosable, {
-      id: "lockscreen",
-      preset: "window"
     })
   )
 
@@ -535,7 +521,6 @@ Hue.start_msg = function () {
   Hue.msg_write_whisper.set(Hue.template_write_whisper())
   Hue.msg_chat_search.set(Hue.template_chat_search())
   Hue.msg_modal_image.set(Hue.template_modal_image())
-  Hue.msg_lockscreen.set(Hue.template_lockscreen())
   Hue.msg_locked.set(Hue.template_locked_menu())
   Hue.msg_notifications.set(Hue.template_notifications())
   Hue.msg_whispers.set(Hue.template_whispers())
