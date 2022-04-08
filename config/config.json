@@ -116,7 +116,7 @@
 		{"name": "Anima Goa", "url": "http://amoris.sknt.ru/goa.mp3", "metadata": "https://amoris.sknt.ru/sc/5/stats.json"},
 		{"name": "Anima New Age", "url": "http://amoris.sknt.ru/newage.mp3", "metadata": "https://amoris.sknt.ru/sc/12/stats.json"},
 		{"name": "Anima DeepTech", "url": "http://amoris.sknt.ru/deeptech.mp3", "metadata": "https://amoris.sknt.ru/sc/9/stats.json"},
-		{"name": "Ruzafa", "url": "http://online.radioruzafa.com:8000/stream", "metadata": "http://online.radioruzafa.com:8000/status-json.xsl"}
+		{"name": "Ruzafa", "url": "http://online.radioruzafa.com:8000/stream", "metadata": "https://online.radioruzafa.com:8000/status-json.xsl"}
 	],
 	"radio_metadata_check_delay": 30000,
 	"radio_slide_delay": 1000,
