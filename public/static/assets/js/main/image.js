@@ -395,6 +395,11 @@ Hue.setup_view_image = function () {
   Hue.el("#view_image_toolbar_url").addEventListener("click", function () {
     Hue.open_view_text(Hue.view_image_source)
   })
+
+  Hue.el("#view_image_toolbar_link").addEventListener("click", function () {
+    Hue.load_media_link("image", Hue.view_image_source, "")
+    Hue.msg_open_url.close()
+  })
 }
 
 // Shows a window with an image at full size
