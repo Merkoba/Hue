@@ -2356,7 +2356,7 @@ pre {
 
 #radio_stations {
 	position: relative;
-	max-height: calc(100vh - 250px);
+	max-height: calc(100vh - 200px);
 	overflow-y: auto;
 	overflow-x: hidden;
 	margin-bottom: 1rem;
@@ -2370,10 +2370,6 @@ pre {
 	width: unset;
 	padding: unset;
 	margin: unset;
-}
-
-.radio_slide .radio_item_icon {
-	margin: 0.5rem;
 }
 
 .radio_slide .radio_content {
@@ -2392,8 +2388,7 @@ pre {
 	border: 1px solid var(--altcolor);
 	flex-grow: 0;
 	flex-shrink: 0;
-	padding: 0.25rem;
-	padding-right: 0.8rem;
+	padding-right: 0.5rem;
 	z-index: 1;
 }
 
@@ -2410,10 +2405,7 @@ pre {
 .radio_item_icon {
 	width: 20px;
 	height: 20px;
-	margin-left: 0.1rem;
-	margin-right: 0.35rem;
-	margin-top: 0.25rem;
-	margin-bottom: 0.25rem;
+	margin: 0.3rem;
 }
 
 .radio_button_separator {
@@ -2521,7 +2513,7 @@ pre {
 }
 
 .reduced_width {
-	width: calc(100% - 50px);
+	width: calc(100% - 40px);
 }
 
 #profilepic_preview_image {
