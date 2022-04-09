@@ -422,7 +422,7 @@ Hue.draw_image_add_click = function (x, y, dragging) {
 }
 
 // Turns the canvas drawing into a Blob and sends it to the server as an image upload
-Hue.upload_draw_image = function (canvas = "#draw_image_area", type = "drawing", name = "draw_image") {
+Hue.upload_draw_image = function (canvas = "#draw_image_area", type = "drawing", name = "drawing") {
   Hue.el(canvas).toBlob(
     function (blob) {
       blob.name = name + ".png"
@@ -638,5 +638,5 @@ Hue.make_random_drawing = function (target = "image") {
     backColor: Hue.colorlib.get_random_hex()
   })
   
-  Hue.upload_draw_image("#draw_random_canvas", "random_canvas", "random_image")
+  Hue.upload_draw_image("#draw_random_canvas", "random_canvas", "random")
 }
