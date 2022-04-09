@@ -688,18 +688,17 @@ Hue.do_radio_crossfade = function () {
     return
   }
 
-  let max_volume = Hue.room_state.radio_volume
-  let volmod = max_volume * 0.01
+  let volmod = Hue.room_state.radio_volume * 0.01
 
   Hue.radio_crossfade_interval = setInterval(function () {
     Hue.radio_crossfade_player_1.volume = Math.max(Hue.radio_crossfade_player_1.volume - volmod, 0)
     Hue.radio_crossfade_player_2.volume = Math.min(Hue.radio_crossfade_player_2.volume + volmod, 1)
 
     if (Hue.radio_crossfade_player_1.volume <= 0 && 
-      Hue.radio_crossfade_player_2.volume >= max_volume) {
+      Hue.radio_crossfade_player_2.volume >= Hue.room_state.radio_volume) {
       clearInterval(Hue.radio_crossfade_interval)
       Hue.radio_crossfade_player_1.volume = 0
-      Hue.radio_crossfade_player_2.volume = max_volume
+      Hue.radio_crossfade_player_2.volume = Hue.room_state.radio_volume
       Hue.radio_crossfade_player_1.pause()
       Hue.radio_crossfade_player_1 = undefined
       Hue.radio_crossfading = false
