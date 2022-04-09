@@ -1116,8 +1116,8 @@ Hue.hide_typing = function () {
   Hue.typing = false
 }
 
-// Gets the most recent chat message by user_id
-Hue.get_last_chat_message_by_user_id = function (ouser_id) {
+// Gets the most recent message by user_id
+Hue.get_last_message_by_user_id = function (ouser_id) {
   let items = Hue.els("#chat_area > .message")
 
   for (let item of items.reverse()) {
@@ -1154,7 +1154,7 @@ Hue.show_aura = function (id) {
 // Adds the aura class to the profile image of the latest chat message of a user
 // This class makes the profile image glow and rotate
 Hue.add_aura = function (id) {
-  let message = Hue.get_last_chat_message_by_user_id(id)
+  let message = Hue.get_last_message_by_user_id(id)
 
   if (message) {
     Hue.el(".chat_image", message).classList.add("aura")
