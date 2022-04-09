@@ -72,6 +72,10 @@ Hue.setup_message_board = function () {
   Hue.el("#message_board_publish").addEventListener("click", function () {
     Hue.submit_message_board_post()
   })
+
+  Hue.el("#message_board_user").addEventListener("click", function () {
+    Hue.show_message_board(`$user ${Hue.username}`)
+  })
 }
 
 // Do the message board edit
@@ -362,9 +366,13 @@ Hue.check_message_board_permissions = function () {
     }
     
     Hue.el("#message_board_input").style.display = "block"
+    Hue.el("#message_board_titlebar_admin").style.display = "flex"
+    Hue.el("#message_board_titlebar").style.display = "none"
   } else {
     Hue.el("#message_board_container").classList.remove("message_board_container_admin")
     Hue.el("#message_board_input").style.display = "none"
+    Hue.el("#message_board_titlebar_admin").style.display = "none"
+    Hue.el("#message_board_titlebar").style.display = "block"
   }
 }
 
