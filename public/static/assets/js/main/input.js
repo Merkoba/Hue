@@ -129,15 +129,6 @@ Hue.input_to_thirdperson = function (text) {
   Hue.process_input({message:`* ${text} *`})
 }
 
-// Clear input or restore last value
-Hue.check_clear_input = function () {
-  if (Hue.get_input()) {
-    Hue.remove_last_input_word()
-  } else if (Hue.last_input_text) {
-    Hue.change_input(Hue.last_input_text)
-  }
-}
-
 // Process user's input messages
 // Checks if it is a command and executes it
 // Or sends a chat message to the server
