@@ -651,6 +651,18 @@ Hue.commands = {
     },
     description: `Show the media tweaks window`,
   },
+  "imagehistory": {
+    action: (arg, ans) => {
+      Hue.show_image_history()
+    },
+    description: "Show the image history",
+  },
+  "tvhistory": {
+    action: (arg, ans) => {
+      Hue.show_tv_history()
+    },
+    description: "Show the tv history",
+  },  
 }
 
 // Commands reserved to superusers
