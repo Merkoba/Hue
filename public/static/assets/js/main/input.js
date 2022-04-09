@@ -132,7 +132,7 @@ Hue.input_to_thirdperson = function (text) {
 // Clear input or restore last value
 Hue.check_clear_input = function () {
   if (Hue.get_input()) {
-    Hue.clear_input()
+    Hue.remove_last_input_word()
   } else if (Hue.last_input_text) {
     Hue.change_input(Hue.last_input_text)
   }
@@ -197,4 +197,17 @@ Hue.process_input = function (args = {}) {
   if (args.clr_input) {
     Hue.clear_input()
   }
+}
+
+// Remove last input word
+Hue.remove_last_input_word = function () {
+  let input = Hue.el("#input")
+  let split = input.value.trimEnd().split(" ")
+  let new_value = split.slice(0, -1).join(" ") + " "
+  
+  if (new_value.trim() === "") {
+    new_value = ""
+  }
+
+  input.value = new_value
 }
