@@ -538,7 +538,7 @@ html {
 .brk_profilepic {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
-	opacity: 0.25;
+	opacity: 0.2;
 	outline: 1px solid var(--text_color);
 }
 
