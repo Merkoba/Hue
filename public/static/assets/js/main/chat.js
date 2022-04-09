@@ -1118,7 +1118,7 @@ Hue.hide_typing = function () {
 
 // Gets the most recent chat message by user_id
 Hue.get_last_chat_message_by_user_id = function (ouser_id) {
-  let items = Hue.els("#chat_area > .message.chat_message")
+  let items = Hue.els("#chat_area > .message")
 
   for (let item of items.reverse()) {
     let user_id = Hue.dataset(item, "user_id")
@@ -1157,7 +1157,7 @@ Hue.add_aura = function (id) {
   let message = Hue.get_last_chat_message_by_user_id(id)
 
   if (message) {
-    Hue.el(".chat_profilepic", message).classList.add("aura")
+    Hue.el(".chat_image", message).classList.add("aura")
   }
 
   let activity_bar_item = Hue.get_activity_bar_item_by_user_id(id)
@@ -1171,8 +1171,8 @@ Hue.add_aura = function (id) {
 Hue.remove_aura = function (id) {
   clearTimeout(Hue.aura_timeouts[id])
   
-  Hue.els(".chat_profilepic.aura").forEach(it => {
-    let message = it.closest(".chat_message")
+  Hue.els(".chat_image.aura").forEach(it => {
+    let message = it.closest(".message")
 
     if (message) {
       if (Hue.dataset(message, "user_id") === id) {

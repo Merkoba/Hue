@@ -454,7 +454,7 @@ html {
 	cursor: pointer;
 }
 
-.chat_profilepic.aura,
+.chat_image.aura,
 .activity_bar_profilepic.aura {
 	animation: spin 1s linear infinite;
 }
