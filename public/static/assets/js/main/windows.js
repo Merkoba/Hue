@@ -819,8 +819,9 @@ Hue.do_modal_filter = function (id = false) {
     }
 
     if (filter.startsWith("$user")) {
-      let match = first_arg === Hue.dataset(it, "username")
-
+      let username = Hue.dataset(it, "username")
+      let match = username && first_arg === username.toLowerCase()
+      
       if (match) {
         if (tail) {
           match = it.textContent.toLowerCase().includes(tail)
@@ -857,6 +858,18 @@ Hue.do_modal_filter = function (id = false) {
       first_arg = split[1]
       args = split.slice(1).join(" ")
       tail = split.slice(2).join(" ")
+
+      if (first_arg) {
+        first_arg = first_arg.toLowerCase()
+      }
+
+      if (args) {
+        args = args.toLowerCase()
+      }
+
+      if (tail) {
+        tail = tail.toLowerCase()
+      }
     }
     
     if (filter.startsWith("$user")) {
