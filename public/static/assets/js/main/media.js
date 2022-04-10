@@ -1033,6 +1033,7 @@ Hue.toggle_media_info = function () {
 Hue.set_default_media_info_enabled = function () {
   Hue.room_state.media_info_enabled = Hue.config.room_state_default_media_info_enabled
   Hue.check_media_info()
+  Hue.set_media_tweaks_toggles()
   Hue.save_room_state()
 }
 
