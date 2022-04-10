@@ -2308,3 +2308,7 @@ pre {
 .titlebar_action {
 	text-decoration: underline;
 }
+
+.user_details_input {
+	width: 18rem;
+}
