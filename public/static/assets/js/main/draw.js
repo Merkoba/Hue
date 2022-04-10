@@ -68,15 +68,6 @@ Hue.canvas_redraw = function (args = {}) {
 // Opens the draw image window
 Hue.open_draw_image = function (target) {
   Hue.draw_image_target = target
-  let title = "Draw Image"
-
-  if (target === "profilepic") {
-    title = "Draw Profile Image"
-  } else if (target === "background") {
-    title = "Draw Background"
-  }
-
-  Hue.msg_draw_image.set_title(title)
   Hue.msg_draw_image.show()
 }
 
