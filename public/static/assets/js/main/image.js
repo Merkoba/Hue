@@ -341,7 +341,7 @@ Hue.start_image_events = function () {
     Hue.el("#media_image_spinner").style.display = "none"
     Hue.el("#media_image_frame").style.display = "none"
     Hue.el("#media_image_error").style.display = "initial"
-    Hue.after_image_load()
+    Hue.apply_media_info("image")
   })
 
   Hue.el("#media_image_frame").style.height = 0
