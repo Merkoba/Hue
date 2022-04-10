@@ -573,7 +573,7 @@ Hue.setup_show_profile = function () {
   })
 
   Hue.el("#show_profile_posts").addEventListener("click", function () {
-    Hue.show_message_board(`$user ${Hue.open_profile_username}`)
+    Hue.show_message_board(`$user ${Hue.open_profile_username} `)
     Hue.msg_profile.close()
   })
 
