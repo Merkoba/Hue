@@ -277,10 +277,6 @@ Hue.show_message_board = function (filter = "") {
 
 // Submits a message board post
 Hue.submit_message_board_post = function () {
-  if (!Hue.is_admin_or_op()) {
-    return false
-  }
-
   let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#message_board_textarea").value).trim()
 
   if (!message || message.length > Hue.config.max_message_board_post_length) {
@@ -353,26 +349,6 @@ Hue.update_last_message_post_checked = function () {
   if (date !== Hue.room_state.last_message_board_post) {
     Hue.room_state.last_message_board_post = date
     Hue.save_room_state()
-  }
-}
-
-// Checks if the user can delete posts in the message board
-Hue.check_message_board_permissions = function () {
-  if (Hue.is_admin_or_op()) {
-    if (Hue.role === "admin") {
-      Hue.el("#message_board_container").classList.add("message_board_container_admin")
-    } else {
-      Hue.el("#message_board_container").classList.remove("message_board_container_admin")
-    }
-    
-    Hue.el("#message_board_input").style.display = "block"
-    Hue.el("#message_board_titlebar_admin").style.display = "flex"
-    Hue.el("#message_board_titlebar").style.display = "none"
-  } else {
-    Hue.el("#message_board_container").classList.remove("message_board_container_admin")
-    Hue.el("#message_board_input").style.display = "none"
-    Hue.el("#message_board_titlebar_admin").style.display = "none"
-    Hue.el("#message_board_titlebar").style.display = "block"
   }
 }
 
@@ -453,4 +429,10 @@ Hue.edit_message_board_post = function (post) {
   edit_btns.style.display = "flex"
   Hue.editing_message_board_post = post
   Hue.editing_message_board = true
+}
+
+// Show message board wait message
+Hue.show_message_board_wait_message = function (remaining) {
+  let c = Hue.utilz.time_components(remaining)
+  Hue.checkmsg(`Need to wait ${c.minutes} minutes and ${c.seconds} seconds`)
 }

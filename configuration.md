@@ -412,6 +412,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "roomlist_check_delay"
 >Update the rooms list every x ms.
 
+"message_board_wait_delay"
+>The amount of minutes to wait between message board posts for non admin users.
+
 
 ## Join Flags
 

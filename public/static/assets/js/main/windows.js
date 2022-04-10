@@ -625,17 +625,83 @@ Hue.start_msg = function () {
 
   // Set the titles
 
-  Hue.msg_chat_search.set_title(Hue.template_chat_search_titlebar())
-  Hue.msg_theme_picker.set_title(Hue.template_theme_picker_titlebar())
-  Hue.msg_profilepic_preview.set_title(Hue.template_profilepic_preview_titlebar())
-  Hue.msg_view_text.set_title(Hue.template_view_text_titlebar())
-  Hue.msg_handle_url.set_title(Hue.template_handle_url_titlebar())
-  Hue.msg_message_board.set_title(Hue.template_message_board_titlebar())
-  Hue.msg_link_image.set_title(Hue.template_link_image_titlebar())
-  Hue.msg_link_tv.set_title(Hue.template_link_tv_titlebar())
-  Hue.msg_draw_image.set_title(Hue.template_draw_image_titlebar())
-  Hue.msg_change_username.set_title(Hue.template_change_username_titlebar())
-  Hue.msg_change_password.set_title(Hue.template_change_password_titlebar())
+  Hue.msg_chat_search.set_title(Hue.template_titlebar({
+    items: [
+      {id: "chat_search_highlights", text: "Highlights"},
+      {id: "chat_search_links", text: "Links"},
+      {id: "chat_search_user", text: "User"},
+      {id: "chat_search_image", text: "Image"},
+      {id: "chat_search_tv", text: "TV"},
+    ]
+  }))
+
+  Hue.msg_theme_picker.set_title(Hue.template_titlebar({
+    items: [
+      {id: "theme_picker_random", text: "Random"},
+      {id: "theme_picker_peek", text: "Peek"},
+    ]
+  }))
+
+  Hue.msg_profilepic_preview.set_title(Hue.template_titlebar({
+    items: [
+      {id: "profilepic_preview_choose", text: "Re-Choose"},
+      {id: "profilepic_preview_confirm", text: "Confirm"},
+    ]
+  }))
+
+  Hue.msg_view_text.set_title(Hue.template_titlebar({
+    items: [
+      {id: "view_text_copy", text: "Copy To Clipboard"},
+    ]
+  }))
+
+  Hue.msg_handle_url.set_title(Hue.template_titlebar({
+    items: [
+      {id: "handle_url_chat", text: "Send To Chat"},
+      {id: "handle_url_image", text: "Change Image"},
+      {id: "handle_url_tv", text: "Change TV"},
+    ]
+  }))
+  Hue.msg_message_board.set_title(Hue.template_titlebar({
+    items: [
+      {id: "message_board_publish", text: "Publish"},
+      {id: "message_board_user", text: "User"},
+    ]
+  }))
+
+  Hue.msg_link_image.set_title(Hue.template_titlebar({
+    items: [
+      {id: "link_image_submit", text: "Submit Image"},
+    ]
+  }))
+
+  Hue.msg_link_tv.set_title(Hue.template_titlebar({
+    items: [
+      {id: "link_tv_submit", text: "Submit TV"},
+    ]
+  }))
+
+  Hue.msg_draw_image.set_title(Hue.template_titlebar({
+    items: [
+      {id: "draw_image_undo", text: "Undo"},
+      {id: "draw_image_redo", text: "Redo"},
+      {id: "draw_image_clear", text: "Clear"},
+      {id: "draw_image_upload", text: "Upload"},
+    ]
+  }))
+
+  Hue.msg_change_username.set_title(Hue.template_titlebar({
+    items: [
+      {id: "change_username_submit", text: "Change Username"},
+    ]
+  }))
+
+  Hue.msg_change_password.set_title(Hue.template_titlebar({
+    items: [
+      {id: "change_password_submit", text: "Change Password"},
+    ]
+  }))
+
   Hue.msg_background_peek.set_title("Background Peek")
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")

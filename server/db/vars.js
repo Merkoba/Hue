@@ -11,7 +11,7 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
   // Room and User versions
   // These must be increased by 1 when the schema changes
   vars.rooms_version = 88
-  vars.users_version = 55
+  vars.users_version = 57
 
   // Room schema definition
   // This is used to check types and fill defaults
@@ -68,7 +68,8 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       bio: { type: "string", default: "" },
       audioclip_version: { type: "number", default: 0 },
       modified: { type: "number", default: Date.now() },
-      version: { type: "number", default: 0 }
+      version: { type: "number", default: 0 },
+      last_message_board_post_date: {type: "number", default: 0}
     }
   } 
 }
