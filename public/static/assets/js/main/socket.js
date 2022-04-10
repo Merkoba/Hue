@@ -234,6 +234,9 @@ Hue.server_update_events = {
   },
   data_not_found: (data) => {
     Hue.checkmsg("Data couldn't be found")
+  },
+  message_board_wait: (data) => {
+    Hue.show_message_board_wait_message(data.remaining)
   }
 }
 
