@@ -1698,10 +1698,6 @@ a.special_link:hover {
 	margin-bottom: 1.5rem;
 }
 
-.details_change_submit {
-	margin-top: 1rem;
-}
-
 .details_inputbox {
 	display: flex;
 	flex-direction: column;
