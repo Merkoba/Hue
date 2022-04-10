@@ -284,6 +284,7 @@ Hue.submit_message_board_post = function () {
   }
 
   Hue.el("#message_board_textarea").value = ""
+  Hue.last_message_board_message = message
   Hue.socket_emit("message_board_post", { message: message })
 }
 
@@ -435,4 +436,5 @@ Hue.edit_message_board_post = function (post) {
 Hue.show_message_board_wait_message = function (remaining) {
   let c = Hue.utilz.time_components(remaining)
   Hue.checkmsg(`Need to wait ${c.minutes} minutes and ${c.seconds} seconds`)
+  Hue.el("#message_board_textarea").value = Hue.last_message_board_message
 }
