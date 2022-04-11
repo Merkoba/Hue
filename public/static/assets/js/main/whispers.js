@@ -103,7 +103,6 @@ Hue.write_whisper = function (usernames = [], type = "user") {
 
   Hue.msg_write_whisper.show(function () {
     Hue.el("#write_whisper_area").focus()
-    Hue.sending_whisper = false
   })
 
   if (usernames.length === 0) {
@@ -142,21 +141,13 @@ Hue.update_whisper_users = function (username) {
 // Submits the whisper window form
 // Handles different types of whispers
 Hue.submit_write_whisper = function () {
-  if (Hue.sending_whisper) {
-    return false
-  }
-
-  Hue.sending_whisper = true
-
   let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#write_whisper_area").value).trim()
   let diff = Hue.config.max_whispers_post_length - message.length
 
   if (diff === Hue.config.max_whispers_post_length) {
-    Hue.sending_whisper = false
     return false
   } else if (diff < 0) {
     Hue.checkmsg(`Character limit exceeded by ${Math.abs(diff)}`)
-    Hue.sending_whisper = false
     return false
   }
 
@@ -165,20 +156,13 @@ Hue.submit_write_whisper = function () {
 
   if (num_lines > Hue.config.max_num_newlines) {
     Hue.checkmsg("Too many linebreaks")
-    Hue.sending_whisper = false
     return false
   }
 
   let ans = Hue.send_whisper(message)
 
   if (ans) {
-    Hue.msg_write_whisper.close(function () {
-      Hue.sending_whisper = false
-    })
-
     Hue.el("#write_whisper_area").value = ""
-  } else {
-    Hue.sending_whisper = false
   }
 }
 
@@ -323,6 +307,10 @@ Hue.setup_whispers = function () {
   Hue.el("#start_write_whisper").addEventListener("click", function () {
     Hue.write_whisper([], "user")
   })
+
+  Hue.el("#whispers_clear").addEventListener("click", function () {
+    Hue.clear_whispers()
+  })
 }
 
 // Pushes a new whisper to the whispers window
@@ -428,4 +416,10 @@ Hue.make_whisper_user = function (user, mode, onclick) {
   user_el.addEventListener("click", onclick)
 
   return user_el
+}
+
+// Clear whispers
+Hue.clear_whispers = function () {
+  Hue.el("#whispers_container").innerHTML = ""
+  Hue.update_whispers_unread_count()
 }
