@@ -757,6 +757,12 @@ Hue.start_msg = function () {
     ]
   }))
 
+  Hue.msg_reply.set_title(Hue.template_titlebar({
+    items: [
+      {id: "reply_submit", text: ""},
+    ]
+  }))
+
   Hue.msg_background_peek.set_title("Background Peek")
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
@@ -770,7 +776,6 @@ Hue.start_msg = function () {
   Hue.msg_settings.set_title("User Settings")
   Hue.msg_media_tweaks.set_title("Media Tweaks")
   Hue.msg_admin_activity.set_title("Admin Activity")
-  Hue.msg_reply.set_title("Write a Reply")
   Hue.msg_notifications.set_title("Notifications")
   Hue.msg_change_role.set_title("Change Role")
   Hue.msg_confirm.set_title("Confirm Action")

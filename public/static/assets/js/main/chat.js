@@ -669,7 +669,8 @@ Hue.show_reply = function (id, username, user_id, text) {
   }
 
   Hue.old_reply_input_val = ""
-  Hue.msg_reply.set_title(`Re: ${username}`)
+  
+  Hue.el("#reply_submit").textContent =`Reply to ${username}`
 
   Hue.msg_reply.show(function () {
     Hue.el("#reply_input").focus()
