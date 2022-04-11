@@ -561,20 +561,6 @@ a.generic:hover {
 	white-space: nowrap;
 }
 
-.nice_input {
-	width: 18rem;
-	font-size: 1.1rem;
-	text-align: center;
-	border: 0.06rem solid grey;
-}
-
-.nice_input_2 {
-	width: 14rem;
-	font-size: 1.1rem;
-	text-align: center;
-	border: 0.06rem solid grey;
-}
-
 .user_items {
 	margin-top: -0.8rem;
 	margin-bottom: -0.8rem;
@@ -1081,8 +1067,7 @@ input[type=checkbox] {
 
 .setting_input_text,
 .setting_textarea,
-.nice_input,
-.nice_input_2 {
+.input1 {
 	padding: 0.2rem;
 }
 
@@ -1651,14 +1636,6 @@ a.special_link:hover {
 
 #open_room_new_tab {
 	margin-top: 1rem;
-}
-
-#goto_room_input {
-	margin-bottom: 1rem;
-}
-
-.media_link_input {
-	margin-bottom: 1rem;
 }
 
 #user_profile_change_buttons {
