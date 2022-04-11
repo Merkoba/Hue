@@ -309,7 +309,9 @@ Hue.setup_whispers = function () {
   })
 
   Hue.el("#whispers_clear").addEventListener("click", function () {
-    Hue.clear_whispers()
+    Hue.show_confirm("Clear Whispers", "Remove all items from the window", function () {
+      Hue.clear_whispers()
+    })
   })
 
   Hue.set_whispers_info()
