@@ -25,7 +25,6 @@ Hue.setup_input = function () {
   Hue.el("#input").addEventListener("click", function () {
     if (Hue.editing_message) {
       Hue.stop_edit_message()
-      Hue.check_scrollers()
     }
   })
 

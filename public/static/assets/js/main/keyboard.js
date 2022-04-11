@@ -31,7 +31,6 @@ Hue.activate_key_detection = function () {
         e.preventDefault()
       } else if (e.key === "Escape") {
         Hue.stop_edit_message()
-        Hue.check_scrollers()
         e.preventDefault()
       } else if (e.key === "ArrowUp") {
         let res = Hue.handle_edit_direction()
@@ -259,7 +258,6 @@ Hue.activate_key_detection = function () {
         Hue.submit_input()
       } else {
         Hue.goto_bottom(true)
-        Hue.check_scrollers()
       }
 
       e.preventDefault()
