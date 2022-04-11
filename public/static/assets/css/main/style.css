@@ -576,15 +576,15 @@ a.generic:hover {
 }
 
 .user_items {
-	margin-top: -1rem;
-	margin-bottom: -1rem;
+	margin-top: -0.8rem;
+	margin-bottom: -0.8rem;
 }
 
 .user_item {
 	overflow-wrap: break-word;
 	word-break: break-word;
 	display: inline-block;
-	margin: 1rem;
+	margin: 0.8rem;
 }
 
 .userlist_item_details_container {
