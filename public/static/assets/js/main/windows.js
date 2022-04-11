@@ -730,6 +730,27 @@ Hue.start_msg = function () {
     ]
   }))
 
+  Hue.msg_profilepic_cropper.set_title(Hue.template_titlebar({
+    items: [
+      {id: "profilepic_cropper_change", text: ""},
+      {id: "profilepic_cropper_crop", text: "Crop"},
+    ]
+  }))
+
+  Hue.msg_image_upload_comment.set_title(Hue.template_titlebar({
+    items: [
+      {id: "image_upload_comment_change", text: ""},
+      {id: "image_upload_comment_submit", text: "Upload"},
+    ]
+  }))
+
+  Hue.msg_tv_upload_comment.set_title(Hue.template_titlebar({
+    items: [
+      {id: "tv_upload_comment_change", text: "Re-Choose"},
+      {id: "tv_upload_comment_submit", text: "Upload"},
+    ]
+  }))
+
   Hue.msg_background_peek.set_title("Background Peek")
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
@@ -744,11 +765,8 @@ Hue.start_msg = function () {
   Hue.msg_settings.set_title("User Settings")
   Hue.msg_media_tweaks.set_title("Media Tweaks")
   Hue.msg_admin_activity.set_title("Admin Activity")
-  Hue.msg_image_upload_comment.set_title("Add a Comment")
-  Hue.msg_tv_upload_comment.set_title("Add a Comment")
   Hue.msg_reply.set_title("Write a Reply")
   Hue.msg_notifications.set_title("Notifications")
-  Hue.msg_profilepic_cropper.set_title("Crop A Circle")
   Hue.msg_change_role.set_title("Change Role")
   Hue.msg_confirm.set_title("Confirm Action")
   Hue.msg_image_picker.set_title("Image")
