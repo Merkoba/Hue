@@ -62,7 +62,6 @@ Hue.editing_message_area = document.createElement("div")
 Hue.editing_message_board = false
 Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 250
-Hue.sending_whisper = false
 Hue.chat_scrolled = false
 Hue.image_upload_comment_file = false
 Hue.tv_upload_comment_file = false
