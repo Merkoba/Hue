@@ -194,8 +194,3 @@ Hue.hide_flash_info = function () {
 Hue.get_element_sizes = function () {
   Hue.panel_height = Hue.el("#footer").offsetHeight
 }
-
-// Welcome flash info
-Hue.welcome_flash_info = function () {
-  Hue.flash_info("Welcome", "You have connected to the room")
-}

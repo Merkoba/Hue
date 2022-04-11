@@ -269,7 +269,6 @@ Hue.on_join = function (data) {
   Hue.update_activity_bar()
   Hue.setup_user_profile()
   Hue.setup_rooms()
-  Hue.welcome_flash_info()
 
   Hue.at_startup()
 }
@@ -300,6 +299,12 @@ Hue.at_startup = function () {
     if (d2 > d1) {
       Hue.on_activity("message")
     }
+
+    Hue.show_room_notification(
+      Hue.username,
+      "Re-connected",
+      "user"
+    )
   }
 
   Hue.check_latest_highlight()
