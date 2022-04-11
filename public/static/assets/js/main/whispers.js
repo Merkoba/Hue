@@ -311,6 +311,8 @@ Hue.setup_whispers = function () {
   Hue.el("#whispers_clear").addEventListener("click", function () {
     Hue.clear_whispers()
   })
+
+  Hue.set_whispers_info()
 }
 
 // Pushes a new whisper to the whispers window
@@ -420,6 +422,11 @@ Hue.make_whisper_user = function (user, mode, onclick) {
 
 // Clear whispers
 Hue.clear_whispers = function () {
-  Hue.el("#whispers_container").innerHTML = ""
+  Hue.set_whispers_info()
   Hue.update_whispers_unread_count()
+}
+
+// Set whispers info
+Hue.set_whispers_info = function () {
+  Hue.el("#whispers_container").innerHTML = Hue.template_whispers_info()
 }
