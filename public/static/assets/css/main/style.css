@@ -988,14 +988,6 @@ input[type=checkbox] {
 	height: 23.53rem;
 }
 
-#profilepic_cropper_buttons {
-	padding-top: 0.5rem;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-}
-
 .profilepic_cropper_button {
 	font-size: 1.1rem;
 }
@@ -1538,7 +1530,7 @@ a.special_link:hover {
 	max-width: 29.41rem;
 }
 
-.upload_comment_input {
+.upload_comment_name {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 }

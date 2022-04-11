@@ -556,13 +556,12 @@ Hue.show_tv_upload_comment = function (file, type) {
 
     Hue.el("#tv_upload_comment_video_preview").src = e.target.result
 
-    Hue.msg_tv_upload_comment.set_title(
-      `${Hue.utilz.slice_string_end(
+    let name = `${Hue.utilz.slice_string_end(
         file.name,
         20
       )} (${Hue.utilz.get_size_string(file.size, 2)})`
-    )
 
+    Hue.el("#tv_upload_name").textContent = name
     Hue.el("#Msg-titlebar-tv_upload_comment").title = file.name
 
     Hue.msg_tv_upload_comment.show(function () {
