@@ -753,7 +753,7 @@ Hue.start_msg = function () {
 
   Hue.msg_link_background.set_title(Hue.template_titlebar({
     items: [
-      {id: "link_background_submit", text: "Use This"},
+      {id: "link_background_submit", text: "Submit Background"},
     ]
   }))
 
