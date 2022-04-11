@@ -480,8 +480,7 @@ Hue.set_text_color = function (color) {
 // Setup background peek
 Hue.setup_background_peek = function () {
   Hue.el("#background_peek_peek").addEventListener("click", function () {
-    Hue.apply_background(Hue.background_peek_url)
-    Hue.hide_windows_temporarily()
+    Hue.do_background_peek()
   })
 
   Hue.el("#background_peek_choose").addEventListener("click", function () {
@@ -503,6 +502,13 @@ Hue.setup_background_peek = function () {
 
 // Show background peek
 Hue.show_background_peek = function () {
+  Hue.do_background_peek()
   Hue.msg_background_select.close()
   Hue.msg_background_peek.show()
+}
+
+// Do background peek
+Hue.do_background_peek = function () {
+  Hue.apply_background(Hue.background_peek_url)
+  Hue.hide_windows_temporarily()
 }
