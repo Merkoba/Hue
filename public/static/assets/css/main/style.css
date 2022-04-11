@@ -421,8 +421,8 @@ html {
 	flex-grow: 0;
 	flex-shrink: 0;
 	width: 2rem;
-	padding-left: 1rem;
-	padding-right: 1rem;
+	margin-left: 0.2rem;
+	margin-right: 0.2rem;
 	flex-basis: unset;
 }
 
