@@ -145,6 +145,9 @@ Hue.server_update_events = {
   whisper: (data) => {
     Hue.whisper_received(data)
   },
+  whisper_sent: (data) => {
+    Hue.whisper_sent(data)
+  },
   system_broadcast: (data) => {
     Hue.whisper_received(data)
   },

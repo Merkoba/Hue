@@ -172,7 +172,7 @@ Hue.init = function () {
   Hue.setup_modal_image()
   Hue.setup_footer()
   Hue.get_input_history()
-  Hue.setup_write_whisper()
+  Hue.setup_whispers()
   Hue.setup_autocomplete()
   Hue.setup_fonts()
   Hue.show_console_message()

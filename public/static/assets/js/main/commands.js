@@ -148,7 +148,7 @@ Hue.commands = {
   },
   "whisper": {
     action: (arg, ans) => {
-      Hue.process_write_whisper(arg, true)
+      Hue.process_write_whisper(arg)
     },
     description: `Opens a window to write a whisper to x user. If the argument contains the &gt; character it will use the inline method where the username is whatever is to the left of the &gt; and the message whatever is to the right of it, and send the message directly without using the window`,
   },
