@@ -69,6 +69,7 @@
 	"room_state_default_radio_volume": 1,
 	"room_state_default_radio_enabled": true,
 	"room_state_default_radio_dj_delay": 10,
+	"room_state_default_radio_dj_enabled": false,
 	"room_state_default_chat_font_size": 1,
 	"room_state_default_media_info_enabled": true,
 	"room_state_default_notifications_enabled": true,

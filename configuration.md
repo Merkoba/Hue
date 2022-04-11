@@ -170,6 +170,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_radio_dj_delay"
 >Change radio station automatically after x minutes if radio dj is on.
 
+"room_state_default_radio_dj_delay"
+>Whether the radio dj is enabled by default.
+
 "room_state_default_media_info_enabled"
 >Whether to show media info below image and tv.
 

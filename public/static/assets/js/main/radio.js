@@ -37,6 +37,7 @@ Hue.setup_radio = function () {
   Hue.slide_radio()
   Hue.change_radio_state(Hue.room_state.radio_enabled)
   Hue.setup_radio_window()
+  Hue.set_radio_dj_controls()
 }
 
 // Setup the radio window
@@ -117,7 +118,7 @@ Hue.play_radio = function (radio, crossfade = true, play = true) {
     crossfade = false
   }
 
-  if (Hue.radio_dj_on) {
+  if (Hue.room_state.radio_dj_enabled) {
     Hue.start_radio_dj_timeout()
   }
 
@@ -183,7 +184,7 @@ Hue.set_radio_player = function (radio) {
       return
     }
 
-    if (Hue.radio_is_playing() && Hue.radio_dj_on) {
+    if (Hue.radio_is_playing() && Hue.room_state.radio_dj_enabled) {
       Hue.play_random_radio()
     } else {
       Hue.stop_radio()
@@ -195,7 +196,7 @@ Hue.set_radio_player = function (radio) {
       return
     }
 
-    if (Hue.radio_is_playing() && Hue.radio_dj_on) {
+    if (Hue.radio_is_playing() && Hue.room_state.radio_dj_enabled) {
       Hue.play_random_radio()
     } else {
       Hue.stop_radio()
@@ -627,14 +628,12 @@ Hue.radio_playstop = function () {
 // Toggle the radio auto dj
 Hue.toggle_radio_dj = function (what) {
   if (what !== undefined) {
-    Hue.radio_dj_on = what
+    Hue.room_state.radio_dj_enabled = what
   } else {
-    Hue.radio_dj_on = !Hue.radio_dj_on
+    Hue.room_state.radio_dj_enabled = !Hue.room_state.radio_dj_enabled
   }
   
-  if (Hue.radio_dj_on) {
-    Hue.el("#radio_button_dj").classList.add("underlined")
-    
+  if (Hue.room_state.radio_dj_enabled) {
     if (!Hue.radio_is_playing()) {
       Hue.play_random_radio()
     } else {
@@ -642,11 +641,20 @@ Hue.toggle_radio_dj = function (what) {
     }
 
     Hue.radio_dj_flash_info()
+  } else {
+    Hue.stop_radio_dj_timeout()
+  }
+
+  Hue.set_radio_dj_controls()
+  Hue.save_room_state()
+}
+
+// Set radio dj style
+Hue.set_radio_dj_controls = function () {
+  if (Hue.room_state.radio_dj_enabled) {
     Hue.show_radio_dj_controls()
   } else {
-    Hue.el("#radio_button_dj").classList.remove("underlined")
     Hue.hide_radio_dj_controls()
-    Hue.stop_radio_dj_timeout()
   }
 }
 
@@ -660,7 +668,7 @@ Hue.start_radio_dj_timeout = function () {
   Hue.stop_radio_dj_timeout()
 
   Hue.radio_dj_timeout = setInterval(function () {
-    if (Hue.radio_dj_on && Hue.radio_is_playing()) {
+    if (Hue.room_state.radio_dj_enabled && Hue.radio_is_playing()) {
       Hue.play_random_radio()
     }
   }, Hue.room_state.radio_dj_delay * 60 * 1000)
@@ -728,11 +736,13 @@ Hue.show_radio_window = function () {
 // Show radio dj controls
 Hue.show_radio_dj_controls = function () {
   Hue.el("#radio_item_dj").style.display = "flex"
+  Hue.el("#radio_button_dj").classList.add("underlined")
 }
 
 // Hide radio dj controls
 Hue.hide_radio_dj_controls = function () {
   Hue.el("#radio_item_dj").style.display = "none"
+  Hue.el("#radio_button_dj").classList.remove("underlined")
 }
 
 // Create the dj controls
@@ -746,7 +756,7 @@ Hue.create_radio_dj_controls = function () {
     Hue.room_state.radio_dj_delay = parseInt(select.value)
     Hue.save_room_state()
 
-    if (Hue.radio_dj_on) {
+    if (Hue.room_state.radio_dj_enabled) {
       Hue.start_radio_dj_timeout()
       Hue.radio_dj_flash_info()
     }
