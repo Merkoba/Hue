@@ -1960,10 +1960,6 @@ pre {
 	justify-content: flex-start !important;
 }
 
-.show_whisper_container {
-	gap: 1rem;
-}
-
 .show_whisper_text {
 	white-space: pre-wrap;
 }

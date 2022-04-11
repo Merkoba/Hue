@@ -217,12 +217,17 @@ Hue.whisper_sent = function (data) {
 
 // Shows a whisper message
 Hue.show_whisper = function (data, mode) {
+  let container = Hue.el("#show_whisper_container")
   let users
 
   if (mode === "received") {
     users = [{username: data.username, user_id: data.user_id}]
+    Hue.dataset(container, "username", data.username)
+    Hue.dataset(container, "user_id", data.user_id)
   } else if (mode === "sent") {
     users = data.users
+    Hue.dataset(container, "username", Hue.username)
+    Hue.dataset(container, "user_id", Hue.user_id)
   }
 
   let users_el = Hue.el("#show_whisper_users")

@@ -586,6 +586,7 @@ Hue.start_chat_mouse_events = function () {
     if (e.target.classList.contains("whisper_link")) {
       let container = e.target.closest(".user_details")
       let username = Hue.dataset(container, "username")
+      Hue.msg_show_whisper.close()
       Hue.process_write_whisper(`${username} > ${e.target.dataset.whisper}`)
     }
   })
