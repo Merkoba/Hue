@@ -43,19 +43,23 @@ module.exports = function (Hue) {
       return false
     }
 
+    let users = []
+    let usernames = [...new Set(data.usernames)]
+
     if (data.type === "user") {
-      for (let username of data.usernames) {
+      for (let username of usernames) {
         let sockets = await Hue.handler.get_user_sockets_per_room_by_username(
           socket.hue_room_id,
           username
         )
   
         if (sockets.length > 0) {
+          users.push({
+            user_id: sockets[0].hue_user_id,
+            username: sockets[0].hue_username
+          })
+
           for (let socc of sockets) {
-            if (socc.id === socket.id) {
-              continue
-            }
-  
             Hue.handler.user_emit(socc, "whisper", {
               room: socket.hue_room_id,
               user_id: socket.hue_user_id,
@@ -68,6 +72,9 @@ module.exports = function (Hue) {
           Hue.handler.user_emit(socket, "user_not_in_room", {})
         }
       }
+
+      data.users = users
+      Hue.handler.user_emit(socket, "whisper_sent", data)
     } else if (data.type === "system_broadcast") {
       Hue.handler.system_emit(socket, "system_broadcast", {
         username: Hue.sconfig.system_username,

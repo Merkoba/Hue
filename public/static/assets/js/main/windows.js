@@ -268,6 +268,13 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_show_whisper = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "show_whisper",
+      window_width: "30rem"
+    })
+  )
+
   Hue.msg_chat_search = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "chat_search",
@@ -597,6 +604,7 @@ Hue.start_msg = function () {
   Hue.msg_link_image.set(Hue.template_link_image())
   Hue.msg_link_tv.set(Hue.template_link_tv())
   Hue.msg_write_whisper.set(Hue.template_write_whisper())
+  Hue.msg_show_whisper.set(Hue.template_show_whisper())
   Hue.msg_modal_image.set(Hue.template_modal_image())
   Hue.msg_locked.set(Hue.template_locked_menu())
   Hue.msg_view_image.set(Hue.template_view_image())
@@ -699,6 +707,19 @@ Hue.start_msg = function () {
   Hue.msg_change_password.set_title(Hue.template_titlebar({
     items: [
       {id: "change_password_submit", text: "Change Password"},
+    ]
+  }))
+
+  Hue.msg_write_whisper.set_title(Hue.template_titlebar({
+    items: [
+      {id: "write_whisper_send", text: "Send"},
+      {id: "write_whisper_add_user", text: "Add"},
+    ]
+  }))
+
+  Hue.msg_show_whisper.set_title(Hue.template_titlebar({
+    items: [
+      {id: "show_whisper_write", text: "Write"},
     ]
   }))
 
@@ -1007,31 +1028,6 @@ Hue.create_popup = function (args = {}, ptype = "unset") {
   let popup = Msg.factory(args)
   popup.hue_type = ptype
   return popup
-}
-
-// Creates a Msg modal
-Hue.create_modal = function (args = {}, ptype = "unset") {
-  if (!args.id) {
-    Hue.modal_id += 1
-    args.id = `modal_${Hue.modal_id}`
-  }
-
-  let def_args = {
-    class: "modal",
-    clear_editables: true,
-    show_effect: "none",
-    close_effect: "none",
-    enable_titlebar: true,
-    center_titlebar: true,
-    titlebar_class: "!custom_titlebar",
-    window_inner_x_class: "!titlebar_inner_x",
-    remove_after_close: true
-  }
-
-  args = Object.assign(def_args, args)
-  let modal = Msg.factory(args)
-  modal.hue_type = ptype
-  return modal
 }
 
 // Determines what to do after a 'close all modals' trigger
