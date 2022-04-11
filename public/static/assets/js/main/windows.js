@@ -723,6 +723,12 @@ Hue.start_msg = function () {
     ]
   }))
 
+  Hue.msg_whispers.set_title(Hue.template_titlebar({
+    items: [
+      {id: "start_write_whisper", text: "Write"},
+    ]
+  }))
+
   Hue.msg_background_peek.set_title("Background Peek")
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
@@ -741,7 +747,6 @@ Hue.start_msg = function () {
   Hue.msg_tv_upload_comment.set_title("Add a Comment")
   Hue.msg_reply.set_title("Write a Reply")
   Hue.msg_notifications.set_title("Notifications")
-  Hue.msg_whispers.set_title("Whispers")
   Hue.msg_profilepic_cropper.set_title("Crop A Circle")
   Hue.msg_change_role.set_title("Change Role")
   Hue.msg_confirm.set_title("Confirm Action")
