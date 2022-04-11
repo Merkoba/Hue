@@ -78,19 +78,13 @@ Hue.send_inline_whisper = function (arg) {
 Hue.write_whisper = function (usernames = [], type = "user") {
   let c_usernames = []
 
-  if (usernames.length === 0) {
-    if (type === "user") {
+  for (let u of usernames) {
+    let cu = Hue.check_user_in_room(u)
+    
+    if (cu) {
+      c_usernames.push(cu)
+    } else {
       return false
-    }
-  } else {
-    for (let u of usernames) {
-      let cu = Hue.check_user_in_room(u)
-      
-      if (cu) {
-        c_usernames.push(cu)
-      } else {
-        return false
-      }
     }
   }
 
@@ -111,6 +105,10 @@ Hue.write_whisper = function (usernames = [], type = "user") {
     Hue.el("#write_whisper_area").focus()
     Hue.sending_whisper = false
   })
+
+  if (usernames.length === 0) {
+    Hue.show_userlist_window("whisper")
+  }
 }
 
 // Updates the user receivers in the whisper window after picking a username in the user list
@@ -118,10 +116,6 @@ Hue.update_whisper_users = function (username) {
   if (!Hue.whisper_users.includes(username)) {
     Hue.whisper_users.push(username)
   } else {
-    if (Hue.whisper_users.length === 1) {
-      return false
-    }
-
     for (let i = 0; i < Hue.whisper_users.length; i++) {
       let u = Hue.whisper_users[i]
 
@@ -321,6 +315,10 @@ Hue.setup_whispers = function () {
     } else {
       Hue.write_whisper([Hue.show_whisper_data.username], "user")
     }
+  })
+
+  Hue.el("#start_write_whisper").addEventListener("click", function () {
+    Hue.write_whisper([], "user")
   })
 }
 
