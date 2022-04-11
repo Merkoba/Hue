@@ -472,7 +472,6 @@ Hue.insert_message = function (args = {}) {
     Hue.goto_bottom()
 
     if (Hue.chat_scrolled) {
-      Hue.check_scrollers()
       Hue.update_scroll_percentage()
     }
 
@@ -552,7 +551,6 @@ Hue.start_chat_mouse_events = function () {
           Hue.send_edit_messsage()
         } else if (e.target.classList.contains("message_edit_cancel")) {
           Hue.stop_edit_message()
-          Hue.check_scrollers()
         } else if (e.target.classList.contains("chat_quote_text")) {
           let quote = e.target.closest(".chat_quote")
           let id = Hue.dataset(quote, "quote_id")
@@ -843,8 +841,6 @@ Hue.edit_message = function (container) {
   area.scrollIntoView({
     block: "center"
   })
-
-  Hue.check_scrollers()
 }
 
 // Stops chat message editing
@@ -1523,7 +1519,7 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
 // Starts chat area scroll events
 Hue.scroll_events = function () {
   Hue.el("#chat_area").addEventListener("scroll", function (e) {
-    if (!Hue.chat_scrolled) {
+    if (!Hue.top_scroller_visible || !Hue.bottom_scroller_visible) {
       Hue.check_scrollers()
     } else {
       Hue.scroll_timer()
@@ -1763,7 +1759,6 @@ Hue.public_feedback = function (message, data = false) {
 Hue.setup_chat = function () {
   Hue.el("#top_scroller").addEventListener("click", function () {
     Hue.goto_top()
-    Hue.check_scrollers()
   })
 
   Hue.el("#activity_up_scroller").addEventListener("click", function () {
@@ -1773,7 +1768,6 @@ Hue.setup_chat = function () {
   Hue.el("#bottom_scroller").addEventListener("click", function () {
     Hue.stop_edit_message()
     Hue.goto_bottom(true)
-    Hue.check_scrollers()
   })
 
   Hue.el("#activity_down_scroller").addEventListener("click", function () {
