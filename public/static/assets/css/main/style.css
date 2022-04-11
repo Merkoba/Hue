@@ -575,12 +575,16 @@ a.generic:hover {
 	border: 0.06rem solid grey;
 }
 
+.user_items {
+	margin-top: -1rem;
+	margin-bottom: -1rem;
+}
+
 .user_item {
 	overflow-wrap: break-word;
 	word-break: break-word;
 	display: inline-block;
-	padding-left: 1rem;
-	padding-right: 1rem;
+	margin: 1rem;
 }
 
 .userlist_item_details_container {
