@@ -102,7 +102,7 @@ Hue.write_whisper = function (usernames = [], type = "user") {
   }
 
   Hue.msg_write_whisper.show(function () {
-    Hue.el("#write_whisper_area").focus()
+    Hue.focus_write_whisper()
   })
 
   if (usernames.length === 0) {
@@ -136,6 +136,7 @@ Hue.update_whisper_users = function (username) {
   }
   
   Hue.msg_userlist.close()
+  Hue.focus_write_whisper()
 }
 
 // Submits the whisper window form
@@ -163,6 +164,7 @@ Hue.submit_write_whisper = function () {
 
   if (ans) {
     Hue.el("#write_whisper_area").value = ""
+    Hue.msg_write_whisper.close()
   }
 }
 
@@ -431,4 +433,9 @@ Hue.clear_whispers = function () {
 // Set whispers info
 Hue.set_whispers_info = function () {
   Hue.el("#whispers_container").innerHTML = Hue.template_whispers_info()
+}
+
+// Focus write whisper
+Hue.focus_write_whisper = function () {
+  Hue.el("#write_whisper_area").focus()
 }
