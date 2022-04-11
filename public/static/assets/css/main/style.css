@@ -390,6 +390,8 @@ html {
 	display: flex;
 	flex-direction: row;
 	visibility: hidden;
+	color: var(--text_color);
+	background-color: var(--altbackground_a);
 }
 
 .top_scroller_container {
@@ -411,8 +413,6 @@ html {
 	padding-left: 2rem;
 	padding-right: 2rem;
 	border: 0.06rem solid var(--altcolor_a);
-	background-color: var(--altbackground_a);
-	color: var(--text_color);
 	flex-grow: 1;
 	flex-basis: 50%;
 }
@@ -421,8 +421,8 @@ html {
 	flex-grow: 0;
 	flex-shrink: 0;
 	width: 2rem;
-	margin-left: 0.2rem;
-	margin-right: 0.2rem;
+	margin-left: 0.25rem;
+	margin-right: 0.25rem;
 	flex-basis: unset;
 }
 
