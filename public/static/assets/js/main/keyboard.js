@@ -121,10 +121,10 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.msg_background_input.is_open()) {
-        if (Hue.msg_background_input.is_highest()) {
+      if (Hue.msg_link_background.is_open()) {
+        if (Hue.msg_link_background.is_highest()) {
           if (e.key === "Enter") {
-            Hue.background_input_action()
+            Hue.link_background_action()
             e.preventDefault()
           }
 
