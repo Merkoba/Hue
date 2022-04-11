@@ -131,7 +131,7 @@ Hue.update_whisper_users = function (username) {
 
   for (let username of Hue.whisper_users) {
     let user = Hue.get_user_by_username(username)
-    users_el.append(Hue.make_whisper_user(user, function () {
+    users_el.append(Hue.make_whisper_user(user, "sent", function () {
       Hue.update_whisper_users(username)
     }))
   }
@@ -212,23 +212,26 @@ Hue.whisper_sent = function (data) {
 // Shows a whisper message
 Hue.show_whisper = function (data, mode) {
   let container = Hue.el("#show_whisper_container")
+  let write_button = Hue.el("#show_whisper_write")
   let users
 
   if (mode === "received") {
     users = [{username: data.username, user_id: data.user_id}]
     Hue.dataset(container, "username", data.username)
     Hue.dataset(container, "user_id", data.user_id)
+    write_button.textContent = "Reply"
   } else if (mode === "sent") {
     users = data.users
     Hue.dataset(container, "username", Hue.username)
     Hue.dataset(container, "user_id", Hue.user_id)
+    write_button.textContent = "Write Again"
   }
 
   let users_el = Hue.el("#show_whisper_users")
   users_el.innerHTML = ""
 
   for (let user of users) {
-    users_el.append(Hue.make_whisper_user(user, function () {
+    users_el.append(Hue.make_whisper_user(user, mode, function () {
       Hue.show_profile(user.username, user.user_id)
     }))
   }
@@ -405,7 +408,7 @@ Hue.get_unread_whispers = function () {
 }
 
 // Make whisper user
-Hue.make_whisper_user = function (user, onclick) {
+Hue.make_whisper_user = function (user, mode, onclick) {
   let user_el = Hue.div("user_item")
   user_el.innerHTML = Hue.template_whisper_user()
   let profilepic = Hue.el(".show_whisper_profilepic", user_el)
@@ -417,6 +420,10 @@ Hue.make_whisper_user = function (user, onclick) {
 
   let username_el = Hue.el(".show_whisper_username", user_el)
   username_el.textContent = user.username
+
+  if (mode === "received") {
+    username_el.textContent += " says:"
+  }
 
   user_el.addEventListener("click", onclick)
 

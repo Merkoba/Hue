@@ -712,8 +712,8 @@ Hue.start_msg = function () {
 
   Hue.msg_write_whisper.set_title(Hue.template_titlebar({
     items: [
-      {id: "write_whisper_send", text: "Send"},
       {id: "write_whisper_add_user", text: "Add"},
+      {id: "write_whisper_send", text: "Send"},
     ]
   }))
 
