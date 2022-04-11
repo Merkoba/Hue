@@ -1608,6 +1608,7 @@ Hue.check_scrollers = function (threshold = 5) {
 // Scrolls the chat to the top
 Hue.goto_top = function () {
   Hue.scroll_chat_to(0)
+  Hue.hide_top_scroller()
 }
 
 // Scrolls the chat to the bottom
