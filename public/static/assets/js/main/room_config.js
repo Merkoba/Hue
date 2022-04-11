@@ -62,7 +62,7 @@ Hue.setup_room_config = function () {
 
   Hue.setup_background_peek()
   Hue.setup_background_select()
-  Hue.setup_background_input()
+  Hue.setup_link_background()
   Hue.setup_theme_picker()
 }
 
@@ -146,7 +146,7 @@ Hue.setup_background_select = function () {
   
   Hue.el("#background_select_link").addEventListener("click", function () {
     Hue.msg_background_select.close()
-    Hue.open_background_input()
+    Hue.open_link_background()
   })
 
   Hue.el("#background_select_remove").addEventListener("click", function () {
@@ -161,16 +161,16 @@ Hue.setup_background_select = function () {
 }
 
 // Setup background input
-Hue.setup_background_input = function () {
-  Hue.el("#background_input_submit").addEventListener("click", function () {
-    Hue.background_input_action()
+Hue.setup_link_background = function () {
+  Hue.el("#link_background_submit").addEventListener("click", function () {
+    Hue.link_background_action()
   })
 }
 
 // Setup background input
-Hue.open_background_input = function () {
-  Hue.el("#background_input_text").value = ""
-  Hue.msg_background_input.show(function () {
-    Hue.el("#background_input_text").focus()
+Hue.open_link_background = function () {
+  Hue.el("#link_background_input").value = ""
+  Hue.msg_link_background.show(function () {
+    Hue.el("#link_background_input").focus()
   })
 }

@@ -333,8 +333,8 @@ Hue.open_background_picker = function () {
 }
 
 // On background image source input change
-Hue.background_input_action = function () {
-  let src = Hue.el("#background_input_text").value.trim()
+Hue.link_background_action = function () {
+  let src = Hue.el("#link_background_input").value.trim()
 
   if (!src) {
     return
@@ -346,7 +346,7 @@ Hue.background_input_action = function () {
     Hue.change_background_source(src)
   }
 
-  Hue.msg_background_input.close()
+  Hue.msg_link_background.close()
   Hue.show_background_peek()
 }
 

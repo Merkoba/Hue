@@ -77,9 +77,9 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_background_input = Msg.factory(
+  Hue.msg_link_background = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "background_input"
+      id: "link_background"
     })
   )
 
@@ -596,7 +596,7 @@ Hue.start_msg = function () {
   Hue.msg_background_select.set(Hue.template_background_select())
   Hue.msg_profilepic_select.set(Hue.template_profilepic_select())
   Hue.msg_audioclip_select.set(Hue.template_audioclip_select())
-  Hue.msg_background_input.set(Hue.template_background_input())
+  Hue.msg_link_background.set(Hue.template_link_background())
   Hue.msg_admin_list.set(Hue.template_admin_list())
   Hue.msg_ban_list.set(Hue.template_ban_list())
   Hue.msg_open_room.set(Hue.template_open_room())
@@ -751,13 +751,18 @@ Hue.start_msg = function () {
     ]
   }))
 
+  Hue.msg_link_background.set_title(Hue.template_titlebar({
+    items: [
+      {id: "link_background_submit", text: "Use This"},
+    ]
+  }))
+
   Hue.msg_background_peek.set_title("Background Peek")
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_background_select.set_title("Background Image")
   Hue.msg_profilepic_select.set_title("Profile Image")
   Hue.msg_audioclip_select.set_title("Audio Clip")
-  Hue.msg_background_input.set_title("Change Background")
   Hue.msg_admin_list.set_title("Admin List")
   Hue.msg_ban_list.set_title("Ban List")
   Hue.msg_open_room.set_title("Open Room")
