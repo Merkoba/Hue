@@ -386,6 +386,7 @@ Hue.show_userlist_window = function (mode = "normal", filter = "") {
 
   if (mode === "normal") {
     Hue.update_usercount()
+    Hue.update_userlist_window()
   } else if (mode === "whisper") {
     Hue.msg_userlist.set_title("Add User")
     Hue.update_userlist_window(Hue.whisper_users)
