@@ -353,11 +353,15 @@ Hue.link_background_action = function () {
 // On background image selected for upload
 Hue.background_selected = function (file) {
   if (!file) {
-    return false
+    return
   }
 
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
+  }
+
+  if (!Hue.utilz.is_image(file.name)) {
+    return
   }
 
   for (let date in Hue.files) {
