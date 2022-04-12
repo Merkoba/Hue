@@ -716,35 +716,35 @@ Hue.start_msg = function () {
 
   Hue.msg_show_whisper.set_title(Hue.template_titlebar({
     items: [
-      {id: "show_whisper_write", text: "Write"},
+      {id: "show_whisper_write", text: ""},
     ]
   }))
 
   Hue.msg_whispers.set_title(Hue.template_titlebar({
     items: [
-      {id: "start_write_whisper", text: "Write"},
-      {id: "whispers_clear", text: "Clear"},
+      {id: "start_write_whisper", text: "New Whisper"},
+      {id: "whispers_clear", text: "Clear Window"},
     ]
   }))
 
   Hue.msg_profilepic_cropper.set_title(Hue.template_titlebar({
     items: [
       {id: "profilepic_cropper_change", text: ""},
-      {id: "profilepic_cropper_crop", text: "Crop"},
+      {id: "profilepic_cropper_crop", text: "Crop Circle"},
     ]
   }))
 
   Hue.msg_image_upload_comment.set_title(Hue.template_titlebar({
     items: [
       {id: "image_upload_comment_change", text: ""},
-      {id: "image_upload_comment_submit", text: "Upload"},
+      {id: "image_upload_comment_submit", text: "Upload Image"},
     ]
   }))
 
   Hue.msg_tv_upload_comment.set_title(Hue.template_titlebar({
     items: [
       {id: "tv_upload_comment_change", text: "Re-Choose"},
-      {id: "tv_upload_comment_submit", text: "Upload"},
+      {id: "tv_upload_comment_submit", text: "Upload TV"},
     ]
   }))
 
@@ -756,7 +756,7 @@ Hue.start_msg = function () {
 
   Hue.msg_reply.set_title(Hue.template_titlebar({
     items: [
-      {id: "reply_submit", text: "Send"},
+      {id: "reply_submit", text: "Send Reply"},
     ]
   }))
 

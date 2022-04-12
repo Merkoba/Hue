@@ -223,8 +223,13 @@ Hue.show_whisper = function (data, mode) {
   }
 
   Hue.show_whisper_data = data
+
   let message_html = Hue.utilz.make_html_safe(data.message)
   message_html = Hue.parse_text(message_html)
+
+  if (mode === "sent") {
+    message_html = `<div class="show_whisper_detail">You said:</div>${message_html}`
+  }
 
   let text_el = Hue.el("#show_whisper_text")
   text_el.innerHTML = message_html

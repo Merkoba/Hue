@@ -1904,6 +1904,11 @@ pre {
 	white-space: pre-wrap;
 }
 
+.show_whisper_detail {
+	text-decoration: underline;
+	margin-bottom: 1rem;
+}
+
 .bg0 {
 	background-color: var(--background_color);
 }
