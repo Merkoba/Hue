@@ -32,12 +32,6 @@ msgvars.titlebar = {
   window_inner_x_class: "!titlebar_inner_x",
 }
 
-msgvars.unclosable = {
-  window_x: "none",
-  close_on_escape: false,
-  close_on_overlay_click: false
-}
-
 // Starts and configures all Msg modal instances
 Hue.start_msg = function () {
   // Start the instances
@@ -444,8 +438,12 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_confirm = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, msgvars.unclosable, {
-      id: "confirm"
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "confirm",
+      after_close: function (instance) {
+        msgvars.common.after_close(instance)
+        Hue.on_confirm_cancel()
+      }
     })
   )
 
@@ -460,8 +458,12 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_background_peek = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, msgvars.unclosable, {
-      id: "background_peek"
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "background_peek",
+      after_close: function (instance) {
+        msgvars.common.after_close(instance)
+        Hue.apply_background()
+      }
     })
   )
 
@@ -760,7 +762,6 @@ Hue.start_msg = function () {
 
   Hue.msg_confirm.set_title(Hue.template_titlebar({
     items: [
-      {id: "confirm_button_cancel", text: "Cancel"},
       {id: "confirm_button_confirm", text: "Confirm"},
     ]
   }))

@@ -79,10 +79,6 @@ Hue.setup_confirm = function () {
   Hue.el("#confirm_button_confirm").addEventListener("click", function () {
     Hue.on_confirm()
   })
-
-  Hue.el("#confirm_button_cancel").addEventListener("click", function () {
-    Hue.on_confirm_cancel()
-  })
 }
 
 // Shows the confirm window
