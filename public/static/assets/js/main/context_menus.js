@@ -50,7 +50,7 @@ Hue.start_chat_menu_context_menu = function () {
       items.push({
         text: "Hide",
         action: function () {
-          Hue.show_confirm("Hide Message", "This won't delete it", function () {
+          Hue.show_confirm("Hide message. This won't delete it", function () {
             Hue.remove_message_from_context_menu(e.target)
           })          
         }

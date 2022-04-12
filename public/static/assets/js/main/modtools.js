@@ -4,7 +4,7 @@ Hue.ban_user_id = function (user_id) {
     return
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("ban_user_id", {user_id: user_id})
   })
 }
@@ -15,7 +15,7 @@ Hue.unban_user_id = function (user_id) {
     return
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("unban_user_id", {user_id: user_id})
   })
 }
@@ -26,7 +26,7 @@ Hue.ban_username = function (username) {
     return
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("ban_username", {username: username})
   })
 }
@@ -37,7 +37,7 @@ Hue.unban_username = function (username) {
     return
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("unban_username", {username: username})
   })
 }
@@ -48,7 +48,7 @@ Hue.ban_ip_address = function (ip_address) {
     return
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("ban_ip_address", {ip_address: ip_address})
   })
 }
@@ -59,7 +59,7 @@ Hue.unban_ip_address = function (ip_address) {
     return
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("unban_ip_address", {ip_address: ip_address})
   })
 }
@@ -70,7 +70,7 @@ Hue.get_user_id_by_username = function (username) {
     return
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("get_user_id_by_username", {username: username})
   })
 }
@@ -81,7 +81,7 @@ Hue.get_username_by_user_id = function (user_id) {
     return
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("get_username_by_user_id", {user_id: user_id})
   })
 }
@@ -92,7 +92,7 @@ Hue.get_ip_address_by_username = function (username) {
     return
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("get_ip_address_by_username", {username: username})
   })
 }
@@ -118,7 +118,7 @@ Hue.disconnect_user = function (username) {
     return
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("disconnect_user", {username: username})
   })
 }

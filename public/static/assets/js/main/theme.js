@@ -121,7 +121,7 @@ Hue.apply_selected_theme = function () {
     return
   }
 
-  Hue.show_confirm("Change Theme", "Apply selected theme", function () {
+  Hue.show_confirm("Apply selected theme", function () {
     Hue.change_background_color(bg_color)
     Hue.change_text_color(text_color)    
   }, function () {

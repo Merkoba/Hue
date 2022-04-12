@@ -231,24 +231,25 @@ Hue.show_ban_list = function (data) {
   container.innerHTML = ""
 
   for (let user of data.list) {
-    let el = Hue.div("ban_list_item")
+    let el = Hue.div("ban_list_item flex_row_center")
     el.innerHTML = Hue.template_ban_list_item()
-
+    
     let username = Hue.el(".ban_list_username", el)
     username.textContent = user.username
-
+    
     username.addEventListener("click", function () {
       Hue.show_profile(user.username, user.user_id)
     })
-
+    
     let unban = Hue.el(".ban_list_unban", el)
-
+    
     unban.addEventListener("click", function () {
-      Hue.show_confirm(`Unban ${user.username}`, "", function () {
+      Hue.show_confirm(`Unban ${user.username}`, function () {
         Hue.unban(user.username)
       })     
     })
-
+    
+    Hue.horizontal_separator(el)
     container.append(el)
   }
 

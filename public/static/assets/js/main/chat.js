@@ -926,7 +926,7 @@ Hue.delete_message = function (id) {
     return false
   }
 
-  Hue.show_confirm("Delete Message", "Delete message from the chat log", function () {
+  Hue.show_confirm("Delete message from the chat log", function () {
     Hue.socket_emit("delete_message", {
       id: id
     })
@@ -939,7 +939,7 @@ Hue.delete_message_group = function (id) {
     return false
   }
 
-  Hue.show_confirm("Delete Messages", "Delete message group", function () {
+  Hue.show_confirm("Delete message group", function () {
     let message = Hue.get_message_by_id(id)[0].closest(".message")
   
     for (let unit of Hue.els(".message_unit", message)) {
@@ -960,7 +960,7 @@ Hue.delete_messages_above = function (id) {
     return false
   }
 
-  Hue.show_confirm("Delete Above", "Delete all messages above this message", function () {
+  Hue.show_confirm("Delete all messages above this message", function () {
     Hue.socket_emit("delete_messages_above", {
       id: id
     })
@@ -973,7 +973,7 @@ Hue.delete_messages_below = function (id) {
     return false
   }
 
-  Hue.show_confirm("Delete Below", "Delete all messages below this message", function () {
+  Hue.show_confirm("Delete all messages below this message", function () {
     Hue.socket_emit("delete_messages_below", {
       id: id
     })
@@ -1859,7 +1859,7 @@ Hue.clear_log = function () {
     return false
   }
 
-  Hue.show_confirm("Clear Log", "Delete all messages from the log", function () {
+  Hue.show_confirm("Delete all messages from the log", function () {
     Hue.socket_emit("clear_log", {})
   })  
 }

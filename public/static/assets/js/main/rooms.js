@@ -5,14 +5,14 @@ Hue.setup_rooms = function () {
 
 // Superuser command to create a room
 Hue.create_room = function (name) {
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("create_room", {name: name})
   })
 }
 
 // Superuser command to create a room
 Hue.delete_room = function (name) {
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("delete_room")
   })
 }
