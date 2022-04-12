@@ -22,7 +22,7 @@ msgvars.common = {
   after_close: function (instance) {
     Hue.after_modal_close(instance)
   },
-  window_min_width: "22rem"
+  window_min_width: "18rem"
 }
 
 msgvars.titlebar = {
