@@ -635,6 +635,18 @@ Hue.setup_reply = function () {
       Hue.old_reply_input_val = this.value
     }
   })
+
+  Hue.el("#reply_profilepic").addEventListener("click", function () {
+    Hue.show_profile(Hue.reply_username, Hue.reply_user_id)
+  })
+  
+  Hue.el("#reply_profilepic").addEventListener("error", function (e) {
+    Hue.fallback_profilepic(this)
+  })
+  
+  Hue.el("#reply_username").addEventListener("click", function () {
+    Hue.show_profile(Hue.reply_username, Hue.reply_user_id)
+  })
 }
 
 // Prepare data to show the reply window
@@ -654,6 +666,8 @@ Hue.start_reply = function (target) {
     return false
   }
 
+  Hue.reply_username = username
+  Hue.reply_user_id = user_id
   Hue.show_reply(id, username, user_id, text)
   return true
 }
@@ -669,8 +683,9 @@ Hue.show_reply = function (id, username, user_id, text) {
   }
 
   Hue.old_reply_input_val = ""
-  
-  Hue.el("#reply_submit").textContent =`Reply to ${username}`
+
+  Hue.el("#reply_profilepic").src = Hue.get_profilepic(user_id)
+  Hue.el("#reply_username").textContent = `${username} said:`
 
   Hue.msg_reply.show(function () {
     Hue.el("#reply_input").focus()

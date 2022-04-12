@@ -1550,8 +1550,8 @@ a.special_link:hover {
 	color: var(--text_color);
 	background-color: transparent;
 	padding: 0.25rem;
-	border: 1px solid (var--text_color_a);
-	outline: 0;
+	border: 1px solid var(--altbackground);
+	margin-top: 1rem;
 }
 
 #reply_input {
@@ -1559,6 +1559,12 @@ a.special_link:hover {
 	text-align: center;
 	width: 99%;
 	resize: none;
+}
+
+#reply_profilepic {
+	margin-right: 0.5rem;
+	width: var(--icon_size);
+	height: var(--icon_size);
 }
 
 .chat_quote {
