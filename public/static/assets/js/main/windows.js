@@ -759,7 +759,7 @@ Hue.start_msg = function () {
 
   Hue.msg_reply.set_title(Hue.template_titlebar({
     items: [
-      {id: "reply_submit", text: ""},
+      {id: "reply_submit", text: "Send"},
     ]
   }))
 
