@@ -85,10 +85,8 @@ Hue.goto_url = function (url, mode, encode = false) {
 Hue.handle_url = function (url) {
   if (url) {
     Hue.check_handle_url_options(url)
-    let url_el = Hue.el("#handle_url_url")
-    url_el.textContent = url
-    Hue.urlize(url_el, false)
     Hue.handled_url = url
+    Hue.msg_handle_url.set_title(url.substring(0, 40))
     Hue.msg_handle_url.show()
   }
 }
@@ -119,12 +117,6 @@ Hue.setup_drag_events = function () {
   Hue.el("#handle_url_tv").addEventListener("click", function () {
     Hue.load_media_link("tv", Hue.handled_url, "")
     Hue.msg_handle_url.close()
-  })
-
-  Hue.el("#handle_url_url").addEventListener("input blur", function () {
-    Hue.handled_url = this.value.trim()
-    Hue.el("#handle_url_url").value = Hue.handled_url
-    Hue.check_handle_url_options(Hue.handled_url)
   })
 }
 
