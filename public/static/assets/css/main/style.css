@@ -651,7 +651,7 @@ a.generic:hover {
 }
 
 #Msg-overlay-locked {
-	background-color: rgba(186, 93, 93, 0.7) !important;
+	background-color: rgb(186, 93, 93) !important;
 }
 
 .Msg-overlay {
