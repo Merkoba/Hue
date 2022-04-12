@@ -82,18 +82,10 @@ Hue.setup_confirm = function () {
 }
 
 // Shows the confirm window
-Hue.show_confirm = function (message, action, action_2) {
-  if (message) {
-    Hue.el("#confirm_message").textContent = message
-    Hue.el("#confirm_message").style.display = "block"
-  } else {
-    Hue.el("#confirm_message").textContent = ""
-    Hue.el("#confirm_message").style.display = "none"
-  }
-
+Hue.show_confirm = function (message, action, action_cancel) {  
+  Hue.el("#confirm_message").textContent = message
   Hue.confirm_action = action
-  Hue.confirm_action_cancel = action_2
-  // Hue.msg_confirm.set_title(title)
+  Hue.confirm_action_cancel = action_cancel
   Hue.msg_confirm.show()
 }
 
