@@ -637,7 +637,7 @@ Hue.setup_reply = function () {
   })
 
   Hue.el("#reply_profilepic").addEventListener("click", function () {
-    Hue.show_profile(Hue.reply_username, Hue.reply_user_id)
+    Hue.show_profile(Hue.quote_username, Hue.quote_user_id)
   })
   
   Hue.el("#reply_profilepic").addEventListener("error", function (e) {
@@ -645,7 +645,7 @@ Hue.setup_reply = function () {
   })
   
   Hue.el("#reply_username").addEventListener("click", function () {
-    Hue.show_profile(Hue.reply_username, Hue.reply_user_id)
+    Hue.show_profile(Hue.quote_username, Hue.quote_user_id)
   })
 }
 
@@ -666,8 +666,6 @@ Hue.start_reply = function (target) {
     return false
   }
 
-  Hue.reply_username = username
-  Hue.reply_user_id = user_id
   Hue.show_reply(id, username, user_id, text)
   return true
 }
