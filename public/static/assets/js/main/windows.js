@@ -457,16 +457,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_background_peek = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "background_peek",
-      after_close: function (instance) {
-        msgvars.common.after_close(instance)
-        Hue.apply_background()
-      }
-    })
-  )
-
   Hue.msg_profilepic_preview = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "profilepic_preview"
@@ -625,7 +615,6 @@ Hue.start_msg = function () {
   Hue.msg_change_password.set(Hue.template_change_password())
   Hue.msg_confirm.set(Hue.template_confirm())
   Hue.msg_theme_picker.set(Hue.template_theme_picker())
-  Hue.msg_background_peek.set(Hue.template_background_peek())
   Hue.msg_profilepic_preview.set(Hue.template_profilepic_preview())
   Hue.msg_draw_image.set(Hue.template_draw_image())
   Hue.msg_image_picker.set(Hue.template_image_picker())
@@ -766,7 +755,6 @@ Hue.start_msg = function () {
     ]
   }))
 
-  Hue.msg_background_peek.set_title("Background Peek")
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_background_select.set_title("Background Image")
