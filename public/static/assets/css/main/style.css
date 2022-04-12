@@ -1550,7 +1550,7 @@ a.special_link:hover {
 	color: var(--text_color);
 	background-color: transparent;
 	padding: 0.25rem;
-	border: 0;
+	border: 1px solid (var--text_color_a);
 	outline: 0;
 }
 
