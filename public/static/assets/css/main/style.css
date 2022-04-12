@@ -391,7 +391,7 @@ html {
 	flex-direction: row;
 	visibility: hidden;
 	color: var(--text_color);
-	background-color: var(--altbackground_a);
+	background-color: var(--altbackground);
 }
 
 .top_scroller_container {
@@ -1181,7 +1181,7 @@ svg.action:hover {
 }
 
 .actionbox_light:hover {
-	box-shadow: 0 0 0.29rem currentColor;
+	box-shadow: 0 0 0.1rem currentColor, inset 0 0 0.1rem currentColor
 }
 
 .actionbox:hover {
