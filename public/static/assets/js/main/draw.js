@@ -103,7 +103,7 @@ Hue.setup_draw_image = function () {
       Hue.draw_image_add_click(e.offsetX, e.offsetY, false)
       Hue.redraw_draw_image()
     } else if (Hue.draw_image_mode === "bucket") {
-      let result = Hue.draw_imagecket_fill(e.offsetX, e.offsetY)
+      let result = Hue.draw_image_bucket_fill(e.offsetX, e.offsetY)
 
       if (result) {
         Hue.draw_image_check_redo()
