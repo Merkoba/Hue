@@ -1905,8 +1905,9 @@ pre {
 }
 
 .show_whisper_detail {
-	text-decoration: underline;
-	margin-bottom: 1rem;
+	display: inline;
+	margin-right: 0.5rem;
+	font-weight: bold;
 }
 
 .show_whisper_username {
