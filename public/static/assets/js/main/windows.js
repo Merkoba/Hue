@@ -673,6 +673,7 @@ Hue.start_msg = function () {
   Hue.msg_message_board.set_title(Hue.template_titlebar({
     items: [
       {id: "message_board_publish", text: "Publish"},
+      {id: "message_board_links", text: "Links"},
       {id: "message_board_user", text: "User"},
     ]
   }))
@@ -959,6 +960,17 @@ Hue.do_modal_filter = function (id = false) {
         }
       } else {
         finished = true
+      }
+
+      return match
+    } else if (filter.startsWith("$links")) {
+      let s = it.textContent.toLowerCase()
+      let match = s.includes("http://") || s.includes("https://")
+
+      if (match) {
+        if (args) {
+          match = it.textContent.toLowerCase().includes(args)
+        }
       }
 
       return match

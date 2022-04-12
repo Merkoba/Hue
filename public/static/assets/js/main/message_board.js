@@ -76,6 +76,10 @@ Hue.setup_message_board = function () {
   Hue.el("#message_board_user").addEventListener("click", function () {
     Hue.show_message_board(`$user ${Hue.username} `)
   })
+
+  Hue.el("#message_board_links").addEventListener("click", function () {
+    Hue.show_message_board("$links ")
+  })
 }
 
 // Do the message board edit
