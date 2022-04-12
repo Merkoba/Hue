@@ -22,6 +22,7 @@ msgvars.common = {
   after_close: function (instance) {
     Hue.after_modal_close(instance)
   },
+  window_min_width: "22rem"
 }
 
 msgvars.titlebar = {
@@ -757,6 +758,13 @@ Hue.start_msg = function () {
     ]
   }))
 
+  Hue.msg_confirm.set_title(Hue.template_titlebar({
+    items: [
+      {id: "confirm_button_cancel", text: "Cancel"},
+      {id: "confirm_button_confirm", text: "Confirm"},
+    ]
+  }))
+
   Hue.msg_background_peek.set_title("Background Peek")
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
@@ -772,7 +780,6 @@ Hue.start_msg = function () {
   Hue.msg_admin_activity.set_title("Admin Activity")
   Hue.msg_notifications.set_title("Notifications")
   Hue.msg_change_role.set_title("Change Role")
-  Hue.msg_confirm.set_title("Confirm Action")
   Hue.msg_image_picker.set_title("Image")
   Hue.msg_tv_picker.set_title("TV")
   Hue.msg_handle_radio_history.set_title("Handle Radio History")

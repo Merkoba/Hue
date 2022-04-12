@@ -86,7 +86,7 @@ Hue.setup_confirm = function () {
 }
 
 // Shows the confirm window
-Hue.show_confirm = function (title, message, action, action_2) {
+Hue.show_confirm = function (message, action, action_2) {
   if (message) {
     Hue.el("#confirm_message").textContent = message
     Hue.el("#confirm_message").style.display = "block"
@@ -97,7 +97,7 @@ Hue.show_confirm = function (title, message, action, action_2) {
 
   Hue.confirm_action = action
   Hue.confirm_action_cancel = action_2
-  Hue.msg_confirm.set_title(title)
+  // Hue.msg_confirm.set_title(title)
   Hue.msg_confirm.show()
 }
 

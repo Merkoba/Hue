@@ -588,13 +588,13 @@ Hue.setup_show_profile = function () {
   })
 
   Hue.el("#show_profile_kick").addEventListener("click", function () {
-    Hue.show_confirm("Kick User", "Disconnect the user from the room", function () {
+    Hue.show_confirm("Disconnect the user from the room", function () {
       Hue.kick(Hue.open_profile_username)
     })
   })
 
   Hue.el("#show_profile_ban").addEventListener("click", function () {
-    Hue.show_confirm("Ban User", "Ban the user from joining the room", function () {
+    Hue.show_confirm("Ban the user from joining the room", function () {
       Hue.ban(Hue.open_profile_username)
     })
   })
@@ -930,14 +930,14 @@ Hue.annex = function (rol = "admin") {
     return false
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("annex", { username: Hue.username, role: rol })
   })
 }
 
 // Superuser command to send a system broadcast
 Hue.system_broadcast = function () {
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.write_whisper([], "system_broadcast")
   })
 }
@@ -1025,7 +1025,7 @@ Hue.modusername = function (arg) {
     return false
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("modusername", {original:original_username, new:new_username})
   })
 }
@@ -1054,7 +1054,7 @@ Hue.modpassword = function (arg) {
     return false
   }
 
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("modpassword", { username: username, password: password })
   })
 }
@@ -1117,7 +1117,7 @@ Hue.fallback_profilepic = function (el) {
 // Setup change role
 Hue.setup_change_role = function () {
   Hue.el("#change_role_admin").addEventListener("click", function () {
-    Hue.show_confirm("Give Admin Role", "Operator abilities plus can add/remove operators ", function () {
+    Hue.show_confirm("Operator abilities plus can add/remove operators", function () {
       Hue.change_role(Hue.change_role_username, "admin")
     })
 
@@ -1125,7 +1125,7 @@ Hue.setup_change_role = function () {
   })
 
   Hue.el("#change_role_op").addEventListener("click", function () {
-    Hue.show_confirm("Give Op Role", "Enables access to operator features and commands", function () {
+    Hue.show_confirm("Enable access to operator features and commands", function () {
       Hue.change_role(Hue.change_role_username, "op")
     })
 
@@ -1133,7 +1133,7 @@ Hue.setup_change_role = function () {
   })
 
   Hue.el("#change_role_voice").addEventListener("click", function () {
-    Hue.show_confirm("Give Voice Role", "Can interact with users and change media but no operator abilities", function () {
+    Hue.show_confirm("Can interact with users and change media but no operator abilities", function () {
       Hue.change_role(Hue.change_role_username, "voice")
     })
 

@@ -27,7 +27,7 @@ Hue.pong_received = function (data) {
 
 // Superuser signal that tells all clients to refresh
 Hue.send_system_restart_signal = function () {
-  Hue.show_confirm("Superuser Command", "", function () {
+  Hue.show_confirm("Run superuser command", function () {
     Hue.socket_emit("system_restart_signal", {})
   })
 }

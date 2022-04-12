@@ -382,7 +382,7 @@ Hue.clear_message_board = function () {
     return false
   }
 
-  Hue.show_confirm("Clear Message Board", "Delete all message board posts", function () {
+  Hue.show_confirm("Delete all message board posts", function () {
     Hue.socket_emit("clear_message_board", {})
   })
 }
@@ -407,7 +407,7 @@ Hue.delete_message_board_post = function (post) {
   }
 
   if (id) {
-    Hue.show_confirm("Delete Message", "Delete message from the message board", function () {
+    Hue.show_confirm("Delete message from the message board", function () {
       Hue.socket_emit("delete_message_board_post", { id: id })
     })
   }
