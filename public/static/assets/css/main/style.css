@@ -1893,7 +1893,7 @@ pre {
 
 #radio_stations {
 	position: relative;
-	max-height: calc(100vh - 200px);
+	max-height: calc(100vh - 230px);
 	overflow-y: auto;
 	overflow-x: hidden;
 	margin-bottom: 1rem;
