@@ -585,12 +585,6 @@ a.generic:hover {
 	height: var(--icon_size);
 }
 
-.dotted {
-	text-decoration: underline;
-	text-decoration-style: dotted;
-	text-underline-position: under;
-}
-
 #settings_container {
 	display: flex;
 	flex-direction: column;
@@ -607,10 +601,6 @@ a.generic:hover {
 
 .setting_title2 {
 	padding-bottom: 0.2rem;
-}
-
-.setting_title3 {
-	padding-bottom: 0.8rem;
 }
 
 .Msg-container {
@@ -726,30 +716,9 @@ a.generic:hover {
 	text-align: center;
 }
 
-.info_item {
-	padding-top: 1rem;
-	padding-bottom: 1rem;
-	max-width: 26rem;
-}
-
 .info_title {
 	font-weight: bold;
 	padding-bottom: 0.3rem;
-}
-
-.info_title2 {
-	font-size: 1.1rem;
-	font-weight: bold;
-	padding-bottom: 0.3rem;
-}
-
-.help_link {
-	cursor: pointer;
-	text-decoration: underline;
-}
-
-.help_controls {
-	margin-top: 1rem;
 }
 
 select {
@@ -879,15 +848,6 @@ input[type=checkbox] {
 	text-align: center;
 }
 
-.editor_area {
-	display: block;
-	font-size: 1rem;
-	width: 35rem;
-	height: 16rem;
-	border: 0.06rem solid grey;
-	resize: vertical;
-}
-
 .bigger {
 	font-size: 1.1rem;
 }
@@ -917,10 +877,6 @@ input[type=checkbox] {
 	height: 23.53rem;
 }
 
-.profilepic_cropper_button {
-	font-size: 1.1rem;
-}
-
 .profile_icon {
 	margin-bottom: 0.5rem;
 }
@@ -931,11 +887,6 @@ input[type=checkbox] {
 
 .nowrap {
 	white-space: nowrap;
-}
-
-#header_topic {
-	display: flex;
-	cursor: pointer;
 }
 
 .small_square_image {
@@ -951,10 +902,6 @@ input[type=checkbox] {
 
 .invisible {
 	visibility: hidden;
-}
-
-.admin_v_container {
-	display: none;
 }
 
 #loading {
@@ -1059,23 +1006,8 @@ input[type=checkbox] {
 	margin-bottom: 0.5rem;
 }
 
-.user_profile_items_container_2 {
-	margin-bottom: 1rem;
-}
-
 .user_profile_icon {
 	margin-right: 0.5rem;
-}
-
-.small_button {
-	font-weight: bold;
-	cursor: pointer;
-	display: inline-block;
-}
-
-.small_button_2 {
-	font-weight: bold;
-	cursor: pointer;
 }
 
 .inline {
@@ -2130,10 +2062,6 @@ pre {
 
 .titlebar_action {
 	text-decoration: underline;
-}
-
-.user_details_input {
-	width: 18rem;
 }
 
 .icon_size {
