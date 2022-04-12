@@ -170,6 +170,7 @@ Hue.submit_write_whisper = function () {
 
 // On whisper received
 Hue.whisper_received = function (data) {
+  data.mode = "received"
   let message = `Whisper from ${data.username}`
   let func = function () { Hue.show_whisper(data, "received") }
   let item = Hue.make_info_popup_item({icon: "envelope", message: message, push: false})
@@ -187,6 +188,7 @@ Hue.whisper_received = function (data) {
 
 // On whisper sent
 Hue.whisper_sent = function (data) {
+  data.mode = "sent"
   let usernames = Array.from(data.users, x => x.username)
   let message = `Whisper sent to ${Hue.utilz.nice_list(usernames)}`
   let func = function () { Hue.show_whisper(data, "sent") }
@@ -330,12 +332,14 @@ Hue.push_whisper = function (message, on_click, read, data) {
   let title = Hue.utilz.nice_date(date)
   let item = Hue.div("whispers_item modal_item nice_row")
 
-  if (data && data.user_id) {
+  if (data.mode === "received") {
     item.innerHTML = `<img class='whispers_item_profilepic profilepic icon_size actionbox' loading='lazy' src='${Hue.get_profilepic(data.user_id)}'>`
     
     Hue.el(".profilepic", item).addEventListener("error", function () {
       Hue.fallback_profilepic(this)
     })
+  } else {
+    item.innerHTML = "<svg class='icon_size'><use href='#icon_envelope'></svg>"
   }
 
   let message_el = Hue.div("whispers_item_content action dynamic_title")
