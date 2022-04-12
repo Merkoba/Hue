@@ -101,7 +101,7 @@ Hue.show_confirm = function (message, action, action_2) {
 Hue.on_confirm = function () {
   if (Hue.confirm_action) {
     Hue.confirm_action()
-    Hue.confirm_action = function () {}
+    Hue.confirm_action = undefined
   }
 
   Hue.msg_confirm.close()
@@ -111,10 +111,8 @@ Hue.on_confirm = function () {
 Hue.on_confirm_cancel = function () {
   if (Hue.confirm_action_cancel) {
     Hue.confirm_action_cancel()
-    Hue.confirm_action_cancel = function () {}
+    Hue.confirm_action_cancel = undefined
   }
-  
-  Hue.msg_confirm.close()
 }
 
 // Simple window for messages

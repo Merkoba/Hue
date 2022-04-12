@@ -348,7 +348,7 @@ Hue.link_background_action = function () {
   }
 
   Hue.msg_link_background.close()
-  Hue.show_background_peek()
+  Hue.do_background_peek()
 }
 
 // On background image selected for upload
@@ -389,7 +389,7 @@ Hue.background_selected = function (file) {
     Hue.upload_file({file: file, action: "background_upload"})
   }
 
-  Hue.show_background_peek()
+  Hue.do_background_peek()
 }
 
 // Change the background image with a URL
@@ -482,33 +482,18 @@ Hue.set_text_color = function (color) {
   Hue.config_admin_text_color()
 }
 
-// Setup background peek
-Hue.setup_background_peek = function () {
-  Hue.el("#background_peek_peek").addEventListener("click", function () {
-    Hue.do_background_peek()
-  })
-
-  Hue.el("#background_peek_choose").addEventListener("click", function () {
-    Hue.apply_background()
-    Hue.msg_background_peek.close()
-    Hue.msg_background_select.show()
-  })
-
-  Hue.el("#background_peek_confirm").addEventListener("click", function () {
-    Hue.background_peek_action()
-    Hue.msg_background_peek.close()
-  })
-}
-
-// Show background peek
-Hue.show_background_peek = function () {
-  Hue.do_background_peek()
-  Hue.msg_background_select.close()
-  Hue.msg_background_peek.show()
-}
-
 // Do background peek
 Hue.do_background_peek = function () {
   Hue.apply_background(Hue.background_peek_url)
   Hue.hide_windows_temporarily()
+  Hue.show_background_peek_confirm()
+}
+
+// Show background peek confirm
+Hue.show_background_peek_confirm = function () {
+  Hue.show_confirm("Apply selected background", function () {
+    Hue.background_peek_action()   
+  }, function () {
+    Hue.apply_background()
+  })
 }

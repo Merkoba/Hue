@@ -60,7 +60,6 @@ Hue.setup_room_config = function () {
     Hue.show_theme_picker()
   })
 
-  Hue.setup_background_peek()
   Hue.setup_background_select()
   Hue.setup_link_background()
   Hue.setup_theme_picker()
