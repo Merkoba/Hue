@@ -44,7 +44,7 @@ Hue.update_activity_bar = function (check = false) {
       <img class='activity_bar_profilepic profilepic icon_size actionbox' src='${pi}' loading='lazy'>
       <div class='activity_bar_text action'></div>`
 
-    let el = Hue.div("activity_bar_item")
+    let el = Hue.div("activity_bar_item flex_row_center")
     el.innerHTML = s
 
     let text_el = Hue.el(".activity_bar_text", el)
