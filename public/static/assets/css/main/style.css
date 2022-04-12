@@ -832,6 +832,7 @@ input[type=number],
 textarea,
 select {
 	font-family: var(--font_family) !important;
+	font-size: 1rem;
 }
 
 input[type=checkbox] {
@@ -1543,12 +1544,14 @@ a.special_link:hover {
 
 #reply_text {
 	width: 99%;
-	background-color: var(--altcolor_a);
-	color: var(--text_color);
 	text-align: center;
-	border-color: var(--altcolor_a);
 	font-size: 1rem;
 	resize: none;
+	color: var(--text_color);
+	background-color: transparent;
+	padding: 0.25rem;
+	border: 0;
+	outline: 0;
 }
 
 #reply_input {
