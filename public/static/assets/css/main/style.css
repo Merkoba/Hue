@@ -1909,6 +1909,10 @@ pre {
 	margin-bottom: 1rem;
 }
 
+.show_whisper_username {
+	margin-top: 0.25rem;
+}
+
 .bg0 {
 	background-color: var(--background_color);
 }
@@ -2230,4 +2234,9 @@ pre {
 .icon_size {
 	width: var(--icon_size);
 	height: var(--icon_size);
+}
+
+.profilepic_size {
+	width: var(--profilepic_size);
+	height: var(--profilepic_size);
 }
