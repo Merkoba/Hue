@@ -1062,31 +1062,13 @@ input[type=checkbox] {
 .setting_textarea {
 	width: 100%;
 	resize: none;
-	font-size: 1rem;
 	text-align: center;
 	overflow-x: hidden;
 	box-sizing: border-box;
 }
 
-.setting_textarea2 {
-	width: 19rem;
-	resize: none;
-	font-size: 1rem;
-	text-align: center;
-	overflow-x: hidden;
-}
-
-.setting_textarea3 {
-	width: 19rem;
-	resize: none;
-	font-size: 1rem;
-	text-align: center;
-	white-space: pre;
-}
-
 .setting_input_text {
 	width: 100%;
-	font-size: 1rem;
 	text-align: center;
 	box-sizing: border-box;
 }
