@@ -130,14 +130,7 @@ html {
 	font-size: var(--panel_font_size);
 }
 
-.activity_bar_profilepic {
-	width: var(--icon_size);
-	height: var(--icon_size);
-}
-
 .show_image_profilepic {
-	width: var(--icon_size);
-	height: var(--icon_size);
 	margin-right: 0.5rem;
 }
 
@@ -1563,8 +1556,6 @@ a.special_link:hover {
 
 #reply_profilepic {
 	margin-right: 0.5rem;
-	width: var(--icon_size);
-	height: var(--icon_size);
 }
 
 .chat_quote {
@@ -1578,8 +1569,6 @@ a.special_link:hover {
 }
 
 .chat_quote_profilepic {
-	width: var(--icon_size);
-	height: var(--icon_size);
 	vertical-align: top;
 	margin-right: 0.35rem;
 }
@@ -1794,8 +1783,6 @@ pre {
 }
 
 .message_board_profilepic {
-	width: var(--icon_size);
-	height: var(--icon_size);
 	opacity: 1;
 	margin-right: 0.5rem;
 }
@@ -1941,11 +1928,6 @@ pre {
 	white-space: pre-wrap;
 }
 
-.show_whisper_profilepic {
-	width: var(--icon_size);
-	height: var(--icon_size);
-}
-
 .bg0 {
 	background-color: var(--background_color);
 }
@@ -1982,8 +1964,6 @@ pre {
 }
 
 .media_info_profilepic {
-	width: var(--icon_size);
-	height: var(--icon_size);
 	margin-right: 0.35rem;
 }
 
@@ -2062,8 +2042,6 @@ pre {
 }
 
 .whispers_item_profilepic {
-	width: var(--icon_size);
-	height: var(--icon_size);
 	margin-right: 0.5rem;
 }
 
@@ -2270,4 +2248,9 @@ pre {
 
 .user_details_input {
 	width: 18rem;
+}
+
+.icon_size {
+	width: var(--icon_size);
+	height: var(--icon_size);
 }
