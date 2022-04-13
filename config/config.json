@@ -103,7 +103,6 @@
 	"max_activity_username_length": 8,
 	"chat_display_percentage_column": 60,
 	"chat_display_percentage_row": 40,
-	"screen_capture_durations": [5, 10, 30, 60],
 
 	"radios": [
 		{"name": "Merkoba FM", "url": "https://radio.merkoba.com:8765/radio.ogg", "metadata": "https://radio.merkoba.com:8765/status-json.xsl"},

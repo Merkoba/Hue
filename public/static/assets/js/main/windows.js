@@ -249,12 +249,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_screen_capture_options = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "screen_capture_options"
-    })
-  )
-
   Hue.msg_command_book = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "command_book",
@@ -590,12 +584,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_screen_capture_options.set(
-    Hue.template_screen_capture_options({
-      durations: Hue.config.screen_capture_durations
-    })
-  )
-
   Hue.msg_main_menu.set(Hue.template_main_menu())
   Hue.msg_room_config.set(Hue.template_room_config())
   Hue.msg_background_select.set(Hue.template_background_select())
@@ -778,7 +766,6 @@ Hue.start_msg = function () {
   Hue.msg_roomlist.set_title("Room List")
   Hue.msg_settings.set_title("User Settings")
   Hue.msg_media_tweaks.set_title("Media Tweaks")
-  Hue.msg_screen_capture_options.set_title("Screen Capture")
   Hue.msg_admin_activity.set_title("Admin Activity")
   Hue.msg_notifications.set_title("Notifications")
   Hue.msg_change_role.set_title("Change Role")
