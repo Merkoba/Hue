@@ -489,6 +489,10 @@ html {
 	margin-left: var(--chat_side_spacing);
 }
 
+.announcement_content {
+	display: inline-block;
+}
+
 .brk_container {
 	display: flex;
 	flex-direction: column;
@@ -1349,11 +1353,6 @@ a.special_link:hover {
 .upload_comment_name {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
-}
-
-.announcement_content_split {
-	display: flex;
-	flex-direction: column;
 }
 
 .modal_subheader {
