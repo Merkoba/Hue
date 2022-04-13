@@ -594,8 +594,11 @@ Hue.change_media_lock = function(args) {
 Hue.change_media_lock_text = function (type) {
   if (Hue[`${type}_locked`]) {
     Hue.el(`#footer_${type}_lock`).textContent = "Unlock"
+    Hue.el(`#footer_${type}_lock`).textContent = "Unlock"
+    Hue.el(`#footer_${type}_lock`).classList.add("underlined")
   } else {
     Hue.el(`#footer_${type}_lock`).textContent = "Lock"
+    Hue.el(`#footer_${type}_lock`).classList.remove("underlined")
   }
 }
 
