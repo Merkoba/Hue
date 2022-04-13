@@ -586,6 +586,7 @@ Hue.take_screenshot = async function () {
   video.srcObject = stream
 
   video.addEventListener("loadeddata", async () => {
+    stream.getTracks().forEach(track => track.stop())
     let { videoWidth, videoHeight } = video
     canvas.width = videoWidth
     canvas.height = videoHeight
@@ -601,7 +602,6 @@ Hue.take_screenshot = async function () {
       Hue.config.image_blob_quality
     )
 
-    stream.getTracks().forEach(track => track.stop())
   })
 }
 

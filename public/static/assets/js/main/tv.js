@@ -649,6 +649,8 @@ Hue.start_screen_capture = async function (seconds) {
   }
 
   media_recorder.onstop = function () {
+    stream.getTracks().forEach(track => track.stop())
+    
     const blob = new Blob(recorded_chunks, {
       type: 'video/webm'
     })
@@ -656,7 +658,6 @@ Hue.start_screen_capture = async function (seconds) {
     blob.name = "capture.webm"
     Hue.show_tv_upload_comment(blob, "tv_upload")
     recorded_chunks = []
-    stream.getTracks().forEach(track => track.stop())
   }
 
   media_recorder.start(200)
