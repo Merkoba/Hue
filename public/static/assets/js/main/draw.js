@@ -427,7 +427,7 @@ Hue.upload_draw_image = function (canvas = "#draw_image_area", type = "drawing",
       }
     },
     "image/png",
-    0.95
+    Hue.config.image_blob_quality
   )
 }
 

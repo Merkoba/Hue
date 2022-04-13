@@ -231,7 +231,7 @@ Hue.setup_profilepic_cropper = function () {
       },
       format: "png",
       circle: true,
-      quality: 0.95,
+      quality: Hue.config.image_blob_quality,
     })
 
     .then(function (blob) {
