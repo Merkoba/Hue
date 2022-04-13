@@ -778,7 +778,7 @@ Hue.start_msg = function () {
   Hue.msg_roomlist.set_title("Room List")
   Hue.msg_settings.set_title("User Settings")
   Hue.msg_media_tweaks.set_title("Media Tweaks")
-  Hue.msg_screen_capture_options.set_title("Screen Capture Options")
+  Hue.msg_screen_capture_options.set_title("Screen Capture")
   Hue.msg_admin_activity.set_title("Admin Activity")
   Hue.msg_notifications.set_title("Notifications")
   Hue.msg_change_role.set_title("Change Role")
