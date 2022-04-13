@@ -620,14 +620,3 @@ Hue.toggle_draw_color_picker = function () {
     Hue.el("#draw_image_color_picker").classList.remove("underlined")
   }
 }
-
-// Make a random drawing
-Hue.make_random_drawing = function (target = "image") {
-  Hue.draw_image_target = target
-  
-  jdenticon.update(Hue.el("#draw_random_canvas"), Hue.utilz.random_sequence(9), {
-    backColor: Hue.colorlib.get_random_hex()
-  })
-  
-  Hue.upload_draw_image("#draw_random_canvas", "random_canvas", "random")
-}
