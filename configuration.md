@@ -292,6 +292,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "screen_capture_durations"
 >How long in seconds tv screen capture videos can be.
 
+"image_blob_quality"
+>Quality for rendered image blobs.
+
 
 ## config.secret.json
 

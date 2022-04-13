@@ -594,11 +594,11 @@ Hue.take_screenshot = async function () {
 
     canvas.toBlob(
       function (blob) {
-        blob.name = "screenshot.png"
+        blob.name = "screenshot.jpg"
         Hue.show_image_upload_comment(blob, "upload")
       },
-      "image/png",
-      0.95
+      "image/jpeg",
+      Hue.config.image_blob_quality
     )
 
     stream.getTracks().forEach(track => track.stop())
@@ -629,6 +629,6 @@ Hue.make_random_image = function (target) {
       }
     },
     "image/png",
-    0.95
+    Hue.config.image_blob_quality
   )
 }
