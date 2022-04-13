@@ -243,6 +243,11 @@ Hue.setup_media_pickers = function () {
     Hue.make_random_image("image")
   })
 
+  Hue.el("#image_picker_screenshot").addEventListener("click", function () {
+    Hue.msg_image_picker.close()
+    Hue.take_screenshot()
+  })
+
   Hue.el("#image_picker_history").addEventListener("click", function () {
     Hue.msg_image_picker.close()
     Hue.show_image_history()
@@ -255,6 +260,11 @@ Hue.setup_media_pickers = function () {
   
   Hue.el("#tv_picker_upload").addEventListener("click", function () {
     Hue.msg_tv_picker.close()
+  })
+
+  Hue.el("#tv_picker_capture").addEventListener("click", function () {
+    Hue.msg_tv_picker.close()
+    Hue.screen_capture_options()
   })
   
   Hue.el("#tv_picker_history").addEventListener("click", function () {
