@@ -249,7 +249,7 @@ Hue.setup_profilepic_cropper = function () {
       Hue.msg_profilepic_cropper.close()
       Hue.open_profilepic_picker()
     } else if (Hue.profilepic_cropper_type === "random_canvas") {
-      Hue.make_random_drawing("profilepic")
+      Hue.make_random_image("profilepic")
     }
   })
 }
@@ -276,7 +276,7 @@ Hue.setup_profilepic_select = function () {
 
   Hue.el("#profilepic_select_random").addEventListener("click", function () {
     Hue.msg_profilepic_select.close()
-    Hue.make_random_drawing("profilepic")
+    Hue.make_random_image("profilepic")
   })
 
   Hue.el("#profilepic_select_upload").addEventListener("click", function () {
