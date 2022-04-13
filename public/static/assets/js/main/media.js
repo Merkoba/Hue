@@ -404,10 +404,6 @@ Hue.change = function (args = {}) {
 
     Hue.loaded_image = item
     Hue.show_image(args.force)
-
-    if (!args.item || args.item === Hue.current_image()) {
-      Hue.el("#footer_lock_image_icon").classList.remove("blinking")
-    }
   } else if (args.type === "tv") {
     if (!Hue.room_state.tv_enabled) {
       return false
@@ -442,10 +438,6 @@ Hue.change = function (args = {}) {
 
     if (args.play) {
       Hue.after_tv_play()
-    }
-
-    if (!args.item || args.item === Hue.current_tv()) {
-      Hue.el("#footer_lock_tv_icon").classList.remove("blinking")
     }
   } else {
     return false
@@ -588,14 +580,10 @@ Hue.change_media_lock = function(args) {
 Hue.change_media_lock_icon = function (type) {
   if (Hue[`${type}_locked`]) {
     Hue.el(`#footer_lock_${type}_icon use`).href.baseVal = "#icon_locked"
-
-    if (Hue[`loaded_${type}`] !== Hue[`current_${type}`]()) {
-      Hue.el(`#footer_lock_${type}_icon`).classList.add("blinking")
-    }
+    Hue.el(`#footer_lock_${type}_icon_container`).classList.add("media_locked_icon")
   } else {
     Hue.el(`#footer_lock_${type}_icon use`).href.baseVal = "#icon_unlocked"
-    Hue.el(`#footer_lock_${type}_icon`).classList.remove("blinking")
-
+    Hue.el(`#footer_lock_${type}_icon_container`).classList.remove("media_locked_icon")
     Hue.change({ type: type })
   }
 }
