@@ -1226,7 +1226,6 @@ a.special_link:hover {
 	justify-content: flex-start;
 	background-color: var(--altcolor_a);
 	color: var(--text_color);
-	min-width: 460px;
 }
 
 .link_preview_text_content {
