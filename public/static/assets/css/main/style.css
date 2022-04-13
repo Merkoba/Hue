@@ -483,19 +483,18 @@ html {
 	margin-bottom: 0.2rem;
 }
 
-.announcement_content_container {
-	display: inline-flex;
-	flex-grow: 1;
-	margin-left: var(--chat_side_spacing);
-}
-
 .announcement_content {
 	display: inline-block;
 }
 
-.brk_container {
+.announcement_left_side {
 	display: flex;
 	flex-direction: column;
+}
+
+.announcement_right_side {
+	margin-left: var(--chat_side_spacing);
+	width: 100%;
 }
 
 .brk {
