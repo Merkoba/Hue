@@ -1333,10 +1333,6 @@ a.special_link:hover {
 	border: 0 !important; 
 }
 
-.blinking {
-	animation: blink 1s linear infinite;
-}
-
 @keyframes blink {
 	0% {
 		opacity: 1
@@ -2081,4 +2077,8 @@ pre {
 .profilepic_size {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
+}
+
+.media_locked_icon {
+	background-color: var(--altcolor);
 }
