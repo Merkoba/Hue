@@ -301,6 +301,7 @@ Hue.activate_key_detection = function () {
           Hue.goto_bottom(true)
         } else {
           Hue.remove_last_input_word()
+          Hue.check_input_expand()
         }
       }
     }

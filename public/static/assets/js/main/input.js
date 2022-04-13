@@ -10,9 +10,7 @@ Hue.on_input_change = function () {
       Hue.enable_footer_expand()
     }
 
-    if (!input.value) {
-      Hue.disable_footer_expand()
-    }
+    Hue.check_input_expand()
   }
 }
 
@@ -200,4 +198,11 @@ Hue.remove_last_input_word = function () {
   }
 
   input.value = new_value
+}
+
+// Check input expand
+Hue.check_input_expand = function () {
+  if (!Hue.el("#input").value) {
+    Hue.disable_footer_expand()
+  }
 }
