@@ -2064,7 +2064,3 @@ pre {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
 }
-
-.media_locked_icon {
-	background-color: var(--altcolor_a);
-}
