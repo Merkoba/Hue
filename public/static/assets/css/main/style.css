@@ -272,10 +272,6 @@ html {
 	position: relative;
 }
 
-#footer_media_items {
-	margin-right: 0.5rem;
-}
-
 .footer_expanded {
 	height: 10rem;
 }
@@ -306,6 +302,10 @@ html {
 
 #footer .separator {
 	height: 1em;
+}
+
+#footer_radio_icon_container {
+	padding-right: 0.5rem;
 }
 
 .panel_icon {
