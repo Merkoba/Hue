@@ -217,8 +217,8 @@ Hue.media_visibility_and_locks = function () {
   Hue.change_media_visibility("tv")
 
   if (Hue.connections === 1) {
-    Hue.change_media_lock_icon("image")
-    Hue.change_media_lock_icon("tv")
+    Hue.change_media_lock_text("image")
+    Hue.change_media_lock_text("tv")
   }
 }
 
@@ -573,7 +573,11 @@ Hue.change_media_lock = function(args) {
   }
 
   Hue[`${args.type}_locked`] = new_val
-  Hue.change_media_lock_icon(args.type)
+  Hue.change_media_lock_text(args.type)
+
+  if (!new_val) {
+    Hue.change({type: args.type})
+  }
 
   if (args.feedback) {
     let ctype = Hue.media_string(args.type)
@@ -587,14 +591,11 @@ Hue.change_media_lock = function(args) {
 }
 
 // Toggles media locks for any type
-Hue.change_media_lock_icon = function (type) {
+Hue.change_media_lock_text = function (type) {
   if (Hue[`${type}_locked`]) {
-    Hue.el(`#footer_lock_${type}_icon use`).href.baseVal = "#icon_locked"
-    Hue.el(`#footer_lock_${type}_icon_container`).classList.add("media_locked_icon")
+    Hue.el(`#footer_${type}_lock`).textContent = "Unlock"
   } else {
-    Hue.el(`#footer_lock_${type}_icon use`).href.baseVal = "#icon_unlocked"
-    Hue.el(`#footer_lock_${type}_icon_container`).classList.remove("media_locked_icon")
-    Hue.change({ type: type })
+    Hue.el(`#footer_${type}_lock`).textContent = "Lock"
   }
 }
 
@@ -950,10 +951,6 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   }
 
   if (mode === "change") {
-    if (Hue[`${type}_locked`]) {
-      Hue.el(`#footer_lock_${type}_icon`).classList.add("blinking")
-    }
-
     Hue.change({type: type})
   }
 }
