@@ -600,6 +600,8 @@ Hue.take_screenshot = async function () {
       "image/png",
       0.95
     )
+
+    stream.getTracks().forEach(track => track.stop())
   })
 }
 
