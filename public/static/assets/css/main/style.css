@@ -1333,20 +1333,6 @@ a.special_link:hover {
 	border: 0 !important; 
 }
 
-@keyframes blink {
-	0% {
-		opacity: 1
-	}
-
-	50% {
-		opacity: 0
-	}
-
-	100% {
-		opacity: 1
-	}
-}
-
 .upload_comment_preview {
 	max-height: 29.41rem;
 	max-width: 29.41rem;
