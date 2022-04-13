@@ -594,10 +594,10 @@ Hue.take_screenshot = async function () {
 
     canvas.toBlob(
       function (blob) {
-        blob.name = "screenshot.png"
+        blob.name = "screenshot.jpg"
         Hue.show_image_upload_comment(blob, "upload")
       },
-      "image/png",
+      "image/jpg",
       0.95
     )
   })
