@@ -308,21 +308,30 @@ html {
 	padding-right: 0.5rem;
 }
 
-.panel_icon {
-	cursor: pointer;
-	flex-shrink: 1;
-	background-color: transparent;
-	color: inherit;
-	width: calc(var(--icon_size) * 1.6);
-	height: var(--icon_size);
-}
-
 .footer_icon {
 	cursor: pointer;
 	flex-shrink: 1;
 	background-color: transparent;
 	color: inherit;
 	width: var(--icon_size);
+	height: var(--icon_size);
+}
+
+.footer_text {
+	margin-right: 0.4rem;
+}
+
+#footer .horizontal_separator {
+	margin-left: 0.5rem !important;
+	margin-right: 0.5rem !important;
+}
+
+.panel_icon {
+	cursor: pointer;
+	flex-shrink: 1;
+	background-color: transparent;
+	color: inherit;
+	width: calc(var(--icon_size) * 1.6);
 	height: var(--icon_size);
 }
 
@@ -334,10 +343,6 @@ html {
 	width: calc(var(--icon_size) * 1.6);
 	height: var(--icon_size);
 	margin-bottom: 0.25rem;
-}
-
-.footer_text {
-	margin-right: 0.4rem;
 }
 
 #input {
@@ -1410,11 +1415,6 @@ a.special_link:hover {
 	background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
 	height: 2px;
 	width: 100%;
-}
-
-#footer .horizontal_separator {
-	margin-left: 0.5rem !important;
-	margin-right: 0.5rem !important;
 }
 
 #room_config_more_container {
