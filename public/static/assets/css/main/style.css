@@ -272,6 +272,10 @@ html {
 	position: relative;
 }
 
+#footer_media_items {
+	margin-right: 0.5rem;
+}
+
 .footer_expanded {
 	height: 10rem;
 }
@@ -313,6 +317,15 @@ html {
 	height: var(--icon_size);
 }
 
+.footer_icon {
+	cursor: pointer;
+	flex-shrink: 1;
+	background-color: transparent;
+	color: inherit;
+	width: var(--icon_size);
+	height: var(--icon_size);
+}
+
 .menu_icon {
 	cursor: pointer;
 	flex-shrink: 1;
@@ -321,11 +334,6 @@ html {
 	width: calc(var(--icon_size) * 1.6);
 	height: var(--icon_size);
 	margin-bottom: 0.25rem;
-}
-
-.panel_icon_label {
-	margin-left: 0.15rem;
-	margin-right: 0.5rem;
 }
 
 .footer_text {
@@ -2027,6 +2035,10 @@ pre {
 	gap: 0.5rem;
 }
 
+.rem025_gap {
+	gap: 0.25rem;
+}
+
 .rem05_gap {
 	gap: 0.5rem;
 }
@@ -2069,13 +2081,4 @@ pre {
 .profilepic_size {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
-}
-
-.footer_media_prev {
-	margin-left: 0.25rem;
-	margin-right: 0.5rem;
-}
-
-.footer_media_next {
-	margin-right: 0.25rem;
 }
