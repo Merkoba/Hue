@@ -508,7 +508,7 @@ Hue.setup_image_upload_comment = function () {
       Hue.msg_image_upload_comment.close()
       Hue.show_upload_image()
     } else if (Hue.image_upload_comment_type === "random_canvas") {
-      Hue.make_random_drawing("image")
+      Hue.make_random_image("image")
     }
   })
 }
@@ -571,4 +571,62 @@ Hue.apply_view_image_resolution = function (image, src) {
   let subheader = Hue.el("#view_image_subheader")
   let text = subheader.textContent
   subheader.textContent = `${text} (${image.width} x ${image.height})`
+}
+
+// Take a screenshot
+Hue.take_screenshot = async function () {
+  let stream = await navigator.mediaDevices.getDisplayMedia({
+    audio: true, 
+    video: {mediaSource: "screen"}
+  })
+
+  let video = document.createElement("video")
+  let canvas = document.createElement("canvas")
+  let context = canvas.getContext("2d")
+  video.srcObject = stream
+
+  video.addEventListener("loadeddata", async () => {
+    let { videoWidth, videoHeight } = video
+    canvas.width = videoWidth
+    canvas.height = videoHeight
+    await video.play()
+    context.drawImage(video, 0, 0, videoWidth, videoHeight)
+
+    canvas.toBlob(
+      function (blob) {
+        blob.name = "screenshot.png"
+        Hue.show_image_upload_comment(blob, "upload")
+      },
+      "image/png",
+      0.95
+    )
+  })
+}
+
+// Make a random image
+Hue.make_random_image = function (target) {
+  let canvas = document.createElement("canvas")
+
+  canvas.width = 1280
+  canvas.height = 1280
+
+  jdenticon.update(canvas, Hue.utilz.random_sequence(9), {
+    backColor: Hue.colorlib.get_random_hex()
+  })
+  
+  canvas.toBlob(
+    function (blob) {
+      blob.name = "random.png"
+
+      if (target === "image") {
+        Hue.show_image_upload_comment(blob, "random_canvas")
+      } else if (target === "profilepic") {
+        Hue.profilepic_selected(blob, "random_canvas")
+      } else if (target === "background") {
+        Hue.background_selected(blob)
+      }
+    },
+    "image/png",
+    0.95
+  )
 }

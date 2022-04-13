@@ -240,7 +240,12 @@ Hue.setup_media_pickers = function () {
 
   Hue.el("#image_picker_random").addEventListener("click", function () {
     Hue.msg_image_picker.close()
-    Hue.make_random_drawing("image")
+    Hue.make_random_image("image")
+  })
+
+  Hue.el("#image_picker_screenshot").addEventListener("click", function () {
+    Hue.msg_image_picker.close()
+    Hue.take_screenshot()
   })
 
   Hue.el("#image_picker_history").addEventListener("click", function () {

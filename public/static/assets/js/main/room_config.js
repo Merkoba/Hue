@@ -140,7 +140,7 @@ Hue.setup_background_select = function () {
 
   Hue.el("#background_select_random").addEventListener("click", function () {
     Hue.msg_background_select.close()
-    Hue.make_random_drawing("background")
+    Hue.make_random_image("background")
   })
   
   Hue.el("#background_select_link").addEventListener("click", function () {
