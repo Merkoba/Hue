@@ -18,12 +18,13 @@ Hue.delete_room = function (name) {
 }
 
 // Shows the Open Room window where the user selects how to open a room
-Hue.show_open_room = function (id) {
+Hue.show_open_room = function (id, name) {
   if (id === Hue.config.main_room_id) {
     id = "/"
   }
 
   Hue.open_room_id = id
+  Hue.el("#open_room_name").textContent = `Go to ${name || id}`
   Hue.msg_open_room.show()
 }
 
@@ -76,7 +77,7 @@ Hue.update_roomlist = function (data) {
     jdenticon.update(icon, room.name)
     
     item.addEventListener("click", function () {
-      Hue.show_open_room(room.id)
+      Hue.show_open_room(room.id, room.name)
     })
 
     container.append(item)

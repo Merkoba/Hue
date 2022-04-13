@@ -767,6 +767,13 @@ Hue.start_msg = function () {
     ]
   }))
 
+  Hue.msg_open_room.set_title(Hue.template_titlebar({
+    items: [
+      {id: "open_room_here", text: "Open Here"},
+      {id: "open_room_new_tab", text: "New Tab"},
+    ]
+  }))
+
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_background_select.set_title("Background Image")
@@ -774,7 +781,6 @@ Hue.start_msg = function () {
   Hue.msg_audioclip_select.set_title("Audio Clip")
   Hue.msg_admin_list.set_title("Admin List")
   Hue.msg_ban_list.set_title("Ban List")
-  Hue.msg_open_room.set_title("Open Room")
   Hue.msg_roomlist.set_title("Room List")
   Hue.msg_settings.set_title("User Settings")
   Hue.msg_media_tweaks.set_title("Media Tweaks")
