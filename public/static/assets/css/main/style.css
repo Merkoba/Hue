@@ -348,8 +348,8 @@ html {
 #input {
 	font-size: var(--panel_font_size);
 	border: 0 solid black;
-	padding-right: 1rem;
-	padding-left: 1rem;
+	padding-right: 0.5rem;
+	padding-left: 0.5rem;
 	outline: none;
 	font-family: inherit;
 	flex-grow: 1;
