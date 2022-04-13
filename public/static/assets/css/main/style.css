@@ -2070,3 +2070,12 @@ pre {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
 }
+
+.footer_media_prev {
+	margin-left: 0.25rem;
+	margin-right: 0.5rem;
+}
+
+.footer_media_next {
+	margin-right: 0.25rem;
+}

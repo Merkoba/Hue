@@ -67,11 +67,6 @@ Hue.create_debouncers = function () {
     Hue.do_update_userlist(prop)
   }, Hue.update_userlist_delay)  
 
-  // Debounce timer for media image scrollwheel for resize
-  Hue.image_wheel_timer = Hue.create_debouncer(function (direction) {
-    Hue.image_wheel_action(direction)
-  }, Hue.wheel_delay)
-
   // Debounce timer to hide the flash info window
   Hue.flash_info_timer = Hue.create_debouncer(function (direction) {
     Hue.hide_flash_info()
