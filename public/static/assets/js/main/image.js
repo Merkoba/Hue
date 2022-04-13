@@ -576,7 +576,7 @@ Hue.apply_view_image_resolution = function (image, src) {
 // Take a screenshot
 Hue.take_screenshot = async function () {
   let stream = await navigator.mediaDevices.getDisplayMedia({
-    audio: true, 
+    audio: false, 
     video: {mediaSource: "screen"}
   })
 
