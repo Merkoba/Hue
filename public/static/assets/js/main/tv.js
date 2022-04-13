@@ -613,3 +613,54 @@ Hue.setup_tv_upload_comment = function () {
 Hue.show_upload_tv = function () {
   Hue.el("#tv_picker_upload").click()
 }
+
+// Setup screen capture
+Hue.setup_screen_capture = function () {
+  Hue.el("#screen_capture_options_container").addEventListener("click", function (e) {
+    let el = e.target.closest(".screen_capture_duration")
+
+    if (el) {
+      let seconds = parseInt(el.dataset.seconds)
+      Hue.msg_screen_capture_options.close()
+      Hue.start_screen_capture(seconds)
+    }
+  })
+}
+
+// Select screen capture options
+Hue.screen_capture_options = function () {
+  Hue.msg_screen_capture_options.show()
+}
+
+// Start capturing the screen and upload it as tv
+Hue.start_screen_capture = async function (seconds) {
+  let stream = await navigator.mediaDevices.getDisplayMedia({
+    audio: true, 
+    video: {mediaSource: "screen"}
+  })
+
+  let recorded_chunks = [] 
+  let media_recorder = new MediaRecorder(stream)
+
+  media_recorder.ondataavailable = function (e) {
+    if (e.data.size > 0) {
+      recorded_chunks.push(e.data)
+    }  
+  }
+
+  media_recorder.onstop = function () {
+    const blob = new Blob(recorded_chunks, {
+      type: 'video/webm'
+    })
+
+    blob.name = "capture.webm"
+    Hue.show_tv_upload_comment(blob, "tv_upload")
+    recorded_chunks = []
+  }
+
+  media_recorder.start(200)
+
+  setTimeout(function () {
+    media_recorder.stop()
+  }, seconds * 1000)
+}

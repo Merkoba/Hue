@@ -256,6 +256,11 @@ Hue.setup_media_pickers = function () {
   Hue.el("#tv_picker_upload").addEventListener("click", function () {
     Hue.msg_tv_picker.close()
   })
+
+  Hue.el("#tv_picker_capture").addEventListener("click", function () {
+    Hue.msg_tv_picker.close()
+    Hue.screen_capture_options()
+  })
   
   Hue.el("#tv_picker_history").addEventListener("click", function () {
     Hue.msg_tv_picker.close()

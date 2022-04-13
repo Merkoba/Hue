@@ -289,6 +289,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_media_info_length"
 >Max length for info under media.
 
+"screen_capture_durations"
+>How long in seconds tv screen capture videos can be.
+
 
 ## config.secret.json
 
