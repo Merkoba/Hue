@@ -169,7 +169,7 @@ Hue.setup_open_url = function () {
   Hue.el("#open_url_menu_jump").addEventListener("click", function () {
     Hue.jump_to_chat_message(Hue.open_url_data.message_id) 
     Hue.msg_open_url.close()
-  })  
+  })
 }
 
 // Shows the Open URL menu

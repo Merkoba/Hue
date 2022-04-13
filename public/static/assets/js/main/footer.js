@@ -14,6 +14,14 @@ Hue.setup_footer = function () {
     Hue.el(`#footer_${type}_lock`).addEventListener("click", function () {
       Hue.change_media_lock({type:type})
     })
+
+    Hue.el(`#footer_${type}_prev`).addEventListener("click", function () {
+      Hue.load_prev_media(type)
+    })
+
+    Hue.el(`#footer_${type}_next`).addEventListener("click", function () {
+      Hue.load_next_media(type)
+    })
   }
 
   if (Hue.config.radios.length > 0) {

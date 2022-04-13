@@ -546,47 +546,6 @@ Hue.link_image_submit = function () {
   }
 }
 
-// Use the image wheel to load prev or next images
-Hue.image_wheel_action = function (direction) {
-  if (direction === "down") {
-    Hue.image_wheel_prev()
-  } else if (direction === "up") {
-    Hue.image_wheel_next()
-  }
-}
-
-// Previous image to load on wheel
-Hue.image_wheel_prev = function () {
-  if (Hue.image_changed.length < 2) {
-    return
-  }
-
-  let index = Hue.image_changed.indexOf(Hue.loaded_image) - 1
-
-  if (index < 0) {
-    index = Hue.image_changed.length - 1
-  }
-
-  let prev = Hue.image_changed[index]
-  Hue.load_media(prev)
-}
-
-// Next image to load on wheel
-Hue.image_wheel_next = function (e) {
-  if (Hue.image_changed.length < 2) {
-    return
-  }
-
-  let index = Hue.image_changed.indexOf(Hue.loaded_image) + 1
-
-  if (index > Hue.image_changed.length - 1) {
-    index = 0
-  }
-
-  let next = Hue.image_changed[index]
-  Hue.load_media(next)
-}
-
 // Trigger upload image picker
 Hue.show_upload_image = function () {
   Hue.el("#image_picker_upload").click()

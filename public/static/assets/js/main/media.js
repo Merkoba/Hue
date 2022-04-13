@@ -8,10 +8,6 @@ Hue.setup_media = function () {
     Hue.show_modal_image()
   })
 
-  Hue.el("#media_image").addEventListener("wheel", function (e) {
-    Hue.image_wheel_timer(e.deltaY > 0 ? "down" : "up")
-  })
-
   Hue.el(".media_picker_content", Hue.msg_image_picker.window).addEventListener("click", function (e) {
     Hue.media_picker_item_click(e.target)
   })
@@ -592,7 +588,6 @@ Hue.change_media_lock = function(args) {
 Hue.change_media_lock_icon = function (type) {
   if (Hue[`${type}_locked`]) {
     Hue.el(`#footer_lock_${type}_icon use`).href.baseVal = "#icon_locked"
-    Hue.el(`#footer_lock_${type}_label`).style.display = "flex"
 
     if (Hue[`loaded_${type}`] !== Hue[`current_${type}`]()) {
       Hue.el(`#footer_lock_${type}_icon`).classList.add("blinking")
@@ -600,7 +595,6 @@ Hue.change_media_lock_icon = function (type) {
   } else {
     Hue.el(`#footer_lock_${type}_icon use`).href.baseVal = "#icon_unlocked"
     Hue.el(`#footer_lock_${type}_icon`).classList.remove("blinking")
-    Hue.el(`#footer_lock_${type}_label`).style.display = "none"
 
     Hue.change({ type: type })
   }
@@ -1042,4 +1036,36 @@ Hue.check_media_info = function () {
   let display = Hue.room_state.media_info_enabled ? "flex" : "none"
   document.documentElement.style.setProperty('--media_info_display', display)
   Hue.fix_frames()
+}
+
+// Previous media to load
+Hue.load_prev_media = function (type) {
+  if (Hue[`${type}_changed`].length < 2) {
+    return
+  }
+
+  let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type}`]) - 1
+
+  if (index < 0) {
+    index = Hue[`${type}_changed`].length - 1
+  }
+
+  let prev = Hue[`${type}_changed`][index]
+  Hue.load_media(prev)
+}
+
+// Next media to load
+Hue.load_next_media = function (type) {
+  if (Hue[`${type}_changed`].length < 2) {
+    return
+  }
+
+  let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type}`]) + 1
+
+  if (index > Hue[`${type}_changed`].length - 1) {
+    index = 0
+  }
+
+  let next = Hue[`${type}_changed`][index]
+  Hue.load_media(next)
 }
