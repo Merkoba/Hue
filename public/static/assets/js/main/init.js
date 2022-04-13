@@ -202,6 +202,7 @@ Hue.init = function () {
   Hue.setup_delete_messages()
   Hue.setup_chat_search()
   Hue.setup_change_role()
+  Hue.setup_screen_capture()
   
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
