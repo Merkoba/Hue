@@ -627,13 +627,17 @@ Hue.setup_screen_capture = function () {
   })
 }
 
-// Select screen capture options
-Hue.screen_capture_options = function () {
+// Show screen capture options
+Hue.screen_capture = function () {
   Hue.msg_screen_capture_options.show()
 }
 
 // Start capturing the screen and upload it as tv
 Hue.start_screen_capture = async function (seconds) {
+  if (!seconds) {
+    return
+  }
+  
   let stream = await navigator.mediaDevices.getDisplayMedia({
     audio: true, 
     video: {mediaSource: "screen"}
