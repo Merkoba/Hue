@@ -198,6 +198,7 @@ Hue.remove_last_input_word = function () {
   }
 
   input.value = new_value
+  Hue.check_input_expand()
 }
 
 // Check input expand
