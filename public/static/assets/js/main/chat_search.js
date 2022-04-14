@@ -13,11 +13,11 @@ Hue.setup_chat_search = function () {
   })
 
   Hue.el("#chat_search_image").addEventListener("click", function () {
-    Hue.show_image_history()
+    Hue.show_image_list()
   })
 
   Hue.el("#chat_search_tv").addEventListener("click", function () {
-    Hue.show_tv_history()
+    Hue.show_tv_list()
   })
 }
 
@@ -215,11 +215,11 @@ Hue.show_links = function () {
 }
 
 // Show image messages
-Hue.show_image_history = function () {
+Hue.show_image_list = function () {
   Hue.show_chat_search("$image ")
 }
 
 // Show tv messages
-Hue.show_tv_history = function () {
+Hue.show_tv_list = function () {
   Hue.show_chat_search("$tv ")
 }

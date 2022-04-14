@@ -653,13 +653,13 @@ Hue.commands = {
   },
   "imagehistory": {
     action: (arg, ans) => {
-      Hue.show_image_history()
+      Hue.show_image_list()
     },
     description: "Show the image history",
   },
   "tvhistory": {
     action: (arg, ans) => {
-      Hue.show_tv_history()
+      Hue.show_tv_list()
     },
     description: "Show the tv history",
   },  
