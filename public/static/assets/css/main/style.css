@@ -289,14 +289,11 @@ html {
 	align-items: center;
 	justify-content: flex-start;
 	height: 100%;
+	padding-right: 0.5rem;
 }
 
 #footer .separator {
 	height: 1em;
-}
-
-#footer_radio_icon_container {
-	padding-right: 0.5rem;
 }
 
 .footer_icon {

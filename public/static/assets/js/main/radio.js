@@ -1,11 +1,14 @@
 // Setup radios
 Hue.setup_radio = function () {
+  Hue.playing_radio = {}
+
   if (Hue.config.radios.length === 0) {
     Hue.room_state.radio_enabled = false
+    Hue.set_radio_player({name: "Empty", url: "https://localhost", metadata: "https://localhost"})
+    Hue.el("#radio_items").classList.add("nodisplay")
     return
   }
 
-  Hue.playing_radio = {}
   Hue.set_radio_player(Hue.config.radios[0])
   
   for (let radio of Hue.config.radios) {
