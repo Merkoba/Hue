@@ -10,7 +10,7 @@
 
     <div class="full_width flex_column_center rem2_gap">
       <div>
-        <div class="setting_title">TV Size / Image Size</div>
+        <div class="setting_title">TV / Image Size</div>
         <div class="flex_row_center">
           <svg id="media_tweaks_tv_size_minus" class="panel_icon action"><use href="#icon_minus"></svg>
           <select class="modal_select" id="media_tweaks_tv_size">
@@ -21,7 +21,7 @@
       </div>
 
       <div>
-        <div class="setting_title">Chat Size / Media Size</div>
+        <div class="setting_title">Chat / Media Size</div>
         <div class="flex_row_center">
           <svg id="media_tweaks_chat_size_minus" class="panel_icon action"><use href="#icon_minus"></svg>
           <select class="modal_select" id="media_tweaks_chat_size">
@@ -43,11 +43,20 @@
       </div>
     </div>
 
-    <div id="media_tweaks_bottom" class="flex_column_center rem1_gap">
-    <div id="media_tweaks_toggle_image" class="menu_item action" title="Show or hide the image"></div>
-    <div id="media_tweaks_toggle_tv" class="menu_item action" title="Show or hide the tv"></div>
-    <div id="media_tweaks_toggle_info" class="menu_item action" title="Info below media"></div>
-    <div id="media_tweaks_toggle_chat" class="menu_item action" title="Show or hide the chat"></div>
+    <div id="media_tweaks_toggles" class="flex_column_center rem1_gap">
+      <div class="flex_row_center rem1_gap">
+        <div class="flex_column_center rem1_gap flex_end">
+          <div id="media_tweaks_toggle_image" class="action" title="Show or hide the image"></div>
+          <div id="media_tweaks_toggle_info" class="action" title="Info below media"></div>
+        </div>
+
+        <div class="flex_column_center rem1_gap flex_end">
+          <div id="media_tweaks_toggle_tv" class="action" title="Show or hide the tv"></div>
+          <div id="media_tweaks_toggle_chat" class="action" title="Show or hide the chat"></div>
+        </div>
+      </div>
+    </div>
+    
     <div id="media_tweaks_defaults" class="menu_item action" title="Set all tweaks to default">Apply Defaults</div>
   </div>
 </script>
