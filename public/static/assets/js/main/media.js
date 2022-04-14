@@ -538,6 +538,8 @@ Hue.toggle_media = function (args) {
       Hue.flash_info("Info", `${ctype} is now invisible`)
     }
   }
+
+  Hue.set_media_tweaks_toggles()
 }
 
 // Change the lock of some media
@@ -971,7 +973,6 @@ Hue.change_media_visibility = function (type, play = false) {
   if (Hue.room_state[`${type}_enabled`]) {
     Hue.el("#media").style.display = "flex"
     Hue.el(`#media_${type}`).style.display = "flex"
-    Hue.el(`#footer_toggle_${type}_icon use`).href.baseVal = "#icon_toggle-on"
 
     if (Hue.first_media_change && Hue.started) {
       Hue.change({type: type, force: true, current_source: Hue[`${type}_locked`], play: play})
@@ -986,7 +987,6 @@ Hue.change_media_visibility = function (type, play = false) {
       Hue.hide_media()
     }
 
-    Hue.el(`#footer_toggle_${type}_icon use`).href.baseVal = "#icon_toggle-off"
     Hue[`${type}_visible`] = false
   }
 

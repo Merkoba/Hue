@@ -7,10 +7,6 @@ Hue.setup_footer = function () {
       Hue.show_media_picker(type)
     })
 
-    Hue.el(`#footer_${type}_toggler`).addEventListener("click", function () {
-      Hue.toggle_media({type:type})
-    })
-
     Hue.el(`#footer_${type}_lock`).addEventListener("click", function () {
       Hue.change_media_lock({type:type})
     })

@@ -69,6 +69,14 @@ Hue.setup_media_tweaks = function () {
     Hue.refresh_media_tweaks()
   })
 
+  Hue.el("#media_tweaks_toggle_image").addEventListener("click", function () {
+    Hue.toggle_media({type:"image"})
+  })
+
+  Hue.el("#media_tweaks_toggle_tv").addEventListener("click", function () {
+    Hue.toggle_media({type:"tv"})
+  })
+
   Hue.apply_media_percentages()
   Hue.apply_media_positions()
   Hue.change_media_layout()
@@ -146,7 +154,13 @@ Hue.apply_media_tweaks_defaults = function () {
 }
 // Set media tweaks toggles
 Hue.set_media_tweaks_toggles = function () {
-  let s = Hue.room_state.media_info_enabled ? "Disable Info" : "Enable Info"
+  let s = Hue.room_state.image_enabled ? "Disable Image" : "Enable Image"
+  Hue.el("#media_tweaks_toggle_image").textContent = s
+
+  s = Hue.room_state.tv_enabled ? "Disable TV" : "Enable TV"
+  Hue.el("#media_tweaks_toggle_tv").textContent = s
+
+  s = Hue.room_state.media_info_enabled ? "Disable Info" : "Enable Info"
   Hue.el("#media_tweaks_toggle_info").textContent = s
 
   s = Hue.room_state.chat_enabled ? "Disable Chat" : "Enable Chat"
