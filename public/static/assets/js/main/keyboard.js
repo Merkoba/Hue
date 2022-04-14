@@ -297,10 +297,10 @@ Hue.activate_key_detection = function () {
       return
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {
-        if (Hue.chat_scrolled) {
-          Hue.goto_bottom(true)
-        } else {
+        if (Hue.get_input()) {
           Hue.remove_last_input_word()
+        } else if (Hue.chat_scrolled) {
+          Hue.goto_bottom(true)
         }
       }
     }
