@@ -1901,9 +1901,6 @@ Hue.setup_delete_messages = function () {
     Hue.msg_delete_messages.close()
     Hue.delete_messages_below(Hue.delete_messages_id)
   })
-
-  Hue.horizontal_separator(Hue.el("#delete_messages_container_1"))
-  Hue.horizontal_separator(Hue.el("#delete_messages_container_2"))
 }
 
 // Handles delete message

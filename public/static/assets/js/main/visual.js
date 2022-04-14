@@ -1,14 +1,3 @@
-// Applies separation to generic horizontal separator classes
-Hue.setup_generic_separators = function () {
-  Hue.els(".generic_horizontal_separator").forEach(it => {
-    Hue.horizontal_separator(it)
-  })
-
-  Hue.els(".generic_vertical_separator").forEach(it => {
-    Hue.vertical_separator(it)
-  })
-}
-
 // Remove & add vertical or horizontal separators
 Hue.apply_separator = function (el, cls) {
   Hue.els(":scope > .separator", el).forEach(it => {

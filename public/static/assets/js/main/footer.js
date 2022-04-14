@@ -44,8 +44,6 @@ Hue.setup_footer = function () {
       Hue.el("#input").focus()
     }
   })
-
-  Hue.horizontal_separator(Hue.el("#footer_media_items"))
 }
 
 // Enabled footer expand
