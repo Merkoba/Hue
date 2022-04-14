@@ -291,15 +291,6 @@ html {
 	height: 100%;
 }
 
-#footer_items div {
-	position: relative;
-	height: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-}
-
 #footer .separator {
 	height: 1em;
 }
