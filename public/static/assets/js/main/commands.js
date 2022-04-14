@@ -84,6 +84,12 @@ Hue.commands = {
     },
     description: "Show the link tv window",
   },
+  "capture": {
+    action: (arg, ans) => {
+      Hue.screen_capture()
+    },
+    description: "Start a screen capture",
+  },
   "uploadtv": {
     action: (arg, ans) => {
       Hue.show_upload_tv()
@@ -105,6 +111,12 @@ Hue.commands = {
       Hue.show_link_image()
     },
     description: "Show the link image window",
+  },
+  "screenshot": {
+    action: (arg, ans) => {
+      Hue.take_screenshot()
+    },
+    description: "Take a screenshot",
   },
   "uploadimage": {
     action: (arg, ans) => {
