@@ -299,7 +299,7 @@ Hue.activate_key_detection = function () {
       if (!e.shiftKey) {
         if (Hue.get_input()) {
           Hue.remove_last_input_word()
-        } else if (Hue.chat_scrolled) {
+        } else {
           Hue.goto_bottom(true)
         }
       }
