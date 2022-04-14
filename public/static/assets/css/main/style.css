@@ -1272,6 +1272,11 @@ a.special_link:hover {
 	margin-bottom: 2rem;
 }
 
+#media_tweaks_toggles {
+	margin-top: 2rem;
+	margin-bottom: 1.5rem;
+}
+
 .message_edit_container {
 	display: none;
 	width: 90%;
@@ -1766,10 +1771,6 @@ pre {
 	text-align: center;
 }
 
-#media_tweaks_bottom {
-	margin-top: 2rem;
-}
-
 #main_menu .vertical_separator {
 	margin-top: 1.5rem !important;
 	margin-bottom: 1.5rem !important;
@@ -2045,4 +2046,8 @@ pre {
 .profilepic_size {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
+}
+
+.flex_end {
+	align-items: flex-end;
 }
