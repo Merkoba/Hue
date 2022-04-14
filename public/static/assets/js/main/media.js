@@ -567,6 +567,10 @@ Hue.change_media_lock = function(args) {
   Hue[`${args.type}_locked`] = new_val
   Hue.change_media_lock_text(args.type)
 
+  if (!new_val) {
+    Hue.change({type: args.type})
+  }
+
   if (args.feedback) {
     let ctype = Hue.media_string(args.type)
 
