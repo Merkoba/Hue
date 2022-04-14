@@ -21,7 +21,7 @@ Hue.setup_footer = function () {
 
     Hue.el(`#footer_${type}_list`).addEventListener("click", function () {
       Hue[`msg_${type}_picker`].close()
-      Hue[`show_${type}_history`]()
+      Hue[`show_${type}_list`]()
     })
   }
 

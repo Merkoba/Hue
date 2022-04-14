@@ -228,6 +228,10 @@ Hue.setup_modal_image = function () {
     Hue.open_url_menu(Hue.loaded_modal_image)
   })
 
+  Hue.el("#modal_image_toolbar_list").addEventListener("click", function (e) {
+    Hue.show_image_list()
+  })
+
   Hue.el("#modal_image_subheader").addEventListener("click", function () {
     Hue.open_view_text(this.textContent)
   })
