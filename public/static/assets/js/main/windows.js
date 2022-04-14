@@ -678,13 +678,13 @@ Hue.start_msg = function () {
 
   Hue.msg_link_image.set_title(Hue.template_titlebar({
     items: [
-      {id: "link_image_submit", text: "Submit Image"},
+      {id: "link_image_submit", text: "Link Image"},
     ]
   }))
 
   Hue.msg_link_tv.set_title(Hue.template_titlebar({
     items: [
-      {id: "link_tv_submit", text: "Submit TV"},
+      {id: "link_tv_submit", text: "Link TV"},
     ]
   }))
 
@@ -752,7 +752,7 @@ Hue.start_msg = function () {
 
   Hue.msg_link_background.set_title(Hue.template_titlebar({
     items: [
-      {id: "link_background_submit", text: "Submit Background"},
+      {id: "link_background_submit", text: "Link Background"},
     ]
   }))
 
