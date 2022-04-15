@@ -232,6 +232,7 @@ Hue.check_input_expand = function () {
 // Setup handle chat media
 Hue.setup_handle_chat_media = function () {
   Hue.el("#handle_chat_media_to_chat").addEventListener("click", function () {
+    Hue.clear_input()
     let args = Hue.handle_chat_media_args
     args.bypass_url_check = true
     Hue.process_input(args)
@@ -239,14 +240,20 @@ Hue.setup_handle_chat_media = function () {
   })
 
   Hue.el("#handle_chat_media_change").addEventListener("click", function () {
-    Hue[`change_${Hue.handle_chat_media_type}_source`](Hue.handle_chat_media_args.message)
-    Hue.msg_handle_chat_media.close()
+    Hue.handle_chat_media_change()
   })
+}
+
+// Handle chat media change
+Hue.handle_chat_media_change = function () {
+  Hue.clear_input()
+  Hue.add_to_input_history(Hue.handle_chat_media_args.message)
+  Hue[`change_${Hue.handle_chat_media_type}_source`](Hue.handle_chat_media_args.message)
+  Hue.msg_handle_chat_media.close()
 }
 
 // Handle chat media
 Hue.handle_chat_media = function (type, args) {
-  Hue.clear_input()
   Hue.handle_chat_media_type = type
   Hue.handle_chat_media_args = args
   Hue.el("#handle_chat_media_change").textContent = `Change ${Hue.media_string(type)}`

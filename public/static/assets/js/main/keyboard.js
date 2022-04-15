@@ -228,6 +228,16 @@ Hue.activate_key_detection = function () {
         }
       }
 
+      if (Hue.msg_handle_chat_media.is_open()) {
+        if (Hue.msg_handle_chat_media.is_highest()) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            Hue.handle_chat_media_change()
+          }
+
+          return
+        }
+      }
+
       return
     }
 
