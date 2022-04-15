@@ -69,9 +69,13 @@ Hue.update_roomlist = function (data) {
     
     item.innerHTML = Hue.template_roomlist_item({
       name: room.name, 
-      topic: topic || "Not set",
+      topic: topic,
       modified: Hue.utilz.timeago(room.modified)
     })
+
+    if (!topic) {
+      Hue.el(".roomlist_topic", item).style.display = "none"
+    }
 
     let icon = Hue.el(".roomlist_icon", item)
     jdenticon.update(icon, room.name)
