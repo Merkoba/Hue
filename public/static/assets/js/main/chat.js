@@ -876,6 +876,7 @@ Hue.stop_edit_message = function () {
   Hue.editing_message = false
   Hue.editing_message_container = false
   Hue.editing_message_area = Hue.div()
+  Hue.goto_bottom()
 }
 
 // Submits a chat message edit
