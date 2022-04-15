@@ -180,22 +180,10 @@ Hue.process_input = function (args = {}) {
   
       if (first_url) {
         if (Hue.utilz.is_image(first_url)) {
-          Hue.show_confirm("Change the Image", function () {  
-            Hue.change_image_source(args.message)
-          }, function () {
-            args.bypass_url_check = true
-            Hue.process_input(args)
-          })
-
+          Hue.handle_chat_media("image", args)
           return
         } else if (Hue.utilz.is_video(first_url) || Hue.utilz.get_youtube_id(first_url) ) {
-          Hue.show_confirm("Change the TV", function () {  
-            Hue.change_tv_source(args.message)
-          }, function () {
-            args.bypass_url_check = true
-            Hue.process_input(args)
-          })
-
+          Hue.handle_chat_media("tv", args)
           return
         }
       }
@@ -239,4 +227,28 @@ Hue.check_input_expand = function () {
   if (!Hue.el("#input").value) {
     Hue.disable_footer_expand()
   }
+}
+
+// Setup handle chat media
+Hue.setup_handle_chat_media = function () {
+  Hue.el("#handle_chat_media_to_chat").addEventListener("click", function () {
+    let args = Hue.handle_chat_media_args
+    args.bypass_url_check = true
+    Hue.process_input(args)
+    Hue.msg_handle_chat_media.close()
+  })
+
+  Hue.el("#handle_chat_media_change").addEventListener("click", function () {
+    Hue[`change_${Hue.handle_chat_media_type}_source`](Hue.handle_chat_media_args.message)
+    Hue.msg_handle_chat_media.close()
+  })
+}
+
+// Handle chat media
+Hue.handle_chat_media = function (type, args) {
+  Hue.clear_input()
+  Hue.handle_chat_media_type = type
+  Hue.handle_chat_media_args = args
+  Hue.el("#handle_chat_media_change").textContent = `Change ${Hue.media_string(type)}`
+  Hue.msg_handle_chat_media.show()
 }
