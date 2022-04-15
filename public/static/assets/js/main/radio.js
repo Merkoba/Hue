@@ -413,12 +413,12 @@ Hue.check_radio_playing = function () {
   if (Hue.radio_is_playing()) {
     Hue.el("#footer_radio_icon").classList.add("rotate")
     Hue.el("#radio_button_playstop use").href.baseVal = "#icon_pause"
-    Hue.update_input_placeholder(`Listening to ${Hue.playing_radio.radio.name}`)
   } else {
     Hue.el("#footer_radio_icon").classList.remove("rotate")
     Hue.el("#radio_button_playstop use").href.baseVal = "#icon_play"
-    Hue.update_input_placeholder()
   }
+
+  Hue.update_input_placeholder()
 }
 
 // Create a radio item
@@ -788,4 +788,13 @@ Hue.create_radio_dj_controls = function () {
 Hue.radio_dj_flash_info = function () {
   let m = Hue.room_state.radio_dj_delay
   Hue.flash_info("Radio DJ", `Radio stations will change automatically every ${m} minutes`)
+}
+
+// Get radio now playing string
+Hue.radio_now_playing_string = function () {
+  if (Hue.radio_is_playing()) {
+    return `Listening to ${Hue.playing_radio.radio.name}`
+  } else {
+    return ""
+  }
 }
