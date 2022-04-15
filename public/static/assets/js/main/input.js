@@ -256,6 +256,12 @@ Hue.handle_chat_media_change = function () {
 Hue.handle_chat_media = function (type, args) {
   Hue.handle_chat_media_type = type
   Hue.handle_chat_media_args = args
+  
   Hue.el("#handle_chat_media_change").textContent = `Change the ${Hue.media_string(type)}`
+
+  let url = Hue.el("#handle_chat_media_url")
+  url.textContent = Hue.utilz.get_first_url(args.message)
+  Hue.urlize(url)
+
   Hue.msg_handle_chat_media.show()
 }

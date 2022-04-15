@@ -782,6 +782,13 @@ Hue.start_msg = function () {
     ]
   }))
 
+  Hue.msg_handle_chat_media.set_title(Hue.template_titlebar({
+    items: [
+      {id: "handle_chat_media_to_chat", text: "Send to Chat"},
+      {id: "handle_chat_media_change", text: ""},
+    ]
+  }))
+
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_background_select.set_title("Background Image")
@@ -802,7 +809,6 @@ Hue.start_msg = function () {
   Hue.msg_delete_messages.set_title("Delete Message(s)")
   Hue.msg_command_book.set_title("Command Book")
   Hue.msg_user_profile.set_title("User Profile")
-  Hue.msg_handle_chat_media.set_title("Handle Chat Media")
 }
 
 // Setup window controls
