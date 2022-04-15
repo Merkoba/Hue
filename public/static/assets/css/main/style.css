@@ -1277,6 +1277,10 @@ a.special_link:hover {
 	margin-bottom: 1.5rem;
 }
 
+.media_tweaks_toggle {
+	align-items: flex-start;
+}
+
 .message_edit_container {
 	display: none;
 	width: 90%;
@@ -2046,8 +2050,4 @@ pre {
 .profilepic_size {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
-}
-
-.flex_end {
-	align-items: flex-end;
 }
