@@ -83,6 +83,7 @@ Hue.on_confirm = function () {
   if (Hue.confirm_action) {
     Hue.confirm_action()
     Hue.confirm_action = undefined
+    Hue.confirm_action_cancel = undefined
   }
 
   Hue.msg_confirm.close()

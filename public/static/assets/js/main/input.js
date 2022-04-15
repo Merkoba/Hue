@@ -145,7 +145,8 @@ Hue.process_input = function (args = {}) {
     quote: "",
     quote_username: "",
     quote_user_id: "",
-    quote_id: ""
+    quote_id: "",
+    bypass_url_check: false
   }
 
   args = Object.assign(def_args, args)
@@ -172,6 +173,33 @@ Hue.process_input = function (args = {}) {
   } else {
     if (args.message.length > Hue.config.max_input_length) {
       args.message = args.message.substring(0, Hue.config.max_input_length)
+    }
+
+    if (!args.bypass_url_check) {
+      let first_url = Hue.utilz.get_first_url(args.message)
+  
+      if (first_url) {
+        if (Hue.utilz.is_image(first_url)) {
+          Hue.show_confirm("Change the Image", function () {  
+            Hue.change_image_source(args.message)
+          }, function () {
+            console.log(123)
+            args.bypass_url_check = true
+            Hue.process_input(args)
+          })
+
+          return
+        } else if (Hue.utilz.is_video(first_url) || Hue.utilz.get_youtube_id(first_url) ) {
+          Hue.show_confirm("Change the TV", function () {  
+            Hue.change_tv_source(args.message)
+          }, function () {
+            args.bypass_url_check = true
+            Hue.process_input(args)
+          })
+
+          return
+        }
+      }
     }
 
     Hue.socket_emit("sendchat", {
