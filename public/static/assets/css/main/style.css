@@ -1374,7 +1374,7 @@ a.special_link:hover {
 .chat_quote {
 	padding: 0.25em;
 	margin-bottom: 0.25em;
-	background-color: var(--altcolor_a);
+	background-color: var(--altbackground);
 }
 
 .chat_quote * {
