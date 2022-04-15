@@ -386,6 +386,12 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_handle_chat_media = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "handle_chat_media"
+    })
+  )
+
   Hue.msg_handle_radio_history = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "handle_radio_history"
@@ -618,6 +624,7 @@ Hue.start_msg = function () {
   Hue.msg_tv_upload_comment.set(Hue.template_tv_upload_comment())
   Hue.msg_reply.set(Hue.template_reply())
   Hue.msg_handle_url.set(Hue.template_handle_url())
+  Hue.msg_handle_chat_media.set(Hue.template_handle_chat_media())
   Hue.msg_handle_radio_history.set(Hue.template_handle_radio_history())
   Hue.msg_delete_messages.set(Hue.template_delete_messages())
   Hue.msg_open_url.set(Hue.template_open_url())
@@ -795,6 +802,7 @@ Hue.start_msg = function () {
   Hue.msg_delete_messages.set_title("Delete Message(s)")
   Hue.msg_command_book.set_title("Command Book")
   Hue.msg_user_profile.set_title("User Profile")
+  Hue.msg_handle_chat_media.set_title("Handle Chat Media")
 }
 
 // Setup window controls
