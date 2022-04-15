@@ -183,7 +183,6 @@ Hue.process_input = function (args = {}) {
           Hue.show_confirm("Change the Image", function () {  
             Hue.change_image_source(args.message)
           }, function () {
-            console.log(123)
             args.bypass_url_check = true
             Hue.process_input(args)
           })
