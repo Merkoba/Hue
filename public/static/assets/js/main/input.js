@@ -43,11 +43,17 @@ Hue.setup_input = function () {
 }
 
 // Updates the input's placeholder
-Hue.update_input_placeholder = function (append = "") {
-  let s = `Hi ${Hue.username}, welcome to ${Hue.room_name}  -  ${Hue.topic}`
+Hue.update_input_placeholder = function () {
+  let s = `Hi ${Hue.username}, welcome to ${Hue.room_name}`
 
-  if (append) {
-    s += `  -  ${append}`
+  if (Hue.topic) {
+    s += `  -  ${Hue.topic}`
+  }
+
+  let np = Hue.radio_now_playing_string()
+  
+  if (np) {
+    s += `  -  ${np}`
   }
 
   Hue.el("#input").placeholder = s
