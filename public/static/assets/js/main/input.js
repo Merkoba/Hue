@@ -256,6 +256,6 @@ Hue.handle_chat_media_change = function () {
 Hue.handle_chat_media = function (type, args) {
   Hue.handle_chat_media_type = type
   Hue.handle_chat_media_args = args
-  Hue.el("#handle_chat_media_change").textContent = `Change ${Hue.media_string(type)}`
+  Hue.el("#handle_chat_media_change").textContent = `Change the ${Hue.media_string(type)}`
   Hue.msg_handle_chat_media.show()
 }
