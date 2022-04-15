@@ -360,6 +360,14 @@ Hue.change = function (args = {}) {
     item = Hue[`loaded_${args.type}`]
   } else {
     item = Hue[`current_${args.type}`]()
+
+    // Unlock if media was changed by user
+    if (item.user_id === Hue.user_id) {
+      Hue.change_media_lock({
+        type: args.type,
+        what: false
+      })
+    }
   }
 
   if (!Hue.has_focus) {
