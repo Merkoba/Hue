@@ -175,7 +175,7 @@ Hue.process_input = function (args = {}) {
       args.message = args.message.substring(0, Hue.config.max_input_length)
     }
 
-    if (!args.bypass_url_check) {
+    if (!args.bypass_url_check && !args.quote) {
       let first_url = Hue.utilz.get_first_url(args.message)
   
       if (first_url) {
