@@ -180,11 +180,15 @@ Hue.process_input = function (args = {}) {
   
       if (first_url) {
         if (Hue.utilz.is_image(first_url)) {
-          Hue.handle_chat_media("image", args)
-          return
+          if (first_url !== Hue.current_image().source) {
+            Hue.handle_chat_media("image", args)
+            return
+          }
         } else if (Hue.utilz.is_video(first_url) || Hue.utilz.get_youtube_id(first_url) ) {
-          Hue.handle_chat_media("tv", args)
-          return
+          if (first_url !== Hue.current_tv().source) {
+            Hue.handle_chat_media("tv", args)
+            return
+          }
         }
       }
     }
