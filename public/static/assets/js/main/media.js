@@ -947,11 +947,13 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   }
 
   if (mode === "change") {
-    Hue.change_media_lock({
-      type: type,
-      what: false,
-      change: false
-    })
+    if (data.user_id === Hue.user_id) {
+      Hue.change_media_lock({
+        type: type,
+        what: false,
+        change: false
+      })
+    }
 
     Hue.change({type: type})
   }
