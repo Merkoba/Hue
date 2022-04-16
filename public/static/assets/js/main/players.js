@@ -57,7 +57,7 @@ Hue.on_youtube_tv_player_ready = function () {
   Hue.youtube_tv_player = Hue.yt_tv_player
 
   if (Hue.youtube_tv_player_request) {
-    Hue.change(Hue.youtube_tv_player_request)
+    Hue.change_media(Hue.youtube_tv_player_request)
     Hue.youtube_tv_player_request = false
   }
 }
@@ -106,7 +106,7 @@ Hue.create_soundcloud_tv_player = function () {
       Hue.soundcloud_tv_player = _soundcloud_tv_player
 
       if (Hue.soundcloud_tv_player_request) {
-        Hue.change(Hue.soundcloud_tv_player_request)
+        Hue.change_media(Hue.soundcloud_tv_player_request)
         Hue.soundcloud_tv_player_request = false
       }
     })
@@ -192,7 +192,7 @@ Hue.create_twitch_tv_player = function () {
       Hue.add_media_info("media_twitch_tv_container")
 
       if (Hue.twitch_tv_player_request) {
-        Hue.change(Hue.twitch_tv_player_request)
+        Hue.change_media(Hue.twitch_tv_player_request)
         Hue.twitch_tv_player_request = false
       }
     })
