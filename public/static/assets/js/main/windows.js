@@ -810,6 +810,16 @@ Hue.start_msg = function () {
     container_id: "handle_url_container"
   }))
 
+  Hue.msg_delete_messages.set_title(Hue.template_titlebar({
+    items: [
+      {id: "delete_messages_one", text: "One"},
+      {id: "delete_messages_group", text: "Group"},
+      {id: "delete_messages_above", text: "Above"},
+      {id: "delete_messages_below", text: "Below"},
+    ],
+    container_id: "delete_messages_container"
+  }))
+
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_background_select.set_title("Background Image")
@@ -827,7 +837,6 @@ Hue.start_msg = function () {
   Hue.msg_image_picker.set_title("Change the Image")
   Hue.msg_tv_picker.set_title("Change the TV")
   Hue.msg_handle_radio_history.set_title("Handle Radio History")
-  Hue.msg_delete_messages.set_title("Delete Message(s)")
   Hue.msg_command_book.set_title("Command Book")
   Hue.msg_user_profile.set_title("User Profile")
 }
