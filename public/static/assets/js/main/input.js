@@ -263,9 +263,9 @@ Hue.handle_chat_media = function (type, args) {
   
   Hue.el("#handle_chat_media_change").textContent = `Change the ${Hue.media_string(type)}`
 
-  let url = Hue.el("#handle_chat_media_url")
-  url.textContent = Hue.utilz.get_first_url(args.message)
-  Hue.urlize(url)
+  let url_el = Hue.el("#handle_chat_media_url")
+  url_el.textContent = Hue.utilz.get_first_url(args.message)
+  Hue.urlize(url_el)
 
   Hue.msg_handle_chat_media.show()
 }
