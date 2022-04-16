@@ -347,8 +347,7 @@ Hue.change_media = function (args = {}) {
     play: true,
     notify: true,
     current_source: false,
-    item: false,
-    bypass_lock: false
+    item: false
   }
 
   args = Object.assign(def_args, args)
@@ -392,7 +391,7 @@ Hue.change_media = function (args = {}) {
 
     if (
       !args.item &&
-      (Hue.image_locked && !args.bypass_lock) &&
+      Hue.image_locked &&
       Hue.loaded_image.source &&
       !args.current_source
     ) {
@@ -411,7 +410,7 @@ Hue.change_media = function (args = {}) {
     }
 
     if (!args.item && 
-      (Hue.tv_locked && !args.bypass_lock) && 
+      Hue.tv_locked && 
       Hue.loaded_tv.source && 
       !args.current_source
     ) {
@@ -948,12 +947,16 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   }
 
   if (mode === "change") {
-    let same_user = data.user_id === Hue.user_id
+    if (data.user_id === Hue.user_id) {
+      Hue.change_media_lock({
+        type: type,
+        what: false,
+        feedback: true,
+        change: false
+      })
+    }
     
-    Hue.change_media({
-      type: type, 
-      bypass_lock: same_user
-    })
+    Hue.change_media({type: type})
   }
 }
 
