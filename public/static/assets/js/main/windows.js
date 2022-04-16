@@ -789,6 +789,27 @@ Hue.start_msg = function () {
     ]
   }))
 
+  Hue.msg_open_url.set_title(Hue.template_titlebar({
+    items: [
+      {id: "open_url_menu_view_url", text: "URL"},
+      {id: "open_url_menu_view_title", text: "Title"},
+      {id: "open_url_menu_view_comment", text: "Comment"},
+      {id: "open_url_menu_load", text: "Load"},
+      {id: "open_url_menu_link", text: "Link"},
+      {id: "open_url_menu_jump", text: "Jump"},
+    ],
+    container_id: "open_url_container"
+  }))
+
+  Hue.msg_handle_url.set_title(Hue.template_titlebar({
+    items: [
+      {id: "handle_url_chat", text: "Send to Chat"},
+      {id: "handle_url_image", text: "Change the Image"},
+      {id: "handle_url_tv", text: "Change the TV"},
+    ],
+    container_id: "handle_url_container"
+  }))
+
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_background_select.set_title("Background Image")

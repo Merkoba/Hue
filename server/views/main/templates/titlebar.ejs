@@ -1,7 +1,11 @@
 <script id="template_titlebar" type="text/x-handlebars-template" class="template">
+  {{#if container_id}}
+  <div class="flex_row_center generic_horizontal_separator" id="{{container_id}}">
+  {{else}}
   <div class="flex_row_center generic_horizontal_separator">
+  {{/if}}
     {{#each items}}
     <div id="{{id}}" class="action titlebar_action">{{text}}</div>
-    {{/each}} 
+    {{/each}}
   </div>
 </script>
