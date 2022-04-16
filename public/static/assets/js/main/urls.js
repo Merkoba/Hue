@@ -206,30 +206,13 @@ Hue.open_url_menu = function (data) {
   Hue.horizontal_separator(Hue.el("#open_url_container"))
 
   let url_el = Hue.el("#open_url_info")
-  
-  let info = ""
-  
-  if (data.title) {
-    info += data.title
-  }
 
-  if (data.comment) {
-    if (info) {
-      info += " "
-    }
+  url_el.innerHTML = Hue.template_open_url_info({
+    title: data.title,
+    comment: data.comment,
+    url: data.source
+  })
 
-    info += data.comment
-  }
-
-  if (data.source) {
-    if (info) {
-      info += " "
-    }
-    
-    info += data.source
-  }
-
-  url_el.textContent = info
   Hue.urlize(url_el)
   
   Hue.open_url_data = data
