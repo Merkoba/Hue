@@ -547,7 +547,8 @@ Hue.change_media_lock = function(args) {
   let def_args = {
     type: "",
     what: undefined,  
-    feedback: false
+    feedback: false,
+    change: true
   }
 
   args = Object.assign(def_args, args)
@@ -567,7 +568,7 @@ Hue.change_media_lock = function(args) {
   Hue[`${args.type}_locked`] = new_val
   Hue.change_media_lock_text(args.type)
 
-  if (!new_val) {
+  if (!new_val && args.change) {
     Hue.change({type: args.type})
   }
 
@@ -946,6 +947,12 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   }
 
   if (mode === "change") {
+    Hue.change_media_lock({
+      type: type,
+      what: false,
+      change: false
+    })
+
     Hue.change({type: type})
   }
 }
