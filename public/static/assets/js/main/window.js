@@ -73,8 +73,8 @@ Hue.process_visibility = function () {
 
 // This runs when the client regains visibility
 Hue.on_focus = function () {
-  Hue.change({type: "image", force: false, play: false})
-  Hue.change({type: "tv", force: false, play: false})
+  Hue.change_media({type: "image", force: false, play: false})
+  Hue.change_media({type: "tv", force: false, play: false})
   Hue.remove_alert_title()
   Hue.show_fresh_messages()
   Hue.focus_input()

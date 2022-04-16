@@ -115,12 +115,12 @@ Hue.swap_display_positions = function () {
 
 // Initial change for current media
 Hue.start_active_media = function () {
-  Hue.change({
+  Hue.change_media({
     type: "image",
     play: false
   })
 
-  Hue.change({
+  Hue.change_media({
     type: "tv",
     play: false
   })
@@ -340,14 +340,15 @@ Hue.fix_frames = function () {
 // This handles all media load
 // It will attempt to load and play media taking into account the room state
 // It is responsible to initiate the construction of all required media players
-Hue.change = function (args = {}) {
+Hue.change_media = function (args = {}) {
   let def_args = {
     type: "",
     force: false,
     play: true,
     notify: true,
     current_source: false,
-    item: false
+    item: false,
+    bypass_lock: false
   }
 
   args = Object.assign(def_args, args)
@@ -391,7 +392,7 @@ Hue.change = function (args = {}) {
 
     if (
       !args.item &&
-      Hue.image_locked &&
+      (Hue.image_locked && !args.bypass_lock) &&
       Hue.loaded_image.source &&
       !args.current_source
     ) {
@@ -410,7 +411,7 @@ Hue.change = function (args = {}) {
     }
 
     if (!args.item && 
-      Hue.tv_locked && 
+      (Hue.tv_locked && !args.bypass_lock) && 
       Hue.loaded_tv.source && 
       !args.current_source
     ) {
@@ -569,7 +570,7 @@ Hue.change_media_lock = function(args) {
   Hue.change_media_lock_text(args.type)
 
   if (!new_val && args.change) {
-    Hue.change({type: args.type})
+    Hue.change_media({type: args.type})
   }
 
   if (args.feedback) {
@@ -714,7 +715,7 @@ Hue.load_media = function (data) {
   Hue.toggle_media({type: data.media_type, what: true, feedback: true})
   Hue.change_media_lock({type: data.media_type, what: true, feedback: true})
   
-  Hue.change({
+  Hue.change_media({
     type: data.media_type,
     item: data,
     force: true
@@ -947,15 +948,12 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   }
 
   if (mode === "change") {
-    if (data.user_id === Hue.user_id) {
-      Hue.change_media_lock({
-        type: type,
-        what: false,
-        change: false
-      })
-    }
-
-    Hue.change({type: type})
+    let same_user = data.user_id === Hue.user_id
+    
+    Hue.change_media({
+      type: type, 
+      bypass_lock: same_user
+    })
   }
 }
 
@@ -984,7 +982,7 @@ Hue.change_media_visibility = function (type, play = false) {
     Hue.el(`#media_${type}`).style.display = "flex"
 
     if (Hue.first_media_change && Hue.started) {
-      Hue.change({type: type, force: true, current_source: Hue[`${type}_locked`], play: play})
+      Hue.change_media({type: type, force: true, current_source: Hue[`${type}_locked`], play: play})
     }
 
     Hue[`${type}_visible`] = true
