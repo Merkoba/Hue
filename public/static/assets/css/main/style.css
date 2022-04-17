@@ -1279,14 +1279,14 @@ a.special_link:hover {
 	margin-top: 2rem;
 }
 
-.media_tweaks_toggle {
+.toggle_button {
 	width: 7rem;
 	background-color: var(--altbackground);
 	padding: 0.25rem;
 	border: 1px solid transparent;
 }
 
-.media_tweaks_toggle_enabled {
+.toggle_button_enabled {
 	border: 1px solid var(--text_color_a);
 }
 
