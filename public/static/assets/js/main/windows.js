@@ -343,7 +343,9 @@ Hue.start_msg = function () {
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.el("#image_upload_comment_input").value = ""
-        Hue.image_upload_comment_file = false
+        Hue.image_upload_comment_file = undefined
+        Hue.image_upload_comment_type = undefined
+        Hue.upload_media = undefined
       },
     })
   )
@@ -357,8 +359,9 @@ Hue.start_msg = function () {
         Hue.el("#tv_upload_comment_input").value = ""
         Hue.el("#tv_upload_comment_video_preview").pause()
         Hue.el("#tv_upload_comment_video_preview").src = ""
-        Hue.tv_upload_comment_file = false
-        Hue.tv_upload_comment_type = false
+        Hue.tv_upload_comment_file = undefined
+        Hue.tv_upload_comment_type = undefined
+        Hue.upload_media = undefined
       },
     })
   )  
@@ -883,6 +886,14 @@ Hue.start_msg = function () {
       {id: "media_tweaks_rotate", text: "Rotate"},
       {id: "media_tweaks_revolve", text: "Revolve"},
       {id: "media_tweaks_defaults", text: "Defaults"},
+    ]
+  }))
+
+  Hue.msg_profile.set_title(Hue.template_titlebar({
+    items: [
+      {id: "show_profile_change_role", text: "Role"},
+      {id: "show_profile_kick", text: "Kick"},
+      {id: "show_profile_ban", text: "Ban"},
     ]
   }))
 
