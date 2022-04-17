@@ -784,7 +784,7 @@ Hue.start_msg = function () {
 
   Hue.msg_handle_chat_media.set_title(Hue.template_titlebar({
     items: [
-      {id: "handle_chat_media_to_chat", text: "Send to Chat"},
+      {id: "handle_chat_media_to_chat", text: "Send To Chat"},
       {id: "handle_chat_media_change", text: ""},
     ]
   }))
@@ -803,9 +803,9 @@ Hue.start_msg = function () {
 
   Hue.msg_handle_url.set_title(Hue.template_titlebar({
     items: [
-      {id: "handle_url_chat", text: "Send to Chat"},
-      {id: "handle_url_image", text: "Change the Image"},
-      {id: "handle_url_tv", text: "Change the TV"},
+      {id: "handle_url_chat", text: "Send To Chat"},
+      {id: "handle_url_image", text: "Change The Image"},
+      {id: "handle_url_tv", text: "Change The TV"},
     ],
     container_id: "handle_url_container"
   }))
@@ -846,10 +846,41 @@ Hue.start_msg = function () {
     ]
   }))
 
+  Hue.msg_background_select.set_title(Hue.template_titlebar({
+    items: [
+      {id: "background_select_link", text: "Link"},
+      {id: "background_select_upload", text: "Upload"},
+      {id: "background_select_draw", text: "Draw"},
+      {id: "background_select_random", text: "Random"},
+      {id: "background_select_remove", text: "Remove"},
+    ]
+  }))
+
+  Hue.msg_audioclip_select.set_title(Hue.template_titlebar({
+    items: [
+      {id: "play_audioclip", text: "Play"},
+      {id: "upload_audioclip", text: "Upload"},
+      {id: "remove_audioclip", text: "Remove"},
+    ]
+  }))
+
+  Hue.msg_change_role.set_title(Hue.template_titlebar({
+    items: [
+      {id: "change_role_admin", text: "Admin"},
+      {id: "change_role_op", text: "Op"},
+      {id: "change_role_voice", text: "Voice"},
+    ]
+  }))
+
+  Hue.msg_handle_radio_history.set_title(Hue.template_titlebar({
+    items: [
+      {id: "handle_radio_history_copy", text: "Copy To Clipboard"},
+      {id: "handle_radio_history_search", text: "Search YouTube"},
+    ]
+  }))
+
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
-  Hue.msg_background_select.set_title("Background Image")
-  Hue.msg_audioclip_select.set_title("Audio Clip")
   Hue.msg_admin_list.set_title("Admin List")
   Hue.msg_ban_list.set_title("Ban List")
   Hue.msg_roomlist.set_title("Room List")
@@ -858,8 +889,6 @@ Hue.start_msg = function () {
   Hue.msg_screen_capture_options.set_title("Screen Capture")
   Hue.msg_admin_activity.set_title("Admin Activity")
   Hue.msg_notifications.set_title("Notifications")
-  Hue.msg_change_role.set_title("Change Role")
-  Hue.msg_handle_radio_history.set_title("Handle Radio History")
   Hue.msg_command_book.set_title("Command Book")
   Hue.msg_user_profile.set_title("User Profile")
 }

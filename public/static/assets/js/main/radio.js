@@ -50,6 +50,8 @@ Hue.setup_radio_window = function () {
 
     if (el) {
       Hue.handle_radio_history_item = el
+      let info = Hue.el(".radio_history_info", el).textContent
+      Hue.el("#handle_radio_history_info").textContent = info
       Hue.msg_handle_radio_history.show()
     }
   })
