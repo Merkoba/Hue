@@ -12,6 +12,7 @@ msgvars.common = {
   class: "modal",
   show_effect: "none",
   close_effect: "none",
+  window_x: "none",
   after_show: function (instance) {
     Hue.after_modal_show(instance)
     Hue.after_modal_set_or_show(instance)
@@ -291,7 +292,6 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, {
       id: "locked",
       closeable: false,
-      window_x: "none",
       show_effect: "none",
       close_effect: "none",
       enable_overlay: true,
