@@ -546,7 +546,7 @@ Hue.receive_tv_progress = function (data) {
 // Shows the window to add a comment to a video upload
 Hue.show_tv_upload_comment = function (file, type) {
   Hue.el("#tv_upload_comment_video_feedback").style.display = "none"
-  Hue.el("#tv_upload_comment_video_preview").style.display = "inline-block"
+  Hue.el("#tv_upload_comment_video_preview").style.display = "block"
 
   let reader = new FileReader()
 
