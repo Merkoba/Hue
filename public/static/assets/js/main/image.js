@@ -453,7 +453,7 @@ Hue.view_image = function (src, username, user_id) {
 // Shows the window to add a comment to an image upload
 Hue.show_image_upload_comment = function (file, type) {
   Hue.el("#image_upload_comment_image_feedback").style.display = "none"
-  Hue.el("#image_upload_comment_image_preview").style.display = "inline-block"
+  Hue.el("#image_upload_comment_image_preview").style.display = "block"
 
   let reader = new FileReader()
 
