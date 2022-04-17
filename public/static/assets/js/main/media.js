@@ -524,26 +524,22 @@ Hue.toggle_media = function (args) {
   if (new_val === Hue.room_state[`${args.type}_enabled`]) {
     return
   }
-
-  if (new_val) {
-    Hue.el(`#footer_${args.type}_toggle use`).href.baseVal = "#icon_toggle-on"
-  } else {
-    Hue.el(`#footer_${args.type}_toggle use`).href.baseVal = "#icon_toggle-off"
-  }
-
+  
   Hue.room_state[`${args.type}_enabled`] = new_val
-
+  
   if (Hue[`${args.type}_visible`] !== args.what) {
     Hue.change_media_visibility(args.type)
   }
-
+  
   let p = Hue.room_state.tv_display_percentage
-
+  
   if (p === 0 || p === 100) {
     Hue.set_default_tv_size()
   } else if (args.save) {
     Hue.save_room_state()
   }
+  
+  Hue.update_footer_toggle(args.type)
 
   if (args.feedback) {
     let ctype = Hue.media_string(args.type)
