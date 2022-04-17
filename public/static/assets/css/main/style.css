@@ -1343,11 +1343,11 @@ a.special_link:hover {
 .upload_comment_preview {
 	max-height: 29.41rem;
 	max-width: 29.41rem;
+	margin-top: 1.5rem;
 }
 
 .upload_comment_name {
 	margin-top: 1rem;
-	margin-bottom: 1rem;
 }
 
 .modal_subheader {
