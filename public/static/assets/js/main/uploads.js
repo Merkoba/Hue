@@ -15,18 +15,21 @@ Hue.start_dropzone = function () {
   })
   
   Hue.dropzone.on("addedfile", function (file) {
+    console.log(file.name)
     let is_image = Hue.utilz.is_image(file.name)
     let is_video = Hue.utilz.is_video(file.name)
     let is_audio = Hue.utilz.is_audio(file.name)
     
     if (is_image) {
       if (Hue.upload_media !== "image") {
+        Hue.dropzone.files = []
         return
       }
 
       Hue.upload_image(file)
     } else if (is_video || is_audio) {
       if (Hue.upload_media !== "tv") {
+        Hue.dropzone.files = []
         return
       }
 
