@@ -323,6 +323,13 @@ html {
 	height: var(--icon_size);
 }
 
+.media_picker_icon {
+	background-color: transparent;
+	color: inherit;
+	width: calc(var(--icon_size) * 1.8);
+	height: calc(var(--icon_size) * 1.8);
+}
+
 .menu_icon {
 	cursor: pointer;
 	flex-shrink: 1;

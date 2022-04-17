@@ -820,10 +820,35 @@ Hue.start_msg = function () {
     container_id: "delete_messages_container"
   }))
 
+  Hue.msg_profilepic_select.set_title(Hue.template_titlebar({
+    items: [
+      {id: "profilepic_select_upload", text: "Upload"},
+      {id: "profilepic_select_draw", text: "Draw"},
+      {id: "profilepic_select_random", text: "Random"},
+    ]
+  }))
+
+  Hue.msg_image_picker.set_title(Hue.template_titlebar({
+    items: [
+      {id: "image_picker_link", text: "Link"},
+      {id: "image_picker_upload", text: "Upload"},
+      {id: "image_picker_draw", text: "Draw"},
+      {id: "image_picker_random", text: "Random"},
+      {id: "image_picker_screenshot", text: "Screenshot"},
+    ]
+  }))
+
+  Hue.msg_tv_picker.set_title(Hue.template_titlebar({
+    items: [
+      {id: "tv_picker_link", text: "Link"},
+      {id: "tv_picker_upload", text: "Upload"},
+      {id: "tv_picker_capture", text: "Capture"},
+    ]
+  }))
+
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_background_select.set_title("Background Image")
-  Hue.msg_profilepic_select.set_title("Profile Image")
   Hue.msg_audioclip_select.set_title("Audio Clip")
   Hue.msg_admin_list.set_title("Admin List")
   Hue.msg_ban_list.set_title("Ban List")
@@ -834,8 +859,6 @@ Hue.start_msg = function () {
   Hue.msg_admin_activity.set_title("Admin Activity")
   Hue.msg_notifications.set_title("Notifications")
   Hue.msg_change_role.set_title("Change Role")
-  Hue.msg_image_picker.set_title("Change the Image")
-  Hue.msg_tv_picker.set_title("Change the TV")
   Hue.msg_handle_radio_history.set_title("Handle Radio History")
   Hue.msg_command_book.set_title("Command Book")
   Hue.msg_user_profile.set_title("User Profile")
