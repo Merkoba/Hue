@@ -878,13 +878,18 @@ Hue.start_msg = function () {
     ]
   }))
 
+  Hue.msg_media_tweaks.set_title(Hue.template_titlebar({
+    items: [
+      {id: "media_tweaks_defaults", text: "Apply Defaults"},
+    ]
+  }))
+
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_admin_list.set_title("Admin List")
   Hue.msg_ban_list.set_title("Ban List")
   Hue.msg_roomlist.set_title("Room List")
   Hue.msg_settings.set_title("User Settings")
-  Hue.msg_media_tweaks.set_title("Media Tweaks")
   Hue.msg_screen_capture_options.set_title("Screen Capture")
   Hue.msg_admin_activity.set_title("Admin Activity")
   Hue.msg_notifications.set_title("Notifications")
