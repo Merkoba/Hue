@@ -11,7 +11,7 @@ Hue.start_dropzone = function () {
     maxFiles: 1,
     maxFilesize: Hue.config.max_image_size / 1024,
     autoProcessQueue: false,
-    clickable: "#image_picker_upload, #tv_picker_upload, #tv_upload_comment_change",
+    clickable: "#image_picker_upload, #tv_picker_upload",
     acceptedFiles: types.join(",")
   })
   
@@ -95,7 +95,7 @@ Hue.upload_video = function (file) {
   }
 
   Hue.dropzone.files = []
-  Hue.show_tv_upload_comment(file, "tv_upload")
+  Hue.show_tv_upload_comment(file, "upload")
 }
 
 // Creates a file reader for files

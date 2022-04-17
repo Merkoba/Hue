@@ -348,7 +348,6 @@ Hue.profilepic_selected = function (file, type) {
 
       .then(function () {
         Hue.profilepic_cropper.setZoom(0)
-        Hue.scroll_modal_to_bottom("profilepic_cropper")
       })
     })
   }

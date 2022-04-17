@@ -751,7 +751,7 @@ Hue.start_msg = function () {
 
   Hue.msg_tv_upload_comment.set_title(Hue.template_titlebar({
     items: [
-      {id: "tv_upload_comment_change", text: "Re-Choose"},
+      {id: "tv_upload_comment_change", text: ""},
       {id: "tv_upload_comment_submit", text: "Upload TV"},
     ]
   }))

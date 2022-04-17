@@ -465,6 +465,8 @@ Hue.show_image_upload_comment = function (file, type) {
       Hue.el("#image_upload_comment_change").textContent = "Re-Draw"
     } else if (type === "upload") {
       Hue.el("#image_upload_comment_change").textContent = "Re-Choose"
+    } else if (type === "screenshot") {
+      Hue.el("#image_upload_comment_change").textContent = "Re-Take"
     } else if (type === "random_canvas") {
       Hue.el("#image_upload_comment_change").textContent = "Re-Generate"
     }
@@ -496,10 +498,6 @@ Hue.setup_image_upload_comment = function () {
     Hue.el("#image_upload_comment_image_feedback").style.display = "inline"
   })
 
-  image.addEventListener("load", function () {
-    Hue.scroll_modal_to_bottom("image_upload_comment")
-  })
-
   Hue.el("#image_upload_comment_submit").addEventListener("click", function () {
     Hue.process_image_upload_comment()
   })
@@ -511,6 +509,9 @@ Hue.setup_image_upload_comment = function () {
     } else if (Hue.image_upload_comment_type === "upload") {
       Hue.msg_image_upload_comment.close()
       Hue.show_upload_image()
+    } else if (Hue.image_upload_comment_type === "screenshot") {
+      Hue.msg_image_upload_comment.close()
+      Hue.take_screenshot()
     } else if (Hue.image_upload_comment_type === "random_canvas") {
       Hue.make_random_image("image")
     }
@@ -600,12 +601,11 @@ Hue.take_screenshot = async function () {
     canvas.toBlob(
       function (blob) {
         blob.name = "screenshot.jpg"
-        Hue.show_image_upload_comment(blob, "upload")
+        Hue.show_image_upload_comment(blob, "screenshot")
       },
       "image/jpeg",
       Hue.config.image_blob_quality
     )
-
   })
 }
 
