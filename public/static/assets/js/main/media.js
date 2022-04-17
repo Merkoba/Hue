@@ -525,6 +525,12 @@ Hue.toggle_media = function (args) {
     return
   }
 
+  if (new_val) {
+    Hue.el(`#footer_${args.type}_toggle use`).href.baseVal = "#icon_toggle-on"
+  } else {
+    Hue.el(`#footer_${args.type}_toggle use`).href.baseVal = "#icon_toggle-off"
+  }
+
   Hue.room_state[`${args.type}_enabled`] = new_val
 
   if (Hue[`${args.type}_visible`] !== args.what) {
@@ -548,8 +554,6 @@ Hue.toggle_media = function (args) {
       Hue.flash_info("Info", `${ctype} is now invisible`)
     }
   }
-
-  Hue.set_media_tweaks_toggles()
 }
 
 // Change the lock of some media

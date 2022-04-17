@@ -68,15 +68,7 @@ Hue.setup_media_tweaks = function () {
     Hue.increase_chat_font_size()
     Hue.refresh_media_tweaks()
   })
-
-  Hue.el("#media_tweaks_toggle_image").addEventListener("click", function () {
-    Hue.toggle_media({type:"image"})
-  })
-
-  Hue.el("#media_tweaks_toggle_tv").addEventListener("click", function () {
-    Hue.toggle_media({type:"tv"})
-  })
-
+  
   Hue.apply_media_percentages()
   Hue.apply_media_positions()
   Hue.change_media_layout()
@@ -154,26 +146,11 @@ Hue.apply_media_tweaks_defaults = function () {
 }
 // Set media tweaks toggles
 Hue.set_media_tweaks_toggles = function () {
-  if (Hue.room_state.image_enabled) {
-    Hue.el("#media_tweaks_toggle_image").classList.add("toggle_button_enabled")
-  } else {
-    Hue.el("#media_tweaks_toggle_image").classList.remove("toggle_button_enabled")
-  }
-  
-
-  if (Hue.room_state.tv_enabled) {
-    Hue.el("#media_tweaks_toggle_tv").classList.add("toggle_button_enabled")
-  } else {
-    Hue.el("#media_tweaks_toggle_tv").classList.remove("toggle_button_enabled")
-  }
-  
-
   if (Hue.room_state.media_info_enabled) {
     Hue.el("#media_tweaks_toggle_info").classList.add("toggle_button_enabled")
   } else {
     Hue.el("#media_tweaks_toggle_info").classList.remove("toggle_button_enabled")
   }
-  
 
   if (Hue.room_state.chat_enabled) {
     Hue.el("#media_tweaks_toggle_chat").classList.add("toggle_button_enabled")

@@ -3,8 +3,12 @@ Hue.setup_footer = function () {
   let media = ["image", "tv"]
 
   for (let type of media) {
-    Hue.el(`#footer_${type}_label`).addEventListener("click", function () {
+    Hue.el(`#footer_${type}_icon`).addEventListener("click", function () {
       Hue.show_media_picker(type)
+    })
+
+    Hue.el(`#footer_${type}_toggle`).addEventListener("click", function () {
+      Hue.toggle_media({type:type})
     })
 
     Hue.el(`#footer_${type}_lock`).addEventListener("click", function () {

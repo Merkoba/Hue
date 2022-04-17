@@ -192,7 +192,7 @@ Hue.open_url_menu = function (data) {
     Hue.el("#open_url_menu_view_comment").style.display = "none"
   }
 
-  if (data !== Hue[`loaded_${data.media_type}`]) {
+  if (data !== Hue[`loaded_${data.media_type}`] || !Hue.room_state[`${data.media_type}_enabled`]) {
     Hue.el("#open_url_menu_load").textContent = "Load"
   } else {
     Hue.el("#open_url_menu_load").textContent = "Reload"
