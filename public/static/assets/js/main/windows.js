@@ -244,8 +244,7 @@ Hue.start_msg = function () {
 
   Hue.msg_media_tweaks = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "media_tweaks",
-      window_width: "22rem"
+      id: "media_tweaks"
     })
   )
 
@@ -880,7 +879,10 @@ Hue.start_msg = function () {
 
   Hue.msg_media_tweaks.set_title(Hue.template_titlebar({
     items: [
-      {id: "media_tweaks_defaults", text: "Apply Defaults"},
+      {id: "media_tweaks_swap", text: "Swap"},
+      {id: "media_tweaks_rotate", text: "Rotate"},
+      {id: "media_tweaks_revolve", text: "Revolve"},
+      {id: "media_tweaks_defaults", text: "Defaults"},
     ]
   }))
 
