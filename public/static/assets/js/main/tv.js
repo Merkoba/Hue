@@ -623,7 +623,8 @@ Hue.setup_tv_upload_comment = function () {
 
 // Trigger upload tv picker
 Hue.show_upload_tv = function () {
-  Hue.el("#tv_picker_upload").click()
+  Hue.upload_media = "tv"
+  Hue.trigger_dropzone()
 }
 
 // Setup screen capture
