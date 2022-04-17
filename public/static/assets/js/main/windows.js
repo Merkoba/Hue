@@ -29,8 +29,7 @@ msgvars.common = {
 msgvars.titlebar = {
   enable_titlebar: true,
   center_titlebar: true,
-  titlebar_class: "!custom_titlebar",
-  window_inner_x_class: "!titlebar_inner_x",
+  titlebar_class: "!custom_titlebar"
 }
 
 // Starts and configures all Msg modal instances
