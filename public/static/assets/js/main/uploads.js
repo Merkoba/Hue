@@ -15,7 +15,6 @@ Hue.start_dropzone = function () {
   })
   
   Hue.dropzone.on("addedfile", function (file) {
-    console.log(file.name)
     let is_image = Hue.utilz.is_image(file.name)
     let is_video = Hue.utilz.is_video(file.name)
     let is_audio = Hue.utilz.is_audio(file.name)
