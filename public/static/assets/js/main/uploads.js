@@ -11,7 +11,6 @@ Hue.start_dropzone = function () {
     maxFiles: 1,
     maxFilesize: Hue.config.max_image_size / 1024,
     autoProcessQueue: false,
-    clickable: "#image_picker_upload, #tv_picker_upload",
     acceptedFiles: types.join(",")
   })
   
@@ -21,8 +20,16 @@ Hue.start_dropzone = function () {
     let is_audio = Hue.utilz.is_audio(file.name)
     
     if (is_image) {
+      if (Hue.upload_media !== "image") {
+        return
+      }
+
       Hue.upload_image(file)
     } else if (is_video || is_audio) {
+      if (Hue.upload_media !== "tv") {
+        return
+      }
+
       Hue.upload_video(file)
     } else {
       Hue.checkmsg("Invalid format")
@@ -33,6 +40,11 @@ Hue.start_dropzone = function () {
   Hue.dropzone.on("maxfilesexceeded", function(file) {
     Hue.dropzone.removeFile(file)
   })  
+}
+
+// Trigger dropzone click
+Hue.trigger_dropzone = function () {
+  Hue.dropzone.clickableElements[0].click()
 }
 
 // Handle generic image upload

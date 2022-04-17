@@ -261,6 +261,16 @@ Hue.setup_media_pickers = function () {
     Hue.msg_tv_picker.close()
     Hue.screen_capture()
   })
+
+  Hue.el("#image_picker_upload").addEventListener("click", function () {
+    Hue.msg_tv_picker.close()
+    Hue.show_upload_image()
+  })
+
+  Hue.el("#tv_picker_upload").addEventListener("click", function () {
+    Hue.msg_tv_picker.close()
+    Hue.show_upload_tv()
+  })
 }
 
 // Setup tv link window

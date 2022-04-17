@@ -553,7 +553,8 @@ Hue.link_image_submit = function () {
 
 // Trigger upload image picker
 Hue.show_upload_image = function () {
-  Hue.el("#image_picker_upload").click()
+  Hue.upload_media = "image"
+  Hue.trigger_dropzone()
 }
 
 // Apply modal image resolution to modal image
