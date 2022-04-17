@@ -1283,6 +1283,7 @@ a.special_link:hover {
 	width: 7rem;
 	background-color: var(--altbackground);
 	padding: 0.25rem;
+	border: 1px solid transparent;
 }
 
 .media_tweaks_toggle_enabled {
