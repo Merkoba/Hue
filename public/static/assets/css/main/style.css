@@ -1135,6 +1135,10 @@ svg.action:hover {
 	text-decoration: underline;
 }
 
+#show_profile_username {
+	margin-bottom: 0.8rem;
+}
+
 #show_profile_profilepic {
 	margin-top: 0.5rem;
 	width: var(--big_profilepic_size);
@@ -1164,10 +1168,6 @@ svg.action:hover {
 #show_profile_info {
 	margin-top: 1.6rem;
 	gap: 0.8rem;
-}
-
-#show_profile_admin_area {
-	margin-top: 1.6rem;
 }
 
 #admin_list_container,

@@ -6,10 +6,9 @@ Hue.start_dropzone = function () {
   types = types.concat(Hue.utilz.video_types)
   types = types.concat(Hue.utilz.audio_types)
   
-  Hue.dropzone = new Dropzone("body", {
+  Hue.dropzone = new Dropzone("#main_container", {
     url: "/",
     maxFiles: 1,
-    maxFilesize: Hue.config.max_image_size / 1024,
     autoProcessQueue: false,
     acceptedFiles: types.join(",")
   })
@@ -20,14 +19,14 @@ Hue.start_dropzone = function () {
     let is_audio = Hue.utilz.is_audio(file.name)
     
     if (is_image) {
-      if (Hue.upload_media !== "image") {
+      if (Hue.upload_media && Hue.upload_media !== "image") {
         Hue.dropzone.files = []
         return
       }
 
       Hue.upload_image(file)
     } else if (is_video || is_audio) {
-      if (Hue.upload_media !== "tv") {
+      if (Hue.upload_media && Hue.upload_media !== "tv") {
         Hue.dropzone.files = []
         return
       }
