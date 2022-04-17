@@ -1702,21 +1702,13 @@ pre {
 	border: 0.12rem solid var(--altcolor) !important;
 }
 
-.titlebar_inner_x {
-	background-color: var(--altbackground) !important;
-}
-
-.titlebar_inner_x:hover {
-	background-color: var(--background_color) !important;
-}
-
 .custom_titlebar {
 	background-color: var(--altbackground) !important;
 	color: var(--text_color) !important;
 	padding-top: 0.25rem !important;
 	padding-bottom: 0.25rem !important;
-	padding-right: 1.25rem !important;
-	padding-left: 1.25rem !important;
+	padding-right: 1.2rem !important;
+	padding-left: 1.2rem !important;
 }
 
 .flex_start {
