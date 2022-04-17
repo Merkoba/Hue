@@ -804,8 +804,8 @@ Hue.start_msg = function () {
   Hue.msg_handle_url.set_title(Hue.template_titlebar({
     items: [
       {id: "handle_url_chat", text: "Send To Chat"},
-      {id: "handle_url_image", text: "Change The Image"},
-      {id: "handle_url_tv", text: "Change The TV"},
+      {id: "handle_url_image", text: "Change Image"},
+      {id: "handle_url_tv", text: "Change TV"},
     ],
     container_id: "handle_url_container"
   }))

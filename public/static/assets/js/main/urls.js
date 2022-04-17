@@ -106,7 +106,8 @@ Hue.handle_url_chat = function () {
 // Like changing the tv when dropping a YouTube URL
 Hue.setup_drag_events = function () {
   Hue.el("#main_container").addEventListener("drop", function (e) {
-    Hue.handle_url(e.dataTransfer.getData("text/plain").trim())
+    let text = e.dataTransfer.getData("text/plain").trim()
+    Hue.change_input(`${Hue.get_input().trimEnd()} ${text}`)
   })
 
   Hue.el("#handle_url_chat").addEventListener("click", function () {
