@@ -554,6 +554,12 @@ Hue.show_tv_upload_comment = function (file, type) {
     Hue.tv_upload_comment_file = file
     Hue.tv_upload_comment_type = type
 
+    if (type === "upload") {
+      Hue.el("#tv_upload_comment_change").textContent = "Re-Choose"
+    } else if (type === "capture") {
+      Hue.el("#tv_upload_comment_change").textContent = "Re-Capture"
+    }
+
     Hue.el("#tv_upload_comment_video_preview").src = e.target.result
 
     let name = `${Hue.utilz.slice_string_end(
@@ -604,8 +610,14 @@ Hue.setup_tv_upload_comment = function () {
     Hue.el("#tv_upload_comment_video_feedback").style.display = "inline"
   })
 
-  video.addEventListener("loadeddata", function () {
-    Hue.scroll_modal_to_bottom("tv_upload_comment")
+  Hue.el("#tv_upload_comment_change").addEventListener("click", function () {
+    if (Hue.tv_upload_comment_type === "upload") {
+      Hue.msg_tv_upload_comment.close()
+      Hue.show_upload_tv()
+    } else if (Hue.tv_upload_comment_type === "capture") {
+      Hue.msg_tv_upload_comment.close()
+      Hue.screen_capture()
+    }
   })
 }
 
@@ -660,7 +672,7 @@ Hue.start_screen_capture = async function (seconds) {
     })
 
     blob.name = "capture.webm"
-    Hue.show_tv_upload_comment(blob, "tv_upload")
+    Hue.show_tv_upload_comment(blob, "capture")
     recorded_chunks = []
   }
 
