@@ -1,6 +1,5 @@
 <script id="template_profile" type="text/x-handlebars-template" class="template">
   <div id="show_profile_container">
-    <div id="show_profile_edit" class="action">Edit Profile</div>
     <div id="show_profile_username" class="bigger"></div>
     
     <img id="show_profile_profilepic" class="profilepic actionbox" src="{{profilepic}}">
@@ -30,6 +29,12 @@
         <svg class="other_icon profile_icon"><use href="#icon_tv"></svg>
         <div>Sync TV</div>
       </div>
+
+      <div class="show_profile_button flex_column_center action" id="show_profile_edit">
+        <svg class="other_icon profile_icon"><use href="#icon_user"></svg>
+        <div>Edit Profile</div>
+      </div>
+
     </div>
 
     <div id="show_profile_info" class="flex_column_center"></div>
