@@ -27,6 +27,8 @@ Hue.setup_footer = function () {
       Hue[`msg_${type}_picker`].close()
       Hue[`show_${type}_list`]()
     })
+
+    Hue.update_footer_toggle(type)
   }
 
   if (Hue.config.radios.length > 0) {
@@ -78,5 +80,16 @@ Hue.after_footer_expand_change = function () {
 
   if (!Hue.get_input().trim()) {
     Hue.clear_input()
+  }
+}
+
+// Update footer toggle
+Hue.update_footer_toggle = function (type) {
+  let val = Hue.room_state[`${type}_enabled`]
+  
+  if (val) {
+    Hue.el(`#footer_${type}_toggle use`).href.baseVal = "#icon_toggle-on"
+  } else {
+    Hue.el(`#footer_${type}_toggle use`).href.baseVal = "#icon_toggle-off"
   }
 }
