@@ -1167,7 +1167,7 @@ Hue.create_popup = function (args = {}, ptype = "unset") {
     window_class: "!custom_popup",
     enable_titlebar: true,
     center_titlebar: true,
-    titlebar_class: "!custom_titlebar",
+    titlebar_class: "!custom_titlebar_popup",
     window_inner_x_class: "!titlebar_inner_x",
     edge_padding_y: Hue.panel_height * 1.5,
     edge_padding_x: 12,
