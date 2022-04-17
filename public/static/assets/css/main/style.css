@@ -1344,6 +1344,7 @@ a.special_link:hover {
 	max-height: 29.41rem;
 	max-width: 29.41rem;
 	margin-top: 1.5rem;
+	display: block;
 }
 
 .upload_comment_name {
