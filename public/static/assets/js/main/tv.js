@@ -548,34 +548,34 @@ Hue.show_tv_upload_comment = function (file, type) {
   Hue.el("#tv_upload_comment_video_feedback").style.display = "none"
   Hue.el("#tv_upload_comment_video_preview").style.display = "block"
 
+  Hue.tv_upload_comment_file = file
+  Hue.tv_upload_comment_type = type
+
+  if (type === "upload") {
+    Hue.el("#tv_upload_comment_change").textContent = "Re-Choose"
+  } else if (type === "capture") {
+    Hue.el("#tv_upload_comment_change").textContent = "Re-Capture"
+  }
+
+  let name = `${Hue.utilz.slice_string_end(
+      file.name,
+      20
+    )} (${Hue.utilz.get_size_string(file.size, 2)})`
+
+  Hue.el("#tv_upload_name").textContent = name
+  Hue.el("#Msg-titlebar-tv_upload_comment").title = file.name
+
   let reader = new FileReader()
 
   reader.onload = function (e) {
-    Hue.tv_upload_comment_file = file
-    Hue.tv_upload_comment_type = type
-
-    if (type === "upload") {
-      Hue.el("#tv_upload_comment_change").textContent = "Re-Choose"
-    } else if (type === "capture") {
-      Hue.el("#tv_upload_comment_change").textContent = "Re-Capture"
-    }
-
     Hue.el("#tv_upload_comment_video_preview").src = e.target.result
-
-    let name = `${Hue.utilz.slice_string_end(
-        file.name,
-        20
-      )} (${Hue.utilz.get_size_string(file.size, 2)})`
-
-    Hue.el("#tv_upload_name").textContent = name
-    Hue.el("#Msg-titlebar-tv_upload_comment").title = file.name
   }
+
+  reader.readAsDataURL(file)
 
   Hue.msg_tv_upload_comment.show(function () {
     Hue.el("#tv_upload_comment_input").focus()
   })
-
-  reader.readAsDataURL(file)
 }
 
 // Submits the upload tv comment window

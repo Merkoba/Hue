@@ -455,38 +455,38 @@ Hue.show_image_upload_comment = function (file, type) {
   Hue.el("#image_upload_comment_image_feedback").style.display = "none"
   Hue.el("#image_upload_comment_image_preview").style.display = "block"
 
+  Hue.image_upload_comment_file = file
+  Hue.image_upload_comment_type = type
+
+  if (type === "drawing") {
+    Hue.el("#image_upload_comment_change").textContent = "Re-Draw"
+  } else if (type === "upload") {
+    Hue.el("#image_upload_comment_change").textContent = "Re-Choose"
+  } else if (type === "screenshot") {
+    Hue.el("#image_upload_comment_change").textContent = "Re-Take"
+  } else if (type === "random_canvas") {
+    Hue.el("#image_upload_comment_change").textContent = "Re-Generate"
+  }
+
+  let name = `${Hue.utilz.slice_string_end(
+      file.name,
+      20
+    )} (${Hue.utilz.get_size_string(file.size, 2)})`
+  
+  Hue.el("#image_upload_name").textContent = name
+  Hue.el("#Msg-titlebar-image_upload_comment").title = file.name
+
   let reader = new FileReader()
 
   reader.onload = function (e) {
-    Hue.image_upload_comment_file = file
-    Hue.image_upload_comment_type = type
-
-    if (type === "drawing") {
-      Hue.el("#image_upload_comment_change").textContent = "Re-Draw"
-    } else if (type === "upload") {
-      Hue.el("#image_upload_comment_change").textContent = "Re-Choose"
-    } else if (type === "screenshot") {
-      Hue.el("#image_upload_comment_change").textContent = "Re-Take"
-    } else if (type === "random_canvas") {
-      Hue.el("#image_upload_comment_change").textContent = "Re-Generate"
-    }
-
     Hue.el("#image_upload_comment_image_preview").src = e.target.result
-
-    let name = `${Hue.utilz.slice_string_end(
-        file.name,
-        20
-      )} (${Hue.utilz.get_size_string(file.size, 2)})`
-    
-    Hue.el("#image_upload_name").textContent = name
-    Hue.el("#Msg-titlebar-image_upload_comment").title = file.name
   }
+
+  reader.readAsDataURL(file)
 
   Hue.msg_image_upload_comment.show(function () {
     Hue.el("#image_upload_comment_input").focus()
   })
-  
-  reader.readAsDataURL(file)
 }
 
 // Setups the upload image comment window
