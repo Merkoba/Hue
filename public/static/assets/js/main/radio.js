@@ -516,6 +516,16 @@ Hue.change_radio_volume = function (direction, amount = 0.05) {
   if (new_volume !== Hue.room_state.radio_volume) {
     Hue.apply_radio_volume(new_volume)
   }
+
+  if (Hue.radio_crossfading) {
+    if (Hue.radio_crossfade_player_1.volume > new_volume) {
+      HUe.radio_crossfade_player_1 = new_volume
+    }
+
+    if (Hue.radio_crossfade_player_2.volume > new_volume) {
+      HUe.radio_crossfade_player_2 = new_volume
+    }
+  }
 }
 
 // Apply radio volume to all players
