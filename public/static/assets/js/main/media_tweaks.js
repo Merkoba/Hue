@@ -68,7 +68,7 @@ Hue.setup_media_tweaks = function () {
     Hue.increase_chat_font_size()
     Hue.refresh_media_tweaks()
   })
-  
+
   Hue.apply_media_percentages()
   Hue.apply_media_positions()
   Hue.change_media_layout()
@@ -146,15 +146,23 @@ Hue.apply_media_tweaks_defaults = function () {
 }
 // Set media tweaks toggles
 Hue.set_media_tweaks_toggles = function () {
+  let el = Hue.el("#media_tweaks_toggle_info")
+
   if (Hue.room_state.media_info_enabled) {
-    Hue.el("#media_tweaks_toggle_info").classList.add("toggle_button_enabled")
+    el.classList.add("toggle_button_enabled")
+    el.textContent = "Disable Info"
   } else {
-    Hue.el("#media_tweaks_toggle_info").classList.remove("toggle_button_enabled")
+    el.classList.remove("toggle_button_enabled")
+    el.textContent = "Enable Info"
   }
 
+  el = Hue.el("#media_tweaks_toggle_chat")
+  
   if (Hue.room_state.chat_enabled) {
-    Hue.el("#media_tweaks_toggle_chat").classList.add("toggle_button_enabled")
+    el.classList.add("toggle_button_enabled")
+    el.textContent = "Disable Chat"
   } else {
-    Hue.el("#media_tweaks_toggle_chat").classList.remove("toggle_button_enabled")
+    el.classList.remove("toggle_button_enabled")
+    el.textContent = "Enable Chat"
   }
 }
