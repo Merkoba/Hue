@@ -1275,7 +1275,7 @@ a.special_link:hover {
 }
 
 .toggle_button {
-	width: 7rem;
+	width: 8rem;
 	background-color: var(--altbackground);
 	padding: 0.25rem;
 	border: 1px solid transparent;
