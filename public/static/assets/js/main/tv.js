@@ -569,15 +569,11 @@ Hue.show_tv_upload_comment = function (file, type) {
 
     Hue.el("#tv_upload_name").textContent = name
     Hue.el("#Msg-titlebar-tv_upload_comment").title = file.name
-
-    Hue.msg_tv_upload_comment.show(function () {
-      Hue.el("#tv_upload_comment_submit").addEventListener("click", function () {
-        Hue.process_tv_upload_comment()
-      })
-
-      Hue.el("#tv_upload_comment_input").focus()
-    })
   }
+
+  Hue.msg_tv_upload_comment.show(function () {
+    Hue.el("#tv_upload_comment_input").focus()
+  })
 
   reader.readAsDataURL(file)
 }
@@ -597,7 +593,7 @@ Hue.process_tv_upload_comment = function () {
     return false
   }
 
-  Hue.upload_file({ file: file, action: type, comment: comment })
+  Hue.upload_file({ file: file, action: "tv_upload", comment: comment })
   Hue.close_all_modals()
 }
 
@@ -618,6 +614,10 @@ Hue.setup_tv_upload_comment = function () {
       Hue.msg_tv_upload_comment.close()
       Hue.screen_capture()
     }
+  })
+
+  Hue.el("#tv_upload_comment_submit").addEventListener("click", function () {
+    Hue.process_tv_upload_comment()
   })
 }
 
