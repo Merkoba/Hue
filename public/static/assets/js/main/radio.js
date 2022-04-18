@@ -9,14 +9,9 @@ Hue.setup_radio = function () {
     return
   }
 
-  let current = Hue.config.radios[0]
-
-  for (let radio of Hue.config.radios) {
-    if (radio.name === Hue.room_state.last_radio_name) {
-      current = radio
-      break
-    }
-  }
+  let current = Hue.config.radios.find(
+    x => x.name === Hue.room_state.last_radio_name
+  ) || Hue.config.radios[0]
 
   Hue.set_radio_player(current)
   
