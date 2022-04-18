@@ -6,7 +6,7 @@ Hue.start_dropzone = function () {
   types = types.concat(Hue.utilz.video_types)
   types = types.concat(Hue.utilz.audio_types)
   
-  Hue.dropzone = new Dropzone("#main_container", {
+  Hue.dropzone = new Dropzone("body", {
     url: "/",
     maxFiles: 1,
     autoProcessQueue: false,
@@ -24,19 +24,27 @@ Hue.start_dropzone = function () {
       return
     }
 
-    if (Hue.upload_media === "image") {
+    if (Hue.upload_media) {
+      if (Hue.upload_media === "image") {
+        if (is_image) {
+          Hue.upload_image(file)
+        } else if (is_video || is_audio) {
+          Hue.upload_video(file)
+          Hue.show_info("Changing tv instead")
+        }
+      } else if (Hue.upload_media === "tv") {
+        if (is_video || is_audio) {
+          Hue.upload_video(file)
+        } else if (is_image) {
+          Hue.upload_image(file)
+          Hue.show_info("Changing image instead")
+        }
+      }
+    } else {
       if (is_image) {
         Hue.upload_image(file)
       } else if (is_video || is_audio) {
         Hue.upload_video(file)
-        Hue.show_info("Changing tv instead")
-      }
-    } else if (Hue.upload_media === "tv") {
-      if (is_video || is_audio) {
-        Hue.upload_video(file)
-      } else if (is_image) {
-        Hue.upload_image(file)
-        Hue.show_info("Changing image instead")
       }
     }
   })
