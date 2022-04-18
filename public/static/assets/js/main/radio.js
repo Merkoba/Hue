@@ -9,7 +9,16 @@ Hue.setup_radio = function () {
     return
   }
 
-  Hue.set_radio_player(Hue.config.radios[0])
+  let current = Hue.config.radios[0]
+
+  for (let radio of Hue.config.radios) {
+    if (radio.name === Hue.room_state.last_radio_name) {
+      current = radio
+      break
+    }
+  }
+
+  Hue.set_radio_player(current)
   
   for (let radio of Hue.config.radios) {
     Hue.create_radio_item(radio)
@@ -207,6 +216,9 @@ Hue.set_radio_player = function (radio) {
       Hue.stop_radio()
     }
   })
+
+  Hue.room_state.last_radio_name = radio.name
+  Hue.save_room_state()
 }
 
 // Apply radio item effects
