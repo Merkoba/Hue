@@ -73,6 +73,7 @@
 	"room_state_default_chat_font_size": 1,
 	"room_state_default_media_info_enabled": true,
 	"room_state_default_notifications_enabled": true,
+	"room_state_default_last_radio_name": "",
 
 	"max_same_post_diff": 300000,
 	"max_same_post_messages": 20,
