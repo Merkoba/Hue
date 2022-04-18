@@ -23,7 +23,6 @@ msgvars.common = {
   after_close: function (instance) {
     Hue.after_modal_close(instance)
   },
-  window_min_width: "18rem"
 }
 
 msgvars.titlebar = {
@@ -120,8 +119,7 @@ Hue.start_msg = function () {
   Hue.msg_userlist = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "userlist",
-      window_min_width: "22rem",
-      window_max_width: "45rem"
+      window_max_width: "40rem"
     })
   )
 
@@ -206,7 +204,6 @@ Hue.start_msg = function () {
   Hue.msg_link_image = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "link_image",
-      window_width: "24rem",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
         Hue.el("#link_image_input").focus()
@@ -229,7 +226,6 @@ Hue.start_msg = function () {
   Hue.msg_link_tv = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "link_tv",
-      window_width: "24rem",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
         Hue.el("#link_tv_input").focus()
@@ -408,7 +404,7 @@ Hue.start_msg = function () {
   Hue.msg_open_url = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "open_url",
-      window_max_width: "50rem"
+      window_max_width: "40rem"
     })
   )
 
