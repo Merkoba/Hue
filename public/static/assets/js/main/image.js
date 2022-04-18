@@ -480,12 +480,12 @@ Hue.show_image_upload_comment = function (file, type) {
     
     Hue.el("#image_upload_name").textContent = name
     Hue.el("#Msg-titlebar-image_upload_comment").title = file.name
-
-    Hue.msg_image_upload_comment.show(function () {
-      Hue.el("#image_upload_comment_input").focus()
-    })
   }
 
+  Hue.msg_image_upload_comment.show(function () {
+    Hue.el("#image_upload_comment_input").focus()
+  })
+  
   reader.readAsDataURL(file)
 }
 
