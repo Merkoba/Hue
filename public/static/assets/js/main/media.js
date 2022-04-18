@@ -202,7 +202,6 @@ Hue.get_media_object_from_init_data = function (type) {
 
 // Hides the media area (image and tv)
 Hue.hide_media = function () {
-  Hue.stop_tv()
   Hue.el("#media").style.display = "none"
 }
 
@@ -1017,6 +1016,10 @@ Hue.change_media_visibility = function (type, play = false) {
   } else if (type == "tv") {
     if (Hue.image_visible) {
       Hue.fix_image_frame()
+    }
+
+    if (!Hue.tv_visible) {
+      Hue.stop_tv()
     }
   }
 
