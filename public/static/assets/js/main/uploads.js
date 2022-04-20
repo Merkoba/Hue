@@ -15,45 +15,7 @@ Hue.start_dropzone = function () {
   })
   
   Hue.dropzone.on("addedfile", function (file) {
-    let is_image = Hue.utilz.is_image(file.name)
-    let is_video = Hue.utilz.is_video(file.name)
-    let is_audio = Hue.utilz.is_audio(file.name)
-
-    if (Hue.upload_media) {
-      if (Hue.upload_media === "image") {
-        if (is_image) {
-          Hue.upload_image(file)
-        } else if (is_video || is_audio) {
-          Hue.upload_video(file)
-        }
-      } else if (Hue.upload_media === "tv") {
-        if (is_video || is_audio) {
-          Hue.upload_video(file)
-        } else if (is_image) {
-          Hue.upload_image(file)
-        }
-      } else if (Hue.upload_media === "background") {
-        if (is_image) {
-          Hue.background_selected(file)
-        }
-      } else if (Hue.upload_media === "profilepic") {
-        if (is_image) {
-          Hue.profilepic_selected(file, "upload")
-        }
-      } else if (Hue.upload_media === "audioclip") {
-        if (is_audio) {
-          Hue.audioclip_selected(file)
-        }
-      }
-    } else {
-      if (is_image) {
-        Hue.upload_image(file)
-      } else if (is_video || is_audio) {
-        Hue.upload_video(file)
-      }
-    }
-
-    Hue.dropzone.files = []
+    Hue.process_file_added(file)
   })
 
   Hue.dropzone.on("dragenter", function () {
@@ -63,6 +25,49 @@ Hue.start_dropzone = function () {
   Hue.dropzone.on("maxfilesexceeded", function(file) {
     Hue.dropzone.removeFile(file)
   })  
+}
+
+// Process file upload
+Hue.do_process_file_added = function (file) {
+  let is_image = Hue.utilz.is_image(file.name)
+  let is_video = Hue.utilz.is_video(file.name)
+  let is_audio = Hue.utilz.is_audio(file.name)
+
+  if (Hue.upload_media) {
+    if (Hue.upload_media === "image") {
+      if (is_image) {
+        Hue.upload_image(file)
+      } else if (is_video || is_audio) {
+        Hue.upload_video(file)
+      }
+    } else if (Hue.upload_media === "tv") {
+      if (is_video || is_audio) {
+        Hue.upload_video(file)
+      } else if (is_image) {
+        Hue.upload_image(file)
+      }
+    } else if (Hue.upload_media === "background") {
+      if (is_image) {
+        Hue.background_selected(file)
+      }
+    } else if (Hue.upload_media === "profilepic") {
+      if (is_image) {
+        Hue.profilepic_selected(file, "upload")
+      }
+    } else if (Hue.upload_media === "audioclip") {
+      if (is_audio) {
+        Hue.audioclip_selected(file)
+      }
+    }
+  } else {
+    if (is_image) {
+      Hue.upload_image(file)
+    } else if (is_video || is_audio) {
+      Hue.upload_video(file)
+    }
+  }
+
+  Hue.dropzone.files = []
 }
 
 // Trigger dropzone click
@@ -82,10 +87,6 @@ Hue.upload_image = function (file) {
 
   Hue.focus_input()
 
-  if (Hue.dropzone.files.length > 1) {
-    return false
-  }
-
   let size = file.size / 1024
 
   if (size > Hue.config.max_image_size) {
@@ -103,10 +104,6 @@ Hue.upload_image = function (file) {
 // Handle generic video upload
 Hue.upload_video = function (file) {
   Hue.focus_input()
-
-  if (Hue.dropzone.files.length > 1) {
-    return false
-  }
 
   let size = file.size / 1024
 
