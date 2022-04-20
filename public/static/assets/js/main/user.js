@@ -297,7 +297,8 @@ Hue.setup_profilepic_select = function () {
 
 // If upload is chosen as the method to change the profilepic
 Hue.open_profilepic_picker = function () {
-  Hue.el("#profilepic_input").click()
+  Hue.upload_media = "profilepic"
+  Hue.trigger_dropzone()
 }
 
 // This is executed after a profile image has been selected in the file dialog
@@ -328,8 +329,6 @@ Hue.profilepic_selected = function (file, type) {
     Hue.profilepic_cropper_type = type
 
     Hue.msg_profilepic_cropper.show(function () {
-      Hue.el("#profilepic_input").closest("form").reset()
-
       if (!Hue.profilepic_cropper) {
         Hue.profilepic_cropper = new Croppie(Hue.el("#profilepic_cropper"), {
           viewport: {
@@ -407,7 +406,8 @@ Hue.setup_audioclip_select = function () {
 
 // Opens the file picker to choose an audio clip
 Hue.select_audioclip = function () {
-  Hue.el("#audioclip_input").click()
+  Hue.upload_media = "audioclip"
+  Hue.trigger_dropzone()
 }
 
 // When an audio clip gets selected from the file picker

@@ -330,7 +330,8 @@ Hue.announce_background_color_change = function (data) {
 
 // If upload is chosen as the method to change the background image
 Hue.open_background_picker = function () {
-  Hue.el("#background_input").click()
+  Hue.upload_media = "background"
+  Hue.trigger_dropzone()
 }
 
 // On background image source input change
@@ -374,8 +375,6 @@ Hue.background_selected = function (file) {
   }
 
   let size = file.size / 1024
-
-  Hue.el("#background_input").closest("form").reset()
 
   if (size > Hue.config.max_image_size) {
     Hue.checkmsg("File is too big")

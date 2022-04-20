@@ -10,7 +10,8 @@ Hue.start_dropzone = function () {
     url: "/",
     maxFiles: 1,
     autoProcessQueue: false,
-    acceptedFiles: types.join(",")
+    acceptedFiles: types.join(","),
+    clickable: "#dropzone_element"
   })
   
   Hue.dropzone.on("addedfile", function (file) {
@@ -30,14 +31,24 @@ Hue.start_dropzone = function () {
           Hue.upload_image(file)
         } else if (is_video || is_audio) {
           Hue.upload_video(file)
-          Hue.show_info("Changing tv instead")
         }
       } else if (Hue.upload_media === "tv") {
         if (is_video || is_audio) {
           Hue.upload_video(file)
         } else if (is_image) {
           Hue.upload_image(file)
-          Hue.show_info("Changing image instead")
+        }
+      } else if (Hue.upload_media === "background") {
+        if (is_image) {
+          Hue.background_selected(file)
+        }
+      } else if (Hue.upload_media === "profilepic") {
+        if (is_image) {
+          Hue.profilepic_selected(file, "upload")
+        }
+      } else if (Hue.upload_media === "audioclip") {
+        if (is_audio) {
+          Hue.audioclip_selected(file)
         }
       }
     } else {
@@ -56,7 +67,7 @@ Hue.start_dropzone = function () {
 
 // Trigger dropzone click
 Hue.trigger_dropzone = function () {
-  Hue.dropzone.clickableElements[0].click()
+  Hue.el("#dropzone_element").click()
 }
 
 // Handle generic image upload
