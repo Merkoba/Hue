@@ -71,4 +71,9 @@ Hue.create_debouncers = function () {
   Hue.flash_info_timer = Hue.create_debouncer(function (direction) {
     Hue.hide_flash_info()
   }, Hue.flash_info_delay)
+
+  // Debounce timer to process files added
+  Hue.process_file_added = Hue.create_debouncer(function (file) {
+    Hue.do_process_file_added(file)
+  }, Hue.file_added_delay)
 }
