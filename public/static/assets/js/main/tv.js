@@ -657,15 +657,15 @@ Hue.start_screen_capture = async function (seconds) {
   })
 
   let recorded_chunks = [] 
-  let media_recorder = new MediaRecorder(stream)
+  Hue.screen_capture_recorder = new MediaRecorder(stream)
 
-  media_recorder.ondataavailable = function (e) {
+  Hue.screen_capture_recorder.ondataavailable = function (e) {
     if (e.data.size > 0) {
       recorded_chunks.push(e.data)
     }  
   }
 
-  media_recorder.onstop = function () {
+  Hue.screen_capture_recorder.onstop = function () {
     stream.getTracks().forEach(track => track.stop())
     
     const blob = new Blob(recorded_chunks, {
@@ -677,9 +677,24 @@ Hue.start_screen_capture = async function (seconds) {
     recorded_chunks = []
   }
 
-  media_recorder.start(200)
+  Hue.screen_capture_popup = Hue.show_action_popup({
+    message: "Close this to stop capture",
+    title: "Screen Capture",
+    on_x_button_click: function () {
+      Hue.stop_screen_capture()
+    }
+  })
 
-  setTimeout(function () {
-    media_recorder.stop()
+  Hue.screen_capture_recorder.start(200)
+
+  Hue.screen_capture_timeout = setTimeout(function () {
+    Hue.stop_screen_capture()
   }, seconds * 1000)
+}
+
+// Stop screen capture
+Hue.stop_screen_capture = function () {
+  clearTimeout(Hue.screen_capture_timeout)
+  Hue.screen_capture_popup.close()
+  Hue.screen_capture_recorder.stop()
 }

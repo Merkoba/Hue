@@ -1216,7 +1216,6 @@ Hue.show_action_popup = function (args = {}) {
     title: "",
     on_click: false,
     after_close: function () {},
-    autoclose: true,
     on_x_button_click: function () {}
   }
 
@@ -1240,8 +1239,6 @@ Hue.show_action_popup = function (args = {}) {
     on_click: on_click,
     after_close: args.after_close,
     close_on_escape: false,
-    autoclose: args.autoclose,
-    autoclose_delay: 5000,
     on_x_button_click: args.on_x_button_click
   }
 
