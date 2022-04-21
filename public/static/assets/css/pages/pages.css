@@ -6,21 +6,15 @@ html {
 	width: 100%;
 	height: 100%;
 	font-size: 18px;
-	background-color: white;
 	color: white;
-	background-image: url("/static/assets/img/pages_background.gif");
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center center;
+	background-color: #0D0D0D;
 }
 
 .main {
 	padding: 0;
 	margin: 0;
-	opacity: 0.95;
 	height: 100%;
 	width: 100%;
-	background-color: black;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
