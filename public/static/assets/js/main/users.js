@@ -562,9 +562,7 @@ Hue.setup_show_profile = function () {
   })
 
   Hue.el("#show_profile_profilepic").addEventListener("error", function () {
-    if (this.src !== Hue.config.default_profilepic_url) {
-      this.src = Hue.config.default_profilepic_url
-    }
+    Hue.fallback_profilepic(this)
   })
 
   Hue.el("#show_profile_search").addEventListener("click", function () {
@@ -1109,8 +1107,8 @@ Hue.show_user_messages = function (username = Hue.username) {
 
 // Apply fallback profilepic
 Hue.fallback_profilepic = function (el) {
-  if (el.src !== Hue.config.default_profilepic_url) {
-    el.src = Hue.config.default_profilepic_url
+  if (el.src !== Hue.config.profilepic_default_url) {
+    el.src = Hue.config.profilepic_default_url
   }
 }
 
