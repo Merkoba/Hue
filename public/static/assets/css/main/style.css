@@ -7,7 +7,6 @@
 	--profilepic_size: 1.8em;
 	--big_profilepic_size: 16rem;
 	--msg_display: block;
-	--image_preview_height: 12em;
 }
 
 @font-face {
@@ -1215,7 +1214,7 @@ a.special_link:hover {
 
 .image_preview_image {
 	max-width: 100%;
-	max-height: var(--image_preview_height);
+	max-height: 12em;
 	object-fit: contain;
 	flex-grow: 0;
 	flex-shrink: 0;
