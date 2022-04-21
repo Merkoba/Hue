@@ -329,7 +329,6 @@ Hue.make_announcement_message = function (args = {}) {
 
   if (image_preview_source) {
     Hue.el(".announcement_image_preview", fmessage).addEventListener("load", function () {
-      console.log(234)
       Hue.goto_bottom()
     })
   }
