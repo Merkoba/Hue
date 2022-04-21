@@ -292,6 +292,7 @@ Hue.make_announcement_message = function (args = {}) {
   }
 
   let fmessage = Hue.div("message announcement message_unit")
+  let image_preview_source = args.type === "image_change" ? args.media_source : ""
   
   fmessage.innerHTML = Hue.template_announcement_message({
     container_classes: container_classes,
@@ -299,7 +300,8 @@ Hue.make_announcement_message = function (args = {}) {
     split_classes: split_classes,
     brk_classes: brk_classes,
     top_classes: top_clasees,
-    brk: args.brk
+    brk: args.brk,
+    image_preview_source: image_preview_source
   })
 
   if (args.container_id) {
@@ -565,6 +567,7 @@ Hue.start_chat_mouse_events = function () {
           let src = Hue.dataset(e.target, "image_preview_src_original")
           Hue.view_image(src, username, user_id)
         } else if (e.target.classList.contains("announcement_content") ||
+        e.target.classList.contains("announcement_image_preview") ||
           e.target.closest(".brk")) {
           if (type === "image_change") {
             Hue.show_modal_image(id)
@@ -866,9 +869,9 @@ Hue.stop_edit_message = function () {
   edit_container.style.display = "none"
   edit_message_container.classList.remove("editing_chat_message")
   Hue.editing_message_area.value = ""
-  edit_message.style.display = "inline-block"
+  edit_message.style.display = "block"
   Hue.editing_message_container.classList.add("chat_menu_button_main")
-  Hue.editing_message_container.style.display = "flex"
+  Hue.editing_message_container.style.display = "block"
   Hue.editing_message = false
   Hue.editing_message_container = false
   Hue.editing_message_area = Hue.div()

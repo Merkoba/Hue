@@ -216,6 +216,17 @@ html {
 	cursor: pointer;
 }
 
+.announcement_image_preview {
+	display: block;
+	max-width: 250px;
+	max-height: 250px;
+	margin-top: 0.25rem;
+}
+
+.editing_chat_message .announcement_image_preview {
+	display: none;
+}
+
 #media {
 	display: flex;
 	width: 100%;
