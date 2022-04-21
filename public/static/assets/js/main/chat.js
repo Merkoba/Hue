@@ -292,7 +292,7 @@ Hue.make_announcement_message = function (args = {}) {
   }
 
   let fmessage = Hue.div("message announcement message_unit")
-  
+
   let image_preview_source = Hue.get_setting("embed_images") && 
   args.type === "image_change" ? args.media_source : ""
   
@@ -325,6 +325,13 @@ Hue.make_announcement_message = function (args = {}) {
     let date = Hue.el(".chat_timeago", fmessage)
     username.textContent = args.username
     date.textContent = Hue.utilz.timeago(args.date)
+  }
+
+  if (image_preview_source) {
+    Hue.el(".announcement_image_preview", fmessage).addEventListener("load", function () {
+      console.log(234)
+      Hue.goto_bottom()
+    })
   }
 
   split.title = t
