@@ -1,7 +1,6 @@
 {
 	"main_room_id": "main",
 	"public_media_directory": "/static",
-	"profilepic_default_url": "/static/assets/img/profilepic_default.png",
 	"profilepic_loading_url": "/static/assets/img/profilepic_loading.png",
 	"background_loading_url": "/static/assets/img/image_loading.jpg",
 	"video_poster": "/static/assets/img/video_poster.jpg",

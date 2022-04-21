@@ -8,9 +8,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "public_media_directory"
 >Public location to access the media files.
 
-"profilepic_default_url"
->The location of the default profile image.
-
 "profilepic_loading_url"
 >The location of the loading image when the profile image is changing.
 

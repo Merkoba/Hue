@@ -1107,8 +1107,8 @@ Hue.show_user_messages = function (username = Hue.username) {
 
 // Apply fallback profilepic
 Hue.fallback_profilepic = function (el) {
-  if (el.src !== Hue.config.profilepic_default_url) {
-    el.src = Hue.config.profilepic_default_url
+  if (el.src !== Hue.config.profilepic_loading_url) {
+    el.src = Hue.config.profilepic_loading_url
   }
 }
 
