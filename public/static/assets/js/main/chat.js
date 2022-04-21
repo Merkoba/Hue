@@ -156,9 +156,7 @@ Hue.make_chat_message = function (args = {}) {
     let quote_profilepic = Hue.el(".chat_quote_profilepic", quote)
     
     quote_profilepic.addEventListener("error", function () {
-      if (this.src !== Hue.config.default_profilepic_url) {
-        this.src = Hue.config.default_profilepic_url
-      }
+      Hue.fallback_profilepic(this)
     })
   } else {
     quote.style.display = "none"
@@ -341,9 +339,7 @@ Hue.make_announcement_message = function (args = {}) {
   }
 
   Hue.el(".profilepic", fmessage).addEventListener("error", function () {
-    if (this.src !== Hue.config.default_profilepic_url) {
-      this.src = Hue.config.default_profilepic_url
-    }
+    Hue.fallback_profilepic(this)
   })
 
   Hue.dataset(fmessage, "id", args.id)

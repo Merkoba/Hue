@@ -1,8 +1,8 @@
 {
 	"main_room_id": "main",
 	"public_media_directory": "/static",
-	"default_profilepic_url": "/static/assets/img/profile.jpg",
-	"profilepic_loading_url": "/static/assets/img/profilepic_loading.jpg",
+	"profilepic_default_url": "/static/assets/img/profilepic_default.png",
+	"profilepic_loading_url": "/static/assets/img/profilepic_loading.png",
 	"background_loading_url": "/static/assets/img/image_loading.jpg",
 	"video_poster": "/static/assets/img/video_poster.jpg",
 	"title_separator": " - ",
@@ -86,7 +86,7 @@
 	"safe_limit_3": 1000,
 	"safe_limit_4": 200,
 
-	"profilepic_diameter": 300,
+	"profilepic_diameter": 600,
 	"max_num_newlines": 100,
 	"image_change_cooldown": 2500,
 	"tv_change_cooldown": 2500,

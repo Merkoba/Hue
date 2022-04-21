@@ -147,9 +147,7 @@ Hue.add_post_to_message_board = function (data, edited) {
   let profilepic = Hue.el(".message_board_profilepic", post)
   
   profilepic.addEventListener("error", function () {
-    if (this.src !== Hue.config.default_profilepic_url) {
-      this.src = Hue.config.default_profilepic_url
-    }
+    Hue.fallback_profilepic(this)
   })
 
   profilepic.src = Hue.get_profilepic(data.user_id)
