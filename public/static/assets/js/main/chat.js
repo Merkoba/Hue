@@ -292,7 +292,9 @@ Hue.make_announcement_message = function (args = {}) {
   }
 
   let fmessage = Hue.div("message announcement message_unit")
-  let image_preview_source = args.type === "image_change" ? args.media_source : ""
+  
+  let image_preview_source = Hue.get_setting("embed_images") && 
+  args.type === "image_change" ? args.media_source : ""
   
   fmessage.innerHTML = Hue.template_announcement_message({
     container_classes: container_classes,
