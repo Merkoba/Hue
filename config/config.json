@@ -85,7 +85,7 @@
 	"safe_limit_3": 1000,
 	"safe_limit_4": 200,
 
-	"profilepic_diameter": 600,
+	"profilepic_diameter": 300,
 	"max_num_newlines": 100,
 	"image_change_cooldown": 2500,
 	"tv_change_cooldown": 2500,
