@@ -31,10 +31,7 @@ Hue.make_chat_message = function (args = {}) {
   }
 
   args.message = Hue.replace_message_vars(args.id, args.message)
-
-  let container_classes = "chat_content_container chat_menu_button_main reply_message_container edit_message_container message_unit dynamic_title"
   let content_classes = "chat_content reply_message edit_message"
-
   let d = args.date ? args.date : Date.now()
   let nd = Hue.utilz.nice_date(d)
   let pi = Hue.get_profilepic(args.user_id)
@@ -115,7 +112,6 @@ Hue.make_chat_message = function (args = {}) {
   fmessage = Hue.div("message chat_message user_details")
 
   fmessage.innerHTML = Hue.template_chat_message({
-    container_classes: container_classes,
     content_classes: content_classes,
     profilepic: pi,
     title: title,
@@ -171,6 +167,10 @@ Hue.make_chat_message = function (args = {}) {
   Hue.el(".profilepic", fmessage).addEventListener("error", function () {
     Hue.fallback_profilepic(this)
   })
+
+  let rightside = Hue.el(".chat_right_side", fmessage)
+  Hue.dataset(rightside, "date", d)
+  Hue.dataset(rightside, "otitle", nd)
 
   let first_url = false
 
@@ -256,8 +256,6 @@ Hue.make_announcement_message = function (args = {}) {
 
   args = Object.assign(def_args, args)
   let is_media = args.type === "image_change" || args.type === "tv_change"
-  let container_classes = "announcement_content_container chat_menu_button_main reply_message_container edit_message_container"
-  let split_classes = "announcement_content_split dynamic_title"
   let content_classes = "announcement_content reply_message edit_message"
   let brk_classes = "brk announcement_brk"
   let highlighted = false
@@ -294,9 +292,7 @@ Hue.make_announcement_message = function (args = {}) {
   let fmessage = Hue.div("message announcement message_unit")
   
   fmessage.innerHTML = Hue.template_announcement_message({
-    container_classes: container_classes,
     content_classes: content_classes,
-    split_classes: split_classes,
     brk_classes: brk_classes,
     top_classes: top_clasees,
     brk: args.brk
@@ -312,20 +308,18 @@ Hue.make_announcement_message = function (args = {}) {
 
   let content_container = Hue.el(".announcement_content_container", fmessage)
   Hue.dataset(content_container, "original_message", args.comment)
-
   let content = Hue.el(".announcement_content", fmessage)
-  let split = Hue.el(".announcement_content_split", fmessage)
-
+  
   if (is_media) {
     let username = Hue.el(".chat_username", fmessage)
     let date = Hue.el(".chat_timeago", fmessage)
     username.textContent = args.username
     date.textContent = Hue.utilz.timeago(args.date)
   }
-
-  split.title = t
-  Hue.dataset(split, "otitle", t)
-  Hue.dataset(split, "date", d)
+  
+  let right_side = Hue.el(".announcement_right_side", fmessage)
+  Hue.dataset(right_side, "otitle", t)
+  Hue.dataset(right_side, "date", d)
 
   content.textContent = args.message
   Hue.urlize(content)
