@@ -1130,10 +1130,6 @@ svg.action:hover {
 	font-size: 1rem;
 }
 
-#show_profile_username {
-	margin-bottom: 0.8rem;
-}
-
 #show_profile_profilepic {
 	margin-top: 0.5rem;
 	width: var(--big_profilepic_size);
@@ -1145,6 +1141,10 @@ svg.action:hover {
 	background-color: var(--altbackground);
 	padding-top: 1rem;
 	padding-bottom: 1rem;
+	margin-top: 1.6rem;
+}
+
+#show_profile_op_buttons {
 	margin-top: 1.6rem;
 }
 

@@ -861,14 +861,6 @@ Hue.start_msg = function () {
     ]
   }))
 
-  Hue.msg_change_role.set_title(Hue.template_titlebar({
-    items: [
-      {id: "change_role_admin", text: "Admin"},
-      {id: "change_role_op", text: "Op"},
-      {id: "change_role_voice", text: "Voice"},
-    ]
-  }))
-
   Hue.msg_handle_radio_history.set_title(Hue.template_titlebar({
     items: [
       {id: "handle_radio_history_copy", text: "Copy To Clipboard"},
@@ -885,14 +877,6 @@ Hue.start_msg = function () {
     ]
   }))
 
-  Hue.msg_profile.set_title(Hue.template_titlebar({
-    items: [
-      {id: "show_profile_change_role", text: "Role"},
-      {id: "show_profile_kick", text: "Kick"},
-      {id: "show_profile_ban", text: "Ban"},
-    ]
-  }))
-
   Hue.msg_main_menu.set_title("Main Menu")
   Hue.msg_room_config.set_title("Room Config")
   Hue.msg_admin_list.set_title("Admin List")
@@ -904,6 +888,7 @@ Hue.start_msg = function () {
   Hue.msg_notifications.set_title("Notifications")
   Hue.msg_command_book.set_title("Command Book")
   Hue.msg_user_profile.set_title("User Profile")
+  Hue.msg_change_role.set_title("Change Role")
 }
 
 // Setup window controls

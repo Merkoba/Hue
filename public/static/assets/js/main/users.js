@@ -680,9 +680,9 @@ Hue.show_profile = function (username, user_id = false) {
   Hue.dataset(Hue.el("#show_profile_change_role"), "username", username)
 
   if (Hue.is_admin_or_op() && !same_user) {
-    Hue.msg_profile.show_titlebar()
+    Hue.el("#show_profile_op_buttons").classList.remove("nodisplay")
   } else {
-    Hue.msg_profile.hide_titlebar()
+    Hue.el("#show_profile_op_buttons").classList.add("nodisplay")
   }
 
   Hue.el("#show_profile_info").innerHTML = ""
@@ -704,8 +704,7 @@ Hue.show_profile = function (username, user_id = false) {
   let item = Hue.div()
   item.textContent = `ID: ${id}`
   Hue.el("#show_profile_info").append(item)
-
-  Hue.el("#show_profile_username").textContent = username
+  Hue.msg_profile.set_title(username)
   Hue.msg_profile.show()
 }
 
