@@ -1,7 +1,5 @@
 <script id="template_profile" type="text/x-handlebars-template" class="template">
   <div id="show_profile_container">
-    <div id="show_profile_username" class="bigger"></div>
-    
     <img id="show_profile_profilepic" class="profilepic actionbox" src="{{profilepic}}">
     
     <div id="show_profile_details">
@@ -34,7 +32,12 @@
         <svg class="other_icon profile_icon"><use href="#icon_user"></svg>
         <div>Edit Profile</div>
       </div>
+    </div>
 
+    <div id="show_profile_op_buttons" class="flex_row_center generic_horizontal_separator">
+      <div id="show_profile_change_role" class="action">Role</div>
+      <div id="show_profile_kick" class="action">Kick</div>
+      <div id="show_profile_ban" class="action">Ban</div>
     </div>
 
     <div id="show_profile_info" class="flex_column_center"></div>

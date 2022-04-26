@@ -134,7 +134,7 @@ Hue.add_post_to_message_board = function (data, edited) {
       return
     }
   } else {
-    post = Hue.div("message_board_post modal_item")
+    post = Hue.div("message_board_post modal_item dynamic_title")
   }
 
   post.innerHTML = Hue.template_message_board_post()
@@ -198,11 +198,10 @@ Hue.add_post_to_message_board = function (data, edited) {
 
   let gets = Hue.getcode(data.id)
   let title = `${gets} | ${Hue.utilz.nice_date(data.date)}`
-
+  post.title = title
+  Hue.dataset(post, "otitle", title)
+  
   let content = Hue.el(".message_board_content", post)
-  content.title = title
-  Hue.dataset(content, "date", data.date)
-  Hue.dataset(content, "otitle", title)
 
   if (Hue.utilz.bingo(gets)) {
     content.classList.add("colortext")
