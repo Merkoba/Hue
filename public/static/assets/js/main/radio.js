@@ -42,11 +42,9 @@ Hue.setup_radio = function () {
   Hue.setup_radio_window()
   Hue.set_radio_dj_controls()
 
-  let current = Hue.config.radios.find(
+  Hue.playing_radio = Hue.config.radios.find(
     x => x.name === Hue.room_state.last_radio_name
   ) || Hue.config.radios[0]
-  
-  Hue.play_radio(current)
 }
 
 // Setup the radio window
