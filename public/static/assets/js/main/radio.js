@@ -1,15 +1,16 @@
 // Setup radios
 Hue.setup_radio = function () {
-  Hue.playing_radio = {}
+  Hue.playing_radio = Hue.config.radios.find(
+    x => x.name === Hue.room_state.last_radio_name
+  ) || Hue.config.radios[0]
+
+  Hue.setup_radio_player()
 
   if (Hue.config.radios.length === 0) {
     Hue.room_state.radio_enabled = false
-    Hue.set_radio_player({name: "Empty", url: "https://localhost", metadata: "https://localhost"})
     Hue.el("#radio_items").classList.add("nodisplay")
     return
   }
-
-  Hue.setup_radio_player()
   
   for (let radio of Hue.config.radios) {
     Hue.create_radio_item(radio)
@@ -41,10 +42,6 @@ Hue.setup_radio = function () {
   Hue.change_radio_state(Hue.room_state.radio_enabled)
   Hue.setup_radio_window()
   Hue.set_radio_dj_controls()
-
-  Hue.playing_radio = Hue.config.radios.find(
-    x => x.name === Hue.room_state.last_radio_name
-  ) || Hue.config.radios[0]
 }
 
 // Setup the radio window
@@ -576,6 +573,10 @@ Hue.unslide_radio = function () {
 // Play or stop the radio
 // Select random item if none is playing
 Hue.radio_playstop = function () {
+  if (!Hue.playing_radio) {
+    return
+  }
+
   Hue.check_radio_play(Hue.playing_radio) 
 }
 
