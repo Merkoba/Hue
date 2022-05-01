@@ -151,6 +151,10 @@ Hue.setup_radio_player = function () {
   Hue.radio_player.addEventListener("pause", function (e) {
     Hue.after_radio_stop()
   })
+
+  navigator.mediaSession.setActionHandler("nexttrack", function() {
+    Hue.play_random_radio()
+  })
 }
 
 // Apply radio item effects
