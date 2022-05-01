@@ -1939,16 +1939,6 @@ pre {
 	margin-right: 0.5rem;
 }
 
-#radio_item_dj {
-	display: none;
-}
-
-#radio_dj_delay_select {
-	border: 0;
-	background-color: var(--altbackground);
-	color: var(--text_color);
-}
-
 .glowing::before {
   content: '';
   position: absolute;
