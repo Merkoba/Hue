@@ -1082,10 +1082,6 @@ svg.action:hover {
 	padding: 0.5rem;
 }
 
-.modal_icon_selected {
-	box-shadow: 0 0 2px currentColor
-}
-
 #chat_area .highlighted_message {
 	background-color: var(--altbackground_a);
 	box-shadow: 0 0 0.12rem currentColor;
@@ -1815,9 +1811,14 @@ pre {
 	margin-left: 0.8rem;
 }
 
-#draw_image_color_picker {
+.buttonbox {
+	border: 1px solid transparent;
 	background-color: var(--altbackground);
 	padding: 0.35rem;
+}
+
+.buttonbox_active {
+	border: 1px solid var(--text_color_a);
 }
 
 .clear_spacer {
