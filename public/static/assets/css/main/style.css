@@ -1815,6 +1815,11 @@ pre {
 	margin-left: 0.8rem;
 }
 
+#draw_image_color_picker {
+	background-color: var(--altbackground);
+	padding: 0.35rem;
+}
+
 .clear_spacer {
 	height: 100vh;
 }
