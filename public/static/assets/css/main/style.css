@@ -738,6 +738,10 @@ select {
 .modal_select {
 	text-align-last: center;
 	min-width: 8rem;
+	background-color: var(--altbackground);
+	color: var(--text_color);
+	border: 0;
+	outline: 0;
 }
 
 .modal_color {
@@ -1268,21 +1272,6 @@ a.special_link:hover {
 .media_container .vertical_separator {
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
-}
-
-#media_tweaks_toggles {
-	margin-top: 2rem;
-}
-
-.toggle_button {
-	width: 8rem;
-	background-color: var(--altbackground);
-	padding: 0.25rem;
-	border: 1px solid transparent;
-}
-
-.toggle_button_enabled {
-	border: 1px solid var(--text_color_a);
 }
 
 .message_edit_container {

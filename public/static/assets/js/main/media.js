@@ -1026,11 +1026,10 @@ Hue.change_media_visibility = function (type, play = false) {
   Hue.goto_bottom()
 }
 
-// Toggle media info
-Hue.toggle_media_info = function () {
-  Hue.room_state.media_info_enabled = !Hue.room_state.media_info_enabled
+// Set media info enabled
+Hue.set_media_info_enabled = function (what) {
+  Hue.room_state.media_info_enabled = what
   Hue.check_media_info()
-  Hue.set_media_tweaks_toggles()
   Hue.save_room_state()
 }
 
@@ -1038,7 +1037,6 @@ Hue.toggle_media_info = function () {
 Hue.set_default_media_info_enabled = function () {
   Hue.room_state.media_info_enabled = Hue.config.room_state_default_media_info_enabled
   Hue.check_media_info()
-  Hue.set_media_tweaks_toggles()
   Hue.save_room_state()
 }
 
