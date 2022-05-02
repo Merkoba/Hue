@@ -198,11 +198,11 @@ Hue.draw_image_prepare_settings = function () {
 // Changes the appearance of the widgets to reflect this
 Hue.set_draw_image_mode_input = function (m) {
   if (m === "pencil") {
-   Hue.el("#draw_image_mode_select_pencil").classList.add("modal_icon_selected")
-   Hue.el("#draw_image_mode_select_bucket").classList.remove("modal_icon_selected")
+   Hue.el("#draw_image_mode_select_pencil").classList.add("buttonbox_active")
+   Hue.el("#draw_image_mode_select_bucket").classList.remove("buttonbox_active")
   } else if (m === "bucket") {
-   Hue.el("#draw_image_mode_select_bucket").classList.add("modal_icon_selected")
-   Hue.el("#draw_image_mode_select_pencil").classList.remove("modal_icon_selected")
+   Hue.el("#draw_image_mode_select_bucket").classList.add("buttonbox_active")
+   Hue.el("#draw_image_mode_select_pencil").classList.remove("buttonbox_active")
   }
 
   Hue.draw_image_mode = m
@@ -615,8 +615,8 @@ Hue.toggle_draw_color_picker = function () {
   Hue.draw_color_picker_on = !Hue.draw_color_picker_on
 
   if (Hue.draw_color_picker_on) {
-    Hue.el("#draw_image_color_picker").classList.add("underlined")
+    Hue.el("#draw_image_color_picker").classList.add("buttonbox_active")
   } else {
-    Hue.el("#draw_image_color_picker").classList.remove("underlined")
+    Hue.el("#draw_image_color_picker").classList.remove("buttonbox_active")
   }
 }
