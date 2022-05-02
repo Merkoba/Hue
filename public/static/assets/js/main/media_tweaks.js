@@ -27,16 +27,18 @@ Hue.setup_media_tweaks = function () {
     Hue.do_chat_font_size_change(size)
   })
 
+  Hue.el("#media_tweaks_media_info_enabled").addEventListener("change", function () {
+    let enabled = Hue.el("#media_tweaks_media_info_enabled option:checked").value === "enabled"
+    Hue.set_media_info_enabled(enabled)
+  })
+
+  Hue.el("#media_tweaks_chat_enabled").addEventListener("change", function () {
+    let enabled = Hue.el("#media_tweaks_chat_enabled option:checked").value === "enabled"
+    Hue.set_chat_enabled(enabled)
+  })
+
   Hue.el("#media_tweaks_defaults").addEventListener("click", function () {
     Hue.apply_media_tweaks_defaults()
-  })
-
-  Hue.el("#media_tweaks_toggle_chat").addEventListener("click", function () {
-    Hue.toggle_chat()
-  })
-
-  Hue.el("#media_tweaks_toggle_info").addEventListener("click", function () {
-    Hue.toggle_media_info()
   })
 
   Hue.el("#media_tweaks_tv_size_minus").addEventListener("click", function () {
@@ -69,10 +71,29 @@ Hue.setup_media_tweaks = function () {
     Hue.refresh_media_tweaks()
   })
 
+  Hue.el("#media_tweaks_media_info_enabled_minus").addEventListener("click", function () {
+    Hue.set_media_info_enabled(false)
+    Hue.refresh_media_tweaks()
+  })
+  
+  Hue.el("#media_tweaks_media_info_enabled_plus").addEventListener("click", function () {
+    Hue.set_media_info_enabled(true)
+    Hue.refresh_media_tweaks()
+  })
+
+  Hue.el("#media_tweaks_chat_enabled_minus").addEventListener("click", function () {
+    Hue.set_chat_enabled(false)
+    Hue.refresh_media_tweaks()
+  })
+  
+  Hue.el("#media_tweaks_chat_enabled_plus").addEventListener("click", function () {
+    Hue.set_chat_enabled(true)
+    Hue.refresh_media_tweaks()
+  })
+
   Hue.apply_media_percentages()
   Hue.apply_media_positions()
   Hue.change_media_layout()
-  Hue.set_media_tweaks_toggles()
 }
 
 // Percentages for media tweaks
@@ -125,6 +146,30 @@ Hue.refresh_media_tweaks = function () {
       it.selected = true
     }
   })
+
+  Hue.els("#media_tweaks_media_info_enabled option").forEach(it => {
+    if (Hue.room_state.media_info_enabled) {
+      if (it.value === "enabled") {
+        it.selected = true
+      }
+    } else {
+      if (it.value === "disabled") {
+        it.selected = true
+      }
+    }
+  })
+
+  Hue.els("#media_tweaks_chat_enabled option").forEach(it => {
+    if (Hue.room_state.chat_enabled) {
+      if (it.value === "enabled") {
+        it.selected = true
+      }
+    } else {
+      if (it.value === "disabled") {
+        it.selected = true
+      }
+    }
+  })
 }
 
 // Apply media defaults
@@ -143,26 +188,4 @@ Hue.apply_media_tweaks_defaults = function () {
   Hue.change_media_layout()
   Hue.apply_media_positions()
   Hue.refresh_media_tweaks()
-}
-// Set media tweaks toggles
-Hue.set_media_tweaks_toggles = function () {
-  let el = Hue.el("#media_tweaks_toggle_info")
-
-  if (Hue.room_state.media_info_enabled) {
-    el.classList.add("toggle_button_enabled")
-    el.textContent = "Disable Info"
-  } else {
-    el.classList.remove("toggle_button_enabled")
-    el.textContent = "Enable Info"
-  }
-
-  el = Hue.el("#media_tweaks_toggle_chat")
-  
-  if (Hue.room_state.chat_enabled) {
-    el.classList.add("toggle_button_enabled")
-    el.textContent = "Disable Chat"
-  } else {
-    el.classList.remove("toggle_button_enabled")
-    el.textContent = "Enable Chat"
-  }
 }

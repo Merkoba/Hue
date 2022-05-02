@@ -1988,25 +1988,20 @@ Hue.check_chat_enabled = function () {
   }
 }
 
-// Toggle chat on or off
-Hue.toggle_chat = function (what = undefined) {
-  if (what !== undefined) {
-    Hue.room_state.chat_enabled = what 
-  } else {
-    Hue.room_state.chat_enabled = !Hue.room_state.chat_enabled
-  }
-  
+// Set chat enabled
+Hue.set_chat_enabled = function (what) {
+  Hue.room_state.chat_enabled = what 
   Hue.save_room_state()
   Hue.check_chat_enabled()
   Hue.fix_frames()
-  Hue.set_media_tweaks_toggles()
   Hue.goto_bottom(true)
 }
 
 // Set default chat enabled
 Hue.set_default_chat_enabled = function () {
-  Hue.toggle_chat(Hue.config.room_state_default_chat_enabled)
+  Hue.set_chat_enabled(Hue.config.room_state_default_chat_enabled)
 }
+
 
 // Increases the chat display percentage
 Hue.increase_chat_percentage = function () {
