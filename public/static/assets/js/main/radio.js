@@ -325,7 +325,6 @@ Hue.start_radio_metadata_loop = function () {
 // Stop metadata check loop
 Hue.stop_radio_metadata_loop = function () {
   clearInterval(Hue.radio_metadata_interval)
-  Hue.radio_metadata_interval = undefined
 }
 
 // Check if radio is playing
