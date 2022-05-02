@@ -68,6 +68,8 @@ Hue.canvas_redraw = function (args = {}) {
 // Opens the draw image window
 Hue.open_draw_image = function (target) {
   Hue.draw_image_target = target
+  Hue.set_draw_image_mode_input("pencil")
+  Hue.set_draw_color_picker(false)
   Hue.msg_draw_image.show()
 }
 
@@ -612,7 +614,12 @@ Hue.draw_color_picker = function (x, y) {
 
 // Toggle draw color picker
 Hue.toggle_draw_color_picker = function () {
-  Hue.draw_color_picker_on = !Hue.draw_color_picker_on
+  Hue.set_draw_color_picker(!Hue.draw_color_picker_on)
+}
+
+// Set draw color picker
+Hue.set_draw_color_picker = function (what) {
+  Hue.draw_color_picker_on = what
 
   if (Hue.draw_color_picker_on) {
     Hue.el("#draw_image_color_picker").classList.add("buttonbox_active")
