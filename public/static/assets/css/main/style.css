@@ -737,11 +737,14 @@ select {
 
 .modal_select {
 	text-align-last: center;
-	min-width: 8rem;
 	background-color: var(--altbackground);
 	color: var(--text_color);
 	border: 0;
 	outline: 0;
+}
+
+.media_tweaks_select {
+	width: 8rem;
 }
 
 .modal_color {
