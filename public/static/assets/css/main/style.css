@@ -239,10 +239,6 @@ html {
 	font-size: 1.1rem;
 }
 
-#media_image_spinner {
-	display: none;
-}
-
 .media_main_container {
 	height: 50%;
 	width: 100%;
@@ -833,18 +829,6 @@ input[type=checkbox] {
 
 .pointer {
 	cursor: pointer;
-}
-
-.spinner1 {
-	border: 0.59rem solid;
-	border-top: 0.59rem solid;
-	color: inherit;
-	border-color: transparent;
-	border-top-color: currentColor;
-	border-radius: 50%;
-	width: 4.71rem;
-	height: 4.71rem;
-	animation: spin 1.4s linear infinite;
 }
 
 @keyframes spin {
