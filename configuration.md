@@ -125,6 +125,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_stop_tv_on_radio_play"
 >Whether to stop the tv when the radio starts playing.
 
+"settings_default_confirm_on_close"
+>Whether to show a confirm message when closing the application.
+
 "room_state_default_image_enabled"
 >Whether images will be enabled by default.
 

@@ -165,3 +165,14 @@ Hue.hide_flash_info = function () {
 Hue.get_element_sizes = function () {
   Hue.panel_height = Hue.el("#footer").offsetHeight
 }
+
+// Attach before-unload event
+Hue.start_before_unload = function () {
+  window.onbeforeunload = function () {
+    if (Hue.get_setting("confirm_on_close")) {
+      if (!confirm("Ok?")) {
+        return false
+      }
+    }
+  }
+}

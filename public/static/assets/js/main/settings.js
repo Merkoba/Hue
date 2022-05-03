@@ -128,6 +128,17 @@ Hue.user_settings = {
         Hue.save_settings()
       }
     },
+  },
+  confirm_on_close: {
+    widget_type: "checkbox",
+    description: `Whether to show a confirm message when closing the application`,
+    action: (save = true) => {
+      Hue.settings.confirm_on_close = Hue.el(`#settings_confirm_on_close`).checked
+
+      if (save) {
+        Hue.save_settings()
+      }
+    },
   }
 }
 

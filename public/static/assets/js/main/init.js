@@ -194,6 +194,7 @@ Hue.init = function () {
   Hue.setup_change_role()
   Hue.setup_screen_capture()
   Hue.setup_handle_chat_media()
+  Hue.start_before_unload()
   
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
