@@ -60,7 +60,7 @@ input[type=submit] {
 	background-color: black;
 	color: white;
 	padding: 0.4em 1em 0.4em 1em;
-	border: 1px solid white;
+	border: 2px solid white;
 	font-size: 1em;
 	cursor: pointer;
 	border-radius: 20px;
@@ -68,7 +68,7 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-	border: 1px solid #93c9ff;
+	border: 2px solid #93c9ff;
 }
 
 .logo {
