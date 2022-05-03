@@ -333,10 +333,8 @@ Hue.radio_is_playing = function () {
 // Check if radio is playing and perform actions
 Hue.check_radio_playing = function () {
   if (Hue.radio_is_playing()) {
-    Hue.el("#footer_radio_icon").classList.add("rotate")
     Hue.el("#radio_button_playstop use").href.baseVal = "#icon_pause"
   } else {
-    Hue.el("#footer_radio_icon").classList.remove("rotate")
     Hue.el("#radio_button_playstop use").href.baseVal = "#icon_play"
   }
 
