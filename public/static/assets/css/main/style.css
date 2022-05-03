@@ -430,7 +430,10 @@ html {
 
 .chat_image.aura,
 .activity_bar_profilepic.aura {
-	animation: spin 1s linear infinite;
+	animation-name: spin;
+	animation-duration: 1s;
+	animation-timing-function: linear;
+	animation-iteration-count: 10;
 }
 
 .chat_message_top {
@@ -1016,16 +1019,6 @@ svg.action:hover {
 .header_label {
 	font-size: var(--panel_font_size);
 	margin-right: 0.5rem;
-}
-
-@keyframes animation_circle_1 {
-	from {
-		transform: scale(0)
-	}
-
-	to {
-		transform: scale(1)
-	}
 }
 
 .draw_tool_container {
