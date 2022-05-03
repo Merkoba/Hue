@@ -11,30 +11,3 @@ Hue.compare_load_dates = function () {
   Hue.loginfo(`Time from init ready and join: ${time_2}`)
   Hue.loginfo(`Time from join to everything ready: ${time_3}`)
 }
-
-// Wraps a function to be debugged
-Hue.wrap_function = function (func, name) {
-  let wrapped = function () {
-    let date = dateFormat(Date.now(), "h:MM:ss:l")
-    Hue.loginfo(`${date} | Running: ${name}`)
-    return func(...arguments)
-  }
-
-  return wrapped
-}
-
-// Wraps all Hue functions for debugging purposes
-// This only happens if Hue.debug_functions is true
-Hue.wrap_functions = function () {
-  for (let i in Hue) {
-    if (i === "wrap_functions" || i === "wrap_function") {
-      continue
-    }
-
-    let p = Hue[i]
-
-    if (typeof p === "function") {
-      Hue[i] = Hue.wrap_function(p, i)
-    }
-  }
-}
