@@ -192,7 +192,9 @@ html {
 
 #chat_area .chat_content_container,
 #chat_area .announcement {
-	animation: fadein linear 600ms;
+	animation-name: fadein;
+	animation-duration: 600ms;
+	animation-timing-function: linear;
 }
 
 #chat_area > .message:first-child {
