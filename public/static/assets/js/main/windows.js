@@ -965,7 +965,6 @@ Hue.after_modal_set_or_show = function (instance) {
 // This is called after a modal is closed
 Hue.after_modal_close = function (instance) {
   if (!Hue.any_modal_open()) {
-    Hue.active_modal = false
     Hue.modal_open = false
     Hue.focus_input()
   } else {
