@@ -7,12 +7,6 @@ const Hue = {}
 // This enables information about socket calls to the server in the console
 Hue.debug_socket = true
 
-// This wraps all functions with a function
-// It shows every triggered function name
-// This is mainly to check for loops
-// Should be false unless debugging
-Hue.debug_functions = false
-
 // This enables or disables script loading
 // This should be always true unless developing without an internet connection
 Hue.load_scripts = true
@@ -203,10 +197,6 @@ Hue.init = function () {
   
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
-  }
-
-  if (Hue.debug_functions) {
-    Hue.wrap_functions()
   }
 
   Hue.start_socket()
