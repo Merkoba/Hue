@@ -160,10 +160,8 @@ Hue.apply_radio_item_effects = function () {
 
     if (Hue.is_playing_radio(radio) && Hue.radio_is_playing()) {
       item.classList.add("radio_item_playing")
-      item.classList.add("glowing")
     } else {
       item.classList.remove("radio_item_playing")
-      item.classList.remove("glowing")
     }
   }
 }
