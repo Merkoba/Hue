@@ -301,25 +301,25 @@ Hue.commands = {
   },
   "lockimage": {
     action: (arg, ans) => {
-      Hue.set_media_lock({type:"image", what:true})
+      Hue.set_media_locked({type:"image", what:true})
     },
     description: `Locks the image`,
   },
   "locktv": {
     action: (arg, ans) => {
-      Hue.set_media_lock({type:"tv", what:true})
+      Hue.set_media_locked({type:"tv", what:true})
     },
     description: `Locks the tv`,
   },
   "unlockimage": {
     action: (arg, ans) => {
-      Hue.set_media_lock({type:"image", what:false})
+      Hue.set_media_locked({type:"image", what:false})
     },
     description: `Unlocks the image`,
   },
   "unlocktv": {
     action: (arg, ans) => {
-      Hue.set_media_lock({type:"tv", what:false})
+      Hue.set_media_locked({type:"tv", what:false})
     },
     description: `Unlocks the tv`,
   },

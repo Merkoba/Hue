@@ -12,7 +12,7 @@ Hue.setup_footer = function () {
     })
 
     Hue.el(`#footer_${type}_lock`).addEventListener("click", function () {
-      Hue.set_media_lock({type: type, what: !Hue[`${type}_locked`]})
+      Hue.set_media_locked({type: type, what: !Hue[`${type}_locked`]})
     })
 
     Hue.el(`#footer_${type}_prev`).addEventListener("click", function () {
