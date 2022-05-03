@@ -495,35 +495,21 @@ Hue.fix_media_info = function () {
   Hue.apply_media_info("tv")
 }
 
-// Toggles media visibility
-Hue.toggle_media = function (args) {
+// Sets media visibility
+Hue.set_media_enabled = function (args) {
   let def_args = {
     type: "",
     what: undefined, 
-    save: true,
-    feedback: false
+    save: true
   }
 
   args = Object.assign(def_args, args)
 
-  let new_val
-
-  if (args.what !== undefined) {
-    if (Hue.room_state[`${args.type}_enabled`] !== args.what) {
-      new_val = args.what
-    } else {
-      new_val = Hue.room_state[`${args.type}_enabled`]
-      save = false
-    }
-  } else {
-    new_val = !Hue.room_state[`${args.type}_enabled`]
-  }
-
-  if (new_val === Hue.room_state[`${args.type}_enabled`]) {
+  if (args.what === Hue.room_state[`${args.type}_enabled`]) {
     return
   }
   
-  Hue.room_state[`${args.type}_enabled`] = new_val
+  Hue.room_state[`${args.type}_enabled`] = args.what
   
   if (Hue[`${args.type}_visible`] !== args.what) {
     Hue.change_media_visibility(args.type)
@@ -538,56 +524,27 @@ Hue.toggle_media = function (args) {
   }
   
   Hue.update_footer_toggle(args.type)
-
-  if (args.feedback) {
-    let ctype = Hue.media_string(args.type)
-
-    if (new_val) {
-      Hue.flash_info("Info", `${ctype} is now visible`)
-    } else {
-      Hue.flash_info("Info", `${ctype} is now invisible`)
-    }
-  }
 }
 
-// Change the lock of some media
-Hue.change_media_lock = function(args) {
+// Set the lock of media
+Hue.set_media_lock = function(args) {
   let def_args = {
     type: "",
-    what: undefined,  
-    feedback: false,
+    what: undefined,
     change: true
   }
 
   args = Object.assign(def_args, args)
-  
-  let new_val
-  
-  if (args.what !== undefined) {
-    new_val = args.what
-  } else {
-    new_val = !Hue[`${args.type}_locked`]
-  }
 
-  if (new_val === Hue[`${args.type}_locked`]) {
+  if (args.what === Hue[`${args.type}_locked`]) {
     return
   }
 
-  Hue[`${args.type}_locked`] = new_val
+  Hue[`${args.type}_locked`] = args.what
   Hue.change_media_lock_text(args.type)
 
-  if (!new_val && args.change) {
+  if (!args.what && args.change) {
     Hue.change_media({type: args.type})
-  }
-
-  if (args.feedback) {
-    let ctype = Hue.media_string(args.type)
-
-    if (new_val) {
-      Hue.flash_info("Info", `${ctype} is now locked`)
-    } else {
-      Hue.flash_info("Info", `${ctype} is now unlocked`)
-    }
   }
 }
 
@@ -719,8 +676,8 @@ Hue.media_string = function (what) {
 
 // Load or restart media
 Hue.load_media = function (data) {
-  Hue.toggle_media({type: data.media_type, what: true, feedback: true})
-  Hue.change_media_lock({type: data.media_type, what: true, feedback: true})
+  Hue.set_media_enabled({type: data.media_type, what: true})
+  Hue.set_media_lock({type: data.media_type, what: true})
   
   Hue.change_media({
     type: data.media_type,
@@ -956,10 +913,9 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
 
   if (mode === "change") {
     if (data.user_id === Hue.user_id) {
-      Hue.change_media_lock({
+      Hue.set_media_lock({
         type: type,
         what: false,
-        feedback: true,
         change: false
       })
     }

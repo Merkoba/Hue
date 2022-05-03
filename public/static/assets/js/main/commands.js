@@ -301,75 +301,51 @@ Hue.commands = {
   },
   "lockimage": {
     action: (arg, ans) => {
-      Hue.change_media_lock({type:"image", what:true})
+      Hue.set_media_lock({type:"image", what:true})
     },
     description: `Locks the image`,
   },
   "locktv": {
     action: (arg, ans) => {
-      Hue.change_media_lock({type:"tv", what:true})
+      Hue.set_media_lock({type:"tv", what:true})
     },
     description: `Locks the tv`,
   },
   "unlockimage": {
     action: (arg, ans) => {
-      Hue.change_media_lock({type:"image", what:false})
+      Hue.set_media_lock({type:"image", what:false})
     },
     description: `Unlocks the image`,
   },
   "unlocktv": {
     action: (arg, ans) => {
-      Hue.change_media_lock({type:"tv", what:false})
+      Hue.set_media_lock({type:"tv", what:false})
     },
     description: `Unlocks the tv`,
   },
-  "togglelockimage": {
-    action: (arg, ans) => {
-      Hue.change_media_lock({type:"image"})
-    },
-    description: `Toggles between lock and unlock the image`,
-  },
-  "togglelocktv": {
-    action: (arg, ans) => {
-      Hue.change_media_lock({type:"tv"})
-    },
-    description: `Toggles between lock and unlock the tv`,
-  },
   "showimage": {
     action: (arg, ans) => {
-      Hue.toggle_media({type:"image", what:true})
+      Hue.set_media_enabled({type:"image", what:true})
     },
     description: `Makes the image visible and active`,
   },
   "showtv": {
     action: (arg, ans) => {
-      Hue.toggle_media({type:"tv", what:true})
+      Hue.set_media_enabled({type:"tv", what:true})
     },
     description: `Makes the tv visible and active`,
   },
   "hideimage": {
     action: (arg, ans) => {
-      Hue.toggle_media({type:"image", what:false})
+      Hue.set_media_enabled({type:"image", what:false})
     },
     description: `Makes the image invisible and inactive`,
   },
   "hidetv": {
     action: (arg, ans) => {
-      Hue.toggle_media({type:"tv", what:false})
+      Hue.set_media_enabled({type:"tv", what:false})
     },
     description: `Makes the tv invisible and inactive`,
-  },
-  "toggleimage": {
-    action: (arg, ans) => {
-      Hue.toggle_media({type:"image"})
-    },
-    description: `Toggles between show and hide the image`,
-  },
-  "toggletv": {
-    action: (arg, ans) => {
-      Hue.toggle_media({type:"tv"})
-    },
-    description: `Toggles between show and hide the tv`,
   },
   "starttv": {
     action: (arg, ans) => {
