@@ -904,26 +904,6 @@ input[type=checkbox] {
 	visibility: hidden;
 }
 
-#loading {
-	position: fixed;
-	height: 100%;
-	width: 100%;
-	z-index: 9999999999999;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: #b17fbf;
-	transition: opacity 1.6s linear;
-	pointer-events: none;
-}
-
-#loading_spinner {
-	width: 4.71rem;
-	height: 4.71rem;
-	background-color: #8f46a8;
-	animation: rotate_plane 1.2s infinite ease-in-out;
-}
-
 @keyframes rotate_plane {
 	0% {
 		transform: perspective(7.06rem) rotateX(0deg) rotateY(0deg);
@@ -1918,10 +1898,6 @@ pre {
 	opacity: 0.5;
 	margin-left: 0.5rem;
 	margin-right: 0.5rem;
-}
-
-.rotate {
-	animation: spin 2.5s linear infinite;
 }
 
 #flash_info {

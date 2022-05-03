@@ -42,13 +42,8 @@ Hue.setup_generic_separators = function () {
 
 // This hides the loading animation and makes the main container visible
 Hue.make_main_container_visible = function () {
-  Hue.el("#loading").style.opacity = 0
   Hue.el("#main_container").style.opacity = 1
   Hue.el("#main_container").style.pointerEvents = "initial"
-
-  setTimeout(function () {
-    Hue.el("#loading").style.display = "none"
-  }, 1600)
 }
 
 // Setup font loading events
