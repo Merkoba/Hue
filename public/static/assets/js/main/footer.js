@@ -8,11 +8,11 @@ Hue.setup_footer = function () {
     })
 
     Hue.el(`#footer_${type}_toggle`).addEventListener("click", function () {
-      Hue.toggle_media({type:type})
+      Hue.set_media_enabled({type: type, what: !Hue.room_state[`${type}_enabled`]})
     })
 
     Hue.el(`#footer_${type}_lock`).addEventListener("click", function () {
-      Hue.change_media_lock({type:type})
+      Hue.set_media_lock({type: type, what: !Hue[`${type}_locked`]})
     })
 
     Hue.el(`#footer_${type}_prev`).addEventListener("click", function () {
