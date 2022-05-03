@@ -24,9 +24,7 @@ Hue.current_image = function () {
 Hue.show_image = function (force = false) {
   let item = Hue.loaded_image
   Hue.el("#media_image_error").style.display = "none"
-  Hue.el("#media_image_frame").style.display = "none"
-  Hue.el("#media_image_info_container").style.visibility = "hidden"
-
+  
   if (force || Hue.el("#media_image_frame").src !== item.source) {
     Hue.el("#media_image_frame").src = item.source
   } else {
@@ -350,7 +348,6 @@ Hue.start_image_events = function () {
 // This runs after an image successfully loads
 Hue.after_image_load = function (ok = true) {
   Hue.el("#media_image_frame").style.display = "initial"
-
   Hue.apply_media_info("image")
 
   if (ok) {

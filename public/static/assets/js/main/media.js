@@ -467,7 +467,6 @@ Hue.apply_media_info = function (type) {
 
   let message = item.message.substring(0, Hue.config.max_media_info_length).trim()
   let container = Hue.el(`#media_${type}_info_container`)
-  container.style.visibility = "initial"
   
   Hue.el(".media_info", container).innerHTML = Hue.template_media_info_inner({
     username: item.username, 
