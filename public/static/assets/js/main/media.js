@@ -527,7 +527,7 @@ Hue.set_media_enabled = function (args) {
 }
 
 // Set the lock of media
-Hue.set_media_lock = function(args) {
+Hue.set_media_locked = function(args) {
   let def_args = {
     type: "",
     what: undefined,
@@ -677,7 +677,7 @@ Hue.media_string = function (what) {
 // Load or restart media
 Hue.load_media = function (data) {
   Hue.set_media_enabled({type: data.media_type, what: true})
-  Hue.set_media_lock({type: data.media_type, what: true})
+  Hue.set_media_locked({type: data.media_type, what: true})
   
   Hue.change_media({
     type: data.media_type,
@@ -913,7 +913,7 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
 
   if (mode === "change") {
     if (data.user_id === Hue.user_id) {
-      Hue.set_media_lock({
+      Hue.set_media_locked({
         type: type,
         what: false,
         change: false
