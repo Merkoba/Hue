@@ -904,20 +904,6 @@ input[type=checkbox] {
 	visibility: hidden;
 }
 
-@keyframes rotate_plane {
-	0% {
-		transform: perspective(7.06rem) rotateX(0deg) rotateY(0deg);
-	}
-
-	50% {
-		transform: perspective(7.06rem) rotateX(-180.1deg) rotateY(0deg);
-	}
-
-	100% {
-		transform: perspective(7.06rem) rotateX(-180deg) rotateY(-179.9deg);
-	}
-}
-
 .shady_text {
 	background-color: var(--altcolor);
 	color: var(--text_color);
