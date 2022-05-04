@@ -60,7 +60,6 @@ Hue.setup_radio_window = function () {
     let el = Hue.handle_radio_history_item
     let info = Hue.el(".radio_history_info", el).textContent
     Hue.copy_string(info)
-    Hue.show_info_autoclose("Copied to clipboard")
   })
 
   Hue.el("#handle_radio_history_search").addEventListener("click", function (e) {

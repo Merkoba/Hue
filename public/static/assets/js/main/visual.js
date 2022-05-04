@@ -97,11 +97,6 @@ Hue.show_info = function (info) {
   Hue.msg_info.show(info)
 }
 
-// Show autoclose information window
-Hue.show_info_autoclose = function (info) {
-  Hue.msg_info_autoclose.show(info)
-}
-
 // Show info window or show in chat
 Hue.checkmsg = function (s) {
   if (Hue.modal_open) {
