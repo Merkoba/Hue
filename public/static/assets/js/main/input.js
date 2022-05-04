@@ -145,8 +145,7 @@ Hue.process_input = function (args = {}) {
     quote: "",
     quote_username: "",
     quote_user_id: "",
-    quote_id: "",
-    bypass_url_check: false
+    quote_id: ""
   }
 
   args = Object.assign(def_args, args)
@@ -173,24 +172,6 @@ Hue.process_input = function (args = {}) {
   } else {
     if (args.message.length > Hue.config.max_input_length) {
       args.message = args.message.substring(0, Hue.config.max_input_length)
-    }
-
-    if (!args.bypass_url_check && !args.quote) {
-      let first_url = Hue.utilz.get_first_url(args.message)
-  
-      if (first_url) {
-        if (Hue.utilz.is_image(first_url)) {
-          if (first_url !== Hue.current_image().source) {
-            Hue.handle_chat_media("image", args)
-            return
-          }
-        } else if (Hue.utilz.is_video(first_url) || Hue.utilz.get_youtube_id(first_url) ) {
-          if (first_url !== Hue.current_tv().source) {
-            Hue.handle_chat_media("tv", args)
-            return
-          }
-        }
-      }
     }
 
     Hue.socket_emit("sendchat", {
@@ -231,41 +212,4 @@ Hue.check_input_expand = function () {
   if (!Hue.el("#input").value) {
     Hue.disable_footer_expand()
   }
-}
-
-// Setup handle chat media
-Hue.setup_handle_chat_media = function () {
-  Hue.el("#handle_chat_media_to_chat").addEventListener("click", function () {
-    Hue.clear_input()
-    let args = Hue.handle_chat_media_args
-    args.bypass_url_check = true
-    Hue.process_input(args)
-    Hue.msg_handle_chat_media.close()
-  })
-
-  Hue.el("#handle_chat_media_change").addEventListener("click", function () {
-    Hue.handle_chat_media_change()
-  })
-}
-
-// Handle chat media change
-Hue.handle_chat_media_change = function () {
-  Hue.clear_input()
-  Hue.add_to_input_history(Hue.handle_chat_media_args.message)
-  Hue[`change_${Hue.handle_chat_media_type}_source`](Hue.handle_chat_media_args.message)
-  Hue.msg_handle_chat_media.close()
-}
-
-// Handle chat media
-Hue.handle_chat_media = function (type, args) {
-  Hue.handle_chat_media_type = type
-  Hue.handle_chat_media_args = args
-  
-  Hue.el("#handle_chat_media_change").textContent = `Change the ${Hue.media_string(type)}`
-
-  let url_el = Hue.el("#handle_chat_media_url")
-  url_el.textContent = Hue.utilz.get_first_url(args.message)
-  Hue.urlize(url_el)
-
-  Hue.msg_handle_chat_media.show()
 }
