@@ -34,6 +34,7 @@ Hue.setup_input = function () {
 
       if (item.kind === "file") {
         Hue.dropzone.addFile(item.getAsFile())
+        e.preventDefault()
         return
       }
     }
