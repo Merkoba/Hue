@@ -172,7 +172,7 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_info_autoclose = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
+    Object.assign({}, msgvars.common, {
       id: "info_autoclose",
       window_height: "auto",
       enable_progressbar: true,
@@ -183,7 +183,7 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_info = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
+    Object.assign({}, msgvars.common, {
       id: "info",
       window_height: "auto",
       after_close: function (instance) {
