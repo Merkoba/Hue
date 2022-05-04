@@ -171,17 +171,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_info_autoclose = Msg.factory(
-    Object.assign({}, msgvars.common, {
-      id: "info_autoclose",
-      window_height: "auto",
-      enable_progressbar: true,
-      bind_progressbar_to_autoclose: true,
-      autoclose: true,
-      autoclose_delay: 3000
-    })
-  )
-
   Hue.msg_info = Msg.factory(
     Object.assign({}, msgvars.common, {
       id: "info",
@@ -631,7 +620,6 @@ Hue.start_msg = function () {
   Hue.msg_tv_picker.set(Hue.template_tv_picker())
 
   Hue.msg_info.create()
-  Hue.msg_info_autoclose.create()
 
   // Set the titles
 
