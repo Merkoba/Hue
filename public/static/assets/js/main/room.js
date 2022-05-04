@@ -77,7 +77,7 @@ Hue.get_topic = function () {
 
 // Shows the topic
 Hue.show_topic = function () {
-  Hue.show_info(Hue.template_topic({topic: Hue.get_topic()}), "Topic")
+  Hue.show_info(Hue.template_topic({topic: Hue.get_topic()}))
   Hue.urlize(Hue.el("#topic_container"))
 }
 

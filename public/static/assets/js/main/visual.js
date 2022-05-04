@@ -92,17 +92,17 @@ Hue.on_confirm_cancel = function () {
   }
 }
 
-// Simple window for messages
-Hue.show_info = function (s, title = "Info") {
-  Hue.msg_info.show([title, s])
+// Simple window to display information
+Hue.show_info = function (info) {
+  Hue.msg_info.show(info)
 }
 
-// Show autoclose window
-Hue.show_info_autoclose = function (s, title = "Info") {
-  Hue.msg_info_autoclose.show([title, s])
+// Show autoclose information window
+Hue.show_info_autoclose = function (info) {
+  Hue.msg_info_autoclose.show(info)
 }
 
-// Simple window for messages
+// Show info window or show in chat
 Hue.checkmsg = function (s) {
   if (Hue.modal_open) {
     Hue.show_info(s)
