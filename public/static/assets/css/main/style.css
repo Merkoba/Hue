@@ -435,7 +435,7 @@ html {
 	animation-name: spin;
 	animation-duration: 1s;
 	animation-timing-function: linear;
-	animation-iteration-count: 10;
+	animation-iteration-count: 60;
 }
 
 .chat_message_top {
