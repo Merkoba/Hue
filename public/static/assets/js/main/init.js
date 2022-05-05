@@ -245,7 +245,6 @@ Hue.on_join = function (data) {
   Hue.update_user_profile()
   Hue.clear_chat()
   Hue.show_log_messages(data.log_messages)
-  Hue.show_joined()
   Hue.config_room_config()
   Hue.config_main_menu()
   Hue.init_message_board(data)
@@ -279,6 +278,7 @@ Hue.at_startup = function () {
   }, 800)
 
   if (Hue.connections === 1) {
+    Hue.show_joined()
     Hue.make_main_container_visible()
   } else {
     let d1 = Hue.last_message_date
