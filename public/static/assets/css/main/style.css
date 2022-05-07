@@ -1501,7 +1501,7 @@ pre {
 	margin-bottom: 1.5rem;
 }
 
-.message_board_container_admin .message_board_buttons {
+.message_board_admin .message_board_buttons {
 	display: flex;
 }
 
