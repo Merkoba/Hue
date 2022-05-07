@@ -369,7 +369,7 @@ Hue.get_radio_item = function (radio) {
 }
 
 // Create a specialized radio button
-Hue.create_radio_item_buttons = function (name, on_click) {
+Hue.create_radio_item_buttons = function () {
   let container = Hue.div("radio_item")
   container.id = "radio_item_buttons"
   
