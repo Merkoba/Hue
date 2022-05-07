@@ -208,12 +208,12 @@ Hue.add_post_to_message_board = function (data, edited) {
     content.classList.add("goldtext")
   }
 
-  let btns = Hue.el(".message_board_buttons", post)
+  let btns = Hue.el(".message_board_btns", post)
 
   if (data.user_id === Hue.user_id) {
     btns.style.display = "flex"
   } else {
-    Hue.el(".message_board_edit", post).style.display = "none"
+    Hue.el(".message_board_edit", btns).style.display = "none"
   }
 
   if (!edited) {
@@ -438,4 +438,15 @@ Hue.show_message_board_wait_message = function (remaining) {
   let c = Hue.utilz.time_components(remaining)
   Hue.checkmsg(`Need to wait ${c.minutes} minutes and ${c.seconds} seconds`)
   Hue.el("#message_board_textarea").value = Hue.last_message_board_message
+}
+
+// Setup message board permissions
+Hue.setup_message_board_permissions = function () {
+  let container = Hue.el("#message_board_container")
+
+  if (Hue.is_admin_or_op()) {
+    container.classList.add("message_board_admin")
+  } else {
+    container.classList.remove("message_board_admin")
+  }
 }

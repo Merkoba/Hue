@@ -372,11 +372,16 @@ Hue.get_radio_item = function (radio) {
 Hue.create_radio_item_buttons = function (name, on_click) {
   let container = Hue.div("radio_item")
   container.id = "radio_item_buttons"
-  container.innerHTML = Hue.template_radio_item_buttons()
+  
+  if (Hue.config.radios.length > 1) {
+    container.innerHTML = Hue.template_radio_item_buttons()
 
-  Hue.el("#radio_button_random", container).addEventListener("click", function () {
-    Hue.play_random_radio()
-  })
+    Hue.el("#radio_button_random", container).addEventListener("click", function () {
+      Hue.play_random_radio()
+    })
+  } else {
+    container.innerHTML = Hue.template_radio_item_buttons_2()
+  }
 
   Hue.el("#radio_button_playstop", container).addEventListener("click", function () {
     Hue.radio_playstop()

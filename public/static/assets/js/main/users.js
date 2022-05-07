@@ -804,6 +804,7 @@ Hue.set_role = function (rol, config = true) {
   }
 
   Hue.el("#user_profile_role").textContent = `(${Hue.get_pretty_role_name(rol)})`
+  Hue.setup_message_board_permissions()
 }
 
 // Bans a user
