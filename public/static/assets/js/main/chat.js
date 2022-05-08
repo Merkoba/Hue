@@ -1343,27 +1343,27 @@ Hue.do_chat_size_change = function (size) {
 
 // Scrolls the chat to a certain vertical position
 Hue.scroll_chat_to = function (scrolltop) {
-  Hue.el("#chat_area").scrollTop = scrolltop
+  Hue.el("#chat_area_parent").scrollTop = scrolltop
 }
 
 // Scrolls the chat up
 Hue.scroll_up = function () {
-  Hue.el("#chat_area").scrollTop -= Hue.chat_scroll_amount
+  Hue.el("#chat_area_parent").scrollTop -= Hue.chat_scroll_amount
 }
 
 // Scrolls the chat down
 Hue.scroll_down = function () {
-  Hue.el("#chat_area").scrollTop += Hue.chat_scroll_amount
+  Hue.el("#chat_area_parent").scrollTop += Hue.chat_scroll_amount
 }
 
 // Scrolls the chat up (more)
 Hue.scroll_up_2 = function () {
-  Hue.el("#chat_area").scrollTop -= Hue.chat_scroll_amount_2
+  Hue.el("#chat_area_parent").scrollTop -= Hue.chat_scroll_amount_2
 }
 
 // Scrolls the chat down (more)
 Hue.scroll_down_2 = function () {
-  Hue.el("#chat_area").scrollTop += Hue.chat_scroll_amount_2
+  Hue.el("#chat_area_parent").scrollTop += Hue.chat_scroll_amount_2
 }
 
 // Generates the username mention regex using the highlights regex
@@ -1456,10 +1456,6 @@ Hue.setup_link_preview = function (fmessage) {
   let link_preview_image = Hue.el(".link_preview_image", link_preview_el)
 
   if (link_preview_image) {
-    link_preview_image.addEventListener("load", function () {
-      Hue.goto_bottom()
-    })
-
     link_preview_image.addEventListener("error", function () {
       link_preview_image.style.display = "none"
       link_preview_el.classList.remove("link_preview_with_image")
@@ -1508,10 +1504,6 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
   let image_preview_el = Hue.el(".image_preview", fmessage)
   let image_preview_image = Hue.el(".image_preview_image", image_preview_el)
 
-  image_preview_image.addEventListener("load", function () {
-    Hue.goto_bottom()
-  })
-
   image_preview_image.addEventListener("error", function () {
     image_preview_image.style.display = "none"
     Hue.goto_bottom()
@@ -1523,7 +1515,7 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
 
 // Starts chat area scroll events
 Hue.scroll_events = function () {
-  Hue.el("#chat_area").addEventListener("scroll", function (e) {
+  Hue.el("#chat_area_parent").addEventListener("scroll", function (e) {
     if (!Hue.top_scroller_visible || !Hue.bottom_scroller_visible) {
       Hue.check_scrollers()
     } else {
@@ -1536,8 +1528,8 @@ Hue.scroll_events = function () {
 
 // Update the scroll percentange on the chat scrollers
 Hue.update_scroll_percentage = function () {
-  let area = Hue.el("#chat_area")
-  let container = Hue.el("#chat_area_parent")
+  let area = Hue.el("#chat_area_parent")
+  let container = Hue.el("#chat_main")
   let p = (area.scrollTop || container.scrollTop) / ((area.scrollHeight || container.scrollHeight) - area.clientHeight)
   let percentage = Math.round(p * 100)
   Hue.el("#top_percentage_scroller").textContent = `${percentage}%`
@@ -1592,7 +1584,7 @@ Hue.hide_bottom_scroller = function () {
 
 // Updates scrollers state based on scroll position
 Hue.check_scrollers = function (threshold = 5) {
-  let area = Hue.el("#chat_area")
+  let area = Hue.el("#chat_area_parent")
   let max = area.scrollHeight - area.clientHeight
   let diff = max - area.scrollTop
 
@@ -1622,7 +1614,7 @@ Hue.goto_bottom = function (force = false) {
     return
   }
 
-  let chat = Hue.el("#chat_area")
+  let chat = Hue.el("#chat_area_parent")
   let max = chat.scrollHeight - chat.clientHeight
 
   if (force || !Hue.chat_scrolled) {
@@ -1787,6 +1779,13 @@ Hue.setup_chat = function () {
   Hue.el("#bottom_percentage_scroller").addEventListener("click", function () {
     Hue.scroll_down_2()
   })
+
+  Hue.chat_resize_observer = new ResizeObserver(function () {
+    Hue.check_scrollers()
+    Hue.goto_bottom()
+  })
+
+  Hue.chat_resize_observer.observe(Hue.el("#chat_area"))
 
   Hue.check_chat_enabled()
   Hue.do_chat_font_size_change()
