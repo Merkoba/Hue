@@ -1817,6 +1817,7 @@ pre {
 	flex-direction: column;
 	z-index: 100;
 	color: var(--text_color);
+	border: 1px solid var(--altcolor);
 }
 
 #radio_stations {
@@ -1824,11 +1825,6 @@ pre {
 	max-height: calc(100vh - 230px);
 	overflow-y: auto;
 	overflow-x: hidden;
-	margin-bottom: 1rem;
-}
-
-.radio_box {
-	border: 1px solid var(--altcolor);
 }
 
 .radio_slide .radio_item {
