@@ -292,6 +292,11 @@ Hue.submit_message_board_post = function () {
 // When a new message board message arrives
 Hue.on_message_board_received = function (data, edited = false) {
   Hue.add_post_to_message_board(data, edited)
+
+  if (edited) {
+    return
+  }
+  
   Hue.check_last_message_board_post()
 
   if (data.user_id !== Hue.user_id && !Hue.msg_message_board.is_open()) {
