@@ -1772,12 +1772,11 @@ Hue.setup_chat = function () {
     Hue.scroll_down_2()
   })
 
-  let on_resize = function () {
+  Hue.chat_resize_observer = new ResizeObserver(function () {
     Hue.goto_bottom()
     Hue.check_scrollers()
-  }
+  })
 
-  Hue.chat_resize_observer = new ResizeObserver(on_resize)
   Hue.chat_resize_observer.observe(Hue.el("#chat_area"))
   Hue.chat_resize_observer.observe(Hue.el("#chat_area_parent"))
 
