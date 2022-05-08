@@ -1,22 +1,17 @@
 module.exports = function (Hue) {
   // Handles message board posting
-  Hue.handler.public.message_board_post = async function (socket, data) {
-    if (!Hue.handler.is_admin_or_op(socket)) {
-      let userinfo = await Hue.db_manager.get_user(
-        ["id", socket.hue_user_id],
-        { last_message_board_post_date: 1 }
-      )
+  Hue.handler.public.message_board_post = async function (socket, data) { 
+    async function get_linkdata () {
+      let linkdata = await Hue.handler.process_message_links(data.message)
 
-      let diff = Date.now() - userinfo.last_message_board_post_date
-      let wait = Hue.sconfig.message_board_wait_delay * 60 * 1000
+      data.link_title = linkdata.title,
+      data.link_description = linkdata.description
+      data.link_image = linkdata.image
+      data.link_url = linkdata.url
 
-      if (diff < wait) {
-        let remaining = wait - diff
-        Hue.handler.user_emit(socket, "message_board_wait", {remaining: remaining})
-        return
-      }
+      return linkdata
     }
-    
+
     if (!data.message) {
       return false
     }
@@ -29,13 +24,7 @@ module.exports = function (Hue) {
       return false
     }
 
-    let linkdata = await Hue.handler.process_message_links(data.message)
-
-    data.link_title = linkdata.title,
-    data.link_description = linkdata.description
-    data.link_image = linkdata.image
-    data.link_url = linkdata.url
-
+    // If it's an edit
     if (data.id) {
       let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { message_board_posts: 1, keys: 1 })
     
@@ -45,6 +34,7 @@ module.exports = function (Hue) {
             return false
           }
 
+          await get_linkdata()
           post.message = data.message
           post.link_title = data.link_title
           post.link_description = data.link_description
@@ -60,13 +50,30 @@ module.exports = function (Hue) {
         }
       }
     }
-    
+
+    if (!Hue.handler.is_admin_or_op(socket)) {
+      let userinfo = await Hue.db_manager.get_user(
+        ["id", socket.hue_user_id],
+        { last_message_board_post_date: 1 }
+      )
+
+      let diff = Date.now() - userinfo.last_message_board_post_date
+      let wait = Hue.sconfig.message_board_wait_delay * 60 * 1000
+
+      if (diff < wait) {
+        let remaining = wait - diff
+        Hue.handler.user_emit(socket, "message_board_wait", {remaining: remaining})
+        return
+      }
+    }
+
+    await get_linkdata()
+    let item = Hue.handler.push_message_board_post(socket, data)
+    Hue.handler.room_emit(socket, "new_message_board_post", item)
+
     Hue.db_manager.update_user(socket.hue_user_id, {
       last_message_board_post_date: Date.now()
     })
-    
-    let item = Hue.handler.push_message_board_post(socket, data)
-    Hue.handler.room_emit(socket, "new_message_board_post", item)
   }
 
   // Pushes pushing room message board posts

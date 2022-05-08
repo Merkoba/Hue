@@ -42,8 +42,7 @@ module.exports = function (Hue) {
       return false
     }
 
-    let linkdata = await Hue.handler.process_message_links(data.message)
-    let id, date, edited, username
+    let id, date, edited, username, linkdata
     
     if (data.edit_id) {      
       let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
@@ -56,6 +55,10 @@ module.exports = function (Hue) {
         if (info.log_messages[i].id === data.edit_id) {
           if (info.log_messages[i].data.user_id !== socket.hue_user_id) {
             return
+          }
+
+          if (!linkdata) {
+            linkdata = await Hue.handler.process_message_links(data.message)
           }
 
           info.log_messages[i].data.edited = true
@@ -91,6 +94,10 @@ module.exports = function (Hue) {
       quote_username = data.quote_username
       quote_user_id = data.quote_user_id
       quote_id = data.quote_id
+    }
+
+    if (!linkdata) {
+      linkdata = await Hue.handler.process_message_links(data.message)
     }
 
     Hue.handler.room_emit(socket, "chat_message", {
