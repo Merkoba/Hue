@@ -1,17 +1,6 @@
 module.exports = function (Hue) {
   // Handles message board posting
   Hue.handler.public.message_board_post = async function (socket, data) { 
-    async function get_linkdata () {
-      let linkdata = await Hue.handler.process_message_links(data.message)
-
-      data.link_title = linkdata.title,
-      data.link_description = linkdata.description
-      data.link_image = linkdata.image
-      data.link_url = linkdata.url
-
-      return linkdata
-    }
-
     if (!data.message) {
       return false
     }
@@ -24,6 +13,8 @@ module.exports = function (Hue) {
       return false
     }
 
+    let linkdata
+
     // If it's an edit
     if (data.id) {
       let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { message_board_posts: 1, keys: 1 })
@@ -34,12 +25,15 @@ module.exports = function (Hue) {
             return false
           }
 
-          await get_linkdata()
+          if (!linkdata) {
+            linkdata = await Hue.handler.process_message_links(data.message)
+          }
+
           post.message = data.message
-          post.link_title = data.link_title
-          post.link_description = data.link_description
-          post.link_image = data.link_image
-          post.link_url = data.link_url
+          post.link_title = linkdata.link_title
+          post.link_description = linkdata.link_description
+          post.link_image = linkdata.link_image
+          post.link_url = linkdata.link_url
 
           Hue.db_manager.update_room(socket.hue_room_id, {
             message_board_posts: info.message_board_posts,
@@ -67,7 +61,16 @@ module.exports = function (Hue) {
       }
     }
 
-    await get_linkdata()
+    if (!linkdata) {
+      linkdata = await Hue.handler.process_message_links(data.message)
+      
+      data.link_title = linkdata.title,
+      data.link_description = linkdata.description
+      data.link_image = linkdata.image
+      data.link_url = linkdata.url
+
+    }
+    
     let item = Hue.handler.push_message_board_post(socket, data)
     Hue.handler.room_emit(socket, "new_message_board_post", item)
 
