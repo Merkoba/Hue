@@ -287,6 +287,8 @@ Hue.submit_message_board_post = function () {
   Hue.el("#message_board_textarea").value = ""
   Hue.last_message_board_message = message
   Hue.socket_emit("message_board_post", { message: message })
+  Hue.el("#message_board_filter").value = ""
+  Hue.do_modal_filter()
 }
 
 // When a new message board message arrives
@@ -296,7 +298,7 @@ Hue.on_message_board_received = function (data, edited = false) {
   if (edited) {
     return
   }
-  
+
   Hue.check_last_message_board_post()
 
   if (data.user_id !== Hue.user_id && !Hue.msg_message_board.is_open()) {
