@@ -46,18 +46,6 @@ Hue.make_main_container_visible = function () {
   Hue.el("#main_container").style.pointerEvents = "initial"
 }
 
-// Setup font loading events
-Hue.setup_fonts = function () {
-  document.fonts.ready.then(function () {
-    Hue.on_fonts_loaded()
-  })
-}
-
-// After the font finished loading
-Hue.on_fonts_loaded = function () {
-  Hue.goto_bottom(true)
-}
-
 // Setups the confirm window
 Hue.setup_confirm = function () {
   Hue.el("#confirm_button_confirm").addEventListener("click", function () {
