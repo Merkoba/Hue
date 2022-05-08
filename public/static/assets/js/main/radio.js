@@ -26,7 +26,7 @@ Hue.setup_radio = function () {
   }
 
   Hue.el("#footer_radio_icon_container").addEventListener("wheel", wheel_func)
-  Hue.el("#radio_items").addEventListener("wheel", wheel_func)
+  Hue.el("#radio_controls").addEventListener("wheel", wheel_func)
 
   Hue.el("#radio_items").addEventListener("mouseenter", function () {
     Hue.start_radio_unslide_timeout()
