@@ -21,13 +21,12 @@ Hue.setup_radio = function () {
   Hue.create_radio_item_buttons()
   Hue.fill_radio_queue()
 
-  Hue.el("#footer_radio_icon_container").addEventListener("wheel", function (e) {
+  let wheel_func = function (e) {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
-  })
+  }
 
-  Hue.el("#radio_controls").addEventListener("wheel", function (e) {
-    Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
-  })
+  Hue.el("#footer_radio_icon_container").addEventListener("wheel", wheel_func)
+  Hue.el("#radio_items").addEventListener("wheel", wheel_func)
 
   Hue.el("#radio_items").addEventListener("mouseenter", function () {
     Hue.start_radio_unslide_timeout()
