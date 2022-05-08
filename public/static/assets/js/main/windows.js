@@ -178,7 +178,6 @@ Hue.start_msg = function () {
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         instance.content.innerHTML = ""
-        instance.titlebar.innerHTML = ""
       },
     })
   )
