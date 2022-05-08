@@ -1181,7 +1181,7 @@ a.special_link:hover {
 	display: flex;
 	flex-direction: column;
 	align-self: flex-start;
-	padding: 0.45em;
+	padding: 0.25em;
 	flex-grow: 1;
 }
 
@@ -1206,7 +1206,7 @@ a.special_link:hover {
 	flex-grow: 0;
 	flex-shrink: 0;
 	align-self: center;
-	margin: 0.45em;
+	margin: 0.25em;
 }
 
 .align_left {
