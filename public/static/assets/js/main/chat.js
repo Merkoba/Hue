@@ -397,7 +397,6 @@ Hue.insert_message = function (args = {}) {
       for (let item of Hue.els(".chat_content_container")) {
         if (Hue.dataset(item, "id") === args.id) {
           item.replaceWith(Hue.clone(content_container))
-          Hue.goto_bottom()
           break
         }
       }
@@ -459,8 +458,6 @@ Hue.insert_message = function (args = {}) {
   }
 
   if (Hue.started) {
-    Hue.goto_bottom()
-
     if (Hue.chat_scrolled) {
       Hue.update_scroll_percentage()
     }
@@ -866,7 +863,6 @@ Hue.stop_edit_message = function () {
   Hue.editing_message = false
   Hue.editing_message_container = false
   Hue.editing_message_area = Hue.div()
-  Hue.goto_bottom()
 }
 
 // Submits a chat message edit
@@ -1006,8 +1002,6 @@ Hue.remove_message_from_chat = function (data) {
   } else if (mode == "announcement") {
     Hue.process_remove_announcement(message)
   }
-
-  Hue.goto_bottom()
 }
 
 // Removes a chat message from the chat, when triggered through the context menu
@@ -1459,7 +1453,6 @@ Hue.setup_link_preview = function (fmessage) {
     link_preview_image.addEventListener("error", function () {
       link_preview_image.style.display = "none"
       link_preview_el.classList.remove("link_preview_with_image")
-      Hue.goto_bottom()
     })
   }
 
@@ -1506,7 +1499,6 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
 
   image_preview_image.addEventListener("error", function () {
     image_preview_image.style.display = "none"
-    Hue.goto_bottom()
   })
 
   Hue.urlize(Hue.el(".image_preview_text", image_preview_el.parentElement))
@@ -1781,8 +1773,8 @@ Hue.setup_chat = function () {
   })
 
   Hue.chat_resize_observer = new ResizeObserver(function () {
-    Hue.check_scrollers()
     Hue.goto_bottom()
+    Hue.check_scrollers()
   })
 
   Hue.chat_resize_observer.observe(Hue.el("#chat_area"))
@@ -1945,8 +1937,6 @@ Hue.deleted_messages_above = function (data) {
       Hue.process_remove_announcement(unit)
     }    
   }
-
-  Hue.goto_bottom()
 }
 
 // When messages below were deleted
@@ -1974,8 +1964,6 @@ Hue.deleted_messages_below = function (data) {
       Hue.process_remove_announcement(unit)
     }    
   }
-
-  Hue.goto_bottom()
 }
 
 // Check chat enabled

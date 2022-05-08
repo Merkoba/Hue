@@ -75,7 +75,6 @@ Hue.disable_footer_expand = function () {
 // After footer expand change
 Hue.after_footer_expand_change = function () {
   Hue.footer_expanded = !Hue.footer_expanded
-  Hue.goto_bottom()
   Hue.fix_frames()
 
   if (!Hue.get_input().trim()) {
