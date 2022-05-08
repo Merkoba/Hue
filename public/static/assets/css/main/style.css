@@ -168,14 +168,12 @@ html {
 	flex-grow: 1;
 	max-width: 100%;
 	max-height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 #chat_area {
 	position: relative;
-	overflow-x: hidden;
-	overflow-y: auto;
-	max-width: 100%;
-	max-height: 100%;
 	font-size: var(--chat_font_size);
 }
 
