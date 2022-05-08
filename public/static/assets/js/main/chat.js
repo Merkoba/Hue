@@ -1575,7 +1575,8 @@ Hue.hide_bottom_scroller = function () {
 }
 
 // Updates scrollers state based on scroll position
-Hue.check_scrollers = function (threshold = 5) {
+Hue.check_scrollers = function () {
+  let threshold = 5
   let area = Hue.el("#chat_area_parent")
   let max = area.scrollHeight - area.clientHeight
   let diff = max - area.scrollTop
