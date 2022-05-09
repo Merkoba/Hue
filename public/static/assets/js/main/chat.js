@@ -1603,7 +1603,7 @@ Hue.goto_top = function () {
 
 // Scrolls the chat to the bottom
 Hue.goto_bottom = function (force = false) {
-  if (!Hue.started) {
+  if (!Hue.started || !Hue.has_focus) {
     return
   }
 

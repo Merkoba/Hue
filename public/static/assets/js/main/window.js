@@ -68,6 +68,8 @@ Hue.process_visibility = function () {
 
   if (Hue.has_focus) {
     Hue.on_focus()
+  } else {
+    Hue.on_unfocus()
   }
 }
 
@@ -79,6 +81,15 @@ Hue.on_focus = function () {
   Hue.show_fresh_messages()
   Hue.focus_input()
   Hue.check_latest_highlight()
+
+  if (!Hue.chat_scrolled_on_unfocus) {
+    Hue.goto_bottom(true)
+  }
+}
+
+// This runs when the client loses visibility
+Hue.on_unfocus = function () {
+  Hue.chat_scrolled_on_unfocus = Hue.chat_scrolled
 }
 
 // Starts window resize events
