@@ -1576,7 +1576,7 @@ Hue.hide_bottom_scroller = function () {
 
 // Updates scrollers state based on scroll position
 Hue.check_scrollers = function () {
-  if (!Hue.has_focus) {
+  if (!Hue.started || !Hue.has_focus) {
     return
   }
 
