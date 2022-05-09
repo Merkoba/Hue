@@ -63,13 +63,12 @@ module.exports = function (Hue) {
 
     if (!linkdata) {
       linkdata = await Hue.handler.process_message_links(data.message)
-      
-      data.link_title = linkdata.title,
-      data.link_description = linkdata.description
-      data.link_image = linkdata.image
-      data.link_url = linkdata.url
-
     }
+
+    data.link_title = linkdata.title,
+    data.link_description = linkdata.description
+    data.link_image = linkdata.image
+    data.link_url = linkdata.url
     
     let item = Hue.handler.push_message_board_post(socket, data)
     Hue.handler.room_emit(socket, "new_message_board_post", item)
