@@ -261,6 +261,19 @@ Hue.setup_theme = function (data) {
   Hue.set_background(data, false)
   Hue.background_color = data.background_color
   Hue.text_color = data.text_color
+
+  Hue.el("#background").addEventListener("load", function () {
+    if (Hue.background_preview) {
+      Hue.hide_windows_temporarily()
+      Hue.show_background_peek_confirm()
+    }
+  })
+
+  Hue.el("#background").addEventListener("error", function () {
+    if (Hue.background_preview) {
+      Hue.apply_background()
+    }
+  })
 }
 
 // Sets an applies background images from data
@@ -285,7 +298,9 @@ Hue.set_background = function (data, apply = true) {
 }
 
 // Applies the background to all background elements
-Hue.apply_background = function (background = Hue.background) {
+Hue.apply_background = function (background = Hue.background, preview = false) {
+  Hue.background_preview = preview
+
   Hue.els(".background").forEach(it => {
     it.src = background
   })
@@ -483,9 +498,7 @@ Hue.set_text_color = function (color) {
 
 // Do background peek
 Hue.do_background_peek = function () {
-  Hue.apply_background(Hue.background_peek_url)
-  Hue.hide_windows_temporarily()
-  Hue.show_background_peek_confirm()
+  Hue.apply_background(Hue.background_peek_url, true)
 }
 
 // Show background peek confirm
