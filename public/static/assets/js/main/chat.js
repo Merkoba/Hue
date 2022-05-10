@@ -1773,9 +1773,7 @@ Hue.setup_chat = function () {
   })
 
   Hue.chat_resize_observer = new ResizeObserver(function () {
-    if (!Hue.chat_scrolled) {
-      Hue.goto_bottom(true)
-    }
+    Hue.goto_bottom()
   })
 
   Hue.chat_resize_observer.observe(Hue.el("#chat_area"))
