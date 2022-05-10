@@ -1508,12 +1508,7 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
 // Starts chat area scroll events
 Hue.scroll_events = function () {
   Hue.el("#chat_area_parent").addEventListener("scroll", function (e) {
-    if (!Hue.top_scroller_visible || !Hue.bottom_scroller_visible) {
-      Hue.check_scrollers()
-    } else {
-      Hue.scroll_timer()
-    }
-
+    Hue.scroll_timer()
     Hue.update_scroll_percentage()
   })
 }
@@ -1780,9 +1775,6 @@ Hue.setup_chat = function () {
   Hue.chat_resize_observer = new ResizeObserver(function () {
     if (!Hue.chat_scrolled) {
       Hue.goto_bottom(true)
-    } else {
-      Hue.goto_bottom()
-      Hue.check_scrollers()
     }
   })
 
