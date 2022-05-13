@@ -68,6 +68,7 @@ Hue.add_to_userlist = function (args = {}) {
       Hue.userlist[i].last_activity = args.last_activity
 
       Hue.update_userlist()
+      return
     }
   }
 
@@ -1084,7 +1085,7 @@ Hue.check_user_in_room = function (username) {
   
   if (!user) {
     Hue.user_not_in_room(username)
-    return ""
+    return
   }
 
   return user.username

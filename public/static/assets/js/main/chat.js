@@ -963,7 +963,7 @@ Hue.delete_messages_below = function (id) {
 // Get message by id
 Hue.get_message_by_id = function (id) {
   if (!id) {
-    return []
+    return
   }
 
   let units = Hue.els("#chat_area .message_unit")
@@ -975,8 +975,6 @@ Hue.get_message_by_id = function (id) {
       return [units[i], i, id]
     }
   }
-
-  return []
 }
 
 // Remove a message from the chat
