@@ -33,7 +33,7 @@ Hue.show_chat_search = function (filter = "") {
 
   function filtercheck (it) {
     if (finished) {
-      return false
+      return
     }
 
     if (filter.startsWith("$user")) {
@@ -60,7 +60,7 @@ Hue.show_chat_search = function (filter = "") {
     } else if (filter.startsWith("$fresh_highlights")) {
       if (!Hue.latest_highlight) {
         finished = true
-        return false
+        return
       }
 
       let match = Hue.dataset(it, "highlighted")

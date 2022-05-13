@@ -1,14 +1,14 @@
 // Function to turn url text into actual links
 Hue.urlize = function (el, limit_width = true) {
   if (!el) {
-    return false
+    return
   }
 
   try {
     let html = el.innerHTML
 
     if (!html) {
-      return false
+      return
     }
 
     let split = html.split(/\s+/)

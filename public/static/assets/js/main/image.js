@@ -120,11 +120,11 @@ Hue.emit_change_image_source = function (url, comment = "") {
 // Updates dimensions of the image
 Hue.fix_image_frame = function () {
   if (!Hue.image_visible) {
-    return false
+    return
   }
 
   if (!Hue.el("#media_image_frame").naturalHeight) {
-    return false
+    return
   }
 
   Hue.fix_frame("media_image_frame")
@@ -177,11 +177,11 @@ Hue.setup_modal_image = function () {
 
   let f = function (e) {
     if (e.ctrlKey || e.shiftKey) {
-      return false
+      return
     }
 
     if (Hue.el("#modal_image_container").classList.contains("expanded_image")) {
-      return false
+      return
     }
 
     let direction = e.deltaY > 0 ? "down" : "up"
@@ -510,14 +510,14 @@ Hue.setup_image_upload_comment = function () {
 // Uploads the file and the optional comment
 Hue.process_image_upload_comment = function () {
   if (!Hue.msg_image_upload_comment.is_open()) {
-    return false
+    return
   }
 
   let file = Hue.image_upload_comment_file
   let comment = Hue.utilz.single_space(Hue.el("#image_upload_comment_input").value)
 
   if (comment.length > Hue.config.max_media_comment_length) {
-    return false
+    return
   }
 
   Hue.upload_file({ file: file, action: "image_upload", comment: comment })

@@ -381,20 +381,20 @@ Hue.change_media = function (args = {}) {
   if (args.type === "image") {
     if (!args.force && Hue.loaded_image.source === Hue.current_image().source) {
       Hue.loaded_image = item
-      return false
+      return
     }
   } else if (args.type === "tv") {
     if (!args.force && Hue.loaded_tv.source === Hue.current_tv().source) {
       Hue.loaded_tv = item
-      return false
+      return
     }
   } else {
-    return false
+    return
   }
 
   if (args.type === "image") {
     if (!Hue.room_state.image_enabled) {
-      return false
+      return
     }
 
     if (
@@ -403,18 +403,18 @@ Hue.change_media = function (args = {}) {
       Hue.loaded_image.source &&
       !args.current_source
     ) {
-      return false
+      return
     }
 
     if (!Hue.room_state.image_enabled) {
-      return false
+      return
     }
 
     Hue.loaded_image = item
     Hue.show_image(args.force)
   } else if (args.type === "tv") {
     if (!Hue.room_state.tv_enabled) {
-      return false
+      return
     }
 
     if (!args.item && 
@@ -422,11 +422,11 @@ Hue.change_media = function (args = {}) {
       Hue.loaded_tv.source && 
       !args.current_source
     ) {
-      return false
+      return
     }
 
     if (!Hue.room_state.tv_enabled) {
-      return false
+      return
     }
 
     if (!Hue.loaded_tv.source && !args.force) {
@@ -436,7 +436,7 @@ Hue.change_media = function (args = {}) {
     if (item.type !== "video" && item.type !== "iframe") {
       if (Hue[`${item.type}_tv_player`] === undefined) {
         Hue.request_media(`${item.type}_tv_player`, args)
-        return false
+        return
       }
     }
 
@@ -448,20 +448,20 @@ Hue.change_media = function (args = {}) {
       Hue.after_tv_play()
     }
   } else {
-    return false
+    return
   }
 }
 
 // Sets a media info item with proper information and events
 Hue.apply_media_info = function (type) {
   if (!Hue[`${type}_visible`]) {
-    return false
+    return
   }
 
   let item = Hue[`loaded_${type}`]
 
   if (!item.type) {
-    return false
+    return
   }
 
   let message = item.message.substring(0, Hue.config.max_media_info_length).trim()
@@ -602,7 +602,7 @@ Hue.swap_media_layout = function () {
 // Swaps media
 Hue.swap_media = function () {
   if (Hue.num_media_elements_visible() < 2) {
-    return false
+    return
   }
   
   Hue.swap_display_positions()
@@ -618,7 +618,7 @@ Hue.set_default_tv_position = function () {
 // Rotates media
 Hue.rotate_media = function () {
   if (Hue.num_media_elements_visible() < 2) {
-    return false
+    return
   }
 
   Hue.swap_media_layout()

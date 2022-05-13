@@ -68,7 +68,6 @@ Hue.add_to_userlist = function (args = {}) {
       Hue.userlist[i].last_activity = args.last_activity
 
       Hue.update_userlist()
-      return false
     }
   }
 
@@ -84,7 +83,6 @@ Hue.add_to_userlist = function (args = {}) {
   })
 
   Hue.update_userlist()
-  return true
 }
 
 // Removes a user from the user list
@@ -191,8 +189,6 @@ Hue.get_user_by_username = function (username) {
       return user
     }
   }
-
-  return false
 }
 
 // Get userlist item by username
@@ -202,8 +198,6 @@ Hue.get_userlist_item_by_username =  function (username) {
       return item
     }
   }
-
-  return false
 }
 
 // Get userlist item by user id
@@ -213,8 +207,6 @@ Hue.get_userlist_item_by_user_id =  function (user_id) {
       return item
     }
   }
-
-  return false
 }
 
 // Gets a user from the user list by ID
@@ -224,8 +216,6 @@ Hue.get_user_by_user_id = function (id) {
       return user
     }
   }
-
-  return false
 }
 
 // Handles a user list update
@@ -713,7 +703,7 @@ Hue.profilepic_changed = function (data) {
   let user = Hue.get_user_by_user_id(data.user_id)
 
   if (!user) {
-    return false
+    return
   }
 
   Hue.update_user_profilepic(data.user_id, data.profilepic_version)
@@ -750,23 +740,23 @@ Hue.bio_changed = function (data) {
 // Changes a user's role
 Hue.change_role = function (username, role) {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
     if (username === Hue.username) {
       Hue.checkmsg("You can't assign a role to yourself")
-      return false
+      return
     }
 
     if ((role === "admin" || role === "op") && Hue.role !== "admin") {
       Hue.forbidden_user()
-      return false
+      return
     }
 
     if (!Hue.roles.includes(role)) {
       Hue.checkmsg("Invalid role")
-      return false
+      return
     }
 
     Hue.socket_emit("change_role", { username: username, role: role })
@@ -810,13 +800,13 @@ Hue.set_role = function (rol, config = true) {
 // Bans a user
 Hue.ban = function (username) {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
     if (username === Hue.username) {
       Hue.checkmsg("You can't ban yourself")
-      return false
+      return
     }
 
     Hue.socket_emit("ban", { username: username })
@@ -826,13 +816,13 @@ Hue.ban = function (username) {
 // Unbans a user
 Hue.unban = function (username) {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
     if (username === Hue.username) {
       Hue.checkmsg("You can't unban yourself")
-      return false
+      return
     }
 
     Hue.socket_emit("unban", { username: username })
@@ -855,24 +845,24 @@ Hue.receive_ban_count = function (data) {
 // Kicks a user
 Hue.kick = function (username) {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
     if (username === Hue.username) {
       Hue.checkmsg("You can't kick yourself")
-      return false
+      return
     }
 
     if (!Hue.check_user_in_room(username)) {
-      return false
+      return
     }
 
     let rol = Hue.get_role(username)
 
     if ((rol === "admin" || rol === "op") && Hue.role !== "admin") {
       Hue.forbidden_user()
-      return false
+      return
     }
 
     Hue.socket_emit("kick", { username: username })
@@ -925,7 +915,7 @@ Hue.is_admin = function (user) {
 Hue.annex = function (rol = "admin") {
   if (!Hue.roles.includes(rol)) {
     Hue.checkmsg("Invalid role")
-    return false
+    return
   }
 
   Hue.show_confirm("Run superuser command", function () {
@@ -989,7 +979,7 @@ Hue.modusername = function (arg) {
     let split = arg.split(" > ")
 
     if (split.length !== 2) {
-      return false
+      return
     }
 
     original_username = split[0].trim()
@@ -998,7 +988,7 @@ Hue.modusername = function (arg) {
     let split = arg.split(" ")
 
     if (split.length !== 2) {
-      return false
+      return
     }
 
     original_username = split[0].trim()
@@ -1006,21 +996,21 @@ Hue.modusername = function (arg) {
   }
 
   if (!original_username || !new_username) {
-    return false
+    return
   }
 
   if (original_username === new_username) {
-    return false
+    return
   }
 
   if (new_username.length > Hue.config.max_username_length) {
     Hue.checkmsg("Username is too long")
-    return false
+    return
   }
 
   if (Hue.utilz.clean_username(new_username) !== new_username) {
     Hue.checkmsg("Username contains invalid characters")
-    return false
+    return
   }
 
   Hue.show_confirm("Run superuser command", function () {
@@ -1033,7 +1023,7 @@ Hue.modpassword = function (arg) {
   let split = arg.split(" ").filter(x => x !== "")
 
   if (split.length !== 2) {
-    return false
+    return
   }
 
   let username = split[0]
@@ -1044,12 +1034,12 @@ Hue.modpassword = function (arg) {
       `Password is too short. It must be at least ${Hue.config.min_password_length} characters long`
     )
 
-    return false
+    return
   }
 
   if (password.length > Hue.config.max_password_length) {
     Hue.checkmsg("Password is too long")
-    return false
+    return
   }
 
   Hue.show_confirm("Run superuser command", function () {
@@ -1094,7 +1084,7 @@ Hue.check_user_in_room = function (username) {
   
   if (!user) {
     Hue.user_not_in_room(username)
-    return false
+    return ""
   }
 
   return user.username

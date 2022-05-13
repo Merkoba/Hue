@@ -51,7 +51,7 @@ Hue.reset_input_history_index = function () {
 // Shows the next input history item based on current history item index
 Hue.input_history_change = function (direction) {
   if (Hue.input_history.length === 0) {
-    return false
+    return
   }
 
   let v
@@ -78,7 +78,7 @@ Hue.input_history_change = function (direction) {
     if (Hue.input_history_index > Hue.input_history.length - 1) {
       Hue.change_input("")
       Hue.reset_input_history_index()
-      return false
+      return
     }
 
     if (Hue.input_history_index >= Hue.input_history.length) {

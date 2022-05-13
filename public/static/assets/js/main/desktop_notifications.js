@@ -1,12 +1,12 @@
 7 // Triggers the browser notifications permission prompt if not yet active
 Hue.request_desktop_notifications_permission = function () {
   if (typeof Notification === "undefined") {
-    return false
+    return
   }
 
   if (Hue.has_desktop_notifications_permission()) {
     Hue.checkmsg("Desktop Notifications are already enabled")
-    return false
+    return
   }
 
   Notification.requestPermission()
@@ -15,7 +15,7 @@ Hue.request_desktop_notifications_permission = function () {
 // Checks if browser notification permission is already granted
 Hue.has_desktop_notifications_permission = function () {
   if (typeof Notification === "undefined") {
-    return false
+    return
   }
 
   return Notification.permission === "granted"
@@ -24,11 +24,11 @@ Hue.has_desktop_notifications_permission = function () {
 // Shows a browser notification
 Hue.show_desktop_notification = function (s) {
   if (typeof Notification === "undefined") {
-    return false
+    return
   }
 
   if (!Hue.has_desktop_notifications_permission()) {
-    return false
+    return
   }
 
   let n = new Notification(s)
@@ -42,7 +42,7 @@ Hue.show_desktop_notification = function (s) {
 // Shows a browser notification alerting of a highlight
 Hue.show_highlight_desktop_notification = function (username) {
   if (!Hue.has_desktop_notifications_permission()) {
-    return false
+    return
   }
 
   Hue.show_desktop_notification(
@@ -53,7 +53,7 @@ Hue.show_highlight_desktop_notification = function (username) {
 // Shows a browser notification alerting an after message
 Hue.show_activity_desktop_notification = function (username) {
   if (!Hue.has_desktop_notifications_permission()) {
-    return false
+    return
   }
 
   Hue.show_desktop_notification(

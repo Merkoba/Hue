@@ -92,7 +92,7 @@ Hue.change_input = function (s, to_end = true, focus = true) {
 // Focuses the input
 Hue.focus_input = function () {
   if (Hue.modal_open) {
-    return false
+    return
   }
 
   Hue.el("#input").focus()
@@ -152,7 +152,7 @@ Hue.process_input = function (args = {}) {
   args = Object.assign(def_args, args)
 
   if (!args.message.trim()) {
-    return false
+    return
   }
 
   args.message = Hue.utilz.remove_pre_empty_lines(args.message)

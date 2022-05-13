@@ -719,7 +719,7 @@ Hue.add_fresh_message = function (container) {
 // Temporarily highlights recent messages since last focus
 Hue.show_fresh_messages = function () {
   if (Hue.fresh_messages_list.length === 0) {
-    return false
+    return
   }
 
   for (let container of Hue.fresh_messages_list) {
@@ -840,7 +840,7 @@ Hue.edit_message = function (container) {
 // Stops chat message editing
 Hue.stop_edit_message = function () {
   if (!Hue.editing_message || !Hue.editing_message_container) {
-    return false
+    return
   }
 
   let edit_container = Hue.el(".message_edit_container", Hue.editing_message_container)
@@ -861,7 +861,7 @@ Hue.stop_edit_message = function () {
 // Submits a chat message edit
 Hue.send_edit_messsage = function (id) {
   if (!Hue.editing_message_container) {
-    return false
+    return
   }
 
   let message = Hue.editing_message_container.closest(".message")
@@ -874,17 +874,17 @@ Hue.send_edit_messsage = function (id) {
   Hue.stop_edit_message()
 
   if (edit_message.textContent === new_message) {
-    return false
+    return
   }
 
   if (edit_mode === "chat") {
     if (!edit_id) {
-      return false
+      return
     }
   
     if (new_message.length === 0) {
       Hue.delete_message(edit_id)
-      return false
+      return
     }
 
     Hue.process_input({
@@ -903,7 +903,7 @@ Hue.send_edit_messsage = function (id) {
 // Deletes a message
 Hue.delete_message = function (id) {
   if (!id) {
-    return false
+    return
   }
 
   Hue.show_confirm("Delete message from the chat log", function () {
@@ -916,7 +916,7 @@ Hue.delete_message = function (id) {
 // Delete message group
 Hue.delete_message_group = function (id) {
   if (!id) {
-    return false
+    return
   }
 
   Hue.show_confirm("Delete message group", function () {
@@ -937,7 +937,7 @@ Hue.delete_message_group = function (id) {
 // Deletes messages above
 Hue.delete_messages_above = function (id) {
   if (!id) {
-    return false
+    return
   }
 
   Hue.show_confirm("Delete all messages above this message", function () {
@@ -950,7 +950,7 @@ Hue.delete_messages_above = function (id) {
 // Deletes messages above
 Hue.delete_messages_below = function (id) {
   if (!id) {
-    return false
+    return
   }
 
   Hue.show_confirm("Delete all messages below this message", function () {
@@ -963,7 +963,7 @@ Hue.delete_messages_below = function (id) {
 // Get message by id
 Hue.get_message_by_id = function (id) {
   if (!id) {
-    return false
+    return []
   }
 
   let units = Hue.els("#chat_area .message_unit")
@@ -976,7 +976,7 @@ Hue.get_message_by_id = function (id) {
     }
   }
 
-  return false
+  return []
 }
 
 // Remove a message from the chat
@@ -1055,7 +1055,7 @@ Hue.check_typing = function (mode = "input") {
     let val = Hue.get_input()
 
     if (val.length < Hue.old_input_val.length) {
-      return false
+      return
     }
 
     tval = val.trim()
@@ -1063,7 +1063,7 @@ Hue.check_typing = function (mode = "input") {
     let val = Hue.el("#reply_input").value
 
     if (val.length < Hue.old_reply_input_val.length) {
-      return false
+      return
     }
 
     tval = val.trim()
@@ -1071,7 +1071,7 @@ Hue.check_typing = function (mode = "input") {
 
   if (tval !== "") {
     if (tval[0] === Hue.config.commands_prefix && tval[1] !== Hue.config.commands_prefix) {
-      return false
+      return
     }
 
     if ((Date.now() - Hue.last_typing_emit) >= Hue.config.typing_delay) {
@@ -1087,7 +1087,7 @@ Hue.show_typing = function (data) {
   let user = Hue.get_user_by_user_id(data.user_id)
 
   if (!user) {
-    return false
+    return
   }
 
   Hue.typing_remove_timer()
@@ -1117,15 +1117,13 @@ Hue.get_last_message_by_user_id = function (ouser_id) {
       }
     }
   }
-
-  return false
 }
 
 // Gives or maintains aura classes
 // Starts timeout to remove them
 Hue.show_aura = function (id) {
   if (!Hue.has_focus) {
-    return false
+    return
   }
 
   if (Hue.aura_timeouts[id] === undefined) {
@@ -1369,7 +1367,7 @@ Hue.generate_mentions_regex = function () {
 // What to do after general activity
 Hue.on_activity = function (type) {
   if (!Hue.started) {
-    return false
+    return
   }
 
   if (!Hue.has_focus) {
@@ -1799,10 +1797,10 @@ Hue.set_default_chat_font_size = function (size) {
 // Shows an alert when a message follows a user's message
 Hue.activity_notification = function (username) {
   if (!Hue.started) {
-    return false
+    return
   }
   if (!Hue.get_setting("show_activity_notifications")) {
-    return false
+    return
   }
 
   if (!Hue.has_focus) {
@@ -1832,7 +1830,7 @@ Hue.add_chat_spacer = function () {
 Hue.clear_log = function () {
   if (!Hue.is_admin()) {
     Hue.not_allowed()
-    return false
+    return
   }
 
   Hue.show_confirm("Delete all messages from the log", function () {

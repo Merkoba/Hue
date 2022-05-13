@@ -31,7 +31,7 @@ Hue.update_activity_bar = function (check = false) {
   activity_list.map(x => activity_hash += x.user_id + x.username)
   
   if (Hue.last_activity_hash === activity_hash) {
-    return false
+    return
   }
 
   Hue.last_activity_hash = activity_hash

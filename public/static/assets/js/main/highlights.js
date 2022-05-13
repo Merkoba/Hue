@@ -32,8 +32,6 @@ Hue.check_highlights = function (message) {
       return true
     }
   }
-
-  return false
 }
 
 // Checks if there are new highlights since the last load
@@ -84,11 +82,11 @@ Hue.get_latest_highlight = function () {
 // What to do when a message gets highlighted
 Hue.on_highlight = function (username) {
   if (!Hue.started) {
-    return false
+    return
   }
 
   if (!Hue.get_setting("show_highlight_notifications")) {
-    return false
+    return
   }
 
   if (!Hue.has_focus) {

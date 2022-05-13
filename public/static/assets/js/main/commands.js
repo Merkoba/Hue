@@ -712,16 +712,10 @@ Hue.setup_commands = function () {
 
 // Checks whether some string is a command
 Hue.is_command = function (message) {
-  if (
-    message.length >= 2 &&
+  return message.length >= 2 &&
     message[0] === Hue.config.commands_prefix &&
     message[1] !== Hue.config.commands_prefix &&
     message[1] !== " "
-  ) {
-    return true
-  }
-
-  return false
 }
 
 // Responsible of executing a command

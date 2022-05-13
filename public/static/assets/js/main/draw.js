@@ -520,7 +520,7 @@ Hue.draw_image_bucket_fill = function (x, y) {
   replacement_color.push(255)
 
   if (Hue.colorlib.get_rgba_distance(target_color, replacement_color) <= Hue.draw_image_bucket_tolerance)  {
-    return false
+    return
   }
 
   let q = []

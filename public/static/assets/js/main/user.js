@@ -80,7 +80,6 @@ Hue.change_bio = function (value) {
   }
 
   Hue.socket_emit("change_bio", { bio: value })
-
   return true
 }
 
@@ -304,7 +303,7 @@ Hue.open_profilepic_picker = function () {
 // This is executed after a profile image has been selected in the file dialog
 Hue.profilepic_selected = function (file, type) {
   if (!file) {
-    return false
+    return
   }
 
   for (let date in Hue.files) {
@@ -413,21 +412,21 @@ Hue.select_audioclip = function () {
 // When an audio clip gets selected from the file picker
 Hue.audioclip_selected = function (file) {
   if (!file) {
-    return false
+    return
   }
 
   let ext = file.name.split(".").pop(-1).toLowerCase()
 
   if (ext !== "mp3") {
     Hue.checkmsg("Only mp3 format is allowed")
-    return false
+    return
   }
 
   let size = file.size / 1024
 
   if (size > Hue.config.max_audioclip_size) {
     Hue.checkmsg("File is too big")
-    return false
+    return
   }
 
   Hue.upload_file({ file: file, action: "audioclip_upload" })

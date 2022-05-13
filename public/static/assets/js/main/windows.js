@@ -904,7 +904,7 @@ Hue.reset_modal_filter = function (instance) {
 
   if (filter) {
     if (id === "info" || filter.dataset.mode === "manual") {
-      return false
+      return
     }
 
     if (filter.value) {
@@ -968,8 +968,6 @@ Hue.any_modal_open = function () {
       return true
     }
   }
-
-  return false
 }
 
 // Gets the highest open Msg modal
@@ -1002,7 +1000,7 @@ Hue.start_filters = function () {
 Hue.do_modal_filter = function (id = false) {
   if (!id) {
     if (!Hue.active_modal) {
-      return false
+      return
     }
 
     id = Hue.active_modal.options.id
@@ -1012,7 +1010,7 @@ Hue.do_modal_filter = function (id = false) {
 
   function filtercheck (it) {
     if (finished) {
-      return false
+      return
     }
 
     if (filter.startsWith("$user")) {

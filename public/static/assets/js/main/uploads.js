@@ -91,11 +91,11 @@ Hue.upload_image = function (file) {
 
   if (size > Hue.config.max_image_size) {
     Hue.show_info("File is too big")
-    return false
+    return
   }
 
   if (!Hue.utilz.is_image(file.name)) {
-    return false
+    return
   }
 
   Hue.show_image_upload_comment(file, "upload")
@@ -109,14 +109,14 @@ Hue.upload_video = function (file) {
 
   if (size > Hue.config.max_tv_size) {
     Hue.show_info("File is too big")
-    return false
+    return
   }
 
   let is_video = Hue.utilz.is_video(file.name)
   let is_audio = Hue.utilz.is_audio(file.name)
 
   if (!is_video && !is_audio) {
-    return false
+    return
   }
 
   Hue.show_tv_upload_comment(file, "upload")
@@ -156,7 +156,7 @@ Hue.upload_file = function (args = {}) {
   args = Object.assign(def_args, args)
 
   if (!args.file || !args.action) {
-    return false
+    return
   }
 
   if (args.file.hue_data === undefined) {
@@ -227,11 +227,11 @@ Hue.cancel_file_upload = function (date) {
   let file = Hue.files[date]
   
   if (!file) {
-    return false
+    return
   }
 
   if (file.hue_data.sending_last_slice) {
-    return false
+    return
   }
 
   Hue.change_upload_status(file, "Cancelled", true)
@@ -243,7 +243,6 @@ Hue.cancel_file_upload = function (date) {
   }
 
   delete Hue.files[date]
-
   Hue.socket_emit("cancel_upload", { date: date })
 }
 
@@ -264,7 +263,7 @@ Hue.get_file_next = function (file) {
 // Updates the upload status announcement based on upload progress
 Hue.change_upload_status = function (file, status, clear = false) {
   if (!file.hue_popup || !file.hue_popup.content) {
-    return false
+    return
   }
 
   Hue.el(".action_popup_message", file.hue_popup.content).textContent =
@@ -297,7 +296,7 @@ Hue.request_slice_upload = function (data) {
   let file = Hue.files[data.date]
 
   if (!file) {
-    return false
+    return
   }
 
   let place = data.current_slice * Hue.config.upload_slice_size

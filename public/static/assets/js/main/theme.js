@@ -205,22 +205,22 @@ Hue.set_background_color = function (color) {
 // Changes the background color
 Hue.change_background_color = function (color) {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   color = Hue.utilz.no_space(color).toLowerCase()
 
   if (color === undefined) {
-    return false
+    return
   }
 
   if (!Hue.utilz.validate_hex(color)) {
     Hue.checkmsg("Not a valid hex color value")
-    return false
+    return
   }
 
   if (color === Hue.background_color) {
-    return false
+    return
   }
 
   Hue.socket_emit("change_background_color", { color: color })
@@ -282,7 +282,7 @@ Hue.background_selected = function (file) {
 
   if (size > Hue.config.max_image_size) {
     Hue.checkmsg("File is too big")
-    return false
+    return
   }
 
   Hue.background_peek_url = URL.createObjectURL(file)
@@ -298,40 +298,39 @@ Hue.background_selected = function (file) {
 // Change the background image with a URL
 Hue.change_background_source = function (src) {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   if (src === undefined) {
-    return false
+    return
   }
 
   if (src !== "") {
     if (!Hue.utilz.is_url(src)) {
-      return false
+      return
     }
 
     src = src.replace(/\.gifv/g, ".gif")
 
     if (src === Hue.background) {
       Hue.checkmsg("Background image is already set to that")
-      return false
+      return
     }
 
     if (src.length === 0) {
-      return false
+      return
     }
 
     if (src.length > Hue.config.max_media_source_length) {
-      return false
+      return
     }
 
     if (!Hue.utilz.is_image(src)) {
-      return false
+      return
     }
   }
 
   Hue.socket_emit("change_background_source", { src: src })
-  return true
 }
 
 // Announces background image changes
@@ -347,22 +346,22 @@ Hue.announce_background_change = function (data) {
 // Changes the text color
 Hue.change_text_color = function (color) {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   color = Hue.utilz.no_space(color).toLowerCase()
 
   if (color === undefined) {
-    return false
+    return
   }
 
   if (!Hue.utilz.validate_hex(color)) {
     Hue.checkmsg("Not a valid hex color value")
-    return false
+    return
   }
 
   if (color === Hue.text_color) {
-    return false
+    return
   }
 
   Hue.socket_emit("change_text_color", { color: color })

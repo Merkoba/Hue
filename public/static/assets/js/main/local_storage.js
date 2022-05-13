@@ -46,7 +46,7 @@ Hue.setup_local_storage = function () {
     "storage",
     function (e) {
       if (e.key !== Hue.ls_settings) {
-        return false
+        return
       }
 
       let obj
@@ -54,11 +54,11 @@ Hue.setup_local_storage = function () {
       try {
         obj = JSON.parse(e.newValue)
       } catch (err) {
-        return false
+        return
       }
 
       if (Hue.utilz.is_empty_object(obj)) {
-        return false
+        return
       }
 
       if (e.key === Hue.ls_settings) {
