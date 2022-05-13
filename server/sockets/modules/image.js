@@ -2,50 +2,50 @@ module.exports = function (Hue) {
   // Handles image source changes
   Hue.handler.public.change_image_source = async function (socket, data) {
     if (data.src === undefined) {
-      return false
+      return
     }
 
     if (data.src.length === 0) {
-      return false
+      return
     }
 
     if (data.src.length > Hue.config.max_media_source_length) {
-      return false
+      return
     }
 
     if (data.query) {
       if (data.query.length > Hue.config.safe_limit_1) {
-        return false
+        return
       }
     }
 
     if (data.comment) {
       if (data.comment.length > Hue.config.max_media_comment_length) {
-        return false
+        return
       }
     }
 
     if (data.src !== Hue.utilz.single_space(data.src)) {
-      return false
+      return
     }
 
     let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { image_source: 1, image_query: 1, image_date: 1})
 
     if (info.image_source === data.src || info.image_query === data.src) {
       Hue.handler.user_emit(socket, "same_image", {})
-      return false
+      return
     }
 
     if (Date.now() - info.image_date < Hue.config.image_change_cooldown) {
       Hue.handler.user_emit(socket, "image_cooldown_wait", {})
-      return false
+      return
     }
 
     data.src = data.src.replace(/\.gifv/g, ".gif")
 
     if (!Hue.utilz.is_url(data.src) && !data.src.startsWith("/")) {
       if (!Hue.config.imgur_enabled) {
-        return false
+        return
       }
 
       Hue.vars
@@ -66,7 +66,7 @@ module.exports = function (Hue) {
 
         .then(async function (response) {
           if (!response.data || !Array.isArray(response.data)) {
-            return false
+            return
           }
 
           for (let item of response.data) {
@@ -115,7 +115,7 @@ module.exports = function (Hue) {
       let extension = Hue.utilz.get_extension(data.src).toLowerCase()
 
       if (!extension || !Hue.utilz.image_extensions.includes(extension)) {
-        return false
+        return
       }
 
       let obj = {}

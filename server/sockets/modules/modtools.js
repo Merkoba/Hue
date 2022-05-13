@@ -34,22 +34,22 @@ module.exports = function (Hue) {
   Hue.handler.public.ban_username = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     if (data.username === undefined) {
-      return false
+      return
     }
 
     if (data.username.length === 0) {
-      return false
+      return
     }
 
     let username = data.username.toLowerCase()
 
     if (Hue.banlist.usernames.some(x => x.toLowerCase() === username)) {
       Hue.handler.user_emit(socket, "item_already_included", {})
-      return false
+      return
     }
 
     Hue.banlist.usernames.push(username)
@@ -61,22 +61,22 @@ module.exports = function (Hue) {
   Hue.handler.public.unban_username = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     if (data.username === undefined) {
-      return false
+      return
     }
 
     if (data.username.length === 0) {
-      return false
+      return
     }
 
     let username = data.username.toLowerCase()
 
     if (!Hue.banlist.usernames.some(x => x.toLowerCase() === username)) {
       Hue.handler.user_emit(socket, "item_not_included", {})
-      return false
+      return
     }
 
     for (let i=0; i<Hue.banlist.usernames.length; i++) {
@@ -94,20 +94,20 @@ module.exports = function (Hue) {
   Hue.handler.public.ban_user_id = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     if (data.user_id === undefined) {
-      return false
+      return
     }
 
     if (data.user_id.length === 0) {
-      return false
+      return
     }
 
     if (Hue.banlist.user_ids.includes(data.user_id)) {
       Hue.handler.user_emit(socket, "item_already_included", {})
-      return false
+      return
     }
 
     Hue.banlist.user_ids.push(data.user_id)
@@ -119,20 +119,20 @@ module.exports = function (Hue) {
   Hue.handler.public.unban_user_id = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     if (data.user_id === undefined) {
-      return false
+      return
     }
 
     if (data.user_id.length === 0) {
-      return false
+      return
     }
 
     if (!Hue.banlist.user_ids.includes(data.user_id)) {
       Hue.handler.user_emit(socket, "item_not_included", {})
-      return false
+      return
     }
 
     for (let i=0; i<Hue.banlist.user_ids.length; i++) {
@@ -150,20 +150,20 @@ module.exports = function (Hue) {
   Hue.handler.public.ban_ip_address = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     if (data.ip_address === undefined) {
-      return false
+      return
     }
 
     if (data.ip_address.length === 0) {
-      return false
+      return
     }
 
     if (Hue.banlist.ip_addresses.includes(data.ip_address)) {
       Hue.handler.user_emit(socket, "item_already_included", {})
-      return false
+      return
     }
 
     Hue.banlist.ip_addresses.push(data.ip_address)
@@ -175,20 +175,20 @@ module.exports = function (Hue) {
   Hue.handler.public.unban_ip_address = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     if (data.ip_address === undefined) {
-      return false
+      return
     }
 
     if (data.ip_address.length === 0) {
-      return false
+      return
     }
 
     if (!Hue.banlist.ip_addresses.includes(data.ip_address)) {
       Hue.handler.user_emit(socket, "item_not_included", {})
-      return false
+      return
     }
 
     for (let i=0; i<Hue.banlist.ip_addresses.length; i++) {
@@ -206,15 +206,15 @@ module.exports = function (Hue) {
   Hue.handler.public.get_user_id_by_username = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     if (data.username === undefined) {
-      return false
+      return
     }
 
     if (data.username.length === 0) {
-      return false
+      return
     }
 
     let userinfo = await Hue.db_manager.get_user(
@@ -236,15 +236,15 @@ module.exports = function (Hue) {
   Hue.handler.public.get_username_by_user_id = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
     
     if (data.user_id === undefined) {
-      return false
+      return
     }
 
     if (data.user_id.length === 0) {
-      return false
+      return
     }
 
     let userinfo = await Hue.db_manager.get_user(
@@ -266,15 +266,15 @@ module.exports = function (Hue) {
   Hue.handler.public.get_ip_address_by_username = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     if (data.username === undefined) {
-      return false
+      return
     }
 
     if (data.username.length === 0) {
-      return false
+      return
     }
 
     let ip_address = ""
@@ -301,7 +301,7 @@ module.exports = function (Hue) {
   Hue.handler.public.disconnect_user = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     let sockets = await Hue.handler.get_all_sockets()

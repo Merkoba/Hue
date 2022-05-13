@@ -15,8 +15,6 @@ function normalizePort(val) {
 	if (port >= 0) {
 		return port
 	}
-
-	return false
 }
 
 const config_path = path.join(__dirname, "../config/config.json")

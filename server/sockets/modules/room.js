@@ -2,29 +2,29 @@ module.exports = function (Hue) {
   // Handles topic changes
   Hue.handler.public.change_topic = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
-      return false
+      return
     }
 
     if (data.topic === undefined) {
-      return false
+      return
     }
 
     if (data.topic.length === 0) {
-      return false
+      return
     }
 
     if (data.topic.length > Hue.config.max_topic_length) {
-      return false
+      return
     }
 
     if (data.topic !== Hue.utilz.single_space(data.topic)) {
-      return false
+      return
     }
 
     let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { topic: 1 })
 
     if (info.topic === data.topic) {
-      return false
+      return
     }
 
     Hue.db_manager.update_room(socket.hue_room_id, {
@@ -43,18 +43,18 @@ module.exports = function (Hue) {
   // Handles room name changes
   Hue.handler.public.change_room_name = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
-      return false
+      return
     }
 
     if (
       data.name.length === 0 ||
       data.name.length > Hue.config.max_room_name_length
     ) {
-      return false
+      return
     }
 
     if (data.name !== Hue.utilz.single_space(data.name)) {
-      return false
+      return
     }
 
     let info = await Hue.db_manager.get_room(
@@ -92,19 +92,19 @@ module.exports = function (Hue) {
   // Handles background color changes
   Hue.handler.public.change_background_color = function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
-      return false
+      return
     }
 
     if (data.color === undefined) {
-      return false
+      return
     }
 
     if (data.color !== Hue.utilz.no_space(data.color)) {
-      return false
+      return
     }
 
     if (!Hue.utilz.validate_hex(data.color)) {
-      return false
+      return
     }
 
     Hue.db_manager.update_room(socket.hue_room_id, {
@@ -123,19 +123,19 @@ module.exports = function (Hue) {
   // Handles text color changes
   Hue.handler.public.change_text_color = function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
-      return false
+      return
     }
 
     if (data.color === undefined) {
-      return false
+      return
     }
 
     if (data.color !== Hue.utilz.no_space(data.color)) {
-      return false
+      return
     }
 
     if (!Hue.utilz.validate_hex(data.color)) {
-      return false
+      return
     }
 
     Hue.db_manager.update_room(socket.hue_room_id, {
@@ -154,18 +154,18 @@ module.exports = function (Hue) {
   // Handles uploaded background images
   Hue.handler.upload_background = async function (socket, data) {
     if (data.image_file === undefined) {
-      return false
+      return
     }
 
     if (data.extension === undefined) {
-      return false
+      return
     }
 
     let size = data.image_file.byteLength / 1024
 
     if (size === 0 || size > Hue.config.max_image_size) {
       Hue.handler.user_emit(socket, "upload_error", {})
-      return false
+      return
     }
 
     let file_name = `background.${data.extension}`
@@ -189,22 +189,22 @@ module.exports = function (Hue) {
   // Handles background image source changes
   Hue.handler.public.change_background_source = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
-      return false
+      return
     }
 
     if (data.src === undefined) {
-      return false
+      return
     }
 
     if (data.src.length > Hue.config.max_media_source_length) {
-      return false
+      return
     }
 
     if (data.src === "") {
       await Hue.handler.do_change_background(socket, "", "hosted")
     } else {
       if (!Hue.utilz.is_url(data.src)) {
-        return false
+        return
       }
   
       data.src = data.src.replace(/\s/g, "").replace(/\.gifv/g, ".gif")
@@ -212,7 +212,7 @@ module.exports = function (Hue) {
       let extension = Hue.utilz.get_extension(data.src).toLowerCase()
   
       if (!extension || !Hue.utilz.image_extensions.includes(extension)) {
-        return false
+        return
       }
   
       await Hue.handler.do_change_background(socket, data.src, "external")

@@ -62,8 +62,6 @@ module.exports = function (Hue) {
           return socc
         }
       }
-
-      return false
     } catch (err) {
       Hue.logger.log_error(err)
     }

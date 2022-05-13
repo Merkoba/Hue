@@ -59,7 +59,6 @@ module.exports = function (Hue) {
   Hue.handler.public.system_restart_signal = function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
     }
 
     Hue.handler.system_emit(socket, "system_restart_signal", {})

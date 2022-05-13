@@ -4,17 +4,17 @@ module.exports = function (Hue) {
     if (data.type === "system_broadcast") {
       if (!socket.hue_superuser) {
         Hue.handler.anti_spam_ban(socket)
-        return false
+        return
       }
     }
 
     if (data.type === "user") {
       if (!data.usernames || data.usernames.length === 0) {
-        return false
+        return
       }
   
       if (data.usernames.length > Hue.config.max_whisper_users) {
-        return false
+        return
       }
   
       for (let username of data.usernames) {
@@ -22,25 +22,25 @@ module.exports = function (Hue) {
           !username.length ||
           username.length > Hue.config.max_max_username_length
         ) {
-          return false
+          return
         }
       }
     }
 
     if (data.message === undefined) {
-      return false
+      return
     }
 
     if (data.message.length === 0) {
-      return false
+      return
     }
 
     if (data.message.length > Hue.config.max_whispers_post_length) {
-      return false
+      return
     }
 
     if (data.message.split("\n").length > Hue.config.max_num_newlines) {
-      return false
+      return
     }
 
     let users = []

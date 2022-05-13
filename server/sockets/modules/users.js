@@ -4,7 +4,7 @@ module.exports = function (Hue) {
   Hue.handler.public.annex = function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     Hue.handler.public.change_role(socket, data)
@@ -14,28 +14,28 @@ module.exports = function (Hue) {
   Hue.handler.public.change_role = async function (socket, data) {
     if (!socket.hue_superuser) {
       if (!Hue.handler.is_admin_or_op(socket)) {
-        return false
+        return
       }
     }
 
     if (data.username === undefined) {
-      return false
+      return
     }
 
     if (data.username.length === 0) {
-      return false
+      return
     }
 
     if (data.username.length > Hue.config.max_max_username_length) {
-      return false
+      return
     }
 
     if (!Hue.vars.roles.includes(data.role)) {
-      return false
+      return
     }
 
     if (!socket.hue_superuser && socket.hue_username === data.username) {
-      return false
+      return
     }
 
     let info = await Hue.db_manager.get_room(
@@ -50,7 +50,7 @@ module.exports = function (Hue) {
 
     if (!userinfo) {
       Hue.handler.user_emit(socket, "user_not_found", {})
-      return false
+      return
     }
 
     let id = userinfo.id
@@ -62,7 +62,7 @@ module.exports = function (Hue) {
         socket.hue_role !== "admin"
       ) {
         Hue.handler.user_emit(socket, "forbidden_user", {})
-        return false
+        return
       }
     }
 
@@ -74,7 +74,7 @@ module.exports = function (Hue) {
         what: data.role,
         who: userinfo.username
       })
-      return false
+      return
     }
 
     let sockets = await Hue.handler.get_user_sockets_per_room(socket.hue_room_id, id)
@@ -87,7 +87,7 @@ module.exports = function (Hue) {
           socc.hue_role === "admin"
         ) {
           Hue.handler.user_emit(socket, "forbidden_user", {})
-          return false
+          return
         }
       }
 
@@ -115,19 +115,19 @@ module.exports = function (Hue) {
   // Handles user kicks
   Hue.handler.public.kick = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
-      return false
+      return
     }
 
     if (data.username === undefined) {
-      return false
+      return
     }
 
     if (data.username.length === 0) {
-      return false
+      return
     }
 
     if (data.username.length > Hue.config.max_max_username_length) {
-      return false
+      return
     }
 
     let sockets = await Hue.handler.get_user_sockets_per_room_by_username(
@@ -143,7 +143,7 @@ module.exports = function (Hue) {
         sockets[0].hue_superuser
       ) {
         Hue.handler.user_emit(socket, "forbidden_user", {})
-        return false
+        return
       }
 
       for (let socc of sockets) {
@@ -156,26 +156,26 @@ module.exports = function (Hue) {
       Hue.handler.push_admin_log_message(socket, `kicked "${data.username}"`)
     } else {
       Hue.handler.user_emit(socket, "user_not_in_room", {})
-      return false
+      return
     }
   }
 
   // Handles user bans
   Hue.handler.public.ban = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
-      return false
+      return
     }
 
     if (data.username === undefined) {
-      return false
+      return
     }
 
     if (data.username.length === 0) {
-      return false
+      return
     }
 
     if (data.username.length > Hue.config.max_max_username_length) {
-      return false
+      return
     }
 
     let info = await Hue.db_manager.get_room(
@@ -190,7 +190,7 @@ module.exports = function (Hue) {
 
     if (!userinfo) {
       Hue.handler.user_emit(socket, "user_not_found", {})
-      return false
+      return
     }
 
     let id = userinfo.id
@@ -201,12 +201,12 @@ module.exports = function (Hue) {
       socket.hue_role !== "admin"
     ) {
       Hue.handler.user_emit(socket, "forbidden_user", {})
-      return false
+      return
     }
 
     if (info.bans.includes(id)) {
       Hue.handler.user_emit(socket, "user_already_banned", {})
-      return false
+      return
     }
 
     let sockets = await Hue.handler.get_user_sockets_per_room(socket.hue_room_id, id)
@@ -215,7 +215,7 @@ module.exports = function (Hue) {
       for (let socc of sockets) {
         if (socc.hue_superuser) {
           Hue.handler.user_emit(socket, "forbidden_user", {})
-          return false
+          return
         }
 
         socc.hue_role = ""
@@ -240,19 +240,19 @@ module.exports = function (Hue) {
   // Handles user unbans
   Hue.handler.public.unban = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
-      return false
+      return
     }
 
     if (data.username === undefined) {
-      return false
+      return
     }
 
     if (data.username.length === 0) {
-      return false
+      return
     }
 
     if (data.username.length > Hue.config.max_max_username_length) {
-      return false
+      return
     }
 
     let info = await Hue.db_manager.get_room(
@@ -267,7 +267,7 @@ module.exports = function (Hue) {
 
     if (!userinfo) {
       Hue.handler.user_emit(socket, "user_not_found", {})
-      return false
+      return
     }
 
     let id = userinfo.id
@@ -275,7 +275,7 @@ module.exports = function (Hue) {
     if (!info.bans.includes(id)) {
       Hue.handler.user_emit(socket, "user_already_unbanned", {})
 
-      return false
+      return
     }
 
     for (let i = 0; i < info.bans.length; i++) {
@@ -352,7 +352,7 @@ module.exports = function (Hue) {
   // Sends admin activity list
   Hue.handler.public.get_admin_activity = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
-      return false
+      return
     }
 
     let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { admin_log_messages: 1 })
@@ -362,7 +362,7 @@ module.exports = function (Hue) {
   // Sends admin list
   Hue.handler.public.get_admin_list = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
-      return false
+      return
     }
 
     let info = await Hue.db_manager.get_room(
@@ -384,7 +384,7 @@ module.exports = function (Hue) {
 
     if (ids.length === 0) {
       Hue.handler.user_emit(socket, "receive_admin_list", { list: [] })
-      return false
+      return
     }
 
     let users = await Hue.db_manager.get_users(
@@ -393,7 +393,7 @@ module.exports = function (Hue) {
 
     if (users.length === 0) {
       Hue.handler.user_emit(socket, "receive_admin_list", { list: [] })
-      return false
+      return
     }
 
     let list = []
@@ -408,7 +408,7 @@ module.exports = function (Hue) {
   // Sends ban list
   Hue.handler.public.get_ban_list = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
-      return false
+      return
     }
 
     let info = await Hue.db_manager.get_room(
@@ -424,7 +424,7 @@ module.exports = function (Hue) {
 
     if (ids.length === 0) {
       Hue.handler.user_emit(socket, "receive_ban_list", { list: [] })
-      return false
+      return
     }
 
     let users = await Hue.db_manager.get_users(
@@ -433,7 +433,7 @@ module.exports = function (Hue) {
 
     if (users.length === 0) {
       Hue.handler.user_emit(socket, "receive_ban_list", { list: [] })
-      return false
+      return
     }
 
     let list = []
@@ -469,23 +469,23 @@ module.exports = function (Hue) {
   Hue.handler.public.modusername = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     if (!data.original || !data.new) {
-      return false
+      return
     }
 
     if (data.original === data.new) {
-      return false
+      return
     }
   
     if (data.new.length > Hue.config.max_username_length) {
-      return false
+      return
     }
   
     if (Hue.utilz.clean_username(data.new) !== data.new) {
-      return false
+      return
     }
 
     let userinfo = await Hue.db_manager.get_user(
@@ -495,7 +495,7 @@ module.exports = function (Hue) {
 
     if (!userinfo) {
       Hue.handler.user_emit(socket, "user_not_found", {})
-      return false
+      return
     }
 
     let done = await Hue.db_manager.change_username(
@@ -530,7 +530,7 @@ module.exports = function (Hue) {
   Hue.handler.public.modpassword = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     let userinfo = await Hue.db_manager.get_user(
@@ -540,7 +540,7 @@ module.exports = function (Hue) {
 
     if (!userinfo) {
       Hue.handler.user_emit(socket, "user_not_found", {})
-      return false
+      return
     }
 
     Hue.db_manager.change_user_password(userinfo.id, data.password)
