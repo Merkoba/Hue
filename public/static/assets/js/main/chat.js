@@ -1764,22 +1764,12 @@ Hue.setup_chat = function () {
   })
 
   Hue.chat_resize_observer = new ResizeObserver(function () {
+    Hue.check_max_chat_messages()
     Hue.goto_bottom()
   })
 
   Hue.chat_resize_observer.observe(Hue.el("#chat_area"))
   Hue.chat_resize_observer.observe(Hue.el("#chat_area_parent"))
-
-  Hue.chat_mutation_observer = new MutationObserver(function (mutations) {
-    for (let index=0; index<mutations.length; index++) {
-      if (mutations[index].addedNodes.length) { 
-        Hue.check_max_chat_messages()
-        break
-      }
-    }
-  })
-
-  Hue.chat_mutation_observer.observe(Hue.el("#chat_area"), {childList: true})
 
   Hue.check_chat_enabled()
   Hue.do_chat_font_size_change()
