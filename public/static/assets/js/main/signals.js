@@ -7,7 +7,7 @@ Hue.reload_client = function () {
 // Reconnect asynchronously
 Hue.refresh_client = function () {
   if (Hue.connecting || Hue.room_locked || Hue.socket.connected) {
-    return false
+    return
   }
 
   Hue.connecting = true

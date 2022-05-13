@@ -2,7 +2,7 @@
 // Resolves a promise when the <script> is loaded
 Hue.load_script = function (source) {
   if (!Hue.load_scripts) {
-    return false
+    return
   }
 
   Hue.loginfo(`Loading script: ${source}`)

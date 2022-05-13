@@ -268,7 +268,7 @@ Hue.activate_key_detection = function () {
       Hue.scroll_down()
     } else if (e.key === "ArrowUp") {
       if (!e.shiftKey && Hue.footer_expanded) {
-        return false
+        return
       }
 
       if (e.shiftKey) {
@@ -283,7 +283,7 @@ Hue.activate_key_detection = function () {
       return
     } else if (e.key === "ArrowDown") {
       if (!e.shiftKey && Hue.footer_expanded) {
-        return false
+        return
       }
       
       if (e.shiftKey) {

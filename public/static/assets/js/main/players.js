@@ -8,11 +8,11 @@ Hue.load_youtube = async function (what = "") {
       Hue.create_youtube_tv_player()
     }
 
-    return false
+    return
   }
 
   if (Hue.youtube_loading) {
-    return false
+    return
   }
 
   Hue.youtube_loading = true
@@ -74,7 +74,7 @@ Hue.start_soundcloud = async function () {
   }
 
   if (Hue.soundcloud_loading) {
-    return false
+    return
   }
 
   Hue.soundcloud_loading = true
@@ -146,11 +146,11 @@ Hue.start_twitch = async function () {
       Hue.create_twitch_tv_player()
     }
 
-    return false
+    return
   }
 
   if (Hue.twitch_loading) {
-    return false
+    return
   }
 
   Hue.twitch_loading = true

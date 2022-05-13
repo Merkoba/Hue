@@ -13,7 +13,7 @@ Hue.setup_room_config = function () {
 
     if (name === "") {
       Hue.el("#admin_room_name").value = Hue.room_name
-      return false
+      return
     }
 
     if (name !== Hue.room_name) {
@@ -26,7 +26,7 @@ Hue.setup_room_config = function () {
 
     if (t === "") {
       Hue.el("#admin_topic").value = Hue.topic
-      return false
+      return
     }
 
     if (t !== Hue.topic) {
@@ -85,7 +85,7 @@ Hue.config_room_config = function () {
 // Updates the background image widget in the room config based on current state
 Hue.config_admin_background = function () {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   if (Hue.background) {
@@ -98,7 +98,7 @@ Hue.config_admin_background = function () {
 // Updates the text color widget in the room config based on current state
 Hue.config_admin_text_color = function () {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   Hue.el("#admin_text_color").value = Hue.text_color
@@ -107,7 +107,7 @@ Hue.config_admin_text_color = function () {
 // Updates the background color widget in the room config based on current state
 Hue.config_admin_background_color = function () {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   Hue.el("#admin_background_color").value = Hue.background_color
@@ -116,7 +116,7 @@ Hue.config_admin_background_color = function () {
 // Updates the room name widget in the room config based on current state
 Hue.config_admin_room_name = function () {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   Hue.el("#admin_room_name").value = Hue.room_name
@@ -125,7 +125,7 @@ Hue.config_admin_room_name = function () {
 // Updates the topic widget in the room config based on current state
 Hue.config_admin_topic = function () {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   Hue.el("#admin_topic").value = Hue.topic

@@ -42,7 +42,7 @@ Hue.stop_tv = function () {
 // Plays the active loaded tv
 Hue.play_tv = function () {
   if (!Hue.tv_visible) {
-    return false
+    return
   }
 
   if (Hue.current_tv().type === "youtube") {
@@ -122,7 +122,7 @@ Hue.show_youtube_tv = function (play = true) {
       })
     }   
   } else {
-    return false
+    return
   }
 
   Hue.after_show_tv()
@@ -139,7 +139,7 @@ Hue.show_twitch_tv = function (play = true) {
   } else if (id[0] === "channel") {
     Hue.twitch_tv_player.setChannel(id[1])
   } else {
-    return false
+    return
   }
 
   if (play) {
@@ -468,11 +468,11 @@ Hue.can_sync_tv = function () {
 // Sends a request to the server to send a request to the user to report video progress
 Hue.sync_tv = function (username) {
   if (!Hue.can_sync_tv()) {
-    return false
+    return
   }
 
   if (!Hue.user_is_online_by_username(username)) {
-    return false
+    return
   }
 
   Hue.socket_emit("sync_tv", {
@@ -484,11 +484,11 @@ Hue.sync_tv = function (username) {
 // Responds to a tv sync request to send it back to a user
 Hue.report_tv_progress = function (data) {
   if (!Hue.can_sync_tv()) {
-    return false
+    return
   }
 
   if (Hue.loaded_tv.source !== data.tv_source) {
-    return false
+    return
   }
 
   let ttype = Hue.loaded_tv.type
@@ -517,12 +517,12 @@ Hue.report_tv_progress = function (data) {
 // After the server sends a user's tv progress response
 Hue.receive_tv_progress = function (data) {
   if (!Hue.can_sync_tv()) {
-    return false
+    return
   }
 
   if (data.type === "youtube") {
     if (Hue.loaded_tv.type !== "youtube") {
-      return false
+      return
     }
 
     let id = Hue.utilz.get_youtube_id(Hue.loaded_tv.source)
@@ -535,7 +535,7 @@ Hue.receive_tv_progress = function (data) {
     }
   } else if (data.type === "video") {
     if (Hue.loaded_tv.type !== "video") {
-      return false
+      return
     }
 
     Hue.el("#media_video_tv").currentTime = data.progress
@@ -582,7 +582,7 @@ Hue.show_tv_upload_comment = function (file, type) {
 // Uploads the file and the optional comment
 Hue.process_tv_upload_comment = function () {
   if (!Hue.msg_tv_upload_comment.is_open()) {
-    return false
+    return
   }
 
   let file = Hue.tv_upload_comment_file
@@ -590,7 +590,7 @@ Hue.process_tv_upload_comment = function () {
   let comment = Hue.utilz.single_space(Hue.el("#tv_upload_comment_input").value)
 
   if (comment.length > Hue.config.max_media_comment_length) {
-    return false
+    return
   }
 
   Hue.upload_file({ file: file, action: "tv_upload", comment: comment })

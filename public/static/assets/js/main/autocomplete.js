@@ -69,7 +69,7 @@ Hue.get_closest_autocomplete = function (element, w) {
 // Attemps to autocomplete a word after a user presses tab on a textbox
 Hue.tabbed = function (element) {
   if (!element.id) {
-    return false
+    return
   }
 
   let info = Hue.tab_info[element.id]
@@ -133,7 +133,7 @@ Hue.replace_tabbed = function (element, word) {
 // Resets 'tabbed' state generated after autocompleting words
 Hue.clear_tabbed = function (element) {
   if (!element.id) {
-    return false
+    return
   }
 
   Hue.tab_info[element.id] = {

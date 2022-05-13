@@ -24,10 +24,10 @@ Hue.process_write_whisper = function (arg) {
       Hue.checkmsg(
         `Multiple usernames matched. Use the proper > syntax. For example ${Hue.config.commands_prefix}whisper bob > hi`
       )
-      return false
+      return
     } else {
       Hue.user_not_in_room()
-      return false
+      return
     }
   }
 }
@@ -37,7 +37,7 @@ Hue.send_inline_whisper = function (arg) {
   let split = arg.split(">")
 
   if (split.length < 2) {
-    return false
+    return
   }
 
   let username = split[0].trim()
@@ -45,14 +45,14 @@ Hue.send_inline_whisper = function (arg) {
   let message = Hue.utilz.single_space(split.slice(1).join(">"))
 
   if (!message) {
-    return false
+    return
   }
 
   let message_split = message.split("\n")
   let num_lines = message_split.length
 
   if (num_lines > Hue.config.max_num_newlines) {
-    return false
+    return
   }
 
   let c_usernames = []
@@ -68,7 +68,7 @@ Hue.send_inline_whisper = function (arg) {
   }
 
   if (c_usernames.length === 0) {
-    return false
+    return
   }
 
   Hue.do_send_whisper({message: message, usernames: c_usernames, type: "user"})
@@ -84,7 +84,7 @@ Hue.write_whisper = function (usernames = [], type = "user") {
     if (cu) {
       c_usernames.push(cu)
     } else {
-      return false
+      return
     }
   }
 
@@ -146,10 +146,10 @@ Hue.submit_write_whisper = function () {
   let diff = Hue.config.max_whispers_post_length - message.length
 
   if (diff === Hue.config.max_whispers_post_length) {
-    return false
+    return
   } else if (diff < 0) {
     Hue.checkmsg(`Character limit exceeded by ${Math.abs(diff)}`)
-    return false
+    return
   }
 
   let message_split = message.split("\n")
@@ -157,7 +157,7 @@ Hue.submit_write_whisper = function () {
 
   if (num_lines > Hue.config.max_num_newlines) {
     Hue.checkmsg("Too many linebreaks")
-    return false
+    return
   }
 
   let ans = Hue.send_whisper(message)
@@ -257,7 +257,7 @@ Hue.send_whisper = function (message) {
   let usernames = Hue.whisper_users
 
   if (!usernames) {
-    return false
+    return
   }
 
   let discarded = []
@@ -275,7 +275,7 @@ Hue.send_whisper = function (message) {
   }
 
   if (approved.length === 0) {
-    return false
+    return
   }
 
   Hue.do_send_whisper({message: message, usernames: approved, type: Hue.message_type})

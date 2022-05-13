@@ -49,7 +49,7 @@ Hue.show_room_name = function () {
 // Change the name of the room
 Hue.change_room_name = function (arg) {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   arg = Hue.utilz.single_space(
@@ -104,7 +104,7 @@ Hue.set_room_name = function (name) {
 // Changes the topic
 Hue.change_topic = function (dtopic) {
   if (!Hue.is_admin_or_op()) {
-    return false
+    return
   }
 
   dtopic = Hue.utilz.single_space(
@@ -148,7 +148,7 @@ Hue.set_topic_info = function (data) {
 Hue.request_admin_activity = function (filter = "") {
   if (!Hue.is_admin_or_op()) {
     Hue.not_an_op()
-    return false
+    return
   }
 
   Hue.admin_activity_filter_string = filter
@@ -186,7 +186,7 @@ Hue.show_admin_activity = function (messages) {
 Hue.request_admin_list = function () {
   if (!Hue.is_admin_or_op()) {
     Hue.not_an_op()
-    return false
+    return
   }
 
   Hue.socket_emit("get_admin_list", {})
@@ -219,7 +219,7 @@ Hue.show_admin_list = function (data) {
 Hue.request_ban_list = function () {
   if (!Hue.is_admin_or_op()) {
     Hue.not_an_op()
-    return false
+    return
   }
 
   Hue.socket_emit("get_ban_list", {})

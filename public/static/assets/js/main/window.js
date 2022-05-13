@@ -5,15 +5,15 @@ Hue.alert_title = function (mode) {
   let modes = [1, 2]
 
   if (!modes.includes(mode)) {
-    return false
+    return
   }
 
   if (mode === 1 && Hue.alert_mode !== 0) {
-    return false
+    return
   }
 
   if (mode === 2 && Hue.alert_mode === 2) {
-    return false
+    return
   }
 
   Hue.alert_mode = mode

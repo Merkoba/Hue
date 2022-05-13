@@ -219,7 +219,7 @@ Hue.on_join = function (data) {
 
   if (data.room_locked) {
     Hue.start_locked_mode()
-    return false
+    return
   }
 
   Hue.init_data = data

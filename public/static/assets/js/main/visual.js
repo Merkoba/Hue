@@ -154,7 +154,7 @@ Hue.start_before_unload = function () {
   window.onbeforeunload = function () {
     if (Hue.get_setting("confirm_on_close")) {
       if (!confirm("Ok?")) {
-        return false
+        return
       }
     }
   }

@@ -281,7 +281,7 @@ Hue.submit_message_board_post = function () {
   let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#message_board_textarea").value).trim()
 
   if (!message || message.length > Hue.config.max_message_board_post_length) {
-    return false
+    return
   }
 
   Hue.el("#message_board_textarea").value = ""
@@ -320,7 +320,7 @@ Hue.check_last_message_board_post = function () {
 
   if (posts.length === 0) {
     Hue.el("#header_message_board_count").textContent = "(0)"
-    return false
+    return
   }
 
   let date = Hue.room_state.last_message_board_post
@@ -383,7 +383,7 @@ Hue.after_message_board_filtered = function () {
 Hue.clear_message_board = function () {
   if (!Hue.is_admin()) {
     Hue.not_allowed()
-    return false
+    return
   }
 
   Hue.show_confirm("Delete all message board posts", function () {
