@@ -3,18 +3,18 @@ module.exports = function (Hue) {
   Hue.handler.public.create_room = async function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     if (
       data.name.length === 0 ||
       data.name.length > Hue.config.max_room_name_length
     ) {
-      return false
+      return
     }
 
     if (data.name !== Hue.utilz.single_space(data.name)) {
-      return false
+      return
     }
 
     data.user_id = socket.hue_user_id
@@ -26,11 +26,11 @@ module.exports = function (Hue) {
   Hue.handler.public.delete_room = function (socket, data) {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
 
     if (socket.hue_room_id === Hue.config.main_room_id) {
-      return false
+      return
     }
     
     Hue.db_manager.delete_room(socket.hue_room_id)

@@ -15,7 +15,7 @@ module.exports = function (Hue) {
   // Attempts to join a room
   Hue.handler.public.join_room = async function (socket, data) {
     if (socket.hue_joining || socket.hue_joined) {
-      return false
+      return
     }
 
     if (data.room_id === undefined) {
@@ -168,7 +168,7 @@ module.exports = function (Hue) {
         room_locked: true,
       })
 
-      return false
+      return
     }
 
     socket.hue_profilepic_version = userinfo.profilepic_version

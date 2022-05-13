@@ -179,7 +179,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Check file using the query and fields
   function check_file_query (type, original, query, fields) {
     if (!query || query.length !== 2 || !query[0] || query[1] === undefined) {
-      return false
+      return
     }
 
     let prop_1 = original[query[0]]
@@ -191,7 +191,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     }
 
     if (prop_1 !== prop_2) {
-      return false
+      return
     }
 
     // Don't delete from the original

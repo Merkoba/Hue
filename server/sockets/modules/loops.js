@@ -4,7 +4,7 @@ module.exports = function (Hue) {
   Hue.handler.start_files_timeout = function () {
     setTimeout(function () {
       if (Hue.vars.exiting) {
-        return false
+        return
       }
 
       Hue.handler.files_timeout_action()
@@ -32,7 +32,7 @@ module.exports = function (Hue) {
   Hue.handler.start_roomlist_timeout = function () {
     setTimeout(function () {
       if (Hue.vars.exiting) {
-        return false
+        return
       }
 
       Hue.handler.roomlist_timeout_action()

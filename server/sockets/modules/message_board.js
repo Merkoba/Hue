@@ -2,15 +2,15 @@ module.exports = function (Hue) {
   // Handles message board posting
   Hue.handler.public.message_board_post = async function (socket, data) { 
     if (!data.message) {
-      return false
+      return
     }
 
     if (data.message.length > Hue.config.max_message_board_post_length) {
-      return false
+      return
     }
 
     if (data.message.split("\n").length > Hue.config.max_num_newlines) {
-      return false
+      return
     }
 
     let linkdata
@@ -22,7 +22,7 @@ module.exports = function (Hue) {
       for (let post of info.message_board_posts) {
         if (post.id === data.id) {
           if (post.user_id !== socket.hue_user_id) {
-            return false
+            return
           }
 
           if (!linkdata) {
@@ -104,7 +104,7 @@ module.exports = function (Hue) {
   // Deletes a message board post
   Hue.handler.public.delete_message_board_post = async function (socket, data) {
     if (!data.id) {
-      return false
+      return
     }
 
     let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { message_board_posts: 1, keys: 1 })
@@ -154,7 +154,7 @@ module.exports = function (Hue) {
   Hue.handler.public.clear_message_board = function (socket, data) {
     if (!Hue.handler.is_admin(socket)) {
       Hue.handler.anti_spam_ban(socket)
-      return false
+      return
     }
     
     Hue.db_manager.update_room(socket.hue_room_id, {message_board_posts: []})

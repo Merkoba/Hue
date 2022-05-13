@@ -2,7 +2,6 @@ module.exports = function (Hue) {
   // Do a socket disconnect
   Hue.handler.do_disconnect = function (socc) {
     socc.disconnect()
-    return false
   }
 
   // On disconnect
@@ -84,7 +83,6 @@ module.exports = function (Hue) {
   Hue.handler.get_out = function (socket) {
     try {
       Hue.handler.do_disconnect(socket)
-      return false
     } catch (err) {
       Hue.logger.log_error(err)
     }

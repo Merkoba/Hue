@@ -7,17 +7,17 @@ module.exports = function (Hue) {
   // Handles sliced media uploads
   Hue.handler.upload_media = async function (socket, data, type) {
     if (data.file === undefined) {
-      return false
+      return
     }
 
     if (data.extension === undefined) {
-      return false
+      return
     }
 
     let size = data.file.byteLength / 1024
 
     if (size === 0 || size > Hue.config[`max_${type}_size`]) {
-      return false
+      return
     }
 
     let file_name = Hue.handler.generate_media_file_name(data.extension)
@@ -172,7 +172,7 @@ module.exports = function (Hue) {
           edited = true
           break
         } else {
-          return false
+          return
         }
       }
     }

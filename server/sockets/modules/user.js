@@ -2,19 +2,19 @@ module.exports = function (Hue) {
   // Changes usernames
   Hue.handler.public.change_username = async function (socket, data) {
     if (data.username === undefined) {
-      return false
+      return
     }
 
     if (data.username.length === 0) {
-      return false
+      return
     }
 
     if (data.username.length > Hue.config.max_username_length) {
-      return false
+      return
     }
 
     if (Hue.utilz.clean_username(data.username) !== data.username) {
-      return false
+      return
     }
 
     let old_username = socket.hue_username
@@ -52,18 +52,18 @@ module.exports = function (Hue) {
   // Changes passwords
   Hue.handler.public.change_password = function (socket, data) {
     if (data.password === undefined) {
-      return false
+      return
     }
 
     if (
       data.password.length === 0 ||
       data.password.length < Hue.config.min_password_length
     ) {
-      return false
+      return
     }
 
     if (data.password.length > Hue.config.max_password_length) {
-      return false
+      return
     }
 
     Hue.db_manager.change_user_password(socket.hue_user_id, data.password)
@@ -80,19 +80,19 @@ module.exports = function (Hue) {
   // Handles bio changes
   Hue.handler.public.change_bio = async function (socket, data) {
     if (data.bio.length > Hue.config.max_bio_length) {
-      return false
+      return
     }
 
     if (data.bio.split("\n").length > Hue.config.max_bio_lines) {
-      return false
+      return
     }
 
     if (data.bio !== Hue.utilz.single_linebreak(data.bio)) {
-      return false
+      return
     }
 
     if (socket.hue_bio === data.bio) {
-      return false
+      return
     }
 
     await Hue.handler.modify_socket_properties(socket.hue_user_id, { hue_bio: data.bio })
@@ -111,7 +111,7 @@ module.exports = function (Hue) {
   // Handles uploaded profile images
   Hue.handler.upload_profilepic = async function (socket, data) {
     if (data.image_file === undefined) {
-      return false
+      return
     }
 
     let dimensions = Hue.vars.image_dimensions(data.image_file)
@@ -120,14 +120,14 @@ module.exports = function (Hue) {
       dimensions.width !== Hue.config.profilepic_diameter ||
       dimensions.height !== Hue.config.profilepic_diameter
     ) {
-      return false
+      return
     }
 
     let size = data.image_file.byteLength / 1024
 
     if (size === 0 || size > Hue.config.max_profilepic_size) {
       Hue.handler.user_emit(socket, "upload_error", {})
-      return false
+      return
     }
 
     let file_name = "profilepic.png"
@@ -173,14 +173,14 @@ module.exports = function (Hue) {
   // Handles uploaded audio clips
   Hue.handler.upload_audioclip = async function (socket, data) {
     if (data.audio_file === undefined) {
-      return false
+      return
     }
 
     let size = data.audio_file.byteLength / 1024
 
     if (size === 0 || size > Hue.config.max_audioclip_size) {
       Hue.handler.user_emit(socket, "upload_error", {})
-      return false
+      return
     }
 
     let file_name = "audioclip.mp3"

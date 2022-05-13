@@ -27,11 +27,11 @@ module.exports = function (Hue) {
   // Start socker handler
   Hue.io.on("connection", async function (socket) {
     if (!socket) {
-      return false
+      return
     }
     
     if (Hue.vars.exiting) {
-      return false
+      return
     }
 
     try {
@@ -39,7 +39,7 @@ module.exports = function (Hue) {
       let spam_ans = await Hue.handler.add_spam(socket)
 
       if (!spam_ans) {
-        return false
+        return
       }
 
       Hue.handler.connection(socket)
@@ -55,7 +55,7 @@ module.exports = function (Hue) {
     // If there is no such public function the user is kicked out
     socket.on("server_method", async function (data) {
       if (Hue.vars.exiting) {
-        return false
+        return
       }
 
       try {
@@ -65,29 +65,29 @@ module.exports = function (Hue) {
           let spam_ans = await Hue.handler.add_spam(socket)
 
           if (!spam_ans) {
-            return false
+            return
           }
         }
 
         if (!Hue.handler.check_data(data)) {
-          return false
+          return
         }
 
         if (Hue.handler.public[m] === undefined) {
-          return false
+          return
         }
 
         if (m === undefined) {
-          return false
+          return
         }
 
         if (!data || typeof data !== "object") {
-          return false
+          return
         }
 
         if (!Hue.vars.dont_check_joined.includes(m)) {
           if (!socket.hue_joined) {
-            return false
+            return
           }
         }
 

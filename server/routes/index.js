@@ -136,7 +136,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   // Checks if a URL length exceeds the limits
   function check_url(req, res, next) {
     if (req.originalUrl.length > config.max_url_length) {
-      return false
+      return
     }
 
     if (req.params.id !== undefined) {
@@ -218,14 +218,14 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     let password = req.body.password
 
     if (username.length === 0 || username.length > config.max_max_username_length) {
-      return false
+      return
     }
 
     if (
       password.length === 0 ||
       password.length > config.max_max_password_length
     ) {
-      return false
+      return
     }
 
     if (sconfig.recaptcha_enabled) {
@@ -297,15 +297,15 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     if (view.reserved_usernames.includes(username.toLowerCase())) {
       already_exists(res, username)
-      return false
+      return
     }
 
     if (username.length === 0 || username.length > config.max_username_length) {
-      return false
+      return
     }
 
     if (username !== utilz.clean_username(username)) {
-      return false
+      return
     }
 
     if (
@@ -313,7 +313,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       password.length < config.min_password_length ||
       password.length > config.max_password_length
     ) {
-      return false
+      return
     }
 
     if (sconfig.recaptcha_enabled) {
@@ -336,7 +336,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       recaptcha_response === "" ||
       recaptcha_response === null
     ) {
-      return false
+      return
     }
 
     console.info("Fetching Recaptcha...")

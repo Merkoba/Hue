@@ -4,7 +4,7 @@ module.exports = function (Hue) {
   Hue.handler.public.slice_upload = async function (socket, data) {
     if (!data || !data.data || data.data.length > Hue.config.upload_slice_size) {
       await Hue.handler.add_spam(socket)
-      return false
+      return
     }
 
     let key = `${socket.hue_user_id}_${data.date}`
@@ -14,7 +14,7 @@ module.exports = function (Hue) {
       let spam_ans = await Hue.handler.add_spam(socket)
 
       if (!spam_ans) {
-        return false
+        return
       }
 
       let ext = data.name.split(".").pop(-1).toLowerCase()
@@ -22,30 +22,30 @@ module.exports = function (Hue) {
       if (data.action.includes("image")) {
         if (data.action === "profilepic_upload") {
           if (ext !== "png") {
-            return false
+            return
           }
         } else {
           if (!Hue.utilz.image_extensions.includes(ext)) {
-            return false
+            return
           }
         }
       } else if (data.action === "tv_upload") {
         if (!Hue.utilz.video_extensions.includes(ext) && !Hue.utilz.audio_extensions.includes(ext)) {
-          return false
+          return
         }
       } else if (data.action === "audioclip_upload") {
         if (ext !== "mp3") {
-          return false
+          return
         }
       }
 
       if (data.name.length > Hue.config.safe_limit_1) {
-        return false
+        return
       }
 
       if (data.comment) {
         if (data.comment.length > Hue.config.safe_limit_4) {
-          return false
+          return
         }
       }
 
@@ -58,7 +58,7 @@ module.exports = function (Hue) {
 
     if (file.cancelled) {
       delete Hue.vars.files[key]
-      return false
+      return
     }
 
     data.data = Buffer.from(new Uint8Array(data.data))
@@ -75,17 +75,17 @@ module.exports = function (Hue) {
     ) {
       if (fsize > Hue.config.max_image_size) {
         delete Hue.vars.files[key]
-        return false
+        return
       }
     } else if (file.action === "audioclip_upload") {
       if (fsize > Hue.config.max_audioclip_size) {
         delete Hue.vars.files[key]
-        return false
+        return
       }
     } else if (file.action === "tv_upload") {
       if (fsize > Hue.config.max_tv_size) {
         delete Hue.vars.files[key]
-        return false
+        return
       }
     }
 
@@ -94,7 +94,7 @@ module.exports = function (Hue) {
       let spam_ans = await Hue.handler.add_spam(socket)
 
       if (!spam_ans) {
-        return false
+        return
       }
     }
 
