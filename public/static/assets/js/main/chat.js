@@ -442,17 +442,6 @@ Hue.insert_message = function (args = {}) {
 
   if (!appended) {
     chat_area.append(args.message)
-    let messages = Hue.els("#chat_area > .message")
-
-    if (messages.length > Hue.config.chat_crop_limit) {
-      setTimeout(function () {
-        let diff = messages.length - Hue.config.chat_crop_limit
-        for (let message of messages.slice(0, diff)) {
-          message.remove()
-        }
-      }, 100)
-    }
-
     Hue.message_id += 1
     message_id = Hue.message_id
     Hue.dataset(args.message, "message_id", message_id)
@@ -1781,6 +1770,17 @@ Hue.setup_chat = function () {
   Hue.chat_resize_observer.observe(Hue.el("#chat_area"))
   Hue.chat_resize_observer.observe(Hue.el("#chat_area_parent"))
 
+  Hue.chat_mutation_observer = new MutationObserver(function (mutations) {
+    for (let index=0; index<mutations.length; index++) {
+      if (mutations[index].addedNodes.length) { 
+        Hue.check_max_chat_messages()
+        break
+      }
+    }
+  })
+
+  Hue.chat_mutation_observer.observe(Hue.el("#chat_area"), {childList: true})
+
   Hue.check_chat_enabled()
   Hue.do_chat_font_size_change()
 }
@@ -2038,4 +2038,17 @@ Hue.do_chat_font_size_change = function (size = Hue.room_state.chat_font_size) {
   document.documentElement.style.setProperty('--chat_font_size', `${size}em`)
   Hue.goto_bottom(true)
   Hue.save_room_state()
+}
+
+// Check if chat messages need pruning
+Hue.check_max_chat_messages = function () {
+  let messages = Hue.els("#chat_area > .message")
+
+  if (messages.length > Hue.config.chat_crop_limit) {
+    let diff = messages.length - Hue.config.chat_crop_limit
+
+    for (let message of messages.slice(0, diff)) {
+      message.remove()
+    }
+  }
 }
