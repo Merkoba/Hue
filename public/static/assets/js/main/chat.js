@@ -373,7 +373,7 @@ Hue.insert_message = function (args = {}) {
   args = Object.assign(def_args, args)
 
   if (!args.message) {
-    return false
+    return {message_id: 0}
   }
 
   let chat_area = Hue.el("#chat_area")
@@ -401,7 +401,9 @@ Hue.insert_message = function (args = {}) {
         }
       }
 
-      return false
+      return {
+        message_id: Hue.dataset(last_message, "message_id")
+      }
     }
   }
 
