@@ -2032,6 +2032,10 @@ Hue.do_chat_font_size_change = function (size = Hue.room_state.chat_font_size) {
 
 // Check if chat messages need pruning
 Hue.check_max_chat_messages = function () {
+  if (!Hue.started) {
+    return
+  }
+  
   let messages = Hue.els("#chat_area > .message")
 
   if (messages.length > Hue.config.chat_crop_limit) {

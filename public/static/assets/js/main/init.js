@@ -228,7 +228,6 @@ Hue.on_join = function (data) {
   Hue.userlist = data.userlist
   Hue.alert_mode = Hue.last_favicon_mode
 
-
   Hue.setup_commands()
   Hue.set_username(data.username)
   Hue.set_bio(data.bio)
@@ -271,6 +270,7 @@ Hue.at_startup = function () {
 
   Hue.load_date_4 = Date.now()
   Hue.compare_load_dates()
+  Hue.check_max_chat_messages()
 
   setTimeout(() => {
     Hue.goto_bottom(true)
