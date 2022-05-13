@@ -445,10 +445,12 @@ Hue.insert_message = function (args = {}) {
     let messages = Hue.els("#chat_area > .message")
 
     if (messages.length > Hue.config.chat_crop_limit) {
-      let diff = messages.length - Hue.config.chat_crop_limit
-      for (let message of messages.slice(0, diff)) {
-        message.remove()
-      }
+      setTimeout(function () {
+        let diff = messages.length - Hue.config.chat_crop_limit
+        for (let message of messages.slice(0, diff)) {
+          message.remove()
+        }
+      }, 100)
     }
 
     Hue.message_id += 1
