@@ -1,21 +1,10 @@
 // Redraws a drawing canvas
 Hue.canvas_redraw = function (args = {}) {
   let def_args = {
-    context: false,
-    click_x: false,
-    click_y: false,
-    drag: false,
-    bg_color: false,
-    colors: false,
-    sizes: false,
-    sector_index: false
+    sector_index: args.click_x.length
   }
 
   args = Object.assign(def_args, args)
-
-  if (args.sector_index === false) {
-    args.sector_index = args.click_x.length
-  }
 
   args.context.clearRect(
     0,

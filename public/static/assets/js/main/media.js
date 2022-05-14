@@ -350,12 +350,10 @@ Hue.fix_frames = function () {
 // It is responsible to initiate the construction of all required media players
 Hue.change_media = function (args = {}) {
   let def_args = {
-    type: "",
     force: false,
     play: true,
     notify: true,
-    current_source: false,
-    item: false
+    current_source: false
   }
 
   args = Object.assign(def_args, args)
@@ -497,8 +495,6 @@ Hue.fix_media_info = function () {
 // Sets media visibility
 Hue.set_media_enabled = function (args) {
   let def_args = {
-    type: "",
-    what: undefined, 
     save: true
   }
 
@@ -528,8 +524,6 @@ Hue.set_media_enabled = function (args) {
 // Set the lock of media
 Hue.set_media_locked = function(args) {
   let def_args = {
-    type: "",
-    what: undefined,
     change: true
   }
 

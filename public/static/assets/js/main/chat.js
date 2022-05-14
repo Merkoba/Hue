@@ -1,23 +1,9 @@
 // This generates all user chat messages inserted into the chat
 Hue.make_chat_message = function (args = {}) {
   let def_args = {
-    id: false,
-    user_id: false,
-    username: "",
-    message: "",
-    date: false,
-    brk: false,
     public: true,
-    link_title: false,
-    link_description: false,
-    link_image: false,
-    link_url: false,
     edited: false,
-    just_edited: false,
-    quote: "",
-    quote_username: "",
-    quote_user_id: "",
-    quote_id: ""
+    just_edited: false
   }
 
   args = Object.assign(def_args, args)
@@ -237,24 +223,14 @@ Hue.make_chat_message = function (args = {}) {
 // This generates all announcements inserted into the chat
 Hue.make_announcement_message = function (args = {}) {
   let def_args = {
-    id: false,
-    brk: "",
-    message: "",
     highlight: false,
-    title: false,
-    container_id: false,
-    date: false,
     type: "normal",
-    username: false,
     public: false,
-    user_id: false,
-    parse_text: false,
-    in_log: true,
-    media_source: "",
-    comment: ""
+    in_log: true
   }
 
   args = Object.assign(def_args, args)
+
   let is_media = args.type === "image_change" || args.type === "tv_change"
   let content_classes = "announcement_content reply_message edit_message"
   let brk_classes = "brk announcement_brk"
@@ -364,17 +340,15 @@ Hue.make_announcement_message = function (args = {}) {
 
 // This is a centralized function to insert all chat messages or announcements into the chat
 Hue.insert_message = function (args = {}) {
+  if (!args.message) {
+    return {message_id: 0}
+  }
+  
   let def_args = {
-    id: false,
-    message: false,
     just_edited: false
   }
 
   args = Object.assign(def_args, args)
-
-  if (!args.message) {
-    return {message_id: 0}
-  }
 
   let chat_area = Hue.el("#chat_area")
   let last_message = Hue.els("#chat_area > .message").slice(-1)[0]
