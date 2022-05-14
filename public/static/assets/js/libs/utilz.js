@@ -138,8 +138,6 @@ const Utilz = function () {
 			return ["list", [list_id, index]]
 		} else if (v_id) {
 			return ["video", v_id]
-		} else {
-			return false
 		}
 	}
 
@@ -209,12 +207,10 @@ const Utilz = function () {
 			if (match[0].includes('twitch.tv/videos/')) {
 				return ["video", match[1]]
 			} else if (match[0].includes("clips.twitch.tv")) {
-				return false
+				return
 			} else {
 				return ["channel", match[1]]
 			}
-		} else {
-			return false
 		}
 	}
 
@@ -286,8 +282,6 @@ const Utilz = function () {
 
 		if (matches) {
 			return matches[1].substring(0, 7)
-		} else {
-			return false
 		}
 	}
 
