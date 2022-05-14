@@ -257,7 +257,7 @@ Hue.send_whisper = function (message) {
   let usernames = Hue.whisper_users
 
   if (!usernames) {
-    return
+    return false
   }
 
   let discarded = []
@@ -275,7 +275,7 @@ Hue.send_whisper = function (message) {
   }
 
   if (approved.length === 0) {
-    return
+    return false
   }
 
   Hue.do_send_whisper({message: message, usernames: approved, type: Hue.message_type})

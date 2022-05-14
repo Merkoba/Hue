@@ -31,6 +31,8 @@ Hue.check_highlights = function (message) {
     if (message.search(Hue.mentions_regex) !== -1) {
       return true
     }
+
+    return false
   }
 }
 

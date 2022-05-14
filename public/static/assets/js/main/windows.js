@@ -968,6 +968,8 @@ Hue.any_modal_open = function () {
       return true
     }
   }
+
+  return false
 }
 
 // Gets the highest open Msg modal
