@@ -22,10 +22,8 @@ Hue.make_info_popup = function (on_click = function () {}) {
 Hue.make_info_popup_item = function (args = {}) {
   let def_args = {
     icon: "info",
-    message: "",
     action: true,
     push: true,
-    on_click: false,
     increase_counter: true
   }
 
@@ -57,8 +55,6 @@ Hue.make_info_popup_item = function (args = {}) {
 Hue.push_notification = function (args) {
   let def_args = {
     icon: "info",
-    message: "",
-    on_click: false,
     increase_counter: true
   }
 

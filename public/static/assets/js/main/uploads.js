@@ -146,15 +146,6 @@ Hue.create_file_reader = function (file) {
 // Creates a file reader
 // Starts a sliced upload
 Hue.upload_file = function (args = {}) {
-  let def_args = {
-    file: false,
-    action: false,
-    name: false,
-    comment: false,
-  }
-
-  args = Object.assign(def_args, args)
-
   if (!args.file || !args.action) {
     return
   }

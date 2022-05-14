@@ -44,19 +44,6 @@ Hue.update_usercount = function () {
 
 // Adds a user to the user list
 Hue.add_to_userlist = function (args = {}) {
-  let def_args = {
-    user_id: false,
-    username: false,
-    role: false,
-    profilepic_version: false,
-    date_joined: false,
-    bio: "",
-    audioclip_version: false,
-    last_activity: 0
-  }
-
-  args = Object.assign(def_args, args)
-
   for (let i = 0; i < Hue.userlist.length; i++) {
     if (Hue.userlist[i].user_id === args.user_id) {
       Hue.userlist[i].user_id = args.user_id

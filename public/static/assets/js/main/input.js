@@ -138,15 +138,8 @@ Hue.input_to_thirdperson = function (text) {
 // Or sends a chat message to the server
 Hue.process_input = function (args = {}) {
   let def_args = {
-    message: "",
     to_history: true,
-    clr_input: true,
-    edit_id: false,
-    handle_url: true,
-    quote: "",
-    quote_username: "",
-    quote_user_id: "",
-    quote_id: ""
+    clr_input: true
   }
 
   args = Object.assign(def_args, args)
