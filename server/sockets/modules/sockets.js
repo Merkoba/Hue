@@ -13,6 +13,7 @@ module.exports = function (Hue) {
       return false
     } catch (err) {
       Hue.logger.log_error(err)
+      return true
     }
   }
 
@@ -115,6 +116,8 @@ module.exports = function (Hue) {
           }
         }
       }
+
+      return false
     } catch (err) {
       Hue.logger.log_error(err)
       return true
