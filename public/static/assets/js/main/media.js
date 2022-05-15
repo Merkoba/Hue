@@ -836,7 +836,6 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   data.date = odata.date
   data.query = odata.query
   data.comment = odata.comment
-  data.in_log = odata.in_log === undefined ? true : odata.in_log
   data.media_type = type
 
   if (!data.source) {
@@ -929,7 +928,6 @@ Hue.announce_media = function (type, data) {
     username: data.username,
     type: `${type}_change`,
     user_id: data.user_id,
-    in_log: data.in_log,
     media_source: data.source,
     comment: data.comment
   })

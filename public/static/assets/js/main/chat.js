@@ -222,8 +222,7 @@ Hue.make_chat_message = function (args = {}) {
 Hue.make_announcement_message = function (args = {}) {
   let def_args = {
     highlight: false,
-    type: "normal",
-    in_log: true
+    type: "normal"
   }
 
   args = Object.assign(def_args, args)
@@ -316,7 +315,6 @@ Hue.make_announcement_message = function (args = {}) {
   Hue.dataset(fmessage, "username", args.username)
   Hue.dataset(fmessage, "mode", "announcement")
   Hue.dataset(fmessage, "user_id", args.user_id)
-  Hue.dataset(fmessage, "in_log", args.in_log)
   Hue.dataset(fmessage, "media_source", args.media_source)
 
   let message_id = Hue.insert_message({
@@ -1593,9 +1591,7 @@ Hue.show_log_messages = function (log_messages) {
     Hue.setup_media_object(
       "image",
       "show",
-      Object.assign(Hue.get_media_object_from_init_data("image"), {
-        in_log: false,
-      })
+      Object.assign(Hue.get_media_object_from_init_data("image"))
     )
   }
 
@@ -1603,9 +1599,7 @@ Hue.show_log_messages = function (log_messages) {
     Hue.setup_media_object(
       "tv",
       "show",
-      Object.assign(Hue.get_media_object_from_init_data("tv"), {
-        in_log: false,
-      })
+      Object.assign(Hue.get_media_object_from_init_data("tv"))
     )
   }
 
