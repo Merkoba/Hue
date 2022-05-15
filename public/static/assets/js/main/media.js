@@ -352,7 +352,6 @@ Hue.change_media = function (args = {}) {
   let def_args = {
     force: false,
     play: true,
-    notify: true,
     current_source: false
   }
 
@@ -369,7 +368,7 @@ Hue.change_media = function (args = {}) {
   }
 
   if (!Hue.has_focus) {
-    if (args.notify && item.username !== Hue.username) {
+    if (item.username !== Hue.username) {
       Hue.on_activity("media_change")
     }
     
@@ -494,12 +493,6 @@ Hue.fix_media_info = function () {
 
 // Sets media visibility
 Hue.set_media_enabled = function (args) {
-  let def_args = {
-    save: true
-  }
-
-  args = Object.assign(def_args, args)
-
   if (args.what === Hue.room_state[`${args.type}_enabled`]) {
     return
   }
@@ -514,7 +507,7 @@ Hue.set_media_enabled = function (args) {
   
   if (p === 0 || p === 100) {
     Hue.set_default_tv_size()
-  } else if (args.save) {
+  } else {
     Hue.save_room_state()
   }
   
@@ -920,7 +913,6 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
 Hue.announce_media = function (type, data) {
   return Hue.public_feedback(data.message, {
     id: data.id,
-    save: true,
     brk: Hue.get_chat_icon(type),
     title: data.info,
     date: data.date,

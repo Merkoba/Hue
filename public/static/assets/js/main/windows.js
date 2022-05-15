@@ -1167,7 +1167,6 @@ Hue.process_msg_close_button = function (button) {
 // Makes action popups like for file upload progress
 Hue.show_action_popup = function (args = {}) {
   let def_args = {
-    after_close: function () {},
     on_x_button_click: function () {}
   }
 
@@ -1189,7 +1188,6 @@ Hue.show_action_popup = function (args = {}) {
     content_class: "!action_popup",
     window_width: "auto",
     on_click: on_click,
-    after_close: args.after_close,
     close_on_escape: false,
     on_x_button_click: args.on_x_button_click
   }
