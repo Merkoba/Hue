@@ -1,7 +1,6 @@
 // This generates all user chat messages inserted into the chat
 Hue.make_chat_message = function (args = {}) {
   let def_args = {
-    public: true,
     edited: false,
     just_edited: false
   }
@@ -170,7 +169,6 @@ Hue.make_chat_message = function (args = {}) {
 
   Hue.dataset(fmessage, "username", args.username)
   Hue.dataset(fmessage, "user_id", args.user_id)
-  Hue.dataset(fmessage, "public", args.public)
   Hue.dataset(fmessage, "date", d)
   Hue.dataset(fmessage, "highlighted", highlighted)
   Hue.dataset(fmessage, "mode", "chat")
@@ -225,7 +223,6 @@ Hue.make_announcement_message = function (args = {}) {
   let def_args = {
     highlight: false,
     type: "normal",
-    public: false,
     in_log: true
   }
 
@@ -313,7 +310,6 @@ Hue.make_announcement_message = function (args = {}) {
   })
 
   Hue.dataset(fmessage, "id", args.id)
-  Hue.dataset(fmessage, "public", args.public)
   Hue.dataset(fmessage, "date", d)
   Hue.dataset(fmessage, "highlighted", highlighted)
   Hue.dataset(fmessage, "type", args.type)
@@ -353,7 +349,6 @@ Hue.insert_message = function (args = {}) {
   let user_id = Hue.dataset(args.message, "user_id")
   let username = Hue.dataset(args.message, "username")
   let date = Hue.dataset(args.message, "date")
-  let is_public = Hue.dataset(args.message, "public")
   let highlighted = Hue.dataset(args.message, "highlighted")
   let content_container, message_id
 
@@ -441,7 +436,7 @@ Hue.insert_message = function (args = {}) {
     }
   }
 
-  if (is_public && user_id) {
+  if (user_id) {
     Hue.last_chat_user_id = user_id
 
     if (Hue.started) {
@@ -1666,8 +1661,7 @@ Hue.shrug = function () {
 Hue.feedback = function (message, data = false) {
   let obj = {
     brk: Hue.get_chat_icon("info"),
-    message: message,
-    public: false,
+    message: message
   }
 
   if (data) {
@@ -1685,8 +1679,7 @@ Hue.feedback = function (message, data = false) {
 Hue.public_feedback = function (message, data = false) {
   let obj = {
     brk: Hue.get_chat_icon("info"),
-    message: message,
-    public: true,
+    message: message
   }
 
   if (data) {
