@@ -339,11 +339,7 @@ Hue.make_announcement_message = function (args = {}) {
 }
 
 // This is a centralized function to insert all chat messages or announcements into the chat
-Hue.insert_message = function (args = {}) {
-  if (!args.message) {
-    return {message_id: 0}
-  }
-  
+Hue.insert_message = function (args = {}) {  
   let def_args = {
     just_edited: false
   }
