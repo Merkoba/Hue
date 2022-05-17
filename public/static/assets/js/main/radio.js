@@ -61,13 +61,29 @@ Hue.setup_radio_window = function () {
     Hue.copy_string(info)
   })
 
-  Hue.el("#handle_radio_history_search").addEventListener("click", function (e) {
-    Hue.msg_handle_radio_history.close()
-    let el = Hue.handle_radio_history_item
-    let info = Hue.el(".radio_history_info", el).textContent
-    let url = `https://www.youtube.com/results?search_query=${info}`
-    Hue.goto_url(url, "tab", true)
+  Hue.el("#handle_radio_history_youtube").addEventListener("click", function (e) {
+    Hue.radio_search_song("youtube")
   })
+
+  Hue.el("#handle_radio_history_soundcloud").addEventListener("click", function (e) {
+    Hue.radio_search_song("soundcloud")
+  })
+}
+
+// Search radio song on a website
+Hue.radio_search_song = function (type) {
+  Hue.msg_handle_radio_history.close()
+  let el = Hue.handle_radio_history_item
+  let info = Hue.el(".radio_history_info", el).textContent
+  let url
+
+  if (type === "youtube") {
+    url = `https://www.youtube.com/results?search_query=${info}`
+  } else if (type === "soundcloud") {
+    url = `https://soundcloud.com/search?q=${info}`
+  }
+  
+  Hue.goto_url(url, "tab", true)
 }
 
 // Setup radio window title

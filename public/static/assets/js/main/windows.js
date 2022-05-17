@@ -836,8 +836,9 @@ Hue.start_msg = function () {
 
   Hue.msg_handle_radio_history.set_title(Hue.template_titlebar({
     items: [
-      {id: "handle_radio_history_copy", text: "Copy To Clipboard"},
-      {id: "handle_radio_history_search", text: "Search YouTube"},
+      {id: "handle_radio_history_copy", text: "Clipboard"},
+      {id: "handle_radio_history_youtube", text: "YouTube"},
+      {id: "handle_radio_history_soundcloud", text: "Soundcloud"},
     ]
   }))
 
