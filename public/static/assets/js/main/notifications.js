@@ -74,7 +74,8 @@ Hue.push_notification = function (args) {
   item.innerHTML = Hue.template_notification({
     content_classes: content_classes,
     icon: args.icon,
-    message: args.message
+    message: args.message,
+    date: t
   })
 
   let content = Hue.el(".notifications_item_content", item)

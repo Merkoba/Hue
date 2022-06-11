@@ -55,6 +55,7 @@ html {
 	height: 100%;
 	object-fit: cover;
 	object-position: center center;
+	filter: grayscale(100%);
 }
 
 #header {
@@ -1466,6 +1467,16 @@ pre {
 	position: relative;
 	box-sizing: border-box;
 	text-align: left;
+}
+
+.notifications_date {
+	margin-bottom: 0.35rem;
+	display: flex;
+	align-items: flex-start;
+}
+
+#notifications_container {
+	gap: 1rem;
 }
 
 .notifications_icon {
