@@ -1532,7 +1532,8 @@ pre {
 }
 
 .message_board_date {
-	margin-bottom: 0.4rem;
+	margin-top: 0.7rem;
+	margin-bottom: 0.35rem;
 }
 
 .message_board_link_image {
