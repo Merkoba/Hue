@@ -1298,15 +1298,15 @@ Hue.scroll_up = function () {
   Hue.scroll_up_check()
 }
 
-// Scrolls the chat down
-Hue.scroll_down = function () {
-  Hue.el("#chat_area_parent").scrollTop += Hue.chat_scroll_amount
-}
-
 // Scrolls the chat up (more)
 Hue.scroll_up_2 = function () {
   Hue.el("#chat_area_parent").scrollTop -= Hue.chat_scroll_amount_2
   Hue.scroll_up_check()
+}
+
+// Scrolls the chat down
+Hue.scroll_down = function () {
+  Hue.el("#chat_area_parent").scrollTop += Hue.chat_scroll_amount
 }
 
 // Scrolls the chat down (more)
