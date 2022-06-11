@@ -1295,6 +1295,7 @@ Hue.scroll_chat_to = function (scrolltop) {
 // Scrolls the chat up
 Hue.scroll_up = function () {
   Hue.el("#chat_area_parent").scrollTop -= Hue.chat_scroll_amount
+  Hue.scroll_up_check()
 }
 
 // Scrolls the chat down
@@ -1305,6 +1306,7 @@ Hue.scroll_down = function () {
 // Scrolls the chat up (more)
 Hue.scroll_up_2 = function () {
   Hue.el("#chat_area_parent").scrollTop -= Hue.chat_scroll_amount_2
+  Hue.scroll_up_check()
 }
 
 // Scrolls the chat down (more)
@@ -1467,10 +1469,19 @@ Hue.scroll_events = function () {
   })
 
   chat.addEventListener("wheel", function (e) {
-    if (e.wheelDelta > 0 && !Hue.bottom_scroller_visible) {
-      Hue.check_scrollers()
+    Hue.scroll_up_check()
+
+    if (e.wheelDelta > 0) {
+      Hue.scroll_up_check()
     }
   })
+}
+
+// Check if it should check scroll instantly
+Hue.scroll_up_check = function () {
+  if (!Hue.bottom_scroller_visible) {
+    Hue.check_scrollers()
+  }
 }
 
 // Update the scroll percentange on the chat scrollers
