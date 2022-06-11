@@ -1459,9 +1459,17 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
 
 // Starts chat area scroll events
 Hue.scroll_events = function () {
-  Hue.el("#chat_area_parent").addEventListener("scroll", function (e) {
+  let chat = Hue.el("#chat_area_parent")
+
+  chat.addEventListener("scroll", function (e) {
     Hue.scroll_timer()
     Hue.update_scroll_percentage()
+  })
+
+  chat.addEventListener("wheel", function (e) {
+    if (!Hue.bottom_scroller_visible) {
+      Hue.check_scrollers()
+    }
   })
 }
 
