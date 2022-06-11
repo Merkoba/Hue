@@ -1452,7 +1452,7 @@ pre {
 .nice_row_container {
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
+	gap: 1rem;
 	width: 100%;
 }
 
@@ -1469,17 +1469,13 @@ pre {
 	text-align: left;
 }
 
-.notifications_date {
+.nicerow_top {
 	margin-bottom: 0.35rem;
 	display: flex;
 	align-items: flex-start;
 }
 
-#notifications_container {
-	gap: 1rem;
-}
-
-.notifications_icon {
+.notification_item_icon {
 	margin-right: 0.5rem;
 }
 
@@ -1489,10 +1485,6 @@ pre {
 
 .whisper_info_container {
 	max-width: 24.71rem;
-}
-
-.whispers_icon {
-	margin-bottom: 0.5rem;
 }
 
 #handle_url_url {
@@ -1798,7 +1790,7 @@ pre {
 	gap: 1rem;
 }
 
-.whispers_item_content {
+.whisper_item_message {
 	margin-left: 0.5rem;
 }
 
