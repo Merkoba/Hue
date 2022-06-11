@@ -331,7 +331,7 @@ Hue.setup_whispers = function () {
 Hue.push_whisper = function (message, on_click, read, data) {
   let date = Date.now()
   let title = Hue.utilz.nice_date(date)
-  let item = Hue.div("whisper_item modal_item")
+  let item = Hue.div("whisper_item modal_item dynamic_title")
 
   if (data.mode === "received") {
     item.innerHTML = Hue.template_whisper_received({
@@ -350,14 +350,13 @@ Hue.push_whisper = function (message, on_click, read, data) {
     })
   }
   
-  let content = Hue.el(".whisper_item_content", item)
-  content.title = title
+  item.title = title
 
-  Hue.dataset(content, "otitle", title)
-  Hue.dataset(content, "date", date)
-  Hue.dataset(content, "read", read)
+  Hue.dataset(item, "otitle", title)
+  Hue.dataset(item, "date", date)
+  Hue.dataset(item, "read", read)
 
-  content.addEventListener("click", function () {
+  item.addEventListener("click", function () {
     on_click()
   })
 
@@ -385,7 +384,7 @@ Hue.push_whisper = function (message, on_click, read, data) {
     empty.remove()
   }
 
-  return content
+  return item
 }
 
 // Shows information about the recent whispers
