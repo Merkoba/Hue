@@ -110,6 +110,7 @@ Hue.dataset_id = 0
 Hue.flipped = false
 Hue.radio_slided = false
 Hue.command_book_created = false
+Hue.last_chat_scrolltop = 0
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
