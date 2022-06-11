@@ -389,7 +389,7 @@ const Utilz = function () {
 
 	// Get a nice date string
 	utilz.nice_date = function (date = Date.now()) {
-		return dateFormat(date, "dd/mmm/yy, hh:MM:ss tt")
+		return dateFormat(date, "dd/mmm/yy, h:MM:ss tt")
 	}
 
 	// Escape special characters
