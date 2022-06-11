@@ -1,7 +1,7 @@
 <script id="template_notification" type="text/x-handlebars-template" class="template">
-  <div class="notifications_date">{{date}}</div>
-  <div class="notifications_item_content nice_row {{content_classes}} dynamic_title">
-    <svg class="other_icon notifications_icon"><use href="#icon_{{icon}}"></svg>
-    <div class="notifications_message">{{message}}</div>
+  <div class="notification_item_date nicerow_top">{{date}}</div>
+  <div class="notification_item_content nice_row {{content_classes}} dynamic_title">
+    <svg class="notification_item_icon other_icon "><use href="#icon_{{icon}}"></svg>
+    <div class="notification_item_message">{{message}}</div>
   </div>
 </script>

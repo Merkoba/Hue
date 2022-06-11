@@ -69,7 +69,7 @@ Hue.push_notification = function (args) {
     content_classes = "action"
   }
 
-  let item = Hue.div("notifications_item modal_item")
+  let item = Hue.div("notification_item modal_item")
 
   item.innerHTML = Hue.template_notification({
     content_classes: content_classes,
@@ -78,7 +78,7 @@ Hue.push_notification = function (args) {
     date: t
   })
 
-  let content = Hue.el(".notifications_item_content", item)
+  let content = Hue.el(".notification_item_content", item)
 
   content.title = t
   Hue.dataset(content, "otitle", t)
@@ -92,7 +92,7 @@ Hue.push_notification = function (args) {
   
   Hue.el("#notifications_container").prepend(item)
   
-  let items = Hue.els(".notifications_item")
+  let items = Hue.els(".notification_item")
 
   if (items.length > Hue.config.notifications_crop_limit) {
     items.slice(-1)[0].remove()

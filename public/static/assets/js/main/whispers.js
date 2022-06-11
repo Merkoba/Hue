@@ -238,8 +238,9 @@ Hue.show_whisper = function (data, mode) {
   Hue.urlize(text_el)
 
   if (!Hue.dataset(data.notification, "read")) {
-    let text = data.notification.textContent.replace(/\s\(unread\)$/, "")
-    data.notification.textContent = text
+    let message_el = Hue.el(".whisper_item_message", data.notification)
+    let text = message_el.textContent.replace(/\s\(unread\)$/, "")
+    message_el.textContent = text
     Hue.dataset(data.notification, "read", true)
     Hue.update_whispers_unread_count()
   }
@@ -330,45 +331,50 @@ Hue.setup_whispers = function () {
 Hue.push_whisper = function (message, on_click, read, data) {
   let date = Date.now()
   let title = Hue.utilz.nice_date(date)
-  let item = Hue.div("whispers_item modal_item nice_row")
+  let item = Hue.div("whisper_item modal_item")
 
   if (data.mode === "received") {
-    item.innerHTML = `<img class='whispers_item_profilepic profilepic icon_size actionbox' loading='lazy' src='${Hue.get_profilepic(data.user_id)}'>`
-    
+    item.innerHTML = Hue.template_whisper_received({
+      date: title,
+      profilepic: Hue.get_profilepic(data.user_id),
+      message: message
+    })
+
     Hue.el(".profilepic", item).addEventListener("error", function () {
       Hue.fallback_profilepic(this)
     })
   } else {
-    item.innerHTML = "<svg class='icon_size'><use href='#icon_envelope'></svg>"
+    item.innerHTML = Hue.template_whisper_sent({
+      date: title,
+      message: message
+    })
   }
-
-  let message_el = Hue.div("whispers_item_content action dynamic_title")
-  message_el.textContent = message
-  item.appendChild(message_el)
   
-  let content = Hue.el(".whispers_item_content", item)
+  let content = Hue.el(".whisper_item_content", item)
   content.title = title
 
   Hue.dataset(content, "otitle", title)
   Hue.dataset(content, "date", date)
   Hue.dataset(content, "read", read)
 
-  if (read) {
-    content.textContent = message
-  } else {
-    content.textContent = `${message} (unread)`
-  }
-
   content.addEventListener("click", function () {
     on_click()
   })
 
+  let message_el = Hue.el(".whisper_item_message", item)
+
+  if (read) {
+    message_el.textContent = message
+  } else {
+    message_el.textContent = `${message} (unread)`
+  }
+
   Hue.el("#whispers_container").prepend(item)
   
-  let items = Hue.els(".whispers_item")
+  let items = Hue.els(".whisper_item")
 
   if (items.length > Hue.config.whispers_crop_limit) {
-    Hue.els("#whispers_container .whispers_item").slice(-1)[0].remove()
+    Hue.els("#whispers_container .whisper_item").slice(-1)[0].remove()
   }
 
   Hue.update_whispers_unread_count()
@@ -401,7 +407,7 @@ Hue.update_whispers_unread_count = function () {
 Hue.get_unread_whispers = function () {
   let num_unread = 0
 
-  Hue.els(".whispers_item_content").forEach(it => {
+  Hue.els(".whisper_item_content").forEach(it => {
     if (!Hue.dataset(it, "read")) {
       num_unread += 1
     }
