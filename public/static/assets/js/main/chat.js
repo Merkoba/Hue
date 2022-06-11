@@ -1467,7 +1467,7 @@ Hue.scroll_events = function () {
   })
 
   chat.addEventListener("wheel", function (e) {
-    if (!Hue.bottom_scroller_visible) {
+    if (e.wheelDelta > 0 && !Hue.bottom_scroller_visible) {
       Hue.check_scrollers()
     }
   })
