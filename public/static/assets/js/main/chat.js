@@ -1480,7 +1480,7 @@ Hue.scroll_events = function () {
 // Check if it should check scroll instantly
 Hue.scroll_up_check = function () {
   if (!Hue.bottom_scroller_visible) {
-    Hue.check_scrollers()
+    Hue.check_scrollers(0)
   }
 }
 
@@ -1541,12 +1541,11 @@ Hue.hide_bottom_scroller = function () {
 }
 
 // Updates scrollers state based on scroll position
-Hue.check_scrollers = function () {
+Hue.check_scrollers = function (threshold = 5) {
   if (!Hue.started || !Hue.has_focus) {
     return
   }
 
-  let threshold = 5
   let area = Hue.el("#chat_area_parent")
   let max = area.scrollHeight - area.clientHeight
   let diff = max - area.scrollTop
