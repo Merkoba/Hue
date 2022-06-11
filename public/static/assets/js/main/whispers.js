@@ -406,7 +406,7 @@ Hue.update_whispers_unread_count = function () {
 Hue.get_unread_whispers = function () {
   let num_unread = 0
 
-  Hue.els(".whisper_item_content").forEach(it => {
+  Hue.els(".whisper_item").forEach(it => {
     if (!Hue.dataset(it, "read")) {
       num_unread += 1
     }
