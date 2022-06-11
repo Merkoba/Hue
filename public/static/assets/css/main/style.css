@@ -1229,7 +1229,7 @@ a.special_link:hover {
 
 .message_edit_area {
 	resize: none;
-	font-size: 1rem;
+	font-size: 1em;
 	height: 4rem;
 	padding: 0.2rem;
 	outline: none;
