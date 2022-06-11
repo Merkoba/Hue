@@ -69,7 +69,7 @@ Hue.push_notification = function (args) {
     content_classes = "action"
   }
 
-  let item = Hue.div("notification_item modal_item")
+  let item = Hue.div("notification_item modal_item dynamic_title")
 
   item.innerHTML = Hue.template_notification({
     content_classes: content_classes,
@@ -78,14 +78,12 @@ Hue.push_notification = function (args) {
     date: t
   })
 
-  let content = Hue.el(".notification_item_content", item)
-
-  content.title = t
-  Hue.dataset(content, "otitle", t)
-  Hue.dataset(content, "date", d)
+  item.title = t
+  Hue.dataset(item, "otitle", t)
+  Hue.dataset(item, "date", d)
 
   if (args.on_click) {
-    content.addEventListener("click", function () {
+    item.addEventListener("click", function () {
       args.on_click()
     })
   }
