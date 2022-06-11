@@ -79,6 +79,7 @@ Hue.push_notification = function (args) {
   })
 
   item.title = t
+  
   Hue.dataset(item, "otitle", t)
   Hue.dataset(item, "date", d)
 
