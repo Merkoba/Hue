@@ -1469,8 +1469,6 @@ Hue.scroll_events = function () {
   })
 
   chat.addEventListener("wheel", function (e) {
-    Hue.scroll_up_check()
-
     if (e.wheelDelta > 0) {
       Hue.scroll_up_check()
     }
