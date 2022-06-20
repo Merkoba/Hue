@@ -1,13 +1,20 @@
 <script id="template_window_controls" type="text/x-handlebars-template" class="template">
   <div class="window_controls flex_row_center" data-parent-id="{{parent_id}}">
-    <div class="window_to_bottom action flex_column_center" title="Go To Bottom">
-      <svg class="panel_icon"><use href="#icon_arrow-down"></svg>
+    <div class="flex_column_center">
+      <div class="window_to_top action flex_column_center" title="Go To Top">
+        <svg class="panel_icon"><use href="#icon_arrow-up"></svg>
+      </div>
+
+      <div class="window_to_bottom action flex_column_center" title="Go To Bottom">
+        <svg class="panel_icon"><use href="#icon_arrow-down"></svg>
+      </div>
     </div>
 
     <input type="text" id="{{filter_id}}" class="filter_input" placeholder="{{filter_placeholder}}" data-mode="{{filter_mode}}">
 
-    <div class="window_to_top action flex_column_center" title="Go To Top">
-      <svg class="panel_icon"><use href="#icon_arrow-up"></svg>
+    <div class="window_filter_clear action flex_column_center" title="Go To Bottom">
+      <svg class="panel_icon"><use href="#icon_x-circle"></svg>
     </div>
+  </div>    
   </div>
 </script>

@@ -872,6 +872,7 @@ Hue.setup_window_controls = function () {
     let filter = Hue.el(".filter_input", it)
     let bottom = Hue.el(".window_to_bottom", it)
     let top = Hue.el(".window_to_top", it)
+    let clear = Hue.el(".window_filter_clear", it)
 
     if (filter.dataset.mode !== "manual") {
       filter.addEventListener("input", function () {
@@ -886,7 +887,18 @@ Hue.setup_window_controls = function () {
     top.addEventListener("click", function () {
       container.scrollTop = 0
     })
+
+    clear.addEventListener("click", function () {
+      filter.value = ""
+      Hue.trigger_filter(filter)
+    })    
   })
+}
+
+// Trigger change on an input
+Hue.trigger_filter = function (filter) {
+  let event = new Event("input")
+  filter.dispatchEvent(event)
 }
 
 // Focuses the filter widget of a modal
