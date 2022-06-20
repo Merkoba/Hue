@@ -651,9 +651,11 @@ a.generic:hover {
 .window_controls {
 	top: 0;
 	position: sticky;
-	margin-bottom: 1.5rem;
 	z-index: 99;
 	background-color: var(--background_color);
+	margin-top: -1.5rem;
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
 }
 
 .filter_input {
