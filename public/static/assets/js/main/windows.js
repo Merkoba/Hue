@@ -882,15 +882,18 @@ Hue.setup_window_controls = function () {
     
     bottom.addEventListener("click", function () {
       container.scrollTop = container.scrollHeight
+      filter.focus()
     })
 
     top.addEventListener("click", function () {
       container.scrollTop = 0
+      filter.focus()
     })
 
     clear.addEventListener("click", function () {
       filter.value = ""
       Hue.trigger_filter(filter)
+      filter.focus()
     })    
   })
 }
