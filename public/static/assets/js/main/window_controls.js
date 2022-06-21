@@ -230,7 +230,7 @@ Hue.save_filter_history = function (force = false) {
 
 // Adds an item to the filter history
 Hue.add_to_filter_history = function (message) {
-  if (!message || message.startsWith("$")) {
+  if (!message.trim()) {
     return
   }
 
