@@ -16,6 +16,7 @@ Hue.config = {}
 Hue.ls_settings = "settings_v1"
 Hue.ls_room_state = "room_state_v2"
 Hue.ls_input_history = "input_history_v1"
+Hue.ls_filter_history = "filter_history_v1"
 Hue.roles = ["admin", "op", "voice"]
 Hue.topic = ""
 Hue.colorlib = ColorLib()
@@ -153,7 +154,6 @@ Hue.init = function () {
   Hue.start_chat_mouse_events()
   Hue.start_body_events()
   Hue.start_chat_menu_context_menu()
-  Hue.start_msg_close_buttons_context_menu()
   Hue.setup_show_profile()
   Hue.setup_main_menu()
   Hue.setup_room_config()
@@ -161,6 +161,7 @@ Hue.init = function () {
   Hue.setup_modal_image()
   Hue.setup_footer()
   Hue.get_input_history()
+  Hue.setup_filter_history()
   Hue.setup_whispers()
   Hue.setup_autocomplete()
   Hue.show_console_message()

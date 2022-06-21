@@ -120,7 +120,8 @@ Hue.show_chat_search = function (filter = "") {
 
   Hue.el("#chat_search_container").innerHTML = ""
   Hue.el("#chat_search_filter").value = filter
-  filter = Hue.utilz.single_space(filter).trim().toLowerCase()
+  let filter0 = Hue.utilz.single_space(filter).trim()
+  filter = filter0.toLowerCase()
   let args, first_arg, tail
 
   if (filter) {
@@ -207,6 +208,8 @@ Hue.show_chat_search = function (filter = "") {
   Hue.msg_chat_search.show(function () {
     Hue.scroll_modal_to_top("chat_search")
   })
+
+  Hue.after_filter_search(filter0)
 }
 
 // Show links in chat search
