@@ -16,11 +16,6 @@ Hue.create_debouncer = function (func, delay) {
 // Creates all debouncers
 // These are functions that get executed after not being called after a set delay
 Hue.create_debouncers = function () {
-  // Debounce timer for normal window filters
-  Hue.do_modal_filter_timer = Hue.create_debouncer(function () {
-    Hue.do_modal_filter()
-  }, Hue.filter_delay)
-
   // Debounce timer for saving a localStorage object
   // This was done to avoid saving loops
   Hue.save_local_storage_timer = Hue.create_debouncer(function () {
@@ -36,11 +31,6 @@ Hue.create_debouncers = function () {
   Hue.scroll_timer = Hue.create_debouncer(function () {
     Hue.check_scrollers()
   }, Hue.scroll_delay)
-
-  // Debounce timer for chat search filter
-  Hue.chat_search_timer = Hue.create_debouncer(function () {
-    Hue.show_chat_search(Hue.el("#chat_search_filter").value)
-  }, Hue.filter_delay)
 
   // Debounce timer to hide the typing actions
   Hue.typing_remove_timer = Hue.create_debouncer(function () {
