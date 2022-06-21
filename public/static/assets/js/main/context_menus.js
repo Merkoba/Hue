@@ -93,18 +93,3 @@ Hue.start_chat_menu_context_menu = function () {
     }
   })
 }
-
-// Starts the context menu for modal and popup windows's close buttons
-Hue.start_msg_close_buttons_context_menu = function () {
-  document.addEventListener("contextmenu", function (e) {
-    if (e.target.classList.contains("Msg-window-inner-x")) {
-      ctxmenu.show([{ 
-        text: "Close All",
-        action: function () {
-          Hue.process_msg_close_button(e.target)
-        }
-      }], e.target)
-      e.preventDefault()
-    }
-  })
-}

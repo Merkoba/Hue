@@ -102,6 +102,12 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_filter_history = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "filter_history"
+    })
+  )
+
   Hue.msg_user_profile = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "user_profile",
@@ -546,6 +552,16 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_filter_history.set(
+    Hue.template_filter_history({
+      window_controls: Hue.template_window_controls({
+        filter_mode: "auto",
+        filter_id: "filter_history_filter",
+        filter_placeholder: "Filter"
+      })
+    })
+  )
+
   Hue.msg_settings.set(
     Hue.template_settings({
       window_controls: Hue.template_window_controls({
@@ -856,6 +872,7 @@ Hue.start_msg = function () {
   Hue.msg_admin_list.set_title("Admin List")
   Hue.msg_ban_list.set_title("Ban List")
   Hue.msg_roomlist.set_title("Room List")
+  Hue.msg_filter_history.set_title("Filter History")
   Hue.msg_settings.set_title("User Settings")
   Hue.msg_screen_capture_options.set_title("Screen Capture")
   Hue.msg_admin_activity.set_title("Admin Activity")
@@ -863,71 +880,6 @@ Hue.start_msg = function () {
   Hue.msg_command_book.set_title("Command Book")
   Hue.msg_user_profile.set_title("User Profile")
   Hue.msg_change_role.set_title("Change Role")
-}
-
-// Setup window controls
-Hue.setup_window_controls = function () {
-  Hue.els(".window_controls").forEach(it => {
-    let container = it.closest(".Msg-content-container")
-    let filter = Hue.el(".filter_input", it)
-    let bottom = Hue.el(".window_to_bottom", it)
-    let top = Hue.el(".window_to_top", it)
-    let clear = Hue.el(".window_filter_clear", it)
-
-    if (filter.dataset.mode !== "manual") {
-      filter.addEventListener("input", function () {
-        Hue.do_modal_filter_timer()
-      })
-    }
-    
-    bottom.addEventListener("click", function () {
-      container.scrollTop = container.scrollHeight
-      filter.focus()
-    })
-
-    top.addEventListener("click", function () {
-      container.scrollTop = 0
-      filter.focus()
-    })
-
-    clear.addEventListener("click", function () {
-      filter.value = ""
-      Hue.trigger_filter(filter)
-      filter.focus()
-    })    
-  })
-}
-
-// Trigger change on an input
-Hue.trigger_filter = function (filter) {
-  let event = new Event("input")
-  filter.dispatchEvent(event)
-}
-
-// Focuses the filter widget of a modal
-Hue.focus_modal_filter = function (instance) {
-  let filter = Hue.el(`#Msg-content-${instance.options.id} .filter_input`)
-
-  if (filter) {
-    filter.focus()
-  }
-}
-
-// Empties the filter of a modal and updates it
-Hue.reset_modal_filter = function (instance) {
-  let id = instance.options.id
-  let filter = Hue.el(`#Msg-content-${id} .filter_input`)
-
-  if (filter) {
-    if (id === "info" || filter.dataset.mode === "manual") {
-      return
-    }
-
-    if (filter.value) {
-      filter.value = ""
-      Hue.do_modal_filter(id)
-    }
-  }
 }
 
 // This is called after a modal is shown
@@ -1007,125 +959,6 @@ Hue.close_all_popups = function (callback = false) {
   }
 }
 
-// Starts custom filters events
-Hue.start_filters = function () {
-  Hue.el("#chat_search_filter").addEventListener("input", function () {
-    Hue.chat_search_timer()
-  })
-}
-
-// Filter action for normal filter windows
-Hue.do_modal_filter = function (id = false) {
-  if (!id) {
-    if (!Hue.active_modal) {
-      return
-    }
-
-    id = Hue.active_modal.options.id
-  }
-
-  let finished = false
-
-  function filtercheck (it) {
-    if (finished) {
-      return
-    }
-
-    if (filter.startsWith("$user")) {
-      let username = Hue.dataset(it, "username")
-      let match = username && first_arg === username.toLowerCase()
-      
-      if (match) {
-        if (tail) {
-          match = it.textContent.toLowerCase().includes(tail)
-        }
-      }
-
-      return match
-    } else if (filter.startsWith("$fresh")) {
-      let match = Hue.dataset(it, "fresh")
-
-      if (match) {
-        if (args) {
-          match = it.textContent.toLowerCase().includes(args)
-        }
-      } else {
-        finished = true
-      }
-
-      return match
-    } else if (filter.startsWith("$links")) {
-      let s = it.textContent.toLowerCase()
-      let match = s.includes("http://") || s.includes("https://")
-
-      if (match) {
-        if (args) {
-          match = it.textContent.toLowerCase().includes(args)
-        }
-      }
-
-      return match
-    } else {
-      return it.textContent.toLowerCase().includes(filter)
-    }
-  }  
-
-  let win = Hue.el(`#Msg-content-${id}`)
-  let filter_el = Hue.el(".filter_input", win)
-  filter = Hue.utilz.single_space(filter_el.value).trim().toLowerCase()
-  let items = Hue.els(".modal_item", win)
-  let args, first_arg, tail
-
-  if (filter && items.length) {
-    if (filter.startsWith("$")) {
-      let split = filter.split(" ").filter(x => x !== "")
-      first_arg = split[1]
-      args = split.slice(1).join(" ")
-      tail = split.slice(2).join(" ")
-
-      if (first_arg) {
-        first_arg = first_arg.toLowerCase()
-      }
-
-      if (args) {
-        args = args.toLowerCase()
-      }
-
-      if (tail) {
-        tail = tail.toLowerCase()
-      }
-    }
-    
-    if (filter.startsWith("$user")) {
-      if (!first_arg) {
-        return
-      }
-    }
-
-    items.forEach(it => {
-      if (filtercheck(it)) {
-        it.classList.remove("nodisplay")
-      } else {
-        it.classList.add("nodisplay")
-      }
-    })
-
-    Hue[`${id}_filtered`] = true
-  } else {
-    items.forEach(it => {
-      it.classList.remove("nodisplay")
-    })
-
-    Hue[`${id}_filtered`] = false
-  }
-
-  Hue.scroll_modal_to_top(id)
-
-  if (Hue[`after_${id}_filtered`]) {
-    Hue[`after_${id}_filtered`]()
-  }
-}
-
 // Scrolls a modal window to the top
 Hue.scroll_modal_to_top = function (id) {
   Hue.el(`#Msg-content-container-${id}`).scrollTop = 0
@@ -1165,19 +998,6 @@ Hue.create_popup = function (args = {}, ptype = "unset") {
   let popup = Msg.factory(args)
   popup.hue_type = ptype
   return popup
-}
-
-// Determines what to do after a 'close all modals' trigger
-// If it comes from a modal it closes all modals
-// If it comes from a popup it closes all popups
-Hue.process_msg_close_button = function (button) {
-  let container = button.closest(".Msg-container")
-
-  if (container.classList.contains("Msg-container-modal")) {
-    Hue.close_all_modals()
-  } else if (container.classList.contains("Msg-container-popup")) {
-    Hue.close_all_popups()
-  }
 }
 
 // Makes action popups like for file upload progress
