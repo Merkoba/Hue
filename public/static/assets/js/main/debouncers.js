@@ -47,11 +47,6 @@ Hue.create_debouncers = function () {
     Hue.modal_image_next_click()
   }, Hue.wheel_delay)
 
-  // Debounce timer for settings filter
-  Hue.settings_filter_timer = Hue.create_debouncer(function () {
-    Hue.show_settings(Hue.el("#settings_filter").value)
-  }, Hue.filter_delay)
-
   // Debounce timer for userlist update
   Hue.update_userlist = Hue.create_debouncer(function (prop) {
     Hue.do_update_userlist(prop)
