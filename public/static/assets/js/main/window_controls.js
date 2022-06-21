@@ -197,7 +197,8 @@ Hue.setup_filter_history = function () {
 
   Hue.el("#filter_history_container").addEventListener("click", function (e) {
     if (e.target.closest(".filter_history_item")) {
-      Hue.filter_history_target.value = e.target.textContent.trim()
+      let el = e.target.closest(".filter_history_item")
+      Hue.filter_history_target.value = el.textContent.trim()
       Hue.msg_filter_history.close(function () {
         Hue.do_modal_filter()
         Hue.filter_history_target.focus()
@@ -207,8 +208,9 @@ Hue.setup_filter_history = function () {
 
   Hue.el("#filter_history_container").addEventListener("auxclick", function (e) {
     if (e.target.closest(".filter_history_item")) {
-      Hue.remove_from_filter_history(e.target.textContent.trim())
-      e.target.remove()
+      let el = e.target.closest(".filter_history_item")
+      Hue.remove_from_filter_history(el.textContent.trim())
+      el.remove()
     }
   })
 }
