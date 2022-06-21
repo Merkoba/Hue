@@ -104,7 +104,8 @@ Hue.start_msg = function () {
 
   Hue.msg_filter_history = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "filter_history"
+      id: "filter_history",
+      window_width: "30rem"
     })
   )
 
