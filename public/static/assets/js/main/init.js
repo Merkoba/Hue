@@ -145,7 +145,6 @@ Hue.init = function () {
   Hue.start_settings_widgets()
   Hue.start_settings_widgets_listeners()
   Hue.setup_settings_windows()
-  Hue.start_filters()
   Hue.start_image_events()
   Hue.start_dropzone()
   Hue.activate_visibility_listener()

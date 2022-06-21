@@ -8,11 +8,11 @@ Hue.setup_window_controls = function () {
     let clear = Hue.el(".window_filter_clear", it)
     let history = Hue.el(".window_filter_history", it)
 
-    if (filter.dataset.mode !== "manual") {
-      filter.addEventListener("input", function () {
-        Hue.do_modal_filter_timer()
-      })
-    }
+    filter.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        Hue.do_modal_filter()
+      }
+    })    
 
     bottom.addEventListener("click", function () {
       container.scrollTop = container.scrollHeight
@@ -32,7 +32,7 @@ Hue.setup_window_controls = function () {
 
     history.addEventListener("click", function () {
       Hue.show_filter_history(filter)
-    })      
+    })
   })
 }
 
@@ -62,13 +62,6 @@ Hue.reset_modal_filter = function (instance) {
   }
 }
 
-// Starts custom filters events
-Hue.start_filters = function () {
-  Hue.el("#chat_search_filter").addEventListener("input", function () {
-    Hue.chat_search_timer()
-  })
-}
-
 // Filter action for normal filter windows
 Hue.do_modal_filter = function (id = false) {
   if (!id) {
@@ -77,6 +70,11 @@ Hue.do_modal_filter = function (id = false) {
     }
 
     id = Hue.active_modal.options.id
+  }
+
+  if (id === "chat_search") {
+    Hue.show_chat_search(Hue.el("#chat_search_filter").value)
+    return
   }
 
   let finished = false
