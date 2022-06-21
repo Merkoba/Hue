@@ -230,6 +230,12 @@ Hue.save_filter_history = function (force = false) {
 
 // Adds an item to the filter history
 Hue.add_to_filter_history = function (message) {
+  if (!message || message.startsWith("$")) {
+    return
+  }
+
+  message = message.substring(0, 100).trim()
+
   for (let i = 0; i < Hue.filter_history.length; i++) {
     if (Hue.filter_history[i].message === message) {
       Hue.filter_history.splice(i, 1)
@@ -288,9 +294,5 @@ Hue.show_filter_history = function (target) {
 
 // After a filter search is done
 Hue.after_filter_search = function (filter) {
-  if (!filter || filter.length > 100 || filter.startsWith("$")) {
-    return
-  }
-
   Hue.add_to_filter_history(filter)
 }
