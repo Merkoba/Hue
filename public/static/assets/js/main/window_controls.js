@@ -24,7 +24,7 @@ Hue.setup_window_controls = function () {
       container.scrollTop = container.scrollHeight
       filter.focus()
     })
-    
+
     top.addEventListener("click", function () {
       container.scrollTop = 0
       filter.focus()
@@ -93,7 +93,7 @@ Hue.do_modal_filter = function (id = false) {
     if (filter.startsWith("$user")) {
       let username = Hue.dataset(it, "username")
       let match = username && first_arg === username.toLowerCase()
-      
+
       if (match) {
         if (tail) {
           match = it.textContent.toLowerCase().includes(tail)
@@ -127,7 +127,7 @@ Hue.do_modal_filter = function (id = false) {
     } else {
       return it.textContent.toLowerCase().includes(filter)
     }
-  }  
+  }
 
   let win = Hue.el(`#Msg-content-${id}`)
   let filter_el = Hue.el(".filter_input", win)
@@ -155,7 +155,7 @@ Hue.do_modal_filter = function (id = false) {
         tail = tail.toLowerCase()
       }
     }
-    
+
     if (filter.startsWith("$user")) {
       if (!first_arg) {
         return
