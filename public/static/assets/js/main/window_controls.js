@@ -12,7 +12,14 @@ Hue.setup_window_controls = function () {
       if (e.key === "Enter") {
         Hue.do_modal_filter()
       }
-    })    
+    })
+
+    filter.addEventListener("input", function (e) {
+      if (filter.value === "") {
+        console.log(4)
+        Hue.do_modal_filter()
+      }
+    }) 
 
     bottom.addEventListener("click", function () {
       container.scrollTop = container.scrollHeight
