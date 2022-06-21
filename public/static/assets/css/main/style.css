@@ -656,6 +656,8 @@ a.generic:hover {
 	margin-top: -1.5rem;
 	padding-top: 1.5rem;
 	padding-bottom: 1.5rem;
+	margin-left: -1px;
+	margin-right: -1px;
 }
 
 .filter_input {
