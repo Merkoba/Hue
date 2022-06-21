@@ -187,7 +187,9 @@ Hue.do_modal_filter = function (id = false) {
     Hue[`after_${id}_filtered`]()
   }
 
-  Hue.after_filter_search(filter0)
+  if (id !== "filter_history") {
+    Hue.after_filter_search(filter0)
+  }
 }
 
 // Setup filter history
