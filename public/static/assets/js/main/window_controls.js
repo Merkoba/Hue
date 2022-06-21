@@ -15,11 +15,10 @@ Hue.setup_window_controls = function () {
     })
 
     filter.addEventListener("input", function (e) {
-      if (filter.value === "") {
-        console.log(4)
+      if (filter.value === "" || e.inputType === "insertFromPaste") {
         Hue.do_modal_filter()
       }
-    }) 
+    })
 
     bottom.addEventListener("click", function () {
       container.scrollTop = container.scrollHeight
