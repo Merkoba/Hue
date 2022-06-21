@@ -198,9 +198,16 @@ Hue.setup_filter_history = function () {
 
   Hue.el("#filter_history_container").addEventListener("click", function (e) {
     if (e.target.closest(".filter_history_item")) {
-      Hue.filter_history_target.value = e.target.textContent
+      Hue.filter_history_target.value = e.target.textContent.trim()
       Hue.trigger_filter(Hue.filter_history_target)
       Hue.msg_filter_history.close()
+    }
+  })
+
+  Hue.el("#filter_history_container").addEventListener("auxclick", function (e) {
+    if (e.target.closest(".filter_history_item")) {
+      Hue.remove_from_filter_history(e.target.textContent.trim())
+      e.target.remove()
     }
   })
 }
@@ -240,6 +247,17 @@ Hue.add_to_filter_history = function (message) {
   }
 
   Hue.save_filter_history()
+}
+
+// Remove from filter history
+Hue.remove_from_filter_history = function (message) {
+  for (let i = 0; i < Hue.filter_history.length; i++) {
+    if (Hue.filter_history[i].message === message) {
+      Hue.filter_history.splice(i, 1)
+      Hue.save_filter_history()
+      break
+    }
+  }
 }
 
 // Show the filter history
