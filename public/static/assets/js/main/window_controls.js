@@ -266,7 +266,7 @@ Hue.show_filter_history = function (target) {
 
 // After a filter search is done
 Hue.after_filter_search = function (filter) {
-  if (!filter || filter.length > 100) {
+  if (!filter || filter.length > 100 || filter.startsWith("$")) {
     return
   }
 
