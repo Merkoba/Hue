@@ -26,7 +26,7 @@ Hue.setup_window_controls = function () {
 
     clear.addEventListener("click", function () {
       filter.value = ""
-      Hue.trigger_filter(filter)
+      Hue.do_modal_filter()
       filter.focus()
     })
 
@@ -34,12 +34,6 @@ Hue.setup_window_controls = function () {
       Hue.show_filter_history(filter)
     })      
   })
-}
-
-// Trigger change on an input
-Hue.trigger_filter = function (filter) {
-  let event = new Event("input")
-  filter.dispatchEvent(event)
 }
 
 // Focuses the filter widget of a modal
@@ -199,8 +193,10 @@ Hue.setup_filter_history = function () {
   Hue.el("#filter_history_container").addEventListener("click", function (e) {
     if (e.target.closest(".filter_history_item")) {
       Hue.filter_history_target.value = e.target.textContent.trim()
-      Hue.trigger_filter(Hue.filter_history_target)
-      Hue.msg_filter_history.close()
+      Hue.msg_filter_history.close(function () {
+        Hue.do_modal_filter()
+        Hue.filter_history_target.focus()
+      })
     }
   })
 
