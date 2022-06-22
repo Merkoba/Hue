@@ -214,7 +214,9 @@ Hue.setup_filter_history = function () {
   })
 
   Hue.el("#filter_history_clear").addEventListener("click", function () {
-    Hue.clear_filter_history()
+    Hue.show_confirm("Delete the filter history", function () {
+      Hue.clear_filter_history()
+    })
   })
 }
 
