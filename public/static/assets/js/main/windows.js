@@ -726,7 +726,13 @@ Hue.start_msg = function () {
   Hue.msg_whispers.set_title(Hue.template_titlebar({
     items: [
       {id: "start_write_whisper", text: "New Whisper"},
-      {id: "whispers_clear", text: "Clear Window"},
+      {id: "whispers_clear", text: "Clear Whispers"},
+    ]
+  }))
+
+  Hue.msg_filter_history.set_title(Hue.template_titlebar({
+    items: [
+      {id: "filter_history_clear", text: "Clear Filter History"},
     ]
   }))
 
@@ -873,7 +879,6 @@ Hue.start_msg = function () {
   Hue.msg_admin_list.set_title("Admin List")
   Hue.msg_ban_list.set_title("Ban List")
   Hue.msg_roomlist.set_title("Room List")
-  Hue.msg_filter_history.set_title("Filter History")
   Hue.msg_settings.set_title("User Settings")
   Hue.msg_screen_capture_options.set_title("Screen Capture")
   Hue.msg_admin_activity.set_title("Admin Activity")
