@@ -212,6 +212,10 @@ Hue.setup_filter_history = function () {
       el.remove()
     }
   })
+
+  Hue.el("#filter_history_clear").addEventListener("click", function () {
+    Hue.clear_filter_history()
+  })
 }
 
 // Get filter history
@@ -295,4 +299,11 @@ Hue.show_filter_history = function (target) {
 // After a filter search is done
 Hue.after_filter_search = function (filter) {
   Hue.add_to_filter_history(filter)
+}
+
+// Clear filter history
+Hue.clear_filter_history = function () {
+  Hue.filter_history = []
+  Hue.save_filter_history()
+  Hue.msg_filter_history.close()
 }
