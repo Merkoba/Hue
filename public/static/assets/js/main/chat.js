@@ -7,9 +7,8 @@ Hue.make_chat_message = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  if (!args.message) {
-    return
-  }
+  // Temporary fix
+  args.message = args.message || args.content
 
   let num_lines = args.message.split("\n").length
 
