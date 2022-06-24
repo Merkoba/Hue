@@ -2017,7 +2017,13 @@ Hue.liked_message = function (data) {
   if (ans) {
     let el = ans[0]
     let likes = Hue.dataset(el, "likes")
-    likes.push(data.user_id)
+
+    if (data.type === "like") {
+      likes.push(data.user_id)
+    } else if (data.type === "unlike") {
+      likes = likes.filter(x => x !== data.user_id)
+    }
+
     Hue.dataset(el, "likes", likes)
     Hue.update_likes(el, likes)
   }
@@ -2025,7 +2031,7 @@ Hue.liked_message = function (data) {
 
 // Update likes container
 Hue.update_likes = function (el, likes) {
-  let c = el.querySelector(".likes_container")
+  let c = Hue.el(".likes_container", el)
 
   if (likes.length > 0) {
     c.innerHTML = "^ Likes: "
@@ -2035,6 +2041,12 @@ Hue.update_likes = function (el, likes) {
       el.innerHTML = Hue.template_like({profilepic: pi})
       Hue.dataset(el, "user_id", user_id)
       el.title = "Likes this"
+
+      let profilepic = Hue.el(".like_profilepic", el)
+      profilepic.addEventListener("error", function () {
+        Hue.fallback_profilepic(this)
+      })
+
       c.append(el)
     }
     c.style.display = "flex"
