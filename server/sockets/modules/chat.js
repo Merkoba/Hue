@@ -69,7 +69,6 @@ module.exports = function (Hue) {
           info.log_messages[i].data.link_description = linkdata.description
           info.log_messages[i].data.link_image = linkdata.image
           info.log_messages[i].data.link_url = linkdata.url
-          info.log_messages[i].data.likes = data.likes
           
           edited = true
           id = data.edit_id
@@ -79,7 +78,6 @@ module.exports = function (Hue) {
           quote_user_id = info.log_messages[i].data.quote_user_id
           quote_id = info.log_messages[i].data.quote_id
           username = info.log_messages[i].data.username
-          likes = info.log_messages[i].data.likes
 
           await Hue.db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
           break
