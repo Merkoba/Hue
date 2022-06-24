@@ -2028,7 +2028,7 @@ Hue.update_likes = function (el, likes) {
   let c = el.querySelector(".likes_container")
 
   if (likes.length > 0) {
-    c.innerHTML = "Likes: "
+    c.innerHTML = "^ Likes: "
     for (let user_id of likes) {
       let pi = Hue.get_profilepic(user_id)
       let el = Hue.div("like_container")
