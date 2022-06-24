@@ -534,7 +534,8 @@ Hue.start_chat_mouse_events = function () {
         } else if (e.target.closest(".like_container")) {
           let el = e.target.closest(".like_container")
           let user_id = Hue.dataset(el, "user_id")
-          Hue.show_profile(undefined, user_id)
+          let username = Hue.dataset(el, "username")
+          Hue.show_profile(username, user_id)
         }
       }
     }
@@ -2046,6 +2047,7 @@ Hue.update_likes = function (el, likes) {
       let el = Hue.div("like_container")
       el.innerHTML = Hue.template_like({profilepic: pi})
       Hue.dataset(el, "user_id", obj.user_id)
+      Hue.dataset(el, "username", obj.username)
       let nd = Hue.utilz.nice_date(obj.date)
       el.title = `${obj.username} | ${nd}`
 
