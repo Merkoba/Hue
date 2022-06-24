@@ -1625,6 +1625,7 @@ Hue.show_log_messages = function (log_messages) {
       if (data) {
         if (type === "chat") {
           data.id = id
+          data.date = date
           Hue.make_chat_message(data)
         } else if (type === "image") {
           data.id = id
