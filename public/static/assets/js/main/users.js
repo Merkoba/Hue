@@ -617,6 +617,10 @@ Hue.show_profile = function (username, user_id = false) {
     user = Hue.get_user_by_username(username)
   }
 
+  if (!user) {
+    
+  }
+
   if (user_id) {
     id = user_id
   } else if (user) {
@@ -648,6 +652,12 @@ Hue.show_profile = function (username, user_id = false) {
   Hue.el("#show_profile_profilepic").src = pi
 
   if (user) {
+    Hue.el("#show_profile_buttons").classList.remove("nodisplay")
+  } else {
+    Hue.el("#show_profile_buttons").classList.add("nodisplay")
+  }
+
+  if (user) {
     Hue.el("#show_profile_whisper").style.display = "block"
     Hue.el("#show_profile_sync_tv").style.display = "flex"
   } else {
@@ -657,7 +667,7 @@ Hue.show_profile = function (username, user_id = false) {
 
   Hue.dataset(Hue.el("#show_profile_change_role"), "username", username)
 
-  if (Hue.is_admin_or_op() && !same_user) {
+  if (user && Hue.is_admin_or_op() && !same_user) {
     Hue.el("#show_profile_op_buttons").classList.remove("nodisplay")
   } else {
     Hue.el("#show_profile_op_buttons").classList.add("nodisplay")
@@ -682,7 +692,7 @@ Hue.show_profile = function (username, user_id = false) {
   let item = Hue.div()
   item.textContent = `ID: ${id}`
   Hue.el("#show_profile_info").append(item)
-  Hue.msg_profile.set_title(username)
+  Hue.msg_profile.set_title(username || "")
   Hue.msg_profile.show()
 }
 
