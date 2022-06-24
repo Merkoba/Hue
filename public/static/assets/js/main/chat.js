@@ -7,15 +7,15 @@ Hue.make_chat_message = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  let num_lines = args.message.split("\n").length
+  let num_lines = args.content.split("\n").length
 
   if (num_lines === 1) {
-    if (args.message.startsWith(Hue.config.commands_prefix + Hue.config.commands_prefix)) {
-      args.message = args.message.slice(1)
+    if (args.content.startsWith(Hue.config.commands_prefix + Hue.config.commands_prefix)) {
+      args.content = args.content.slice(1)
     }
   }
 
-  args.message = Hue.replace_message_vars(args.id, args.message)
+  args.content = Hue.replace_message_vars(args.id, args.content)
   let content_classes = "chat_content reply_message edit_message"
   let d = args.date ? args.date : Date.now()
   let nd = Hue.utilz.nice_date(d)
@@ -25,7 +25,7 @@ Hue.make_chat_message = function (args = {}) {
   let image_preview_text = false
 
   if (Hue.get_setting("embed_images")) {
-    let ans = Hue.make_image_preview(args.message)
+    let ans = Hue.make_image_preview(args.content)
 
     image_preview = ans.image_preview
     image_preview_src_original = ans.image_preview_src_original
@@ -41,7 +41,7 @@ Hue.make_chat_message = function (args = {}) {
     Hue.get_setting("show_link_previews")
   ) {
     let ans = Hue.make_link_preview({
-      message: args.message,
+      message: args.content,
       image: args.link_image,
       title: args.link_title,
       description: args.link_description,
@@ -66,7 +66,7 @@ Hue.make_chat_message = function (args = {}) {
         highlighted = true
       }
     } else {
-      if (Hue.check_highlights(args.message)) {
+      if (Hue.check_highlights(args.content)) {
         content_classes += " highlighted_message"
         highlighted = true
       }
@@ -118,7 +118,7 @@ Hue.make_chat_message = function (args = {}) {
       Hue.el(".link_preview_text", fmessage).classList.add(preview_text_class)
     }
   } else {
-    content.innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(args.message))
+    content.innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(args.content))
   }
 
   let quote = Hue.el(".chat_quote", fmessage)
@@ -164,7 +164,7 @@ Hue.make_chat_message = function (args = {}) {
   } else if (link_preview) {
     first_url = args.link_url
   } else {
-    first_url = Hue.utilz.get_first_url(args.message)
+    first_url = Hue.utilz.get_first_url(args.content)
   }
 
   Hue.dataset(fmessage, "username", args.username)
@@ -179,9 +179,13 @@ Hue.make_chat_message = function (args = {}) {
   Hue.dataset(content_container, "highlighted", highlighted)
   Hue.dataset(content_container, "date", d)
   Hue.dataset(content_container, "first_url", first_url)
-  Hue.dataset(content_container, "original_message", args.message)
+  Hue.dataset(content_container, "original_message", args.content)
   Hue.dataset(content_container, "otitle", title)
   Hue.dataset(content_container, "username", args.username)
+  
+  args.likes = args.likes || []
+  Hue.dataset(content_container, "likes", args.likes)
+  Hue.update_likes(content_container, args.likes)
 
   if (!image_preview && !link_preview) {
     Hue.urlize(content)
@@ -316,6 +320,10 @@ Hue.make_announcement_message = function (args = {}) {
   Hue.dataset(fmessage, "mode", "announcement")
   Hue.dataset(fmessage, "user_id", args.user_id)
   Hue.dataset(fmessage, "media_source", args.media_source)
+  
+  args.likes = args.likes || []
+  Hue.dataset(fmessage, "likes", args.likes)
+  Hue.update_likes(fmessage, args.likes)
 
   let message_id = Hue.insert_message({
     message: fmessage
@@ -520,6 +528,10 @@ Hue.start_chat_mouse_events = function () {
           }
         } else if (e.target.closest(".brk_profilepic")) {
           Hue.show_profile(username, user_id)
+        } else if (e.target.closest(".like_container")) {
+          let el = e.target.closest(".like_container")
+          let user_id = Hue.dataset(el, "user_id")
+          Hue.show_profile(undefined, user_id)
         }
       }
     }
@@ -1185,24 +1197,7 @@ Hue.jump_to_chat_message_by_id = function (id) {
 
 // What to do after receiving a chat message from the server
 Hue.on_chat_message = function (data) {
-  Hue.make_chat_message({
-    id: data.id,
-    user_id: data.user_id,
-    username: data.username,
-    message: data.message,
-    date: data.date,
-    link_title: data.link_title,
-    link_description: data.link_description,
-    link_image: data.link_image,
-    link_url: data.link_url,
-    edited: data.edited,
-    just_edited: data.just_edited,
-    quote: data.quote,
-    quote_username: data.quote_username,
-    quote_user_id: data.quote_user_id,
-    quote_id: data.quote_id
-  })
-
+  Hue.make_chat_message(data)
   Hue.hide_typing()
   Hue.remove_aura(data.user_id)
 }
@@ -1626,23 +1621,8 @@ Hue.show_log_messages = function (log_messages) {
 
       if (data) {
         if (type === "chat") {
-          Hue.make_chat_message({
-            id: id,
-            user_id: data.user_id,
-            username: data.username,
-            message: data.content,
-            link_title: data.link_title,
-            link_description: data.link_description,
-            link_image: data.link_image,
-            link_url: data.link_url,
-            date: date,
-            scroll: false,
-            edited: data.edited,
-            quote: data.quote,
-            quote_username: data.quote_username,
-            quote_user_id: data.quote_user_id,
-            quote_id: data.quote_id
-          })
+          data.id = id
+          Hue.make_chat_message(data)
         } else if (type === "image") {
           data.id = id
           data.date = date
@@ -2012,6 +1992,51 @@ Hue.check_max_chat_messages = function () {
 
     for (let message of messages.slice(0, diff)) {
       message.remove()
+    }
+  }
+}
+
+// Like a message
+Hue.like_message = function (target) {
+  let unit = target.closest(".message_unit")
+  let id = Hue.dataset(unit, "id")
+  
+  Hue.socket_emit("like_message", {
+    id: id,
+  })
+}
+
+// Liked message
+Hue.liked_message = function (data) {
+  let ans = Hue.get_message_by_id(data.id)
+
+  if (ans) {
+    let el = ans[0]
+    let likes = Hue.dataset(el, "likes")
+    likes.push(data.user_id)
+    Hue.dataset(el, "likes", likes)
+    Hue.update_likes(el, likes)
+  }
+}
+
+// Update likes container
+Hue.update_likes = function (el, likes) {
+  let c = el.querySelector(".likes_container")
+  c.innerHTML = ""
+
+  if (likes.length > 0) {
+    for (let user_id of likes) {
+      let pi = Hue.get_profilepic(user_id)
+      let el = Hue.div("like_container")
+      el.innerHTML = Hue.template_like({profilepic: pi})
+      Hue.dataset(el, "user_id", user_id)
+      c.append(el)
+    }
+
+    if (likes.length === 1) {
+      c.innerHTML += " likes this!"
+    } else {
+      c.innerHTML += " like this!"
     }
   }
 }

@@ -1974,3 +1974,15 @@ pre {
 	width: var(--profilepic_size);
 	height: var(--profilepic_size);
 }
+
+.likes_container {
+	display: flex;
+	flex-direction: row;
+	gap: 0.5rem;
+	margin-top: 0.25rem;
+}
+
+.like_profilepic {
+	width: var(--icon_size);
+	height: var(--icon_size);
+}

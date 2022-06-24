@@ -1,19 +1,19 @@
 module.exports = function (Hue) {
   // Handles chat messages
   Hue.handler.public.sendchat = async function (socket, data) {
-    if (data.message === undefined) {
+    if (data.content === undefined) {
       return
     }
 
-    if (data.message.length === 0) {
+    if (data.content.length === 0) {
       return
     }
 
-    if (data.message.length > Hue.config.max_input_length) {
+    if (data.content.length > Hue.config.max_input_length) {
       return
     }
 
-    if (data.message.split("\n").length > Hue.config.max_num_newlines) {
+    if (data.content.split("\n").length > Hue.config.max_num_newlines) {
       return
     }
 
@@ -58,15 +58,16 @@ module.exports = function (Hue) {
           }
 
           if (!linkdata) {
-            linkdata = await Hue.handler.process_message_links(data.message)
+            linkdata = await Hue.handler.process_message_links(data.content)
           }
 
           info.log_messages[i].data.edited = true
-          info.log_messages[i].data.content = data.message
+          info.log_messages[i].data.content = data.content
           info.log_messages[i].data.link_title = linkdata.title,
           info.log_messages[i].data.link_description = linkdata.description
           info.log_messages[i].data.link_image = linkdata.image
           info.log_messages[i].data.link_url = linkdata.url
+          info.log_messages[i].data.likes = data.likes
           
           edited = true
           id = data.edit_id
@@ -75,7 +76,8 @@ module.exports = function (Hue) {
           quote_username = info.log_messages[i].data.quote_username
           quote_user_id = info.log_messages[i].data.quote_user_id
           quote_id = info.log_messages[i].data.quote_id
-          username = info.log_messages[i].data.username        
+          username = info.log_messages[i].data.username
+          likes = info.log_messages[i].data.likes
 
           await Hue.db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
           break
@@ -94,17 +96,18 @@ module.exports = function (Hue) {
       quote_username = data.quote_username
       quote_user_id = data.quote_user_id
       quote_id = data.quote_id
+      likes = []
     }
 
     if (!linkdata) {
-      linkdata = await Hue.handler.process_message_links(data.message)
+      linkdata = await Hue.handler.process_message_links(data.content)
     }
 
     Hue.handler.room_emit(socket, "chat_message", {
       id: id,
       user_id: socket.hue_user_id,
       username: username,
-      message: data.message,
+      content: data.content,
       date: date,
       link_title: linkdata.title,
       link_description: linkdata.description,
@@ -115,7 +118,8 @@ module.exports = function (Hue) {
       quote: quote,
       quote_username: quote_username,
       quote_user_id: quote_user_id,
-      quote_id: quote_id
+      quote_id: quote_id,
+      likes: likes
     })
 
     if (!data.edit_id) {
@@ -126,7 +130,7 @@ module.exports = function (Hue) {
         data: {
           user_id: socket.hue_user_id,
           username: username,
-          content: data.message,
+          content: data.content,
           link_title: linkdata.title,
           link_description: linkdata.description,
           link_image: linkdata.image,
@@ -135,7 +139,8 @@ module.exports = function (Hue) {
           quote: quote,
           quote_username: quote_username,
           quote_user_id: quote_user_id,
-          quote_id: quote_id
+          quote_id: quote_id,
+          likes: likes
         }
       }
 
@@ -372,4 +377,27 @@ module.exports = function (Hue) {
       }
     }   
   }  
+
+  // Like a message
+  Hue.handler.public.like_message = async function (socket, data) {
+    if (!data.id) {
+      return
+    }
+
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
+
+    for (let i=0; i<info.log_messages.length; i++) {
+      if (info.log_messages[i].id === data.id) {
+        if (info.log_messages[i].data.likes) {
+          if (!info.log_messages[i].data.likes.includes(socket.hue_user_id)) {
+            info.log_messages[i].data.likes.push(socket.hue_user_id)
+            await Hue.db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
+            Hue.handler.room_emit(socket, "liked_message", {id: data.id, user_id: socket.hue_user_id})
+          }
+        }
+
+        return
+      }
+    }
+  }
 }
