@@ -105,7 +105,7 @@
 	"chat_display_percentage_row": 40,
 	"screen_capture_durations": [5, 10, 30, 60],
 	"image_blob_quality": 0.9,
-	"max_likes": 20,
+	"max_likes": 10,
 
 	"radios": [
 		{"name": "Merkoba FM", "url": "https://radio.merkoba.com:8765/radio.ogg", "metadata": "https://radio.merkoba.com:8765/status-json.xsl"},
