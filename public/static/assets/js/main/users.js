@@ -651,7 +651,7 @@ Hue.show_profile = function (username, user_id = false) {
 
   Hue.el("#show_profile_profilepic").src = pi
 
-  if (user) {
+  if (username) {
     Hue.el("#show_profile_buttons").classList.remove("nodisplay")
   } else {
     Hue.el("#show_profile_buttons").classList.add("nodisplay")
@@ -667,7 +667,7 @@ Hue.show_profile = function (username, user_id = false) {
 
   Hue.dataset(Hue.el("#show_profile_change_role"), "username", username)
 
-  if (user && Hue.is_admin_or_op() && !same_user) {
+  if (username && Hue.is_admin_or_op() && !same_user) {
     Hue.el("#show_profile_op_buttons").classList.remove("nodisplay")
   } else {
     Hue.el("#show_profile_op_buttons").classList.add("nodisplay")
