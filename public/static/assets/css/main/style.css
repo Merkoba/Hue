@@ -1975,11 +1975,18 @@ pre {
 	height: var(--profilepic_size);
 }
 
+.contentlikes {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+}
+
 .likes_container {
 	display: flex;
 	flex-direction: row;
 	gap: 0.5rem;
-	margin-top: 0.25rem;
+	margin-left: 0.5rem;
 }
 
 .like_profilepic {

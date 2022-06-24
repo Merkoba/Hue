@@ -2034,6 +2034,7 @@ Hue.update_likes = function (el, likes) {
       let el = Hue.div("like_container")
       el.innerHTML = Hue.template_like({profilepic: pi})
       Hue.dataset(el, "user_id", user_id)
+      el.title = "Likes this"
       c.append(el)
     }
   }
