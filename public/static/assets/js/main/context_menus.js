@@ -42,9 +42,10 @@ Hue.start_chat_menu_context_menu = function () {
       if (mode === "chat" || type === "image_change" || type === "tv_change") {
         let text = "Like"
         let type = "like"
+        let included = Hue.dataset(unit, "likes").some(x => x.user_id === Hue.user_id)
 
         // Check if the user already like the post
-        if (Hue.dataset(unit, "likes").includes(Hue.user_id)) {
+        if (included) {
           text = "Unlike"
           type = "unlike"
         }
