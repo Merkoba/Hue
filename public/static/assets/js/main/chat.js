@@ -1415,6 +1415,10 @@ Hue.setup_link_preview = function (fmessage) {
 Hue.make_image_preview = function (message) {
   let ans = {}
 
+  if (message.startsWith(">")) {
+    return ans
+  }
+
   ans.image_preview = false
   ans.image_preview_src = false
   ans.image_preview_src_original = false
