@@ -424,6 +424,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "message_board_wait_delay"
 >The amount of minutes to wait between message board posts for non admin users.
 
+"max_likes"
+>The max amount of likes a message can register
+
 
 ## Join Flags
 

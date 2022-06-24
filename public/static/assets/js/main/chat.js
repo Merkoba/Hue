@@ -2003,6 +2003,11 @@ Hue.check_max_chat_messages = function () {
 // Like a message
 Hue.like_message = function (target, type) {
   let unit = target.closest(".message_unit")
+  
+  if (type === "like" && Hue.dataset(unit, "likes").length >= Hue.config.max_likes) {
+    return
+  }
+
   let id = Hue.dataset(unit, "id")
   
   Hue.socket_emit("like_message", {
