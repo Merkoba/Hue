@@ -2025,7 +2025,6 @@ Hue.liked_message = function (data) {
 // Update likes container
 Hue.update_likes = function (el, likes) {
   let c = el.querySelector(".likes_container")
-  c.innerHTML = ""
 
   if (likes.length > 0) {
     c.innerHTML = "Likes: "
@@ -2037,5 +2036,8 @@ Hue.update_likes = function (el, likes) {
       el.title = "Likes this"
       c.append(el)
     }
+    c.style.display = "flex"
+  } else {
+    c.style.display = "none"
   }
 }
