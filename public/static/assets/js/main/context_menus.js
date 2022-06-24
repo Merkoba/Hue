@@ -41,17 +41,19 @@ Hue.start_chat_menu_context_menu = function () {
       if (mode === "chat" || type === "image_change" || type === "tv_change") 
       {
         let text = "Like"
+        let type = "like"
 
         // Check if the user already like the post
         if (Hue.dataset(unit, "likes").includes(Hue.user_id)) {
           text = "Unlike"
+          type = "unlike"
         }
 
         items.push({
           text: text,
           action: function () {
             let el = Hue.el(".reply_message", e.target.closest(".reply_message_container"))
-            Hue.like_message(el)
+            Hue.like_message(el, type)
           }
         })
       }    

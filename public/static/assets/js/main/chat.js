@@ -2001,12 +2001,13 @@ Hue.check_max_chat_messages = function () {
 }
 
 // Like a message
-Hue.like_message = function (target) {
+Hue.like_message = function (target, type) {
   let unit = target.closest(".message_unit")
   let id = Hue.dataset(unit, "id")
   
   Hue.socket_emit("like_message", {
     id: id,
+    type: type
   })
 }
 
