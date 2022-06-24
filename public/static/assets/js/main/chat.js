@@ -2025,9 +2025,9 @@ Hue.liked_message = function (data) {
     let likes = Hue.dataset(el, "likes")
 
     if (data.type === "like") {
-      likes.push(data.user_id)
+      likes.push(data.obj)
     } else if (data.type === "unlike") {
-      likes = likes.filter(x => x !== data.user_id)
+      likes = likes.filter(x => x.user_id !== data.obj.user_id)
     }
 
     Hue.dataset(el, "likes", likes)
@@ -2041,12 +2041,13 @@ Hue.update_likes = function (el, likes) {
 
   if (likes.length > 0) {
     c.innerHTML = "^ Likes: "
-    for (let user_id of likes) {
-      let pi = Hue.get_profilepic(user_id)
+    for (let obj of likes) {
+      let pi = Hue.get_profilepic(obj.user_id)
       let el = Hue.div("like_container")
       el.innerHTML = Hue.template_like({profilepic: pi})
-      Hue.dataset(el, "user_id", user_id)
-      el.title = "Likes this"
+      Hue.dataset(el, "user_id", obj.user_id)
+      let nd = Hue.utilz.nice_date(obj.date)
+      el.title = `${obj.username} | ${nd}`
 
       let profilepic = Hue.el(".like_profilepic", el)
       profilepic.addEventListener("error", function () {
