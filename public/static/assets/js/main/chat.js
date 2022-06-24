@@ -2025,9 +2025,10 @@ Hue.liked_message = function (data) {
 // Update likes container
 Hue.update_likes = function (el, likes) {
   let c = el.querySelector(".likes_container")
-  c.innerHTML = "Likes: "
+  c.innerHTML = ""
 
   if (likes.length > 0) {
+    c.innerHTML = "Likes: "
     for (let user_id of likes) {
       let pi = Hue.get_profilepic(user_id)
       let el = Hue.div("like_container")
