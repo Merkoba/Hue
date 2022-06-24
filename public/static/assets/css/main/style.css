@@ -474,6 +474,7 @@ html {
 .chat_content {
 	display: inline-block;
 	line-height: 1.2em;
+	min-width: 50%;
 }
 
 .no_pre_wrap {
@@ -493,6 +494,7 @@ html {
 
 .announcement_content {
 	display: inline-block;
+	min-width: 50%;
 }
 
 .announcement_left_side {
@@ -1980,6 +1982,10 @@ pre {
 	flex-direction: row;
 	align-items: center;
 	justify-content: flex-start;
+}
+
+.chat_area_clone .likes_container {
+	display: none;
 }
 
 .likes_container {

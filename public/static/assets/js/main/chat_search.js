@@ -195,7 +195,7 @@ Hue.show_chat_search = function (filter = "") {
             Hue.fallback_profilepic(this)
           })
         }
-
+        
         Hue.el("#chat_search_container").append(message)
       }
     } else {
