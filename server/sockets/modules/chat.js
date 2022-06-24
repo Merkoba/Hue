@@ -17,8 +17,6 @@ module.exports = function (Hue) {
       return
     }
 
-    console.log(data)
-
     let quote = data.quote || ""
     let quote_username = data.quote_username || ""
     let quote_user_id = data.quote_user_id || ""
