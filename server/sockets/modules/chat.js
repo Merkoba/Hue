@@ -398,6 +398,10 @@ module.exports = function (Hue) {
               return
             }
 
+            if (info.log_messages[i].data.likes.length >= Hue.config.max_likes) {
+              return
+            }
+
             type = "like"
             info.log_messages[i].data.likes.push(socket.hue_user_id)
           } else {

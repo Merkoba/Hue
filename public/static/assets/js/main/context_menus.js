@@ -12,6 +12,7 @@ Hue.start_chat_menu_context_menu = function () {
       let message_id = Hue.dataset(message, "message_id")
       let unit = e.target.closest(".message_unit")
       let id = Hue.dataset(unit, "id")
+      let likes = Hue.dataset(unit, "likes")
       let url = ""
 
       if (mode === "chat") {
@@ -38,8 +39,7 @@ Hue.start_chat_menu_context_menu = function () {
         })
       }
 
-      if (mode === "chat" || type === "image_change" || type === "tv_change") 
-      {
+      if (mode === "chat" || type === "image_change" || type === "tv_change") {
         let text = "Like"
         let type = "like"
 
@@ -49,13 +49,17 @@ Hue.start_chat_menu_context_menu = function () {
           type = "unlike"
         }
 
-        items.push({
-          text: text,
-          action: function () {
-            let el = Hue.el(".reply_message", e.target.closest(".reply_message_container"))
-            Hue.like_message(el, type)
-          }
-        })
+        if (type === "like" && likes.length >= Hue.config.max_likes) {
+          //  Do nothing
+        } else {
+          items.push({
+            text: text,
+            action: function () {
+              let el = Hue.el(".reply_message", e.target.closest(".reply_message_container"))
+              Hue.like_message(el, type)
+            }
+          })
+        }
       }    
 
       if (user_id === Hue.user_id && (mode === "chat" || type === "image_change" || type === "tv_change")) {
