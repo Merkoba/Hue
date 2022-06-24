@@ -830,6 +830,7 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   data.query = odata.query
   data.comment = odata.comment
   data.media_type = type
+  data.likes = odata.likes
 
   if (!data.source) {
     return
@@ -921,7 +922,8 @@ Hue.announce_media = function (type, data) {
     type: `${type}_change`,
     user_id: data.user_id,
     media_source: data.source,
-    comment: data.comment
+    comment: data.comment,
+    likes: data.likes
   })
 }
 

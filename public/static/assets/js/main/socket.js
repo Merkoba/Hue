@@ -240,6 +240,9 @@ Hue.server_update_events = {
   },
   message_board_wait: (data) => {
     Hue.show_message_board_wait_message(data.remaining)
+  },
+  liked_message: (data) => {
+    Hue.liked_message(data)
   }
 }
 

@@ -64,6 +64,7 @@ module.exports = function (Hue) {
     let comment = data.comment || data.file_name || ""
     let size = data.size || 0
     let title = ""
+    let likes = []
 
     if (data.title) {
       title = Hue.vars.he.decode(data.title)
@@ -91,6 +92,7 @@ module.exports = function (Hue) {
     obj[`${type}_type`] = data.type,
     obj[`${type}_query`] = data.query,
     obj[`${type}_comment`] = comment,
+    obj[`${type}_likes`] = likes
 
     Hue.db_manager.update_room(room_id, obj)
 
@@ -105,6 +107,7 @@ module.exports = function (Hue) {
       type: data.type,
       query: data.query,
       comment: comment,
+      likes: likes
     })
 
     let message = {
@@ -120,6 +123,7 @@ module.exports = function (Hue) {
         type: data.type,
         query: data.query,
         comment: comment,
+        likes: likes
       }
     }
 

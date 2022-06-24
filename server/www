@@ -268,4 +268,4 @@ process.on("SIGINT", function () {
 })
 
 // Backup db files in case something goes wrong
-create_db_backup()
+// create_db_backup()

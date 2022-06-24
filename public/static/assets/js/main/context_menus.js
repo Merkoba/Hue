@@ -29,6 +29,16 @@ Hue.start_chat_menu_context_menu = function () {
 
       if (mode === "chat" || type === "image_change" || type === "tv_change") {
         items.push({
+          text: "Like",
+          action: function () {
+            let el = Hue.el(".reply_message", e.target.closest(".reply_message_container"))
+            Hue.like_message(el)
+          }
+        })
+      }      
+
+      if (mode === "chat" || type === "image_change" || type === "tv_change") {
+        items.push({
           text: "Reply",
           action: function () {
             let el = Hue.el(".reply_message", e.target.closest(".reply_message_container"))
