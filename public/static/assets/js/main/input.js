@@ -169,12 +169,12 @@ Hue.process_input = function (args = {}) {
     }
 
     Hue.socket_emit("sendchat", {
-      content: args.message,
+      message: args.message,
       edit_id: args.edit_id,
       quote: args.quote,
       quote_username: args.quote_username,
       quote_user_id: args.quote_user_id,
-      
+
       quote_id: args.quote_id
     })
   }
