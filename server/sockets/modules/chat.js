@@ -1,21 +1,23 @@
 module.exports = function (Hue) {
   // Handles chat messages
   Hue.handler.public.sendchat = async function (socket, data) {
-    if (data.content === undefined) {
+    if (data.message === undefined) {
       return
     }
 
-    if (data.content.length === 0) {
+    if (data.message.length === 0) {
       return
     }
 
-    if (data.content.length > Hue.config.max_input_length) {
+    if (data.message.length > Hue.config.max_input_length) {
       return
     }
 
-    if (data.content.split("\n").length > Hue.config.max_num_newlines) {
+    if (data.message.split("\n").length > Hue.config.max_num_newlines) {
       return
     }
+
+    console.log(data)
 
     let quote = data.quote || ""
     let quote_username = data.quote_username || ""
@@ -58,11 +60,11 @@ module.exports = function (Hue) {
           }
 
           if (!linkdata) {
-            linkdata = await Hue.handler.process_message_links(data.content)
+            linkdata = await Hue.handler.process_message_links(data.message)
           }
 
           info.log_messages[i].data.edited = true
-          info.log_messages[i].data.content = data.content
+          info.log_messages[i].data.message = data.message
           info.log_messages[i].data.link_title = linkdata.title,
           info.log_messages[i].data.link_description = linkdata.description
           info.log_messages[i].data.link_image = linkdata.image
@@ -100,14 +102,14 @@ module.exports = function (Hue) {
     }
 
     if (!linkdata) {
-      linkdata = await Hue.handler.process_message_links(data.content)
+      linkdata = await Hue.handler.process_message_links(data.message)
     }
 
     Hue.handler.room_emit(socket, "chat_message", {
       id: id,
       user_id: socket.hue_user_id,
       username: username,
-      content: data.content,
+      message: data.message,
       date: date,
       link_title: linkdata.title,
       link_description: linkdata.description,
@@ -130,7 +132,7 @@ module.exports = function (Hue) {
         data: {
           user_id: socket.hue_user_id,
           username: username,
-          content: data.content,
+          message: data.message,
           link_title: linkdata.title,
           link_description: linkdata.description,
           link_image: linkdata.image,

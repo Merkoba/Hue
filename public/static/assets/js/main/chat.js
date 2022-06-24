@@ -7,15 +7,19 @@ Hue.make_chat_message = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  let num_lines = args.content.split("\n").length
+  if (!args.message) {
+    return
+  }
+
+  let num_lines = args.message.split("\n").length
 
   if (num_lines === 1) {
-    if (args.content.startsWith(Hue.config.commands_prefix + Hue.config.commands_prefix)) {
-      args.content = args.content.slice(1)
+    if (args.message.startsWith(Hue.config.commands_prefix + Hue.config.commands_prefix)) {
+      args.message = args.message.slice(1)
     }
   }
 
-  args.content = Hue.replace_message_vars(args.id, args.content)
+  args.message = Hue.replace_message_vars(args.id, args.message)
   let content_classes = "chat_content reply_message edit_message"
   let d = args.date ? args.date : Date.now()
   let nd = Hue.utilz.nice_date(d)
@@ -25,7 +29,7 @@ Hue.make_chat_message = function (args = {}) {
   let image_preview_text = false
 
   if (Hue.get_setting("embed_images")) {
-    let ans = Hue.make_image_preview(args.content)
+    let ans = Hue.make_image_preview(args.message)
 
     image_preview = ans.image_preview
     image_preview_src_original = ans.image_preview_src_original
@@ -41,7 +45,7 @@ Hue.make_chat_message = function (args = {}) {
     Hue.get_setting("show_link_previews")
   ) {
     let ans = Hue.make_link_preview({
-      message: args.content,
+      message: args.message,
       image: args.link_image,
       title: args.link_title,
       description: args.link_description,
@@ -66,7 +70,7 @@ Hue.make_chat_message = function (args = {}) {
         highlighted = true
       }
     } else {
-      if (Hue.check_highlights(args.content)) {
+      if (Hue.check_highlights(args.message)) {
         content_classes += " highlighted_message"
         highlighted = true
       }
@@ -118,7 +122,7 @@ Hue.make_chat_message = function (args = {}) {
       Hue.el(".link_preview_text", fmessage).classList.add(preview_text_class)
     }
   } else {
-    content.innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(args.content))
+    content.innerHTML = Hue.parse_text(Hue.utilz.make_html_safe(args.message))
   }
 
   let quote = Hue.el(".chat_quote", fmessage)
@@ -164,7 +168,7 @@ Hue.make_chat_message = function (args = {}) {
   } else if (link_preview) {
     first_url = args.link_url
   } else {
-    first_url = Hue.utilz.get_first_url(args.content)
+    first_url = Hue.utilz.get_first_url(args.message)
   }
 
   Hue.dataset(fmessage, "username", args.username)
@@ -179,7 +183,7 @@ Hue.make_chat_message = function (args = {}) {
   Hue.dataset(content_container, "highlighted", highlighted)
   Hue.dataset(content_container, "date", d)
   Hue.dataset(content_container, "first_url", first_url)
-  Hue.dataset(content_container, "original_message", args.content)
+  Hue.dataset(content_container, "original_message", args.message)
   Hue.dataset(content_container, "otitle", title)
   Hue.dataset(content_container, "username", args.username)
   
@@ -2031,12 +2035,6 @@ Hue.update_likes = function (el, likes) {
       el.innerHTML = Hue.template_like({profilepic: pi})
       Hue.dataset(el, "user_id", user_id)
       c.append(el)
-    }
-
-    if (likes.length === 1) {
-      c.innerHTML += " likes this!"
-    } else {
-      c.innerHTML += " like this!"
     }
   }
 }
