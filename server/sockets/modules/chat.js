@@ -389,11 +389,18 @@ module.exports = function (Hue) {
     for (let i=0; i<info.log_messages.length; i++) {
       if (info.log_messages[i].id === data.id) {
         if (info.log_messages[i].data.likes) {
+          let type
+
           if (!info.log_messages[i].data.likes.includes(socket.hue_user_id)) {
+            type = "like"
             info.log_messages[i].data.likes.push(socket.hue_user_id)
-            await Hue.db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
-            Hue.handler.room_emit(socket, "liked_message", {id: data.id, user_id: socket.hue_user_id})
+          } else {
+            type = "unlike"
+            info.log_messages[i].data.likes = info.log_messages[i].data.likes.filter(x => x !== socket.hue_user_id)
           }
+
+          await Hue.db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
+          Hue.handler.room_emit(socket, "liked_message", {id: data.id, user_id: socket.hue_user_id, type: type})
         }
 
         return

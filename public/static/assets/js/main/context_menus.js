@@ -10,7 +10,8 @@ Hue.start_chat_menu_context_menu = function () {
       let type = Hue.dataset(message, "type")
       let user_id = Hue.dataset(message, "user_id")
       let message_id = Hue.dataset(message, "message_id")
-      let id = Hue.dataset(e.target.closest(".message_unit"), "id")
+      let unit = e.target.closest(".message_unit")
+      let id = Hue.dataset(unit, "id")
       let url = ""
 
       if (mode === "chat") {
@@ -25,17 +26,7 @@ Hue.start_chat_menu_context_menu = function () {
             Hue.jump_to_chat_message(message_id)
           }
         })
-      }
-
-      if (mode === "chat" || type === "image_change" || type === "tv_change") {
-        items.push({
-          text: "Like",
-          action: function () {
-            let el = Hue.el(".reply_message", e.target.closest(".reply_message_container"))
-            Hue.like_message(el)
-          }
-        })
-      }      
+      }  
 
       if (mode === "chat" || type === "image_change" || type === "tv_change") {
         items.push({
@@ -46,6 +37,24 @@ Hue.start_chat_menu_context_menu = function () {
           }
         })
       }
+
+      if (mode === "chat" || type === "image_change" || type === "tv_change") 
+      {
+        let text = "Like"
+
+        // Check if the user already like the post
+        if (Hue.dataset(unit, "likes").includes(Hue.user_id)) {
+          text = "Unlike"
+        }
+
+        items.push({
+          text: text,
+          action: function () {
+            let el = Hue.el(".reply_message", e.target.closest(".reply_message_container"))
+            Hue.like_message(el)
+          }
+        })
+      }    
 
       if (user_id === Hue.user_id && (mode === "chat" || type === "image_change" || type === "tv_change")) {
         items.push({
