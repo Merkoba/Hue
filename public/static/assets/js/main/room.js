@@ -156,17 +156,19 @@ Hue.request_admin_activity = function (filter = "") {
   Hue.socket_emit("get_admin_activity", {})
 }
 
+// Setup admin activity
+Hue.setup_admin_activity = function () {
+  Hue.el("#admin_activity_clear").addEventListener("click", function () {
+    Hue.clear_admin_activity()
+  })
+}
+
 // Shows the admin activity list
 Hue.show_admin_activity = function (messages) {
   Hue.el("#admin_activity_container").innerHTML = ""
 
   Hue.msg_admin_activity.show(function () {
     for (let data of messages) {
-      // Temporary fix
-      if (data.data) {
-        continue
-      }
-
       let nice_date = Hue.utilz.nice_date(data.date)
 
       let s = `<div class='admin_activity_message'></div><div class='admin_activity_date'></div>`
@@ -185,6 +187,23 @@ Hue.show_admin_activity = function (messages) {
     Hue.el("#admin_activity_filter").value = Hue.admin_activity_filter_string
     Hue.do_modal_filter()
   })
+}
+
+// Clear admin activity
+Hue.clear_admin_activity = function () {
+  if (!Hue.is_admin()) {
+    Hue.not_allowed()
+    return
+  }
+
+  Hue.show_confirm("Delete all admin activity logs", function () {
+    Hue.socket_emit("clear_admin_activity", {})
+  })  
+}
+
+// On admin activity clear
+Hue.admin_activity_cleared = function () {
+  Hue.el("#admin_activity_container").innerHTML = ""
 }
 
 // Requests the admin list

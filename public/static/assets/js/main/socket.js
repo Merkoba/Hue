@@ -243,6 +243,9 @@ Hue.server_update_events = {
   },
   liked_message: (data) => {
     Hue.liked_message(data)
+  },
+  admin_activity_cleared: (data) => {
+    Hue.admin_activity_cleared()
   }
 }
 
