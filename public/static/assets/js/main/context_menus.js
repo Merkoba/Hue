@@ -3,7 +3,6 @@
 Hue.start_chat_menu_context_menu = function () {
   document.addEventListener("click", function (e) {
     if (e.target.closest("#chat_area .chat_menu_button_container")) {
-      e.stopPropagation()
       Hue.show_chat_context_menu(e)
     } else if (e.target.closest(".chat_area_clone .chat_menu_button_container")) {
       let message = e.target.closest(".message")
@@ -24,6 +23,8 @@ Hue.start_chat_menu_context_menu = function () {
 
 // Show chat context menu
 Hue.show_chat_context_menu = function (e) {
+  e.stopPropagation()
+  
   let items = []
   let message = e.target.closest(".message")
   let mode = Hue.dataset(message, "mode")
