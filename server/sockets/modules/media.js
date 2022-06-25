@@ -170,7 +170,7 @@ module.exports = function (Hue) {
         continue
       }
 
-      if (message.id === data.id) {
+      if (message.data.id === data.id) {
         if (message.data.user_id === socket.hue_user_id) {
           message.data.comment = data.comment
           edited = true
