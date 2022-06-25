@@ -563,19 +563,15 @@ Hue.start_chat_mouse_events = function () {
     if (e.target.closest(".chat_area")) {
       if (e.target.closest(".chat_content_container")) {
         if (e.button === 1) {
-          let container = e.target.closest(".chat_content_container")
-          if (Hue.start_reply(Hue.el(".chat_content", container))) {
-            e.preventDefault()
-            e.stopPropagation()
-          }
+          Hue.show_chat_context_menu(e)
+          e.preventDefault()
+          e.stopPropagation()
         }
       } else if (e.target.closest(".announcement_content_container")) {
         if (e.button === 1) {
-          let container = e.target.closest(".announcement_content_container")
-          if (Hue.start_reply(Hue.el(".announcement_content", container))) {
-            e.preventDefault()
-            e.stopPropagation()
-          }
+          Hue.show_chat_context_menu(e)
+          e.preventDefault()
+          e.stopPropagation()
         }
       }
     }
