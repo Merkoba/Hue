@@ -161,8 +161,13 @@ Hue.show_admin_activity = function (messages) {
   Hue.el("#admin_activity_container").innerHTML = ""
 
   Hue.msg_admin_activity.show(function () {
-    for (let message of messages) {
-      let nice_date = Hue.utilz.nice_date(message.date)
+    for (let data of messages) {
+      // Temporary fix
+      if (data.data) {
+        continue
+      }
+
+      let nice_date = Hue.utilz.nice_date(data.date)
 
       let s = `<div class='admin_activity_message'></div><div class='admin_activity_date'></div>`
 
@@ -170,9 +175,9 @@ Hue.show_admin_activity = function (messages) {
       el.title = nice_date
       el.innerHTML = s
 
-      Hue.el(".admin_activity_message", el).textContent = `${message.data.username} ${message.data.content}`
+      Hue.el(".admin_activity_message", el).textContent = `${data.username} ${data.content}`
       Hue.el(".admin_activity_date", el).textContent = nice_date
-      Hue.dataset(el, "date", message.date)
+      Hue.dataset(el, "date", data.date)
       Hue.dataset(el, "otitle", nice_date)
       Hue.el("#admin_activity_container").prepend(el)
     }

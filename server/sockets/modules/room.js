@@ -37,7 +37,7 @@ module.exports = function (Hue) {
       username: socket.hue_username
     })
 
-    Hue.handler.push_admin_log_message(socket, `changed the topic to "${info.topic}"`)
+    Hue.handler.push_admin_log_message(socket, `changed the topic to "${data.topic}"`)
   }
 
   // Handles room name changes
@@ -116,8 +116,6 @@ module.exports = function (Hue) {
       user_id: socket.hue_user_id,
       username: socket.hue_username
     })
-
-    Hue.handler.push_admin_log_message(socket, `changed the background color to "${data.color}"`)
   }
 
   // Handles text color changes
@@ -147,8 +145,6 @@ module.exports = function (Hue) {
       user_id: socket.hue_user_id,
       username: socket.hue_username
     })
-
-    Hue.handler.push_admin_log_message(socket, `changed the text color to "${data.color}"`)
   }
 
   // Handles uploaded background images
@@ -247,8 +243,6 @@ module.exports = function (Hue) {
       background_type: type,
       background_version: new_ver
     })
-
-    Hue.handler.push_admin_log_message(socket, "changed the background image")
 
     // Remove left over files
     if (type === "hosted") {
