@@ -563,15 +563,11 @@ Hue.start_chat_mouse_events = function () {
     if (e.target.closest(".chat_area")) {
       if (e.target.closest(".chat_content_container")) {
         if (e.button === 1) {
-          e.stopPropagation()
           Hue.show_chat_context_menu(e)
-          e.preventDefault()
         }
       } else if (e.target.closest(".announcement_content_container")) {
         if (e.button === 1) {
-          e.stopPropagation()
           Hue.show_chat_context_menu(e)
-          e.preventDefault()
         }
       }
     }
