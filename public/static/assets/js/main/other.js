@@ -132,8 +132,8 @@ Hue.flip = function () {
 
 // Get the last 3 digits of a message id
 // Mainly used to turn things goldtext
-Hue.getcode = function (s) {
-  return s.slice(-3)
+Hue.getcode = function (s = "") {
+  return s.slice(-3) 
 }
 
 // Show that a command is not allowed

@@ -111,10 +111,10 @@ module.exports = function (Hue) {
     })
 
     let message = {
-      id: id,
       type: type,
-      date: date,
       data: {
+        id: id,
+        date: date,
         user_id: user_id,
         source: data.src,
         username: data.username,

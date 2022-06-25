@@ -1618,23 +1618,15 @@ Hue.show_log_messages = function (log_messages) {
 
   if (log_messages && log_messages.length > 0) {
     for (let message of log_messages) {
-      let id = message.id
       let type = message.type
       let data = message.data
-      let date = message.date
 
       if (data) {
         if (type === "chat") {
-          data.id = id
-          data.date = date
           Hue.make_chat_message(data)
         } else if (type === "image") {
-          data.id = id
-          data.date = date
           Hue.setup_media_object("image", "show", data)
         } else if (type === "tv") {
-          data.id = id
-          data.date = date
           Hue.setup_media_object("tv", "show", data)
         }
       }

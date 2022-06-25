@@ -52,7 +52,7 @@ module.exports = function (Hue) {
       }
 
       for (let i=0; i<info.log_messages.length; i++) {
-        if (info.log_messages[i].id === data.edit_id) {
+        if (info.log_messages[i].data.id === data.edit_id) {
           if (info.log_messages[i].data.user_id !== socket.hue_user_id) {
             return
           }
@@ -122,10 +122,10 @@ module.exports = function (Hue) {
 
     if (!data.edit_id) {
       let message = {
-        id: id,
         type: "chat",
-        date: date,
         data: {
+          id: id,
+          date: date,
           user_id: socket.hue_user_id,
           username: username,
           message: data.message,
@@ -196,10 +196,10 @@ module.exports = function (Hue) {
     for (let i = 0; i < messages.length; i++) {
       let msg = messages[i]
 
-      if (msg.id && msg.id == data.id) {
+      if (msg.data.id && msg.data.id == data.id) {
         message = msg
         message_index = i
-        message_id = msg.id
+        message_id = msg.data.id
         message_user_id = msg.data.user_id
         break
       }
@@ -252,7 +252,7 @@ module.exports = function (Hue) {
         for (let i = 0; i < messages.length; i++) {
           let msg = messages[i]
 
-          if (msg.id && msg.id == data.id) {
+          if (msg.data.id && msg.data.id == data.id) {
             deleted = true
             messages.splice(i, 1)
             break
