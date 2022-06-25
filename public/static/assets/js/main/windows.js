@@ -730,6 +730,12 @@ Hue.start_msg = function () {
     ]
   }))
 
+  Hue.msg_admin_activity.set_title(Hue.template_titlebar({
+    items: [
+      {id: "admin_activity_clear", text: "Clear Admin Activity"},
+    ]
+  }))
+
   Hue.msg_filter_history.set_title(Hue.template_titlebar({
     items: [
       {id: "filter_history_clear", text: "Clear Filter History"},
@@ -881,7 +887,6 @@ Hue.start_msg = function () {
   Hue.msg_roomlist.set_title("Room List")
   Hue.msg_settings.set_title("User Settings")
   Hue.msg_screen_capture_options.set_title("Screen Capture")
-  Hue.msg_admin_activity.set_title("Admin Activity")
   Hue.msg_notifications.set_title("Notifications")
   Hue.msg_command_book.set_title("Command Book")
   Hue.msg_user_profile.set_title("User Profile")

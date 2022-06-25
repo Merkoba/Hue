@@ -405,6 +405,12 @@ module.exports = function (Hue) {
     Hue.handler.user_emit(socket, "receive_admin_list", { list: list })
   }
 
+  // Clear admin activity
+  Hue.handler.public.clear_admin_activity = function (socket, data) {
+    Hue.db_manager.update_room(socket.hue_room_id, {admin_log_messages: []})
+    Hue.handler.room_emit(socket, "admin_activity_cleared", {})
+  }
+
   // Sends ban list
   Hue.handler.public.get_ban_list = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {

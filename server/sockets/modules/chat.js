@@ -376,7 +376,7 @@ module.exports = function (Hue) {
     }   
   }  
 
-  // Like a message
+  // Like or Unlike a message
   Hue.handler.public.like_message = async function (socket, data) {
     if (!data.id) {
       return
