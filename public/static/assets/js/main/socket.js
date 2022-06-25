@@ -348,6 +348,15 @@ Hue.start_socket = function () {
     let type = obj.type
     let data = obj.data
 
+    if (Hue.debug_socket) {
+      Hue.loginfo(
+        `Received: ${type} | Data: ${JSON.stringify(data).substring(
+          0,
+          250
+        )}`
+      )
+    }
+
     if (Hue.server_update_events[type]) {
       Hue.server_update_events[type](data)
     }
