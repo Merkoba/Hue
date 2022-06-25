@@ -389,7 +389,7 @@ module.exports = function (Hue) {
     let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
 
     for (let i=0; i<info.log_messages.length; i++) {
-      if (info.log_messages[i].id === data.id) {
+      if (info.log_messages[i].data.id === data.id) {
         if (info.log_messages[i].data.likes) {
           let included = info.log_messages[i].data.likes.some(x => x.user_id === socket.hue_user_id)
           let type
