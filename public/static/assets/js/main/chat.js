@@ -1842,23 +1842,21 @@ Hue.handle_delete_messages = function (id, user_id) {
     num = Hue.els(".message_unit", message).length
   }
 
-  if (num === 1) {
-    Hue.el("#delete_messages_group").style.display = "none"
-  } else {
+  Hue.el("#delete_messages_group").style.display = "none"
+  Hue.el("#delete_messages_above").style.display = "none"
+  Hue.el("#delete_messages_below").style.display = "none"
+
+  if (num > 1) {
     Hue.el("#delete_messages_group").style.display = "flex"
     shown += 1
   }
 
-  if (index === 0) {
-    Hue.el("#delete_messages_above").style.display = "none"
-  } else if (Hue.is_admin()) {
+  if (Hue.is_admin() && index !== 0) {
     Hue.el("#delete_messages_above").style.display = "flex"
     shown += 1
   }
 
-  if (index >= messages.length - 1) {
-    Hue.el("#delete_messages_below").style.display = "none"
-  } else if (Hue.is_admin()) {
+  if (Hue.is_admin() && index < messages.length - 1) {
     Hue.el("#delete_messages_below").style.display = "flex"
     shown += 1
   }
