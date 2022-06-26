@@ -321,7 +321,7 @@ module.exports = function (Hue) {
 
     for (let i=0; i<info.log_messages.length; i++) {
       let message = info.log_messages[i]
-      if (message.id === data.id) {
+      if (message.data.id === data.id) {
         info.log_messages = info.log_messages.slice(i)
 
         Hue.handler.room_emit(socket, "deleted_messages_above", {
@@ -360,7 +360,7 @@ module.exports = function (Hue) {
 
     for (let i=0; i<info.log_messages.length; i++) {
       let message = info.log_messages[i]
-      if (message.id === data.id) {
+      if (message.data.id === data.id) {
         info.log_messages = info.log_messages.slice(0, i + 1)
 
         Hue.handler.room_emit(socket, "deleted_messages_below", {
