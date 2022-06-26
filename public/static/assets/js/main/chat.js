@@ -1828,8 +1828,13 @@ Hue.handle_delete_messages = function (id, user_id) {
 
   Hue.delete_messages_id = id
   
+  let unit = Hue.get_message_by_id(id)[0]
+  let message = unit.closest(".message")
+  let area = message.closest(".chat_area")
+  let messages = [...area.children]
+  let index = messages.indexOf(message)
   let num = 0
-  let message = Hue.get_message_by_id(id)[0].closest(".message")
+  let shown = 1
 
   if (message.classList.contains("message_unit")) {
     num = 1
@@ -1841,20 +1846,25 @@ Hue.handle_delete_messages = function (id, user_id) {
     Hue.el("#delete_messages_group").style.display = "none"
   } else {
     Hue.el("#delete_messages_group").style.display = "flex"
+    shown += 1
   }
 
-  if (Hue.is_admin()) {
-    Hue.el("#delete_messages_above").style.display = "flex"
-    Hue.el("#delete_messages_below").style.display = "flex"
-  } else if (Hue.is_admin_or_op() || user_id === Hue.user_id) {
-    if (num === 1) {
-      Hue.delete_message(Hue.delete_messages_id)
-      return
-    }
-    
+  if (index === 0) {
     Hue.el("#delete_messages_above").style.display = "none"
+  } else if (Hue.is_admin()) {
+    Hue.el("#delete_messages_above").style.display = "flex"
+    shown += 1
+  }
+
+  if (index >= messages.length - 1) {
     Hue.el("#delete_messages_below").style.display = "none"
-  } else {
+  } else if (Hue.is_admin()) {
+    Hue.el("#delete_messages_below").style.display = "flex"
+    shown += 1
+  }
+
+  if (shown === 1) {
+    Hue.delete_message(Hue.delete_messages_id)
     return
   }
 
