@@ -911,7 +911,11 @@ Hue.delete_messages_above = function (id) {
     return
   }
 
-  Hue.show_confirm("Delete all messages above this message", function () {
+  let msg = Hue.get_message_by_id(id)
+  let index = msg[1]
+  let s = Hue.utilz.singular_or_plural(index, "messages")
+
+  Hue.show_confirm(`Delete all messages above this message (${s})`, function () {
     Hue.socket_emit("delete_messages_above", {
       id: id
     })
@@ -924,7 +928,12 @@ Hue.delete_messages_below = function (id) {
     return
   }
 
-  Hue.show_confirm("Delete all messages below this message", function () {
+  let msg = Hue.get_message_by_id(id)
+  let index = msg[1]
+  let num = Hue.els("#chat_area .message_unit").length - index - 1
+  let s = Hue.utilz.singular_or_plural(num, "messages")
+
+  Hue.show_confirm(`Delete all messages below this message (${s})`, function () {
     Hue.socket_emit("delete_messages_below", {
       id: id
     })
@@ -1828,19 +1837,21 @@ Hue.handle_delete_messages = function (id, user_id) {
 
   Hue.delete_messages_id = id
   
-  let unit = Hue.get_message_by_id(id)[0]
-  let message = unit.closest(".message")
-  let area = message.closest(".chat_area")
-  let messages = [...area.children]
-  let index = messages.indexOf(message)
+  let msg = Hue.get_message_by_id(id)
+  let unit = msg[0]
+  let index = msg[1]
   let num = 0
   let shown = 1
+
+  let message = unit.closest(".message")
 
   if (message.classList.contains("message_unit")) {
     num = 1
   } else {
     num = Hue.els(".message_unit", message).length
   }
+  
+  let num_messages = Hue.els("#chat_area .message_unit").length
 
   Hue.el("#delete_messages_group").style.display = "none"
   Hue.el("#delete_messages_above").style.display = "none"
@@ -1856,7 +1867,7 @@ Hue.handle_delete_messages = function (id, user_id) {
     shown += 1
   }
 
-  if (Hue.is_admin() && index < messages.length - 1) {
+  if (Hue.is_admin() && index < num_messages - 1) {
     Hue.el("#delete_messages_below").style.display = "flex"
     shown += 1
   }
