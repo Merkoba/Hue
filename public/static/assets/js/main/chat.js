@@ -1827,8 +1827,15 @@ Hue.handle_delete_messages = function (id, user_id) {
   }
 
   Hue.delete_messages_id = id
+  
+  let num = 0
   let message = Hue.get_message_by_id(id)[0].closest(".message")
-  let num = Hue.els(".message_unit", message).length
+
+  if (message.classList.contains("message_unit")) {
+    num = 1
+  } else {
+    num = Hue.els(".message_unit", message).length
+  }
 
   if (num === 1) {
     Hue.el("#delete_messages_group").style.display = "none"
