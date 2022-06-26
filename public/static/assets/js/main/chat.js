@@ -890,8 +890,13 @@ Hue.delete_message_group = function (id) {
     return
   }
 
-  Hue.show_confirm("Delete message group", function () {
-    let message = Hue.get_message_by_id(id)[0].closest(".message")
+  let msg = Hue.get_message_by_id(id)
+  let unit = msg[0]
+  let message = unit.closest(".message")
+  let num = Hue.get_num_message_units(unit)
+  let s = Hue.utilz.singular_or_plural(num, "messages")
+
+  Hue.show_confirm(`Delete message group (${s})`, function () {
   
     for (let unit of Hue.els(".message_unit", message)) {
       let id = Hue.dataset(unit, "id")
@@ -915,7 +920,7 @@ Hue.delete_messages_above = function (id) {
   let index = msg[1]
   let s = Hue.utilz.singular_or_plural(index, "messages")
 
-  Hue.show_confirm(`Delete all messages above this message (${s})`, function () {
+  Hue.show_confirm(`Delete messages above this message (${s})`, function () {
     Hue.socket_emit("delete_messages_above", {
       id: id
     })
@@ -933,7 +938,7 @@ Hue.delete_messages_below = function (id) {
   let num = Hue.els("#chat_area .message_unit").length - index - 1
   let s = Hue.utilz.singular_or_plural(num, "messages")
 
-  Hue.show_confirm(`Delete all messages below this message (${s})`, function () {
+  Hue.show_confirm(`Delete messages below this message (${s})`, function () {
     Hue.socket_emit("delete_messages_below", {
       id: id
     })
@@ -1840,18 +1845,9 @@ Hue.handle_delete_messages = function (id, user_id) {
   let msg = Hue.get_message_by_id(id)
   let unit = msg[0]
   let index = msg[1]
-  let num = 0
-  let shown = 1
-
-  let message = unit.closest(".message")
-
-  if (message.classList.contains("message_unit")) {
-    num = 1
-  } else {
-    num = Hue.els(".message_unit", message).length
-  }
-  
+  let num = Hue.get_num_message_units(unit)
   let num_messages = Hue.els("#chat_area .message_unit").length
+  let shown = 1
 
   Hue.el("#delete_messages_group").style.display = "none"
   Hue.el("#delete_messages_above").style.display = "none"
@@ -2087,5 +2083,16 @@ Hue.update_likes = function (el, likes) {
     c.style.display = "flex"
   } else {
     c.style.display = "none"
+  }
+}
+
+// Get number of units in a message
+Hue.get_num_message_units = function (unit) {
+  let message = unit.closest(".message")
+
+  if (message.classList.contains("message_unit")) {
+    return 1
+  } else {
+    return Hue.els(".message_unit", message).length
   }
 }
