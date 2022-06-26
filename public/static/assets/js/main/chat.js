@@ -920,7 +920,7 @@ Hue.delete_messages_above = function (id) {
   let index = msg[1]
   let s = Hue.utilz.singular_or_plural(index, "messages")
 
-  Hue.show_confirm(`Delete messages above this message (${s})`, function () {
+  Hue.show_confirm(`Delete messages above (${s})`, function () {
     Hue.socket_emit("delete_messages_above", {
       id: id
     })
@@ -938,7 +938,7 @@ Hue.delete_messages_below = function (id) {
   let num = Hue.els("#chat_area .message_unit").length - index - 1
   let s = Hue.utilz.singular_or_plural(num, "messages")
 
-  Hue.show_confirm(`Delete messages below this message (${s})`, function () {
+  Hue.show_confirm(`Delete messages below (${s})`, function () {
     Hue.socket_emit("delete_messages_below", {
       id: id
     })
