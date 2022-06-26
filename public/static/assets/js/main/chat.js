@@ -1827,11 +1827,24 @@ Hue.handle_delete_messages = function (id, user_id) {
   }
 
   Hue.delete_messages_id = id
+  let message = Hue.get_message_by_id(id)[0].closest(".message")
+  let num = Hue.els(".message_unit", message).length
+
+  if (num === 1) {
+    Hue.el("#delete_messages_group").style.display = "none"
+  } else {
+    Hue.el("#delete_messages_group").style.display = "flex"
+  }
 
   if (Hue.is_admin()) {
     Hue.el("#delete_messages_above").style.display = "flex"
     Hue.el("#delete_messages_below").style.display = "flex"
   } else if (Hue.is_admin_or_op() || user_id === Hue.user_id) {
+    if (num === 1) {
+      Hue.delete_message(Hue.delete_messages_id)
+      return
+    }
+    
     Hue.el("#delete_messages_above").style.display = "none"
     Hue.el("#delete_messages_below").style.display = "none"
   } else {
