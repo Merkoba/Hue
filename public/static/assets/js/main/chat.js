@@ -469,7 +469,12 @@ Hue.insert_message = function (args = {}) {
 
 // Starts chat mouse events
 Hue.start_chat_mouse_events = function () {
-  document.addEventListener("click", function (e) {
+  document.addEventListener("mouseup", function (e) {
+    // If right click
+    if (e.button === 2) {
+      return
+    }
+
     if (!e.target) {
       return
     }
@@ -488,55 +493,64 @@ Hue.start_chat_mouse_events = function () {
     
     if (e.target.closest(".chat_area")) {
       let message = e.target.closest(".message")
-
+      
       if (message) {
         let id = Hue.dataset(message, "id")
         let username = Hue.dataset(message, "username")
         let user_id = Hue.dataset(message, "user_id")
         let type = Hue.dataset(message, "type")
+        let unit = e.target.closest(".message_unit")
 
-        if (e.target.closest(".chat_menu_button")) {
-          return
-        } else if (e.target.classList.contains("chat_username")) {
-          Hue.show_profile(username, user_id)
-        } else if (e.target.classList.contains("chat_profilepic")) {
-          Hue.show_profile(username, user_id)
-        } else if (e.target.classList.contains("message_edit_submit")) {
-          Hue.send_edit_messsage()
-        } else if (e.target.classList.contains("message_edit_cancel")) {
-          Hue.stop_edit_message()
-        } else if (e.target.classList.contains("chat_quote_text")) {
-          let quote = e.target.closest(".chat_quote")
-          let id = Hue.dataset(quote, "quote_id")
-          Hue.jump_to_chat_message_by_id(id)
-        } else if (e.target.classList.contains("chat_quote_username") ||
-          e.target.classList.contains("chat_quote_profilepic")) {
-          let quote = e.target.closest(".chat_quote")
-          let username = Hue.dataset(quote, "quote_username")
-          let user_id = Hue.dataset(quote, "quote_user_id")
-          Hue.show_profile(username, user_id)
-        } else if (e.target.classList.contains("link_preview_image")) {
-          e.stopPropagation()
-          Hue.view_image(e.target.src, username, user_id)
-        } else if (e.target.classList.contains("image_preview_image")) {
-          e.stopPropagation()
-          let src = Hue.dataset(e.target, "image_preview_src_original")
-          Hue.view_image(src, username, user_id)
-        } else if (e.target.classList.contains("announcement_content") ||
-          e.target.closest(".brk")) {
-          if (type === "image_change") {
-            Hue.show_modal_image(id)
-          } else if (type === "tv_change") {
-            Hue.open_url_menu_by_media_id("tv", id)
+        // If primary click
+        if (e.button === 0) {
+          if (e.target.classList.contains("chat_username")) {
+            Hue.show_profile(username, user_id)
+          } else if (e.target.classList.contains("chat_profilepic")) {
+            Hue.show_profile(username, user_id)
+          } else if (e.target.classList.contains("message_edit_submit")) {
+            Hue.send_edit_messsage()
+          } else if (e.target.classList.contains("message_edit_cancel")) {
+            Hue.stop_edit_message()
+          } else if (e.target.classList.contains("chat_quote_text")) {
+            let quote = e.target.closest(".chat_quote")
+            let id = Hue.dataset(quote, "quote_id")
+            Hue.jump_to_chat_message_by_id(id)
+          } else if (e.target.classList.contains("chat_quote_username") ||
+            e.target.classList.contains("chat_quote_profilepic")) {
+            let quote = e.target.closest(".chat_quote")
+            let username = Hue.dataset(quote, "quote_username")
+            let user_id = Hue.dataset(quote, "quote_user_id")
+            Hue.show_profile(username, user_id)
+          } else if (e.target.classList.contains("link_preview_image")) {
+            e.stopPropagation()
+            Hue.view_image(e.target.src, username, user_id)
+          } else if (e.target.classList.contains("image_preview_image")) {
+            e.stopPropagation()
+            let src = Hue.dataset(e.target, "image_preview_src_original")
+            Hue.view_image(src, username, user_id)
+          } else if (e.target.classList.contains("announcement_content") ||
+            e.target.closest(".brk")) {
+            if (type === "image_change") {
+              Hue.show_modal_image(id)
+            } else if (type === "tv_change") {
+              Hue.open_url_menu_by_media_id("tv", id)
+            }
+          } else if (e.target.closest(".brk_profilepic")) {
+            Hue.show_profile(username, user_id)
+          } else if (e.target.closest(".like_container")) {
+            let el = e.target.closest(".like_container")
+            let user_id = Hue.dataset(el, "user_id")
+            let username = Hue.dataset(el, "username")
+            Hue.show_profile(username, user_id)
           }
-        } else if (e.target.closest(".brk_profilepic")) {
-          Hue.show_profile(username, user_id)
-        } else if (e.target.closest(".like_container")) {
-          let el = e.target.closest(".like_container")
-          let user_id = Hue.dataset(el, "user_id")
-          let username = Hue.dataset(el, "username")
-          Hue.show_profile(username, user_id)
         }
+
+        // If middle click
+        else if (e.button === 1) {
+          if (unit) {
+            Hue.show_chat_context_menu(e)
+          }
+        }        
       }
     }
 
@@ -544,32 +558,6 @@ Hue.start_chat_mouse_events = function () {
       let container = e.target.closest(".user_details")
       let username = Hue.dataset(container, "username")
       Hue.process_write_whisper(`${username} > ${e.target.dataset.whisper}`)
-    }
-  })
-
-  document.addEventListener("mouseup", function (e) {
-    if (!e.target) {
-      return
-    }
-
-    if (e.target.tagName === "A") {
-      return
-    }
-
-    if (!e.target.closest) {
-      return
-    }
-    
-    if (e.target.closest(".chat_area")) {
-      if (e.target.closest(".chat_content_container")) {
-        if (e.button === 1) {
-          Hue.show_chat_context_menu(e)
-        }
-      } else if (e.target.closest(".announcement_content_container")) {
-        if (e.button === 1) {
-          Hue.show_chat_context_menu(e)
-        }
-      }
     }
   })
 }
@@ -2089,10 +2077,5 @@ Hue.update_likes = function (el, likes) {
 // Get number of units in a message
 Hue.get_num_message_units = function (unit) {
   let message = unit.closest(".message")
-
-  if (message.classList.contains("message_unit")) {
-    return 1
-  } else {
-    return Hue.els(".message_unit", message).length
-  }
+  return Hue.els_or_self(".message_unit", message).length
 }
