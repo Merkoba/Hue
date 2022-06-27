@@ -8,6 +8,32 @@ Hue.els = function (query, root = document) {
   return Array.from(root.querySelectorAll(query))
 }
 
+// Select a single element or self
+Hue.el_or_self = function (query, root = document) {
+  let el = root.querySelector(query)
+
+  if (!el) {
+    if (root.classList.contains(query.replace(".", ""))) {
+      el = root
+    }
+  }
+
+  return el
+}
+
+// Select an array of elements or self
+Hue.els_or_self = function (query, root = document) {
+  let els = Array.from(root.querySelectorAll(query))
+
+  if (els.length === 0) {
+    if (root.classList.contains(query.replace(".", ""))) {
+      els = [root]
+    }
+  }
+
+  return els
+}
+
 // Clone element
 Hue.clone = function (el) {
   return el.cloneNode(true)
