@@ -492,6 +492,7 @@ Hue.start_chat_mouse_events = function () {
     }
     
     if (e.target.closest(".chat_area")) {
+      let is_main = e.target.closest("#chat_area")
       let message = e.target.closest(".message")
       
       if (message) {
@@ -547,17 +548,19 @@ Hue.start_chat_mouse_events = function () {
 
         // If middle click
         else if (e.button === 1) {
-          if (unit) {
+          if (is_main && unit) {
             Hue.show_chat_context_menu(e)
           }
         }        
       }
     }
 
-    if (e.target.classList.contains("whisper_link")) {
-      let container = e.target.closest(".user_details")
-      let username = Hue.dataset(container, "username")
-      Hue.process_write_whisper(`${username} > ${e.target.dataset.whisper}`)
+    if (e.button === 0) {
+      if (e.target.classList.contains("whisper_link")) {
+        let container = e.target.closest(".user_details")
+        let username = Hue.dataset(container, "username")
+        Hue.process_write_whisper(`${username} > ${e.target.dataset.whisper}`)
+      }
     }
   })
 }
