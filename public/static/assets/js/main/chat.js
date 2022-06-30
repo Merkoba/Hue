@@ -1089,8 +1089,6 @@ Hue.jump_to_chat_message = function (message_id, highlight, container = "#chat_a
 
   let el = Hue.el(`${container} > .message_id_${message_id}`)
 
-  console.log(el)
-
   if (!el) {
     return
   }
