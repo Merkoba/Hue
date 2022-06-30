@@ -210,7 +210,6 @@ Hue.open_url_menu = function (data) {
   })
 
   Hue.urlize(url_el)
-  
   Hue.open_url_data = data
   Hue.msg_open_url.show()
 }
