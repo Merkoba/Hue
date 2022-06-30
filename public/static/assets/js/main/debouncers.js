@@ -61,4 +61,9 @@ Hue.create_debouncers = function () {
   Hue.process_file_added = Hue.create_debouncer(function (file) {
     Hue.do_process_file_added(file)
   }, Hue.file_added_delay)
+
+  // Modal filter debouncer
+  Hue.modal_filter = Hue.create_debouncer(function (file) {
+    Hue.do_modal_filter()
+  }, Hue.filter_delay)
 }

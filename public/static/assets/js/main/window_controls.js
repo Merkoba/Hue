@@ -8,16 +8,8 @@ Hue.setup_window_controls = function () {
     let clear = Hue.el(".window_filter_clear", it)
     let history = Hue.el(".window_filter_history", it)
 
-    filter.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
-        Hue.do_modal_filter()
-      }
-    })
-
     filter.addEventListener("input", function (e) {
-      if (filter.value === "" || e.inputType === "insertFromPaste") {
-        Hue.do_modal_filter()
-      }
+        Hue.modal_filter()
     })
 
     bottom.addEventListener("click", function () {
