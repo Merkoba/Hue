@@ -211,7 +211,7 @@ module.exports = function (Hue) {
   Hue.handler.get_last_media = async function (room_id, type) {
     let info = await Hue.db_manager.get_room(["id", room_id], { log_messages: 1 })
 
-    for (let item of info.log_messages.slice().reverse()) {
+    for (let item of info.log_messages.reverse()) {
       if (item.type === type) {
         return item.data
       }
