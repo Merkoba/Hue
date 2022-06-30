@@ -515,7 +515,7 @@ Hue.start_chat_mouse_events = function () {
           } else if (e.target.classList.contains("chat_quote_text")) {
             let quote = e.target.closest(".chat_quote")
             let id = Hue.dataset(quote, "quote_id")
-            Hue.jump_to_chat_message_by_id(id)
+            Hue.show_chat_search(`$id ${id}`)
           } else if (e.target.classList.contains("chat_quote_username") ||
             e.target.classList.contains("chat_quote_profilepic")) {
             let quote = e.target.closest(".chat_quote")
@@ -953,6 +953,18 @@ Hue.get_message_by_id = function (id) {
   }
 }
 
+// Get message container by id
+Hue.get_message_container_by_id = function (id) {
+  let unit = Hue.get_message_by_id(id)
+  let message
+  
+  if (unit.length) {
+    message = unit[0].closest(".message")
+  }
+
+  return message
+}
+
 // Remove a message from the chat
 Hue.remove_message_from_chat = function (data) {
   let ans = Hue.get_message_by_id(data.id)
@@ -1181,19 +1193,6 @@ Hue.jump_to_chat_message = function (message_id, highlight = true) {
   }
 
   Hue.close_all_modals()
-}
-
-// Jumps to the message by id (not message_id)
-Hue.jump_to_chat_message_by_id = function (id) {
-  let ans = Hue.get_message_by_id(id)
-
-  if (ans) {
-    let message = ans[0].closest(".message")
-    let message_id = Hue.dataset(message, "message_id")
-    Hue.jump_to_chat_message(message_id)
-  } else {
-    Hue.show_info("Message no longer in chat")
-  }
 }
 
 // What to do after receiving a chat message from the server
