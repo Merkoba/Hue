@@ -30,6 +30,7 @@ Hue.reset_chat_search_filter = function () {
 // Shows the chat search window
 Hue.show_chat_search = function (filter = "") {
   let finished = false
+  let highlight_id
 
   function filtercheck (it) {
     if (finished) {
@@ -172,7 +173,12 @@ Hue.show_chat_search = function (filter = "") {
       let item = Hue.get_message_container_by_id(first_arg)
 
       if (item) {
-        on_messages([Hue.clone(item)])
+        let messages = []
+        messages.push(Hue.clone(item.previousElementSibling))
+        messages.push(Hue.clone(item))
+        messages.push(Hue.clone(item.nextElementSibling))
+        highlight_id = Hue.dataset(item, "message_id")
+        on_messages(messages)
       }
     } else {
       let messages = Hue.clone_children("#chat_area").reverse()
@@ -219,7 +225,11 @@ Hue.show_chat_search = function (filter = "") {
   }
 
   Hue.msg_chat_search.show(function () {
-    Hue.scroll_modal_to_top("chat_search")
+    if (highlight_id) {
+      Hue.jump_to_chat_message(highlight_id, true, "#chat_search_container")
+    } else {
+      Hue.scroll_modal_to_top("chat_search")
+    }
   })
 }
 
