@@ -42,7 +42,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let id, date, edited, username, linkdata
+    let id, date, edited, username, linkdata, likes
     
     if (data.edit_id) {      
       let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })

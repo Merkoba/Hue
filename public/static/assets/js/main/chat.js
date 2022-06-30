@@ -368,11 +368,9 @@ Hue.insert_message = function (args = {}) {
     content_container.classList.add(`chat_content_container_${Hue.chat_content_container_id}`)
 
     if (args.just_edited && args.id) {
-      let clone = Hue.clone(content_container)
-
       for (let item of Hue.els(".chat_content_container")) {
         if (Hue.dataset(item, "id") === args.id) {
-          item.replaceWith(clone)
+          item.replaceWith(Hue.clone(content_container))
           break
         }
       }
@@ -380,7 +378,7 @@ Hue.insert_message = function (args = {}) {
       if (Hue.msg_chat_search.is_open()) {
         for (let item of Hue.els("#chat_search_container .message_unit")) {
           if (args.id === Hue.dataset(item, "id")) {
-            item.replaceWith(clone)
+            item.replaceWith(Hue.clone(content_container))
             break
           }
         }
