@@ -30,7 +30,6 @@ Hue.show_chat_context_menu = function (e) {
   let mode = Hue.dataset(message, "mode")
   let type = Hue.dataset(message, "type")
   let user_id = Hue.dataset(message, "user_id")
-  let message_id = Hue.dataset(message, "message_id")
   let unit = e.target.closest(".message_unit")
   let id = Hue.dataset(unit, "id")
   let likes = Hue.dataset(unit, "likes")
@@ -40,15 +39,6 @@ Hue.show_chat_context_menu = function (e) {
     let container = e.target.closest(".chat_content_container")
     url = Hue.dataset(container, "first_url")
   }
-
-  if (!e.target.closest("#chat_area")) {
-    items.push({
-      text: "Jump",
-      action: function () {
-        Hue.jump_to_chat_message(message_id)
-      }
-    })
-  }  
 
   if (mode === "chat" || type === "image_change" || type === "tv_change") {
     items.push({

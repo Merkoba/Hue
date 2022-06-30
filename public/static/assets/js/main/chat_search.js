@@ -239,3 +239,8 @@ Hue.show_image_list = function () {
 Hue.show_tv_list = function () {
   Hue.show_chat_search("$tv ")
 }
+
+// Do a chat search by id
+Hue.chat_search_by_id = function (id) {
+  Hue.show_chat_search(`$id ${id}`)
+}

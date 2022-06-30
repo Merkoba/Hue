@@ -515,7 +515,7 @@ Hue.start_chat_mouse_events = function () {
           } else if (e.target.classList.contains("chat_quote_text")) {
             let quote = e.target.closest(".chat_quote")
             let id = Hue.dataset(quote, "quote_id")
-            Hue.show_chat_search(`$id ${id}`)
+            Hue.chat_search_by_id(id)
           } else if (e.target.classList.contains("chat_quote_username") ||
             e.target.classList.contains("chat_quote_profilepic")) {
             let quote = e.target.closest(".chat_quote")
@@ -958,7 +958,7 @@ Hue.get_message_container_by_id = function (id) {
   let unit = Hue.get_message_by_id(id)
   let message
   
-  if (unit.length) {
+  if (unit) {
     message = unit[0].closest(".message")
   }
 
