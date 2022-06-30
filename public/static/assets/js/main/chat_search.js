@@ -118,6 +118,24 @@ Hue.show_chat_search = function (filter = "") {
     }
   }
 
+  function on_messages (messages) {
+    if (messages.length) {
+      for (let message of messages) {
+        let profilepics = Hue.els(".profilepic", message)
+
+        for (let pic of profilepics) {
+          pic.addEventListener("error", function (e) {
+            Hue.fallback_profilepic(this)
+          })
+        }
+        
+        Hue.el("#chat_search_container").append(message)
+      }
+    } else {
+      Hue.el("#chat_search_container").innerHTML = "<div class='center'>Nothing found</div>"
+    }     
+  }
+
   Hue.el("#chat_search_container").innerHTML = ""
   Hue.el("#chat_search_filter").value = filter
   let filter0 = Hue.utilz.single_space(filter).trim()
@@ -150,57 +168,52 @@ Hue.show_chat_search = function (filter = "") {
       }
     }
 
-    let messages = Hue.clone_children("#chat_area").reverse()
+    if (filter.startsWith("$id")) {
+      let item = Hue.get_message_container_by_id(first_arg)
 
-    messages.forEach(it => {
-      it.removeAttribute("id")
-    })
-
-    messages = messages.filter(it => {
-      let mode = Hue.dataset(it, "mode")
-      let message_matched = false
-
-      if (mode === "chat") {
-        let containers = Hue.els(".chat_content_container", it)
-  
-        for (let container of containers) {
-          if (filtercheck(container)) {
-            message_matched = true
-            container.x_search_matched = true
-          }
-        }
-  
-        if (message_matched) {
-          for (let container of containers) {
-            if (!container.x_search_matched) {
-              container.remove()
-            }
-          }
-        }
-      } else if (mode === "announcement") {
-        if (filtercheck(it)) {
-          message_matched = true
-        }
-      }
-
-      return message_matched
-    })
-
-    if (messages.length) {
-      for (let message of messages) {
-        let profilepics = Hue.els(".profilepic", message)
-
-        for (let pic of profilepics) {
-          pic.addEventListener("error", function (e) {
-            Hue.fallback_profilepic(this)
-          })
-        }
-        
-        Hue.el("#chat_search_container").append(message)
+      if (item) {
+        on_messages([Hue.clone(item)])
       }
     } else {
-      Hue.el("#chat_search_container").innerHTML = "<div class='center'>Nothing found</div>"
-    } 
+      let messages = Hue.clone_children("#chat_area").reverse()
+  
+      messages.forEach(it => {
+        it.removeAttribute("id")
+      })
+  
+      messages = messages.filter(it => {
+        let mode = Hue.dataset(it, "mode")
+        let message_matched = false
+  
+        if (mode === "chat") {
+          let containers = Hue.els(".chat_content_container", it)
+    
+          for (let container of containers) {
+            if (filtercheck(container)) {
+              message_matched = true
+              container.x_search_matched = true
+            }
+          }
+    
+          if (message_matched) {
+            for (let container of containers) {
+              if (!container.x_search_matched) {
+                container.remove()
+              }
+            }
+          }
+        } else if (mode === "announcement") {
+          if (filtercheck(it)) {
+            message_matched = true
+          }
+        }
+  
+        return message_matched
+      })
+
+      on_messages(messages)
+    }
+
   } else {
     Hue.el("#chat_search_container").innerHTML = "<div class='center'>Search recent messages</div>"
   }
