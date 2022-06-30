@@ -10,7 +10,7 @@ Hue.user_join = function (data) {
     audioclip_version: data.audioclip_version
   })
 
-  if(data.user_id !== Hue.user_id) {
+  if (data.user_id !== Hue.user_id) {
     Hue.on_activity("join")
   }
 
@@ -180,7 +180,7 @@ Hue.get_user_by_username = function (username) {
 }
 
 // Get userlist item by username
-Hue.get_userlist_item_by_username =  function (username) {
+Hue.get_userlist_item_by_username = function (username) {
   for (let item of Hue.userlist) {
     if (item.username.toLowerCase() === username.toLowerCase()) {
       return item
@@ -189,7 +189,7 @@ Hue.get_userlist_item_by_username =  function (username) {
 }
 
 // Get userlist item by user id
-Hue.get_userlist_item_by_user_id =  function (user_id) {
+Hue.get_userlist_item_by_user_id = function (user_id) {
   for (let item of Hue.userlist) {
     if (item.user_id === user_id) {
       return item
@@ -1012,7 +1012,7 @@ Hue.modusername = function (arg) {
   }
 
   Hue.show_confirm("Run superuser command", function () {
-    Hue.socket_emit("modusername", {original:original_username, new:new_username})
+    Hue.socket_emit("modusername", {original: original_username, new: new_username})
   })
 }
 

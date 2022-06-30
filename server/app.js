@@ -20,11 +20,11 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   })
 
   // Apply the limiter to these routes
-  app.use("/change_password/", limiter);
-  app.use("/login/", limiter);
-  app.use("/register/", limiter);
-  app.get("/", limiter);
-  app.get("/:id(\\w+)", limiter);
+  app.use("/change_password/", limiter)
+  app.use("/login/", limiter)
+  app.use("/register/", limiter)
+  app.get("/", limiter)
+  app.get("/:id(\\w+)", limiter)
 
   app.set("views", path.join(__dirname, "views"))
   app.set("view engine", "ejs")

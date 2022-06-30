@@ -33,6 +33,7 @@ module.exports = function (Hue) {
       /youtu\.be\/(\w{11})/,
       "www.youtube.com/watch?v=$1"
     )
+
     data.username = socket.hue_username
 
     let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { tv_source: 1, tv_query: 1, tv_date: 1})
@@ -97,9 +98,7 @@ module.exports = function (Hue) {
         } else {
           Hue.handler.user_emit(socket, "video_not_found", {})
         }
-      } 
-
-      else if(data.src.includes("twitch.tv")) {
+      } else if (data.src.includes("twitch.tv")) {
         let info = Hue.utilz.get_twitch_id(data.src)
 
         if (info && info[0] === "channel") {
@@ -107,12 +106,10 @@ module.exports = function (Hue) {
           data.title = info[1]
           await Hue.handler.do_change_media(socket, data, "tv")
         } else {
-          Hue.handler.user_emit(socket, 'video_not_found', {})
+          Hue.handler.user_emit(socket, "video_not_found", {})
           return
         }
-      }
-      
-      else if (data.src.includes("soundcloud.com")) {
+      } else if (data.src.includes("soundcloud.com")) {
         data.src = data.src.split("#t=")[0]
         data.type = "soundcloud"
         data.title = data.src.replace(/^https?:\/\/soundcloud.com\//, "")

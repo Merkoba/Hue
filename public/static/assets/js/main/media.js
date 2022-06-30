@@ -515,7 +515,7 @@ Hue.set_media_enabled = function (args) {
 }
 
 // Set the lock of media
-Hue.set_media_locked = function(args) {
+Hue.set_media_locked = function (args) {
   let def_args = {
     change: true
   }
@@ -981,7 +981,7 @@ Hue.set_default_media_info_enabled = function () {
 // Check media info
 Hue.check_media_info = function () {
   let display = Hue.room_state.media_info_enabled ? "flex" : "none"
-  document.documentElement.style.setProperty('--media_info_display', display)
+  document.documentElement.style.setProperty("--media_info_display", display)
   Hue.fix_frames()
 }
 

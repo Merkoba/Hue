@@ -311,7 +311,7 @@ Hue.show_modal_image = function (id = 0) {
 
   let dummy_image = new Image()
 
-  dummy_image.onload = function() {
+  dummy_image.onload = function () {
     Hue.apply_modal_image_resolution(dummy_image, data.source)
   }
 
@@ -419,7 +419,7 @@ Hue.view_image = function (src, username, user_id) {
 
   let dummy_image = new Image()
 
-  dummy_image.onload = function() {
+  dummy_image.onload = function () {
     Hue.apply_view_image_resolution(dummy_image, src)
   }
 

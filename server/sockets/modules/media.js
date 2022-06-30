@@ -92,7 +92,6 @@ module.exports = function (Hue) {
     obj[`${type}_type`] = data.type,
     obj[`${type}_query`] = data.query,
     obj[`${type}_comment`] = comment,
-    obj[`${type}_likes`] = likes
 
     Hue.db_manager.update_room(room_id, obj)
 

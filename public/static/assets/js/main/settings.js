@@ -4,10 +4,10 @@
 Hue.user_settings = {
   highlight_current_username: {
     widget_type: "checkbox",
-    description: `Whether messages containing the user's username must be highlighted`,
+    description: "Whether messages containing the user's username must be highlighted",
     action: (save = true) => {
       Hue.settings.highlight_current_username = Hue.el(
-        `#settings_highlight_current_username`
+        "#settings_highlight_current_username"
       ).checked
 
       if (save) {
@@ -17,10 +17,10 @@ Hue.user_settings = {
   },
   case_insensitive_username_highlights: {
     widget_type: "checkbox",
-    description: `Whether username highlight checks are case insensitive or not`,
+    description: "Whether username highlight checks are case insensitive or not",
     action: (save = true) => {
       Hue.settings.case_insensitive_username_highlights = Hue.el(
-        `#settings_case_insensitive_username_highlights`
+        "#settings_case_insensitive_username_highlights"
       ).checked
 
       Hue.generate_mentions_regex()
@@ -32,9 +32,9 @@ Hue.user_settings = {
   },
   open_whispers_automatically: {
     widget_type: "checkbox",
-    description: `Whether messages received should open in a window automatically`,
+    description: "Whether messages received should open in a window automatically",
     action: (save = true) => {
-      Hue.settings.open_whispers_automatically = Hue.el(`#settings_open_whispers_automatically`).checked
+      Hue.settings.open_whispers_automatically = Hue.el("#settings_open_whispers_automatically").checked
 
       if (save) {
         Hue.save_settings()
@@ -43,9 +43,9 @@ Hue.user_settings = {
   },
   embed_images: {
     widget_type: "checkbox",
-    description: `Whether to embed other images automatically`,
+    description: "Whether to embed other images automatically",
     action: (save = true) => {
-      Hue.settings.embed_images = Hue.el(`#settings_embed_images`).checked
+      Hue.settings.embed_images = Hue.el("#settings_embed_images").checked
 
       if (save) {
         Hue.save_settings()
@@ -54,9 +54,9 @@ Hue.user_settings = {
   },
   show_link_previews: {
     widget_type: "checkbox",
-    description: `Whether to show related information of chat links when available`,
+    description: "Whether to show related information of chat links when available",
     action: (save = true) => {
-      Hue.settings.show_link_previews = Hue.el(`#settings_show_link_previews`).checked
+      Hue.settings.show_link_previews = Hue.el("#settings_show_link_previews").checked
 
       if (save) {
         Hue.save_settings()
@@ -65,9 +65,9 @@ Hue.user_settings = {
   },
   show_highlight_notifications: {
     widget_type: "checkbox",
-    description: `Whether to show desktop notifications on highlights`,
+    description: "Whether to show desktop notifications on highlights",
     action: (save = true) => {
-      Hue.settings.show_highlight_notifications = Hue.el(`#settings_show_highlight_notifications`).checked
+      Hue.settings.show_highlight_notifications = Hue.el("#settings_show_highlight_notifications").checked
 
       if (save) {
         Hue.save_settings()
@@ -76,9 +76,9 @@ Hue.user_settings = {
   },
   show_activity_notifications: {
     widget_type: "checkbox",
-    description: `Whether to show desktop notifications on activity after your last message`,
+    description: "Whether to show desktop notifications on activity after your last message",
     action: (save = true) => {
-      Hue.settings.show_activity_notifications = Hue.el(`#settings_show_activity_notifications`).checked
+      Hue.settings.show_activity_notifications = Hue.el("#settings_show_activity_notifications").checked
 
       if (save) {
         Hue.save_settings()
@@ -87,9 +87,9 @@ Hue.user_settings = {
   },
   show_user_join_notifications: {
     widget_type: "checkbox",
-    description: `Whether to show notifications when users join`,
+    description: "Whether to show notifications when users join",
     action: (save = true) => {
-      Hue.settings.show_user_join_notifications = Hue.el(`#settings_show_user_join_notifications`).checked
+      Hue.settings.show_user_join_notifications = Hue.el("#settings_show_user_join_notifications").checked
 
       if (save) {
         Hue.save_settings()
@@ -98,9 +98,9 @@ Hue.user_settings = {
   },
   show_user_leave_notifications: {
     widget_type: "checkbox",
-    description: `Whether to show notifications when users leave`,
+    description: "Whether to show notifications when users leave",
     action: (save = true) => {
-      Hue.settings.show_user_leave_notifications = Hue.el(`#settings_show_user_leave_notifications`).checked
+      Hue.settings.show_user_leave_notifications = Hue.el("#settings_show_user_leave_notifications").checked
 
       if (save) {
         Hue.save_settings()
@@ -109,9 +109,9 @@ Hue.user_settings = {
   },
   stop_radio_on_tv_play: {
     widget_type: "checkbox",
-    description: `Whether to stop the radio when the tv starts playing`,
+    description: "Whether to stop the radio when the tv starts playing",
     action: (save = true) => {
-      Hue.settings.stop_radio_on_tv_play = Hue.el(`#settings_stop_radio_on_tv_play`).checked
+      Hue.settings.stop_radio_on_tv_play = Hue.el("#settings_stop_radio_on_tv_play").checked
 
       if (save) {
         Hue.save_settings()
@@ -120,9 +120,9 @@ Hue.user_settings = {
   },
   stop_tv_on_radio_play: {
     widget_type: "checkbox",
-    description: `Whether to stop the tv when the radio starts playing`,
+    description: "Whether to stop the tv when the radio starts playing",
     action: (save = true) => {
-      Hue.settings.stop_tv_on_radio_play = Hue.el(`#settings_stop_tv_on_radio_play`).checked
+      Hue.settings.stop_tv_on_radio_play = Hue.el("#settings_stop_tv_on_radio_play").checked
 
       if (save) {
         Hue.save_settings()
@@ -131,9 +131,9 @@ Hue.user_settings = {
   },
   confirm_on_close: {
     widget_type: "checkbox",
-    description: `Whether to show a confirm message when closing the application`,
+    description: "Whether to show a confirm message when closing the application",
     action: (save = true) => {
-      Hue.settings.confirm_on_close = Hue.el(`#settings_confirm_on_close`).checked
+      Hue.settings.confirm_on_close = Hue.el("#settings_confirm_on_close").checked
 
       if (save) {
         Hue.save_settings()

@@ -22,7 +22,7 @@ Hue.start_dropzone = function () {
     Hue.upload_media = undefined
   })
 
-  Hue.dropzone.on("maxfilesexceeded", function(file) {
+  Hue.dropzone.on("maxfilesexceeded", function (file) {
     Hue.dropzone.removeFile(file)
   })  
 }

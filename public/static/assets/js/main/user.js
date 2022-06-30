@@ -58,7 +58,7 @@ Hue.change_password = function (p1, p2) {
 
 // Feedback on password change
 Hue.password_changed = function () {
-  Hue.checkmsg(`Password succesfully changed`)
+  Hue.checkmsg("Password succesfully changed")
 }
 
 // Changes the user's bio

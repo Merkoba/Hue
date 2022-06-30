@@ -236,7 +236,7 @@ module.exports = function (Hue) {
       background_version: info.background_version,
       text_color: info.text_color,
       bio: socket.hue_bio,
-      superuser:socket.hue_superuser,
+      superuser: socket.hue_superuser,
       reg_date: userinfo.registration_date,
     }
 

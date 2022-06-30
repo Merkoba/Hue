@@ -262,7 +262,7 @@ Hue.make_announcement_message = function (args = {}) {
     }
   }
 
-  let  top_clasees = "chat_message_top announcement_top"
+  let top_clasees = "chat_message_top announcement_top"
 
   if (!is_media) {
     top_clasees += " nodisplay"
@@ -1901,7 +1901,7 @@ Hue.do_chat_font_size_change = function (size = Hue.room_state.chat_font_size) {
   }
 
   Hue.room_state.chat_font_size = size
-  document.documentElement.style.setProperty('--chat_font_size', `${size}em`)
+  document.documentElement.style.setProperty("--chat_font_size", `${size}em`)
   Hue.goto_bottom(true)
   Hue.save_room_state()
 }

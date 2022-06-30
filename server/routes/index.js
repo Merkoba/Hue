@@ -17,8 +17,8 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   build_view()
   start_view_check()
 
-  function build_view() {
-    Object.keys(view).forEach(function(key) {
+  function build_view () {
+    Object.keys(view).forEach(function (key) {
       delete view[key]
     })
 
@@ -72,7 +72,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     for (let file of svg_files) {
       let h = fs.readFileSync(path.join(svg_path, file), "utf8").trim()
-      let name = `icon_${file.replace('.svg', '')}`
+      let name = `icon_${file.replace(".svg", "")}`
       h = h.replace("<svg", `<svg id="${name}" fill="currentColor"`)
       svg_templates += `\n${h}\n`
     }
@@ -106,7 +106,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     utilz.loginfo("View built")
   }
 
-  function walkdir(dir, callback) {
+  function walkdir (dir, callback) {
     fs.readdirSync(dir).forEach(f => {
       let dirPath = path.join(dir, f)
       let isDirectory = fs.statSync(dirPath).isDirectory()
@@ -115,7 +115,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     })
   }
 
-  function get_view_mtime() {
+  function get_view_mtime () {
     let mtime = ""
 
     walkdir(path.join(__dirname, "../views/main"), function (file) {
@@ -125,7 +125,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     return mtime
   }
 
-  function start_view_check() {
+  function start_view_check () {
     setInterval(() => {
       if (get_view_mtime() !== view_mtime || config.mtime !== config_mtime) {
         build_view()
@@ -134,7 +134,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   }
 
   // Checks if a URL length exceeds the limits
-  function check_url(req, res, next) {
+  function check_url (req, res, next) {
     if (req.originalUrl.length > config.max_url_length) {
       return
     }
@@ -143,7 +143,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       let id = req.params.id.substr(0, sconfig.max_room_id_length)
 
       if (id === config.main_room_id) {
-        res.redirect(`/`)
+        res.redirect("/")
         return
       }
     }
@@ -154,7 +154,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   // Checks if the user is logged in
   // If they're logged in they receive a jwt token
   // If not, they're redirected to the login page
-  function require_login(req, res, next) {
+  function require_login (req, res, next) {
     let fromurl = encodeURIComponent(req.originalUrl)
 
     if (req.session.user_id === undefined) {
@@ -354,20 +354,20 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       if (json.success) {
         callback()
       } else {
-        let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
+        let m = encodeURIComponent("There was a problem verifying you're not a robot")
         res.redirect(`/message?message=${m}`)
       }
     })
 
     .catch((err) => {
-      let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
+      let m = encodeURIComponent("There was a problem verifying you're not a robot")
       res.redirect(`/message?message=${m}`)
       console.error(err)
     })    
   }
 
   // Helper function
-  function already_exists(res, username) {
+  function already_exists (res, username) {
     let m = encodeURIComponent("Username already exists")
     let form_username = encodeURIComponent(username)
 
@@ -377,7 +377,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   }
 
   // Complete registration
-  function do_register(req, res, next) {
+  function do_register (req, res, next) {
     let username = req.body.username
     let password = req.body.password
 

@@ -1,4 +1,4 @@
-/*global message:readonly */ 
+/* global message:readonly */ 
 
 const utilz = Utilz()
 
@@ -21,11 +21,11 @@ Hue.els = function (query) {
   return Array.from(document.querySelectorAll(query))
 }
 
-function msg_info_after_close(instance) {
+function msg_info_after_close (instance) {
 	Hue.el("form").querySelector("input").focus()
 }
 
-function show_info(s) {
+function show_info (s) {
 	msg_info.show(s)
 }
 

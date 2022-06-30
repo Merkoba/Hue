@@ -1,7 +1,7 @@
 module.exports = function (Hue) {
   // Get ip address
   Hue.handler.get_ip_address = function (socket) {
-    return socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
+    return socket.client.request.headers["x-forwarded-for"] || socket.client.conn.remoteAddress
   }
 
   // Write banlist file

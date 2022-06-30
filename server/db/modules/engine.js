@@ -23,7 +23,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     if (obj.version !== vars[`${type}_version`]) {
       manager.fill_defaults(type, obj)
       obj.version = vars[`${type}_version`]
-      write_file (path, obj)
+      write_file(path, obj)
     }
   }
 
@@ -42,7 +42,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.cache = {}
 
   // Add to memory cache
-  manager.add_to_cache = function(path, obj) {
+  manager.add_to_cache = function (path, obj) {
     if (manager.cache[path] === undefined) {
       manager.cache[path] = {timeout: undefined, last_write: 0, obj: obj}
     }

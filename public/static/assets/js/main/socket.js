@@ -399,5 +399,5 @@ Hue.start_socket_stats = function () {
     Hue.loginfo(`Socket Messsages IN/OUT (last 10 minutes): ${Hue.num_socket_in}/${Hue.num_socket_out}`)
     Hue.num_socket_in = 0
     Hue.num_socket_out = 0
-  }, 10 * 60 * 1000);
+  }, 10 * 60 * 1000)
 }

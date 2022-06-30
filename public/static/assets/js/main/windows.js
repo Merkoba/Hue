@@ -1061,9 +1061,9 @@ Hue.get_first_visible_modal_item = function (id) {
 
 // Make windows invisible temporarily
 Hue.hide_windows_temporarily = function (delay = 2000) {
-  document.documentElement.style.setProperty("--msg_display", "none");
+  document.documentElement.style.setProperty("--msg_display", "none")
 
   setTimeout(function () {
-    document.documentElement.style.setProperty("--msg_display", "block");
+    document.documentElement.style.setProperty("--msg_display", "block")
   }, delay)
 }
