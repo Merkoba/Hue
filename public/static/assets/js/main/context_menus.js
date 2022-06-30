@@ -19,6 +19,7 @@ Hue.show_chat_context_menu = function (e, is_main) {
   let user_id = Hue.dataset(message, "user_id")
   let id = Hue.dataset(unit, "id")
   let likes = Hue.dataset(unit, "likes")
+  let message_id = Hue.dataset(message, "message_id")
   let url = ""
 
   if (mode === "chat") {
