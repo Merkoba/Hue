@@ -102,13 +102,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_filter_history = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "filter_history",
-      window_width: "30rem"
-    })
-  )
-
   Hue.msg_user_profile = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "user_profile",
@@ -553,16 +546,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_filter_history.set(
-    Hue.template_filter_history({
-      window_controls: Hue.template_window_controls({
-        filter_mode: "auto",
-        filter_id: "filter_history_filter",
-        filter_placeholder: "Filter"
-      })
-    })
-  )
-
   Hue.msg_settings.set(
     Hue.template_settings({
       window_controls: Hue.template_window_controls({
@@ -733,12 +716,6 @@ Hue.start_msg = function () {
   Hue.msg_admin_activity.set_title(Hue.template_titlebar({
     items: [
       {id: "admin_activity_clear", text: "Clear Admin Activity"},
-    ]
-  }))
-
-  Hue.msg_filter_history.set_title(Hue.template_titlebar({
-    items: [
-      {id: "filter_history_clear", text: "Clear Filter History"},
     ]
   }))
 

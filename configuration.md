@@ -197,9 +197,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "input_history_crop_limit"
 >Max number of recent input history items saved.
 
-"filter_history_crop_limit"
->Max number of recent filter history items saved.
-
 "whispers_crop_limit"
 >Max number of whisper items to show.
 
