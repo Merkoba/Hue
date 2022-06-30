@@ -3,7 +3,7 @@ const Utilz = function () {
 
 	// Clean string util
 	utilz.single_space = function (s) {
-		return s.replace(/\s+/g, ' ').trim()
+		return s.replace(/\s+/g, " ").trim()
 	}
 
 	// Clean string util
@@ -13,14 +13,14 @@ const Utilz = function () {
 
 	// Clean string util
 	utilz.no_space = function (s) {
-		return s.replace(/\s+/g, '').trim()
+		return s.replace(/\s+/g, "").trim()
 	}
 
 	// Replace multiple empty lines with a single one
 	utilz.remove_multiple_empty_lines = function (s, level = 1) {
 		let ns = []
 		let charge = 0
-		let split = s.split('\n')
+		let split = s.split("\n")
 
 		for (let line of split) {
 			if (line.trim() === "") {
@@ -35,7 +35,7 @@ const Utilz = function () {
 			}
 		}
 
-		let pf = ns.join('\n')
+		let pf = ns.join("\n")
 
 		return pf
 	}
@@ -56,7 +56,7 @@ const Utilz = function () {
 
 	// Clean string util
 	utilz.single_linebreak = function (s) {
-		return s.replace(/[\n\r]+/g, '\n').replace(/ +/g, ' ').trim()
+		return s.replace(/[\n\r]+/g, "\n").replace(/ +/g, " ").trim()
 	}
 
 	// Get a random int from min to max. Optional exclude a number
@@ -204,7 +204,7 @@ const Utilz = function () {
 		let match = url.match(/.*twitch\.tv(?:\/videos)?\/(\w+)/)
 
 		if (match) {
-			if (match[0].includes('twitch.tv/videos/')) {
+			if (match[0].includes("twitch.tv/videos/")) {
 				return ["video", match[1]]
 			} else if (match[0].includes("clips.twitch.tv")) {
 				return
@@ -216,7 +216,7 @@ const Utilz = function () {
 
 	// Round to specified decimal places
 	utilz.round = function (value, decimals) {
-		return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals)
+		return Number(Math.round(value + "e" + decimals) + "e-" + decimals)
 	}
 
 	// Round to place or the place below
@@ -267,6 +267,8 @@ const Utilz = function () {
 
 	// Check if hex value is valid
 	utilz.validate_hex = function (hex, case_sensitive = true) {
+		let re
+
 		if (case_sensitive) {
 			re = /^#[0-9a-f]{6}$/
 		} else {
@@ -288,9 +290,9 @@ const Utilz = function () {
 	// Capitalize words in a sentence
 	utilz.capitalize_words = function (s) {
 		let ns = s.toLowerCase()
-			.split(' ')
+			.split(" ")
 			.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-			.join(' ')
+			.join(" ")
 
 		return ns
 	}
@@ -394,7 +396,7 @@ const Utilz = function () {
 
 	// Escape special characters
 	utilz.escape_special_characters = function (s) {
-		return s.replace(/[^A-Za-z0-9]/g, '\\$&')
+		return s.replace(/[^A-Za-z0-9]/g, "\\$&")
 	}
 
 	// Get a string with the size in megabytes
@@ -459,34 +461,32 @@ const Utilz = function () {
 	utilz.is_textbox = function (element) {
 		let tag_name = element.tagName.toLowerCase()
 
-		if (tag_name === 'textarea') return true
-		if (tag_name !== 'input') return false
+		if (tag_name === "textarea") return true
+		if (tag_name !== "input") return false
 
-		let type = element.getAttribute('type')
+		let type = element.getAttribute("type")
 
 		if (!type) {
 			return false
 		}
 
-		type = type.toLowerCase(),
+		let input_types = [
+			"text",
+			"password",
+			"number",
+			"email",
+			"tel",
+			"url",
+			"search",
+			"date",
+			"datetime",
+			"datetime-local",
+			"time",
+			"month",
+			"week"
+		]
 
-			input_types = [
-				'text',
-				'password',
-				'number',
-				'email',
-				'tel',
-				'url',
-				'search',
-				'date',
-				'datetime',
-				'datetime-local',
-				'time',
-				'month',
-				'week'
-			]
-
-		return input_types.includes(type)
+		return input_types.includes(type.toLowerCase())
 	}
 
 	// Crop a string and add ... to it

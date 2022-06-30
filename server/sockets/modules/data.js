@@ -15,7 +15,7 @@ module.exports = function (Hue) {
         return false
       }
 
-      for (key of keys) {
+      for (let key of keys) {
         let d = data[key]
         let td = typeof d
 

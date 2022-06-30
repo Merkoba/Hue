@@ -17,18 +17,18 @@ const ColorLib = (function () {
       use_limits = false
     ) {
       if (palette_size === 0 || palette_size > 100) {
-        console.error('Invalid argument')
+        console.error("Invalid argument")
         return
       }
 
       let size = 64
 
-      const canvas = document.createElement('canvas')
+      const canvas = document.createElement("canvas")
 
       canvas.width = size
       canvas.height = size
 
-      const context = canvas.getContext('2d')
+      const context = canvas.getContext("2d")
       context.imageSmoothingEnabled = false
 
       context.drawImage(image, 0, 0, size, size)
@@ -131,7 +131,6 @@ const ColorLib = (function () {
 
     instance.is_light = function (rgb) {
       if (rgb.startsWith("#")) {
-				mode = "hex"
 				rgb = instance.hex_to_rgb(rgb)
 			}
 
@@ -162,9 +161,9 @@ const ColorLib = (function () {
 
     instance.get_proper_font = function (rgb) {
       if (instance.is_light(rgb)) {
-        return '#000000'
+        return "#000000"
       } else {
-        return '#ffffff'
+        return "#ffffff"
       }
     }
 
@@ -192,16 +191,16 @@ const ColorLib = (function () {
 
         for (let i = 0; i < rgb.length; i++) {
           let split = rgb[i]
-            .replace('rgb(', '')
-            .replace(')', '')
-            .split(',')
+            .replace("rgb(", "")
+            .replace(")", "")
+            .split(",")
           array[i] = split.map(x => parseInt(x))
         }
       } else {
         let split = rgb
-          .replace('rgb(', '')
-          .replace(')', '')
-          .split(',')
+          .replace("rgb(", "")
+          .replace(")", "")
+          .split(",")
         array = split.map(x => parseInt(x))
       }
 
@@ -210,9 +209,9 @@ const ColorLib = (function () {
 
     instance.rgb_to_rgba = function (rgb, alpha) {
       let split = rgb
-        .replace('rgb(', '')
-        .replace(')', '')
-        .split(',')
+        .replace("rgb(", "")
+        .replace(")", "")
+        .split(",")
 
       let rgba = `rgba(${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()}, ${alpha})`
 
@@ -221,9 +220,9 @@ const ColorLib = (function () {
 
     instance.rgba_to_rgb = function (rgb) {
       let split = rgb
-        .replace('rgba(', '')
-        .replace(')', '')
-        .split(',')
+        .replace("rgba(", "")
+        .replace(")", "")
+        .split(",")
 
       let nrgb = `rgb(${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()})`
 
@@ -231,7 +230,7 @@ const ColorLib = (function () {
     }
 
     instance.rgb_to_hex = function (rgb, hash = true) {
-      if (typeof rgb === 'string') {
+      if (typeof rgb === "string") {
         rgb = instance.rgb_to_array(rgb)
       }
 
@@ -240,7 +239,7 @@ const ColorLib = (function () {
         .slice(1)
 
       if (hash) {
-        code = '#' + code
+        code = "#" + code
       }
 
       return code
@@ -291,12 +290,12 @@ const ColorLib = (function () {
     // This should be replaced with something easier to read
     instance.shadeBlendConvert = function (p, from, to) {
       if (
-        typeof p != 'number' ||
+        typeof p != "number" ||
         p < -1 ||
         p > 1 ||
-        typeof from != 'string' ||
-        (from[0] != 'r' && from[0] != '#') ||
-        (typeof to != 'string' && typeof to != 'undefined')
+        typeof from != "string" ||
+        (from[0] != "r" && from[0] != "#") ||
+        (typeof to != "string" && typeof to != "undefined")
       )
         return null //ErrorCheck
       if (!this.sbcRip)
@@ -304,7 +303,7 @@ const ColorLib = (function () {
           var l = d.length,
             RGB = new Object()
           if (l > 9) {
-            d = d.split(',')
+            d = d.split(",")
             if (d.length < 3 || d.length > 4) return null //ErrorCheck
             ;(RGB[0] = i(d[0].slice(4))),
               (RGB[1] = i(d[1])),
@@ -314,14 +313,14 @@ const ColorLib = (function () {
             if (l == 8 || l == 6 || l < 4) return null //ErrorCheck
             if (l < 6)
               d =
-                '#' +
+                "#" +
                 d[1] +
                 d[1] +
                 d[2] +
                 d[2] +
                 d[3] +
                 d[3] +
-                (l > 4 ? d[4] + '' + d[4] : '') //3 digit
+                (l > 4 ? d[4] + "" + d[4] : "") //3 digit
             ;(d = i(d.slice(1), 16)),
               (RGB[0] = (d >> 16) & 255),
               (RGB[1] = (d >> 8) & 255),
@@ -337,40 +336,40 @@ const ColorLib = (function () {
         r = Math.round,
         h = from.length > 9,
         h =
-          typeof to == 'string'
+          typeof to == "string"
             ? to.length > 9
               ? true
-              : to == 'c'
+              : to == "c"
               ? !h
               : false
             : h,
         b = p < 0,
         p = b ? p * -1 : p,
-        to = to && to != 'c' ? to : b ? '#000000' : '#FFFFFF',
+        to = to && to != "c" ? to : b ? "#000000" : "#FFFFFF",
         f = this.sbcRip(from),
         t = this.sbcRip(to)
       if (!f || !t) return null //ErrorCheck
       if (h)
         return (
-          'rgb(' +
+          "rgb(" +
           r((t[0] - f[0]) * p + f[0]) +
-          ',' +
+          "," +
           r((t[1] - f[1]) * p + f[1]) +
-          ',' +
+          "," +
           r((t[2] - f[2]) * p + f[2]) +
           (f[3] < 0 && t[3] < 0
-            ? ')'
-            : ',' +
+            ? ")"
+            : "," +
               (f[3] > -1 && t[3] > -1
                 ? r(((t[3] - f[3]) * p + f[3]) * 10000) / 10000
                 : t[3] < 0
                 ? f[3]
                 : t[3]) +
-              ')')
+              ")")
         )
       else
         return (
-          '#' +
+          "#" +
           (
             0x100000000 +
             (f[3] > -1 && t[3] > -1
