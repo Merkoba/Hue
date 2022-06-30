@@ -64,6 +64,22 @@ Hue.activate_key_detection = function () {
         }
       }
 
+      if (e.target.closest(".filter_input")) {
+        let c = e.target.closest(".Msg-content-container")
+
+        if (e.key === "PageUp") {
+          c.scrollTop = 0
+        } else if (e.key === "PageDown") {
+          c.scrollTop = c.scrollHeight
+        } else if (e.key === "ArrowUp") {
+          c.scrollTop -= Hue.chat_scroll_amount
+        } else if (e.key === "ArrowDown") {
+          c.scrollTop += Hue.chat_scroll_amount
+        }
+
+        return
+      }
+
       if (Hue.msg_link_image.is_open()) {
         if (Hue.msg_link_image.is_highest()) {
           if (e.key === "Enter") {
