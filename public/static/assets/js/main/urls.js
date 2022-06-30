@@ -166,8 +166,8 @@ Hue.setup_open_url = function () {
     Hue.msg_open_url.close()
   })
 
-  Hue.el("#open_url_menu_jump").addEventListener("click", function () {
-    Hue.jump_to_chat_message(Hue.open_url_data.message_id) 
+  Hue.el("#open_url_menu_context").addEventListener("click", function () {
+    Hue.chat_search_by_id(Hue.open_url_data.id) 
     Hue.msg_open_url.close()
   })
 }

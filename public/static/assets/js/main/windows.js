@@ -795,7 +795,7 @@ Hue.start_msg = function () {
       {id: "open_url_menu_view_comment", text: "Comment"},
       {id: "open_url_menu_load", text: "Load"},
       {id: "open_url_menu_link", text: "Link"},
-      {id: "open_url_menu_jump", text: "Jump"},
+      {id: "open_url_menu_context", text: "Context"},
     ],
     container_id: "open_url_container"
   }))
