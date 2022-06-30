@@ -31,7 +31,7 @@ Hue.show_chat_context_menu = function (e, is_main) {
     items.push({
       text: "Jump",
       action: function () {
-        Hue.jump_to_chat_message(message_id)
+        Hue.jump_to_chat_message(message_id, true)
       }
     })
   }

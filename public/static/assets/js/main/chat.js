@@ -1082,12 +1082,14 @@ Hue.remove_aura = function (id) {
 // Jumps to a chat message in the chat area
 // This is used when clicking the Jump button in
 // windows showing chat message clones
-Hue.jump_to_chat_message = function (message_id, highlight = true) {
+Hue.jump_to_chat_message = function (message_id, highlight, container = "#chat_area") {
   if (!message_id) {
     return
   }
 
-  let el = Hue.el(`#chat_area > .message_id_${message_id}`)
+  let el = Hue.el(`${container} > .message_id_${message_id}`)
+
+  console.log(el)
 
   if (!el) {
     return
@@ -1105,7 +1107,9 @@ Hue.jump_to_chat_message = function (message_id, highlight = true) {
     }, Hue.fresh_messages_duration)
   }
 
-  Hue.close_all_modals()
+  if (container === "#chat_area") {
+    Hue.close_all_modals()
+  }
 }
 
 // What to do after receiving a chat message from the server
