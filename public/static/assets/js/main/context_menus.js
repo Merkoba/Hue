@@ -27,15 +27,6 @@ Hue.show_chat_context_menu = function (e, is_main) {
     url = Hue.dataset(container, "first_url")
   }
 
-  if (!is_main) {
-    items.push({
-      text: "Jump",
-      action: function () {
-        Hue.jump_to_chat_message(message_id, true)
-      }
-    })
-  }
-
   if (mode === "chat" || type === "image_change" || type === "tv_change") {
     items.push({
       text: "Reply",
@@ -104,6 +95,15 @@ Hue.show_chat_context_menu = function (e, is_main) {
       text: "Handle",
       action: function () {
         Hue.handle_url(url)     
+      }
+    })
+  }
+
+  if (!is_main) {
+    items.push({
+      text: "Jump",
+      action: function () {
+        Hue.jump_to_chat_message(message_id, true)
       }
     })
   }
