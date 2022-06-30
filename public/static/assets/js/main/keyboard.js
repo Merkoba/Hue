@@ -305,4 +305,10 @@ Hue.activate_key_detection = function () {
       }
     }
   })
+
+  document.addEventListener("input", function (e) {
+    if (e.target.closest(".filter_input")) {
+      Hue.modal_filter()
+    }
+  })
 }

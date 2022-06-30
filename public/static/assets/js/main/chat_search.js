@@ -221,8 +221,6 @@ Hue.show_chat_search = function (filter = "") {
   Hue.msg_chat_search.show(function () {
     Hue.scroll_modal_to_top("chat_search")
   })
-
-  Hue.after_filter_search(filter0)
 }
 
 // Show links in chat search
