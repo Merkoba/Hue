@@ -1,3 +1,5 @@
+/*global message:readonly */ 
+
 const utilz = Utilz()
 
 const msg_info = Msg.factory({

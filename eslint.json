@@ -1,4 +1,5 @@
 {
+  "ignorePatterns": ["*bundle*.js", "**/assets/js/libs/*"],
   "rules": {
     "no-undef": 2
   },
