@@ -1,0 +1,30 @@
+{
+  "rules": {
+    "no-undef": 2
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true   
+  },
+  "parserOptions": {
+    "ecmaVersion": 8
+  },
+  "globals": {
+    "Hue": "readonly",
+    "Msg": "readonly",
+    "Utilz": "readonly",
+    "Croppie": "readonly",
+    "Handlebars": "readonly",
+    "jdenticon": "readonly",
+    "Dropzone": "readonly",
+    "io": "readonly",
+    "Twitch": "readonly",
+    "SC": "readonly",
+    "YT": "readonly",
+    "onYouTubeIframeAPIReady": "readonly",
+    "ColorLib": "readonly",
+    "ctxmenu": "readonly",
+    "dateFormat": "readonly"
+  }
+}

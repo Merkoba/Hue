@@ -777,13 +777,6 @@ Hue.inspect_command = function (cmd) {
   Hue.checkmsg(s)
 }
 
-// Get command book commands
-Hue.get_command_book_commands = function () {
-
-
-  return commands
-}
-
 // Show the command book
 Hue.show_command_book = function (filter = "") {
   if (!Hue.command_book_created) {
@@ -795,7 +788,7 @@ Hue.show_command_book = function (filter = "") {
           continue
         }
       }
-  
+
       commands[key] = Hue.commands[key]
     }
   
