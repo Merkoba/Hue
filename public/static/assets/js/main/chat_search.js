@@ -174,9 +174,19 @@ Hue.show_chat_search = function (filter = "") {
 
       if (item) {
         let messages = []
-        messages.push(Hue.clone(item.previousElementSibling))
+        let prev = item.previousElementSibling
+        let next = item.nextElementSibling
+        
+        if (prev) {
+          messages.push(Hue.clone(prev))
+        }
+        
         messages.push(Hue.clone(item))
-        messages.push(Hue.clone(item.nextElementSibling))
+
+        if (next) {
+          messages.push(Hue.clone(next))
+        }
+
         highlight_id = Hue.dataset(item, "message_id")
         on_messages(messages)
       }
