@@ -78,7 +78,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
         .then(obj => {
           if (obj) {
-            resolve(obj)
+            resolve(structuredClone(obj))
           } else {
             reject("Nothing found")
           }
@@ -105,7 +105,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             try {
               let obj = await check_file(type, path, query, fields)
               if (obj) {
-                resolve(obj)
+                resolve(structuredClone(obj))
                 return
               }
             } catch (err) {}
