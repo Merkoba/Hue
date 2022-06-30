@@ -1,33 +1,22 @@
 // On context click action
 Hue.on_context_click = function (e) {
-  if (e.target.closest("#chat_area")) {
-    Hue.show_chat_context_menu(e)
-  } else if (e.target.closest(".chat_area_clone")) {
-    let message = e.target.closest(".message")
-    let message_id = Hue.dataset(message, "message_id")
-    let items = []
-
-    items.push({
-      text: "Jump",
-      action: function () {
-        Hue.jump_to_chat_message(message_id)
-      }
-    })
-    
-    ctxmenu.show(items, e)
-  }
+  Hue.show_chat_context_menu(e, e.target.closest("#chat_area"))
 }
 
 // Show chat context menu
-Hue.show_chat_context_menu = function (e) {
+Hue.show_chat_context_menu = function (e, is_main) {
   e.stopPropagation()
+  let unit = e.target.closest(".message_unit")
+
+  if (!unit) {
+    return
+  }
   
   let items = []
   let message = e.target.closest(".message")
   let mode = Hue.dataset(message, "mode")
   let type = Hue.dataset(message, "type")
   let user_id = Hue.dataset(message, "user_id")
-  let unit = e.target.closest(".message_unit")
   let id = Hue.dataset(unit, "id")
   let likes = Hue.dataset(unit, "likes")
   let url = ""
@@ -35,6 +24,15 @@ Hue.show_chat_context_menu = function (e) {
   if (mode === "chat") {
     let container = e.target.closest(".chat_content_container")
     url = Hue.dataset(container, "first_url")
+  }
+
+  if (!is_main) {
+    items.push({
+      text: "Jump",
+      action: function () {
+        Hue.jump_to_chat_message(message_id)
+      }
+    })
   }
 
   if (mode === "chat" || type === "image_change" || type === "tv_change") {

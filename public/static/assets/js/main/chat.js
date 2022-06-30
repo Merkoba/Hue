@@ -368,12 +368,23 @@ Hue.insert_message = function (args = {}) {
     content_container.classList.add(`chat_content_container_${Hue.chat_content_container_id}`)
 
     if (args.just_edited && args.id) {
+      let clone = Hue.clone(content_container)
+
       for (let item of Hue.els(".chat_content_container")) {
         if (Hue.dataset(item, "id") === args.id) {
-          item.replaceWith(Hue.clone(content_container))
+          item.replaceWith(clone)
           break
         }
       }
+
+      if (Hue.msg_chat_search.is_open()) {
+        for (let item of Hue.els("#chat_search_container .message_unit")) {
+          if (args.id === Hue.dataset(item, "id")) {
+            item.replaceWith(clone)
+            break
+          }
+        }
+      }      
 
       return {
         message_id: Hue.dataset(last_message, "message_id")
@@ -2041,6 +2052,17 @@ Hue.liked_message = function (data) {
 
     Hue.dataset(el, "likes", likes)
     Hue.update_likes(el, likes)
+
+    if (Hue.msg_chat_search.is_open()) {
+      let id = Hue.dataset(el, "id")
+
+      for (let item of Hue.els("#chat_search_container .message_unit")) {
+        if (id === Hue.dataset(item, "id")) {
+          Hue.update_likes(item, likes)
+          break
+        }
+      }
+    }
   }
 }
 
