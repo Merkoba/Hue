@@ -321,7 +321,7 @@ const Utilz = function () {
 		if (s.startsWith("http://") || s.startsWith("https://")) {
 			if (s.endsWith("]")) {
 				return false
-			} else if (s.endsWith('"')) {
+			} else if (s.endsWith("\"")) {
 				return false
 			} else if (s.endsWith("'")) {
 				return false
@@ -721,7 +721,7 @@ const Utilz = function () {
 		let hours = utilz.fillpad(date.getHours().toString(), 2, "0")
 		let minutes = utilz.fillpad(date.getMinutes().toString(), 2, "0")
 		let seconds = utilz.fillpad(date.getSeconds().toString(), 2, "0")
-		return {hours: hours, minutes: minutes, seconds:seconds}
+		return {hours: hours, minutes: minutes, seconds: seconds}
 	}
 
 	// Get hostname from url

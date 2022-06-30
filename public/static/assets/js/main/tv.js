@@ -669,7 +669,7 @@ Hue.start_screen_capture = async function (seconds) {
     stream.getTracks().forEach(track => track.stop())
     
     const blob = new Blob(recorded_chunks, {
-      type: 'video/webm'
+      type: "video/webm"
     })
 
     blob.name = "capture.webm"

@@ -130,7 +130,7 @@ Hue.get_input = function () {
 
 // Turns this * into this *
 Hue.input_to_thirdperson = function (text) {
-  Hue.process_input({message:`* ${text} *`})
+  Hue.process_input({message: `* ${text} *`})
 }
 
 // Process user's input messages

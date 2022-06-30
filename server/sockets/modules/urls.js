@@ -9,7 +9,7 @@ module.exports = function (Hue) {
 
     let url = urls[0]
 
-    if (url.includes('"') || url.includes("'") || url.includes("*")) {
+    if (url.includes("\"") || url.includes("'") || url.includes("*")) {
       return {}
     }
 
@@ -63,10 +63,10 @@ module.exports = function (Hue) {
   
       if ($("title").length > 0) {
         response.title = Hue.utilz.single_space($("title").eq(0).text()) || ""
-      } else if ($('meta[property="og:title"]').length > 0) {
+      } else if ($("meta[property=\"og:title\"]").length > 0) {
         response.title =
         Hue.utilz.single_space(
-            $('meta[property="og:title"]').eq(0).attr("content")
+            $("meta[property=\"og:title\"]").eq(0).attr("content")
           ) || ""
       }
   
@@ -81,7 +81,7 @@ module.exports = function (Hue) {
   
       response.description =
         Hue.utilz.single_space(
-          $('meta[property="og:description"]').eq(0).attr("content")
+          $("meta[property=\"og:description\"]").eq(0).attr("content")
         ) || ""
   
       let description_add_dots =
@@ -95,7 +95,7 @@ module.exports = function (Hue) {
       }
   
       response.image =
-        $('meta[property="og:image"]').eq(0).attr("content") || ""
+        $("meta[property=\"og:image\"]").eq(0).attr("content") || ""
   
       if (response.image.length > Hue.sconfig.link_max_image_length) {
         response.image = ""

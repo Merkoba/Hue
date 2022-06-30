@@ -32,11 +32,11 @@ Hue.apply_theme = function (background_color = "", text_color = "") {
   text_color = Hue.colorlib.hex_to_rgb(text_color)
 
   let altcolor = Hue.colorlib.get_lighter_or_darker(background_color, 0.2)
-  let altcolor_a = Hue.colorlib.rgb_to_rgba(altcolor,  0.7)
+  let altcolor_a = Hue.colorlib.rgb_to_rgba(altcolor, 0.7)
   let background_color_a = Hue.colorlib.rgb_to_rgba(background_color, 0.95)
   let altbackground = Hue.colorlib.get_lighter_or_darker(background_color, 0.09)
   let altbackground_a = Hue.colorlib.rgb_to_rgba(altbackground, 0.7)
-  let text_color_a = Hue.colorlib.rgb_to_rgba(text_color,  0.7)
+  let text_color_a = Hue.colorlib.rgb_to_rgba(text_color, 0.7)
   
   document.documentElement.style.setProperty("--text_color", text_color)
   document.documentElement.style.setProperty("--text_color_a", text_color_a)
@@ -68,7 +68,7 @@ Hue.generate_random_themes = function () {
     return item
   }
 
-  function fill_column(col) {
+  function fill_column (col) {
     let dark = true
 
     for (let i=0; i<num_col_items; i++) {

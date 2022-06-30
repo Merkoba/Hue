@@ -112,7 +112,7 @@ Hue.create_tweaks_chat_font_sizes = function () {
   let html = ""
   let size = Hue.max_chat_font_size
 
-  while(size >= Hue.min_chat_font_size) {
+  while (size >= Hue.min_chat_font_size) {
     let n = Hue.utilz.round(size, 1)
     html += `<option value='${n}'>${n}x</option>`
     size = Hue.utilz.round(size - 0.1, 1)

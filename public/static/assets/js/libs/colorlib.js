@@ -297,20 +297,20 @@ const ColorLib = (function () {
         (from[0] != "r" && from[0] != "#") ||
         (typeof to != "string" && typeof to != "undefined")
       )
-        return null //ErrorCheck
+        return null // ErrorCheck
       if (!this.sbcRip)
         this.sbcRip = d => {
           var l = d.length,
             RGB = new Object()
           if (l > 9) {
             d = d.split(",")
-            if (d.length < 3 || d.length > 4) return null //ErrorCheck
+            if (d.length < 3 || d.length > 4) return null // ErrorCheck
             ;(RGB[0] = i(d[0].slice(4))),
               (RGB[1] = i(d[1])),
               (RGB[2] = i(d[2])),
               (RGB[3] = d[3] ? parseFloat(d[3]) : -1)
           } else {
-            if (l == 8 || l == 6 || l < 4) return null //ErrorCheck
+            if (l == 8 || l == 6 || l < 4) return null // ErrorCheck
             if (l < 6)
               d =
                 "#" +
@@ -320,7 +320,7 @@ const ColorLib = (function () {
                 d[2] +
                 d[3] +
                 d[3] +
-                (l > 4 ? d[4] + "" + d[4] : "") //3 digit
+                (l > 4 ? d[4] + "" + d[4] : "") // 3 digit
             ;(d = i(d.slice(1), 16)),
               (RGB[0] = (d >> 16) & 255),
               (RGB[1] = (d >> 8) & 255),
@@ -348,7 +348,7 @@ const ColorLib = (function () {
         to = to && to != "c" ? to : b ? "#000000" : "#FFFFFF",
         f = this.sbcRip(from),
         t = this.sbcRip(to)
-      if (!f || !t) return null //ErrorCheck
+      if (!f || !t) return null // ErrorCheck
       if (h)
         return (
           "rgb(" +
@@ -468,16 +468,16 @@ const ColorLib = (function () {
 		}
 
     instance.get_rgb_distance = function (a, b) {
-      return Math.sqrt((  (a[0] - b[0]) * (a[0] - b[0]) + 
-                          (a[1] - b[1]) * (a[1] - b[1]) +
-                          (a[2] - b[2]) * (a[2] - b[2]) ) / ( 256 * Math.sqrt(3) ))      
+      return Math.sqrt(( (a[0] - b[0]) * (a[0] - b[0]) + 
+                         (a[1] - b[1]) * (a[1] - b[1]) +
+                         (a[2] - b[2]) * (a[2] - b[2]) ) / ( 256 * Math.sqrt(3) ))      
     }    
 
     instance.get_rgba_distance = function (a, b) {
-      return Math.sqrt((  (a[0] - b[0]) * (a[0] - b[0]) + 
-                          (a[1] - b[1]) * (a[1] - b[1]) +
-                          (a[2] - b[2]) * (a[2] - b[2]) +
-                          (a[3] - b[3]) * (a[3] - b[3]) ) / ( 256 * Math.sqrt(4) ))      
+      return Math.sqrt(( (a[0] - b[0]) * (a[0] - b[0]) + 
+                         (a[1] - b[1]) * (a[1] - b[1]) +
+                         (a[2] - b[2]) * (a[2] - b[2]) +
+                         (a[3] - b[3]) * (a[3] - b[3]) ) / ( 256 * Math.sqrt(4) ))      
     }
 
     instance.get_dark_color = function () {

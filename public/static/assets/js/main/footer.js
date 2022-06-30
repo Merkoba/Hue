@@ -45,7 +45,7 @@ Hue.setup_footer = function () {
     Hue.el("#footer_radio_icon_container").remove()
   }
 
-  Hue.el("#footer_items").addEventListener("click", function(e) {
+  Hue.el("#footer_items").addEventListener("click", function (e) {
     if (e.target === this) {
       Hue.el("#input").focus()
     }

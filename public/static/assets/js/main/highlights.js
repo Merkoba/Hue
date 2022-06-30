@@ -16,7 +16,7 @@ Hue.generate_highlights_regex = function (
   }
 
   // Raw regex if using the word "mad"
-  //(?:^|\s|\")(?:\@)?(?:mad)(?:\'s)?(?:$|\s|\"|\!|\?|\,|\.|\:)
+  // (?:^|\s|\")(?:\@)?(?:mad)(?:\'s)?(?:$|\s|\"|\!|\?|\,|\.|\:)
   let regex = new RegExp(
     `(?:^|\\s|\\"|\\\`|\>|\\()(?:\\@)?(?:${word})(?:\\'s)?(?:$|\\s|\\"|\\!|\\?|\\,|\\.|\\:|\\)|\\\`)`,
     flags

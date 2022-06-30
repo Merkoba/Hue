@@ -171,7 +171,7 @@ Hue.show_admin_activity = function (messages) {
     for (let data of messages) {
       let nice_date = Hue.utilz.nice_date(data.date)
 
-      let s = `<div class='admin_activity_message'></div><div class='admin_activity_date'></div>`
+      let s = "<div class='admin_activity_message'></div><div class='admin_activity_date'></div>"
 
       let el = Hue.div("modal_item admin_activity_item dynamic_title")
       el.title = nice_date

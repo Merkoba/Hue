@@ -508,7 +508,7 @@ Hue.draw_image_bucket_fill = function (x, y) {
   let replacement_color = Hue.colorlib.hex_to_rgb_array(Hue.draw_image_bucket_color)
   replacement_color.push(255)
 
-  if (Hue.colorlib.get_rgba_distance(target_color, replacement_color) <= Hue.draw_image_bucket_tolerance)  {
+  if (Hue.colorlib.get_rgba_distance(target_color, replacement_color) <= Hue.draw_image_bucket_tolerance) {
     return
   }
 

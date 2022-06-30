@@ -1,12 +1,12 @@
 // Makes and prepares the textparser regexes
 Hue.setup_textparser_regexes = function () {
   Hue.textparser_regexes = {}
-
   Hue.textparser_regexes["whisper_link"] = {}
   Hue.textparser_regexes["whisper_link"].regex = new RegExp(
-    `\\[whisper\\s+(.*?)\\](.*?)\\[\/whisper\\]`,
+    "\\[whisper\\s+(.*?)\\](.*?)\\[\/whisper\\]",
     "gm"
   )
+
   Hue.textparser_regexes["whisper_link"].replace_function = function (
     g1,
     g2,
@@ -17,9 +17,10 @@ Hue.setup_textparser_regexes = function () {
 
   Hue.textparser_regexes["anchor_link"] = {}
   Hue.textparser_regexes["anchor_link"].regex = new RegExp(
-    `\\[anchor\\s+(.*?)\\](.*?)\\[\/anchor\\]`,
+    "\\[anchor\\s+(.*?)\\](.*?)\\[\/anchor\\]",
     "gm"
   )
+
   Hue.textparser_regexes["anchor_link"].replace_function = function (g1, g2, g3) {
     return `<a href="${g2}" class="anchor_link special_link" target="_blank">${g3.trim().replace(/\s+/, "&nbsp;")}</a>`
   }
