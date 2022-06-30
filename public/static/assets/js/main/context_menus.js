@@ -1,4 +1,3 @@
-
 // On context click action
 Hue.on_context_click = function (e) {
   if (e.target.closest("#chat_area")) {
