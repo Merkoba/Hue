@@ -36,16 +36,18 @@ module.exports = function (Hue) {
 
     data.username = socket.hue_username
 
-    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { tv_source: 1, tv_query: 1, tv_date: 1})
+    let media_info = await Hue.handler.get_last_media(socket.hue_room_id, "tv")
 
-    if (info.tv_source === data.src || info.tv_query === data.src) {
-      Hue.handler.user_emit(socket, "same_tv", {})
-      return
-    }
-
-    if (Date.now() - info.tv_date < Hue.config.tv_change_cooldown) {
-      Hue.handler.user_emit(socket, "tv_cooldown_wait", {})
-      return
+    if (media_info) {
+      if (media_info.source === data.src || media_info.query === data.src) {
+        Hue.handler.user_emit(socket, "same_tv", {})
+        return
+      }
+  
+      if (Date.now() - media_info.date < Hue.config.tv_change_cooldown) {
+        Hue.handler.user_emit(socket, "tv_cooldown_wait", {})
+        return
+      }
     }
 
     if (Hue.utilz.is_url(data.src)) {

@@ -60,6 +60,7 @@ module.exports = function (Hue) {
       user_id = "none"
     }
 
+    let id = Hue.handler.generate_message_id()
     let date = Date.now()
     let comment = data.comment || data.file_name || ""
     let size = data.size || 0
@@ -77,23 +78,6 @@ module.exports = function (Hue) {
     if (!data.username) {
       user_id = ""
     }
-
-    let id = Hue.handler.generate_message_id()
-
-    let obj = {}
-
-    obj[`${type}_id`] = id,
-    obj[`${type}_user_id`] = user_id,
-    obj[`${type}_source`] = data.src,
-    obj[`${type}_username`] = data.username,
-    obj[`${type}_title`] = title,
-    obj[`${type}_size`] = size,
-    obj[`${type}_date`] = date,
-    obj[`${type}_type`] = data.type,
-    obj[`${type}_query`] = data.query,
-    obj[`${type}_comment`] = comment,
-
-    Hue.db_manager.update_room(room_id, obj)
 
     Hue.handler.room_emit(room_id, `${type}_source_changed`, {
       id: id,
@@ -220,6 +204,17 @@ module.exports = function (Hue) {
       }
     } catch (err) {
       Hue.logger.log_error(err)
+    }
+  }
+
+  // Get the last media object from the message log
+  Hue.handler.get_last_media = async function (room_id, type) {
+    let info = await Hue.db_manager.get_room(["id", room_id], { log_messages: 1 })
+
+    for (let item of info.log_messages.slice().reverse()) {
+      if (item.type === type) {
+        return item.data
+      }
     }
   }
 }

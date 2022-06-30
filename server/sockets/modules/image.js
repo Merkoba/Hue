@@ -29,16 +29,18 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { image_source: 1, image_query: 1, image_date: 1})
+    let media_info = await Hue.handler.get_last_media(socket.hue_room_id, "image")
 
-    if (info.image_source === data.src || info.image_query === data.src) {
-      Hue.handler.user_emit(socket, "same_image", {})
-      return
-    }
-
-    if (Date.now() - info.image_date < Hue.config.image_change_cooldown) {
-      Hue.handler.user_emit(socket, "image_cooldown_wait", {})
-      return
+    if (media_info) {
+      if (media_info.source === data.src || media_info.query === data.src) {
+        Hue.handler.user_emit(socket, "same_image", {})
+        return
+      }
+  
+      if (Date.now() - media_info.date < Hue.config.change_cooldown) {
+        Hue.handler.user_emit(socket, "image_cooldown_wait", {})
+        return
+      }
     }
 
     data.src = data.src.replace(/\.gifv/g, ".gif")
