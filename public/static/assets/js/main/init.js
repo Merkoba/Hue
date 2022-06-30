@@ -152,7 +152,6 @@ Hue.init = function () {
   Hue.resize_events()
   Hue.start_chat_mouse_events()
   Hue.start_body_events()
-  Hue.start_chat_menu_context_menu()
   Hue.setup_show_profile()
   Hue.setup_main_menu()
   Hue.setup_room_config()

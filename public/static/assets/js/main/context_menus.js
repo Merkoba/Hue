@@ -1,24 +1,22 @@
-// Starts the context menu for chat items
-// This is triggered by a normal click
-Hue.start_chat_menu_context_menu = function () {
-  document.addEventListener("click", function (e) {
-    if (e.target.closest("#chat_area .chat_menu_button_container")) {
-      Hue.show_chat_context_menu(e)
-    } else if (e.target.closest(".chat_area_clone .chat_menu_button_container")) {
-      let message = e.target.closest(".message")
-      let message_id = Hue.dataset(message, "message_id")
-      let items = []
 
-      items.push({
-        text: "Jump",
-        action: function () {
-          Hue.jump_to_chat_message(message_id)
-        }
-      })
-      
-      ctxmenu.show(items, e)
-    }
-  })
+// On context click action
+Hue.on_context_click = function (e) {
+  if (e.target.closest("#chat_area")) {
+    Hue.show_chat_context_menu(e)
+  } else if (e.target.closest(".chat_area_clone")) {
+    let message = e.target.closest(".message")
+    let message_id = Hue.dataset(message, "message_id")
+    let items = []
+
+    items.push({
+      text: "Jump",
+      action: function () {
+        Hue.jump_to_chat_message(message_id)
+      }
+    })
+    
+    ctxmenu.show(items, e)
+  }
 }
 
 // Show chat context menu
