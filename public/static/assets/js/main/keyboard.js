@@ -69,12 +69,16 @@ Hue.activate_key_detection = function () {
 
         if (e.key === "PageUp") {
           c.scrollTop = 0
+          e.preventDefault()
         } else if (e.key === "PageDown") {
           c.scrollTop = c.scrollHeight
+          e.preventDefault()
         } else if (e.key === "ArrowUp") {
           c.scrollTop -= Hue.chat_scroll_amount
+          e.preventDefault()
         } else if (e.key === "ArrowDown") {
           c.scrollTop += Hue.chat_scroll_amount
+          e.preventDefault()
         }
 
         return
