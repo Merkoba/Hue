@@ -38,15 +38,9 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(
-      ["id", socket.hue_room_id],
-      { keys: 1 }
-    )
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
-    let userinfo = await Hue.db_manager.get_user(
-      ["username", data.username],
-      { username: 1 }
-    )
+    let userinfo = await Hue.db_manager.get_user(["username", data.username])
 
     if (!userinfo) {
       Hue.handler.user_emit(socket, "user_not_found", {})
@@ -100,8 +94,6 @@ module.exports = function (Hue) {
     }
 
     info.keys[id] = data.role
-
-    Hue.db_manager.update_room(info.id, { keys: info.keys })
 
     Hue.handler.room_emit(socket, "user_role_changed", {
       username1: socket.hue_username,
@@ -178,15 +170,9 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(
-      ["id", socket.hue_room_id],
-      { bans: 1, keys: 1 }
-    )
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
-    let userinfo = await Hue.db_manager.get_user(
-      ["username", data.username],
-      { username: 1 }
-    )
+    let userinfo = await Hue.db_manager.get_user(["username", data.username])
 
     if (!userinfo) {
       Hue.handler.user_emit(socket, "user_not_found", {})
@@ -234,7 +220,6 @@ module.exports = function (Hue) {
 
     info.bans.push(id)
     delete info.keys[id]
-    Hue.db_manager.update_room(info.id, { bans: info.bans, keys: info.keys })
   }
 
   // Handles user unbans
@@ -255,15 +240,9 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(
-      ["id", socket.hue_room_id],
-      { bans: 1, keys: 1 }
-    )
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
-    let userinfo = await Hue.db_manager.get_user(
-      ["username", data.username],
-      { username: 1 }
-    )
+    let userinfo = await Hue.db_manager.get_user(["username", data.username])
 
     if (!userinfo) {
       Hue.handler.user_emit(socket, "user_not_found", {})
@@ -284,8 +263,6 @@ module.exports = function (Hue) {
         break
       }
     }
-
-    Hue.db_manager.update_room(info.id, { bans: info.bans })
 
     Hue.handler.room_emit(socket, "user_unbanned", {
       username1: socket.hue_username,
@@ -355,7 +332,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { admin_log_messages: 1 })
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
     Hue.handler.user_emit(socket, "receive_admin_activity", { messages: info.admin_log_messages })
   }
 
@@ -365,10 +342,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(
-      ["id", socket.hue_room_id],
-      { keys: 1 }
-    )
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
     let roles = {}
     let ids = []
@@ -406,8 +380,9 @@ module.exports = function (Hue) {
   }
 
   // Clear admin activity
-  Hue.handler.public.clear_admin_activity = function (socket, data) {
-    Hue.db_manager.update_room(socket.hue_room_id, {admin_log_messages: []})
+  Hue.handler.public.clear_admin_activity = async function (socket, data) {
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
+    info.admin_log_messages = []
     Hue.handler.room_emit(socket, "admin_activity_cleared", {})
   }
 
@@ -417,10 +392,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(
-      ["id", socket.hue_room_id],
-      { bans: 1 }
-    )
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
     
     let ids = []
 
@@ -494,42 +466,37 @@ module.exports = function (Hue) {
       return
     }
 
-    let userinfo = await Hue.db_manager.get_user(
-      ["username", data.original],
-      { username: 1 }
-    )
+    let userinfo = await Hue.db_manager.get_user(["username", data.original])
 
     if (!userinfo) {
       Hue.handler.user_emit(socket, "user_not_found", {})
       return
     }
 
-    let done = await Hue.db_manager.change_username(
-      userinfo.id,
-      data.original,
-      data.new
-    )
-  
-    if (done) {
-      await Hue.handler.modify_socket_properties(
-        userinfo.id,
-        { hue_username: data.new },
-        {
-          method: "new_username",
-          data: {
-            user_id: userinfo.id,
-            username: data.new,
-            old_username: data.original
-          }
-        }
-      )
+    let ans = await Hue.db_manager.change_username(userinfo.id, data.original, data.new)
 
-      Hue.handler.user_emit(socket, "done", {})
-    } else {
+    if (!ans) {
       Hue.handler.user_emit(socket, "username_already_exists", {
-        username: data.new,
+        username: data.new
       })
+      
+      return
     }
+
+    await Hue.handler.modify_socket_properties(
+      userinfo.id,
+      { hue_username: data.new },
+      {
+        method: "new_username",
+        data: {
+          user_id: userinfo.id,
+          username: data.new,
+          old_username: data.original
+        }
+      }
+    )
+
+    Hue.handler.user_emit(socket, "done", {})    
   }
 
   // Superuser function to change a user's password
@@ -539,10 +506,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let userinfo = await Hue.db_manager.get_user(
-      ["username", data.username],
-      { username: 1 }
-    )
+    let userinfo = await Hue.db_manager.get_user(["username", data.username])
 
     if (!userinfo) {
       Hue.handler.user_emit(socket, "user_not_found", {})

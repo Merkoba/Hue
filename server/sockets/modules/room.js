@@ -21,15 +21,13 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { topic: 1 })
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
     if (info.topic === data.topic) {
       return
     }
 
-    Hue.db_manager.update_room(socket.hue_room_id, {
-      topic: data.topic
-    })
+    info.topic = data.topic
 
     Hue.handler.room_emit(socket, "topic_changed", {
       topic: data.topic,
@@ -57,10 +55,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(
-      ["id", socket.hue_room_id],
-      { name: 1 }
-    )
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
     if (info.name !== data.name) {
       info.name = data.name
@@ -69,10 +64,6 @@ module.exports = function (Hue) {
         name: info.name,
         user_id: socket.hue_user_id,
         username: socket.hue_username
-      })
-
-      Hue.db_manager.update_room(info.id, {
-        name: info.name,
       })
 
       Hue.handler.push_admin_log_message(socket, `changed the room name to "${info.name}"`)
@@ -90,7 +81,7 @@ module.exports = function (Hue) {
   }
 
   // Handles background color changes
-  Hue.handler.public.change_background_color = function (socket, data) {
+  Hue.handler.public.change_background_color = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
       return
     }
@@ -107,9 +98,8 @@ module.exports = function (Hue) {
       return
     }
 
-    Hue.db_manager.update_room(socket.hue_room_id, {
-      background_color: data.color,
-    })
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
+    info.background_color = data.color
 
     Hue.handler.room_emit(socket, "background_color_changed", {
       color: data.color,
@@ -119,7 +109,7 @@ module.exports = function (Hue) {
   }
 
   // Handles text color changes
-  Hue.handler.public.change_text_color = function (socket, data) {
+  Hue.handler.public.change_text_color = async function (socket, data) {
     if (!Hue.handler.is_admin_or_op(socket)) {
       return
     }
@@ -136,9 +126,8 @@ module.exports = function (Hue) {
       return
     }
 
-    Hue.db_manager.update_room(socket.hue_room_id, {
-      text_color: data.color,
-    })
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
+    info.text_color = data.color
 
     Hue.handler.room_emit(socket, "text_color_changed", {
       color: data.color,
@@ -217,24 +206,17 @@ module.exports = function (Hue) {
 
   // Completes background image changes
   Hue.handler.do_change_background = async function (socket, file_name, type) {
-    let obj = {
-      background: file_name,
-      background_type: type,
-    }
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
+    info.background = file_name
+    info.background_type = type
 
     let new_ver = 0
 
     if (type === "hosted") {
-      let info = await Hue.db_manager.get_room(
-        ["id", socket.hue_room_id],
-        { background_version: 1 }
-      )
-
+      let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
       new_ver = (info.background_version || 0) + 1
-      obj.background_version = new_ver
+      info.background_version = new_ver
     }
-    
-    Hue.db_manager.update_room(socket.hue_room_id, obj)
 
     Hue.handler.room_emit(socket, "background_changed", {
       user_id: socket.hue_user_id,

@@ -7,6 +7,6 @@ module.exports = function (Hue) {
       content: content,
     }
 
-    Hue.db_manager.push_room_item(socket.hue_room_id, "admin_log_messages", message)
+    Hue.db_manager.push_item("rooms", socket.hue_room_id, "admin_log_messages", message)
   }
 }

@@ -1,8 +1,8 @@
 module.exports = function (manager, vars, config, sconfig, utilz, logger) {
-  // Finds a user with the given query and fields to be fetched
-  manager.get_user = function (query, fields) {
+  // Finds a user with the given query
+  manager.get_user = function (query) {
     return new Promise((resolve, reject) => {
-      manager.find_one("users", query, fields)
+      manager.find_one("users", query)
 
       .then(user => {
         resolve(user)
@@ -14,10 +14,10 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
-  // Finds users with the given ids and fields to be fetched
-  manager.get_users = function (ids, fields) {
+  // Finds users with the given ids
+  manager.get_users = function (ids) {
     return new Promise((resolve, reject) => {
-      manager.find_multiple("users", ids, fields)
+      manager.find_multiple("users", ids)
 
       .then(users => {
         resolve(users)
@@ -32,8 +32,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Creates a user
   manager.create_user = function (info) {
     return new Promise((resolve, reject) => {
-      manager.get_user(
-        ["username", info.username], { username: 1 })
+      manager.get_user(["username", info.username])
 
       .then(euser => {
         if (euser) {
@@ -84,58 +83,61 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
-  // Updates the user
-  manager.update_user = function (id, fields) {
-    fields.modified = Date.now()
-
-    let check = manager.validate_schema("users", fields)
-
-    if (!check.passed) {
-      console.error(check.message)
-      return
-    }
-
-    manager.update_one("users", ["id", id], fields)
-  }
-
-  // Dedicated function to change user password
-  manager.change_user_password = function (id, password) {
+  // Changes the username
+  manager.change_username = function (id, current_username, new_username) {
     return new Promise((resolve, reject) => {
-      vars.bcrypt.hash(password, sconfig.encryption_cost)
+      if (vars.reserved_usernames.includes(new_username.toLowerCase())) {
+        resolve(false)
+        return
+      }
       
-      .then(hash => {
-        manager.update_one("users", ["id", id], { password: hash, password_date: Date.now() })
-        resolve("ok")
+      if (current_username === new_username) {
+        resolve(false)
         return
-      })
+      }
 
-      .catch(err => {
-        reject(err)
-        logger.log_error(err)
-        return
-      })
-    })
-  }
+      if (current_username.toLowerCase() === new_username.toLowerCase()) {
+        manager.get_user(["username", current_username])
 
-  // Checks if a user with a given username and password matches the stored password
-  // This uses bcrypt to compare with the encrypted password version
-  manager.check_password = function (username, password, fields = {}) {
-    return new Promise((resolve, reject) => {
-      Object.assign(fields, { password: 1 })
+        .then(the_user => {
+          the_user.username = new_username
+          resolve(true)
+        })
+
+        .catch(err => {
+          reject(err)
+          logger.log_error(err)
+        })
+      }
 
       manager
-        .get_user(["username", username], fields)
+        .get_user(["id", id], { username: 1 })
 
         .then((user) => {
           if (!user) {
-            resolve({ user: null, valid: false })
+            resolve(false)
+            return
           } else {
-            vars.bcrypt
-              .compare(password, user.password)
+            manager
+              .get_user(["username", new_username])
 
-              .then((valid) => {
-                resolve({ user: user, valid: valid })
-                return
+              .then((user2) => {
+                if (user2) {
+                  resolve(false)
+                  return
+                } else {
+                  manager.get_user(["username", current_username])
+
+                  .then(the_user => {
+                    the_user.username = new_username
+                    resolve(true)
+                  })
+
+                  .catch(err => {
+                    reject(err)
+                    logger.log_error(err)
+                  })
+                }
               })
 
               .catch(err => {
@@ -153,45 +155,52 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
-  // Changes the username
-  manager.change_username = function (id, current_username, new_username) {
+  // Dedicated function to change user password
+  manager.change_user_password = function (id, password) {
     return new Promise((resolve, reject) => {
-      if (vars.reserved_usernames.includes(new_username.toLowerCase())) {
-        resolve(false)
-        return
-      }
+      vars.bcrypt.hash(password, sconfig.encryption_cost)
       
-      if (current_username === new_username) {
-        resolve(false)
-        return
-      }
+      .then(hash => {
+        manager.get_user(["id", id])
 
-      if (current_username.toLowerCase() === new_username.toLowerCase()) {
-        manager.update_user(id, { username: new_username })
-        resolve(true)
-        return
-      }
+        .then(user => {
+          user.password = hash
+          user.password_date = Date.now()
+          resolve("ok")
+        })
 
+        .catch(err => {
+          reject(err)
+          logger.log_error(err)
+          return
+        })        
+      })
+
+      .catch(err => {
+        reject(err)
+        logger.log_error(err)
+        return
+      })
+    })
+  }
+
+  // Checks if a user with a given username and password matches the stored password
+  // This uses bcrypt to compare with the encrypted password version
+  manager.check_password = function (username, password) {
+    return new Promise((resolve, reject) => {
       manager
-        .get_user(["id", id], { username: 1 })
+        .get_user(["username", username])
 
         .then((user) => {
           if (!user) {
-            resolve(false)
-            return
+            resolve({ user: null, valid: false })
           } else {
-            manager
-              .get_user(["username", new_username], { username: 1 })
+            vars.bcrypt
+              .compare(password, user.password)
 
-              .then((user2) => {
-                if (user2) {
-                  resolve(false)
-                  return
-                } else {
-                  manager.update_user(id, { username: new_username })
-                  resolve(true)
-                  return
-                }
+              .then((valid) => {
+                resolve({ user: user, valid: valid })
+                return
               })
 
               .catch(err => {
