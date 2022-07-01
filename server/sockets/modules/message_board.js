@@ -17,7 +17,7 @@ module.exports = function (Hue) {
 
     // If it's an edit
     if (data.id) {
-      let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { message_board_posts: 1, keys: 1 })
+      let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
     
       for (let post of info.message_board_posts) {
         if (post.id === data.id) {
@@ -34,11 +34,6 @@ module.exports = function (Hue) {
           post.link_description = linkdata.link_description
           post.link_image = linkdata.link_image
           post.link_url = linkdata.link_url
-
-          Hue.db_manager.update_room(socket.hue_room_id, {
-            message_board_posts: info.message_board_posts,
-          })
-
           Hue.handler.room_emit(socket, "edited_message_board_post", post)
           return
         }
@@ -46,10 +41,7 @@ module.exports = function (Hue) {
     }
 
     if (!Hue.handler.is_admin_or_op(socket)) {
-      let userinfo = await Hue.db_manager.get_user(
-        ["id", socket.hue_user_id],
-        { last_message_board_post_date: 1 }
-      )
+      let userinfo = await Hue.db_manager.get_user(["id", socket.hue_user_id])
 
       let diff = Date.now() - userinfo.last_message_board_post_date
       let wait = Hue.sconfig.message_board_wait_delay * 60 * 1000
@@ -73,9 +65,8 @@ module.exports = function (Hue) {
     let item = Hue.handler.push_message_board_post(socket, data)
     Hue.handler.room_emit(socket, "new_message_board_post", item)
 
-    Hue.db_manager.update_user(socket.hue_user_id, {
-      last_message_board_post_date: Date.now()
-    })
+    let userinfo = await Hue.db_manager.get_user(["id", socket.hue_user_id])
+    userinfo.last_message_board_post_date = Date.now()
   }
 
   // Pushes pushing room message board posts
@@ -92,7 +83,7 @@ module.exports = function (Hue) {
       id: Hue.handler.generate_message_board_post_id(),
     }
 
-    Hue.db_manager.push_room_item(socket.hue_room_id, "message_board_posts", item)
+    Hue.db_manager.push_item("rooms", socket.hue_room_id, "message_board_posts", item)
     return item
   }
 
@@ -107,7 +98,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { message_board_posts: 1, keys: 1 })
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
     for (let i = 0; i < info.message_board_posts.length; i++) {
       let item = info.message_board_posts[i]
@@ -136,10 +127,6 @@ module.exports = function (Hue) {
 
         info.message_board_posts.splice(i, 1)
 
-        Hue.db_manager.update_room(socket.hue_room_id, {
-          message_board_posts: info.message_board_posts,
-        })
-
         Hue.handler.room_emit(socket, "message_board_post_deleted", {
           id: data.id,
         })
@@ -151,13 +138,14 @@ module.exports = function (Hue) {
   }
 
   // Remove all message board posts
-  Hue.handler.public.clear_message_board = function (socket, data) {
+  Hue.handler.public.clear_message_board = async function (socket, data) {
     if (!Hue.handler.is_admin(socket)) {
       Hue.handler.anti_spam_ban(socket)
       return
     }
     
-    Hue.db_manager.update_room(socket.hue_room_id, {message_board_posts: []})
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
+    info.message_board_posts = []
 
     Hue.handler.room_emit(socket, "message_board_cleared", {
       username: socket.hue_username, user_id: socket.hue_user_id

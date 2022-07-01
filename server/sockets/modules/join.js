@@ -64,19 +64,10 @@ module.exports = function (Hue) {
       }
     }
 
-    let user_fields = {
-      username: 1,
-      profilepic_version: 1,
-      registration_date: 1,
-      bio: 1,
-      audioclip_version: 1
-    }
-
     if (data.alternative) {
       let ans = await Hue.db_manager.check_password(
         data.username,
-        data.password,
-        user_fields
+        data.password
       )
 
       if (!ans.valid) {
@@ -88,7 +79,7 @@ module.exports = function (Hue) {
 
       socket.hue_user_id = userinfo.id
 
-      let info = await Hue.db_manager.get_room(["id", data.room_id], {})
+      let info = await Hue.db_manager.get_room(["id", data.room_id])
 
       if (!info) {
         return Hue.handler.get_out(socket)
@@ -114,16 +105,13 @@ module.exports = function (Hue) {
         } else {
           socket.hue_user_id = data.user_id
 
-          let info = await Hue.db_manager.get_room(["id", data.room_id], {})
+          let info = await Hue.db_manager.get_room(["id", data.room_id])
 
           if (!info) {
             return Hue.handler.get_out(socket)
           }
 
-          let userinfo = await Hue.db_manager.get_user(
-            ["id", socket.hue_user_id],
-            user_fields
-          )
+          let userinfo = await Hue.db_manager.get_user(["id", socket.hue_user_id])
 
           if (!userinfo) {
             return Hue.handler.get_out(socket)

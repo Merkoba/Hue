@@ -1,8 +1,6 @@
 const fs = require("fs")
 const path = require("path")
 const root_path = path.join(__dirname, "../../../")
-const update_calls = []
-let update_calling = false
 
 module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Write to a file
@@ -42,9 +40,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.cache = {}
 
   // Add to memory cache
-  manager.add_to_cache = function (path, obj) {
+  manager.add_to_cache = function (path, obj, proxy) {
     if (manager.cache[path] === undefined) {
-      manager.cache[path] = {timeout: undefined, last_write: 0, obj: obj}
+      manager.cache[path] = {timeout: undefined, last_write: 0, obj: obj, proxy: proxy}
     }
   }
 
@@ -68,17 +66,39 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     return path.join(root_path, `${sconfig.db_store_path}/${type}/${file_name}`)
   }
 
+  // Make proxy object to handle property updates
+  manager.make_proxy_object = function (obj, path, type) {
+    let schema = vars[`${type}_schema`]()
+
+    let handler = {
+      get (target, property) {
+        return target[property]
+      },
+
+      set (target, property, value) {
+        if (property in schema) {
+          if (typeof value === schema[property].type) {
+            target[property] = value
+            target.modified = Date.now()
+            write_file(path)
+          }
+        }
+      }
+    }
+
+    return new Proxy(obj, handler)
+  }
+
   // Find one result
-  manager.find_one = function (type, query, fields) {
+  manager.find_one = function (type, query) {
     return new Promise((resolve, reject) => {
       if (query[0] === "id") {
         let path = manager.get_file_path(type, query[1])
-
-        check_file(type, path, query, fields)
+        check_file(type, path, query)
 
         .then(obj => {
           if (obj) {
-            resolve(structuredClone(obj))
+            resolve(obj)
           } else {
             reject("Nothing found")
           }
@@ -103,9 +123,10 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             let path = manager.get_file_path(type, file_name)
 
             try {
-              let obj = await check_file(type, path, query, fields)
+              let obj = await check_file(type, path, query)
+              
               if (obj) {
-                resolve(structuredClone(obj))
+                resolve(obj)
                 return
               }
             } catch (err) {}
@@ -119,13 +140,13 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Find multiple results based on a list of ids
-  manager.find_multiple = function (type, ids, fields) {
+  manager.find_multiple = function (type, ids) {
     return new Promise(async (resolve, reject) => {
       let objs = []
 
       for (let id of ids) {
         try {
-          let obj = await manager.find_one(type, ["id", id], fields)
+          let obj = await manager.find_one(type, ["id", id])
           objs.push(obj)
         } catch (err) {}
       }
@@ -135,13 +156,13 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Check if the file matches
-  function check_file (type, path, query, fields) {
+  function check_file (type, path, query) {
     return new Promise((resolve, reject) => {
       if (manager.path_in_cache(path)) {
-        let obj = check_file_query(type, manager.cache[path].obj, query, fields)
+        let proxy = manager.cache[path].proxy
 
-        if (obj) {
-          resolve(obj)
+        if (check_file_query(type, proxy, query)) {
+          resolve(proxy)
         } else {
           reject("Nothing found")
         }
@@ -160,14 +181,13 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             reject("Nothing found")
             return
           }
+          
+          let proxy = manager.make_proxy_object(original, path, type)
+          manager.add_to_cache(path, original, proxy)
+          check_version(type, path, proxy)
 
-          manager.add_to_cache(path, original)
-          check_version(type, path, original)
-
-          let obj = check_file_query(type, original, query, fields)
-
-          if (obj) {
-            resolve(obj)
+          if (check_file_query(type, proxy, query)) {
+            resolve(proxy)
           } else {
             reject("Nothing found")
           }
@@ -176,8 +196,8 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     })
   }
 
-  // Check file using the query and fields
-  function check_file_query (type, original, query, fields) {
+  // Check file using the query
+  function check_file_query (type, original, query) {
     if (!query || query.length !== 2 || !query[0] || query[1] === undefined) {
       return
     }
@@ -190,69 +210,22 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       prop_2 = prop_2.toLowerCase()
     }
 
-    if (prop_1 !== prop_2) {
-      return
-    }
-
-    // Don't delete from the original
-    // As it should remain complete
-    let obj = Object.assign({}, original)
-
-    let fieldkeys = Object.keys(fields)
-
-    if (fieldkeys.length > 0) {
-      let mode = ""
-      let first_field = fields[fieldkeys[0]]
-
-      if (first_field === 1) {
-        mode = "include"
-      } else if (first_field === 0) {
-        mode = "exclude"
-      }
-
-      for (let key in obj) {
-        if (key === "id") {
-          continue
-        }
-
-        if (mode === "include") {
-          if (!fieldkeys.includes(key)) {
-            delete obj[key]
-          }
-        } else if (mode === "exclude") {
-          if (fieldkeys.includes(key)) {
-            delete obj[key]
-          }
-        }
-      }
-    }
-
-    return obj
+    return prop_1 === prop_2
   }
 
   // Insert a new file in the proper directory
-  manager.insert_one = function (type, obj) {
+  manager.insert_one = function (type, original) {
     return new Promise((resolve, reject) => {
-      if (!obj.id) {
-        obj.id = `${Math.round(new Date() / 1000)}_${utilz.get_random_string(4)}`
+      if (!original.id) {
+        original.id = `${Math.round(new Date() / 1000)}_${utilz.get_random_string(4)}`
       }
 
-      let path = manager.get_file_path(type, obj.id)
-      manager.add_to_cache(path, obj)
+      let path = manager.get_file_path(type, original.id)
+      let proxy = manager.make_proxy_object(original, path, type)
+      manager.add_to_cache(path, original, proxy)
       write_file(path)
-      resolve(obj)
+      resolve(proxy)
     })
-  }
-
-  // Add call to the update queue
-  manager.update_one = function (type, query, fields) {
-    let call = {type: type, query: query, fields: fields}
-
-    update_calls.push(call)
-
-    if (!update_calling) {
-      do_update_call()
-    }
   }
 
   // Fill unexisting keys with defaults
@@ -281,75 +254,21 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     }
   }
 
-  // Process next update queue item
-  function do_update_call () {
-    if (update_calls.length > 0) {
-      let call = update_calls.shift()
+  // Push an item to a list and keep at a proper size
+  manager.push_item = async function (type, id, list_name, item) {
+    let obj = await manager.find_one(type, ["id", id])
 
-      update_calling = true
-      do_update_one(call)
-
-      .then(ans => {
-        update_calling = false
-        do_update_call()
-      })
-
-      .catch(err => {
-        update_calling = false
-        logger.log_error(err)
-        do_update_call()
-      })
-    }
-  }
-
-  // Update properties of one file
-  function do_update_one (call) {
-    return new Promise((resolve, reject) => {
-      manager.find_one(call.type, call.query, {})
-
-      .then(obj => {
-        for (let key in call.fields) {
-          obj[key] = call.fields[key]
-        }
-
-        let path = manager.get_file_path(call.type, obj.id)
-        manager.cache[path].obj = obj
-        write_file(path)
-        resolve("Ok")
-      })
-
-      .catch(err => {
-        resolve("Not updated")
-      })
-    })
-  }
-
-  // Check field types against a schema
-  manager.validate_schema = function (type, fields) {
-    let schema = vars[`${type}_schema`]()
-
-    for (let key in fields) {
-      if (key === "id" || key === "password") {
-        let s = `[${type}] Validation failed on '${key}'. Property is read-only`
-        return { passed: false, message: s }
+    if (obj) {
+      obj[list_name].push(item)
+  
+      if (obj[list_name].length > config[`max_${list_name}`]) {
+        obj[list_name] = obj[list_name].slice(
+          obj[list_name].length - config[`max_${list_name}`]
+        )
       }
 
-      let item = schema[key]
-      let data = fields[key]
-
-      if (item) {
-        let type = typeof data
-
-        if (type !== item.type) {
-          let s = `[${type}] Validation failed on '${key}'. Expected type '${item.type}', got type '${type}'`
-          return { passed: false, message: s }
-        }
-      } else {
-        let s = `[${type}] Validation failed on '${key}'. It does not exist in the database`
-        return { passed: false, message: s }
-      }
+      // This is to trigger file write
+      obj.modified = Date.now()
     }
-
-    return { passed: true, message: "ok" }
   }
 }

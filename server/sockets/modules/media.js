@@ -110,7 +110,7 @@ module.exports = function (Hue) {
       }
     }
 
-    Hue.db_manager.push_room_item(socket.hue_room_id, "log_messages", message)
+    Hue.db_manager.push_item("rooms", socket.hue_room_id, "log_messages", message)
 
     // Remove left over files
     if (data.type === "upload") {
@@ -143,11 +143,10 @@ module.exports = function (Hue) {
   // Edit the comment of a media change
   Hue.handler.public.edit_media_comment = async function (socket, data) {
     let edited = false
-    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1, [`${data.type}_id`]: 1})
-    let messages = info.log_messages
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
-    for (let i = 0; i < messages.length; i++) {
-      let message = messages[i]
+    for (let i = 0; i < info.log_messages.length; i++) {
+      let message = info.log_messages[i]
 
       if (message.type !== data.type) {
         continue
@@ -163,22 +162,15 @@ module.exports = function (Hue) {
         }
       }
     }
-
-    if (info[`${data.type}_id`] === data.id) {
-      let obj = {}
-      obj[`${data.type}_comment`] = data.comment      
-      Hue.db_manager.update_room(socket.hue_room_id, obj)
-      edited = true
-    }
     
     if (edited) {
+      info.modified = Date.now()
+
       Hue.handler.room_emit(socket, "edited_media_comment", {
         type: data.type,
         id: data.id,
         comment: data.comment
       })
-
-      Hue.db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
     }
   }
 
@@ -209,7 +201,7 @@ module.exports = function (Hue) {
 
   // Get the last media object from the message log
   Hue.handler.get_last_media = async function (room_id, type) {
-    let info = await Hue.db_manager.get_room(["id", room_id], { log_messages: 1 })
+    let info = await Hue.db_manager.get_room(["id", room_id])
 
     for (let item of info.log_messages.reverse()) {
       if (item.type === type) {

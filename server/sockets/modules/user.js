@@ -22,31 +22,29 @@ module.exports = function (Hue) {
     if (old_username === data.username) {
       return
     }
-    
-    let done = await Hue.db_manager.change_username(
-      socket.hue_user_id,
-      old_username,
-      data.username
-    )
 
-    if (done) {
-      await Hue.handler.modify_socket_properties(
-        socket.hue_user_id,
-        { hue_username: data.username },
-        {
-          method: "new_username",
-          data: {
-            user_id: socket.hue_user_id,
-            username: data.username,
-            old_username: old_username
-          }
-        }
-      )
-    } else {
+    let ans = await Hue.db_manager.change_username(socket.hue_user_id, old_username, data.username)
+
+    if (!ans) {
       Hue.handler.user_emit(socket, "username_already_exists", {
         username: data.username
       })
+      
+      return
     }
+
+    await Hue.handler.modify_socket_properties(
+      socket.hue_user_id,
+      { hue_username: data.username },
+      {
+        method: "new_username",
+        data: {
+          user_id: socket.hue_user_id,
+          username: data.username,
+          old_username: old_username
+        }
+      }
+    )
   }
 
   // Changes passwords
@@ -97,9 +95,8 @@ module.exports = function (Hue) {
 
     await Hue.handler.modify_socket_properties(socket.hue_user_id, { hue_bio: data.bio })
 
-    Hue.db_manager.update_user(socket.hue_user_id, {
-      bio: socket.hue_bio,
-    })
+    let userinfo = await Hue.db_manager.get_user(["id", socket.hue_user_id])
+    userinfo.bio = socket.hue_bio
 
     Hue.handler.room_emit(socket, "bio_changed", {
       user_id: socket.hue_user_id,
@@ -151,10 +148,8 @@ module.exports = function (Hue) {
   // Completes profile image changes
   Hue.handler.do_change_profilepic = async function (socket, file_name) {
     let new_ver = (socket.hue_profilepic_version || 0) + 1
-
-    Hue.db_manager.update_user(socket.hue_user_id, {
-      profilepic_version: new_ver
-    })
+    let userinfo = await Hue.db_manager.get_user(["id", socket.hue_user_id])
+    userinfo.profilepic_version = new_ver
 
     await Hue.handler.modify_socket_properties(
       socket.hue_user_id,
@@ -219,10 +214,8 @@ module.exports = function (Hue) {
   // Completes audio clip changes
   Hue.handler.do_change_audioclip = async function (socket, file_name) {
     let new_ver = (socket.hue_audioclip_version || 0) + 1
-
-    Hue.db_manager.update_user(socket.hue_user_id, {
-      audioclip_version: new_ver
-    })
+    let userinfo = await Hue.db_manager.get_user(["id", socket.hue_user_id])
+    userinfo.audioclip_version = new_ver
 
     await Hue.handler.modify_socket_properties(
       socket.hue_user_id,

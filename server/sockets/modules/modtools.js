@@ -217,10 +217,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let userinfo = await Hue.db_manager.get_user(
-      ["username", data.username],
-      { username: 1 }
-    )
+    let userinfo = await Hue.db_manager.get_user(["username", data.username])
 
     if (userinfo) {
       Hue.handler.user_emit(socket, "user_id_received", {
@@ -247,10 +244,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let userinfo = await Hue.db_manager.get_user(
-      ["id", data.user_id],
-      { username: 1 }
-    )
+    let userinfo = await Hue.db_manager.get_user(["id", data.user_id])
 
     if (userinfo) {
       Hue.handler.user_emit(socket, "username_received", {

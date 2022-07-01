@@ -45,7 +45,7 @@ module.exports = function (Hue) {
     let id, date, edited, username, linkdata, likes
     
     if (data.edit_id) {      
-      let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
+      let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
       if (!info) {
         return
@@ -67,6 +67,7 @@ module.exports = function (Hue) {
           info.log_messages[i].data.link_description = linkdata.description
           info.log_messages[i].data.link_image = linkdata.image
           info.log_messages[i].data.link_url = linkdata.url
+          info.modified = Date.now()
           
           edited = true
           id = data.edit_id
@@ -77,7 +78,6 @@ module.exports = function (Hue) {
           quote_id = info.log_messages[i].data.quote_id
           username = info.log_messages[i].data.username
 
-          await Hue.db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
           break
         }
       }
@@ -142,7 +142,7 @@ module.exports = function (Hue) {
         }
       }
 
-      Hue.db_manager.push_room_item(socket.hue_room_id, "log_messages", message)
+      Hue.db_manager.push_item("rooms", socket.hue_room_id, "log_messages", message)
     }
   }
 
@@ -178,7 +178,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1, keys: 1 })
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
     if (!info) {
       return
@@ -218,10 +218,7 @@ module.exports = function (Hue) {
           return
         }
         
-        let userinfo = await Hue.db_manager.get_user(
-          ["id", message.data.user_id],
-          { username: 1 }
-        )
+        let userinfo = await Hue.db_manager.get_user(["id", message.data.user_id])
 
         if (!userinfo) {
           Hue.handler.user_emit(socket, "user_not_found", {})
@@ -264,6 +261,8 @@ module.exports = function (Hue) {
       }
 
       if (deleted) {
+        info.modified = Date.now()
+        
         Hue.handler.room_emit(socket, "message_deleted", {
           user_id: socket.hue_user_id,
           username: socket.hue_username,
@@ -273,8 +272,6 @@ module.exports = function (Hue) {
         if (message_user_id !== socket.hue_user_id && message_username) {
           Hue.handler.push_admin_log_message(socket, `deleted a message from "${message_username}"`)
         }
-
-        Hue.db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
       }
     }
   }
@@ -286,7 +283,8 @@ module.exports = function (Hue) {
       return
     }
 
-    Hue.db_manager.update_room(socket.hue_room_id, {log_messages: []})
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
+    info.log_messages = []
 
     Hue.handler.room_emit(socket, "log_cleared", {
       user_id: socket.hue_user_id,
@@ -313,7 +311,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
     if (!info) {
       return
@@ -330,8 +328,7 @@ module.exports = function (Hue) {
           id: data.id
         })
         
-        Hue.handler.push_admin_log_message(socket, "deleted messages above")
-        Hue.db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })        
+        Hue.handler.push_admin_log_message(socket, "deleted messages above")   
         return
       }
     }   
@@ -352,7 +349,7 @@ module.exports = function (Hue) {
       return
     }    
 
-    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
     if (!info) {
       return
@@ -369,8 +366,7 @@ module.exports = function (Hue) {
           id: data.id
         })
         
-        Hue.handler.push_admin_log_message(socket, "deleted messages below")
-        Hue.db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })                
+        Hue.handler.push_admin_log_message(socket, "deleted messages below")               
         return
       }
     }   
@@ -386,7 +382,7 @@ module.exports = function (Hue) {
       return
     }
 
-    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id], { log_messages: 1 })
+    let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
 
     for (let i=0; i<info.log_messages.length; i++) {
       if (info.log_messages[i].data.id === data.id) {
@@ -422,7 +418,7 @@ module.exports = function (Hue) {
             info.log_messages[i].data.likes = info.log_messages[i].data.likes.filter(x => x.user_id !== socket.hue_user_id)
           }
 
-          await Hue.db_manager.update_room(socket.hue_room_id, { log_messages: info.log_messages })
+          info.modified = Date.now()
           Hue.handler.room_emit(socket, "liked_message", {id: data.id, obj: obj, type: type})
         }
 
