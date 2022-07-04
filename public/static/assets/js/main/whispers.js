@@ -94,6 +94,8 @@ Hue.write_whisper = function (usernames = [], type = "user") {
     Hue.el("#write_whisper_add_user").style.display = "none"
   }
 
+  Hue.horizontal_separator(Hue.el("#write_whisper_titlebar"))
+
   Hue.message_type = type
   Hue.whisper_users = []
 
@@ -106,7 +108,9 @@ Hue.write_whisper = function (usernames = [], type = "user") {
   })
 
   if (usernames.length === 0) {
-    Hue.show_userlist_window("whisper")
+    if (type !== "system_broadcast") {
+      Hue.show_userlist_window("whisper")
+    }
   }
 }
 
