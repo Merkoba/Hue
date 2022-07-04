@@ -697,7 +697,8 @@ Hue.start_msg = function () {
     items: [
       {id: "write_whisper_add_user", text: "Add"},
       {id: "write_whisper_send", text: "Send"},
-    ]
+    ],
+    container_id: "write_whisper_titlebar"
   }))
 
   Hue.msg_show_whisper.set_title(Hue.template_titlebar({
@@ -774,7 +775,7 @@ Hue.start_msg = function () {
       {id: "open_url_menu_link", text: "Link"},
       {id: "open_url_menu_context", text: "Context"},
     ],
-    container_id: "open_url_container"
+    container_id: "open_url_titlebar"
   }))
 
   Hue.msg_handle_url.set_title(Hue.template_titlebar({
@@ -783,7 +784,7 @@ Hue.start_msg = function () {
       {id: "handle_url_image", text: "Change Image"},
       {id: "handle_url_tv", text: "Change TV"},
     ],
-    container_id: "handle_url_container"
+    container_id: "handle_url_titlebar"
   }))
 
   Hue.msg_delete_messages.set_title(Hue.template_titlebar({
@@ -793,7 +794,7 @@ Hue.start_msg = function () {
       {id: "delete_messages_above", text: "Above"},
       {id: "delete_messages_below", text: "Below"},
     ],
-    container_id: "delete_messages_container"
+    container_id: "delete_messages_titlebar"
   }))
 
   Hue.msg_profilepic_select.set_title(Hue.template_titlebar({

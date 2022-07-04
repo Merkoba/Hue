@@ -140,7 +140,7 @@ Hue.check_handle_url_options = function (text) {
     Hue.el("#handle_url_tv").style.display = "none"
   }
 
-  Hue.horizontal_separator(Hue.el("#handle_url_container"))
+  Hue.horizontal_separator(Hue.el("#handle_url_titlebar"))
 }
 
 // Setups the Open URL picker window
@@ -199,7 +199,7 @@ Hue.open_url_menu = function (data) {
     Hue.el("#open_url_menu_link").style.display = "none"
   }
 
-  Hue.horizontal_separator(Hue.el("#open_url_container"))
+  Hue.horizontal_separator(Hue.el("#open_url_titlebar"))
 
   let url_el = Hue.el("#open_url_info")
 

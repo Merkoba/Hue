@@ -1776,7 +1776,7 @@ Hue.handle_delete_messages = function (id, user_id) {
     return
   }
 
-  Hue.horizontal_separator(Hue.el("#delete_messages_container"))
+  Hue.horizontal_separator(Hue.el("#delete_messages_titlebar"))
   Hue.msg_delete_messages.show()
 }
 
