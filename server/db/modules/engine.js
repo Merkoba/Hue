@@ -81,7 +81,11 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             target[property] = value
             target.modified = Date.now()
             write_file(path)
+          } else {
+            logger.log_error(`DB Engine: '${property}' is the wrong type`)
           }
+        } else {
+          logger.log_error(`DB Engine: '${property}' is not in the schema`)
         }
       }
     }
