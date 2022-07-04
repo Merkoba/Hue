@@ -795,15 +795,15 @@ Hue.show_command_book = function (filter = "") {
     Hue.el("#command_book_container").innerHTML = 
       Hue.template_command_book_commands({commands: commands})
 
-    Hue.command_book_created = true
-
     Hue.el("#command_book_container").addEventListener("click", function (e) {
       if (e.target.closest(".command_book_item")) {
         let key = e.target.closest(".command_book_item").dataset.key
         Hue.change_input(`${Hue.config.commands_prefix}${key} `)
         Hue.close_all_modals()
       }
-    })    
+    })
+    
+    Hue.command_book_created = true
   }
 
   Hue.msg_command_book.show(function () {
