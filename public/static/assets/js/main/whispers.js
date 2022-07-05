@@ -352,9 +352,13 @@ Hue.push_whisper = function (message, on_click, read, data) {
       message: message
     })
 
-    Hue.el(".profilepic", item).addEventListener("error", function () {
-      Hue.fallback_profilepic(this)
-    })
+    if (data.user_id) {
+      Hue.el(".profilepic", item).addEventListener("error", function () {
+        Hue.fallback_profilepic(this)
+      })
+    } else {
+      Hue.el(".profilepic", item).classList.add("nodisplay")  
+    }
   } else {
     item.innerHTML = Hue.template_whisper_sent({
       date: title,
@@ -432,11 +436,15 @@ Hue.make_whisper_user = function (user, mode, onclick) {
   let user_el = Hue.div("user_item")
   user_el.innerHTML = Hue.template_whisper_user()
   let profilepic = Hue.el(".show_whisper_profilepic", user_el)
-  profilepic.src = Hue.get_profilepic(user.user_id)
 
-  profilepic.addEventListener("error", function () {
-    Hue.fallback_profilepic(this)
-  })
+  if (user.user_id) {
+    profilepic.src = Hue.get_profilepic(user.user_id)
+    profilepic.addEventListener("error", function () {
+      Hue.fallback_profilepic(this)
+    })
+  } else {
+    profilepic.classList.add("nodisplay")
+  }
 
   let username_el = Hue.el(".show_whisper_username", user_el)
   username_el.textContent = user.username
