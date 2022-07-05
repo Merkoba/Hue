@@ -1687,8 +1687,8 @@ pre {
 	font-weight: bold;
 }
 
-.show_whisper_username {
-	margin-top: 0.25rem;
+.show_whisper_profilepic {
+	margin-bottom: 0.25rem;
 }
 
 .bg0 {
@@ -1801,8 +1801,8 @@ pre {
 	gap: 1rem;
 }
 
-.whisper_item_message {
-	margin-left: 0.5rem;
+.whisper_item_icon {
+	margin-right: 0.5rem;
 }
 
 .profilepic {

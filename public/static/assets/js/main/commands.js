@@ -167,14 +167,12 @@ Hue.commands = {
   "systemrestart": {
     action: (arg, ans) => {
       Hue.send_system_restart_signal()
-      ans.to_history = false
     },
     description: "(Only for superusers) Sends a signal to every connected client to restart the application",
   },
   "systembroadcast": {
     action: (arg, ans) => {
       Hue.system_broadcast()
-      ans.to_history = false
     },
     description: "(Only for superusers) Sends a whisper to every connected client",
   },
@@ -802,7 +800,7 @@ Hue.show_command_book = function (filter = "") {
         Hue.close_all_modals()
       }
     })
-    
+
     Hue.command_book_created = true
   }
 
