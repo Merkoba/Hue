@@ -182,7 +182,6 @@ Hue.commands = {
         Hue.annex(arg)
       } else {
         Hue.annex()
-        ans.to_history = false
       }
     },
     description: "(Only for superusers) Used to change the user's role",
