@@ -1974,14 +1974,16 @@ Hue.update_likes = function (el, likes) {
   let c = Hue.el(".likes_container", el)
 
   if (likes.length > 0) {
-    c.innerHTML = "^ Likes: "
+    c.innerHTML = "<div class='likes_label'>^ Likes:</div><div class='likes_items'></div>"
     for (let obj of likes) {
       let pi = Hue.get_profilepic(obj.user_id)
       let el = Hue.div("like_container dynamic_title")
       el.innerHTML = Hue.template_like({profilepic: pi})
+      
       let nd = Hue.utilz.nice_date(obj.date)
       let title = `${obj.username} | ${nd}`
       el.title = title
+      
       Hue.dataset(el, "user_id", obj.user_id)
       Hue.dataset(el, "username", obj.username)
       Hue.dataset(el, "date", obj.date)
@@ -1992,7 +1994,7 @@ Hue.update_likes = function (el, likes) {
         Hue.fallback_profilepic(this)
       })
 
-      c.append(el)
+      Hue.el(".likes_items", c).append(el)
     }
     c.style.display = "flex"
   } else {
