@@ -48,7 +48,7 @@ Hue.show_chat_context_menu = function (e, is_main) {
       type = "unlike"
     }
 
-    if (type === "like" && likes.length < Hue.config.max_likes) {
+    if (type === "unlike" || (type === "like" && likes.length < Hue.config.max_likes)) {
       items.push({
         text: text,
         action: function () {
