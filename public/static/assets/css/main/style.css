@@ -1982,6 +1982,17 @@ pre {
 	margin-top: 0.25rem;
 }
 
+.likes_label {
+	flex-shrink: 0;
+}
+
+.likes_items {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
 .like_profilepic {
 	width: var(--icon_size);
 	height: var(--icon_size);
