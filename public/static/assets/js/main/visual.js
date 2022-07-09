@@ -151,11 +151,10 @@ Hue.get_element_sizes = function () {
 
 // Attach before-unload event
 Hue.start_before_unload = function () {
-  window.onbeforeunload = function () {
+  Hue.ev(window, "beforeunload", function (e) {
     if (Hue.get_setting("confirm_on_close")) {
-      if (!confirm("Ok?")) {
-        return
-      }
+      e.preventDefault()
+      return e.returnValue = "Are you sure?"
     }
-  }
+  })
 }
