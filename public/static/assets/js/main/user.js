@@ -139,11 +139,11 @@ Hue.set_bio = function (bio) {
 
 // Setups the user profile
 Hue.setup_user_profile = function () {
-  Hue.el("#user_profile_profilepic").addEventListener("error", function () {
+  Hue.ev(Hue.el("#user_profile_profilepic"), "error", function () {
     Hue.fallback_profilepic(this)
   })
 
-  Hue.el("#user_profile_bio_textarea").addEventListener("blur", function () {
+  Hue.ev(Hue.el("#user_profile_bio_textarea"), "blur", function () {
     let value = Hue.utilz.single_linebreak(this.value)
 
     if (value !== Hue.bio) {
@@ -162,23 +162,23 @@ Hue.setup_user_profile = function () {
   Hue.el("#user_profile_reg_date").textContent = Hue.utilz.nice_date(Hue.user_reg_date)
   Hue.el("#user_profile_id").textContent = `ID: ${Hue.user_id}`
 
-  Hue.el("#user_profile_profilepic").addEventListener("click", function () {
+  Hue.ev(Hue.el("#user_profile_profilepic"), "click", function () {
     Hue.msg_profilepic_select.show()
   })
 
-  Hue.el("#user_profile_audioclip").addEventListener("click", function () {
+  Hue.ev(Hue.el("#user_profile_audioclip"), "click", function () {
     Hue.msg_audioclip_select.show()
   })
 
-  Hue.el("#user_profile_logout").addEventListener("click", function () {
+  Hue.ev(Hue.el("#user_profile_logout"), "click", function () {
     Hue.needs_confirm("logout")
   })
 
-  Hue.el("#user_profile_change_username").addEventListener("click", function () {
+  Hue.ev(Hue.el("#user_profile_change_username"), "click", function () {
     Hue.show_change_username()    
   })
 
-  Hue.el("#user_profile_change_password").addEventListener("click", function () {
+  Hue.ev(Hue.el("#user_profile_change_password"), "click", function () {
     Hue.show_change_password()    
   })
 
@@ -195,14 +195,14 @@ Hue.setup_user_profile = function () {
 
 // Setup change username
 Hue.setup_change_username = function () {
-  Hue.el("#change_username_submit").addEventListener("click", function () {
+  Hue.ev(Hue.el("#change_username_submit"), "click", function () {
     Hue.submit_change_username()
   })
 }
 
 // Setup change password
 Hue.setup_change_password = function () {
-  Hue.el("#change_password_submit").addEventListener("click", function () {
+  Hue.ev(Hue.el("#change_password_submit"), "click", function () {
     Hue.submit_change_password()
   })
 }
@@ -221,7 +221,7 @@ Hue.show_user_profile = function () {
 
 // Setups the profile image circular cropper
 Hue.setup_profilepic_cropper = function () {
-  Hue.el("#profilepic_cropper_crop").addEventListener("click", function () {
+  Hue.ev(Hue.el("#profilepic_cropper_crop"), "click", function () {
     Hue.profilepic_cropper.result({
       type: "blob",
       size: {
@@ -240,7 +240,7 @@ Hue.setup_profilepic_cropper = function () {
     })
   })
 
-  Hue.el("#profilepic_cropper_change").addEventListener("click", function () {
+  Hue.ev(Hue.el("#profilepic_cropper_change"), "click", function () {
     if (Hue.profilepic_cropper_type === "drawing") {
       Hue.msg_profilepic_cropper.close()
       Hue.open_draw_image("profilepic")
@@ -268,27 +268,27 @@ Hue.upload_profilepic = function () {
 
 // Setup profilepic select
 Hue.setup_profilepic_select = function () {
-  Hue.el("#profilepic_select_draw").addEventListener("click", function () {
+  Hue.ev(Hue.el("#profilepic_select_draw"), "click", function () {
     Hue.msg_profilepic_select.close()
     Hue.open_draw_image("profilepic")
   })
 
-  Hue.el("#profilepic_select_random").addEventListener("click", function () {
+  Hue.ev(Hue.el("#profilepic_select_random"), "click", function () {
     Hue.msg_profilepic_select.close()
     Hue.make_random_image("profilepic")
   })
 
-  Hue.el("#profilepic_select_upload").addEventListener("click", function () {
+  Hue.ev(Hue.el("#profilepic_select_upload"), "click", function () {
     Hue.msg_profilepic_select.close()
     Hue.open_profilepic_picker()
   })
 
-  Hue.el("#profilepic_preview_choose").addEventListener("click", function () {
+  Hue.ev(Hue.el("#profilepic_preview_choose"), "click", function () {
     Hue.msg_profilepic_preview.close()
     Hue.msg_profilepic_select.show()
   })
 
-  Hue.el("#profilepic_preview_confirm").addEventListener("click", function () {
+  Hue.ev(Hue.el("#profilepic_preview_confirm"), "click", function () {
     Hue.msg_profilepic_preview.close()
     Hue.upload_profilepic()
   })
@@ -386,19 +386,19 @@ Hue.show_others_disconnected = function (data) {
 
 // Setup change audioclip select
 Hue.setup_audioclip_select = function () {
-  Hue.el("#upload_audioclip").addEventListener("click", function () {
+  Hue.ev(Hue.el("#upload_audioclip"), "click", function () {
     Hue.select_audioclip()
     Hue.msg_audioclip_select.close()
   })
 
-  Hue.el("#remove_audioclip").addEventListener("click", function () {
+  Hue.ev(Hue.el("#remove_audioclip"), "click", function () {
     Hue.needs_confirm_2(function () {
       Hue.socket_emit("remove_audioclip", {})
       Hue.msg_audioclip_select.close()
     })
   })
 
-  Hue.el("#play_audioclip").addEventListener("click", function () {
+  Hue.ev(Hue.el("#play_audioclip"), "click", function () {
     Hue.play_audioclip(Hue.user_id)
   })
 }

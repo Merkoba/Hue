@@ -1,18 +1,18 @@
 // Setups media
 Hue.setup_media = function () {
-  Hue.el("#media_image_frame").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_image_frame"), "click", function () {
     Hue.show_modal_image()
   })
 
-  Hue.el("#media_image_error").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_image_error"), "click", function () {
     Hue.show_modal_image()
   })
 
-  Hue.el(".media_picker_content", Hue.msg_image_picker.window).addEventListener("click", function (e) {
+  Hue.ev(Hue.el(".media_picker_content", Hue.msg_image_picker.window), "click", function (e) {
     Hue.media_picker_item_click(e.target)
   })
 
-  Hue.el(".media_picker_content", Hue.msg_tv_picker.window).addEventListener("click", function (e) {
+  Hue.ev(Hue.el(".media_picker_content", Hue.msg_tv_picker.window), "click", function (e) {
     Hue.media_picker_item_click(e.target)
   })
 }
@@ -222,50 +222,50 @@ Hue.media_visibility_and_locks = function () {
 
 // More media picker configurations
 Hue.setup_media_pickers = function () {
-  Hue.el("#image_picker_link").addEventListener("click", function () {
+  Hue.ev(Hue.el("#image_picker_link"), "click", function () {
     Hue.msg_image_picker.close()
     Hue.show_link_image()
   })
 
-  Hue.el("#image_picker_upload").addEventListener("click", function () {
+  Hue.ev(Hue.el("#image_picker_upload"), "click", function () {
     Hue.msg_image_picker.close()
   })
   
-  Hue.el("#image_picker_draw").addEventListener("click", function () {
+  Hue.ev(Hue.el("#image_picker_draw"), "click", function () {
     Hue.msg_image_picker.close()
     Hue.open_draw_image("image")
   })
 
-  Hue.el("#image_picker_random").addEventListener("click", function () {
+  Hue.ev(Hue.el("#image_picker_random"), "click", function () {
     Hue.msg_image_picker.close()
     Hue.make_random_image("image")
   })
 
-  Hue.el("#image_picker_screenshot").addEventListener("click", function () {
+  Hue.ev(Hue.el("#image_picker_screenshot"), "click", function () {
     Hue.msg_image_picker.close()
     Hue.take_screenshot()
   })
   
-  Hue.el("#tv_picker_link").addEventListener("click", function () {
+  Hue.ev(Hue.el("#tv_picker_link"), "click", function () {
     Hue.msg_tv_picker.close()
     Hue.show_link_tv()
   }) 
   
-  Hue.el("#tv_picker_upload").addEventListener("click", function () {
+  Hue.ev(Hue.el("#tv_picker_upload"), "click", function () {
     Hue.msg_tv_picker.close()
   })
 
-  Hue.el("#tv_picker_capture").addEventListener("click", function () {
+  Hue.ev(Hue.el("#tv_picker_capture"), "click", function () {
     Hue.msg_tv_picker.close()
     Hue.screen_capture()
   })
 
-  Hue.el("#image_picker_upload").addEventListener("click", function () {
+  Hue.ev(Hue.el("#image_picker_upload"), "click", function () {
     Hue.msg_tv_picker.close()
     Hue.show_upload_image()
   })
 
-  Hue.el("#tv_picker_upload").addEventListener("click", function () {
+  Hue.ev(Hue.el("#tv_picker_upload"), "click", function () {
     Hue.msg_tv_picker.close()
     Hue.show_upload_tv()
   })
@@ -273,11 +273,11 @@ Hue.setup_media_pickers = function () {
 
 // Setup tv link window
 Hue.setup_media_link = function () {
-  Hue.el("#link_image_submit").addEventListener("click", function () {
+  Hue.ev(Hue.el("#link_image_submit"), "click", function () {
     Hue.link_image_submit()
   })
 
-  Hue.el("#link_tv_submit").addEventListener("click", function () {
+  Hue.ev(Hue.el("#link_tv_submit"), "click", function () {
     Hue.link_tv_submit()
   })
 }
@@ -473,7 +473,7 @@ Hue.apply_media_info = function (type) {
   Hue.el(".media_info_timeago", container).textContent = Hue.utilz.timeago(item.date)
   container.title = item.info
 
-  Hue.el(".media_info_profilepic", container).addEventListener("error", function () {
+  Hue.ev(Hue.el(".media_info_profilepic", container), "error", function () {
     Hue.fallback_profilepic(this)
   })
     
@@ -627,7 +627,7 @@ Hue.append_media_info = function (container, type) {
 Hue.start_media_info = function () {
   Hue.append_media_info("#media_image_container", "image")
   
-  Hue.el("#media").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#media"), "click", function (e) {
     let el = e.target.closest(".media_info_user")
 
     if (el) {
@@ -637,7 +637,7 @@ Hue.start_media_info = function () {
     }
   })
 
-  Hue.el("#media").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#media"), "click", function (e) {
     let el = e.target.closest(".media_info_details")
 
     if (el) {

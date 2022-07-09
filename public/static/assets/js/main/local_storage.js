@@ -42,29 +42,25 @@ Hue.do_save_local_storage = function () {
 
 // Setups localStorage events
 Hue.setup_local_storage = function () {
-  window.addEventListener(
-    "storage",
-    function (e) {
-      if (e.key !== Hue.ls_settings) {
-        return
-      }
+  Hue.ev(window, "storage", function (e) {
+    if (e.key !== Hue.ls_settings) {
+      return
+    }
 
-      let obj
+    let obj
 
-      try {
-        obj = JSON.parse(e.newValue)
-      } catch (err) {
-        return
-      }
+    try {
+      obj = JSON.parse(e.newValue)
+    } catch (err) {
+      return
+    }
 
-      if (Hue.utilz.is_empty_object(obj)) {
-        return
-      }
+    if (Hue.utilz.is_empty_object(obj)) {
+      return
+    }
 
-      if (e.key === Hue.ls_settings) {
-        Hue.reset_settings(false)
-      }
-    },
-    false
-  )
+    if (e.key === Hue.ls_settings) {
+      Hue.reset_settings(false)
+    }
+  }, false)
 }

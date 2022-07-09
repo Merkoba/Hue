@@ -30,12 +30,12 @@ Hue.show_open_room = function (id, name) {
 
 // Setup open room
 Hue.setup_open_room = function () {
-  Hue.el("#open_room_here").addEventListener("click", function () {
+  Hue.ev(Hue.el("#open_room_here"), "click", function () {
     Hue.goto_url(Hue.open_room_id, "same")
     Hue.msg_open_room.close()
   })
 
-  Hue.el("#open_room_new_tab").addEventListener("click", function () {
+  Hue.ev(Hue.el("#open_room_new_tab"), "click", function () {
     Hue.goto_url(Hue.open_room_id, "tab")
     Hue.msg_open_room.close()
   })
@@ -80,7 +80,7 @@ Hue.update_roomlist = function (data) {
     let icon = Hue.el(".roomlist_icon", item)
     jdenticon.update(icon, room.name)
     
-    item.addEventListener("click", function () {
+    Hue.ev(item, "click", function () {
       Hue.show_open_room(room.id, room.name)
     })
 

@@ -1,22 +1,22 @@
 // Setup chat search
 Hue.setup_chat_search = function () {
-  Hue.el("#chat_search_highlights").addEventListener("click", function () {
+  Hue.ev(Hue.el("#chat_search_highlights"), "click", function () {
     Hue.show_highlights()
   })
 
-  Hue.el("#chat_search_links").addEventListener("click", function () {
+  Hue.ev(Hue.el("#chat_search_links"), "click", function () {
     Hue.show_links()
   })
 
-  Hue.el("#chat_search_user").addEventListener("click", function () {
+  Hue.ev(Hue.el("#chat_search_user"), "click", function () {
     Hue.show_user_messages()
   })
 
-  Hue.el("#chat_search_image").addEventListener("click", function () {
+  Hue.ev(Hue.el("#chat_search_image"), "click", function () {
     Hue.show_image_list()
   })
 
-  Hue.el("#chat_search_tv").addEventListener("click", function () {
+  Hue.ev(Hue.el("#chat_search_tv"), "click", function () {
     Hue.show_tv_list()
   })
 }
@@ -125,7 +125,7 @@ Hue.show_chat_search = function (filter = "") {
         let profilepics = Hue.els(".profilepic", message)
 
         for (let pic of profilepics) {
-          pic.addEventListener("error", function (e) {
+          Hue.ev(pic, "error", function (e) {
             Hue.fallback_profilepic(this)
           })
         }

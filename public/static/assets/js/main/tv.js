@@ -415,7 +415,7 @@ Hue.set_default_tv_size = function () {
 
 // Setup for the tv iframe
 Hue.setup_iframe_tv = function () {
-  Hue.el("#media_iframe_poster").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_iframe_poster"), "click", function () {
     Hue.play_tv()
   })
 }
@@ -601,12 +601,12 @@ Hue.process_tv_upload_comment = function () {
 Hue.setup_tv_upload_comment = function () {
   let video = Hue.el("#tv_upload_comment_video_preview")
   
-  video.addEventListener("error", function () {
+  Hue.ev(video, "error", function () {
     this.style.display = "none"
     Hue.el("#tv_upload_comment_video_feedback").style.display = "inline"
   })
 
-  Hue.el("#tv_upload_comment_change").addEventListener("click", function () {
+  Hue.ev(Hue.el("#tv_upload_comment_change"), "click", function () {
     if (Hue.tv_upload_comment_type === "upload") {
       Hue.msg_tv_upload_comment.close()
       Hue.show_upload_tv()
@@ -616,7 +616,7 @@ Hue.setup_tv_upload_comment = function () {
     }
   })
 
-  Hue.el("#tv_upload_comment_submit").addEventListener("click", function () {
+  Hue.ev(Hue.el("#tv_upload_comment_submit"), "click", function () {
     Hue.process_tv_upload_comment()
   })
 }
@@ -629,7 +629,7 @@ Hue.show_upload_tv = function () {
 
 // Setup screen capture
 Hue.setup_screen_capture = function () {
-  Hue.el("#screen_capture_options_container").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#screen_capture_options_container"), "click", function (e) {
     let el = e.target.closest(".screen_capture_duration")
 
     if (el) {

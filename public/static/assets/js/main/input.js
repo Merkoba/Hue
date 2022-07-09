@@ -16,17 +16,17 @@ Hue.on_input_change = function () {
 
 // Setups events for the main input
 Hue.setup_input = function () {
-  Hue.el("#input").addEventListener("input", function () {
+  Hue.ev(Hue.el("#input"), "input", function () {
     Hue.on_input_change()
   })
 
-  Hue.el("#input").addEventListener("click", function () {
+  Hue.ev(Hue.el("#input"), "click", function () {
     if (Hue.editing_message) {
       Hue.stop_edit_message()
     }
   })
 
-  Hue.el("#input").addEventListener("paste", function (e) {
+  Hue.ev(Hue.el("#input"), "paste", function (e) {
     let items = (e.clipboardData || e.originalEvent.clipboardData).items
 
     for (let index in items) {

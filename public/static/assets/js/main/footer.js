@@ -3,27 +3,27 @@ Hue.setup_footer = function () {
   let media = ["image", "tv"]
 
   for (let type of media) {
-    Hue.el(`#footer_${type}_icon`).addEventListener("click", function () {
+    Hue.ev(Hue.el(`#footer_${type}_icon`), "click", function () {
       Hue.show_media_picker(type)
     })
 
-    Hue.el(`#footer_${type}_toggle`).addEventListener("click", function () {
+    Hue.ev(Hue.el(`#footer_${type}_toggle`), "click", function () {
       Hue.set_media_enabled({type: type, what: !Hue.room_state[`${type}_enabled`]})
     })
 
-    Hue.el(`#footer_${type}_lock`).addEventListener("click", function () {
+    Hue.ev(Hue.el(`#footer_${type}_lock`), "click", function () {
       Hue.set_media_locked({type: type, what: !Hue[`${type}_locked`]})
     })
 
-    Hue.el(`#footer_${type}_prev`).addEventListener("click", function () {
+    Hue.ev(Hue.el(`#footer_${type}_prev`), "click", function () {
       Hue.load_prev_media(type)
     })
 
-    Hue.el(`#footer_${type}_next`).addEventListener("click", function () {
+    Hue.ev(Hue.el(`#footer_${type}_next`), "click", function () {
       Hue.load_next_media(type)
     })
 
-    Hue.el(`#footer_${type}_list`).addEventListener("click", function () {
+    Hue.ev(Hue.el(`#footer_${type}_list`), "click", function () {
       Hue[`msg_${type}_picker`].close()
       Hue[`show_${type}_list`]()
     })
@@ -32,11 +32,11 @@ Hue.setup_footer = function () {
   }
 
   if (Hue.config.radios.length > 0) {
-    Hue.el("#footer_radio_icon_container").addEventListener("click", function () {
+    Hue.ev(Hue.el("#footer_radio_icon_container"), "click", function () {
       Hue.toggle_radio()
     })
 
-    Hue.el("#footer_radio_icon_container").addEventListener("auxclick", function (e) {
+    Hue.ev(Hue.el("#footer_radio_icon_container"), "auxclick", function (e) {
       if (e.which === 2) {
         Hue.radio_playstop()
       }
@@ -45,7 +45,7 @@ Hue.setup_footer = function () {
     Hue.el("#footer_radio_icon_container").remove()
   }
 
-  Hue.el("#footer_items").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#footer_items"), "click", function (e) {
     if (e.target === this) {
       Hue.el("#input").focus()
     }

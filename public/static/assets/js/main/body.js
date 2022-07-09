@@ -1,6 +1,6 @@
 // Starts body events
 Hue.start_body_events = function () {
-  Hue.el("body").addEventListener("mouseover", function (e) {
+  Hue.ev(Hue.el("body"), "mouseover", function (e) {
     if (e.target.closest(".dynamic_title")) {
       let el = e.target.closest(".dynamic_title")
       let otitle = Hue.dataset(el, "otitle")
@@ -10,15 +10,15 @@ Hue.start_body_events = function () {
     }
   })
 
-  Hue.el("body").addEventListener("mousedown", function () {
+  Hue.ev(Hue.el("body"), "mousedown", function () {
     Hue.mouse_is_down = true
   })
 
-  Hue.el("body").addEventListener("mouseup", function (e) {
+  Hue.ev(Hue.el("body"), "mouseup", function (e) {
     Hue.mouse_is_down = false
   })
 
-  Hue.el("body").addEventListener("mouseleave", function () {
+  Hue.ev(Hue.el("body"), "mouseleave", function () {
     Hue.mouse_is_down = false
   })
 }

@@ -211,19 +211,19 @@ Hue.start_settings_widgets_listeners = function () {
       setting.widget_type === "checkbox" ||
       setting.widget_type === "select"
     ) {
-      item.addEventListener("change", () => setting.action())
+      Hue.ev(item, "change", () => setting.action())
     } else if (
       setting.widget_type === "textarea" ||
       setting.widget_type === "text"
     ) {
-      item.addEventListener("blur", () => setting.action())
+      Hue.ev(item, "blur", () => setting.action())
     } else if (
       setting.widget_type === "number" ||
       setting.widget_type === "color"
     ) {
-      item.addEventListener("change", () => setting.action())
+      Hue.ev(item, "change", () => setting.action())
     } else if (setting.widget_type === "range") {
-      item.addEventListener("input change", function () {
+      Hue.ev(item, "input change", function () {
         setting.action()
       })
     }
@@ -265,7 +265,7 @@ Hue.show_settings = function (filter = "") {
 Hue.setup_settings_windows = function () {
   Hue.set_user_settings_titles()
 
-  Hue.el("#settings_request_notifications").addEventListener("click", function () {
+  Hue.ev(Hue.el("#settings_request_notifications"), "click", function () {
     Hue.request_desktop_notifications_permission()
   })
 }

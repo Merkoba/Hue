@@ -112,7 +112,7 @@ Hue.open_view_text = function (text) {
 
 // Setup view text window
 Hue.setup_view_text = function () {
-  Hue.el("#view_text_copy").addEventListener("click", function () {
+  Hue.ev(Hue.el("#view_text_copy"), "click", function () {
     Hue.copy_string(Hue.el("#view_text_text").textContent)
     Hue.msg_view_text.close()
   })

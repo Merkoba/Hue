@@ -166,11 +166,11 @@ Hue.modal_image_next_click = function (e) {
 Hue.setup_modal_image = function () {
   let img = Hue.el("#modal_image")
 
-  img.addEventListener("load", function () {
+  Hue.ev(img, "load", function () {
     Hue.el("#modal_image").style.display = "block"
   })
 
-  img.addEventListener("error", function () {
+  Hue.ev(img, "error", function () {
     Hue.el("#modal_image").style.display = "none"
     Hue.el("#modal_image_error").style.display = "block"
   })
@@ -193,9 +193,9 @@ Hue.setup_modal_image = function () {
     }
   }
 
-  Hue.el("#Msg-window-modal_image").addEventListener("wheel", f)
+  Hue.ev(Hue.el("#Msg-window-modal_image"), "wheel", f)
 
-  Hue.el("#modal_image_container").addEventListener("click", function () {
+  Hue.ev(Hue.el("#modal_image_container"), "click", function () {
     if (Hue.el("#modal_image_container").classList.contains("expanded_image")) {
       Hue.restore_modal_image()
     } else {
@@ -203,15 +203,15 @@ Hue.setup_modal_image = function () {
     }
   })
 
-  Hue.el("#modal_image_arrow_prev").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#modal_image_arrow_prev"), "click", function (e) {
     Hue.modal_image_prev_click()
   })
 
-  Hue.el("#modal_image_arrow_next").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#modal_image_arrow_next"), "click", function (e) {
     Hue.modal_image_next_click()
   })
 
-  Hue.el("#modal_image_toolbar_expand").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#modal_image_toolbar_expand"), "click", function (e) {
     if (Hue.el("#modal_image_container").classList.contains("expanded_image")) {
       Hue.restore_modal_image()
     } else {
@@ -219,24 +219,24 @@ Hue.setup_modal_image = function () {
     }
   })
 
-  Hue.el("#modal_image_toolbar_menu").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#modal_image_toolbar_menu"), "click", function (e) {
     Hue.open_url_menu(Hue.loaded_modal_image)
   })
 
-  Hue.el("#modal_image_toolbar_list").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#modal_image_toolbar_list"), "click", function (e) {
     Hue.show_image_list()
   })
 
-  Hue.el("#modal_image_subheader").addEventListener("click", function () {
+  Hue.ev(Hue.el("#modal_image_subheader"), "click", function () {
     Hue.open_view_text(this.textContent)
   })
 
-  Hue.el("#modal_image_profilepic").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#modal_image_profilepic"), "click", function (e) {
     let data = Hue.loaded_modal_image
     Hue.show_profile(data.username, data.user_id)
   })
 
-  Hue.el("#modal_image_username").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#modal_image_username"), "click", function (e) {
     let data = Hue.loaded_modal_image
     Hue.show_profile(data.username, data.user_id)
   })
@@ -319,7 +319,7 @@ Hue.show_modal_image = function (id = 0) {
 
   let profilepic = Hue.el("#modal_image_profilepic")
   profilepic.src = Hue.get_profilepic(data.user_id)
-  profilepic.addEventListener("error", function () {
+  Hue.ev(profilepic, "error", function () {
     Hue.fallback_profilepic(this)
   })
 
@@ -331,11 +331,11 @@ Hue.show_modal_image = function (id = 0) {
 
 // Starts events for the image
 Hue.start_image_events = function () {
-  Hue.el("#media_image_frame").addEventListener("load", function (e) {
+  Hue.ev(Hue.el("#media_image_frame"), "load", function (e) {
     Hue.after_image_load()
   })
 
-  Hue.el("#media_image_frame").addEventListener("error", function () {
+  Hue.ev(Hue.el("#media_image_frame"), "error", function () {
     Hue.el("#media_image_frame").style.display = "none"
     Hue.el("#media_image_error").style.display = "initial"
     Hue.apply_media_info("image")
@@ -360,16 +360,16 @@ Hue.after_image_load = function (ok = true) {
 Hue.setup_view_image = function () {
   let img = Hue.el("#view_image")
 
-  img.addEventListener("load", function () {
+  Hue.ev(img, "load", function () {
     img.style.display = "block"
   })
 
-  img.addEventListener("error", function () {
+  Hue.ev(img, "error", function () {
     Hue.el("#view_image").style.display = "none"
     Hue.el("#view_image_error").style.display = "block"
   })
 
-  Hue.el("#view_image_container").addEventListener("click", function () {
+  Hue.ev(Hue.el("#view_image_container"), "click", function () {
     if (Hue.el("#view_image_container").classList.contains("expanded_image")) {
       Hue.restore_view_image()
     } else {
@@ -377,7 +377,7 @@ Hue.setup_view_image = function () {
     }
   })
 
-  Hue.el("#view_image_toolbar_expand").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#view_image_toolbar_expand"), "click", function (e) {
     if (Hue.el("#view_image_container").classList.contains("expanded_image")) {
       Hue.restore_view_image()
     } else {
@@ -385,24 +385,24 @@ Hue.setup_view_image = function () {
     }
   })
 
-  Hue.el("#view_image_toolbar_url").addEventListener("click", function () {
+  Hue.ev(Hue.el("#view_image_toolbar_url"), "click", function () {
     Hue.open_view_text(Hue.view_image_source)
   })
 
-  Hue.el("#view_image_toolbar_link").addEventListener("click", function () {
+  Hue.ev(Hue.el("#view_image_toolbar_link"), "click", function () {
     Hue.load_media_link("image", Hue.view_image_source, "")
     Hue.msg_open_url.close()
   })
 
-  Hue.el("#view_image_profilepic").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#view_image_profilepic"), "click", function (e) {
     Hue.show_profile(Hue.view_image_username, Hue.view_image_user_id)
   })
 
-  Hue.el("#view_image_username").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#view_image_username"), "click", function (e) {
     Hue.show_profile(Hue.view_image_username, Hue.view_image_user_id)
   })
 
-  Hue.el("#view_image_subheader").addEventListener("click", function () {
+  Hue.ev(Hue.el("#view_image_subheader"), "click", function () {
     Hue.open_view_text(this.textContent)
   })
 }
@@ -425,7 +425,7 @@ Hue.view_image = function (src, username, user_id) {
 
   let profilepic = Hue.el("#view_image_profilepic")
   profilepic.src = Hue.get_profilepic(user_id)
-  profilepic.addEventListener("error", function () {
+  Hue.ev(profilepic, "error", function () {
     Hue.fallback_profilepic(this)
   })
 
@@ -481,16 +481,16 @@ Hue.show_image_upload_comment = function (file, type) {
 Hue.setup_image_upload_comment = function () {
   let image = Hue.el("#image_upload_comment_image_preview")
 
-  image.addEventListener("error", function () {
+  Hue.ev(image, "error", function () {
     this.style.display = "none"
     Hue.el("#image_upload_comment_image_feedback").style.display = "inline"
   })
 
-  Hue.el("#image_upload_comment_submit").addEventListener("click", function () {
+  Hue.ev(Hue.el("#image_upload_comment_submit"), "click", function () {
     Hue.process_image_upload_comment()
   })
 
-  Hue.el("#image_upload_comment_change").addEventListener("click", function () {
+  Hue.ev(Hue.el("#image_upload_comment_change"), "click", function () {
     if (Hue.image_upload_comment_type === "drawing") {
       Hue.msg_image_upload_comment.close()
       Hue.open_draw_image("image")
@@ -579,7 +579,7 @@ Hue.take_screenshot = async function () {
   let context = canvas.getContext("2d")
   video.srcObject = stream
 
-  video.addEventListener("loadeddata", async () => {
+  Hue.ev(video, "loadeddata", async () => {
     stream.getTracks().forEach(track => track.stop())
     let { videoWidth, videoHeight } = video
     canvas.width = videoWidth

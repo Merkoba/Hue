@@ -232,7 +232,7 @@ Hue.do_update_userlist = function (prop = "") {
 
 // Some configurations for the userlist window
 Hue.setup_userlist_window = function () {
-  Hue.el("#userlist").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#userlist"), "click", function (e) {
     let el = e.target.closest(".userlist_item")
 
     if (el) {
@@ -265,7 +265,7 @@ Hue.update_userlist_window = function (filter_out = []) {
 
     let image = Hue.el(".userlist_item_profilepic", el)
 
-    image.addEventListener("error", function (e) {
+    Hue.ev(image, "error", function (e) {
       Hue.fallback_profilepic(this)
     })
 
@@ -521,17 +521,17 @@ Hue.get_matching_usernames = function (s) {
 
 // Setups user profile windows
 Hue.setup_show_profile = function () {
-  Hue.el("#show_profile_whisper").addEventListener("click", function () {
+  Hue.ev(Hue.el("#show_profile_whisper"), "click", function () {
     Hue.write_whisper([Hue.open_profile_username])
     Hue.msg_profile.close()
   })
 
-  Hue.el("#show_profile_sync_tv").addEventListener("click", function () {
+  Hue.ev(Hue.el("#show_profile_sync_tv"), "click", function () {
     Hue.sync_tv(Hue.open_profile_username)
     Hue.msg_profile.close()
   })
 
-  Hue.el("#show_profile_profilepic").addEventListener("click", function () {
+  Hue.ev(Hue.el("#show_profile_profilepic"), "click", function () {
     if (Hue.audioclip) {
       Hue.stop_audioclip()
     } else {
@@ -539,37 +539,37 @@ Hue.setup_show_profile = function () {
     }
   })
 
-  Hue.el("#show_profile_profilepic").addEventListener("error", function () {
+  Hue.ev(Hue.el("#show_profile_profilepic"), "error", function () {
     Hue.fallback_profilepic(this)
   })
 
-  Hue.el("#show_profile_search").addEventListener("click", function () {
+  Hue.ev(Hue.el("#show_profile_search"), "click", function () {
     Hue.show_user_messages(Hue.open_profile_username)
     Hue.msg_profile.close()
   })
 
-  Hue.el("#show_profile_posts").addEventListener("click", function () {
+  Hue.ev(Hue.el("#show_profile_posts"), "click", function () {
     Hue.show_message_board(`$user ${Hue.open_profile_username} `)
     Hue.msg_profile.close()
   })
 
-  Hue.el("#show_profile_edit").addEventListener("click", function () {
+  Hue.ev(Hue.el("#show_profile_edit"), "click", function () {
     Hue.show_user_profile()
     Hue.msg_profile.close()
   })
 
-  Hue.el("#show_profile_change_role").addEventListener("click", function () {
+  Hue.ev(Hue.el("#show_profile_change_role"), "click", function () {
     Hue.change_role_username = Hue.open_profile_username
     Hue.msg_change_role.show()
   })
 
-  Hue.el("#show_profile_kick").addEventListener("click", function () {
+  Hue.ev(Hue.el("#show_profile_kick"), "click", function () {
     Hue.show_confirm("Disconnect the user from the room", function () {
       Hue.kick(Hue.open_profile_username)
     })
   })
 
-  Hue.el("#show_profile_ban").addEventListener("click", function () {
+  Hue.ev(Hue.el("#show_profile_ban"), "click", function () {
     Hue.show_confirm("Ban the user from joining the room", function () {
       Hue.ban(Hue.open_profile_username)
     })
@@ -585,7 +585,7 @@ Hue.play_audioclip = function (user_id = Hue.open_profile_user_id) {
     Hue.stop_audioclip()
   }
 
-  Hue.audioclip.addEventListener("error", function (e) {
+  Hue.ev(Hue.audioclip, "error", function (e) {
     if (Hue.audioclip) {
       Hue.show_info("User has no audioclip")
       Hue.stop_audioclip()
@@ -1102,7 +1102,7 @@ Hue.fallback_profilepic = function (el) {
 
 // Setup change role
 Hue.setup_change_role = function () {
-  Hue.el("#change_role_admin").addEventListener("click", function () {
+  Hue.ev(Hue.el("#change_role_admin"), "click", function () {
     Hue.show_confirm("Operator abilities plus can add/remove operators", function () {
       Hue.change_role(Hue.change_role_username, "admin")
     })
@@ -1110,7 +1110,7 @@ Hue.setup_change_role = function () {
     Hue.msg_change_role.close()
   })
 
-  Hue.el("#change_role_op").addEventListener("click", function () {
+  Hue.ev(Hue.el("#change_role_op"), "click", function () {
     Hue.show_confirm("Enable access to operator features and commands", function () {
       Hue.change_role(Hue.change_role_username, "op")
     })
@@ -1118,7 +1118,7 @@ Hue.setup_change_role = function () {
     Hue.msg_change_role.close()
   })
 
-  Hue.el("#change_role_voice").addEventListener("click", function () {
+  Hue.ev(Hue.el("#change_role_voice"), "click", function () {
     Hue.show_confirm("Can interact with users and change media but no operator abilities", function () {
       Hue.change_role(Hue.change_role_username, "voice")
     })

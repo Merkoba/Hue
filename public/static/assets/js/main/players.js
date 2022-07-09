@@ -183,7 +183,7 @@ Hue.create_twitch_tv_player = function () {
       channel: channel
     })
 
-    twch_tv_player.addEventListener(Twitch.Player.READY, () => {
+    Hue.ev(twch_tv_player, Twitch.Player.READY, () => {
       Hue.twitch_tv_player = twch_tv_player
 
       let iframe = Hue.el("#media_twitch_tv_container iframe")
