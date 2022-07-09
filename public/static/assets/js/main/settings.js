@@ -264,9 +264,13 @@ Hue.show_settings = function (filter = "") {
 // Setup the settings windows
 Hue.setup_settings_windows = function () {
   Hue.set_user_settings_titles()
-
-  Hue.ev(Hue.el("#settings_request_notifications"), "click", function () {
+  
+  Hue.ev(Hue.el("#settings_notifications"), "click", function () {
     Hue.request_desktop_notifications_permission()
+  })
+
+  Hue.ev(Hue.el("#settings_defaults"), "click", function () {
+    Hue.reset_settings()
   })
 }
 
