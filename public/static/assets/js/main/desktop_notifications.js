@@ -33,7 +33,7 @@ Hue.show_desktop_notification = function (s) {
 
   let n = new Notification(s)
 
-  n.addEventListener("click", function (e) {
+  Hue.ev(n, "click", function (e) {
     window.focus()
     e.target.close()
   })

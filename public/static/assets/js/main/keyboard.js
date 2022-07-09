@@ -1,6 +1,6 @@
 // Setups most keyboard events
 Hue.activate_key_detection = function () {
-  document.addEventListener("keydown", (e) => {
+  Hue.ev(document, "keydown", (e) => {
     if (!Hue.started) {
       return
     }
@@ -326,7 +326,7 @@ Hue.activate_key_detection = function () {
     }
   })
 
-  document.addEventListener("input", function (e) {
+  Hue.ev(document, "input", function (e) {
     if (e.target.closest(".filter_input")) {
       Hue.modal_filter()
     }

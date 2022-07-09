@@ -5,7 +5,7 @@ Hue.setup_activity_bar = function () {
     Hue.update_activity_bar(true)
   }, Hue.config.activity_bar_delay)
 
-  Hue.el("#activity_bar").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#activity_bar"), "click", function (e) {
     if (e.target.closest(".activity_bar_item")) {
       let item = e.target.closest(".activity_bar_item")
       Hue.show_profile(Hue.dataset(item, "username"), Hue.dataset(item, "user_id"))
@@ -50,7 +50,7 @@ Hue.update_activity_bar = function (check = false) {
     let text_el = Hue.el(".activity_bar_text", el)
     let img_el = Hue.el(".activity_bar_profilepic", el)
 
-    img_el.addEventListener("error", function () {
+    Hue.ev(img_el, "error", function () {
       Hue.fallback_profilepic(this)
     })
 

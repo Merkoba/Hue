@@ -126,7 +126,7 @@ Hue.upload_video = function (file) {
 Hue.create_file_reader = function (file) {
   let reader = new FileReader()
 
-  reader.addEventListener("loadend", function (e) {
+  Hue.ev(reader, "loadend", function (e) {
     Hue.socket_emit("slice_upload", {
       data: reader.result,
       action: file.hue_data.action,

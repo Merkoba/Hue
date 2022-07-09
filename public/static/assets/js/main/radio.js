@@ -25,14 +25,14 @@ Hue.setup_radio = function () {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
   }
 
-  Hue.el("#footer_radio_icon_container").addEventListener("wheel", wheel_func)
-  Hue.el("#radio_controls").addEventListener("wheel", wheel_func)
+  Hue.ev(Hue.el("#footer_radio_icon_container"), "wheel", wheel_func)
+  Hue.ev(Hue.el("#radio_controls"), "wheel", wheel_func)
 
-  Hue.el("#radio_items").addEventListener("mouseenter", function () {
+  Hue.ev(Hue.el("#radio_items"), "mouseenter", function () {
     Hue.start_radio_unslide_timeout()
   })
 
-  Hue.el("#radio_items").addEventListener("mouseleave", function () {
+  Hue.ev(Hue.el("#radio_items"), "mouseleave", function () {
     Hue.start_radio_slide_timeout()
   })
 
@@ -43,7 +43,7 @@ Hue.setup_radio = function () {
 
 // Setup the radio window
 Hue.setup_radio_window = function () {
-  Hue.el("#radio_history").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#radio_history"), "click", function (e) {
     let el = e.target.closest(".radio_history_item")
 
     if (el) {
@@ -54,18 +54,18 @@ Hue.setup_radio_window = function () {
     }
   })
 
-  Hue.el("#handle_radio_history_copy").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#handle_radio_history_copy"), "click", function (e) {
     Hue.msg_handle_radio_history.close()
     let el = Hue.handle_radio_history_item
     let info = Hue.el(".radio_history_info", el).textContent
     Hue.copy_string(info)
   })
 
-  Hue.el("#handle_radio_history_youtube").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#handle_radio_history_youtube"), "click", function (e) {
     Hue.radio_search_song("youtube")
   })
 
-  Hue.el("#handle_radio_history_soundcloud").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#handle_radio_history_soundcloud"), "click", function (e) {
     Hue.radio_search_song("soundcloud")
   })
 }
@@ -156,11 +156,11 @@ Hue.setup_radio_player = function () {
   Hue.radio_player = new Audio()
   Hue.radio_player.volume = Hue.room_state.radio_volume
   
-  Hue.radio_player.addEventListener("play", function (e) {
+  Hue.ev(Hue.radio_player, "play", function (e) {
     Hue.after_radio_play()
   })
   
-  Hue.radio_player.addEventListener("pause", function (e) {
+  Hue.ev(Hue.radio_player, "pause", function (e) {
     Hue.after_radio_stop()
   })
 }
@@ -365,7 +365,7 @@ Hue.create_radio_item = function (radio) {
   let name = Hue.el(".radio_item_name", container)
   name.textContent = radio.name
   
-  container.addEventListener("click", function () {
+  Hue.ev(container, "click", function () {
     Hue.check_radio_play(radio)
   })
 
@@ -390,18 +390,18 @@ Hue.create_radio_item_buttons = function () {
   if (Hue.config.radios.length > 1) {
     container.innerHTML = Hue.template_radio_item_buttons()
 
-    Hue.el("#radio_button_random", container).addEventListener("click", function () {
+    Hue.ev(Hue.el("#radio_button_random", container), "click", function () {
       Hue.play_random_radio()
     })
   } else {
     container.innerHTML = Hue.template_radio_item_buttons_2()
   }
 
-  Hue.el("#radio_button_playstop", container).addEventListener("click", function () {
+  Hue.ev(Hue.el("#radio_button_playstop", container), "click", function () {
     Hue.radio_playstop()
   })
   
-  Hue.el("#radio_button_info", container).addEventListener("click", function () {
+  Hue.ev(Hue.el("#radio_button_info", container), "click", function () {
     Hue.show_radio_window()
   })
 
@@ -414,11 +414,11 @@ Hue.create_radio_item_volume = function () {
   container.id = "radio_item_volume"
   container.innerHTML = Hue.template_radio_item_volume()
 
-  Hue.el("#radio_item_volume_icon", container).addEventListener("click", function () {
+  Hue.ev(Hue.el("#radio_item_volume_icon", container), "click", function () {
     Hue.change_radio_volume("down", 0.25)
   })
   
-  Hue.el("#radio_item_volume_text", container).addEventListener("click", function () {
+  Hue.ev(Hue.el("#radio_item_volume_text", container), "click", function () {
     Hue.change_radio_volume("up", 0.25)
   })
 

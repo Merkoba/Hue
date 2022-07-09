@@ -52,13 +52,9 @@ Hue.update_title = function () {
 // A function is executed on visibility change
 // Blur event is also included to handle some cases
 Hue.activate_visibility_listener = function () {
-  document.addEventListener(
-    "visibilitychange",
-    function () {
-      Hue.process_visibility()
-    },
-    false
-  )
+  Hue.ev(document, "visibilitychange", function () {
+    Hue.process_visibility()
+  }, false)
 }
 
 // This runs after a visibility change
@@ -94,7 +90,7 @@ Hue.on_unfocus = function () {
 
 // Starts window resize events
 Hue.resize_events = function () {
-  window.addEventListener("resize", function () {
+  Hue.ev(window, "resize", function () {
     Hue.resize_timer()
   })
 }

@@ -792,7 +792,7 @@ Hue.show_command_book = function (filter = "") {
     Hue.el("#command_book_container").innerHTML = 
       Hue.template_command_book_commands({commands: commands})
 
-    Hue.el("#command_book_container").addEventListener("click", function (e) {
+    Hue.ev(Hue.el("#command_book_container"), "click", function (e) {
       if (e.target.closest(".command_book_item")) {
         let key = e.target.closest(".command_book_item").dataset.key
         Hue.change_input(`${Hue.config.commands_prefix}${key} `)

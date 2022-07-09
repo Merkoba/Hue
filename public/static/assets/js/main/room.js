@@ -158,7 +158,7 @@ Hue.request_admin_activity = function (filter = "") {
 
 // Setup admin activity
 Hue.setup_admin_activity = function () {
-  Hue.el("#admin_activity_clear").addEventListener("click", function () {
+  Hue.ev(Hue.el("#admin_activity_clear"), "click", function () {
     Hue.clear_admin_activity()
   })
 }
@@ -229,7 +229,7 @@ Hue.show_admin_list = function (data) {
     Hue.el(".admin_list_username", el).textContent = user.username
     Hue.el(".admin_list_role", el).textContent = `(${Hue.get_pretty_role_name(user.role)})`
 
-    el.addEventListener("click", function () {
+    Hue.ev(el, "click", function () {
       Hue.show_profile(user.username, user.user_id)
     })
 
@@ -261,13 +261,13 @@ Hue.show_ban_list = function (data) {
     let username = Hue.el(".ban_list_username", el)
     username.textContent = user.username
     
-    username.addEventListener("click", function () {
+    Hue.ev(username, "click", function () {
       Hue.show_profile(user.username, user.user_id)
     })
     
     let unban = Hue.el(".ban_list_unban", el)
     
-    unban.addEventListener("click", function () {
+    Hue.ev(unban, "click", function () {
       Hue.show_confirm(`Unban ${user.username}`, function () {
         Hue.unban(user.username)
       })     

@@ -84,7 +84,7 @@ Hue.push_notification = function (args) {
   Hue.dataset(item, "date", d)
 
   if (args.on_click) {
-    item.addEventListener("click", function () {
+    Hue.ev(item, "click", function () {
       args.on_click()
     })
   }

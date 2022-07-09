@@ -4,14 +4,14 @@ Hue.setup_theme = function (data) {
   Hue.background_color = data.background_color
   Hue.text_color = data.text_color
 
-  Hue.el("#background").addEventListener("load", function () {
+  Hue.ev(Hue.el("#background"), "load", function () {
     if (Hue.background_preview) {
       Hue.hide_windows_temporarily()
       Hue.show_background_peek_confirm()
     }
   })
 
-  Hue.el("#background").addEventListener("error", function () {
+  Hue.ev(Hue.el("#background"), "error", function () {
     if (Hue.background_preview) {
       Hue.apply_background()
     }
@@ -59,7 +59,7 @@ Hue.generate_random_themes = function () {
     item.style.color = theme.text_color
     item.textContent = "This is a random theme"
 
-    item.addEventListener("click", function () {
+    Hue.ev(item, "click", function () {
       Hue.el("#admin_background_color").value = theme.bg_color
       Hue.el("#admin_text_color").value = theme.text_color
       Hue.apply_theme(theme.bg_color, theme.text_color)
@@ -151,11 +151,11 @@ Hue.apply_selected_theme = function () {
 
 // Setup random theme
 Hue.setup_theme_picker = function () {
-  Hue.el("#theme_picker_random").addEventListener("click", function () {
+  Hue.ev(Hue.el("#theme_picker_random"), "click", function () {
     Hue.generate_random_themes()
   })
 
-  Hue.el("#theme_picker_peek").addEventListener("click", function () {
+  Hue.ev(Hue.el("#theme_picker_peek"), "click", function () {
     Hue.hide_windows_temporarily()
   })
 }

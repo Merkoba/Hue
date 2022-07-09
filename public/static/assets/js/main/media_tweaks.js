@@ -1,92 +1,92 @@
 // Additional media tweaks configurations
 Hue.setup_media_tweaks = function () {
-  Hue.el("#media_tweaks_swap").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_swap"), "click", function () {
     Hue.swap_media()
   })
 
-  Hue.el("#media_tweaks_rotate").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_rotate"), "click", function () {
     Hue.rotate_media()
   })
 
-  Hue.el("#media_tweaks_revolve").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_revolve"), "click", function () {
     Hue.change_main_layout()
   })   
 
-  Hue.el("#media_tweaks_tv_size").addEventListener("change", function () {
+  Hue.ev(Hue.el("#media_tweaks_tv_size"), "change", function () {
     let size = Hue.el("#media_tweaks_tv_size option:checked").value
     Hue.do_media_tv_size_change(size)
   })
 
-  Hue.el("#media_tweaks_chat_size").addEventListener("change", function () {
+  Hue.ev(Hue.el("#media_tweaks_chat_size"), "change", function () {
     let size = Hue.el("#media_tweaks_chat_size option:checked").value
     Hue.do_chat_size_change(size)
   })
 
-  Hue.el("#media_tweaks_chat_font_size").addEventListener("change", function () {
+  Hue.ev(Hue.el("#media_tweaks_chat_font_size"), "change", function () {
     let size = Hue.el("#media_tweaks_chat_font_size option:checked").value
     Hue.do_chat_font_size_change(size)
   })
 
-  Hue.el("#media_tweaks_media_info_enabled").addEventListener("change", function () {
+  Hue.ev(Hue.el("#media_tweaks_media_info_enabled"), "change", function () {
     let enabled = Hue.el("#media_tweaks_media_info_enabled option:checked").value === "enabled"
     Hue.set_media_info_enabled(enabled)
   })
 
-  Hue.el("#media_tweaks_chat_enabled").addEventListener("change", function () {
+  Hue.ev(Hue.el("#media_tweaks_chat_enabled"), "change", function () {
     let enabled = Hue.el("#media_tweaks_chat_enabled option:checked").value === "enabled"
     Hue.set_chat_enabled(enabled)
   })
 
-  Hue.el("#media_tweaks_defaults").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_defaults"), "click", function () {
     Hue.apply_media_tweaks_defaults()
   })
 
-  Hue.el("#media_tweaks_tv_size_minus").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_tv_size_minus"), "click", function () {
     Hue.decrease_tv_percentage()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.el("#media_tweaks_tv_size_plus").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_tv_size_plus"), "click", function () {
     Hue.increase_tv_percentage()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.el("#media_tweaks_chat_size_minus").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_chat_size_minus"), "click", function () {
     Hue.decrease_chat_percentage()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.el("#media_tweaks_chat_size_plus").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_chat_size_plus"), "click", function () {
     Hue.increase_chat_percentage()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.el("#media_tweaks_chat_font_size_minus").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_chat_font_size_minus"), "click", function () {
     Hue.decrease_chat_font_size()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.el("#media_tweaks_chat_font_size_plus").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_chat_font_size_plus"), "click", function () {
     Hue.increase_chat_font_size()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.el("#media_tweaks_media_info_enabled_minus").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_media_info_enabled_minus"), "click", function () {
     Hue.set_media_info_enabled(false)
     Hue.refresh_media_tweaks()
   })
   
-  Hue.el("#media_tweaks_media_info_enabled_plus").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_media_info_enabled_plus"), "click", function () {
     Hue.set_media_info_enabled(true)
     Hue.refresh_media_tweaks()
   })
 
-  Hue.el("#media_tweaks_chat_enabled_minus").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_chat_enabled_minus"), "click", function () {
     Hue.set_chat_enabled(false)
     Hue.refresh_media_tweaks()
   })
   
-  Hue.el("#media_tweaks_chat_enabled_plus").addEventListener("click", function () {
+  Hue.ev(Hue.el("#media_tweaks_chat_enabled_plus"), "click", function () {
     Hue.set_chat_enabled(true)
     Hue.refresh_media_tweaks()
   })

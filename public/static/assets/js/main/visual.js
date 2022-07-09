@@ -48,7 +48,7 @@ Hue.make_main_container_visible = function () {
 
 // Setups the confirm window
 Hue.setup_confirm = function () {
-  Hue.el("#confirm_button_confirm").addEventListener("click", function () {
+  Hue.ev(Hue.el("#confirm_button_confirm"), "click", function () {
     Hue.on_confirm()
   })
 }

@@ -302,11 +302,11 @@ Hue.do_send_whisper = function (data) {
 
 // Setups whispers
 Hue.setup_whispers = function () {
-  Hue.el("#write_whisper_send").addEventListener("click", function () {
+  Hue.ev(Hue.el("#write_whisper_send"), "click", function () {
     Hue.submit_write_whisper()
   })
 
-  Hue.el("#write_whisper_add_user").addEventListener("click", function () {
+  Hue.ev(Hue.el("#write_whisper_add_user"), "click", function () {
     if (Hue.whisper_users.length >= Hue.config.max_whisper_users) {
       Hue.show_info("Max whisper users reached")
       return
@@ -315,7 +315,7 @@ Hue.setup_whispers = function () {
     Hue.show_userlist_window("whisper")
   })
 
-  Hue.el("#show_whisper_write").addEventListener("click", function () {
+  Hue.ev(Hue.el("#show_whisper_write"), "click", function () {
     Hue.msg_show_whisper.close()
 
     if (Hue.show_whisper_data.users) {
@@ -326,11 +326,11 @@ Hue.setup_whispers = function () {
     }
   })
 
-  Hue.el("#start_write_whisper").addEventListener("click", function () {
+  Hue.ev(Hue.el("#start_write_whisper"), "click", function () {
     Hue.write_whisper([], "user")
   })
 
-  Hue.el("#whispers_clear").addEventListener("click", function () {
+  Hue.ev(Hue.el("#whispers_clear"), "click", function () {
     Hue.show_confirm("Remove all whispers from the window", function () {
       Hue.clear_whispers()
     })
@@ -353,7 +353,7 @@ Hue.push_whisper = function (message, on_click, read, data) {
     })
 
     if (data.user_id) {
-      Hue.el(".profilepic", item).addEventListener("error", function () {
+      Hue.ev(Hue.el(".profilepic", item), "error", function () {
         Hue.fallback_profilepic(this)
       })
     } else {
@@ -372,7 +372,7 @@ Hue.push_whisper = function (message, on_click, read, data) {
   Hue.dataset(item, "date", date)
   Hue.dataset(item, "read", read)
 
-  item.addEventListener("click", function () {
+  Hue.ev(item, "click", function () {
     on_click()
   })
 
@@ -439,7 +439,7 @@ Hue.make_whisper_user = function (user, mode, onclick) {
 
   if (user.user_id) {
     profilepic.src = Hue.get_profilepic(user.user_id)
-    profilepic.addEventListener("error", function () {
+    Hue.ev(profilepic, "error", function () {
       Hue.fallback_profilepic(this)
     })
   } else {
@@ -453,7 +453,7 @@ Hue.make_whisper_user = function (user, mode, onclick) {
     username_el.textContent += " says:"
   }
 
-  user_el.addEventListener("click", onclick)
+  Hue.ev(user_el, "click", onclick)
 
   return user_el
 }

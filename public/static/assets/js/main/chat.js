@@ -139,7 +139,7 @@ Hue.make_chat_message = function (args = {}) {
 
     let quote_profilepic = Hue.el(".chat_quote_profilepic", quote)
     
-    quote_profilepic.addEventListener("error", function () {
+    Hue.ev(quote_profilepic, "error", function () {
       Hue.fallback_profilepic(this)
     })
   } else {
@@ -152,7 +152,7 @@ Hue.make_chat_message = function (args = {}) {
   let htimeago = Hue.el(".chat_timeago", fmessage)
   htimeago.textContent = Hue.utilz.timeago(d)
 
-  Hue.el(".profilepic", fmessage).addEventListener("error", function () {
+  Hue.ev(Hue.el(".profilepic", fmessage), "error", function () {
     Hue.fallback_profilepic(this)
   })
 
@@ -311,7 +311,7 @@ Hue.make_announcement_message = function (args = {}) {
     brk_profilepic.style.display = "none"
   }
 
-  Hue.el(".profilepic", fmessage).addEventListener("error", function () {
+  Hue.ev(Hue.el(".profilepic", fmessage), "error", function () {
     Hue.fallback_profilepic(this)
   })
 
@@ -478,26 +478,26 @@ Hue.insert_message = function (args = {}) {
 
 // Setup reply
 Hue.setup_reply = function () {
-  Hue.el("#reply_submit").addEventListener("click", function () {
+  Hue.ev(Hue.el("#reply_submit"), "click", function () {
     Hue.submit_reply()
   })
 
-  Hue.el("#reply_input").addEventListener("input", function () {
+  Hue.ev(Hue.el("#reply_input"), "input", function () {
     if (Hue.old_reply_input_val !== this.value) {
       Hue.check_typing("reply")
       Hue.old_reply_input_val = this.value
     }
   })
 
-  Hue.el("#reply_profilepic").addEventListener("click", function () {
+  Hue.ev(Hue.el("#reply_profilepic"), "click", function () {
     Hue.show_profile(Hue.quote_username, Hue.quote_user_id)
   })
   
-  Hue.el("#reply_profilepic").addEventListener("error", function (e) {
+  Hue.ev(Hue.el("#reply_profilepic"), "error", function (e) {
     Hue.fallback_profilepic(this)
   })
   
-  Hue.el("#reply_username").addEventListener("click", function () {
+  Hue.ev(Hue.el("#reply_username"), "click", function () {
     Hue.show_profile(Hue.quote_username, Hue.quote_user_id)
   })
 }
@@ -1310,7 +1310,7 @@ Hue.setup_link_preview = function (fmessage) {
   let link_preview_image = Hue.el(".link_preview_image", link_preview_el)
 
   if (link_preview_image) {
-    link_preview_image.addEventListener("error", function () {
+    Hue.ev(link_preview_image, "error", function () {
       link_preview_image.style.display = "none"
       link_preview_el.classList.remove("link_preview_with_image")
     })
@@ -1361,7 +1361,7 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
   let image_preview_el = Hue.el(".image_preview", fmessage)
   let image_preview_image = Hue.el(".image_preview_image", image_preview_el)
 
-  image_preview_image.addEventListener("error", function () {
+  Hue.ev(image_preview_image, "error", function () {
     image_preview_image.style.display = "none"
   })
 
@@ -1373,7 +1373,7 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
 Hue.scroll_events = function () {
   let chat = Hue.el("#chat_area_parent")
 
-  chat.addEventListener("scroll", function (e) {
+  Hue.ev(chat, "scroll", function (e) {
     Hue.scroll_timer()
     Hue.update_scroll_percentage()
 
@@ -1593,28 +1593,28 @@ Hue.public_feedback = function (message, data = false) {
 
 // Setups some chat configs
 Hue.setup_chat = function () {
-  Hue.el("#top_scroller").addEventListener("click", function () {
+  Hue.ev(Hue.el("#top_scroller"), "click", function () {
     Hue.goto_top()
   })
 
-  Hue.el("#activity_up_scroller").addEventListener("click", function () {
+  Hue.ev(Hue.el("#activity_up_scroller"), "click", function () {
     Hue.activity_above()
   })
 
-  Hue.el("#bottom_scroller").addEventListener("click", function () {
+  Hue.ev(Hue.el("#bottom_scroller"), "click", function () {
     Hue.stop_edit_message()
     Hue.goto_bottom(true)
   })
 
-  Hue.el("#activity_down_scroller").addEventListener("click", function () {
+  Hue.ev(Hue.el("#activity_down_scroller"), "click", function () {
     Hue.activity_below()
   })
 
-  Hue.el("#top_percentage_scroller").addEventListener("click", function () {
+  Hue.ev(Hue.el("#top_percentage_scroller"), "click", function () {
     Hue.scroll_up_2()
   })
 
-  Hue.el("#bottom_percentage_scroller").addEventListener("click", function () {
+  Hue.ev(Hue.el("#bottom_percentage_scroller"), "click", function () {
     Hue.scroll_down_2()
   })
 
@@ -1711,22 +1711,22 @@ Hue.announce_log_cleared = function (data) {
 
 // Setup delete messages
 Hue.setup_delete_messages = function () {
-  Hue.el("#delete_messages_one").addEventListener("click", function () {
+  Hue.ev(Hue.el("#delete_messages_one"), "click", function () {
     Hue.msg_delete_messages.close()
     Hue.delete_message(Hue.delete_messages_id)
   })
 
-  Hue.el("#delete_messages_group").addEventListener("click", function () {
+  Hue.ev(Hue.el("#delete_messages_group"), "click", function () {
     Hue.msg_delete_messages.close()
     Hue.delete_message_group(Hue.delete_messages_id)
   })
 
-  Hue.el("#delete_messages_above").addEventListener("click", function () {
+  Hue.ev(Hue.el("#delete_messages_above"), "click", function () {
     Hue.msg_delete_messages.close()
     Hue.delete_messages_above(Hue.delete_messages_id)
   })
 
-  Hue.el("#delete_messages_below").addEventListener("click", function () {
+  Hue.ev(Hue.el("#delete_messages_below"), "click", function () {
     Hue.msg_delete_messages.close()
     Hue.delete_messages_below(Hue.delete_messages_id)
   })
@@ -1990,7 +1990,7 @@ Hue.update_likes = function (el, likes) {
       Hue.dataset(el, "otitle", title)
 
       let profilepic = Hue.el(".like_profilepic", el)
-      profilepic.addEventListener("error", function () {
+      Hue.ev(profilepic, "error", function () {
         Hue.fallback_profilepic(this)
       })
 

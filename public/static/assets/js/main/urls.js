@@ -105,16 +105,16 @@ Hue.handle_url_chat = function () {
 // This is used to display actions when dropping a URL
 // Like changing the tv when dropping a YouTube URL
 Hue.setup_drag_events = function () {
-  Hue.el("#handle_url_chat").addEventListener("click", function () {
+  Hue.ev(Hue.el("#handle_url_chat"), "click", function () {
     Hue.handle_url_chat()
   })
 
-  Hue.el("#handle_url_image").addEventListener("click", function () {
+  Hue.ev(Hue.el("#handle_url_image"), "click", function () {
     Hue.load_media_link("image", Hue.handled_url, "")
     Hue.msg_handle_url.close()
   })
   
-  Hue.el("#handle_url_tv").addEventListener("click", function () {
+  Hue.ev(Hue.el("#handle_url_tv"), "click", function () {
     Hue.load_media_link("tv", Hue.handled_url, "")
     Hue.msg_handle_url.close()
   })
@@ -145,28 +145,28 @@ Hue.check_handle_url_options = function (text) {
 
 // Setups the Open URL picker window
 Hue.setup_open_url = function () {
-  Hue.el("#open_url_menu_view_url").addEventListener("click", function () {
+  Hue.ev(Hue.el("#open_url_menu_view_url"), "click", function () {
     Hue.open_view_text(Hue.open_url_data.source)
   })
   
-  Hue.el("#open_url_menu_view_title").addEventListener("click", function () {
+  Hue.ev(Hue.el("#open_url_menu_view_title"), "click", function () {
     Hue.open_view_text(Hue.open_url_data.title)
   })
 
-  Hue.el("#open_url_menu_view_comment").addEventListener("click", function () {
+  Hue.ev(Hue.el("#open_url_menu_view_comment"), "click", function () {
     Hue.open_view_text(Hue.open_url_data.comment)
   })
 
-  Hue.el("#open_url_menu_load").addEventListener("click", function () {
+  Hue.ev(Hue.el("#open_url_menu_load"), "click", function () {
     Hue.load_media(Hue.open_url_data)
   })
 
-  Hue.el("#open_url_menu_link").addEventListener("click", function () {
+  Hue.ev(Hue.el("#open_url_menu_link"), "click", function () {
     Hue.load_media_link(Hue.open_url_data.media_type, Hue.open_url_data.source, Hue.open_url_data.comment)
     Hue.msg_open_url.close()
   })
 
-  Hue.el("#open_url_menu_context").addEventListener("click", function () {
+  Hue.ev(Hue.el("#open_url_menu_context"), "click", function () {
     Hue.chat_search_by_id(Hue.open_url_data.id) 
     Hue.msg_open_url.close()
   })

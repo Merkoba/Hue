@@ -1,10 +1,10 @@
 // Setups the message board
 Hue.setup_message_board = function () {
-  Hue.el("#message_board_textarea").addEventListener("input blur", function () {
+  Hue.ev(Hue.el("#message_board_textarea"), "input blur", function () {
     this.value = this.value.substring(0, Hue.config.max_message_board_post_length)
   })
 
-  Hue.el("#message_board_container").addEventListener("click", function (e) {
+  Hue.ev(Hue.el("#message_board_container"), "click", function (e) {
     let post
     let username = ""
     let user_id = ""
@@ -69,15 +69,15 @@ Hue.setup_message_board = function () {
     }
   })
 
-  Hue.el("#message_board_publish").addEventListener("click", function () {
+  Hue.ev(Hue.el("#message_board_publish"), "click", function () {
     Hue.submit_message_board_post()
   })
 
-  Hue.el("#message_board_user").addEventListener("click", function () {
+  Hue.ev(Hue.el("#message_board_user"), "click", function () {
     Hue.show_message_board(`$user ${Hue.username} `)
   })
 
-  Hue.el("#message_board_links").addEventListener("click", function () {
+  Hue.ev(Hue.el("#message_board_links"), "click", function () {
     Hue.show_message_board("$links ")
   })
 }
@@ -146,7 +146,7 @@ Hue.add_post_to_message_board = function (data, edited) {
 
   let profilepic = Hue.el(".message_board_profilepic", post)
   
-  profilepic.addEventListener("error", function () {
+  Hue.ev(profilepic, "error", function () {
     Hue.fallback_profilepic(this)
   })
 
@@ -169,7 +169,7 @@ Hue.add_post_to_message_board = function (data, edited) {
       let image = Hue.el(".message_board_image", post)
       image.src = first_url
       image.style.display = "block" 
-      image.addEventListener("error", function () {
+      Hue.ev(image, "error", function () {
         image.remove()
       })
     }
@@ -178,7 +178,7 @@ Hue.add_post_to_message_board = function (data, edited) {
       let link_image = Hue.el(".message_board_link_image", post)
       link_image.src = data.link_image
       link_image.style.display = "block"
-      link_image.addEventListener("error", function () {
+      Hue.ev(link_image, "error", function () {
         link_image.remove()
       }) 
     }

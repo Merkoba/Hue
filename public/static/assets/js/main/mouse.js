@@ -1,6 +1,6 @@
 // Handle mouse events
 Hue.start_mouse_events = function () {
-  document.addEventListener("click", function (e) {
+  Hue.ev(document, "click", function (e) {
     if (!e.target) {
       return
     }
@@ -83,7 +83,7 @@ Hue.start_mouse_events = function () {
     }
   })
 
-  document.addEventListener("mouseup", function (e) {
+  Hue.ev(document, "mouseup", function (e) {
     if (!e.target) {
       return
     }

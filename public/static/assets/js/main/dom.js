@@ -91,3 +91,12 @@ Hue.div = function (classes = "", id = "") {
 
   return new_div
 }
+
+// Add an event listener
+Hue.ev = function (element, action, callback, extra) {
+  if (extra === undefined) {
+    element.addEventListener(action, callback)
+  } else {
+    element.addEventListener(action, callback, extra)
+  }
+}

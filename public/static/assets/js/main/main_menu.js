@@ -1,36 +1,36 @@
 // Setup main menu
 Hue.setup_main_menu = function () {
-  Hue.el("#main_menu_user_profile").addEventListener("click", function () {
+  Hue.ev(Hue.el("#main_menu_user_profile"), "click", function () {
     Hue.msg_main_menu.close()
     Hue.show_user_profile()
   })
 
-  Hue.el("#main_menu_room_config").addEventListener("click", function () {
+  Hue.ev(Hue.el("#main_menu_room_config"), "click", function () {
     Hue.msg_main_menu.close()
     Hue.show_room_config()
   })
 
-  Hue.el("#main_menu_rooms").addEventListener("click", function () {
+  Hue.ev(Hue.el("#main_menu_rooms"), "click", function () {
     Hue.msg_main_menu.close()
     Hue.show_roomlist()
   })
 
-  Hue.el("#main_menu_settings").addEventListener("click", function () {
+  Hue.ev(Hue.el("#main_menu_settings"), "click", function () {
     Hue.msg_main_menu.close()
     Hue.show_settings()
   })
 
-  Hue.el("#main_menu_commands").addEventListener("click", function () {
+  Hue.ev(Hue.el("#main_menu_commands"), "click", function () {
     Hue.msg_main_menu.close()
     Hue.show_command_book()
   })
 
-  Hue.el("#main_menu_chat_search").addEventListener("click", function () {
+  Hue.ev(Hue.el("#main_menu_chat_search"), "click", function () {
     Hue.msg_main_menu.close()
     Hue.show_chat_search()
   })
 
-  Hue.el("#main_menu_media_tweaks").addEventListener("click", function () {
+  Hue.ev(Hue.el("#main_menu_media_tweaks"), "click", function () {
     Hue.msg_main_menu.close()
     Hue.show_media_tweaks()
   })
