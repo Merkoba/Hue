@@ -187,19 +187,25 @@ Hue.open_url_menu = function (data) {
 
   Hue.urlize(el)
   Hue.open_url_data = data
-  
+
   Hue.msg_open_url.show(function () {
-    Hue.ev(Hue.el("#open_url_info_title_title"), "click", function () {
-      Hue.open_view_text(Hue.el("#open_url_info_text_title").textContent)
-    })
-  
-    Hue.ev(Hue.el("#open_url_info_title_comment"), "click", function () {
-      Hue.open_view_text(Hue.el("#open_url_info_text_comment").textContent)
-    })
-  
-    Hue.ev(Hue.el("#open_url_info_title_url"), "click", function () {
-      Hue.open_view_text(Hue.el("#open_url_info_text_url").textContent)
-    })
+    if (data.title) {
+      Hue.ev(Hue.el("#open_url_info_title_title"), "click", function () {
+        Hue.open_view_text(Hue.el("#open_url_info_text_title").textContent)
+      })
+    }
+    
+    if (data.comment) {
+      Hue.ev(Hue.el("#open_url_info_title_comment"), "click", function () {
+        Hue.open_view_text(Hue.el("#open_url_info_text_comment").textContent)
+      })
+    }
+    
+    if (data.source) {
+      Hue.ev(Hue.el("#open_url_info_title_url"), "click", function () {
+        Hue.open_view_text(Hue.el("#open_url_info_text_url").textContent)
+      })
+    }
   })
 }
 
