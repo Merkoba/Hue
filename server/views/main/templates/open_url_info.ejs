@@ -2,22 +2,22 @@
   <div class="flex_column_center rem1_gap">
     {{#if title}}
     <div class="flex_column_center open_url_info_item">
-      <div class="open_url_info_title">Title</div>
-      <div>{{title}}</div>
+      <div id="open_url_info_title_title" class="open_url_info_title action">Title</div>
+      <div id="open_url_info_text_title">{{title}}</div>
     </div>
     {{/if}}
 
     {{#if comment}}
     <div class="flex_column_center open_url_info_item">
-      <div class="open_url_info_title">Comment</div>
-      <div>{{comment}}</div>
+      <div id="open_url_info_title_comment" class="open_url_info_title action">Comment</div>
+      <div id="open_url_info_text_comment">{{comment}}</div>
     </div>
     {{/if}}
     
     {{#if url}}
     <div class="flex_column_center open_url_info_item">
-      <div class="open_url_info_title">URL</div>
-      <div>{{url}}</div>
+      <div id="open_url_info_title_url" class="open_url_info_title action">URL</div>
+      <div id="open_url_info_text_url">{{url}}</div>
     </div>
     {{/if}}
   </div>
