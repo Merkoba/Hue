@@ -144,19 +144,7 @@ Hue.check_handle_url_options = function (text) {
 }
 
 // Setups the Open URL picker window
-Hue.setup_open_url = function () {
-  Hue.ev(Hue.el("#open_url_menu_view_url"), "click", function () {
-    Hue.open_view_text(Hue.open_url_data.source)
-  })
-  
-  Hue.ev(Hue.el("#open_url_menu_view_title"), "click", function () {
-    Hue.open_view_text(Hue.open_url_data.title)
-  })
-
-  Hue.ev(Hue.el("#open_url_menu_view_comment"), "click", function () {
-    Hue.open_view_text(Hue.open_url_data.comment)
-  })
-
+Hue.setup_open_url = function () {  
   Hue.ev(Hue.el("#open_url_menu_load"), "click", function () {
     Hue.load_media(Hue.open_url_data)
   })
@@ -175,18 +163,6 @@ Hue.setup_open_url = function () {
 // Shows the Open URL menu
 // This is used to show actions for links and media
 Hue.open_url_menu = function (data) {
-  if (data.title) {
-    Hue.el("#open_url_menu_view_title").style.display = "inline-block"
-  } else {
-    Hue.el("#open_url_menu_view_title").style.display = "none"
-  }
-
-  if (data.comment) {
-    Hue.el("#open_url_menu_view_comment").style.display = "inline-block"
-  } else {
-    Hue.el("#open_url_menu_view_comment").style.display = "none"
-  }
-
   if (data !== Hue[`loaded_${data.media_type}`] || !Hue.room_state[`${data.media_type}_enabled`]) {
     Hue.el("#open_url_menu_load").textContent = "Load"
   } else {
@@ -201,15 +177,15 @@ Hue.open_url_menu = function (data) {
 
   Hue.horizontal_separator(Hue.el("#open_url_titlebar"))
 
-  let url_el = Hue.el("#open_url_info")
+  let el = Hue.el("#open_url_info")
 
-  url_el.innerHTML = Hue.template_open_url_info({
+  el.innerHTML = Hue.template_open_url_info({
     title: data.title,
     comment: data.comment,
     url: data.source
   })
 
-  Hue.urlize(url_el)
+  Hue.urlize(el)
   Hue.open_url_data = data
   Hue.msg_open_url.show()
 }

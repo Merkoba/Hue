@@ -1997,3 +1997,13 @@ pre {
 	width: var(--icon_size);
 	height: var(--icon_size);
 }
+
+.open_url_info_item {
+	gap: 0.25rem;
+}
+
+.open_url_info_title {
+	font-weight: bold;
+	text-decoration: underline;
+	opacity: 0.5;
+}
