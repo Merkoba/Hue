@@ -192,6 +192,7 @@ Hue.start_msg = function () {
   Hue.msg_link_image = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "link_image",
+      window_width: "28rem",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
         Hue.el("#link_image_input").focus()
@@ -214,6 +215,7 @@ Hue.start_msg = function () {
   Hue.msg_link_tv = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "link_tv",
+      window_width: "28rem",
       after_show: function (instance) {
         msgvars.common.after_show(instance)
         Hue.el("#link_tv_input").focus()
@@ -323,6 +325,7 @@ Hue.start_msg = function () {
   Hue.msg_image_upload_comment = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "image_upload_comment",
+      window_width: "28rem",
       scroll_on_show: false,
       after_close: function (instance) {
         msgvars.common.after_close(instance)
@@ -337,6 +340,7 @@ Hue.start_msg = function () {
   Hue.msg_tv_upload_comment = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "tv_upload_comment",
+      window_width: "28rem",
       scroll_on_show: false,
       after_close: function (instance) {
         msgvars.common.after_close(instance)

@@ -1274,10 +1274,15 @@ a.special_link:hover {
 }
 
 .upload_comment_preview {
-	max-height: 29.41rem;
-	max-width: 29.41rem;
+	max-height: 28rem;
+	max-width: 100%;
 	margin-top: 1.35rem;
 	display: block;
+}
+
+.upload_comment_input {
+	width: 100%;
+	text-align: center;
 }
 
 .upload_comment_name {
@@ -2006,4 +2011,9 @@ pre {
 	font-weight: bold;
 	text-decoration: underline;
 	opacity: 0.55;
+}
+
+.link_media_input {
+	width: 100%;
+	text-align: center;
 }
