@@ -772,7 +772,10 @@ Hue.show_media_picker = function (type) {
 Hue.load_media_link = function (type, source, comment) {
   Hue.el(`#link_${type}_comment`).value = comment
   Hue.el(`#link_${type}_input`).value = source
-  Hue[`msg_link_${type}`].show()
+  
+  Hue[`msg_link_${type}`].show(function () {
+    Hue.el(`#link_${type}_comment`).focus()
+  })
 }
 
 // Generate Image or TV item messages
