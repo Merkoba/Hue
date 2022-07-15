@@ -1,5 +1,12 @@
 <script id="template_open_url_info" type="text/x-handlebars-template" class="template">
   <div class="flex_column_center rem1_gap">
+    {{#if size}}
+    <div class="flex_column_center open_url_info_item">
+      <div id="open_url_info_title_comment" class="open_url_info_title action">Size</div>
+      <div id="open_url_info_text_comment">{{size}}</div>
+    </div>
+    {{/if}}
+
     {{#if title}}
     <div class="flex_column_center open_url_info_item">
       <div id="open_url_info_title_title" class="open_url_info_title action">Title</div>
