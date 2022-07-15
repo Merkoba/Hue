@@ -30,7 +30,7 @@
 	"max_admin_log_messages": 250,
 	"max_message_board_posts": 250,
 	"max_message_board_post_length": 2000,
-	"upload_slice_size": 50000,
+	"upload_slice_size": 500000,
 	"max_media_source_length": 800,
 	"max_media_comment_length": 200,
 	"max_title_length": 280,
