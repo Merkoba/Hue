@@ -179,10 +179,17 @@ Hue.open_url_menu = function (data) {
 
   let el = Hue.el("#open_url_info")
 
+  let size
+
+  if (data.size) {
+    size = Hue.utilz.size_string(data.size)
+  }
+
   el.innerHTML = Hue.template_open_url_info({
     title: data.title,
     comment: data.comment,
-    url: data.source
+    url: data.source,
+    size: size
   })
 
   Hue.urlize(el)

@@ -202,7 +202,7 @@ Hue.upload_file = function (args = {}) {
     )}: 0%`,
     icon: "image",
     id: `uploading_${date}`,
-    title: `Size: ${Hue.utilz.get_size_string(args.file.hue_data.size / 1024)}`,
+    title: `Size: ${Hue.utilz.size_string(args.file.hue_data.size / 1024)}`,
     on_x_button_click: function () {
       Hue.cancel_file_upload(date)
     }

@@ -459,7 +459,7 @@ Hue.show_image_upload_comment = function (file, type) {
   let name = `${Hue.utilz.slice_string_end(
       file.name,
       20
-    )} (${Hue.utilz.get_size_string(file.size, 2)})`
+    )} (${Hue.utilz.size_string(file.size, 2)})`
   
   Hue.el("#image_upload_name").textContent = name
   Hue.el("#Msg-titlebar-image_upload_comment").title = file.name

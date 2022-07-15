@@ -400,7 +400,7 @@ const Utilz = function () {
 	}
 
 	// Get a string with the size in megabytes
-	utilz.get_size_string = function (size, mode = 1) {
+	utilz.size_string = function (size, mode = 1) {
 		if (mode === 1) {
 			return `${parseFloat(size / 1024).toFixed(2)} MB`
 		} else if (mode === 2) {

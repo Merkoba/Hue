@@ -869,8 +869,8 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
   data.info_html = ""
 
   if (data.size) {
-    data.info += ` | Size: ${Hue.utilz.get_size_string(data.size)}`
-    data.info_html += `<div>Size: ${Hue.utilz.get_size_string(data.size)}</div>`
+    data.info += ` | Size: ${Hue.utilz.size_string(data.size)}`
+    data.info_html += `<div>Size: ${Hue.utilz.size_string(data.size)}</div>`
   }
 
   if (data.query) {
