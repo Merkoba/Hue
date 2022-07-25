@@ -1165,7 +1165,7 @@ a.special_link:hover {
 
 .image_preview_image {
 	max-width: 100%;
-	max-height: 12em;
+	height: 10em;
 	object-fit: contain;
 	flex-grow: 0;
 	flex-shrink: 0;
@@ -1204,7 +1204,7 @@ a.special_link:hover {
 .link_preview_image {
 	cursor: pointer;
 	max-width: 6em;
-	max-height: 6em;
+	height: 3em;
 	object-fit: contain;
 	flex-grow: 0;
 	flex-shrink: 0;
