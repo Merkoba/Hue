@@ -155,7 +155,6 @@ Hue.get_media_change_inline_comment = function (type, source) {
     // OK
   } else if (source.includes(">")) {
     let split = source.split(">")
-
     source = split[0].trim()
     comment = split.slice(1).join(">").trim()
   } else {
@@ -164,10 +163,8 @@ Hue.get_media_change_inline_comment = function (type, source) {
     let cm = []
 
     for (let sp of split) {
-      if (Hue.utilz.is_url(sp)) {
-        if (!url) {
-          url = sp
-        }
+      if (Hue.utilz.is_url(sp) && !url) {
+        url = sp
       } else {
         cm.push(sp)
       }
