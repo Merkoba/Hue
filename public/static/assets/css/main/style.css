@@ -1205,11 +1205,11 @@ a.special_link:hover {
 	cursor: pointer;
 	width: 6em;
 	height: 3em;
-	object-fit: contain;
+	object-fit: cover;
 	flex-grow: 0;
 	flex-shrink: 0;
 	align-self: center;
-	margin: 0.25em;
+	margin: 0.35em;
 }
 
 .align_left {
