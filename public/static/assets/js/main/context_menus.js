@@ -109,3 +109,8 @@ Hue.show_chat_context_menu = function (e, is_main) {
   ctxmenu.show(items, e)
   e.preventDefault()  
 }
+
+// Hide the context menu
+Hue.hide_context_menu = function () {
+  ctxmenu.hide()
+}
