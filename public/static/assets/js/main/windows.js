@@ -882,6 +882,7 @@ Hue.start_msg = function () {
 Hue.after_modal_show = function (instance) {
   Hue.active_modal = instance
   Hue.modal_open = true
+  Hue.hide_context_menu()
   Hue.blur_input()
   Hue.focus_modal_filter(instance)
 

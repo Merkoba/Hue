@@ -327,7 +327,6 @@ Hue.show_modal_image = function (id = 0) {
 
   Hue.horizontal_separator(Hue.el("#modal_image_header_info_container"))
   Hue.msg_modal_image.show()
-  Hue.hide_context_menu()
 }
 
 // Starts events for the image
@@ -437,7 +436,6 @@ Hue.view_image = function (src, username, user_id) {
   Hue.view_image_username = username
   Hue.view_image_user_id = user_id
   Hue.msg_view_image.show()
-  Hue.hide_context_menu()
 }
 
 // Shows the window to add a comment to an image upload
