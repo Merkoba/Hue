@@ -1010,7 +1010,7 @@ svg.action:hover {
 }
 
 .actionbox:hover {
-	box-shadow: 0 0 1.18rem currentColor, inset 0 0 1.1765rem currentColor;
+	box-shadow: 0 0 1.18rem currentColor;
 }
 
 .aura {
