@@ -265,6 +265,7 @@ Hue.start_msg = function () {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "chat_search",
       window_width: "38rem",
+      scroll_on_show: false,
       after_close: function (instance) {
         msgvars.common.after_close(instance)
         Hue.reset_chat_search_filter()
