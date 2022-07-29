@@ -393,6 +393,7 @@ Hue.do_background_peek = function () {
 Hue.show_background_peek_confirm = function () {
   Hue.show_confirm("Apply selected background", function () {
     Hue.background_peek_action()   
+    Hue.msg_background_select.close()
   }, function () {
     Hue.apply_background()
   })

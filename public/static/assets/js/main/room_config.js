@@ -134,27 +134,22 @@ Hue.config_admin_topic = function () {
 // Setup background select
 Hue.setup_background_select = function () {  
   Hue.ev(Hue.el("#background_select_draw"), "click", function () {
-    Hue.msg_background_select.close()
     Hue.open_draw_image("background")
   })
 
   Hue.ev(Hue.el("#background_select_random"), "click", function () {
-    Hue.msg_background_select.close()
     Hue.make_random_image("background")
   })
   
   Hue.ev(Hue.el("#background_select_link"), "click", function () {
-    Hue.msg_background_select.close()
     Hue.open_link_background()
   })
 
   Hue.ev(Hue.el("#background_select_remove"), "click", function () {
-    Hue.msg_background_select.close()
     Hue.change_background_source("")
   })
 
   Hue.ev(Hue.el("#background_select_upload"), "click", function () {
-    Hue.msg_background_select.close()
     Hue.open_background_picker()
   })
 }
