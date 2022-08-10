@@ -109,18 +109,12 @@
 	"radios": [
 		{"name": "Merkoba FM", "url": "https://radio.merkoba.com:8765/radio.ogg", "metadata": "https://radio.merkoba.com:8765/status-json.xsl"},
 		{"name": "Lain Cyberia", "url": "https://lainon.life/radio/cyberia.mp3", "metadata": "https://lainon.life/radio/status-json.xsl"},
-		{"name": "NTR", "url": "http://carol.epichosts.co.uk:8240", "metadata": "http://carol.epichosts.co.uk:8240/status-json.xsl"},
 		{"name": "The Beat", "url": "http://c5.radioboss.fm:8024/autodj", "metadata": "http://c5.radioboss.fm:8024/status-json.xsl"},
 		{"name": "AMP IDM", "url": "http://radio.anothermusicproject.com:8000/idm", "metadata": "http://radio.anothermusicproject.com:8000/status-json.xsl"},
 		{"name": "Channel 1", "url": "http://stream.tilos.hu/karolyi-chill-eclectic", "metadata": "https://stream.tilos.hu/status-json.xsl"},
-		{"name": "Anima IDM", "url": "http://amoris.sknt.ru/idm.mp3", "metadata": "https://amoris.sknt.ru/sc/11/stats.json"},
-		{"name": "Anima Techno", "url": "http://amoris.sknt.ru/techno.mp3", "metadata": "https://amoris.sknt.ru/sc/14/stats.json"},
-		{"name": "Anima DubTech", "url": "http://amoris.sknt.ru/dubtechnomix.mp3", "metadata": "https://amoris.sknt.ru/sc/3/stats.json"},
-		{"name": "Anima Minimal", "url": "http://amoris.sknt.ru/minimal.mp3", "metadata": "https://amoris.sknt.ru/sc/8/stats.json"},
-		{"name": "Anima Goa", "url": "http://amoris.sknt.ru/goa.mp3", "metadata": "https://amoris.sknt.ru/sc/5/stats.json"},
-		{"name": "Anima New Age", "url": "http://amoris.sknt.ru/newage.mp3", "metadata": "https://amoris.sknt.ru/sc/12/stats.json"},
-		{"name": "Anima DeepTech", "url": "http://amoris.sknt.ru/deeptech.mp3", "metadata": "https://amoris.sknt.ru/sc/9/stats.json"},
-		{"name": "Ruzafa", "url": "http://online.radioruzafa.com:8000/stream", "metadata": "https://online.radioruzafa.com:8000/status-json.xsl"}
+		{"name": "Ruzafa", "url": "http://online.radioruzafa.com:8000/stream", "metadata": "https://online.radioruzafa.com:8000/status-json.xsl"},
+		{"name": "Mabu Beatz", "url": "http://audio.mabu-beatz-radio.com:8002/dub", "metadata": "http://audio.mabu-beatz-radio.com:8002/dub/status-json.xsl"},
+		{"name": "M1xer", "url": "http://fra-ranger01.dedicateware.com:18016/m1xer", "metadata": "http://fra-ranger01.dedicateware.com:18016/status-json.xsl"}
 	],
 	"radio_metadata_check_delay": 30000,
 	"radio_slide_delay": 1000,
