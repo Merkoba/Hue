@@ -112,8 +112,8 @@ Hue.stop_radio = function () {
 Hue.after_radio_stop = function () {
   Hue.apply_radio_item_effects()
   Hue.check_radio_playing()
-  Hue.radio_player.src = ""
   Hue.unhighlight_radio_footer()
+  Hue.radio_player.src = ""
 }
 
 // Scroll stations list to playing item
