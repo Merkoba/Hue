@@ -30,6 +30,7 @@ Hue.setup_radio = function () {
   })
 
   Hue.ev(Hue.el("#radio_random"), "click", function () {
+    Hue.clear_radio_filter()
     Hue.play_random_radio()
   })
 
@@ -305,4 +306,10 @@ Hue.play_first_radio = function () {
       return
     }
   }
+}
+
+// Clear radio filter
+Hue.clear_radio_filter = function () {
+  Hue.el("#radio_filter").value = ""
+  Hue.do_modal_filter()
 }
