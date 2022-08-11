@@ -32,6 +32,10 @@ Hue.setup_radio = function () {
   Hue.ev(Hue.el("#radio_random"), "click", function () {
     Hue.play_random_radio()
   })
+
+  Hue.ev(Hue.el("#radio_volume"), "click", function () {
+    Hue.change_radio_volume("up")
+  })
 }
 
 // Play or pause radio
