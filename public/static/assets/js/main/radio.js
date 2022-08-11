@@ -2,11 +2,8 @@
 Hue.setup_radio = function () {
   if (Hue.config.radios.length === 0) {
     Hue.radio_disabled = true
-    Hue.el("#radio_items").classList.add("nodisplay")
     return
   }
-
-  Hue.radio_visible = false
 
   Hue.playing_radio = Hue.config.radios.find(
     x => x.name === Hue.room_state.last_radio_name
@@ -15,10 +12,9 @@ Hue.setup_radio = function () {
   Hue.setup_radio_player()
   
   for (let radio of Hue.config.radios) {
-    Hue.create_radio_item(radio)
+    Hue.create_radio_station(radio)
   }
   
-  Hue.create_radio_item_buttons()
   Hue.apply_radio_volume()
   Hue.fill_radio_queue()
 
@@ -26,15 +22,15 @@ Hue.setup_radio = function () {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
   }
 
-  Hue.ev(Hue.el("#radio_button_volume"), "wheel", wheel_func)
+  Hue.ev(Hue.el("#radio_volume"), "wheel", wheel_func)
   Hue.ev(Hue.el("#footer_radio_icon"), "wheel", wheel_func)
 
-  Hue.ev(Hue.el("#radio_items"), "mouseleave", function () {
-    Hue.start_hide_radio()
+  Hue.ev(Hue.el("#radio_playstop"), "click", function () {
+    Hue.radio_playstop()
   })
 
-  Hue.ev(Hue.el("#radio_items"), "mouseenter", function () {
-    Hue.stop_hide_radio()
+  Hue.ev(Hue.el("#radio_random"), "click", function () {
+    Hue.play_random_radio()
   })
 }
 
@@ -58,7 +54,7 @@ Hue.play_radio = function (radio) {
   Hue.playing_radio = radio
   Hue.radio_player.src = Hue.utilz.cache_bust_url(radio.url)
   Hue.radio_player.play()
-  Hue.apply_radio_item_effects()
+  Hue.apply_radio_station_effects()
   Hue.check_radio_playing()
   Hue.room_state.last_radio_name = radio.name
   Hue.save_room_state()
@@ -66,9 +62,9 @@ Hue.play_radio = function (radio) {
 
 // After radio play
 Hue.after_radio_play = function () {
-  Hue.apply_radio_item_effects()
+  Hue.apply_radio_station_effects()
   Hue.check_radio_playing()
-  Hue.scroll_to_radio_item()
+  Hue.scroll_to_radio_station()
   Hue.highlight_radio_footer()
 }
 
@@ -86,15 +82,15 @@ Hue.setup_radio_player = function () {
   })
 }
 
-// Apply radio item effects
-Hue.apply_radio_item_effects = function () {
-  for (let item of Hue.els(".radio_station_item")) {
-    let radio = Hue.dataset(item, "radio")
+// Apply radio station effects
+Hue.apply_radio_station_effects = function () {
+  for (let station of Hue.els(".radio_station")) {
+    let radio = Hue.dataset(station, "radio")
 
     if (Hue.is_playing_radio(radio) && Hue.radio_is_playing()) {
-      item.classList.add("radio_item_playing")
+      station.classList.add("radio_station_playing")
     } else {
-      item.classList.remove("radio_item_playing")
+      station.classList.remove("radio_station_playing")
     }
   }
 }
@@ -111,21 +107,21 @@ Hue.stop_radio = function () {
 
 // After stop radio
 Hue.after_radio_stop = function () {
-  Hue.apply_radio_item_effects()
+  Hue.apply_radio_station_effects()
   Hue.check_radio_playing()
   Hue.unhighlight_radio_footer()
   Hue.radio_player.src = ""
 }
 
-// Scroll stations list to playing item
-Hue.scroll_to_radio_item = function () {
+// Scroll stations list to playing station
+Hue.scroll_to_radio_station = function () {
   if (!Hue.radio_is_playing()) {
     return
   }
   
-  let item = Hue.get_radio_item(Hue.playing_radio)
+  let station = Hue.get_radio_station(Hue.playing_radio)
   
-  item.scrollIntoView({
+  station.scrollIntoView({
     block: "center"
   })
 }
@@ -138,23 +134,23 @@ Hue.radio_is_playing = function () {
 // Check if radio is playing and perform actions
 Hue.check_radio_playing = function () {
   if (Hue.radio_is_playing()) {
-    Hue.el("#radio_button_playstop use").href.baseVal = "#icon_pause"
+    Hue.el("#radio_playstop").textContent = "Pause"
   } else {
-    Hue.el("#radio_button_playstop use").href.baseVal = "#icon_play"
+    Hue.el("#radio_playstop").textContent = "Play"
   }
 
   Hue.update_input_placeholder()
 }
 
-// Create a radio item
-Hue.create_radio_item = function (radio) {
-  let container = Hue.div("radio_item radio_station_item action")
-  container.innerHTML = Hue.template_radio_item()
+// Create a radio station
+Hue.create_radio_station = function (radio) {
+  let container = Hue.div("radio_station nice_row modal_item action")
+  container.innerHTML = Hue.template_radio_station()
   
-  let icon = Hue.el(".radio_item_icon", container)
+  let icon = Hue.el(".radio_station_icon", container)
   jdenticon.update(icon, radio.name)
   
-  let name = Hue.el(".radio_item_name", container)
+  let name = Hue.el(".radio_station_name", container)
   name.textContent = radio.name
   
   Hue.ev(container, "click", function () {
@@ -165,35 +161,13 @@ Hue.create_radio_item = function (radio) {
   Hue.el("#radio_stations").append(container)
 }
 
-// Get radio item
-Hue.get_radio_item = function (radio) {
-  for (let el of Hue.els(".radio_station_item")) {
+// Get radio station
+Hue.get_radio_station = function (radio) {
+  for (let el of Hue.els(".radio_station")) {
     if (Hue.dataset(el, "radio").name === radio.name) {
       return el
     }
   }
-}
-
-// Create a specialized radio button
-Hue.create_radio_item_buttons = function () {
-  let container = Hue.div("radio_item")
-  container.id = "radio_item_buttons"
-  
-  if (Hue.config.radios.length > 1) {
-    container.innerHTML = Hue.template_radio_item_buttons()
-
-    Hue.ev(Hue.el("#radio_button_random", container), "click", function () {
-      Hue.play_random_radio()
-    })
-  } else {
-    container.innerHTML = Hue.template_radio_item_buttons_2()
-  }
-
-  Hue.ev(Hue.el("#radio_button_playstop", container), "click", function () {
-    Hue.radio_playstop()
-  })
-
-  Hue.el("#radio_controls").append(container)
 }
 
 // Increase or decrease radio volume
@@ -227,9 +201,9 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
   
   let vstring = Math.round(volume * 100)
   let fp = Hue.utilz.fillpad(vstring.toString(), 3, "0")
-  Hue.el("#radio_button_volume").textContent = `${fp}%` 
+  Hue.el("#radio_volume").textContent = `Volume: ${fp}%` 
   
-  if (!Hue.radio_visible) {
+  if (Hue.started && !Hue.msg_radio.is_open()) {
     Hue.flash_info("Radio", `Volume: ${vstring}%`)
   }
 
@@ -246,12 +220,12 @@ Hue.play_random_radio = function () {
   Hue.play_radio(Hue.get_random_radio())
 }
 
-// Get first random radio queue item
+// Get first random radio queue station
 Hue.get_random_radio = function () {
   return Hue.radio_queue[0]
 }
 
-// Push back played item to end of radio queue
+// Push back played station to end of radio queue
 Hue.push_radio_queue = function (radio) {
   for (let [i, r] of Hue.radio_queue.entries()) {
     if (r.name === radio.name) {
@@ -261,14 +235,14 @@ Hue.push_radio_queue = function (radio) {
   }
 }
 
-// Fill items for the random button
+// Fill stations for the random button
 Hue.fill_radio_queue = function () {
   Hue.radio_queue = Hue.config.radios.slice(0)
   Hue.utilz.shuffle_array(Hue.radio_queue)
 }
 
 // Play or stop the radio
-// Select random item if none is playing
+// Select random station if none is playing
 Hue.radio_playstop = function () {
   if (!Hue.playing_radio || Hue.radio_disabled) {
     return
@@ -286,37 +260,15 @@ Hue.radio_now_playing_string = function () {
   }
 }
 
-// Toggle radio visibility
-Hue.toggle_radio = function () {
-  if (Hue.radio_visible) {
-    Hue.hide_radio()
-  } else {
-    Hue.show_radio()
-  }
-}
-
 // Show radio 
 Hue.show_radio = function () {
-  Hue.stop_hide_radio()
-  Hue.el("#radio_items").classList.remove("nodisplay")
-  Hue.radio_visible = true
+  Hue.msg_radio.show(function () {
+    Hue.scroll_to_radio_station()
+  })
 }
 
 Hue.hide_radio = function () {
-  Hue.el("#radio_items").classList.add("nodisplay")
-  Hue.radio_visible = false
-}
-
-// Start hide radio timeout
-Hue.start_hide_radio = function () {
-  Hue.hide_radio_timeout = setTimeout(function () {
-    Hue.hide_radio()
-  }, Hue.hide_radio_delay)
-}
-
-// Stop hide radio timeout
-Hue.stop_hide_radio = function () {
-  clearTimeout(Hue.hide_radio_timeout)
+  Hue.msg_radio.close()
 }
 
 // Highlight radio footer

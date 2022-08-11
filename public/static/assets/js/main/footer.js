@@ -32,7 +32,13 @@ Hue.setup_footer = function () {
   }
 
   Hue.ev(Hue.el("#footer_radio_icon"), "click", function () {
-    Hue.toggle_radio()
+    Hue.show_radio()
+  })
+
+  Hue.ev(Hue.el("#footer_radio_icon"), "auxclick", function (e) {
+    if (e.button === 1) {
+      Hue.radio_playstop()
+    }
   })
 
   Hue.ev(Hue.el("#footer_items"), "click", function (e) {

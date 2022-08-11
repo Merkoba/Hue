@@ -247,6 +247,14 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_radio = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "radio",
+      window_width: "36rem",
+      scroll_on_show: false
+    })
+  )
+
   Hue.msg_write_whisper = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "write_whisper",
@@ -499,6 +507,16 @@ Hue.start_msg = function () {
       window_controls: Hue.template_window_controls({
         filter_mode: "auto",
         filter_id: "command_book_filter",
+        filter_placeholder: "Filter"
+      })
+    })
+  )
+
+  Hue.msg_radio.set(
+    Hue.template_radio({
+      window_controls: Hue.template_window_controls({
+        filter_mode: "auto",
+        filter_id: "radio_filter",
         filter_placeholder: "Filter"
       })
     })
@@ -828,6 +846,14 @@ Hue.start_msg = function () {
     items: [
       {id: "settings_notifications", text: "Notifications"},
       {id: "settings_defaults", text: "Defaults"},
+    ]
+  }))
+
+  Hue.msg_radio.set_title(Hue.template_titlebar({
+    items: [
+      {id: "radio_playstop", text: "Play"},
+      {id: "radio_random", text: "Random"},
+      {id: "radio_volume", text: "Volume: 100%"},
     ]
   }))
 

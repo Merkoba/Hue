@@ -12,12 +12,6 @@ Hue.start_mouse_events = function () {
     if (!e.target.closest) {
       return
     }
-
-    if (e.target.closest("#input") || e.target.closest("#main_rows_container")) {
-      if (Hue.radio_visible) {
-        Hue.hide_radio()
-      }
-    }
     
     if (e.target.closest(".chat_area")) {
       let message = e.target.closest(".message")

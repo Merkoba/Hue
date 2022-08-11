@@ -1818,60 +1818,21 @@ pre {
 	transform: rotateY(180deg);
 }
 
-#radio_items {
-	position: fixed;
-	right: 0;
-	bottom: calc(var(--panel_height) + 1rem);
+#radio_stations {
 	display: flex;
 	flex-direction: column;
-	z-index: 100;
-	color: var(--text_color);
-	border: 1px solid var(--altcolor);
+	gap: 0.5rem;
 }
 
-#radio_stations {
-	position: relative;
-	max-height: calc(100vh - 230px);
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-
-.radio_item {
-	position: relative;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: flex-start;
-	overflow: hidden;
-	white-space: nowrap;
-	background-color: var(--altbackground);
-	border: 1px solid var(--altcolor);
-	flex-grow: 0;
-	flex-shrink: 0;
-	padding-right: 0.5rem;
-	z-index: 1;
-}
-
-.radio_content {
-	display: flex;
-	flex-direction: row;
-}
-
-.radio_item_playing {
+.radio_station_playing {
 	border: 1px solid var(--text_color_a);
 	z-index: 10;
 }
 
-.radio_item_icon {
-	width: 20px;
-	height: 20px;
-	margin: 0.3rem;
-}
-
-.radio_button_separator {
-	opacity: 0.5;
-	margin-left: 0.5rem;
-	margin-right: 0.5rem;
+.radio_station_icon {
+	width: 25px;
+	height: 25px;
+	margin-right: 1rem;
 }
 
 #flash_info {
