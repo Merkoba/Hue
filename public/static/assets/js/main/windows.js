@@ -250,7 +250,7 @@ Hue.start_msg = function () {
   Hue.msg_radio = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "radio",
-      window_width: "36rem",
+      window_width: "30rem",
       scroll_on_show: false
     })
   )

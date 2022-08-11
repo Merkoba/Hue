@@ -1824,9 +1824,12 @@ pre {
 	gap: 0.5rem;
 }
 
+.radio_station {
+	border: 1px solid transparent;
+}
+
 .radio_station_playing {
 	border: 1px solid var(--text_color_a);
-	z-index: 10;
 }
 
 .radio_station_icon {
