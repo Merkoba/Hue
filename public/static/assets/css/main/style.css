@@ -1832,8 +1832,8 @@ pre {
 }
 
 .radio_station_icon {
-	width: 25px;
-	height: 25px;
+	width: var(--icon_size);
+	height: var(--icon_size);
 	margin-right: 1rem;
 }
 
