@@ -284,17 +284,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_radio_window = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      window_class: "radio !radio_window",
-      window_width: "36rem",
-      after_close: function (instance) {     
-        Hue.after_modal_close(instance)
-        Hue.stop_radio_metadata_loop()
-      }
-    })
-  )
-
   Hue.msg_settings = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "settings",
@@ -373,12 +362,6 @@ Hue.start_msg = function () {
   Hue.msg_handle_url = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "handle_url"
-    })
-  )
-
-  Hue.msg_handle_radio_history = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "handle_radio_history"
     })
   )
 
@@ -531,16 +514,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_radio_window.set(
-    Hue.template_radio_window({
-      window_controls: Hue.template_window_controls({
-        filter_mode: "auto",
-        filter_id: "radio_history_filter",
-        filter_placeholder: "Filter"
-      })
-    })
-  )
-
   Hue.msg_roomlist.set(
     Hue.template_roomlist({
       window_controls: Hue.template_window_controls({
@@ -608,7 +581,6 @@ Hue.start_msg = function () {
   Hue.msg_tv_upload_comment.set(Hue.template_tv_upload_comment())
   Hue.msg_reply.set(Hue.template_reply())
   Hue.msg_handle_url.set(Hue.template_handle_url())
-  Hue.msg_handle_radio_history.set(Hue.template_handle_radio_history())
   Hue.msg_delete_messages.set(Hue.template_delete_messages())
   Hue.msg_open_url.set(Hue.template_open_url())
   Hue.msg_view_text.set(Hue.template_view_text())
@@ -843,14 +815,6 @@ Hue.start_msg = function () {
     ]
   }))
 
-  Hue.msg_handle_radio_history.set_title(Hue.template_titlebar({
-    items: [
-      {id: "handle_radio_history_copy", text: "Clipboard"},
-      {id: "handle_radio_history_youtube", text: "YouTube"},
-      {id: "handle_radio_history_soundcloud", text: "Soundcloud"},
-    ]
-  }))
-
   Hue.msg_media_tweaks.set_title(Hue.template_titlebar({
     items: [
       {id: "media_tweaks_swap", text: "Swap"},
@@ -922,7 +886,7 @@ Hue.get_modal_instances = function () {
   return Hue.msg_main_menu.higher_instances()
 }
 
-// Gets all Msg popup instances excluding radio popups
+// Gets all Msg popup instances
 Hue.get_popup_instances = function () {
   return Hue.msg_main_menu.lower_instances()
 }

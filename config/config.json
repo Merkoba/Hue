@@ -107,8 +107,9 @@
 	"max_likes": 100,
 
 	"radios": [
-		{"name": "Radio Name", "url": "https://radiourl", "metadata": "https://radio.com/admin/publicstats"}
+		{"name": "Radio Name", "url": "https://radiourl"}
 	],
+	
 	"radio_metadata_check_delay": 30000,
 	"radio_slide_delay": 1000,
 	"radio_unslide_delay": 250
