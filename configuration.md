@@ -203,9 +203,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "notifications_crop_limit"
 >How many notifications after the notifications items get cropped in the notifications window.
 
-"radio_history_crop_limit"
->How many radio history items can exist at the same time.
-
 "socket_emit_throttle"
 >Throttle on socket emits on the client.
 
@@ -266,10 +263,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >How wide usernames on the activity bar can be.
 
 "radios"
->Radios to autostart [ {"name": somename, "url": someurl, "metadata": someurl} ]
-
-"radio_metadata_check_delay"
->How often make a metadata check while app radio window is open.
+>Radios to show [ {"name": "Some Name", "url": "https://something.com"} ]
 
 "radio_slide_delay"
 >Slide the radio items to the edge x ms after mouseleave.

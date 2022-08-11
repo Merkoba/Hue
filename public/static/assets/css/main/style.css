@@ -1818,16 +1818,6 @@ pre {
 	transform: rotateY(180deg);
 }
 
-.radio_history_station {
-	font-weight: bold;
-	justify-self: flex-start;
-	flex-shrink: 0;
-}
-
-.radio_history_info {
-	justify-self: flex-end;
-}
-
 #radio_items {
 	position: fixed;
 	right: 0;
