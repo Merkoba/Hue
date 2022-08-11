@@ -1826,6 +1826,7 @@ pre {
 
 .radio_station {
 	border: 1px solid transparent;
+	padding: 0.5rem;
 }
 
 .radio_station_playing {
