@@ -261,9 +261,14 @@ Hue.radio_now_playing_string = function () {
 }
 
 // Show radio 
-Hue.show_radio = function () {
+Hue.show_radio = function (filter = "") {
   Hue.msg_radio.show(function () {
-    Hue.scroll_to_radio_station()
+    if (filter.trim()) {
+      Hue.el("#radio_filter").value = filter
+      Hue.do_modal_filter()
+    } else {
+      Hue.scroll_to_radio_station()
+    }
   })
 }
 

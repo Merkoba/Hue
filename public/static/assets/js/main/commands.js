@@ -606,6 +606,12 @@ Hue.commands = {
     },
     description: "Play or stop the current radio station",
   },
+  "radio": {
+    action: (arg, ans) => {
+      Hue.show_radio(arg)
+    },
+    description: "Open and filter the radio window",
+  },  
   "roomlist": {
     action: (arg, ans) => {
       Hue.show_roomlist(arg)
