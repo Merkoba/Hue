@@ -1,7 +1,7 @@
 // Setup radios
 Hue.setup_radio = function () {
   if (Hue.config.radios.length === 0) {
-    Hue.room_state.radio_enabled = false
+    Hue.radio_disabled = true
     Hue.el("#radio_items").classList.add("nodisplay")
     return
   }
@@ -261,6 +261,10 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
 
 // Play a random radio station
 Hue.play_random_radio = function () {
+  if (Hue.radio_disabled) {
+    return
+  }
+  
   Hue.play_radio(Hue.get_random_radio())
 }
 
@@ -334,7 +338,7 @@ Hue.unslide_radio = function () {
 // Play or stop the radio
 // Select random item if none is playing
 Hue.radio_playstop = function () {
-  if (!Hue.playing_radio) {
+  if (!Hue.playing_radio || Hue.radio_disabled) {
     return
   }
 
