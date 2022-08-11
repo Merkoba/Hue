@@ -1478,7 +1478,7 @@ pre {
 	align-items: center;
 	justify-content: flex-start;
 	background-color: var(--altbackground);
-	padding: 0.8rem;
+	padding: 0.6rem;
 	width: 100%;
 	position: relative;
 	box-sizing: border-box;
@@ -1821,12 +1821,10 @@ pre {
 #radio_stations {
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
 }
 
 .radio_station {
 	border: 1px solid transparent;
-	padding: 0.5rem;
 }
 
 .radio_station_playing {
