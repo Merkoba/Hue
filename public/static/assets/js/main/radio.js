@@ -291,6 +291,7 @@ Hue.toggle_radio = function () {
 
 // Show radio 
 Hue.show_radio = function () {
+  Hue.stop_hide_radio()
   Hue.el("#radio_items").classList.remove("nodisplay")
   Hue.radio_visible = true
 }
