@@ -31,20 +31,6 @@ Hue.setup_footer = function () {
     Hue.update_footer_toggle(type)
   }
 
-  if (Hue.config.radios.length > 0) {
-    Hue.ev(Hue.el("#footer_radio_icon_container"), "click", function () {
-      Hue.toggle_radio()
-    })
-
-    Hue.ev(Hue.el("#footer_radio_icon_container"), "auxclick", function (e) {
-      if (e.which === 2) {
-        Hue.radio_playstop()
-      }
-    })
-  } else {
-    Hue.el("#footer_radio_icon_container").remove()
-  }
-
   Hue.ev(Hue.el("#footer_items"), "click", function (e) {
     if (e.target === this) {
       Hue.el("#input").focus()

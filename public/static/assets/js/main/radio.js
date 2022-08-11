@@ -24,7 +24,6 @@ Hue.setup_radio = function () {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
   }
 
-  Hue.ev(Hue.el("#footer_radio_icon_container"), "wheel", wheel_func)
   Hue.ev(Hue.el("#radio_items"), "wheel", wheel_func)
 
   Hue.ev(Hue.el("#radio_items"), "mouseenter", function () {
@@ -39,24 +38,14 @@ Hue.setup_radio = function () {
   Hue.change_radio_state(Hue.room_state.radio_enabled)
 }
 
-// Make radio items visible or invisible
-Hue.toggle_radio = function () {
-  Hue.room_state.radio_enabled = !Hue.room_state.radio_enabled
-  Hue.change_radio_state(Hue.room_state.radio_enabled)
-  Hue.fix_frames()
-  Hue.save_room_state()
-}
-
 // Enable or disable radio based on radio enabled
 Hue.change_radio_state = function (what) {
   if (what) {
     Hue.el("#radio_items").classList.remove("nodisplay")
-    Hue.el("#footer_radio_icon use").href.baseVal = "#icon_star-solid"
     Hue.el("#main_rows_container").classList.add("reduced_width")
     Hue.fix_frames()
   } else {
     Hue.el("#radio_items").classList.add("nodisplay")
-    Hue.el("#footer_radio_icon use").href.baseVal = "#icon_star"
     Hue.el("#main_rows_container").classList.remove("reduced_width")
     Hue.fix_frames()
   }
@@ -264,7 +253,7 @@ Hue.play_random_radio = function () {
   if (Hue.radio_disabled) {
     return
   }
-  
+
   Hue.play_radio(Hue.get_random_radio())
 }
 
