@@ -1836,16 +1836,6 @@ pre {
 	overflow-x: hidden;
 }
 
-.radio_slide .radio_item {
-	width: unset;
-	padding: unset;
-	margin: unset;
-}
-
-.radio_slide .radio_content {
-	display: none;
-}
-
 .radio_item {
 	position: relative;
 	display: flex;
@@ -1948,10 +1938,6 @@ pre {
 	border: 1px solid var(--altcolor_a);
 }
 
-.reduced_width {
-	width: calc(100% - 40px);
-}
-
 #profilepic_preview_image {
 	margin-right: var(--chat_side_spacing);
 }
@@ -2005,4 +1991,9 @@ pre {
 .link_media_input {
 	width: 100%;
 	text-align: center;
+}
+
+.icon_highlight {
+	background-color: var(--text_color);
+	color: var(--background_color);
 }

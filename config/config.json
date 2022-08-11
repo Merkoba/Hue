@@ -107,8 +107,5 @@
 
 	"radios": [
 		{"name": "Radio Name", "url": "https://radiourl"}
-	],
-	
-	"radio_slide_delay": 1000,
-	"radio_unslide_delay": 250
+	]
 }

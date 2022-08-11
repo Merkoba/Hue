@@ -265,12 +265,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "radios"
 >Radios to show [ {"name": "Some Name", "url": "https://something.com"} ]
 
-"radio_slide_delay"
->Slide the radio items to the edge x ms after mouseleave.
-
-"radio_unslide_delay"
->Show the radio items fully x ms after mouseenter.
-
 "chat_display_percentage_column"
 >Chat display percentage when revolving to column mode.
 
