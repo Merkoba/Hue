@@ -31,10 +31,6 @@ Hue.setup_footer = function () {
     Hue.update_footer_toggle(type)
   }
 
-  Hue.ev(Hue.el("#footer_radio_icon"), "mouseenter", function () {
-    Hue.show_radio()
-  })
-
   Hue.ev(Hue.el("#footer_radio_icon"), "click", function () {
     Hue.toggle_radio()
   })

@@ -27,6 +27,7 @@ Hue.setup_radio = function () {
   }
 
   Hue.ev(Hue.el("#radio_button_volume"), "wheel", wheel_func)
+  Hue.ev(Hue.el("#footer_radio_icon"), "wheel", wheel_func)
 
   Hue.ev(Hue.el("#radio_items"), "mouseleave", function () {
     Hue.start_hide_radio()
@@ -226,7 +227,12 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
   
   let vstring = Math.round(volume * 100)
   let fp = Hue.utilz.fillpad(vstring.toString(), 3, "0")
-  Hue.el("#radio_button_volume").textContent = `${fp}%`  
+  Hue.el("#radio_button_volume").textContent = `${fp}%` 
+  
+  if (!Hue.radio_visible) {
+    Hue.flash_info("Radio", `Volume: ${vstring}%`)
+  }
+
   Hue.room_state.radio_volume = volume
   Hue.save_room_state()
 }
