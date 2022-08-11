@@ -24,7 +24,7 @@ Hue.setup_radio = function () {
     Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
   }
 
-  Hue.ev(Hue.el("#radio_items"), "wheel", wheel_func)
+  Hue.ev(Hue.el("#radio_button_volume"), "wheel", wheel_func)
 
   Hue.ev(Hue.el("#radio_items"), "mouseenter", function () {
     Hue.start_radio_unslide_timeout()
@@ -224,7 +224,7 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
   
   let vstring = Math.round(volume * 100)
   let fp = Hue.utilz.fillpad(vstring.toString(), 3, "0")
-  Hue.el("#radio_volume").textContent = `${fp}%`  
+  Hue.el("#radio_button_volume").textContent = `${fp}%`  
   Hue.room_state.radio_volume = volume
   Hue.save_room_state()
 }
