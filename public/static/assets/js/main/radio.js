@@ -36,6 +36,12 @@ Hue.setup_radio = function () {
   Hue.ev(Hue.el("#radio_volume"), "click", function () {
     Hue.change_radio_volume("up")
   })
+
+  Hue.ev(Hue.el("#radio_filter"), "keydown", function (e) {
+    if (e.key === "Enter") {
+      Hue.play_first_radio()
+    }
+  })
 }
 
 // Play or pause radio
@@ -264,7 +270,7 @@ Hue.radio_now_playing_string = function () {
   }
 }
 
-// Show radio 
+// Show the radio 
 Hue.show_radio = function (filter = "") {
   Hue.msg_radio.show(function () {
     if (filter.trim()) {
@@ -276,15 +282,27 @@ Hue.show_radio = function (filter = "") {
   })
 }
 
+// Hide the radio
 Hue.hide_radio = function () {
   Hue.msg_radio.close()
 }
 
-// Highlight radio footer
+// Highlight the radio footer
 Hue.highlight_radio_footer = function () {
   Hue.el("#footer_radio_icon").classList.add("icon_highlight")
 }
 
+// Unhighlight the radio footer
 Hue.unhighlight_radio_footer = function () {
   Hue.el("#footer_radio_icon").classList.remove("icon_highlight")
+}
+
+// Play first selected radio
+Hue.play_first_radio = function () {
+  for (let station of Hue.els(".radio_station")) {
+    if (!station.classList.contains("nodisplay")) {
+      Hue.play_radio(Hue.dataset(station, "radio"))
+      return
+    }
+  }
 }
