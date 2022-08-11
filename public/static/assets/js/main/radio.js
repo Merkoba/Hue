@@ -35,20 +35,6 @@ Hue.setup_radio = function () {
   })
 
   Hue.slide_radio()
-  Hue.change_radio_state(Hue.room_state.radio_enabled)
-}
-
-// Enable or disable radio based on radio enabled
-Hue.change_radio_state = function (what) {
-  if (what) {
-    Hue.el("#radio_items").classList.remove("nodisplay")
-    Hue.el("#main_rows_container").classList.add("reduced_width")
-    Hue.fix_frames()
-  } else {
-    Hue.el("#radio_items").classList.add("nodisplay")
-    Hue.el("#main_rows_container").classList.remove("reduced_width")
-    Hue.fix_frames()
-  }
 }
 
 // Play or pause radio
