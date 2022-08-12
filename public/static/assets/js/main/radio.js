@@ -200,10 +200,7 @@ Hue.change_radio_volume = function (direction, amount = 0.05) {
   }
 
   new_volume = Hue.utilz.round(new_volume, 2)
-  
-  if (new_volume !== Hue.room_state.radio_volume) {
-    Hue.apply_radio_volume(new_volume)
-  }
+  Hue.apply_radio_volume(new_volume)
 }
 
 // Apply radio volume to all players
@@ -218,8 +215,10 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
     Hue.flash_info("Radio", `Volume: ${vstring}%`)
   }
 
-  Hue.room_state.radio_volume = volume
-  Hue.save_room_state()
+  if (Hue.room_state.radio_volume !== volume) {
+    Hue.room_state.radio_volume = volume
+    Hue.save_room_state()
+  }
 }
 
 // Play a random radio station
