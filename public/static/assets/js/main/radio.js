@@ -215,7 +215,7 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
     Hue.flash_info("Radio", `Volume: ${vstring}%`)
   }
 
-  if (volume >= 0.8) {
+  if (volume >= 0.7) {
     Hue.el("#footer_radio_icon use").href.baseVal = "#icon_volume-full"
   } else if (volume > 0) {
     Hue.el("#footer_radio_icon use").href.baseVal = "#icon_volume-mid"
