@@ -215,6 +215,14 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
     Hue.flash_info("Radio", `Volume: ${vstring}%`)
   }
 
+  if (volume >= 0.8) {
+    Hue.el("#footer_radio_icon use").href.baseVal = "#icon_volume-full"
+  } else if (volume > 0) {
+    Hue.el("#footer_radio_icon use").href.baseVal = "#icon_volume-mid"
+  } else {
+    Hue.el("#footer_radio_icon use").href.baseVal = "#icon_volume-mute"
+  }
+
   if (Hue.room_state.radio_volume !== volume) {
     Hue.room_state.radio_volume = volume
     Hue.save_room_state()
@@ -317,7 +325,7 @@ Hue.clear_radio_filter = function () {
 Hue.pick_radio_volume = function () {
   let nums = Hue.utilz.number_range(0, 100, 10)
   nums.reverse()
-  
+
   let s = nums.map(x => x + "%")
   
   Hue.show_item_picker("Radio Volume", s, function (item) {
