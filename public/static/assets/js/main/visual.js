@@ -165,7 +165,7 @@ Hue.show_item_picker = function (title, items, callback) {
   container.innerHTML = ""
 
   for (let item of items) {
-    let el = Hue.div("nice_row action")
+    let el = Hue.div("nice_row action justify_center")
     el.textContent = item
     
     Hue.ev(el, "click", function () {

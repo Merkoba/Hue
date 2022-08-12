@@ -1743,6 +1743,10 @@ pre {
 	text-align: center;
 }
 
+.justify_center {
+	justify-content: center;
+}
+
 #main_menu .vertical_separator {
 	margin-top: 1.5rem !important;
 	margin-bottom: 1.5rem !important;

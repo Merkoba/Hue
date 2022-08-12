@@ -258,7 +258,8 @@ Hue.start_msg = function () {
   Hue.msg_item_picker = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "item_picker",
-      window_width: "22rem"
+      window_min_width: "20rem",
+      window_max_width: "40rem"
     })
   )
 
