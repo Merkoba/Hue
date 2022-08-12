@@ -35,7 +35,7 @@ Hue.setup_radio = function () {
   })
 
   Hue.ev(Hue.el("#radio_volume"), "click", function () {
-    Hue.change_radio_volume("up")
+    Hue.pick_radio_volume()
   })
 
   Hue.ev(Hue.el("#radio_filter"), "keydown", function (e) {
@@ -311,4 +311,15 @@ Hue.play_first_radio = function () {
 Hue.clear_radio_filter = function () {
   Hue.el("#radio_filter").value = ""
   Hue.do_modal_filter()
+}
+
+// Show a picker to select radio volume
+Hue.pick_radio_volume = function () {
+  let nums = Hue.utilz.number_range(0, 100, 10)
+  let s = nums.map(x => x + "%")
+  
+  Hue.show_item_picker("Radio Volume", s, function (item) {
+    let vol = parseInt(item) / 100
+    Hue.apply_radio_volume(vol)
+  })
 }

@@ -729,6 +729,23 @@ const Utilz = function () {
 		return new URL(url).hostname
 	}
 
+	// Number range with a certain increment
+	utilz.number_range = function (to, from, increment) {
+		let numbers = []
+		let n = to
+
+		while (n < 1000000) {
+			numbers.push(n)
+			n += increment
+			
+			if (n > from) {
+				break
+			}
+		}
+
+		return numbers
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]

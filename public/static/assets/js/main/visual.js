@@ -158,3 +158,24 @@ Hue.start_before_unload = function () {
     }
   })
 }
+
+// Select an item from a list
+Hue.show_item_picker = function (title, items, callback) {
+  let container = Hue.el("#item_picker_container")
+  container.innerHTML = ""
+
+  for (let item of items) {
+    let el = Hue.div("nice_row action")
+    el.textContent = item
+    
+    Hue.ev(el, "click", function () {
+      callback(item)
+      Hue.msg_item_picker.close()
+    })
+
+    container.append(el)
+  }
+
+  Hue.msg_item_picker.set_title(title)
+  Hue.msg_item_picker.show()
+}

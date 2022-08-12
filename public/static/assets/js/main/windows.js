@@ -255,6 +255,13 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_item_picker = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "item_picker",
+      window_width: "22rem"
+    })
+  )
+
   Hue.msg_write_whisper = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "write_whisper",
@@ -612,6 +619,7 @@ Hue.start_msg = function () {
   Hue.msg_draw_image.set(Hue.template_draw_image())
   Hue.msg_image_picker.set(Hue.template_image_picker())
   Hue.msg_tv_picker.set(Hue.template_tv_picker())
+  Hue.msg_item_picker.set(Hue.template_item_picker())
 
   Hue.msg_info.create()
 
