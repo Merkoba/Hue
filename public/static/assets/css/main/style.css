@@ -1963,4 +1963,5 @@ pre {
 .icon_highlight {
 	background-color: var(--text_color);
 	color: var(--background_color);
+	border-radius: 50%;
 }
