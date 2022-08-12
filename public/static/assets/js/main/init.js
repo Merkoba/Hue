@@ -192,6 +192,7 @@ Hue.init = function () {
   Hue.setup_screen_capture()
   Hue.start_before_unload()
   Hue.setup_admin_activity()
+  Hue.setup_item_picker()
   
   if (Hue.debug_socket) {
     Hue.start_socket_stats()

@@ -159,23 +159,34 @@ Hue.start_before_unload = function () {
   })
 }
 
+// Setup item picker
+Hue.setup_item_picker = function () {
+  let container = Hue.el("#item_picker_container")
+
+  Hue.ev(container, "click", function (e) {
+    let el = e.target.closest(".item_picker_item")
+
+    if (el) {
+      let item = Hue.dataset(el, "item")
+      Hue.item_picker_callback(item)
+      Hue.msg_item_picker.close()
+    }
+  })
+}
+
 // Select an item from a list
 Hue.show_item_picker = function (title, items, callback) {
   let container = Hue.el("#item_picker_container")
   container.innerHTML = ""
 
   for (let item of items) {
-    let el = Hue.div("nice_row action justify_center")
+    let el = Hue.div("item_picker_item nice_row action justify_center")
     el.textContent = item
-    
-    Hue.ev(el, "click", function () {
-      callback(item)
-      Hue.msg_item_picker.close()
-    })
-
+    Hue.dataset(el, "item", item)
     container.append(el)
   }
 
+  Hue.item_picker_callback = callback
   Hue.msg_item_picker.set_title(title)
   Hue.msg_item_picker.show()
 }
