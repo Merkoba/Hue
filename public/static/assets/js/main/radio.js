@@ -316,6 +316,8 @@ Hue.clear_radio_filter = function () {
 // Show a picker to select radio volume
 Hue.pick_radio_volume = function () {
   let nums = Hue.utilz.number_range(0, 100, 10)
+  nums.reverse()
+  
   let s = nums.map(x => x + "%")
   
   Hue.show_item_picker("Radio Volume", s, function (item) {
