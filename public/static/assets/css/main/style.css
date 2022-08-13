@@ -1456,11 +1456,12 @@ pre {
 	align-items: center;
 	justify-content: flex-start;
 	background-color: var(--altbackground);
-	padding: 0.6rem;
+	padding: 0.5rem;
 	width: 100%;
 	position: relative;
 	box-sizing: border-box;
 	text-align: left;
+	border-radius: 25px;
 }
 
 .nice_row.pointer:hover {
