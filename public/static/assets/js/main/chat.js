@@ -482,13 +482,6 @@ Hue.setup_reply = function () {
     Hue.submit_reply()
   })
 
-  Hue.ev(Hue.el("#reply_input"), "input", function () {
-    if (Hue.old_reply_input_val !== this.value) {
-      Hue.check_typing("reply")
-      Hue.old_reply_input_val = this.value
-    }
-  })
-
   Hue.ev(Hue.el("#reply_profilepic"), "click", function () {
     Hue.show_profile(Hue.quote_username, Hue.quote_user_id)
   })
@@ -532,8 +525,6 @@ Hue.show_reply = function (id, username, user_id, text) {
     Hue.clear_input()
     Hue.el("#reply_input").value = input
   }
-
-  Hue.old_reply_input_val = ""
 
   Hue.el("#reply_profilepic").src = Hue.get_profilepic(user_id)
   Hue.el("#reply_username").textContent = `${username} said:`
@@ -943,64 +934,6 @@ Hue.process_remove_announcement = function (message) {
   })
 }
 
-// Checks if the user is typing a chat message to send a typing emit
-// If the message appears to be a command it is ignored
-Hue.check_typing = function (mode = "input") {
-  let tval
-
-  if (mode === "input") {
-    let val = Hue.get_input()
-
-    if (val.length < Hue.old_input_val.length) {
-      return
-    }
-
-    tval = val.trim()
-  } else if (mode === "reply") {
-    let val = Hue.el("#reply_input").value
-
-    if (val.length < Hue.old_reply_input_val.length) {
-      return
-    }
-
-    tval = val.trim()
-  }
-
-  if (tval !== "") {
-    if (tval[0] === Hue.config.commands_prefix && tval[1] !== Hue.config.commands_prefix) {
-      return
-    }
-
-    if ((Date.now() - Hue.last_typing_emit) >= Hue.config.typing_delay) {
-      Hue.socket_emit("typing", {})
-      Hue.last_typing_emit = Date.now()
-    }
-  }
-}
-
-// When a typing signal is received
-// And animates profile images
-Hue.show_typing = function (data) {
-  let user = Hue.get_user_by_user_id(data.user_id)
-
-  if (!user) {
-    return
-  }
-
-  Hue.typing_remove_timer()
-  Hue.show_aura(user.user_id)
-  Hue.typing = true
-}
-
-// Stops the typing actions
-Hue.hide_typing = function () {
-  if (!Hue.typing) {
-    return
-  }
-
-  Hue.typing = false
-}
-
 // Gets the most recent message by user_id
 Hue.get_last_message_by_user_id = function (ouser_id) {
   let items = Hue.els("#chat_area > .message")
@@ -1014,67 +947,6 @@ Hue.get_last_message_by_user_id = function (ouser_id) {
       }
     }
   }
-}
-
-// Gives or maintains aura classes
-// Starts timeout to remove them
-Hue.show_aura = function (id) {
-  if (!Hue.has_focus) {
-    return
-  }
-
-  if (Hue.aura_timeouts[id] === undefined) {
-    Hue.add_aura(id)
-  } else {
-    clearTimeout(Hue.aura_timeouts[id])
-  }
-
-  Hue.aura_timeouts[id] = setTimeout(function () {
-    Hue.remove_aura(id)
-  }, Hue.config.max_typing_inactivity)
-}
-
-// Adds the aura class to the profile image of the latest chat message of a user
-// This class makes the profile image glow and rotate
-Hue.add_aura = function (id) {
-  let message = Hue.get_last_message_by_user_id(id)
-
-  if (message) {
-    Hue.el(".chat_image", message).classList.add("aura")
-  }
-
-  let activity_bar_item = Hue.get_activity_bar_item_by_user_id(id)
-
-  if (activity_bar_item) {
-    Hue.el(".activity_bar_profilepic", activity_bar_item).classList.add("aura")
-  }
-}
-
-// Removes the aura class from messages from a user
-Hue.remove_aura = function (id) {
-  clearTimeout(Hue.aura_timeouts[id])
-  
-  Hue.els(".chat_image.aura").forEach(it => {
-    let message = it.closest(".message")
-
-    if (message) {
-      if (Hue.dataset(message, "user_id") === id) {
-        it.classList.remove("aura")
-      }
-    }
-  })
-
-  Hue.els(".activity_bar_profilepic.aura").forEach(it => {
-    let activity_bar_item = it.closest(".activity_bar_item")
-
-    if (activity_bar_item) {
-      if (Hue.dataset(activity_bar_item, "user_id") === id) {
-        it.classList.remove("aura")
-      }
-    }
-  })
-
-  Hue.aura_timeouts[id] = undefined
 }
 
 // Jumps to a chat message in the chat area
@@ -1111,8 +983,6 @@ Hue.jump_to_chat_message = function (message_id, highlight, container = "#chat_a
 // What to do after receiving a chat message from the server
 Hue.on_chat_message = function (data) {
   Hue.make_chat_message(data)
-  Hue.hide_typing()
-  Hue.remove_aura(data.user_id)
 }
 
 // Find the next chat message above that involves the user

@@ -146,23 +146,6 @@ module.exports = function (Hue) {
     }
   }
 
-  // Handles typing signals
-  Hue.handler.public.typing = async function (socket, data) {
-    socket.hue_typing_counter += 1
-
-    if (socket.hue_typing_counter >= 50) {
-      let spam_ans = await Hue.handler.add_spam(socket)
-
-      if (!spam_ans) {
-        return
-      }
-
-      socket.hue_typing_counter = 0
-    }
-
-    Hue.handler.broadcast_emit(socket, "typing", { user_id: socket.hue_user_id, username: socket.hue_username })
-  }
-
   // Generates IDs for messages
   Hue.handler.generate_message_id = function () {
     return `${Date.now()}_${Hue.utilz.random_sequence(3)}`

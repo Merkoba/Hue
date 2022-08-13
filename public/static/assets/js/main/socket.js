@@ -3,9 +3,6 @@ Hue.server_update_events = {
   joined: (data) => {
     Hue.on_join(data)
   },
-  typing: (data) => {
-    Hue.show_typing(data)
-  },
   chat_message: (data) => {
     Hue.on_chat_message(data)
   },

@@ -32,11 +32,6 @@ Hue.create_debouncers = function () {
     Hue.check_scrollers()
   }, Hue.scroll_delay)
 
-  // Debounce timer to hide the typing actions
-  Hue.typing_remove_timer = Hue.create_debouncer(function () {
-    Hue.hide_typing()
-  }, Hue.config.max_typing_inactivity)
-
   // Debounce timer for image modal scrollwheel in the 'previous' direction
   Hue.modal_image_prev_wheel_timer = Hue.create_debouncer(function () {
     Hue.modal_image_prev_click()

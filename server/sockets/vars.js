@@ -52,8 +52,7 @@ module.exports = function (Hue) {
   // Don't add spam on these functions
   // They add spam manually
   Hue.vars.dont_add_spam = [
-    "slice_upload",
-    "typing"
+    "slice_upload"
   ]
 
   Hue.vars.fetch_2 = function (url, args = {}) {

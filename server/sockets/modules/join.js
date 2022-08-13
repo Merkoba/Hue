@@ -9,7 +9,6 @@ module.exports = function (Hue) {
     socket.hue_superuser = false
     socket.hue_locked = false
     socket.hue_info1 = ""
-    socket.hue_typing_counter = 0
   }
 
   // Attempts to join a room

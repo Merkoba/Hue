@@ -2,16 +2,11 @@
 Hue.on_input_change = function () {
   let input = Hue.el("#input")
 
-  if (Hue.old_input_val !== input.value) {
-    Hue.check_typing()
-    Hue.old_input_val = input.value
-
-    if (input.clientHeight < input.scrollHeight) {
-      Hue.enable_footer_expand()
-    }
-
-    Hue.check_input_expand()
+  if (input.clientHeight < input.scrollHeight) {
+    Hue.enable_footer_expand()
   }
+
+  Hue.check_input_expand()
 }
 
 // Setups events for the main input
@@ -39,8 +34,6 @@ Hue.setup_input = function () {
       }
     }
   })
-
-  Hue.old_input_val = Hue.get_input()
 }
 
 // Updates the input's placeholder
@@ -69,7 +62,6 @@ Hue.clear_input = function () {
   }
 
   Hue.change_input("")
-  Hue.old_input_val = ""
   Hue.reset_input_history_index()
 }
 

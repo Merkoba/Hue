@@ -429,14 +429,6 @@ html {
 	cursor: pointer;
 }
 
-.chat_image.aura,
-.activity_bar_profilepic.aura {
-	animation-name: spin;
-	animation-duration: 1s;
-	animation-timing-function: linear;
-	animation-iteration-count: 60;
-}
-
 .chat_message_top {
 	display: flex;
 	flex-shrink: 1;
@@ -839,16 +831,6 @@ input[type=checkbox] {
 	cursor: pointer;
 }
 
-@keyframes spin {
-	0% {
-		transform: rotate(0deg)
-	}
-
-	100% {
-		transform: rotate(360deg)
-	}
-}
-
 .input1 {
 	font-size: 1rem;
 	width: 18rem;
@@ -1011,10 +993,6 @@ svg.action:hover {
 
 .actionbox:hover {
 	box-shadow: 0 0 1.18rem currentColor;
-}
-
-.aura {
-	box-shadow: 0 0 1.18rem currentColor, inset 0 0 1.1765rem currentColor;
 }
 
 .header_container {
