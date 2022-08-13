@@ -645,9 +645,9 @@ a.generic:hover {
 	position: sticky;
 	z-index: 99;
 	background-color: var(--background_color);
-	margin-top: -1rem;
-	padding-top: 1rem;
-	padding-bottom: 1rem;
+	margin-top: -1.2rem;
+	padding-top: 1.2rem;
+	padding-bottom: 1.2rem;
 	margin-left: -1px;
 	margin-right: -1px;
 }
