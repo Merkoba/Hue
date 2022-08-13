@@ -69,7 +69,7 @@ Hue.setup_message_board = function () {
     }
   })
 
-  Hue.ev(Hue.el("#message_board_publish"), "click", function () {
+  Hue.ev(Hue.el("#message_board_post"), "click", function () {
     Hue.submit_message_board_post()
   })
 

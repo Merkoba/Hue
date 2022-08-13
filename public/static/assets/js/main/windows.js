@@ -658,9 +658,9 @@ Hue.start_msg = function () {
 
   Hue.msg_message_board.set_title(Hue.template_titlebar({
     items: [
-      {id: "message_board_publish", text: "Publish"},
-      {id: "message_board_links", text: "Links"},
-      {id: "message_board_user", text: "User"},
+      {id: "message_board_post", text: "Submit Post"},
+      {id: "message_board_links", text: "Show Links"},
+      {id: "message_board_user", text: "Show User"},
     ]
   }))
 
