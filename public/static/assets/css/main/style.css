@@ -988,7 +988,7 @@ svg.action:hover {
 }
 
 .actionbox_light:hover {
-	box-shadow: 0 0 0.1rem currentColor, inset 0 0 0.1rem currentColor
+	box-shadow: 0 0 0.1rem currentColor, inset 0 0 0.1rem currentColor;
 }
 
 .actionbox:hover {
@@ -1461,6 +1461,10 @@ pre {
 	position: relative;
 	box-sizing: border-box;
 	text-align: left;
+}
+
+.nice_row:hover {
+	background-color: var(--altbackground_a);
 }
 
 .nicerow_top {
