@@ -1805,23 +1805,15 @@ pre {
 	transform: rotateY(180deg);
 }
 
-#radio_stations {
-	display: flex;
-	flex-direction: column;
-}
-
-.radio_station {
-	border: 1px solid transparent;
-}
-
 .radio_station_playing {
-	border: 1px solid var(--text_color_a);
+	outline: 1px solid var(--text_color);
+	outline-offset: -1px;
 }
 
 .radio_station_icon {
 	width: var(--icon_size);
 	height: var(--icon_size);
-	margin-right: 1rem;
+	margin-right: 0.8rem;
 }
 
 #flash_info {
