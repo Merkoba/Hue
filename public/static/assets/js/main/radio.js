@@ -19,10 +19,13 @@ Hue.setup_radio = function () {
   Hue.fill_radio_queue()
 
   let wheel_func = function (e) {
-    Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
+    if (Hue.radio_is_playing()) {
+      Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
+    }
   }
 
   Hue.ev(Hue.el("#radio_volume"), "wheel", wheel_func)
+  Hue.ev(Hue.el("#footer_radio_container"), "wheel", wheel_func)
 
   Hue.ev(Hue.el("#radio_playstop"), "click", function () {
     Hue.radio_playstop()
@@ -208,7 +211,11 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
   
   let vstring = Math.round(volume * 100)
   let fp = Hue.utilz.fillpad(vstring.toString(), 3, "0")
-  Hue.el("#radio_volume").textContent = `Volume: ${fp}%` 
+  Hue.el("#radio_volume").textContent = `Volume: ${fp}%`
+  
+  if (Hue.started && !Hue.msg_radio.is_open()) {
+    Hue.flash_info("Radio", `Volume: ${vstring}%`)
+  }
 
   if (volume >= 0.7) {
     Hue.el("#footer_radio_icon use").href.baseVal = "#icon_volume-full"
