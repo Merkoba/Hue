@@ -180,7 +180,7 @@ Hue.show_item_picker = function (title, items, callback) {
   container.innerHTML = ""
 
   for (let item of items) {
-    let el = Hue.div("item_picker_item nice_row action justify_center")
+    let el = Hue.div("item_picker_item nice_row pointer justify_center")
     el.textContent = item
     Hue.dataset(el, "item", item)
     container.append(el)

@@ -66,7 +66,7 @@ Hue.push_notification = function (args) {
   let content_classes = ""
 
   if (args.on_click) {
-    content_classes = "action"
+    content_classes = "pointer"
   }
 
   let item = Hue.div("notification_item modal_item dynamic_title")
