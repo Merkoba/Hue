@@ -19,9 +19,7 @@ Hue.setup_radio = function () {
   Hue.fill_radio_queue()
 
   let wheel_func = function (e) {
-    if (Hue.radio_is_playing()) {
-      Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
-    }
+    Hue.change_radio_volume(e.deltaY > 0 ? "down" : "up")
   }
 
   Hue.ev(Hue.el("#radio_volume"), "wheel", wheel_func)
