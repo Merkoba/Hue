@@ -75,7 +75,7 @@ Hue.after_radio_play = function () {
   Hue.apply_radio_station_effects()
   Hue.check_radio_playing()
   Hue.scroll_to_radio_station()
-  Hue.highlight_radio_footer()
+  Hue.show_radio_icon()
 }
 
 // Set radio player
@@ -119,7 +119,7 @@ Hue.stop_radio = function () {
 Hue.after_radio_stop = function () {
   Hue.apply_radio_station_effects()
   Hue.check_radio_playing()
-  Hue.unhighlight_radio_footer()
+  Hue.hide_radio_icon()
   Hue.radio_player.src = ""
 }
 
@@ -209,7 +209,7 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
   let vstring = Math.round(volume * 100)
   let fp = Hue.utilz.fillpad(vstring.toString(), 3, "0")
   Hue.el("#radio_volume").textContent = `Volume: ${fp}%` 
-  
+
   if (volume >= 0.7) {
     Hue.el("#footer_radio_icon use").href.baseVal = "#icon_volume-full"
   } else if (volume > 0) {
@@ -291,13 +291,13 @@ Hue.hide_radio = function () {
 }
 
 // Highlight the radio footer
-Hue.highlight_radio_footer = function () {
-  Hue.el("#footer_radio_icon").classList.add("icon_highlight")
+Hue.show_radio_icon = function () {
+  Hue.el("#footer_radio_icon").classList.remove("nodisplay")
 }
 
 // Unhighlight the radio footer
-Hue.unhighlight_radio_footer = function () {
-  Hue.el("#footer_radio_icon").classList.remove("icon_highlight")
+Hue.hide_radio_icon = function () {
+  Hue.el("#footer_radio_icon").classList.add("nodisplay")
 }
 
 // Play first selected radio
