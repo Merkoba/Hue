@@ -1463,7 +1463,7 @@ pre {
 	text-align: left;
 }
 
-.nice_row:hover {
+.nice_row.pointer:hover {
 	background-color: var(--altbackground_a);
 }
 
