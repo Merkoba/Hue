@@ -2,6 +2,8 @@
 Hue.setup_radio = function () {
   if (Hue.config.radios.length === 0) {
     Hue.radio_disabled = true
+    Hue.el("#footer_radio_container").classList.add("nodisplay")
+    Hue.horizontal_separator(Hue.el("#footer_media_items"))
     return
   }
 
