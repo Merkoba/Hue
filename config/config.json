@@ -74,8 +74,6 @@
 
 	"max_same_post_diff": 300000,
 	"max_same_post_messages": 20,
-	"typing_delay": 800,
-	"max_typing_inactivity": 2000,
 	"socket_emit_throttle": 10,
 
 	"safe_limit_1": 100,

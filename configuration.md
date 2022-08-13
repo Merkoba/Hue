@@ -182,12 +182,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_same_post_diff"
 >Maximum messages within a post. After this a new post is displayed.
 
-"typing_delay"
->Send a typing emit if at least this ms passed after the last typing emit.
-
-"max_typing_inactivity"
->After the last typing signal has being received, it will stop showing the typing status after this amount of time.
-
 "media_changed_crop_limit"
 >How many items are stored in images_changed and tv_changed.
 
