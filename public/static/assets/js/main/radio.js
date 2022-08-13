@@ -202,7 +202,10 @@ Hue.change_radio_volume = function (direction, amount = 0.05) {
   }
 
   new_volume = Hue.utilz.round(new_volume, 2)
-  Hue.apply_radio_volume(new_volume)
+
+  if (Hue.room_state.radio_volume !== new_volume) {
+    Hue.apply_radio_volume(new_volume)
+  }
 }
 
 // Apply radio volume to all players
@@ -211,7 +214,7 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
   let fp = Hue.utilz.fillpad(vstring.toString(), 3, "0")
   Hue.el("#radio_volume").textContent = `Volume: ${fp}%`
   
-  if (Hue.started && Hue.radio_player.volume !== volume && !Hue.msg_radio.is_open()) {
+  if (Hue.started && !Hue.msg_radio.is_open()) {
     Hue.flash_info("Radio", `Volume: ${vstring}%`)
   }
   
