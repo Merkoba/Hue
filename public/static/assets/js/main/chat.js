@@ -1027,7 +1027,7 @@ Hue.activity_above = function () {
       let rect = message.getBoundingClientRect()
 
       if (rect.top <= 0) {
-        Hue.jump_to_chat_message(Hue.dataset(message, "message_id"), false)
+        Hue.jump_to_chat_message(Hue.dataset(message, "message_id"), true)
         return
       }
     }
@@ -1058,7 +1058,7 @@ Hue.activity_below = function () {
         let rect = message.getBoundingClientRect()
 
         if (rect.top >= area_rect.top + area_height) {
-          Hue.jump_to_chat_message(Hue.dataset(message, "message_id"), false)
+          Hue.jump_to_chat_message(Hue.dataset(message, "message_id"), true)
           return
         }
       }
