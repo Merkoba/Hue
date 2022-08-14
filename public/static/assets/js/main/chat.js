@@ -478,20 +478,12 @@ Hue.insert_message = function (args = {}) {
 
 // Setup reply
 Hue.setup_reply = function () {
-  Hue.ev(Hue.el("#reply_submit"), "click", function () {
-    Hue.submit_reply()
+  Hue.ev(Hue.el("#input_reply"), "click", function () {
+    Hue.show_info(`${Hue.reply_username}: ${Hue.reply_text}`)
   })
 
-  Hue.ev(Hue.el("#reply_profilepic"), "click", function () {
-    Hue.show_profile(Hue.quote_username, Hue.quote_user_id)
-  })
-  
-  Hue.ev(Hue.el("#reply_profilepic"), "error", function (e) {
-    Hue.fallback_profilepic(this)
-  })
-  
-  Hue.ev(Hue.el("#reply_username"), "click", function () {
-    Hue.show_profile(Hue.quote_username, Hue.quote_user_id)
+  Hue.ev(Hue.el("#input_reply_close"), "click", function () {
+    Hue.hide_reply()
   })
 }
 
@@ -516,42 +508,33 @@ Hue.start_reply = function (target) {
   return true
 }
 
-// Show the reply window
+// Show the reply info
 Hue.show_reply = function (id, username, user_id, text) {
-  Hue.el("#reply_text").value = text
-  let input = Hue.get_input().trim()
+  Hue.reply_text = text
+  Hue.reply_username = username
+  Hue.reply_id = id
+  Hue.reply_user_id = user_id
+  Hue.el("#input_reply_container").classList.remove("nodisplay")
+  Hue.focus_input()
+}
 
-  if (input) {
-    Hue.clear_input()
-    Hue.el("#reply_input").value = input
-  }
-
-  Hue.el("#reply_profilepic").src = Hue.get_profilepic(user_id)
-  Hue.el("#reply_username").textContent = `${username} said:`
-
-  Hue.msg_reply.show(function () {
-    Hue.el("#reply_input").focus()
-  })
-
-  Hue.quote_id = id
-  Hue.quote_username = username
-  Hue.quote_user_id = user_id
+// Hide the reply info
+Hue.hide_reply = function () {
+  Hue.el("#input_reply_container").classList.add("nodisplay")
+  Hue.reply_text = ""
 }
 
 // Submit the reply window
 Hue.submit_reply = function () {
-  let reply = Hue.el("#reply_input").value.trim()
+  let otext = Hue.reply_text
+  Hue.hide_reply()
+
+  let reply = Hue.get_input()
 
   if (!reply) {
     return
   }
 
-  if (Hue.is_command(reply)) {
-    reply = `/${reply}`
-  }
-
-  Hue.msg_reply.close()
-  let otext = Hue.utilz.single_space(Hue.el("#reply_text").value)
   let quote = otext.substring(0, Hue.config.quote_max_length).trim()
 
   if (otext.length > quote.length) {
@@ -561,12 +544,10 @@ Hue.submit_reply = function () {
   Hue.process_input({
     message: reply,
     quote: quote,
-    quote_username: Hue.quote_username,
-    quote_user_id: Hue.quote_user_id,
-    quote_id: Hue.quote_id
+    quote_username: Hue.reply_username,
+    quote_user_id: Hue.reply_user_id,
+    quote_id: Hue.reply_id
   })
-
-  Hue.el("#reply_input").value = ""
 }
 
 // Adds a message to the fresh message list

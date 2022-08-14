@@ -23,7 +23,6 @@ Hue.userlist = []
 Hue.all_usernames = []
 Hue.role = ""
 Hue.tab_info = {}
-Hue.writing_reply = false
 Hue.modal_open = false
 Hue.commands_list_sorted = {}
 Hue.commands_list_sorted_2 = {}
@@ -107,6 +106,7 @@ Hue.command_book_created = false
 Hue.last_chat_scrolltop = 0
 Hue.radio_disabled = false
 Hue.hide_radio_delay = 1000
+Hue.reply_text = ""
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

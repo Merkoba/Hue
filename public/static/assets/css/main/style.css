@@ -358,6 +358,19 @@ html {
 	opacity: 0.8;
 }
 
+.input_info {
+	border: 1px solid grey;
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
+	margin-left: 0.1rem;
+	margin-right: 0.1rem;
+}
+
+#input_reply_container {
+	display: flex;
+	flex-direction: row;
+}
+
 .scroller_container {
 	position: absolute;
 	left: 0;

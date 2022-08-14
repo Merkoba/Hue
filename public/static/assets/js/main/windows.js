@@ -360,21 +360,6 @@ Hue.start_msg = function () {
     })
   )  
 
-  Hue.msg_reply = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "reply",
-      window_width: "30rem",
-      after_show: function (instance) {
-        msgvars.common.after_show(instance)
-        Hue.writing_reply = true
-      },
-      after_close: function (instance) {
-        msgvars.common.after_close(instance)
-        Hue.writing_reply = false
-      },
-    })
-  )
-
   Hue.msg_handle_url = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "handle_url"
@@ -605,7 +590,6 @@ Hue.start_msg = function () {
   Hue.msg_view_image.set(Hue.template_view_image())
   Hue.msg_image_upload_comment.set(Hue.template_image_upload_comment())
   Hue.msg_tv_upload_comment.set(Hue.template_tv_upload_comment())
-  Hue.msg_reply.set(Hue.template_reply())
   Hue.msg_handle_url.set(Hue.template_handle_url())
   Hue.msg_delete_messages.set(Hue.template_delete_messages())
   Hue.msg_open_url.set(Hue.template_open_url())
@@ -748,12 +732,6 @@ Hue.start_msg = function () {
   Hue.msg_link_background.set_title(Hue.template_titlebar({
     items: [
       {id: "link_background_submit", text: "Link Background"},
-    ]
-  }))
-
-  Hue.msg_reply.set_title(Hue.template_titlebar({
-    items: [
-      {id: "reply_submit", text: "Send Reply"},
     ]
   }))
 

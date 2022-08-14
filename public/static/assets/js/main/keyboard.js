@@ -171,17 +171,6 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.writing_reply) {
-        if (Hue.msg_reply.is_highest()) {
-          if (e.key === "Enter" && !e.shiftKey) {
-            Hue.submit_reply()
-            e.preventDefault()
-          }
-
-          return
-        }
-      }
-
       if (Hue.msg_change_username.is_open()) {
         if (Hue.msg_change_username.is_highest()) {
           if (e.key === "Enter" && !e.shiftKey) {

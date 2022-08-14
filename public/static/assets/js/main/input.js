@@ -136,6 +136,11 @@ Hue.process_input = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
+  if (Hue.reply_text) {
+    Hue.submit_reply()
+    return
+  }
+
   if (!args.message.trim()) {
     return
   }
