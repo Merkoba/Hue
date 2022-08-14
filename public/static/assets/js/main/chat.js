@@ -94,7 +94,7 @@ Hue.make_chat_message = function (args = {}) {
   if (Hue.utilz.bingo(gets)) {
     content_classes += " colortext goldtext"
   }
-  
+
   title = `${gets} | ${title}`
 
   fmessage = Hue.div("message chat_message user_details")
@@ -138,7 +138,7 @@ Hue.make_chat_message = function (args = {}) {
     Hue.dataset(quote, "quote_id", args.quote_id)
 
     let quote_profilepic = Hue.el(".chat_quote_profilepic", quote)
-    
+
     Hue.ev(quote_profilepic, "error", function () {
       Hue.fallback_profilepic(this)
     })
@@ -175,7 +175,7 @@ Hue.make_chat_message = function (args = {}) {
   Hue.dataset(fmessage, "date", d)
   Hue.dataset(fmessage, "highlighted", highlighted)
   Hue.dataset(fmessage, "mode", "chat")
-  
+
   let content_container = Hue.el(".chat_content_container", fmessage)
   Hue.dataset(content_container, "id", args.id)
   Hue.dataset(content_container, "edited", args.edited)
@@ -185,7 +185,7 @@ Hue.make_chat_message = function (args = {}) {
   Hue.dataset(content_container, "original_message", args.message)
   Hue.dataset(content_container, "otitle", title)
   Hue.dataset(content_container, "username", args.username)
-  
+
   args.likes = args.likes || []
   Hue.dataset(content_container, "likes", args.likes)
   Hue.update_likes(content_container, args.likes)
@@ -255,7 +255,7 @@ Hue.make_announcement_message = function (args = {}) {
   if (args.user_id) {
     brk_classes += " pos_absolute"
   }
-  
+
   if (is_media) {
     if (Hue.utilz.bingo(Hue.getcode(args.id))) {
       content_classes += " colortext goldtext"
@@ -269,7 +269,7 @@ Hue.make_announcement_message = function (args = {}) {
   }
 
   let fmessage = Hue.div("message announcement message_unit")
-  
+
   fmessage.innerHTML = Hue.template_announcement_message({
     content_classes: content_classes,
     brk_classes: brk_classes,
@@ -279,8 +279,8 @@ Hue.make_announcement_message = function (args = {}) {
 
   if (args.container_id) {
     fmessage.id = args.container_id
-  }  
-  
+  }
+
   if (is_media) {
     fmessage.classList.add("media_announcement")
   }
@@ -288,14 +288,14 @@ Hue.make_announcement_message = function (args = {}) {
   let content_container = Hue.el(".announcement_content_container", fmessage)
   Hue.dataset(content_container, "original_message", args.comment)
   let content = Hue.el(".announcement_content", fmessage)
-  
+
   if (is_media) {
     let username = Hue.el(".chat_username", fmessage)
     let date = Hue.el(".chat_timeago", fmessage)
     username.textContent = args.username
     date.textContent = Hue.utilz.timeago(args.date)
   }
-  
+
   let right_side = Hue.el(".announcement_right_side", fmessage)
   Hue.dataset(right_side, "otitle", t)
   Hue.dataset(right_side, "date", d)
@@ -323,7 +323,7 @@ Hue.make_announcement_message = function (args = {}) {
   Hue.dataset(fmessage, "mode", "announcement")
   Hue.dataset(fmessage, "user_id", args.user_id)
   Hue.dataset(fmessage, "media_source", args.media_source)
-  
+
   args.likes = args.likes || []
   Hue.dataset(fmessage, "likes", args.likes)
   Hue.update_likes(fmessage, args.likes)
@@ -344,7 +344,7 @@ Hue.make_announcement_message = function (args = {}) {
 }
 
 // This is a centralized function to insert all chat messages or announcements into the chat
-Hue.insert_message = function (args = {}) {  
+Hue.insert_message = function (args = {}) {
   let def_args = {
     just_edited: false
   }
@@ -382,7 +382,7 @@ Hue.insert_message = function (args = {}) {
             break
           }
         }
-      }      
+      }
 
       return {
         message_id: Hue.dataset(last_message, "message_id")
@@ -406,18 +406,18 @@ Hue.insert_message = function (args = {}) {
           let c1 = Hue.els(".chat_content_container", args.message).slice(-1)[0]
           let c2 = Hue.els(".chat_content_container", last_message).slice(-1)[0]
           let date_diff = Hue.dataset(c1, "date") - Hue.dataset(c2, "date")
-          
+
           if (date_diff < Hue.config.max_same_post_diff) {
             Hue.dataset(content_container, "date", date)
             Hue.dataset(content_container, "highlighted", highlighted)
-  
+
             Hue.el(".chat_container", last_message).append(content_container)
             message_id = Hue.dataset(last_message, "message_id")
-  
+
             if (!Hue.dataset(last_message, "highlighted")) {
               Hue.dataset(last_message, "highlighted", highlighted)
             }
-  
+
             appended = true
           }
         }
@@ -470,7 +470,7 @@ Hue.insert_message = function (args = {}) {
       Hue.add_fresh_message(container)
     }
   }
-  
+
   return {
     message_id: message_id
   }
@@ -628,9 +628,9 @@ Hue.edit_last_message = function (reverse = false) {
             continue
           }
         }
-  
+
         let cnt = item
-  
+
         if (!edit_found) {
           last_container = item
           continue
@@ -639,7 +639,7 @@ Hue.edit_last_message = function (reverse = false) {
             cnt = last_container
           }
         }
-  
+
         if (!cnt) {
           Hue.stop_edit_message()
         } else {
@@ -730,7 +730,7 @@ Hue.send_edit_messsage = function (id) {
     if (!edit_id) {
       return
     }
-  
+
     if (new_message.length === 0) {
       Hue.delete_message(edit_id)
       return
@@ -775,10 +775,10 @@ Hue.delete_message_group = function (id) {
   let s = Hue.utilz.singular_or_plural(num, "messages")
 
   Hue.show_confirm(`Delete message group (${s})`, function () {
-  
+
     for (let unit of Hue.els(".message_unit", message)) {
       let id = Hue.dataset(unit, "id")
-      
+
       if (id) {
         Hue.socket_emit("delete_message", {
           id: id
@@ -849,7 +849,7 @@ Hue.get_message = function (message_id, container = "#chat_area") {
 Hue.get_message_container_by_id = function (id) {
   let unit = Hue.get_message_by_id(id)
   let message
-  
+
   if (unit) {
     message = unit[0].closest(".message")
   }
@@ -930,7 +930,7 @@ Hue.get_last_message_by_user_id = function (ouser_id) {
 
   for (let item of items.reverse()) {
     let user_id = Hue.dataset(item, "user_id")
-  
+
     if (user_id) {
       if (user_id === ouser_id) {
         return item
@@ -956,7 +956,7 @@ Hue.jump_to_chat_message = function (message_id, highlight, container = "#chat_a
   el.scrollIntoView({
     block: "center"
   })
-  
+
   if (highlight) {
     el.classList.add("fresh_message")
 
@@ -987,7 +987,7 @@ Hue.jump_to_chat_message_unit = function (id, highlight, container = "#chat_area
   el.closest(".message").scrollIntoView({
     block: "center"
   })
-  
+
   if (highlight) {
     el.classList.add("fresh_message")
 
@@ -1581,13 +1581,13 @@ Hue.clear_log = function () {
 
   Hue.show_confirm("Delete all messages from the log", function () {
     Hue.socket_emit("clear_log", {})
-  })  
+  })
 }
 
 // When chat log is cleared
 Hue.announce_log_cleared = function (data) {
   let areas = Hue.els(".chat_area")
-  
+
   for (let area of areas) {
     area.innerHTML = ""
   }
@@ -1635,7 +1635,7 @@ Hue.handle_delete_messages = function (id, user_id) {
   }
 
   Hue.delete_messages_id = id
-  
+
   let msg = Hue.get_message_by_id(id)
   let unit = msg[0]
   let index = msg[1]
@@ -1694,7 +1694,7 @@ Hue.deleted_messages_above = function (data) {
       Hue.process_remove_chat_message(unit)
     } else if (mode == "announcement") {
       Hue.process_remove_announcement(unit)
-    }    
+    }
   }
 }
 
@@ -1721,7 +1721,7 @@ Hue.deleted_messages_below = function (data) {
       Hue.process_remove_chat_message(unit)
     } else if (mode == "announcement") {
       Hue.process_remove_announcement(unit)
-    }    
+    }
   }
 }
 
@@ -1736,7 +1736,7 @@ Hue.check_chat_enabled = function () {
 
 // Set chat enabled
 Hue.set_chat_enabled = function (what) {
-  Hue.room_state.chat_enabled = what 
+  Hue.room_state.chat_enabled = what
   Hue.save_room_state()
   Hue.check_chat_enabled()
   Hue.fix_frames()
@@ -1802,7 +1802,7 @@ Hue.check_max_chat_messages = function () {
   if (!Hue.started) {
     return
   }
-  
+
   let messages = Hue.els("#chat_area > .message")
 
   if (messages.length > Hue.config.chat_crop_limit) {
@@ -1817,13 +1817,13 @@ Hue.check_max_chat_messages = function () {
 // Like a message
 Hue.like_message = function (target, type) {
   let unit = target.closest(".message_unit")
-  
+
   if (type === "like" && Hue.dataset(unit, "likes").length >= Hue.config.max_likes) {
     return
   }
 
   let id = Hue.dataset(unit, "id")
-  
+
   Hue.socket_emit("like_message", {
     id: id,
     type: type
@@ -1870,11 +1870,11 @@ Hue.update_likes = function (el, likes) {
       let pi = Hue.get_profilepic(obj.user_id)
       let el = Hue.div("like_container dynamic_title")
       el.innerHTML = Hue.template_like({profilepic: pi})
-      
+
       let nd = Hue.utilz.nice_date(obj.date)
       let title = `${obj.username} | ${nd}`
       el.title = title
-      
+
       Hue.dataset(el, "user_id", obj.user_id)
       Hue.dataset(el, "username", obj.username)
       Hue.dataset(el, "date", obj.date)
