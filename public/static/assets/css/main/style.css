@@ -358,11 +358,14 @@ html {
 	opacity: 0.8;
 }
 
+#input_reply_container {
+	margin-left: 0.25rem;
+}
+
 #input_reply_cancel {
 	border: 1px solid grey;
 	padding-left: 0.25rem;
 	padding-right: 0.25rem;
-	margin-left: 0.25rem;
 }
 
 .scroller_container {

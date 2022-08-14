@@ -490,14 +490,22 @@ Hue.get_reply_text = function () {
 
 // Setup reply
 Hue.setup_reply = function () {
-  let cancel = Hue.el("#input_reply_cancel")
-
-  Hue.ev(cancel, "click", function () {
+  Hue.ev(Hue.el("#input_reply_cancel"), "click", function () {
     Hue.hide_reply()
   })
 
-  Hue.ev(cancel, "mouseenter", function (e) {
+  Hue.ev(Hue.el("#input_reply_container"), "mouseenter", function (e) {
     e.target.title = `${Hue.reply_username}: ${Hue.get_reply_text()}`
+  })
+
+  let pf = Hue.el("#input_reply_profilepic")
+
+  Hue.ev(pf, "error", function () {
+    Hue.fallback_profilepic(this)
+  })
+
+  Hue.ev(pf, "click", function () {
+    Hue.show_profile(Hue.reply_username, Hue.reply_user_id)
   })
 }
 
@@ -527,14 +535,15 @@ Hue.start_reply = function (target) {
 
 // Show the reply info
 Hue.show_reply = function () {
-  Hue.el("#input_reply_cancel").classList.remove("nodisplay")
+  Hue.el("#input_reply_profilepic").src = Hue.get_profilepic(Hue.reply_user_id)
+  Hue.el("#input_reply_container").classList.remove("nodisplay")
   Hue.reply_active = true
   Hue.focus_input()
 }
 
 // Hide the reply info
 Hue.hide_reply = function () {
-  Hue.el("#input_reply_cancel").classList.add("nodisplay")
+  Hue.el("#input_reply_container").classList.add("nodisplay")
   Hue.reply_active = false
   Hue.check_footer_expand()
   Hue.update_input_placeholder()
