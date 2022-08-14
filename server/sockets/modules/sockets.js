@@ -88,7 +88,7 @@ module.exports = function (Hue) {
           .length
       }
 
-      if (num > Hue.config.max_sockets_per_user) {
+      if (num > Hue.sconfig.max_sockets_per_user) {
         return true
       } else {
         return false

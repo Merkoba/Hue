@@ -1,46 +1,148 @@
+# >The name of the main room. This is the room that will be joined 
+# when going to the root url. This room is created automatically when first joined
 main_room_id: "main"
+
+# Public location to access the media files
 public_media_directory: "/static"
+
+# The location of the loading image when the profile image is changing
 profilepic_loading_url: "/static/assets/img/profilepic_loading.png"
+
+# The location of the loading image when the background image is changing
 background_loading_url: "/static/assets/img/image_loading.jpg"
+
+# Image to show to video element when there's no video image loaded
 video_poster: "/static/assets/img/video_poster.jpg"
+
+# Separator used to separate the room name and the topic in the browser tab's title
 title_separator: " - "
+
+# The default tab title of a room. 
+# This appears before the room information has been gathered to set the first title
 default_title: "Hue | Chat room with images and tv"
+
+# The shown topic when the room is created
 default_topic: "No topic"
+
+# The amount of most recent images to have stored in a room
 max_stored_image: 50
+
+# The amount of most recent videos to have stored in a room
 max_stored_tv: 50
+
+# How many items are stored in images_changed and tv_changed
 media_changed_crop_limit: 500
+
+# How many notifications after the notifications items get cropped 
+# in the notifications window
 notifications_crop_limit: 500
+
+# Max number of whisper items to show
 whispers_crop_limit: 500
+
+# Max number of messages to keep on the client
 chat_crop_limit: 500
+
+# Max number of recent input history items saved
 input_history_crop_limit: 100
+
+# Automatically close notifications after these ms
 notifications_close_delay: 5000
+
+# Max length for whisper messages
 max_whispers_post_length: 2000
+
+# Maximum displayed media info
 max_media_info_length: 60
+
+# Maximum amount of text for something typed in the input box
+# If something bigger is inputed it will get cropped to meet this limit
 max_input_length: 2500
+
+# The maximum length of a room topic. If a longer topic is tried to be set 
+# with /topic it will get cropped to meet this limit. /topicadd and 
+# /topicaddstart will throw an error if there is no more room to add to the topic
 max_topic_length: 2000
+
+# Maximum length for usernames
 max_username_length: 20
+
+# This is a safety used when validating usernames on login
+# In case max or min username length configurations where changed 
+# when there were already users registered, this arbitrary big number 
+# is used to check something huge is not being inputed instead of checking 
+# with the username length configuration options, to avoid old username 
+# from not being able to login. This likely shouldn't be changed
 max_max_username_length: 300
+
+# Minimum length for passwords. It must be at least 1
 min_password_length: 3
+
+# Maximum length for passwords
 max_password_length: 200
+
+# Same as max_max_username_length but for passwords
 max_max_password_length: 2000
+
+# Max length for room names
 max_room_name_length: 100
+
+# Maximum amount of messages to store in room logs
+# It stores chat messages and some notifications like image uploads and tv changes
 max_log_messages: 500
+
+# Maximum amount of messages to store in room admin logs
+# It stores information about the most recent admin activity
 max_admin_log_messages: 250
+
+# How big the message board is. How many posts it stores
 max_message_board_posts: 250
+
+# How long message board posts can be
 max_message_board_post_length: 2000
+
+# The size of file slices to be uploaded
 upload_slice_size: 500000
+
+# Maximum length of a media source urls
 max_media_source_length: 800
+
+# Maximum length of comments on media change
 max_media_comment_length: 200
+
+# Maximum length for the tab's title. Title consists of "room_name - topic" 
+# and is set automatically. If title is bigger it gets cropped
 max_title_length: 280
+
+# Maximum image size allowed in KB. This is checked both in the client and server
+# If the image is bigger it won't be uploaded
 max_image_size: 55555
+
+# Maximum video size allowed in KB. This is checked both in the client and server
+# If the video is bigger it won't be uploaded
 max_tv_size: 55555
+
+# Maximum image size allowed for profile images
 max_profilepic_size: 1111
+
+# Maximum size allowed for user audio clips
 max_audioclip_size: 9999
+
+# Whether Youtube features are enabled
 youtube_enabled: true
+
+# Whether Imgur features are enabled
 imgur_enabled: true
+
+# Whether embedded iframes are enabled
 iframes_enabled: true
+
+# Url lengths beyond this are ignored by the system
+# This is to avoid triggering actions on urls 
+# that are likely wrong or meant as an attack
 max_url_length: 1000
 
+# Default user setting values
 settings_default_highlight_current_username: true
 settings_default_case_insensitive_username_highlights: true
 settings_default_open_whispers_automatically: true
@@ -54,6 +156,7 @@ settings_default_stop_radio_on_tv_play: true
 settings_default_stop_tv_on_radio_play: true
 settings_default_confirm_on_close: false
 
+# Default room state values
 room_state_default_image_enabled: true
 room_state_default_tv_enabled: true
 room_state_default_last_highlight_date: 0
@@ -71,37 +174,74 @@ room_state_default_media_info_enabled: true
 room_state_default_notifications_enabled: true
 room_state_default_last_radio_name: ""
 
+# Maximum difference in time between a message and and another 
+# from the same user to be displayed within the same post
 max_same_post_diff: 300000
+
+# Maximum messages within a post
+# After this a new post is displayed
 max_same_post_messages: 20
+
+# Throttle on socket emits on the client
 socket_emit_throttle: 10
 
+# Generic limits used to check data length
 safe_limit_1: 100
 safe_limit_2: 500
 safe_limit_3: 1000
 safe_limit_4: 200
 
+# The diameter of the cropped profile image selected by the user
 profilepic_diameter: 300
+
+# Maximum amount of newlines allowed per message
 max_num_newlines: 100
-image_change_cooldown: 2500
-tv_change_cooldown: 2500
-max_sockets_per_user: 100
+
+# How often to check for obsolete items in the top activity bar to remove them
 activity_bar_delay: 10000
+
+# Maximum amount of top activity bar items at the same time
 max_activity_bar_items: 20
+
+# Maximum length for urls to be shown fully in window titles
+# After this they get cropped and "..." is added
 url_title_max_length: 35
+
+# Max number of whisper receivers
 max_whisper_users: 20
+
+# Character length of user bios
 max_bio_length: 500
+
+# Maximum number of linebreaks allowed in user bios
 max_bio_lines: 4
+
+# How many info popups (bottom right) can be displayed at once
+# After this, the older ones get closed
 max_info_popups: 5
+
+# The character before commands
 commands_prefix: "/"
+
+# How long the reply quote can be
 quote_max_length: 140
+
+# Max length of urls in chat
 max_displayed_url: 65
+
+# How wide usernames on the activity bar can be
 max_activity_username_length: 8
-chat_display_percentage_column: 60
-chat_display_percentage_row: 40
+
+# How long in seconds tv screen capture videos can be
 screen_capture_durations: [5, 10, 30, 60]
+
+# Quality for rendered image blobs
 image_blob_quality: 0.9
+
+# The max amount of likes a message can register
 max_likes: 100
 
+# Radio stations available
 radios: 
   - name: Radio Name
     url: https://radiourl.net

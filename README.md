@@ -1,1 +1,1 @@
-[Installation](installation.md) | [Configuration](configuration.md)
+[Installation](installation.md)

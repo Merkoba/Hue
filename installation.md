@@ -63,3 +63,13 @@ After a git pull with new changes it might be necessary to `bundle_all` again if
 If some ejs files or config files were changed it's not necessary to restart the server, since it checks automatically and reloads live. The terminal output will show messages when these get rebuilt.
 
 If other backend files changed then it's necessary to restart the server.
+
+## Join Flags
+
+"alternative" (boolean)
+>Meant to be used for bots or similar, to connect without using the normal login portal.
+
+>Failure to authenticate will result in a temporary ban to avoid abuse.
+
+"no_message_log" (boolean)
+>If true, the server will not send the message log on join, which can save some bandwidth.

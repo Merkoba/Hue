@@ -44,7 +44,7 @@ module.exports = function (Hue) {
         return
       }
   
-      if (Date.now() - media_info.date < Hue.config.tv_change_cooldown) {
+      if (Date.now() - media_info.date < Hue.sconfig.tv_change_cooldown) {
         Hue.handler.user_emit(socket, "tv_cooldown_wait", {})
         return
       }
