@@ -263,12 +263,7 @@ Hue.activate_key_detection = function () {
         return
       }
 
-      if (val) {
-        Hue.submit_input()
-      } else {
-        Hue.goto_bottom(true)
-      }
-
+      Hue.submit_input()
       e.preventDefault()
       return
     } else if (e.key === "PageUp") {

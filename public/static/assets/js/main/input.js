@@ -6,7 +6,7 @@ Hue.on_input_change = function () {
     Hue.enable_footer_expand()
   }
 
-  Hue.check_input_expand()
+  Hue.check_footer_expand()
 }
 
 // Setups events for the main input
@@ -55,12 +55,6 @@ Hue.update_input_placeholder = function () {
 
 // Clears the input
 Hue.clear_input = function () {
-  let val = Hue.get_input()
-
-  if (val) {
-    Hue.last_input_text = val
-  }
-
   Hue.change_input("")
   Hue.reset_input_history_index()
 }
@@ -102,17 +96,19 @@ Hue.input_to_end = function () {
 
 // Does a submit action from the input
 Hue.submit_input = function () {
-  let val = Hue.get_input()
+  if (!Hue.get_input()) {
+    return
+  }
 
-  if (val) {
+  if (Hue.reply_text) {
+    Hue.submit_reply()
+  } else {
     Hue.process_input({
       message: Hue.get_input()
     })
-  
+
     Hue.disable_footer_expand()
   }
-
-  Hue.last_input_text = ""
 }
 
 // Get the input value
@@ -135,11 +131,6 @@ Hue.process_input = function (args = {}) {
   }
 
   args = Object.assign(def_args, args)
-
-  if (Hue.reply_text) {
-    Hue.submit_reply()
-    return
-  }
 
   if (!args.message.trim()) {
     return
@@ -196,11 +187,11 @@ Hue.remove_last_input_word = function () {
   }
 
   input.value = new_value
-  Hue.check_input_expand()
+  Hue.check_footer_expand()
 }
 
 // Check input expand
-Hue.check_input_expand = function () {
+Hue.check_footer_expand = function () {
   if (!Hue.el("#input").value) {
     Hue.disable_footer_expand()
   }

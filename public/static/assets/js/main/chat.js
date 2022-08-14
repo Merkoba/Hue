@@ -522,6 +522,7 @@ Hue.show_reply = function (id, username, user_id, text) {
 Hue.hide_reply = function () {
   Hue.el("#input_reply_container").classList.add("nodisplay")
   Hue.reply_text = ""
+  Hue.check_footer_expand()
 }
 
 // Submit the reply window

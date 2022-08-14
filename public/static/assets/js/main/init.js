@@ -76,7 +76,6 @@ Hue.max_fresh_messages = 100
 Hue.fresh_messages_duration = 2500
 Hue.notifications_count = 0
 Hue.footer_expanded = false
-Hue.last_input_text = ""
 Hue.alert_mode = 0
 Hue.last_favicon_mode = 0
 Hue.favicon_mode = 0
