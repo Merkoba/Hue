@@ -1398,7 +1398,6 @@ a.special_link:hover {
 
 .command_book_name {
 	font-weight: bold;
-	font-size: 1.1rem;
 	flex-shrink: 0;
 	margin-right: 0.5rem;
 }
