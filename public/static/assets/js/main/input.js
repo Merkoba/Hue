@@ -50,6 +50,11 @@ Hue.update_input_placeholder = function () {
     s += `  -  ${np}`
   }
 
+  Hue.set_input_placeholder(s)
+}
+
+// Set input placeholder
+Hue.set_input_placeholder = function (s) {
   Hue.el("#input").placeholder = s
 }
 

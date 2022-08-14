@@ -495,12 +495,11 @@ Hue.start_reply = function (target) {
 
   let message = target.closest(".message")
   let unit = target.closest(".message_unit")
-  let text = Hue.remove_urls(Hue.utilz.single_space(target.textContent))
   let username = Hue.dataset(message, "username")
   let user_id = Hue.dataset(message, "user_id")
   let id = Hue.dataset(unit, "id")
 
-  if (!text || !username) {
+  if (!username) {
     return
   }
 
@@ -508,7 +507,8 @@ Hue.start_reply = function (target) {
   Hue.reply_id = id
   Hue.reply_user_id = user_id
 
-  Hue.show_reply(id, username, user_id, text)
+  Hue.show_reply()
+  Hue.set_input_placeholder(`Replying to: ${username}`)
 }
 
 // Show the reply info
@@ -523,6 +523,7 @@ Hue.hide_reply = function () {
   Hue.el("#input_reply_container").classList.add("nodisplay")
   Hue.reply_active = false
   Hue.check_footer_expand()
+  Hue.update_input_placeholder()
 }
 
 // Submit the reply window
@@ -535,13 +536,7 @@ Hue.submit_reply = function () {
     return
   }
 
-  let ans = Hue.get_message_by_id(Hue.reply_id)
-
-  if (!ans || !ans[0]) {
-    return
-  }
-
-  let otext = Hue.el(".chat_content", ans[0]).textContent
+  let otext = Hue.get_text_by_id(Hue.reply_id)
 
   if (!otext) {
     return
@@ -846,6 +841,17 @@ Hue.get_message_by_id = function (id, container = "#chat_area") {
       return [units[i], i, id]
     }
   }
+}
+
+// Get text by id
+Hue.get_text_by_id = function (id, container = "#chat_area") {
+  let ans = Hue.get_message_by_id(id)
+
+  if (!ans || !ans[0]) {
+    return ""
+  }
+
+  return Hue.el(".chat_content", ans[0]).textContent
 }
 
 // Get message
