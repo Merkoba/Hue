@@ -97,7 +97,7 @@ Hue.make_chat_message = function (args = {}) {
 
   title = `${gets} | ${title}`
 
-  fmessage = Hue.div("message chat_message user_details")
+  fmessage = Hue.create("div", "message chat_message user_details")
 
   fmessage.innerHTML = Hue.template_chat_message({
     content_classes: content_classes,
@@ -268,7 +268,7 @@ Hue.make_announcement_message = function (args = {}) {
     top_clasees += " nodisplay"
   }
 
-  let fmessage = Hue.div("message announcement message_unit")
+  let fmessage = Hue.create("div", "message announcement message_unit")
 
   fmessage.innerHTML = Hue.template_announcement_message({
     content_classes: content_classes,
@@ -721,7 +721,7 @@ Hue.stop_edit_message = function () {
   Hue.editing_message_container.style.display = "block"
   Hue.editing_message = false
   Hue.editing_message_container = false
-  Hue.editing_message_area = Hue.div()
+  Hue.editing_message_area = Hue.create("div")
 }
 
 // Submits a chat message edit
@@ -1553,7 +1553,7 @@ Hue.add_chat_spacer = function () {
     it.remove()
   })
 
-  let spacer = Hue.div("message clear_spacer")
+  let spacer = Hue.create("div", "message clear_spacer")
   Hue.el("#chat_area").append(spacer)
   Hue.goto_bottom(true)
 }
@@ -1854,7 +1854,7 @@ Hue.update_likes = function (el, likes) {
     c.innerHTML = "<div class='likes_label'>^ Likes:</div><div class='likes_items'></div>"
     for (let obj of likes) {
       let pi = Hue.get_profilepic(obj.user_id)
-      let el = Hue.div("like_container dynamic_title")
+      let el = Hue.create("div", "like_container dynamic_title")
       el.innerHTML = Hue.template_like({profilepic: pi})
 
       let nd = Hue.utilz.nice_date(obj.date)

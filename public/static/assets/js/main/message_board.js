@@ -134,7 +134,7 @@ Hue.add_post_to_message_board = function (data, edited) {
       return
     }
   } else {
-    post = Hue.div("message_board_post modal_item dynamic_title")
+    post = Hue.create("div", "message_board_post modal_item dynamic_title")
   }
 
   post.innerHTML = Hue.template_message_board_post()

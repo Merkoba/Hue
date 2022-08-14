@@ -173,7 +173,7 @@ Hue.show_admin_activity = function (messages) {
 
       let s = "<div class='admin_activity_message'></div><div class='admin_activity_date'></div>"
 
-      let el = Hue.div("modal_item admin_activity_item dynamic_title")
+      let el = Hue.create("div", "modal_item admin_activity_item dynamic_title")
       el.title = nice_date
       el.innerHTML = s
 
@@ -223,7 +223,7 @@ Hue.show_admin_list = function (data) {
   data.list.sort(Hue.compare_userlist)
 
   for (let user of data.list) {
-    let el = Hue.div("admin_list_item action")
+    let el = Hue.create("div", "admin_list_item action")
     el.innerHTML = Hue.template_admin_list_item()
 
     Hue.el(".admin_list_username", el).textContent = user.username
@@ -255,7 +255,7 @@ Hue.show_ban_list = function (data) {
   container.innerHTML = ""
 
   for (let user of data.list) {
-    let el = Hue.div("ban_list_item flex_row_center")
+    let el = Hue.create("div", "ban_list_item flex_row_center")
     el.innerHTML = Hue.template_ban_list_item()
     
     let username = Hue.el(".ban_list_username", el)

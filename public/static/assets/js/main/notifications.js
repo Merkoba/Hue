@@ -69,7 +69,7 @@ Hue.push_notification = function (args) {
     content_classes = "pointer"
   }
 
-  let item = Hue.div("notification_item modal_item dynamic_title")
+  let item = Hue.create("div", "notification_item modal_item dynamic_title")
 
   item.innerHTML = Hue.template_notification({
     content_classes: content_classes,

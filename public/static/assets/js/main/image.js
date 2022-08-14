@@ -574,8 +574,8 @@ Hue.take_screenshot = async function () {
     video: {mediaSource: "screen"}
   })
 
-  let video = document.createElement("video")
-  let canvas = document.createElement("canvas")
+  let video = Hue.create("video")
+  let canvas = Hue.create("canvas")
   let context = canvas.getContext("2d")
   video.srcObject = stream
 
@@ -600,7 +600,7 @@ Hue.take_screenshot = async function () {
 
 // Make a random image
 Hue.make_random_image = function (target) {
-  let canvas = document.createElement("canvas")
+  let canvas = Hue.create("canvas")
 
   canvas.width = 1280
   canvas.height = 1280

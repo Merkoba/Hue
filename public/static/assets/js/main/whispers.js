@@ -343,7 +343,7 @@ Hue.setup_whispers = function () {
 Hue.push_whisper = function (message, on_click, read, data) {
   let date = Date.now()
   let title = Hue.utilz.nice_date(date)
-  let item = Hue.div("whisper_item modal_item dynamic_title")
+  let item = Hue.create("div", "whisper_item modal_item dynamic_title")
 
   if (data.mode === "received") {
     item.innerHTML = Hue.template_whisper_received({
@@ -433,7 +433,7 @@ Hue.get_unread_whispers = function () {
 
 // Make whisper user
 Hue.make_whisper_user = function (user, mode, onclick) {
-  let user_el = Hue.div("user_item")
+  let user_el = Hue.create("div", "user_item")
   user_el.innerHTML = Hue.template_whisper_user()
   let profilepic = Hue.el(".show_whisper_profilepic", user_el)
 

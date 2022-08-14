@@ -53,7 +53,7 @@ Hue.generate_random_themes = function () {
   let num_col_items = 6
 
   function create_item (theme) {
-    let item = Hue.div("random_theme_item action")
+    let item = Hue.create("div", "random_theme_item action")
 
     item.style.backgroundColor = theme.bg_color
     item.style.color = theme.text_color

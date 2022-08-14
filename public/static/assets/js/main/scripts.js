@@ -8,7 +8,7 @@ Hue.load_script = function (source) {
   Hue.loginfo(`Loading script: ${source}`)
 
   return new Promise((resolve, reject) => {
-    const script = document.createElement("script")
+    const script = Hue.create("script")
     document.body.appendChild(script)
     script.onload = resolve
     script.onerror = reject

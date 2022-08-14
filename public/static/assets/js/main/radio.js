@@ -161,7 +161,7 @@ Hue.check_radio_playing = function () {
 
 // Create a radio station
 Hue.create_radio_station = function (radio) {
-  let container = Hue.div("radio_station nice_row modal_item pointer")
+  let container = Hue.create("div", "radio_station nice_row modal_item pointer")
   container.innerHTML = Hue.template_radio_station()
   
   let icon = Hue.el(".radio_station_icon", container)

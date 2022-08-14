@@ -250,7 +250,7 @@ Hue.setup_userlist_window = function () {
 
 // Fills the userlist window with user information
 Hue.update_userlist_window = function (filter_out = []) {
-  let container = Hue.div()
+  let container = Hue.create("div")
 
   for (let i = 0; i < Hue.userlist.length; i++) {
     let user = Hue.userlist[i]
@@ -260,7 +260,7 @@ Hue.update_userlist_window = function (filter_out = []) {
     }
 
     let pi = Hue.get_profilepic(user.user_id)
-    let el = Hue.div("modal_item userlist_item user_item")
+    let el = Hue.create("div", "modal_item userlist_item user_item")
     el.innerHTML = Hue.template_userlist_item({profilepic: pi})
 
     let image = Hue.el(".userlist_item_profilepic", el)
@@ -579,7 +579,7 @@ Hue.setup_show_profile = function () {
 // Stars the profile audio
 Hue.play_audioclip = function (user_id = Hue.open_profile_user_id) {
   Hue.stop_audioclip()
-  Hue.audioclip = document.createElement("audio")
+  Hue.audioclip = Hue.create("audio")
 
   Hue.audioclip.onended = function () {
     Hue.stop_audioclip()
@@ -677,7 +677,7 @@ Hue.show_profile = function (username, user_id = false) {
   Hue.el("#show_profile_edit").classList.add("nodisplay")
 
   if (user) {
-    let item = Hue.div()
+    let item = Hue.create("div")
     let nicedate = Hue.utilz.nice_date(user.date_joined)
     let timeago = Hue.utilz.timeago(user.date_joined)
     item.textContent = `Got Online: ${timeago}`
@@ -689,7 +689,7 @@ Hue.show_profile = function (username, user_id = false) {
     }
   }
 
-  let item = Hue.div()
+  let item = Hue.create("div")
   item.textContent = `ID: ${id}`
   Hue.el("#show_profile_info").append(item)
   Hue.msg_profile.set_title(username || "")

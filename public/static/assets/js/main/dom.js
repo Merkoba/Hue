@@ -73,30 +73,26 @@ Hue.dataset = function (el, value, setvalue) {
   }
 }
 
-// Create an empty div
-Hue.div = function (classes = "", id = "") {
-  let new_div = document.createElement("div")
+// Create an html element
+Hue.create = function (type, classes = "", id = "") {
+  let el = document.createElement(type)
 
   if (classes) {
     let classlist = classes.split(" ").filter(x => x != "")
   
     for (let cls of classlist) {
-      new_div.classList.add(cls)
+      el.classList.add(cls)
     }
   }
 
   if (id) {
-    new_div.id = id
+    el.id = id
   }
 
-  return new_div
+  return el
 }
 
 // Add an event listener
 Hue.ev = function (element, action, callback, extra) {
-  if (extra === undefined) {
-    element.addEventListener(action, callback)
-  } else {
-    element.addEventListener(action, callback, extra)
-  }
+  element.addEventListener(action, callback, extra)
 }

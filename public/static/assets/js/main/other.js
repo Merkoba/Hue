@@ -54,7 +54,7 @@ Hue.generate_favicon = function (mode) {
     return
   }
 
-  let canvas = document.createElement("canvas")
+  let canvas = Hue.create("canvas")
 
   canvas.height = 256
   canvas.width = 256
@@ -76,7 +76,7 @@ Hue.generate_favicon = function (mode) {
   context.fillStyle = color
   context.fillRect(center - (side / 2), center - (side / 2), side, side)
 
-  let link = Hue.el("link[rel*='icon']") || document.createElement("link")
+  let link = Hue.el("link[rel*='icon']") || Hue.create("link")
 
   link.type = "image/x-icon"
   link.rel = "shortcut icon"
