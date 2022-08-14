@@ -1289,30 +1289,6 @@ a.special_link:hover {
 	background-color: var(--altcolor);
 }
 
-#reply_text {
-	width: 99%;
-	text-align: center;
-	font-size: 1rem;
-	resize: none;
-	color: var(--text_color);
-	background-color: transparent;
-	padding: 0.25rem;
-	border: 1px solid var(--altbackground);
-	margin-top: 1rem;
-	outline: none;
-}
-
-#reply_input {
-	margin-top: 1rem;
-	text-align: center;
-	width: 99%;
-	resize: none;
-}
-
-#reply_profilepic {
-	margin-right: 0.5rem;
-}
-
 .chat_quote {
 	padding: 0.25em;
 	margin-bottom: 0.25em;
