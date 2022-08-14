@@ -2,6 +2,7 @@
 const fs = require("fs")
 const path = require("path")
 const tar = require("tar")
+const YAML = require("yaml")
 
 const utilz = require("../public/static/assets/js/libs/utilz.js")()
 
@@ -17,10 +18,10 @@ function normalizePort(val) {
 	}
 }
 
-const config_path = path.join(__dirname, "../config/config.json")
-const user_config_path = path.join(__dirname, "../config/user_config.json")
-const sconfig_path = path.join(__dirname, "../config/config.secret.json")
-const user_sconfig_path = path.join(__dirname, "../config/user_config.secret.json")
+const config_path = path.join(__dirname, "../config/config.yml")
+const user_config_path = path.join(__dirname, "../config/user_config.yml")
+const sconfig_path = path.join(__dirname, "../config/config.secret.yml")
+const user_sconfig_path = path.join(__dirname, "../config/user_config.secret.yml")
 const config = {}
 const sconfig = {}
 const config_check_delay = 5000
@@ -30,18 +31,18 @@ const banlist = {}
 let config_mtime = ""
 
 function build_config() {
-	let xconfig = JSON.parse(fs.readFileSync(config_path, "utf8"))
-	let xsconfig = JSON.parse(fs.readFileSync(sconfig_path, "utf8"))
+	let xconfig = YAML.parse(fs.readFileSync(config_path, "utf8"))
+	let xsconfig = YAML.parse(fs.readFileSync(sconfig_path, "utf8"))
 
 	if (fs.existsSync(user_config_path)) {
-		let user_config = JSON.parse(fs.readFileSync(user_config_path, "utf8"))
+		let user_config = YAML.parse(fs.readFileSync(user_config_path, "utf8"))
 		Object.assign(xconfig, user_config)
 	} else {
 		utilz.loginfo("No user config file found")
 	}
 
 	if (fs.existsSync(user_sconfig_path)) {
-		let user_sconfig = JSON.parse(fs.readFileSync(user_sconfig_path, "utf8"))
+		let user_sconfig = YAML.parse(fs.readFileSync(user_sconfig_path, "utf8"))
 		Object.assign(xsconfig, user_sconfig)
 	} else {
 		utilz.loginfo("No user secret config file found")

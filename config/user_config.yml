@@ -1,0 +1,30 @@
+radios:
+  - name: Merkoba FM
+    url: https://radio.merkoba.com:8765/radio.ogg
+
+  - name: Lain Cyberia
+    url: https://lainon.life/radio/cyberia.mp3
+
+  - name: The Beat
+    url: http://c5.radioboss.fm:8024/autodj
+
+  - name: AMP IDM
+    url: http://radio.anothermusicproject.com:8000/idm
+
+  - name: Channel 1
+    url: http://stream.tilos.hu/karolyi-chill-eclectic
+
+  - name: Ruzafa
+    url: http://online.radioruzafa.com:8000/stream
+
+  - name: Mabu Beatz
+    url: http://audio.mabu-beatz-radio.com:8002/dub
+
+  - name: M1xer
+    url: http://fra-ranger01.dedicateware.com:18016/m1xer
+
+  - name: Soul Live
+    url: http://radio.soullive.ru:8000/soul
+
+  - name: Jackson Radio
+    url: http://ice.streams.ovh:1100/stream
