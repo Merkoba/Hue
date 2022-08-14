@@ -45,6 +45,10 @@ Hue.setup_radio = function () {
       Hue.play_first_radio()
     }
   })
+
+  Hue.ev(Hue.el("#footer_radio_container"), "mouseenter", function (e) {
+    e.target.title = Hue.playing_radio.name
+  })
 }
 
 // Play or pause radio
