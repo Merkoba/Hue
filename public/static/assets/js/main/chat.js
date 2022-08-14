@@ -506,6 +506,7 @@ Hue.start_reply = function (target) {
   Hue.reply_username = username
   Hue.reply_id = id
   Hue.reply_user_id = user_id
+  Hue.reply_target = target
 
   Hue.show_reply()
   Hue.set_input_placeholder(`Replying to: ${username}`)
@@ -536,7 +537,7 @@ Hue.submit_reply = function () {
     return
   }
 
-  let otext = Hue.get_text_by_id(Hue.reply_id)
+  let otext = Hue.remove_urls(Hue.utilz.single_space(Hue.reply_target.textContent))
 
   if (!otext) {
     return
@@ -841,17 +842,6 @@ Hue.get_message_by_id = function (id, container = "#chat_area") {
       return [units[i], i, id]
     }
   }
-}
-
-// Get text by id
-Hue.get_text_by_id = function (id, container = "#chat_area") {
-  let ans = Hue.get_message_by_id(id)
-
-  if (!ans || !ans[0]) {
-    return ""
-  }
-
-  return Hue.el(".chat_content", ans[0]).textContent
 }
 
 // Get message
