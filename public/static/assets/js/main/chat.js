@@ -479,11 +479,28 @@ Hue.insert_message = function (args = {}) {
 // Setup reply
 Hue.setup_reply = function () {
   Hue.ev(Hue.el("#input_reply"), "click", function () {
-    Hue.show_info(`${Hue.reply_username}: ${Hue.reply_text}`)
+    Hue.el("#reply_info_profilepic").src = Hue.get_profilepic(Hue.reply_user_id)
+    Hue.el("#reply_info_username").textContent = Hue.reply_username
+    Hue.el("#reply_info_text").textContent = Hue.reply_text
+    Hue.msg_reply_info.show()
   })
 
   Hue.ev(Hue.el("#input_reply_close"), "click", function () {
     Hue.hide_reply()
+  })
+
+  let pf = Hue.el("#reply_info_profilepic")
+
+  Hue.ev(pf, "error", function () {
+    Hue.fallback_profilepic(this)
+  })
+
+  Hue.ev(pf, "click", function () {
+    Hue.show_profile(Hue.reply_username, Hue.reply_user_id)
+  })
+
+  Hue.ev(Hue.el("#reply_info_username"), "click", function () {
+    Hue.show_profile(Hue.reply_username, Hue.reply_user_id)
   })
 }
 
