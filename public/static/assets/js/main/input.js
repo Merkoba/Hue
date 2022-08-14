@@ -100,7 +100,7 @@ Hue.submit_input = function () {
     return
   }
 
-  if (Hue.reply_text) {
+  if (Hue.reply_active) {
     Hue.submit_reply()
   } else {
     Hue.process_input({

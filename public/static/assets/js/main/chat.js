@@ -479,35 +479,18 @@ Hue.insert_message = function (args = {}) {
 // Setup reply
 Hue.setup_reply = function () {
   Hue.ev(Hue.el("#input_reply"), "click", function () {
-    Hue.el("#reply_info_profilepic").src = Hue.get_profilepic(Hue.reply_user_id)
-    Hue.el("#reply_info_username").textContent = Hue.reply_username
-    Hue.el("#reply_info_text").textContent = Hue.reply_text
-    Hue.msg_reply_info.show()
+    Hue.jump_to_chat_message(Hue.reply_message_id, true)
   })
 
   Hue.ev(Hue.el("#input_reply_close"), "click", function () {
     Hue.hide_reply()
-  })
-
-  let pf = Hue.el("#reply_info_profilepic")
-
-  Hue.ev(pf, "error", function () {
-    Hue.fallback_profilepic(this)
-  })
-
-  Hue.ev(pf, "click", function () {
-    Hue.show_profile(Hue.reply_username, Hue.reply_user_id)
-  })
-
-  Hue.ev(Hue.el("#reply_info_username"), "click", function () {
-    Hue.show_profile(Hue.reply_username, Hue.reply_user_id)
   })
 }
 
 // Prepare data to show the reply window
 Hue.start_reply = function (target) {
   if (target.tagName === "A") {
-    return false
+    return
   }
 
   let message = target.closest(".message")
@@ -518,38 +501,50 @@ Hue.start_reply = function (target) {
   let id = Hue.dataset(unit, "id")
 
   if (!text || !username) {
-    return false
+    return
   }
 
-  Hue.show_reply(id, username, user_id, text)
-  return true
-}
-
-// Show the reply info
-Hue.show_reply = function (id, username, user_id, text) {
-  Hue.reply_text = text
   Hue.reply_username = username
   Hue.reply_id = id
   Hue.reply_user_id = user_id
+  Hue.reply_message_id = Hue.dataset(message, "message_id")
+
+  Hue.show_reply(id, username, user_id, text)
+}
+
+// Show the reply info
+Hue.show_reply = function () {
   Hue.el("#input_reply_container").classList.remove("nodisplay")
+  Hue.reply_active = true
   Hue.focus_input()
 }
 
 // Hide the reply info
 Hue.hide_reply = function () {
   Hue.el("#input_reply_container").classList.add("nodisplay")
-  Hue.reply_text = ""
+  Hue.reply_active = false
   Hue.check_footer_expand()
 }
 
 // Submit the reply window
 Hue.submit_reply = function () {
-  let otext = Hue.reply_text
   Hue.hide_reply()
 
   let reply = Hue.get_input()
 
   if (!reply) {
+    return
+  }
+
+  let ans = Hue.get_message_by_id(Hue.reply_id)
+
+  if (!ans || !ans[0]) {
+    return
+  }
+
+  let otext = Hue.el(".chat_content", ans[0]).textContent
+
+  if (!otext) {
     return
   }
 
@@ -854,6 +849,11 @@ Hue.get_message_by_id = function (id) {
   }
 }
 
+// Get message
+Hue.get_message = function (message_id, container = "#chat_area") {
+  return Hue.el(`${container} > .message_id_${message_id}`)
+}
+
 // Get message container by id
 Hue.get_message_container_by_id = function (id) {
   let unit = Hue.get_message_by_id(id)
@@ -956,7 +956,7 @@ Hue.jump_to_chat_message = function (message_id, highlight, container = "#chat_a
     return
   }
 
-  let el = Hue.el(`${container} > .message_id_${message_id}`)
+  let el = Hue.get_message(message_id, container)
 
   if (!el) {
     return

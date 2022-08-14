@@ -105,7 +105,7 @@ Hue.command_book_created = false
 Hue.last_chat_scrolltop = 0
 Hue.radio_disabled = false
 Hue.hide_radio_delay = 1000
-Hue.reply_text = ""
+Hue.reply_active = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

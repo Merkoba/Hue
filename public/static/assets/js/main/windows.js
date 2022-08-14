@@ -77,13 +77,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_reply_info = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: "reply_info",
-      window_width: "28rem"
-    })
-  )
-
   Hue.msg_admin_list = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: "admin_list"
@@ -584,7 +577,6 @@ Hue.start_msg = function () {
   Hue.msg_profilepic_select.set(Hue.template_profilepic_select())
   Hue.msg_audioclip_select.set(Hue.template_audioclip_select())
   Hue.msg_link_background.set(Hue.template_link_background())
-  Hue.msg_reply_info.set(Hue.template_reply_info())
   Hue.msg_admin_list.set(Hue.template_admin_list())
   Hue.msg_ban_list.set(Hue.template_ban_list())
   Hue.msg_open_room.set(Hue.template_open_room())
@@ -862,7 +854,6 @@ Hue.start_msg = function () {
   Hue.msg_command_book.set_title("Command Book")
   Hue.msg_user_profile.set_title("User Profile")
   Hue.msg_change_role.set_title("Change Role")
-  Hue.msg_reply_info.set_title("Replying to...")
 }
 
 // This is called after a modal is shown
