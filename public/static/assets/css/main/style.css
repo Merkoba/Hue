@@ -358,12 +358,11 @@ html {
 	opacity: 0.8;
 }
 
-.input_info {
+#input_reply_cancel {
 	border: 1px solid grey;
 	padding-left: 0.25rem;
 	padding-right: 0.25rem;
-	margin-left: 0.1rem;
-	margin-right: 0.1rem;
+	margin-left: 0.25rem;
 }
 
 #input_reply_container {

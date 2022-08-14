@@ -478,11 +478,7 @@ Hue.insert_message = function (args = {}) {
 
 // Setup reply
 Hue.setup_reply = function () {
-  Hue.ev(Hue.el("#input_reply"), "click", function () {
-    Hue.jump_to_chat_message_unit(Hue.reply_id, true)
-  })
-
-  Hue.ev(Hue.el("#input_reply_close"), "click", function () {
+  Hue.ev(Hue.el("#input_reply_cancel"), "click", function () {
     Hue.hide_reply()
   })
 }
