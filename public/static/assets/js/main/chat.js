@@ -970,37 +970,6 @@ Hue.jump_to_chat_message = function (message_id, highlight, container = "#chat_a
   }
 }
 
-// Jump to a message unit
-Hue.jump_to_chat_message_unit = function (id, highlight, container = "#chat_area") {
-  if (!id) {
-    return
-  }
-
-  let ans = Hue.get_message_by_id(id, container)
-
-  if (!ans || !ans[0]) {
-    return
-  }
-
-  let el = ans[0]
-
-  el.closest(".message").scrollIntoView({
-    block: "center"
-  })
-
-  if (highlight) {
-    el.classList.add("fresh_message")
-
-    setTimeout(function () {
-      el.classList.remove("fresh_message")
-    }, Hue.fresh_messages_duration)
-  }
-
-  if (container === "#chat_area") {
-    Hue.close_all_modals()
-  }
-}
-
 // What to do after receiving a chat message from the server
 Hue.on_chat_message = function (data) {
   Hue.make_chat_message(data)
