@@ -479,7 +479,7 @@ Hue.insert_message = function (args = {}) {
 // Setup reply
 Hue.setup_reply = function () {
   Hue.ev(Hue.el("#input_reply"), "click", function () {
-    Hue.jump_to_chat_message(Hue.reply_message_id, true)
+    Hue.jump_to_chat_message_unit(Hue.reply_id, true)
   })
 
   Hue.ev(Hue.el("#input_reply_close"), "click", function () {
@@ -507,7 +507,6 @@ Hue.start_reply = function (target) {
   Hue.reply_username = username
   Hue.reply_id = id
   Hue.reply_user_id = user_id
-  Hue.reply_message_id = Hue.dataset(message, "message_id")
 
   Hue.show_reply(id, username, user_id, text)
 }
@@ -833,12 +832,12 @@ Hue.delete_messages_below = function (id) {
 }
 
 // Get message by id
-Hue.get_message_by_id = function (id) {
+Hue.get_message_by_id = function (id, container = "#chat_area") {
   if (!id) {
     return
   }
 
-  let units = Hue.els("#chat_area .message_unit")
+  let units = Hue.els(`${container} .message_unit`)
 
   for (let i=0; i<units.length; i++) {
     let uid = Hue.dataset(units[i], "id")
@@ -963,6 +962,37 @@ Hue.jump_to_chat_message = function (message_id, highlight, container = "#chat_a
   }
 
   el.scrollIntoView({
+    block: "center"
+  })
+  
+  if (highlight) {
+    el.classList.add("fresh_message")
+
+    setTimeout(function () {
+      el.classList.remove("fresh_message")
+    }, Hue.fresh_messages_duration)
+  }
+
+  if (container === "#chat_area") {
+    Hue.close_all_modals()
+  }
+}
+
+// Jump to a message unit
+Hue.jump_to_chat_message_unit = function (id, highlight, container = "#chat_area") {
+  if (!id) {
+    return
+  }
+
+  let ans = Hue.get_message_by_id(id, container)
+
+  if (!ans || !ans[0]) {
+    return
+  }
+
+  let el = ans[0]
+
+  el.closest(".message").scrollIntoView({
     block: "center"
   })
   
