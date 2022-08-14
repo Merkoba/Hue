@@ -309,7 +309,11 @@ Hue.activate_key_detection = function () {
         if (Hue.get_input()) {
           Hue.remove_last_input_word()
         } else {
-          Hue.goto_bottom(true)
+          if (Hue.chat_scrolled) {
+            Hue.goto_bottom(true)
+          } else {
+            Hue.hide_reply()
+          }
         }
       }
     }
