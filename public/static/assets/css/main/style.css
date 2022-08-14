@@ -1286,6 +1286,7 @@ a.special_link:hover {
 	padding: 0.25rem;
 	border: 1px solid var(--altbackground);
 	margin-top: 1rem;
+	outline: none;
 }
 
 #reply_input {
