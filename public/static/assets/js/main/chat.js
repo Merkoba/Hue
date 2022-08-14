@@ -476,10 +476,21 @@ Hue.insert_message = function (args = {}) {
   }
 }
 
+// Get reply text
+Hue.get_reply_text = function () {
+  return Hue.remove_urls(Hue.utilz.single_space(Hue.reply_target.textContent)) || ""
+}
+
 // Setup reply
 Hue.setup_reply = function () {
-  Hue.ev(Hue.el("#input_reply_cancel"), "click", function () {
+  let cancel = Hue.el("#input_reply_cancel")
+
+  Hue.ev(cancel, "click", function () {
     Hue.hide_reply()
+  })
+
+  Hue.ev(cancel, "mouseenter", function (e) {
+    e.target.title = `${Hue.reply_username}: ${Hue.get_reply_text()}`
   })
 }
 
@@ -510,14 +521,14 @@ Hue.start_reply = function (target) {
 
 // Show the reply info
 Hue.show_reply = function () {
-  Hue.el("#input_reply_container").classList.remove("nodisplay")
+  Hue.el("#input_reply_cancel").classList.remove("nodisplay")
   Hue.reply_active = true
   Hue.focus_input()
 }
 
 // Hide the reply info
 Hue.hide_reply = function () {
-  Hue.el("#input_reply_container").classList.add("nodisplay")
+  Hue.el("#input_reply_cancel").classList.add("nodisplay")
   Hue.reply_active = false
   Hue.check_footer_expand()
   Hue.update_input_placeholder()
@@ -533,7 +544,7 @@ Hue.submit_reply = function () {
     return
   }
 
-  let otext = Hue.remove_urls(Hue.utilz.single_space(Hue.reply_target.textContent))
+  let otext = Hue.get_reply_text()
 
   if (!otext) {
     return

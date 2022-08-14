@@ -365,11 +365,6 @@ html {
 	margin-left: 0.25rem;
 }
 
-#input_reply_container {
-	display: flex;
-	flex-direction: row;
-}
-
 .scroller_container {
 	position: absolute;
 	left: 0;
@@ -1375,10 +1370,6 @@ a.special_link:hover {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
-}
-
-.show_message_reply_with_spacing {
-	margin-bottom: 0.4rem;
 }
 
 .full_width {
