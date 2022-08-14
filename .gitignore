@@ -1,6 +1,4 @@
 /config/user_config.json
-/config/user_config.yml
-/config/user_config.secret.yml
 /config/user_config.secret.json
 /config/banlist.json
 
