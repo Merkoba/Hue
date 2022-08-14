@@ -478,7 +478,14 @@ Hue.insert_message = function (args = {}) {
 
 // Get reply text
 Hue.get_reply_text = function () {
-  return Hue.remove_urls(Hue.utilz.single_space(Hue.reply_target.textContent)) || ""
+  let ans = Hue.get_message_by_id(Hue.reply_id)
+
+  if (!ans || !ans[0]) {
+    return ""
+  }
+
+  let text = Hue.el(".reply_message", ans[0]).textContent 
+  return Hue.remove_urls(Hue.utilz.single_space(text)) || ""
 }
 
 // Setup reply
@@ -513,7 +520,6 @@ Hue.start_reply = function (target) {
   Hue.reply_username = username
   Hue.reply_id = id
   Hue.reply_user_id = user_id
-  Hue.reply_target = target
 
   Hue.show_reply()
   Hue.set_input_placeholder(`Replying to: ${username}`)
