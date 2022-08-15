@@ -287,7 +287,7 @@ Hue.activate_key_detection = function () {
         Hue.scroll_up()
         e.preventDefault()
       } else {
-        Hue.select_message("up")
+        Hue.edit_last_message()
         e.preventDefault()
       }
 
