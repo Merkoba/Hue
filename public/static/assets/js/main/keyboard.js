@@ -285,8 +285,10 @@ Hue.activate_key_detection = function () {
         e.preventDefault()
       } else if (Hue.chat_scrolled) {
         Hue.scroll_up()
+        e.preventDefault()
       } else {
-        Hue.edit_last_message()
+        Hue.select_message("up")
+        e.preventDefault()
       }
 
       return
