@@ -175,7 +175,7 @@ Hue.make_chat_message = function (args = {}) {
   Hue.dataset(fmessage, "date", d)
   Hue.dataset(fmessage, "highlighted", highlighted)
   Hue.dataset(fmessage, "mode", "chat")
-
+  
   let content_container = Hue.el(".chat_content_container", fmessage)
   Hue.dataset(content_container, "id", args.id)
   Hue.dataset(content_container, "edited", args.edited)
@@ -185,6 +185,7 @@ Hue.make_chat_message = function (args = {}) {
   Hue.dataset(content_container, "original_message", args.message)
   Hue.dataset(content_container, "otitle", title)
   Hue.dataset(content_container, "username", args.username)
+  Hue.dataset(content_container, "user_id", args.user_id)
 
   args.likes = args.likes || []
   Hue.dataset(content_container, "likes", args.likes)
@@ -235,7 +236,7 @@ Hue.make_announcement_message = function (args = {}) {
   args = Object.assign(def_args, args)
 
   let is_media = args.type === "image_change" || args.type === "tv_change"
-  let content_classes = "announcement_content unit_text"
+  let content_classes = "announcement_content unit_text unit_data_container"
   let brk_classes = "brk announcement_brk"
   let highlighted = false
 
@@ -627,7 +628,8 @@ Hue.start_edit = function (unit) {
   Hue.edit_container = unit.closest(".message")
   Hue.edit_unit = unit
   Hue.do_unselect_message()
-  Hue.change_input(unit.textContent.trim())
+  let original_message = Hue.dataset(unit.closest(".unit_data_container"), "original_message")
+  Hue.change_input(original_message)
   Hue.hide_reply()
   Hue.show_edit()
 }
@@ -1876,14 +1878,14 @@ Hue.do_unselect_message = function () {
 
 // Selected message action
 Hue.selected_message_action = function () {
-  let message = Hue.selected_message.closest(".message")
-  let user_id = Hue.dataset(message, "user_id")
+  let unit_data = Hue.el_or_self(".unit_data_container", Hue.selected_message)
+  let unit_text = Hue.el_or_self(".unit_text", Hue.selected_message)
+  let user_id = Hue.dataset(unit_data, "user_id")
 
   if (user_id === Hue.user_id) {
-    Hue.start_edit(Hue.el_or_self(".unit_text", Hue.selected_message))
+    Hue.start_edit(unit_text)
   } else {
-    let container = Hue.el_or_self(".message_unit", message)
-    Hue.start_reply(container)
+    Hue.start_reply(unit_text)
   }
 
   Hue.do_unselect_message()
