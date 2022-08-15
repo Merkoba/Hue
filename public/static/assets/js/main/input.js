@@ -54,7 +54,9 @@ Hue.set_input_placeholder = function (s) {
 
 // Clears the input
 Hue.clear_input = function () {
-  Hue.change_input("")
+  if (Hue.get_input() !== "") {
+    Hue.change_input("")
+  }
 }
 
 // Changes the input

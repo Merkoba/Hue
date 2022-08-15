@@ -294,6 +294,8 @@ Hue.activate_key_detection = function () {
           Hue.cancel_reply()
         } else if (Hue.edit_active) {
           Hue.cancel_edit()
+        } else {
+          Hue.clear_input()
         }
       }
     }
