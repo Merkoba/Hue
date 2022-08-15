@@ -1854,7 +1854,7 @@ Hue.get_num_message_units = function (unit) {
 // Select message unit
 Hue.select_unit = function (unit) {
   unit.classList.add("selected_message")
-  unit.scrollIntoView({block: "center"})
+  unit.scrollIntoView({block: "center", behavior: "smooth"})
   Hue.selected_message = unit
   Hue.unselect_message()
 }
