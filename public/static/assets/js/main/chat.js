@@ -623,7 +623,7 @@ Hue.setup_edit = function () {
 }
 
 // Starts chat message editing
-Hue.edit_message = function (unit) {
+Hue.start_edit = function (unit) {
   Hue.edit_container = unit.closest(".message")
   Hue.edit_unit = unit
   Hue.do_unselect_message()
@@ -1880,7 +1880,7 @@ Hue.selected_message_action = function () {
   let user_id = Hue.dataset(message, "user_id")
 
   if (user_id === Hue.user_id) {
-    Hue.edit_message(Hue.el_or_self(".unit_text", Hue.selected_message))
+    Hue.start_edit(Hue.el_or_self(".unit_text", Hue.selected_message))
   } else {
     let container = Hue.el_or_self(".message_unit", message)
     Hue.start_reply(container)

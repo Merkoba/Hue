@@ -64,7 +64,7 @@ Hue.show_chat_context_menu = function (e, is_main) {
       text: "Edit",
       action: function () {
         let el = Hue.el(".unit_text", e.target.closest(".message_unit"))
-        Hue.edit_message(el)
+        Hue.start_edit(el)
       }
     })
   }
