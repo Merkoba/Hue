@@ -269,13 +269,7 @@ Hue.activate_key_detection = function () {
     } else if (e.key === "PageDown") {
       Hue.scroll_down()
     } else if (e.key === "ArrowUp") {
-      if (Hue.footer_expanded) {
-        return
-      }
-
-      if (e.shiftKey) {
-        Hue.restore_input()
-        e.preventDefault()
+      if (e.shiftKey || Hue.footer_expanded) {
         return
       }
 
@@ -325,7 +319,7 @@ Hue.activate_key_detection = function () {
     if (!Hue.started) {
       return false
     }
-    
+
     if (e.target.closest(".filter_input")) {
       Hue.modal_filter()
     }
