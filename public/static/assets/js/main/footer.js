@@ -73,7 +73,7 @@ Hue.after_footer_expand_change = function () {
   Hue.footer_expanded = !Hue.footer_expanded
   Hue.fix_frames()
 
-  if (!Hue.get_input().trim()) {
+  if (Hue.input_has_value(true)) {
     Hue.clear_input()
   }
 }

@@ -311,8 +311,20 @@ Hue.activate_key_detection = function () {
             Hue.restore_input()
           }
         }
+
+        e.preventDefault()
+        return
+      }        
+    } else if (e.key === "Backspace") {
+      if (Hue.footer_expanded) {
+        if (!Hue.input_has_value()) {
+          Hue.disable_footer_expand()
+          e.preventDefault()
+        }
+        
+        return
       }
-    }
+    }    
   })
 
   Hue.ev(document, "input", function (e) {
