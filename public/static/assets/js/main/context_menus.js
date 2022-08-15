@@ -63,7 +63,7 @@ Hue.show_chat_context_menu = function (e, is_main) {
     items.push({
       text: "Edit",
       action: function () {
-        let el = Hue.el(".edit_message", e.target.closest(".message_unit"))
+        let el = Hue.el(".unit_text", e.target.closest(".message_unit"))
         Hue.edit_message(el)
       }
     })

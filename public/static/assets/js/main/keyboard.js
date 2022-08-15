@@ -291,18 +291,14 @@ Hue.activate_key_detection = function () {
       return
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {
-        if (Hue.get_input()) {
-          Hue.remove_last_input_word()
-        } else {
-          if (Hue.selected_message) {
-            Hue.do_unselect_message()
-          } else if (Hue.chat_scrolled) {
-            Hue.goto_bottom(true)
-          } else if (Hue.reply_active) {
-            Hue.hide_reply()
-          } else if (Hue.edit_active) {
-            Hue.hide_edit()
-          }
+        if (Hue.selected_message) {
+          Hue.do_unselect_message()
+        } else if (Hue.chat_scrolled) {
+          Hue.goto_bottom(true)
+        } else if (Hue.reply_active) {
+          Hue.hide_reply()
+        } else if (Hue.edit_active) {
+          Hue.hide_edit()
         }
       }
     }
