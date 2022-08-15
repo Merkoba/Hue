@@ -61,4 +61,9 @@ Hue.create_debouncers = function () {
   Hue.modal_filter = Hue.create_debouncer(function (file) {
     Hue.do_modal_filter()
   }, Hue.filter_delay)
+
+  // Unselect message debouncer
+  Hue.unselect_message = Hue.create_debouncer(function (file) {
+    Hue.do_unselect_message()
+  }, Hue.unselect_delay)
 }

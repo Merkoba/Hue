@@ -1916,3 +1916,7 @@ pre {
 	width: 100%;
 	text-align: center;
 }
+
+.selected_message {
+	outline: 1px solid var(--text_color_a);
+}

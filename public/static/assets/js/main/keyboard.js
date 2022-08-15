@@ -33,13 +33,13 @@ Hue.activate_key_detection = function () {
         Hue.stop_edit_message()
         e.preventDefault()
       } else if (e.key === "ArrowUp") {
-        let res = Hue.handle_edit_direction()
+        let res = Hue.handle_edit_direction("up")
 
         if (res) {
           e.preventDefault()
         }
       } else if (e.key === "ArrowDown") {
-        let res = Hue.handle_edit_direction(true)
+        let res = Hue.handle_edit_direction("down")
 
         if (res) {
           e.preventDefault()
@@ -249,6 +249,12 @@ Hue.activate_key_detection = function () {
     Hue.focus_input()
 
     if (e.key === "Enter") {
+      if (Hue.selected_message) {
+        Hue.selected_message_action()
+        e.preventDefault()
+        return
+      }
+
       let val = Hue.get_input()
 
       if (e.shiftKey) {
@@ -283,11 +289,8 @@ Hue.activate_key_detection = function () {
       if (e.shiftKey) {
         Hue.input_history_change("up")
         e.preventDefault()
-      } else if (Hue.chat_scrolled) {
-        Hue.scroll_up()
-        e.preventDefault()
       } else {
-        Hue.edit_last_message()
+        Hue.select_message("up")
         e.preventDefault()
       }
 
@@ -301,10 +304,10 @@ Hue.activate_key_detection = function () {
         Hue.input_history_change("down")
         e.preventDefault()
       } else {
-        Hue.scroll_down()
+        Hue.select_message("down")
+        e.preventDefault()
       }
 
-      e.preventDefault()
       return
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {
@@ -313,6 +316,8 @@ Hue.activate_key_detection = function () {
         } else {
           if (Hue.chat_scrolled) {
             Hue.goto_bottom(true)
+          } else if (Hue.selected_message) {
+            Hue.do_unselect_message()
           } else {
             Hue.hide_reply()
           }

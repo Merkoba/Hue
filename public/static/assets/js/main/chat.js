@@ -617,65 +617,20 @@ Hue.focus_edit_area = function () {
 
 // Handles direction on Up and Down keys
 // Determines whether a message has to be edited
-Hue.handle_edit_direction = function (reverse = false) {
+Hue.handle_edit_direction = function (direction) {
   let area = Hue.editing_message_area
 
   if (
-    (reverse && area.selectionStart === area.value.length) ||
-    (!reverse && area.selectionStart === 0)
+    (direction === "down" && area.selectionStart === area.value.length) ||
+    (direction === "up" && area.selectionStart === 0)
   ) {
-    Hue.edit_last_message(reverse)
+    let unit = Hue.editing_message_container.closest(".message_unit")
+    Hue.stop_edit_message()
+    Hue.select_unit(unit)
     return true
   }
 
   return false
-}
-
-// Edits the next latest chat message
-// Either in normal or reverse order
-Hue.edit_last_message = function (reverse = false) {
-  let edit_found = true
-  let last_container = false
-
-  if (Hue.editing_message) {
-    edit_found = false
-  }
-
-  let messages = Hue.els("#chat_area > .message")
-
-  for (let message of messages.reverse()) {
-    if (Hue.dataset(message, "user_id") === Hue.user_id) {
-      let items = Hue.els(".edit_message_container", message)
-
-      for (let item of items.reverse()) {
-        if (Hue.editing_message) {
-          if (item === Hue.editing_message_container) {
-            edit_found = true
-            continue
-          }
-        }
-
-        let cnt = item
-
-        if (!edit_found) {
-          last_container = item
-          continue
-        } else {
-          if (reverse) {
-            cnt = last_container
-          }
-        }
-
-        if (!cnt) {
-          Hue.stop_edit_message()
-        } else {
-          Hue.edit_message(cnt)
-        }
-
-        return
-      }
-    }
-  }
 }
 
 // Starts chat message editing
@@ -683,6 +638,8 @@ Hue.edit_message = function (container) {
   if (Hue.editing_message) {
     Hue.stop_edit_message()
   }
+
+  Hue.do_unselect_message()
 
   let edit_container = Hue.el(".message_edit_container", container)
   let area = Hue.el(".message_edit_area", container)
@@ -1892,4 +1849,88 @@ Hue.update_likes = function (el, likes) {
 Hue.get_num_message_units = function (unit) {
   let message = unit.closest(".message")
   return Hue.els_or_self(".message_unit", message).length
+}
+
+// Select message unit
+Hue.select_unit = function (unit) {
+  unit.classList.add("selected_message")
+  unit.scrollIntoView({block: "center"})
+  Hue.selected_message = unit
+  Hue.unselect_message()
+}
+
+// Select next message in a direction
+Hue.select_message = function (direction = "up") {
+  function select (unit) {
+    unit.classList.add("selected_message")
+    unit.scrollIntoView({block: "center"})
+    Hue.selected_message = unit
+    Hue.unselect_message()
+  }
+
+  let units = Hue.els("#chat_area .message_unit")
+
+  if (Hue.selected_message) {
+    if (direction === "up") {
+      if (Hue.select_message === units[0]) {
+        return
+      }
+    } else if (direction === "down") {
+      if (Hue.selected_message === units[units.length - 1]) {
+        return
+      }
+    }
+
+    let found = false
+  
+    if (direction === "up") {
+      units.reverse()
+    }
+  
+    for (let unit of units) {
+      if (found) {
+        Hue.select_unit(unit)
+        return
+      }
+  
+      if (unit.classList.contains("selected_message")) {
+        unit.classList.remove("selected_message")
+        found = true
+      }
+    }
+  } else {
+    if (direction === "up") {
+      units.reverse()
+    }
+
+    let unit = units[0]
+    Hue.select_unit(unit)
+    return
+  }
+}
+
+// Unselect message
+Hue.do_unselect_message = function () {
+  let units = Hue.els("#chat_area .selected_message")
+
+  for (let unit of units) {
+    unit.classList.remove("selected_message")
+  }
+
+  Hue.selected_message = undefined
+}
+
+// Selected message action
+Hue.selected_message_action = function () {
+  let message = Hue.selected_message.closest(".message")
+  let user_id = Hue.dataset(message, "user_id")
+
+  if (user_id === Hue.user_id) {
+    Hue.edit_message(Hue.selected_message)
+  } else {
+    let container = Hue.el(".reply_message_container", message)
+    Hue.start_reply(container)
+  }
+
+  Hue.do_unselect_message()
 }
