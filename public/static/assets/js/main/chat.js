@@ -542,6 +542,12 @@ Hue.show_reply = function () {
   Hue.focus_input()
 }
 
+// Cancel reply
+Hue.cancel_reply = function () {
+  Hue.hide_reply()
+  Hue.clear_input()
+}
+
 // Hide the reply info
 Hue.hide_reply = function () {
   Hue.el("#input_reply_container").classList.add("nodisplay")

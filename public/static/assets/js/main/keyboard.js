@@ -285,9 +285,9 @@ Hue.activate_key_detection = function () {
         } else if (Hue.chat_scrolled) {
           Hue.goto_bottom(true)
         } else if (Hue.reply_active) {
-          Hue.hide_reply()
+          Hue.cancel_reply()
         } else if (Hue.edit_active) {
-          Hue.hide_edit()
+          Hue.cancel_edit()
         }
       }
     }
