@@ -276,6 +276,20 @@ Hue.show_message_board = function (filter = "") {
   })
 }
 
+// Hide message board
+Hue.hide_message_board = function () {
+  Hue.msg_message_board.close()
+}
+
+// Toggle message board
+Hue.toggle_message_board = function () {
+  if (Hue.msg_message_board.is_open()) {
+    Hue.hide_message_board()
+  } else {
+    Hue.show_message_board()
+  }
+}
+
 // Submits a message board post
 Hue.submit_message_board_post = function () {
   let message = Hue.utilz.remove_multiple_empty_lines(Hue.el("#message_board_textarea").value).trim()

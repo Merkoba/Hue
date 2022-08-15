@@ -34,6 +34,16 @@ Hue.activate_key_detection = function () {
     if (e.key === "Enter") {
       if (e.ctrlKey) {
         Hue.toggle_modal_image()
+        e.preventDefault()
+        return
+      }
+    }
+
+    if (e.key === "Backspace") {
+      if (e.ctrlKey) {
+        Hue.toggle_message_board()
+        e.preventDefault()
+        return
       }
     }
 
