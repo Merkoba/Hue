@@ -355,7 +355,7 @@ html {
 
 #input::placeholder {
 	color: var(--text_color);
-	opacity: 0.8;
+	opacity: 0.6;
 }
 
 .input_button_container {
