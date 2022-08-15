@@ -59,6 +59,8 @@ Hue.input_has_value = function () {
 
 // Clears the input
 Hue.clear_input = function () {
+  Hue.last_input = Hue.get_input()
+
   if (Hue.input_has_value()) {
     Hue.change_input("")
   }
@@ -111,7 +113,7 @@ Hue.submit_input = function () {
         Hue.clear_input()
         return
       }
-      
+
       Hue.process_input({
         message: Hue.get_input()
       })
@@ -151,7 +153,7 @@ Hue.process_input = function (args = {}) {
 
   let message_split = args.message.split("\n")
   let num_lines = message_split.length
-  
+
   if (num_lines === 1 && Hue.is_command(args.message) && !args.edit_id) {
     let ans = Hue.execute_command(args.message, {
       clr_input: args.clr_input,
@@ -184,4 +186,9 @@ Hue.check_footer_expand = function () {
   if (!Hue.el("#input").value) {
     Hue.disable_footer_expand()
   }
+}
+
+// Restore input
+Hue.restore_input = function () {
+  Hue.change_input(Hue.last_input)
 }

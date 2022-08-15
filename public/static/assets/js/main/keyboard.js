@@ -269,7 +269,13 @@ Hue.activate_key_detection = function () {
     } else if (e.key === "PageDown") {
       Hue.scroll_down()
     } else if (e.key === "ArrowUp") {
-      if (e.shiftKey || Hue.footer_expanded) {
+      if (Hue.footer_expanded) {
+        return
+      }
+
+      if (e.shiftKey) {
+        Hue.restore_input()
+        e.preventDefault()
         return
       }
 
@@ -305,13 +311,21 @@ Hue.activate_key_detection = function () {
         } else if (Hue.edit_active) {
           Hue.cancel_edit()
         } else {
-          Hue.clear_input()
+          if (Hue.input_has_value()) {
+            Hue.clear_input()
+          } else {
+            Hue.restore_input()
+          }
         }
       }
     }
   })
 
   Hue.ev(document, "input", function (e) {
+    if (!Hue.started) {
+      return false
+    }
+    
     if (e.target.closest(".filter_input")) {
       Hue.modal_filter()
     }
