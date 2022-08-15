@@ -5,7 +5,7 @@ Hue.setup_media_tweaks = function () {
   })
 
   Hue.ev(Hue.el("#media_tweaks_rotate"), "click", function () {
-    Hue.rotate_media()
+    Hue.swap_media_layout()
   })
 
   Hue.ev(Hue.el("#media_tweaks_revolve"), "click", function () {

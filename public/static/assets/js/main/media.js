@@ -599,11 +599,6 @@ Hue.set_default_tv_position = function () {
   Hue.apply_media_positions()
 }
 
-// Rotates media
-Hue.rotate_media = function () {
-  Hue.swap_media_layout()
-}
-
 // Get html for media info items
 Hue.get_media_info_html = function (type) {
   return Hue.template_media_info({type: type})
