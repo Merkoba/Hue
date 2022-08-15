@@ -256,7 +256,7 @@ Hue.activate_key_detection = function () {
         return
       }
       
-      if (Hue.input_has_value()) {
+      if (Hue.reply_active || Hue.edit_active || Hue.input_has_value()) {
         Hue.submit_input()
       } else {
         Hue.goto_bottom(true)
