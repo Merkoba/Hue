@@ -669,7 +669,6 @@ Hue.submit_edit = function () {
     Hue.process_input({
       message: new_message,
       edit_id: edit_id,
-      to_history: false
     })
   } else if (mode === "announcement") {
     Hue.do_edit_media_comment(type.split("_")[0], edit_id, new_message)
@@ -1340,8 +1339,7 @@ Hue.show_log_messages = function (log_messages) {
 // Sends a simple shrug chat message
 Hue.shrug = function () {
   Hue.process_input({
-    message: "¯\\_(ツ)_/¯",
-    to_history: false,
+    message: "¯\\_(ツ)_/¯"
   })
 }
 

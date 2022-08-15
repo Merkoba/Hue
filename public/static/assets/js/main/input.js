@@ -55,7 +55,6 @@ Hue.set_input_placeholder = function (s) {
 // Clears the input
 Hue.clear_input = function () {
   Hue.change_input("")
-  Hue.reset_input_history_index()
 }
 
 // Changes the input
@@ -125,7 +124,6 @@ Hue.input_to_thirdperson = function (text) {
 // Or sends a chat message to the server
 Hue.process_input = function (args = {}) {
   let def_args = {
-    to_history: true,
     clr_input: true
   }
 
@@ -144,11 +142,9 @@ Hue.process_input = function (args = {}) {
   
   if (num_lines === 1 && Hue.is_command(args.message) && !args.edit_id) {
     let ans = Hue.execute_command(args.message, {
-      to_history: args.to_history,
       clr_input: args.clr_input,
     })
 
-    args.to_history = ans.to_history
     args.clr_input = ans.clr_input
   } else {
     if (args.message.length > Hue.config.max_input_length) {
@@ -164,10 +160,6 @@ Hue.process_input = function (args = {}) {
 
       quote_id: args.quote_id
     })
-  }
-
-  if (args.to_history) {
-    Hue.add_to_input_history(args.message)
   }
 
   if (args.clr_input) {

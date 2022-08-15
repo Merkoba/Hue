@@ -15,7 +15,6 @@ Hue.load_scripts = true
 Hue.config = {}
 Hue.ls_settings = "settings_v1"
 Hue.ls_room_state = "room_state_v2"
-Hue.ls_input_history = "input_history_v1"
 Hue.roles = ["admin", "op", "voice"]
 Hue.topic = ""
 Hue.colorlib = ColorLib()
@@ -151,7 +150,6 @@ Hue.init = function () {
   Hue.setup_input()
   Hue.setup_modal_image()
   Hue.setup_footer()
-  Hue.get_input_history()
   Hue.setup_whispers()
   Hue.setup_autocomplete()
   Hue.show_console_message()

@@ -253,41 +253,30 @@ Hue.activate_key_detection = function () {
     } else if (e.key === "PageDown") {
       Hue.scroll_down()
     } else if (e.key === "ArrowUp") {
-      if (!e.shiftKey && Hue.footer_expanded) {
+      if (e.shiftKey || Hue.footer_expanded) {
         return
       }
 
-      if (e.shiftKey) {
-        Hue.input_history_change("up")
-        e.preventDefault()
+      if (Hue.chat_scrolled && !Hue.selected_message) {
+        Hue.scroll_up()
       } else {
-        if (Hue.chat_scrolled && !Hue.selected_message) {
-          Hue.scroll_up()
-        } else {
-          Hue.select_message("up")
-        }
-        e.preventDefault()
+        Hue.select_message("up")
       }
 
+      e.preventDefault()
       return
     } else if (e.key === "ArrowDown") {
-      if (!e.shiftKey && Hue.footer_expanded) {
+      if (e.shiftKey || Hue.footer_expanded) {
         return
       }
       
-      if (e.shiftKey) {
-        Hue.input_history_change("down")
-        e.preventDefault()
+      if (Hue.chat_scrolled && !Hue.selected_message) {
+        Hue.scroll_down()
       } else {
-        if (Hue.chat_scrolled && !Hue.selected_message) {
-          Hue.scroll_down()
-        } else {
-          Hue.select_message("down")
-        }
-
-        e.preventDefault()
+        Hue.select_message("down")
       }
 
+      e.preventDefault()
       return
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {

@@ -43,9 +43,6 @@ whispers_crop_limit: 500
 # Max number of messages to keep on the client
 chat_crop_limit: 500
 
-# Max number of recent input history items saved
-input_history_crop_limit: 100
-
 # Automatically close notifications after these ms
 notifications_close_delay: 5000
 
