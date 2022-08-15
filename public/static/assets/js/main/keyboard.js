@@ -313,7 +313,7 @@ Hue.activate_key_detection = function () {
         } else {
           Hue.select_message("down")
         }
-        
+
         e.preventDefault()
       }
 
@@ -323,10 +323,10 @@ Hue.activate_key_detection = function () {
         if (Hue.get_input()) {
           Hue.remove_last_input_word()
         } else {
-          if (Hue.chat_scrolled) {
-            Hue.goto_bottom(true)
-          } else if (Hue.selected_message) {
+          if (Hue.selected_message) {
             Hue.do_unselect_message()
+          } else if (Hue.chat_scrolled) {
+            Hue.goto_bottom(true)
           } else {
             Hue.hide_reply()
           }
