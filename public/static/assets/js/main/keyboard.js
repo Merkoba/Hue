@@ -31,6 +31,12 @@ Hue.activate_key_detection = function () {
       }
     }
 
+    if (e.key === "Enter") {
+      if (e.ctrlKey) {
+        Hue.toggle_modal_image()
+      }
+    }
+
     if (Hue.modal_open) {
       if (e.key === "Escape") {
         if (e.shiftKey) {

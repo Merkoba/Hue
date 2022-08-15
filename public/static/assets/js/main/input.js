@@ -167,20 +167,6 @@ Hue.process_input = function (args = {}) {
   }
 }
 
-// Remove last input word
-Hue.remove_last_input_word = function () {
-  let input = Hue.el("#input")
-  let split = input.value.trimEnd().split(" ")
-  let new_value = split.slice(0, -1).join(" ") + " "
-  
-  if (new_value.trim() === "") {
-    new_value = ""
-  }
-
-  input.value = new_value
-  Hue.check_footer_expand()
-}
-
 // Check input expand
 Hue.check_footer_expand = function () {
   if (!Hue.el("#input").value) {

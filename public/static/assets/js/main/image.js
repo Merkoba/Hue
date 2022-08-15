@@ -199,7 +199,7 @@ Hue.setup_modal_image = function () {
     if (Hue.el("#modal_image_container").classList.contains("expanded_image")) {
       Hue.restore_modal_image()
     } else {
-      Hue.msg_modal_image.close()
+      Hue.hide_modal_image()
     }
   })
 
@@ -283,12 +283,12 @@ Hue.show_modal_image = function (id = 0) {
 
   if (id) {
     data = Hue.get_media_item("image", id)
-  } else {
-    if (Hue.loaded_image.source) {
-      data = Hue.loaded_image
-    } else {
-      return
-    }
+  } else if (Hue.loaded_image.source) {
+    data = Hue.loaded_image
+  }
+
+  if (!data) {
+    data = Hue.image_changed[Hue.image_changed.length - 1]
   }
 
   Hue.loaded_modal_image = data
@@ -327,6 +327,11 @@ Hue.show_modal_image = function (id = 0) {
 
   Hue.horizontal_separator(Hue.el("#modal_image_header_info_container"))
   Hue.msg_modal_image.show()
+}
+
+// Hide modal image
+Hue.hide_modal_image = function () {
+  Hue.msg_modal_image.close()
 }
 
 // Starts events for the image
@@ -624,4 +629,13 @@ Hue.make_random_image = function (target) {
     "image/png",
     Hue.config.image_blob_quality
   )
+}
+
+// Toggle modal image
+Hue.toggle_modal_image = function () {
+  if (Hue.msg_modal_image.is_open()) {
+    Hue.hide_modal_image()
+  } else {
+    Hue.show_modal_image()
+  }
 }
