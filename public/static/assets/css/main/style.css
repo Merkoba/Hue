@@ -201,7 +201,7 @@ html {
 }
 
 #chat_area > .message:last-child {
-	padding-bottom: 1.5em;
+	margin-bottom: 1.5em;
 }
 
 .chat_area_clone {

@@ -1926,9 +1926,9 @@ Hue.selected_message_action = function () {
   let user_id = Hue.dataset(message, "user_id")
 
   if (user_id === Hue.user_id) {
-    Hue.edit_message(Hue.el(".edit_message_container", Hue.selected_message))
+    Hue.edit_message(Hue.el_or_self(".edit_message_container", Hue.selected_message))
   } else {
-    let container = Hue.el(".reply_message_container", message)
+    let container = Hue.el_or_self(".reply_message_container", message)
     Hue.start_reply(container)
   }
 
