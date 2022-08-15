@@ -23,31 +23,7 @@ Hue.activate_key_detection = function () {
       }
     }
 
-    if (Hue.editing_message) {
-      Hue.focus_edit_area()
-
-      if (e.key === "Enter" && !e.shiftKey) {
-        Hue.send_edit_messsage()
-        e.preventDefault()
-      } else if (e.key === "Escape") {
-        Hue.stop_edit_message()
-        e.preventDefault()
-      } else if (e.key === "ArrowUp") {
-        let res = Hue.handle_edit_direction("up")
-
-        if (res) {
-          e.preventDefault()
-        }
-      } else if (e.key === "ArrowDown") {
-        let res = Hue.handle_edit_direction("down")
-
-        if (res) {
-          e.preventDefault()
-        }
-      }
-
-      return
-    } else if (Hue.editing_message_board) {
+    if (Hue.editing_message_board) {
       if (e.key === "Enter") {
         Hue.do_message_board_edit()
         e.preventDefault()
@@ -268,13 +244,8 @@ Hue.activate_key_detection = function () {
 
         return
       }
-
-      if (val) {
-        Hue.submit_input()
-      } else {
-        Hue.goto_bottom(true)
-      }
-
+      
+      Hue.submit_input()
       e.preventDefault()
       return
     } else if (e.key === "PageUp") {
@@ -327,8 +298,10 @@ Hue.activate_key_detection = function () {
             Hue.do_unselect_message()
           } else if (Hue.chat_scrolled) {
             Hue.goto_bottom(true)
-          } else {
+          } else if (Hue.reply_active) {
             Hue.hide_reply()
+          } else if (Hue.edit_active) {
+            Hue.hide_edit()
           }
         }
       }

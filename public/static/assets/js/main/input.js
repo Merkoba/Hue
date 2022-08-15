@@ -15,12 +15,6 @@ Hue.setup_input = function () {
     Hue.on_input_change()
   })
 
-  Hue.ev(Hue.el("#input"), "click", function () {
-    if (Hue.editing_message) {
-      Hue.stop_edit_message()
-    }
-  })
-
   Hue.ev(Hue.el("#input"), "paste", function (e) {
     let items = (e.clipboardData || e.originalEvent.clipboardData).items
 
@@ -101,18 +95,18 @@ Hue.input_to_end = function () {
 
 // Does a submit action from the input
 Hue.submit_input = function () {
-  if (!Hue.get_input()) {
-    return
-  }
-
   if (Hue.reply_active) {
     Hue.submit_reply()
+  } else if (Hue.edit_active) {
+    Hue.submit_edit()
   } else {
-    Hue.process_input({
-      message: Hue.get_input()
-    })
+    if (Hue.get_input()) {
+      Hue.process_input({
+        message: Hue.get_input()
+      })
 
-    Hue.disable_footer_expand()
+      Hue.disable_footer_expand()
+    }
   }
 }
 

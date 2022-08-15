@@ -358,11 +358,11 @@ html {
 	opacity: 0.8;
 }
 
-#input_reply_container {
+.input_button_container {
 	margin-left: 0.25rem;
 }
 
-#input_reply_cancel {
+.input_button {
 	border: 1px solid grey;
 	padding-left: 0.25rem;
 	padding-right: 0.25rem;
@@ -1207,44 +1207,6 @@ a.special_link:hover {
 .media_container .vertical_separator {
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
-}
-
-.message_edit_container {
-	display: none;
-	width: 90%;
-	position: relative;
-}
-
-.editing_chat_message .chat_quote {
-	display: none;
-}
-
-.message_edit_area {
-	resize: none;
-	font-size: 1em;
-	height: 4rem;
-	padding: 0.2rem;
-	outline: none;
-	border: 0.06rem solid grey;
-	position: relative;
-	width: 100%;
-	background-color: var(--altcolor_a);
-	color: var(--text_color);
-}
-
-.message_edit_buttons {
-	display: flex;
-	justify-content: flex-end;
-	flex-direction: row;
-	position: relative;
-	width: 100%;
-	margin-top: 0.25rem;
-}
-
-.message_edit_button {
-	cursor: pointer;
-	margin-left: 1rem;
-	text-decoration: underline;
 }
 
 #media_iframe_poster {

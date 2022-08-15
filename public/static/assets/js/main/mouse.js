@@ -26,10 +26,6 @@ Hue.start_mouse_events = function () {
           Hue.show_profile(username, user_id)
         } else if (e.target.classList.contains("chat_profilepic")) {
           Hue.show_profile(username, user_id)
-        } else if (e.target.classList.contains("message_edit_submit")) {
-          Hue.send_edit_messsage()
-        } else if (e.target.classList.contains("message_edit_cancel")) {
-          Hue.stop_edit_message()
         } else if (e.target.classList.contains("chat_quote_text")) {
           let quote = e.target.closest(".chat_quote")
           let id = Hue.dataset(quote, "quote_id")

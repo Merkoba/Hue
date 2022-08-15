@@ -31,7 +31,7 @@ Hue.show_chat_context_menu = function (e, is_main) {
     items.push({
       text: "Reply",
       action: function () {
-        let el = Hue.el(".reply_message", e.target.closest(".reply_message_container"))
+        let el = Hue.el(".unit_text", e.target.closest(".message_unit"))
         Hue.start_reply(el)
       }
     })
@@ -52,7 +52,7 @@ Hue.show_chat_context_menu = function (e, is_main) {
       items.push({
         text: text,
         action: function () {
-          let el = Hue.el(".reply_message", e.target.closest(".reply_message_container"))
+          let el = Hue.el(".unit_text", e.target.closest(".message_unit"))
           Hue.like_message(el, type)
         }
       })
@@ -63,7 +63,7 @@ Hue.show_chat_context_menu = function (e, is_main) {
     items.push({
       text: "Edit",
       action: function () {
-        let el = e.target.closest(".edit_message_container")
+        let el = Hue.el(".edit_message", e.target.closest(".message_unit"))
         Hue.edit_message(el)
       }
     })

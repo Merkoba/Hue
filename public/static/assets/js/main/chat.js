@@ -19,7 +19,7 @@ Hue.make_chat_message = function (args = {}) {
   }
 
   args.message = Hue.replace_message_vars(args.id, args.message)
-  let content_classes = "chat_content reply_message edit_message"
+  let content_classes = "chat_content unit_text"
   let d = args.date ? args.date : Date.now()
   let nd = Hue.utilz.nice_date(d)
   let pi = Hue.get_profilepic(args.user_id)
@@ -235,7 +235,7 @@ Hue.make_announcement_message = function (args = {}) {
   args = Object.assign(def_args, args)
 
   let is_media = args.type === "image_change" || args.type === "tv_change"
-  let content_classes = "announcement_content reply_message edit_message"
+  let content_classes = "announcement_content unit_text"
   let brk_classes = "brk announcement_brk"
   let highlighted = false
 
@@ -484,7 +484,7 @@ Hue.get_reply_text = function () {
     return ""
   }
 
-  let text = Hue.el(".reply_message", ans[0]).textContent 
+  let text = Hue.el(".unit_text", ans[0]).textContent 
   return Hue.remove_urls(Hue.utilz.single_space(text)) || ""
 }
 
@@ -535,6 +535,7 @@ Hue.start_reply = function (target) {
 
 // Show the reply info
 Hue.show_reply = function () {
+  Hue.hide_edit()
   Hue.el("#input_reply_profilepic").src = Hue.get_profilepic(Hue.reply_user_id)
   Hue.el("#input_reply_container").classList.remove("nodisplay")
   Hue.reply_active = true
@@ -608,112 +609,58 @@ Hue.show_fresh_messages = function () {
   Hue.fresh_messages_list = []
 }
 
-// Focuses the message edit textbox
-Hue.focus_edit_area = function () {
-  if (Hue.editing_message_area !== document.activeElement) {
-    Hue.editing_message_area.focus()
-  }
-}
-
-// Handles direction on Up and Down keys
-// Determines whether a message has to be edited
-Hue.handle_edit_direction = function (direction) {
-  let area = Hue.editing_message_area
-
-  if (
-    (direction === "down" && area.selectionStart === area.value.length) ||
-    (direction === "up" && area.selectionStart === 0)
-  ) {
-    let unit = Hue.editing_message_container.closest(".message_unit")
-    Hue.stop_edit_message()
-    Hue.select_unit(unit)
-    return true
-  }
-
-  return false
-}
-
-// Starts chat message editing
-Hue.edit_message = function (container) {
-  if (Hue.editing_message) {
-    Hue.stop_edit_message()
-  }
-
-  Hue.do_unselect_message()
-
-  let edit_container = Hue.el(".message_edit_container", container)
-  let area = Hue.el(".message_edit_area", container)
-  let edit_message = Hue.el(".edit_message", container)
-  let edit_message_container = container.closest(".edit_message_container")
-
-  edit_container.style.display = "block"
-  edit_message_container.classList.add("editing_chat_message")
-  edit_message.style.display = "none"
-  container.classList.remove("chat_menu_button_main")
-  container.style.display = "block"
-
-  Hue.editing_message = true
-  Hue.editing_message_container = container
-  Hue.editing_message_area = area
-  Hue.editing_original_message = Hue.dataset(container, "original_message")
-
-  area.value = Hue.editing_original_message
-  area.focus()
-
-  setTimeout(function () {
-    area.setSelectionRange(area.value.length, area.value.length)
-  }, 40)
-
-  area.scrollIntoView({
-    block: "center"
+// Setup edit message
+Hue.setup_edit = function () {
+  Hue.ev(Hue.el("#input_edit_cancel"), "click", function () {
+    Hue.cancel_edit()
   })
 }
 
-// Stops chat message editing
-Hue.stop_edit_message = function () {
-  if (!Hue.editing_message || !Hue.editing_message_container) {
-    return
-  }
-
-  let edit_container = Hue.el(".message_edit_container", Hue.editing_message_container)
-  let edit_message = Hue.el(".edit_message", Hue.editing_message_container)
-  let edit_message_container = Hue.editing_message_container.closest(".edit_message_container")
-
-  edit_container.style.display = "none"
-  edit_message_container.classList.remove("editing_chat_message")
-  Hue.editing_message_area.value = ""
-  edit_message.style.display = "block"
-  Hue.editing_message_container.classList.add("chat_menu_button_main")
-  Hue.editing_message_container.style.display = "block"
-  Hue.editing_message = false
-  Hue.editing_message_container = false
-  Hue.editing_message_area = Hue.create("div")
+// Starts chat message editing
+Hue.edit_message = function (unit) {
+  Hue.edit_container = unit.closest(".message")
+  Hue.edit_unit = unit
+  Hue.do_unselect_message()
+  Hue.change_input(unit.textContent.trim())
+  Hue.hide_reply()
+  Hue.show_edit()
 }
 
-// Submits a chat message edit
-Hue.send_edit_messsage = function (id) {
-  if (!Hue.editing_message_container) {
+// Show edit
+Hue.show_edit = function () {
+  Hue.hide_reply()
+  Hue.el("#input_edit_container").classList.remove("nodisplay")
+  Hue.edit_active = true
+}
+
+// Hide edit
+Hue.hide_edit = function () {
+  Hue.el("#input_edit_container").classList.add("nodisplay")
+  Hue.check_footer_expand()
+  Hue.edit_active = false
+}
+
+// Submit edit
+Hue.submit_edit = function () {
+  let mode = Hue.dataset(Hue.edit_container, "mode")
+  let edit_id
+  
+  if (mode === "chat") {
+    edit_id = Hue.dataset(Hue.edit_unit.closest(".chat_content_container"), "id")
+  } else {
+    edit_id = Hue.dataset(Hue.edit_container, "id")
+  }
+
+  if (!edit_id) {
     return
   }
 
-  let message = Hue.editing_message_container.closest(".message")
-  let edit_mode = Hue.dataset(message, "mode")
-  let edit_message = Hue.el(".edit_message", Hue.editing_message_container)
-  let new_message = Hue.editing_message_area.value
-  let edit_id = Hue.dataset(Hue.editing_message_container, "id") || Hue.dataset(message, "id")
-  new_message = Hue.utilz.remove_multiple_empty_lines(new_message)
-  new_message = Hue.utilz.untab_string(new_message).trimEnd()
-  Hue.stop_edit_message()
+  let type = Hue.dataset(Hue.edit_container, "type")
+  let new_message = Hue.get_input()
 
-  if (edit_message.textContent === new_message) {
-    return
-  }
+  Hue.hide_edit()
 
-  if (edit_mode === "chat") {
-    if (!edit_id) {
-      return
-    }
-
+  if (mode === "chat") {
     if (new_message.length === 0) {
       Hue.delete_message(edit_id)
       return
@@ -724,12 +671,16 @@ Hue.send_edit_messsage = function (id) {
       edit_id: edit_id,
       to_history: false
     })
-  } else if (edit_mode === "announcement") {
-    let media_type = Hue.dataset(message, "type").split("_")[0]
-    Hue.do_edit_media_comment(media_type, edit_id, new_message)
+  } else if (mode === "announcement") {
+    Hue.do_edit_media_comment(type.split("_")[0], edit_id, new_message)
+    Hue.clear_input()
   }
+}
 
-  Hue.replace_in_input_history(Hue.editing_original_message, new_message)
+// Cancel edit
+Hue.cancel_edit = function () {
+  Hue.hide_edit()
+  Hue.clear_input()
 }
 
 // Deletes a message
@@ -1445,7 +1396,6 @@ Hue.setup_chat = function () {
   })
 
   Hue.ev(Hue.el("#bottom_scroller"), "click", function () {
-    Hue.stop_edit_message()
     Hue.goto_bottom(true)
   })
 
@@ -1926,9 +1876,9 @@ Hue.selected_message_action = function () {
   let user_id = Hue.dataset(message, "user_id")
 
   if (user_id === Hue.user_id) {
-    Hue.edit_message(Hue.el_or_self(".edit_message_container", Hue.selected_message))
+    Hue.edit_message(Hue.el_or_self(".unit_text", Hue.selected_message))
   } else {
-    let container = Hue.el_or_self(".reply_message_container", message)
+    let container = Hue.el_or_self(".message_unit", message)
     Hue.start_reply(container)
   }
 

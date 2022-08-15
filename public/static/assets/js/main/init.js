@@ -49,10 +49,6 @@ Hue.user_leaving = false
 Hue.admin_activity_filter_string = ""
 Hue.active_modal = false
 Hue.activity_list = []
-Hue.editing_message = false
-Hue.editing_message_container = false
-Hue.editing_message_area = document.createElement("div")
-Hue.editing_message_board = false
 Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 250
 Hue.chat_scrolled = false
@@ -108,6 +104,7 @@ Hue.hide_radio_delay = 1000
 Hue.reply_active = false
 Hue.selected_message
 Hue.unselect_delay = 2500
+Hue.edit_active = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -189,6 +186,7 @@ Hue.init = function () {
   Hue.start_before_unload()
   Hue.setup_admin_activity()
   Hue.setup_item_picker()
+  Hue.setup_edit()
   
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
