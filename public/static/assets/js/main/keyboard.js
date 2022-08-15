@@ -237,21 +237,21 @@ Hue.activate_key_detection = function () {
         return
       }
 
-      let val = Hue.get_input()
-
       if (e.shiftKey) {
         if (!Hue.footer_expanded) {
           Hue.enable_footer_expand()
-
-          if (!val.trim()) {
-            e.preventDefault()
-          }
+          e.preventDefault()
         }
 
         return
       }
       
-      Hue.submit_input()
+      if (Hue.input_has_value()) {
+        Hue.submit_input()
+      } else {
+        Hue.goto_bottom(true)
+      }
+
       e.preventDefault()
       return
     } else if (e.key === "PageUp") {

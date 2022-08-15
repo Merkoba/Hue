@@ -52,9 +52,14 @@ Hue.set_input_placeholder = function (s) {
   Hue.el("#input").placeholder = s
 }
 
+// Input has value
+Hue.input_has_value = function () {
+  return Hue.get_input() !== ""
+}
+
 // Clears the input
 Hue.clear_input = function () {
-  if (Hue.get_input() !== "") {
+  if (Hue.input_has_value()) {
     Hue.change_input("")
   }
 }
@@ -101,7 +106,12 @@ Hue.submit_input = function () {
   } else if (Hue.edit_active) {
     Hue.submit_edit()
   } else {
-    if (Hue.get_input()) {
+    if (Hue.input_has_value()) {
+      if (Hue.get_input().trim() === "") {
+        Hue.clear_input()
+        return
+      }
+      
       Hue.process_input({
         message: Hue.get_input()
       })
