@@ -601,10 +601,6 @@ Hue.set_default_tv_position = function () {
 
 // Rotates media
 Hue.rotate_media = function () {
-  if (Hue.num_media_elements_visible() < 2) {
-    return
-  }
-
   Hue.swap_media_layout()
 }
 
