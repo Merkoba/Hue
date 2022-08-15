@@ -290,7 +290,11 @@ Hue.activate_key_detection = function () {
         Hue.input_history_change("up")
         e.preventDefault()
       } else {
-        Hue.select_message("up")
+        if (Hue.chat_scrolled && !Hue.selected_message) {
+          Hue.scroll_up()
+        } else {
+          Hue.select_message("up")
+        }
         e.preventDefault()
       }
 
@@ -304,7 +308,12 @@ Hue.activate_key_detection = function () {
         Hue.input_history_change("down")
         e.preventDefault()
       } else {
-        Hue.select_message("down")
+        if (Hue.chat_scrolled && !Hue.selected_message) {
+          Hue.scroll_down()
+        } else {
+          Hue.select_message("down")
+        }
+        
         e.preventDefault()
       }
 
