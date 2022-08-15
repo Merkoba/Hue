@@ -485,8 +485,8 @@ Hue.get_reply_text = function () {
     return ""
   }
 
-  let text = Hue.el(".unit_text", ans[0]).textContent 
-  return Hue.remove_urls(Hue.utilz.single_space(text)) || ""
+  let text = Hue.dataset(Hue.el_or_self(".unit_data_container", ans[0]), "original_message")
+  return Hue.remove_urls(Hue.utilz.single_space(text))
 }
 
 // Setup reply
