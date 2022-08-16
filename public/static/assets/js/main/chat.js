@@ -1875,7 +1875,7 @@ Hue.select_message = function (direction = "up") {
 
   if (Hue.selected_message) {
     if (direction === "up") {
-      if (Hue.select_message === units[0]) {
+      if (Hue.selected_message === units[0]) {
         return
       }
     } else if (direction === "down") {
