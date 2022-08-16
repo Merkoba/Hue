@@ -1835,7 +1835,7 @@ Hue.get_num_message_units = function (unit) {
 // Select message unit
 Hue.select_unit = function (unit) {
   unit.classList.add("selected_message")
-  unit.scrollIntoView({block: "center", behavior: "smooth"})
+  unit.scrollIntoView({block: "center"})
   Hue.selected_message = unit
   Hue.last_selected_message = unit
 }
@@ -1858,9 +1858,9 @@ Hue.remove_selected_classes = function () {
 Hue.select_message = function (direction = "up") {
   if (Hue.chat_scrolled) {
     let u = Hue.el_or_self(".message_unit", Hue.selected_message)
-    let last_u = Hue.el_or_self(".message_unit", Hue.last_selected_message)
-
+    
     if (!Hue.dataset(u, "visible")) {
+      let last_u = Hue.el_or_self(".message_unit", Hue.last_selected_message)
       Hue.remove_selected_classes()
 
       if (Hue.dataset(last_u, "visible")) {
