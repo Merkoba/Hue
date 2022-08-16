@@ -377,6 +377,13 @@ Hue.insert_message = function (args = {}) {
           let clone = Hue.clone(content_container)
           item.replaceWith(clone)
           message_unit = Hue.el_or_self(".message_unit", clone)
+          
+          if (Hue.last_selected_message) {
+            if (args.id === Hue.dataset(Hue.last_selected_message, "id")) {
+              Hue.last_selected_message = message_unit
+            }
+          }
+
           break
         }
       }
@@ -1857,21 +1864,37 @@ Hue.remove_selected_classes = function () {
   }
 }
 
+// Check last selected message action
+Hue.check_last_selected_message = function () {
+  let last_u = Hue.el_or_self(".message_unit", Hue.last_selected_message)
+          
+  if (Hue.dataset(last_u, "visible")) {
+    Hue.select_unit(Hue.last_selected_message)
+  } else {
+    Hue.select_middle_message()
+  } 
+}
+
 // Select next message in a direction
-Hue.select_message = function (direction = "up") {
+Hue.select_message = function (direction = "up") { 
   if (Hue.chat_scrolled) {
-    let u = Hue.el_or_self(".message_unit", Hue.selected_message)
-    
-    if (!Hue.dataset(u, "visible")) {
-      let last_u = Hue.el_or_self(".message_unit", Hue.last_selected_message)
-      Hue.remove_selected_classes()
-
-      if (Hue.dataset(last_u, "visible")) {
-        Hue.select_unit(Hue.last_selected_message)
-      } else {
-        Hue.select_middle_message()
+    if (Hue.selected_message) {
+      let u = Hue.el_or_self(".message_unit", Hue.selected_message)
+  
+      if (!Hue.dataset(u, "visible")) {
+        Hue.remove_selected_classes()
+  
+        if (Hue.last_selected_message) {
+          Hue.check_last_selected_message()
+        } else {
+          Hue.select_middle_message()
+        }
+        
+        return
       }
-
+    } else if (Hue.last_selected_message) {
+      Hue.remove_selected_classes()
+      Hue.check_last_selected_message()
       return
     }
   }
