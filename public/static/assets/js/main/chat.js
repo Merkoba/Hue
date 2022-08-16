@@ -631,7 +631,6 @@ Hue.start_edit = function (unit) {
   Hue.edit_container = unit.closest(".message")
   Hue.edit_unit = unit
   Hue.edit_original_message = Hue.dataset(unit.closest(".unit_data_container"), "original_message")
-  Hue.unselect_message()
   Hue.change_input(Hue.edit_original_message)
   Hue.hide_reply()
   Hue.show_edit()
