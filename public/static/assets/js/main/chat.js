@@ -203,11 +203,11 @@ Hue.make_chat_message = function (args = {}) {
     Hue.setup_link_preview(fmessage)
   }
 
-  let message_id = Hue.insert_message({
+  let ans = Hue.insert_message({
     id: args.id,
     message: fmessage,
     just_edited: args.just_edited,
-  }).message_id
+  })
 
   if (!args.edited) {
     if (args.username !== Hue.username) {
@@ -220,9 +220,10 @@ Hue.make_chat_message = function (args = {}) {
   }
 
   Hue.push_to_all_usernames(args.username)
+  Hue.observe_message(ans.message_unit)
 
   return {
-    message_id: message_id
+    message_id: ans.message_id
   }
 }
 
@@ -330,18 +331,19 @@ Hue.make_announcement_message = function (args = {}) {
   Hue.dataset(fmessage, "likes", args.likes)
   Hue.update_likes(fmessage, args.likes)
 
-  let message_id = Hue.insert_message({
+  let ans = Hue.insert_message({
     message: fmessage
-  }).message_id
+  })
 
   if (highlighted) {
     Hue.on_highlight(args.username)
   }
 
   Hue.push_to_all_usernames(args.username)
+  Hue.observe_message(ans.message_unit)
 
   return {
-    message_id: message_id
+    message_id: ans.message_id
   }
 }
 
@@ -361,7 +363,7 @@ Hue.insert_message = function (args = {}) {
   let username = Hue.dataset(args.message, "username")
   let date = Hue.dataset(args.message, "date")
   let highlighted = Hue.dataset(args.message, "highlighted")
-  let content_container, message_id
+  let content_container, message_id, message_unit
 
   if (mode === "chat") {
     content_container = Hue.el(".chat_content_container", args.message)
@@ -387,16 +389,16 @@ Hue.insert_message = function (args = {}) {
       }
 
       return {
-        message_id: Hue.dataset(last_message, "message_id")
+        message_id: Hue.dataset(last_message, "message_id"),
+        message_unit: Hue.el_or_self(".message_unit", content_container)
       }
     }
+  } else if (mode === "announcement") {
+    message_unit = Hue.el_or_self(".message_unit", args.message)
   }
 
   if (last_message) {
-    if (
-      args.message.classList.contains("chat_message") &&
-      last_message.classList.contains("chat_message")
-    ) {
+    if (mode === "chat" && Hue.dataset(last_message, "mode") === "chat") {
       if (
         Hue.el(".chat_username", args.message).textContent ===
         Hue.el(".chat_username", last_message).textContent
@@ -425,6 +427,10 @@ Hue.insert_message = function (args = {}) {
         }
       }
     }
+  }
+
+  if (mode === "chat") {
+    message_unit = Hue.el_or_self(".message_unit", content_container)
   }
 
   if (!appended) {
@@ -473,16 +479,9 @@ Hue.insert_message = function (args = {}) {
     }
   }
 
-  if (content_container) {
-    let unit = Hue.el_or_self(".message_unit", content_container)
-
-    if (unit) {
-      Hue.chat_intersection_observer.observe(unit)
-    }
-  }
-
   return {
-    message_id: message_id
+    message_id: message_id,
+    message_unit: message_unit
   }
 }
 
@@ -1861,10 +1860,14 @@ Hue.select_message = function (direction = "up") {
       Hue.remove_selected_classes()
       Hue.select_middle_message()
       return
-    } else if (!Hue.dataset(Hue.selected_message, "visible")) {
-      Hue.remove_selected_classes()
-      Hue.select_middle_message()
-      return
+    } else {
+      let u = Hue.el_or_self(".message_unit", Hue.selected_message)
+
+      if (!Hue.dataset(u, "visible")) {
+        Hue.remove_selected_classes()
+        Hue.select_middle_message()
+        return
+      }
     }
   }
 
@@ -1961,4 +1964,11 @@ Hue.get_visible_units = function () {
   }
 
   return visible
+}
+
+// Observe message
+Hue.observe_message = function (unit) {
+  if (unit) {
+    Hue.chat_intersection_observer.observe(unit)
+  }
 }
