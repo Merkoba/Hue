@@ -68,7 +68,7 @@ Hue.get_latest_highlight = function () {
   }
 
   if (!latest_highlight) {
-    let items = Hue.els("#chat_area > .message.announcement")
+    let items = Hue.get_all_announcements()
 
     for (let item of items.reverse()) {
       if (Hue.dataset(item, "highlighted")) {

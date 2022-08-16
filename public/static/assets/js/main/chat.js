@@ -353,8 +353,8 @@ Hue.insert_message = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  let chat_area = Hue.el("#chat_area")
-  let last_message = Hue.els("#chat_area > .message").slice(-1)[0]
+  let messages = Hue.get_all_messages()
+  let last_message = messages.slice(-1)[0]
   let appended = false
   let mode = Hue.dataset(args.message, "mode")
   let user_id = Hue.dataset(args.message, "user_id")
@@ -428,7 +428,7 @@ Hue.insert_message = function (args = {}) {
   }
 
   if (!appended) {
-    chat_area.append(args.message)
+    Hue.el("#chat_area").append(args.message)
     Hue.message_id += 1
     message_id = Hue.message_id
     Hue.dataset(args.message, "message_id", message_id)
@@ -587,8 +587,6 @@ Hue.submit_reply = function () {
     quote_user_id: Hue.reply_user_id,
     quote_id: Hue.reply_id
   })
-
-  Hue.goto_bottom(true)
 }
 
 // Adds a message to the fresh message list
@@ -689,8 +687,6 @@ Hue.submit_edit = function () {
     Hue.do_edit_media_comment(type.split("_")[0], edit_id, new_message)
     Hue.clear_input()
   }
-
-  Hue.goto_bottom(true)
 }
 
 // Cancel edit
@@ -876,7 +872,7 @@ Hue.process_remove_announcement = function (message) {
 
 // Gets the most recent message by user_id
 Hue.get_last_message_by_user_id = function (ouser_id) {
-  let items = Hue.els("#chat_area > .message")
+  let items = Hue.get_all_messages()
 
   for (let item of items.reverse()) {
     let user_id = Hue.dataset(item, "user_id")
@@ -928,7 +924,7 @@ Hue.on_chat_message = function (data) {
 // Find the next chat message above that involves the user
 // This is a message made by the user or one that is highlighted
 Hue.activity_above = function () {
-  let messages = Hue.els("#chat_area > .message")
+  let messages = Hue.get_all_messages()
 
   for (let message of messages.reverse()) {
     let same_username = false
@@ -954,7 +950,7 @@ Hue.activity_above = function () {
 // Find the next chat message below that involves the user
 // This is a message made by the user or one that is highlighted
 Hue.activity_below = function () {
-  let messages = Hue.els("#chat_area > .message")
+  let messages = Hue.get_all_messages()
 
   for (let message of messages) {
     let same_username = false
@@ -1721,7 +1717,7 @@ Hue.check_max_chat_messages = function () {
     return
   }
 
-  let messages = Hue.els("#chat_area > .message")
+  let messages = Hue.get_all_messages()
 
   if (messages.length > Hue.config.chat_crop_limit) {
     let diff = messages.length - Hue.config.chat_crop_limit
@@ -1891,4 +1887,14 @@ Hue.selected_message_action = function () {
   }
 
   Hue.unselect_message()
+}
+
+// Get all messages
+Hue.get_all_messages = function () {
+  return Hue.els("#chat_area > .message")
+}
+
+// Get all announcements
+Hue.get_all_announcements = function () {
+  return Hue.els("#chat_area > .message.announcement")
 }
