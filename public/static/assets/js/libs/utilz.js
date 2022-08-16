@@ -746,6 +746,11 @@ const Utilz = function () {
 		return numbers
 	}
 
+	// Get the middle item of an array
+	utilz.get_middle_item = function (arr) {
+		return arr[Math.round((arr.length - 1) / 2)]
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]

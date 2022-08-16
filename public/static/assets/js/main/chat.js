@@ -473,6 +473,14 @@ Hue.insert_message = function (args = {}) {
     }
   }
 
+  if (content_container) {
+    let unit = Hue.el_or_self(".message_unit", content_container)
+
+    if (unit) {
+      Hue.chat_intersection_observer.observe(unit)
+    }
+  }
+
   return {
     message_id: message_id
   }
@@ -759,7 +767,7 @@ Hue.delete_messages_below = function (id) {
 
   let msg = Hue.get_message_by_id(id)
   let index = msg[1]
-  let num = Hue.els("#chat_area .message_unit").length - index - 1
+  let num = Hue.get_all_units().length - index - 1
   let s = Hue.utilz.singular_or_plural(num, "messages")
 
   Hue.show_confirm(`Delete messages below (${s})`, function () {
@@ -1433,6 +1441,18 @@ Hue.setup_chat = function () {
 
   Hue.check_chat_enabled()
   Hue.do_chat_font_size_change()
+
+  let options = {
+    root: Hue.el("#chat_area_parent"),
+    rootMargin: "0px",
+    threshold: 1,
+  }
+
+  Hue.chat_intersection_observer = new IntersectionObserver(function (entries) {
+    for (let entry of entries) {
+      Hue.dataset(entry.target, "visible", entry.isIntersecting)
+    }
+  }, options)
 }
 
 // Replace things like $id$ with the message id
@@ -1554,7 +1574,7 @@ Hue.handle_delete_messages = function (id, user_id) {
   let unit = msg[0]
   let index = msg[1]
   let num = Hue.get_num_message_units(unit)
-  let num_messages = Hue.els("#chat_area .message_unit").length
+  let num_messages = Hue.get_all_units().length
   let shown = 1
 
   Hue.el("#delete_messages_group").style.display = "none"
@@ -1598,7 +1618,7 @@ Hue.deleted_messages_above = function (data) {
     return
   }
 
-  let units = Hue.els("#chat_area .message_unit")
+  let units = Hue.get_all_units()
 
   for (let i=0; i<ans[1]; i++) {
     let unit = units[i]
@@ -1625,7 +1645,7 @@ Hue.deleted_messages_below = function (data) {
     return
   }
 
-  let units = Hue.els("#chat_area .message_unit")
+  let units = Hue.get_all_units()
 
   for (let i=ans[1]+1; i<units.length; i++) {
     let unit = units[i]
@@ -1822,7 +1842,16 @@ Hue.select_unit = function (unit) {
 
 // Select next message in a direction
 Hue.select_message = function (direction = "up") {
-  let units = Hue.els("#chat_area .message_unit")
+  if (Hue.chat_scrolled) {
+    if (!Hue.selected_message) {
+      let visible = Hue.get_visible_units()
+      let unit = Hue.utilz.get_middle_item(visible)
+      Hue.select_unit(unit)
+      return
+    }
+  }
+
+  let units = Hue.get_all_units()
 
   if (Hue.selected_message) {
     if (direction === "up") {
@@ -1897,4 +1926,22 @@ Hue.get_all_messages = function () {
 // Get all announcements
 Hue.get_all_announcements = function () {
   return Hue.els("#chat_area > .message.announcement")
+}
+
+// Get all units
+Hue.get_all_units = function () {
+  return Hue.els("#chat_area .message_unit")
+}
+
+// Get visible messages
+Hue.get_visible_units = function () {
+  let visible = []
+
+  for (let unit of Hue.get_all_units()) {
+    if (Hue.dataset(unit, "visible")) {
+      visible.push(unit)
+    }
+  }
+
+  return visible
 }
