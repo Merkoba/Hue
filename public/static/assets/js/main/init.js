@@ -101,7 +101,6 @@ Hue.last_chat_scrolltop = 0
 Hue.radio_disabled = false
 Hue.hide_radio_delay = 1000
 Hue.reply_active = false
-Hue.selected_message
 Hue.edit_active = false
 
 // Initial media-loading variables declarations

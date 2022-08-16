@@ -1837,6 +1837,7 @@ Hue.select_unit = function (unit) {
   unit.classList.add("selected_message")
   unit.scrollIntoView({block: "center", behavior: "smooth"})
   Hue.selected_message = unit
+  Hue.last_selected_message = unit
 }
 
 // Select middle message
@@ -1856,18 +1857,19 @@ Hue.remove_selected_classes = function () {
 // Select next message in a direction
 Hue.select_message = function (direction = "up") {
   if (Hue.chat_scrolled) {
-    if (!Hue.selected_message) {
-      Hue.remove_selected_classes()
-      Hue.select_middle_message()
-      return
-    } else {
-      let u = Hue.el_or_self(".message_unit", Hue.selected_message)
+    let u = Hue.el_or_self(".message_unit", Hue.selected_message)
+    let last_u = Hue.el_or_self(".message_unit", Hue.last_selected_message)
 
-      if (!Hue.dataset(u, "visible")) {
-        Hue.remove_selected_classes()
+    if (!Hue.dataset(u, "visible")) {
+      Hue.remove_selected_classes()
+
+      if (Hue.dataset(last_u, "visible")) {
+        Hue.select_unit(Hue.last_selected_message)
+      } else {
         Hue.select_middle_message()
-        return
       }
+
+      return
     }
   }
 
