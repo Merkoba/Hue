@@ -289,12 +289,12 @@ Hue.activate_key_detection = function () {
       if (!e.shiftKey) {
         if (Hue.selected_message) {
           Hue.unselect_message()
-        } else if (Hue.chat_scrolled) {
-          Hue.goto_bottom(true)
         } else if (Hue.reply_active) {
           Hue.cancel_reply()
         } else if (Hue.edit_active) {
           Hue.cancel_edit()
+        } else if (Hue.chat_scrolled) {
+          Hue.goto_bottom(true)
         } else {
           if (has_value) {
             Hue.clear_input()
