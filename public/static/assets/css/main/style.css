@@ -198,7 +198,7 @@ html {
 }
 
 #chat_area > .message:first-child {
-	padding-top: 1.5em;
+	margin-top: 1.5em;
 }
 
 #chat_area > .message:last-child {
