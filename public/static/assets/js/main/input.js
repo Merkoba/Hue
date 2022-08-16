@@ -195,8 +195,3 @@ Hue.check_footer_expand = function () {
     Hue.disable_footer_expand()
   }
 }
-
-// Restore input
-Hue.restore_input = function () {
-  Hue.change_input(Hue.last_input)
-}

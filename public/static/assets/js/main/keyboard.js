@@ -298,8 +298,6 @@ Hue.activate_key_detection = function () {
         } else {
           if (has_value) {
             Hue.clear_input()
-          } else {
-            Hue.restore_input()
           }
         }
 
