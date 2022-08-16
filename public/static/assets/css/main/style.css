@@ -7,6 +7,7 @@
 	--profilepic_size: 1.8em;
 	--big_profilepic_size: 16rem;
 	--msg_display: block;
+	--placeholder_opacity: 0.6;
 }
 
 @font-face {
@@ -355,7 +356,7 @@ html {
 
 #input::placeholder {
 	color: var(--text_color);
-	opacity: 0.6;
+	opacity: var(--placeholder_opacity);
 }
 
 .input_button_container {
@@ -913,9 +914,8 @@ input[type=checkbox] {
 
 .shady_text::placeholder {
 	color: var(--text_color_a);
-	opacity: 0.8;
+	opacity: var(--placeholder_opacity);
 }
-
 
 #write_whisper_area {
 	margin-top: 1rem;
