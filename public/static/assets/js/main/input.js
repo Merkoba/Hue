@@ -64,11 +64,7 @@ Hue.input_has_value = function (trim) {
 }
 
 // Clears the input
-Hue.clear_input = function () {
-  if (Hue.input_has_value(true)) {
-    Hue.last_input = Hue.get_input()
-  }
-  
+Hue.clear_input = function () {  
   if (Hue.input_has_value()) {
     Hue.change_input("")
   }

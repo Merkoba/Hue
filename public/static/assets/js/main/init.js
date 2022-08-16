@@ -118,7 +118,6 @@ Hue.soundcloud_tv_player_requested = false
 Hue.soundcloud_tv_player_request = false
 Hue.media_info_image_data = []
 Hue.media_info_tv_data = []
-Hue.last_input = ""
 
 // This runs after the application's load event
 // This is the first function that gets executed
