@@ -102,7 +102,6 @@ Hue.radio_disabled = false
 Hue.hide_radio_delay = 1000
 Hue.reply_active = false
 Hue.selected_message
-Hue.unselect_delay = 2500
 Hue.edit_active = false
 
 // Initial media-loading variables declarations

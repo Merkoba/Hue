@@ -239,6 +239,7 @@ Hue.activate_key_detection = function () {
     }
 
     Hue.focus_input()
+    let has_value = Hue.input_has_value()
 
     if (e.key === "Enter") {
       if (Hue.selected_message) {
@@ -256,7 +257,7 @@ Hue.activate_key_detection = function () {
         return
       }
       
-      if (Hue.reply_active || Hue.edit_active || Hue.input_has_value()) {
+      if (Hue.reply_active || Hue.edit_active || has_value) {
         Hue.submit_input()
       } else {
         Hue.goto_bottom(true)
@@ -287,7 +288,7 @@ Hue.activate_key_detection = function () {
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {
         if (Hue.selected_message) {
-          Hue.do_unselect_message()
+          Hue.unselect_message()
         } else if (Hue.chat_scrolled) {
           Hue.goto_bottom(true)
         } else if (Hue.reply_active) {
@@ -295,7 +296,7 @@ Hue.activate_key_detection = function () {
         } else if (Hue.edit_active) {
           Hue.cancel_edit()
         } else {
-          if (Hue.input_has_value()) {
+          if (has_value) {
             Hue.clear_input()
           } else {
             Hue.restore_input()
@@ -307,14 +308,18 @@ Hue.activate_key_detection = function () {
       }        
     } else if (e.key === "Backspace") {
       if (Hue.footer_expanded) {
-        if (!Hue.input_has_value()) {
+        if (!has_value) {
           Hue.disable_footer_expand()
           e.preventDefault()
         }
         
         return
       }
-    }    
+    }
+    
+    if (!has_value) {
+      Hue.unselect_message()
+    }
   })
 
   Hue.ev(document, "input", function (e) {
