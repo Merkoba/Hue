@@ -236,7 +236,7 @@ Hue.make_announcement_message = function (args = {}) {
   args = Object.assign(def_args, args)
 
   let is_media = args.type === "image_change" || args.type === "tv_change"
-  let content_classes = "announcement_content unit_text unit_data_container"
+  let content_classes = "announcement_content unit_text"
   let brk_classes = "brk announcement_brk"
   let highlighted = false
 
@@ -269,7 +269,7 @@ Hue.make_announcement_message = function (args = {}) {
     top_clasees += " nodisplay"
   }
 
-  let fmessage = Hue.create("div", "message announcement message_unit")
+  let fmessage = Hue.create("div", "message announcement message_unit unit_data_container")
 
   fmessage.innerHTML = Hue.template_announcement_message({
     content_classes: content_classes,
@@ -324,6 +324,7 @@ Hue.make_announcement_message = function (args = {}) {
   Hue.dataset(fmessage, "mode", "announcement")
   Hue.dataset(fmessage, "user_id", args.user_id)
   Hue.dataset(fmessage, "media_source", args.media_source)
+  Hue.dataset(fmessage, "original_message", args.message)
 
   args.likes = args.likes || []
   Hue.dataset(fmessage, "likes", args.likes)
@@ -586,6 +587,8 @@ Hue.submit_reply = function () {
     quote_user_id: Hue.reply_user_id,
     quote_id: Hue.reply_id
   })
+
+  Hue.goto_bottom(true)
 }
 
 // Adds a message to the fresh message list
@@ -687,6 +690,8 @@ Hue.submit_edit = function () {
     Hue.do_edit_media_comment(type.split("_")[0], edit_id, new_message)
     Hue.clear_input()
   }
+
+  Hue.goto_bottom(true)
 }
 
 // Cancel edit
@@ -1822,20 +1827,6 @@ Hue.select_unit = function (unit) {
 
 // Select next message in a direction
 Hue.select_message = function (direction = "up") {
-  function select (unit) {
-    unit.classList.add("selected_message")
-    unit.scrollIntoView({block: "center"})
-    Hue.selected_message = unit
-    Hue.unselect_message()
-  }
-
-  if (Hue.chat_scrolled) {
-    if (!Hue.selected_message && Hue.last_selected_message) {
-      Hue.select_unit(Hue.last_selected_message)
-      return
-    }
-  }
-
   let units = Hue.els("#chat_area .message_unit")
 
   if (Hue.selected_message) {
@@ -1885,7 +1876,6 @@ Hue.do_unselect_message = function () {
     unit.classList.remove("selected_message")
   }
 
-  Hue.last_selected_message = Hue.selected_message
   Hue.selected_message = undefined
 }
 
