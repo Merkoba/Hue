@@ -627,9 +627,9 @@ Hue.setup_edit = function () {
 Hue.start_edit = function (unit) {
   Hue.edit_container = unit.closest(".message")
   Hue.edit_unit = unit
+  Hue.edit_original_message = Hue.dataset(unit.closest(".unit_data_container"), "original_message")
   Hue.do_unselect_message()
-  let original_message = Hue.dataset(unit.closest(".unit_data_container"), "original_message")
-  Hue.change_input(original_message)
+  Hue.change_input(Hue.edit_original_message)
   Hue.hide_reply()
   Hue.show_edit()
 }
@@ -667,6 +667,11 @@ Hue.submit_edit = function () {
   let new_message = Hue.get_input()
 
   Hue.hide_edit()
+
+  if (new_message === Hue.edit_original_message) {
+    Hue.clear_input()
+    return
+  }  
 
   if (mode === "chat") {
     if (new_message.length === 0) {
@@ -1824,6 +1829,13 @@ Hue.select_message = function (direction = "up") {
     Hue.unselect_message()
   }
 
+  if (Hue.chat_scrolled) {
+    if (!Hue.selected_message && Hue.last_selected_message) {
+      Hue.select_unit(Hue.last_selected_message)
+      return
+    }
+  }
+
   let units = Hue.els("#chat_area .message_unit")
 
   if (Hue.selected_message) {
@@ -1873,6 +1885,7 @@ Hue.do_unselect_message = function () {
     unit.classList.remove("selected_message")
   }
 
+  Hue.last_selected_message = Hue.selected_message
   Hue.selected_message = undefined
 }
 
