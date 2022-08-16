@@ -1840,13 +1840,30 @@ Hue.select_unit = function (unit) {
   Hue.selected_message = unit
 }
 
+// Select middle message
+Hue.select_middle_message = function () {
+  let visible = Hue.get_visible_units()
+  let unit = Hue.utilz.get_middle_item(visible)
+  Hue.select_unit(unit)
+}
+
+// Remove selected classes
+Hue.remove_selected_classes = function () {
+  for(let unit of Hue.els(".selected_message")) {
+    unit.classList.remove("selected_message")
+  }
+}
+
 // Select next message in a direction
 Hue.select_message = function (direction = "up") {
   if (Hue.chat_scrolled) {
     if (!Hue.selected_message) {
-      let visible = Hue.get_visible_units()
-      let unit = Hue.utilz.get_middle_item(visible)
-      Hue.select_unit(unit)
+      Hue.remove_selected_classes()
+      Hue.select_middle_message()
+      return
+    } else if (!Hue.dataset(Hue.selected_message, "visible")) {
+      Hue.remove_selected_classes()
+      Hue.select_middle_message()
       return
     }
   }
