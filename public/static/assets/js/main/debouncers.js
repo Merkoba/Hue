@@ -48,7 +48,7 @@ Hue.create_debouncers = function () {
   }, Hue.update_userlist_delay)  
 
   // Debounce timer to hide the flash info window
-  Hue.flash_info_timer = Hue.create_debouncer(function (direction) {
+  Hue.flash_info_timer = Hue.create_debouncer(function () {
     Hue.hide_flash_info()
   }, Hue.flash_info_delay)
 
@@ -58,7 +58,7 @@ Hue.create_debouncers = function () {
   }, Hue.file_added_delay)
 
   // Modal filter debouncer
-  Hue.modal_filter = Hue.create_debouncer(function (file) {
+  Hue.modal_filter = Hue.create_debouncer(function () {
     Hue.do_modal_filter()
   }, Hue.filter_delay)
 }
