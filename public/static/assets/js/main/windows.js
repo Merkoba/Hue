@@ -841,7 +841,10 @@ Hue.start_msg = function () {
       {id: "radio_playstop", text: "Play"},
       {id: "radio_random", text: "Random"},
       {id: "radio_volume", text: "Volume: 100%"},
-      {id: "radio_auto", text: "Auto: Off"},
+      {
+        id: "radio_auto", text: "Auto: Off", 
+        title: `Automatically change the station every ${Hue.config.radio_auto_minutes} minutes`
+      },
     ]
   }))
 
