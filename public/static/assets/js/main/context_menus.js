@@ -121,26 +121,30 @@ Hue.show_input_menu = function (e) {
 
   let items = []
 
-  items.push({
-    text: "Send",
-    action: function () {
-      Hue.submit_input()    
-    }
-  })
+  if (Hue.get_input(true)) {
+    items.push({
+      text: "Send",
+      action: function () {
+        Hue.submit_input()    
+      }
+    })
 
-  items.push({
-    text: "Clear",
-    action: function () {
-      Hue.clear_input()    
-    }
-  })
-  
-  items.push({
-    text: "Repeat",
-    action: function () {
-      Hue.repeat_input()    
-    }
-  })  
+    items.push({
+      text: "Clear",
+      action: function () {
+        Hue.clear_input()    
+      }
+    })
+  }
+
+  if (Hue.room_state.last_input) {
+    items.push({
+      text: "Repeat",
+      action: function () {
+        Hue.repeat_input()    
+      }
+    })  
+  }
 
   ctxmenu.show(items, e)
   e.preventDefault()

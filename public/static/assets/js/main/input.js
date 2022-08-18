@@ -70,7 +70,8 @@ Hue.input_has_value = function (trim) {
 // Clears the input
 Hue.clear_input = function () {
   if (Hue.input_has_value(true)) {
-    Hue.last_input = Hue.get_input()
+    Hue.room_state.last_input = Hue.get_input().substring(0, Hue.config.max_input_length)
+    Hue.save_room_state()
   }
 
   if (Hue.input_has_value()) {
@@ -80,8 +81,8 @@ Hue.clear_input = function () {
 
 // Restore input from last value
 Hue.repeat_input = function () {
-  if (Hue.last_input) {
-    Hue.change_input(Hue.last_input)
+  if (Hue.room_state.last_input) {
+    Hue.change_input(Hue.room_state.last_input)
   }
 }
 

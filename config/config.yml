@@ -171,6 +171,7 @@ room_state_default_media_info_enabled: true
 room_state_default_notifications_enabled: true
 room_state_default_last_radio_name: ""
 room_state_default_radio_auto: false
+room_state_default_last_input: ""
 
 # Maximum difference in time between a message and and another 
 # from the same user to be displayed within the same post
