@@ -46,6 +46,7 @@ Hue.update_activity_bar = function (check = false) {
 
     let el = Hue.create("div", "activity_bar_item flex_row_center")
     el.innerHTML = s
+    el.title = user.username
 
     let text_el = Hue.el(".activity_bar_text", el)
     let img_el = Hue.el(".activity_bar_profilepic", el)
