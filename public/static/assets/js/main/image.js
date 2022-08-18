@@ -334,15 +334,6 @@ Hue.hide_modal_image = function () {
   Hue.msg_modal_image.close()
 }
 
-// Toggle modal image
-Hue.toggle_modal_image = function () {
-  if (Hue.msg_modal_image.is_open()) {
-    Hue.hide_modal_image()
-  } else {
-    Hue.show_modal_image()
-  }
-}
-
 // Starts events for the image
 Hue.start_image_events = function () {
   Hue.ev(Hue.el("#media_image_frame"), "load", function (e) {
