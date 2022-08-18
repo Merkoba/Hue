@@ -74,7 +74,7 @@ Hue.goto_url = function (url, mode, encode = false) {
     url = encodeURI(url)
   }
   if (mode === "tab") {
-    window.open(url, "_blank")
+    window.open(url, url.substring(0, 200))
   } else {
     Hue.user_leaving = true
     window.location = url
