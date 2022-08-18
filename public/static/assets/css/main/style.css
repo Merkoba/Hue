@@ -361,6 +361,7 @@ html {
 
 .input_button_container {
 	margin-left: 0.25rem;
+	margin-right: 0.25rem;
 }
 
 .input_button {
@@ -1881,4 +1882,8 @@ pre {
 
 .selected_message {
 	outline: 1px solid var(--text_color_a);
+}
+
+#footer_input_menu {
+	margin-left: 0.25rem;
 }
