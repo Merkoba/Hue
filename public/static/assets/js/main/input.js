@@ -28,6 +28,18 @@ Hue.setup_input = function () {
       }
     }
   })
+
+  Hue.ev(Hue.el("#footer_input_send"), "click", function () {
+    Hue.submit_input()
+  })
+
+  Hue.ev(Hue.el("#footer_input_clear"), "click", function () {
+    Hue.clear_input()
+  })
+
+  Hue.ev(Hue.el("#footer_input_repeat"), "click", function () {
+    Hue.restore_input()
+  })
 }
 
 // Updates the input's placeholder
@@ -64,10 +76,19 @@ Hue.input_has_value = function (trim) {
 }
 
 // Clears the input
-Hue.clear_input = function () {  
+Hue.clear_input = function () {
+  if (Hue.input_has_value(true)) {
+    Hue.last_input = Hue.get_input()
+  }
+
   if (Hue.input_has_value()) {
     Hue.change_input("")
   }
+}
+
+// Restore input
+Hue.restore_input = function () {
+  Hue.change_input(Hue.last_input)
 }
 
 // Changes the input
