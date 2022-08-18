@@ -29,16 +29,8 @@ Hue.setup_input = function () {
     }
   })
 
-  Hue.ev(Hue.el("#footer_input_send"), "click", function () {
-    Hue.submit_input()
-  })
-
-  Hue.ev(Hue.el("#footer_input_clear"), "click", function () {
-    Hue.clear_input()
-  })
-
-  Hue.ev(Hue.el("#footer_input_repeat"), "click", function () {
-    Hue.restore_input()
+  Hue.ev(Hue.el("#footer_input_menu"), "click", function (e) {
+    Hue.show_input_menu(e)
   })
 }
 
@@ -86,8 +78,8 @@ Hue.clear_input = function () {
   }
 }
 
-// Restore input
-Hue.restore_input = function () {
+// Restore input from last value
+Hue.repeat_input = function () {
   if (Hue.last_input) {
     Hue.change_input(Hue.last_input)
   }

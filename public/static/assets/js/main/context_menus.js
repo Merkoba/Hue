@@ -114,3 +114,34 @@ Hue.show_chat_context_menu = function (e, is_main) {
 Hue.hide_context_menu = function () {
   ctxmenu.hide()
 }
+
+// Show input menu
+Hue.show_input_menu = function (e) {
+  e.stopPropagation()
+
+  let items = []
+
+  items.push({
+    text: "Send",
+    action: function () {
+      Hue.submit_input()    
+    }
+  })
+
+  items.push({
+    text: "Clear",
+    action: function () {
+      Hue.clear_input()    
+    }
+  })
+  
+  items.push({
+    text: "Repeat",
+    action: function () {
+      Hue.repeat_input()    
+    }
+  })  
+
+  ctxmenu.show(items, e)
+  e.preventDefault()
+}
