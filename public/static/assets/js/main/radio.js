@@ -162,7 +162,7 @@ Hue.radio_is_playing = function () {
 // Check if radio is playing and perform actions
 Hue.check_radio_playing = function () {
   if (Hue.radio_is_playing()) {
-    Hue.el("#radio_playstop").textContent = "Pause"
+    Hue.el("#radio_playstop").textContent = "Stop"
   } else {
     Hue.el("#radio_playstop").textContent = "Play"
   }
