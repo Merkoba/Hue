@@ -81,10 +81,6 @@ Hue.play_radio = function (radio) {
   Hue.check_radio_playing()
   Hue.room_state.last_radio_name = radio.name
   Hue.save_room_state()
-
-  if (Hue.room_state.radio_auto) {
-    Hue.start_radio_auto_timeout()
-  }
 }
 
 // After radio play
@@ -93,6 +89,7 @@ Hue.after_radio_play = function () {
   Hue.check_radio_playing()
   Hue.scroll_to_radio_station()
   Hue.show_radio_icon()
+  Hue.start_radio_auto_timeout()
 }
 
 // Set radio player
@@ -389,7 +386,7 @@ Hue.stop_radio_auto_timeout = function () {
 // Start radio auto timeout
 Hue.start_radio_auto_timeout = function () {
   Hue.stop_radio_auto_timeout()
-
+  
   Hue.room_state.radio_auto_timeout = setTimeout(function () {
     if (Hue.radio_is_playing()) {
       Hue.play_random_radio()
