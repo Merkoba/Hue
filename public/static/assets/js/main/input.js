@@ -88,7 +88,9 @@ Hue.clear_input = function () {
 
 // Restore input
 Hue.restore_input = function () {
-  Hue.change_input(Hue.last_input)
+  if (Hue.last_input) {
+    Hue.change_input(Hue.last_input)
+  }
 }
 
 // Changes the input
