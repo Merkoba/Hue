@@ -170,6 +170,7 @@ room_state_default_chat_font_size: 1
 room_state_default_media_info_enabled: true
 room_state_default_notifications_enabled: true
 room_state_default_last_radio_name: ""
+room_state_default_radio_auto: false
 
 # Maximum difference in time between a message and and another 
 # from the same user to be displayed within the same post
@@ -245,3 +246,6 @@ radios:
     
   - name: Other Radio
     url: https://otheradio.com
+
+# Change radio auto after these minutes
+radio_auto_minutes: 15

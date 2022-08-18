@@ -49,6 +49,12 @@ Hue.setup_radio = function () {
   Hue.ev(Hue.el("#footer_radio_container"), "mouseenter", function (e) {
     e.target.title = Hue.playing_radio.name
   })
+
+  Hue.ev(Hue.el("#radio_auto"), "click", function () {
+    Hue.toggle_radio_auto()
+  })
+
+  Hue.set_radio_auto_text()
 }
 
 // Play or pause radio
@@ -75,6 +81,10 @@ Hue.play_radio = function (radio) {
   Hue.check_radio_playing()
   Hue.room_state.last_radio_name = radio.name
   Hue.save_room_state()
+
+  if (Hue.room_state.radio_auto) {
+    Hue.start_radio_auto_timeout()
+  }
 }
 
 // After radio play
@@ -124,6 +134,7 @@ Hue.stop_radio = function () {
 
 // After stop radio
 Hue.after_radio_stop = function () {
+  Hue.stop_radio_auto_timeout()
   Hue.apply_radio_station_effects()
   Hue.check_radio_playing()
   Hue.hide_radio_icon()
@@ -341,4 +352,47 @@ Hue.pick_radio_volume = function () {
     let vol = parseInt(item) / 100
     Hue.apply_radio_volume(vol)
   })
+}
+
+// Set radio auto text
+Hue.set_radio_auto_text = function () {
+  let el = Hue.el("#radio_auto")
+
+  if (Hue.room_state.radio_auto) {
+    el.textContent = "Auto: On"
+  } else {
+    el.textContent = "Auto: Off"
+  }
+}
+
+// Toggle radio auto
+Hue.toggle_radio_auto = function () {
+  Hue.room_state.radio_auto = !Hue.room_state.radio_auto
+
+  if (Hue.room_state.radio_auto) {
+    if (Hue.radio_is_playing()) {
+      Hue.start_radio_auto_timeout()
+    }
+  } else {
+    Hue.stop_radio_auto_timeout()
+  }
+
+  Hue.set_radio_auto_text()
+  Hue.save_room_state()
+}
+
+// Stop radio auto timeout
+Hue.stop_radio_auto_timeout = function () {
+  clearTimeout(Hue.room_state.radio_auto_timeout)
+}
+
+// Start radio auto timeout
+Hue.start_radio_auto_timeout = function () {
+  Hue.stop_radio_auto_timeout()
+
+  Hue.room_state.radio_auto_timeout = setTimeout(function () {
+    if (Hue.radio_is_playing()) {
+      Hue.play_random_radio()
+    }
+  }, Hue.config.radio_auto_minutes * 60 * 1000)
 }
