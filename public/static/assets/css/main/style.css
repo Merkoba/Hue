@@ -312,6 +312,10 @@ html {
 	margin-right: 0.5rem !important;
 }
 
+#footer_input_menu {
+	margin-left: 0.25rem;
+}
+
 .panel_icon {
 	cursor: pointer;
 	flex-shrink: 1;
@@ -341,7 +345,7 @@ html {
 #input {
 	font-size: var(--panel_font_size);
 	border: 0 solid black;
-	padding-right: 0.5rem;
+	padding-right: 0.35rem;
 	padding-left: 0.5rem;
 	outline: none;
 	font-family: inherit;
@@ -1882,8 +1886,4 @@ pre {
 
 .selected_message {
 	outline: 1px solid var(--text_color_a);
-}
-
-#footer_input_menu {
-	margin-left: 0.25rem;
 }
