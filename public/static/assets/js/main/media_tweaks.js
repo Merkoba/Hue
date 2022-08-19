@@ -90,6 +90,15 @@ Hue.setup_media_tweaks = function () {
     Hue.set_chat_enabled(true)
     Hue.refresh_media_tweaks()
   })
+  
+  Hue.ev(Hue.el("#media_tweaks_vertical_preset"), "click", function () {
+    Hue.change_media_layout("row")
+    Hue.change_main_layout("column")
+    Hue.do_chat_size_change(60)
+    Hue.set_media_enabled({type: "image", what: false})
+    Hue.set_media_enabled({type: "tv", what: true})
+    Hue.refresh_media_tweaks()
+  })
 
   Hue.apply_media_percentages()
   Hue.apply_media_positions()

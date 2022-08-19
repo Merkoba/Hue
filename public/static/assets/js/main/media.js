@@ -547,6 +547,9 @@ Hue.change_media_lock_text = function (type) {
 Hue.change_media_layout = function (mode = false) {
   if (!mode) {
     mode = Hue.room_state.media_layout
+  } else {
+    Hue.room_state.media_layout = mode
+    Hue.save_room_state()
   }
 
   if (mode === "column") {
@@ -571,16 +574,12 @@ Hue.change_media_layout = function (mode = false) {
 
 // Apply default media layout
 Hue.set_default_media_layout = function () {
-  Hue.room_state.media_layout = Hue.config.room_state_default_media_layout
-  Hue.save_room_state()
-  Hue.change_media_layout()
+  Hue.change_media_layout(Hue.config.room_state_default_media_layout)
 }
 
 // Switches between row and column media layout mode
 Hue.swap_media_layout = function () {
-  Hue.room_state.media_layout = Hue.room_state.media_layout === "row" ? "column" : "row"
-  Hue.save_room_state()
-  Hue.change_media_layout()
+  Hue.change_media_layout(Hue.room_state.media_layout === "row" ? "column" : "row")
 }
 
 // Swaps media

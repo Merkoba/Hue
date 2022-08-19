@@ -1859,7 +1859,7 @@ Hue.select_middle_message = function () {
 
 // Remove selected classes
 Hue.remove_selected_classes = function () {
-  for(let unit of Hue.els(".selected_message")) {
+  for (let unit of Hue.els(".selected_message")) {
     unit.classList.remove("selected_message")
   }
 }
