@@ -7,6 +7,14 @@ Hue.setup_footer = function () {
       Hue.show_media_picker(type)
     })
 
+    Hue.ev(Hue.el(`#footer_${type}_icon`), "auxclick", function (e) {
+      if (e.button === 1) {
+        if (type === "image") {
+          Hue.show_modal_image()
+        }
+      }
+    })
+
     Hue.ev(Hue.el(`#footer_${type}_toggle`), "click", function () {
       Hue.set_media_enabled({type: type, what: !Hue.room_state[`${type}_enabled`]})
     })
