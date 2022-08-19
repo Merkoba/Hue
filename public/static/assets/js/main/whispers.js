@@ -415,7 +415,8 @@ Hue.show_whispers = function (filter = "") {
 
 // Updates the whispers unread count
 Hue.update_whispers_unread_count = function () {
-  Hue.el("#header_whispers_count").textContent = `(${Hue.get_unread_whispers()})`
+  let num = Math.min(100, Hue.get_unread_whispers())
+  Hue.el("#header_whispers_count").textContent = `(${num})`
 }
 
 // Get a list of unread whispers
