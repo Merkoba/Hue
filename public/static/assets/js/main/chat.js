@@ -1930,13 +1930,11 @@ Hue.select_message = function (direction = "up") {
       }
     }
   } else {
-    if (direction === "up") {
+    if (!Hue.chat_scrolled) {
       units.reverse()
+      let unit = units[0]
+      Hue.select_unit(unit)
     }
-
-    let unit = units[0]
-    Hue.select_unit(unit)
-    return
   }
 }
 
