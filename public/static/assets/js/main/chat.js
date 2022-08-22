@@ -1934,6 +1934,8 @@ Hue.select_message = function (direction = "up") {
       units.reverse()
       let unit = units[0]
       Hue.select_unit(unit)
+    } else {
+      Hue.select_middle_message()
     }
   }
 }
