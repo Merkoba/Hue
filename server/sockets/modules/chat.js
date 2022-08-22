@@ -69,14 +69,15 @@ module.exports = function (Hue) {
           info.log_messages[i].data.link_url = linkdata.url
           info.modified = Date.now()
           
-          edited = true
-          id = data.edit_id
           date = info.log_messages[i].data.date
+          id = data.edit_id
+          username = info.log_messages[i].data.username
+          edited = true
           quote = info.log_messages[i].data.quote
           quote_username = info.log_messages[i].data.quote_username
           quote_user_id = info.log_messages[i].data.quote_user_id
           quote_id = info.log_messages[i].data.quote_id
-          username = info.log_messages[i].data.username
+          likes = info.log_messages[i].data.likes
 
           break
         }
