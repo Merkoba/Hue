@@ -4,6 +4,7 @@
 const NeedContext = {}
 NeedContext.open = false
 NeedContext.keydown = false
+NeedContext.mousedown = false
 
 // Show the menu
 NeedContext.show = function (x, y, items) {
@@ -52,6 +53,7 @@ NeedContext.hide = function () {
     NeedContext.container.remove()
     NeedContext.open = false
     NeedContext.keydown = false
+    NeedContext.mousedown = false
   }
 }
 
@@ -122,12 +124,20 @@ NeedContext.init = function () {
   style.innerHTML = css
   document.head.appendChild(style)
 
+  document.addEventListener("mousedown", function (e) {
+    if (e.target.closest("#needcontext-container")) {
+      NeedContext.mousedown = true
+    }
+  })  
+
   document.addEventListener("mouseup", function (e) {
     if (!e.target.closest("#needcontext-container")) {
       NeedContext.hide()
-    } else {
+    } else if (NeedContext.mousedown) {
       NeedContext.select_action()
     }
+
+    NeedContext.mousedown = false
   })
 
   document.addEventListener("keydown", function (e) {
