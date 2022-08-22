@@ -122,7 +122,7 @@ NeedContext.init = function () {
   style.innerHTML = css
   document.head.appendChild(style)
 
-  document.addEventListener("mousedown", function (e) {
+  document.addEventListener("mouseup", function (e) {
     if (!e.target.closest("#needcontext-container")) {
       NeedContext.hide()
     } else {
