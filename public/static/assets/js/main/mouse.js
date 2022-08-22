@@ -58,7 +58,7 @@ Hue.start_mouse_events = function () {
           let username = Hue.dataset(el, "username")
           Hue.show_profile(username, user_id)
         } else if (e.target.closest(".chat_menu_button_container")) {
-          Hue.on_context_click(e)
+          Hue.show_chat_context_menu(e.target.closest(".chat_menu_button_container"))
         } 
       }
     } else if (e.target.closest(".window_controls")) {
@@ -77,25 +77,5 @@ Hue.start_mouse_events = function () {
       let username = Hue.dataset(container, "username")
       Hue.process_write_whisper(`${username} > ${e.target.dataset.whisper}`)
     }
-  })
-
-  Hue.ev(document, "mouseup", function (e) {
-    if (!e.target) {
-      return
-    }
-
-    if (e.target.tagName === "A") {
-      return
-    }    
-
-    if (!e.target.closest) {
-      return
-    }
-
-    if (e.button === 1) {
-      if (e.target.closest(".message")) {
-        Hue.on_context_click(e)
-      }
-    }  
   })
 }

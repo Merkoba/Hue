@@ -1953,14 +1953,10 @@ Hue.unselect_message = function () {
 
 // Selected message action
 Hue.selected_message_action = function () {
-  let unit_data = Hue.el_or_self(".unit_data_container", Hue.selected_message)
-  let unit_text = Hue.el_or_self(".unit_text", Hue.selected_message)
-  let user_id = Hue.dataset(unit_data, "user_id")
+  let button = Hue.el(".chat_menu_button_container", Hue.selected_message)
 
-  if (user_id === Hue.user_id) {
-    Hue.start_edit(unit_text)
-  } else {
-    Hue.start_reply(unit_text)
+  if (button) {
+    Hue.show_chat_context_menu(button)
   }
 
   Hue.unselect_message()

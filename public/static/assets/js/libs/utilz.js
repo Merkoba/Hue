@@ -751,6 +751,11 @@ const Utilz = function () {
 		return arr[Math.round((arr.length - 1) / 2)]
 	}
 
+	// Move an item in an array
+	utilz.move_in_array = function(arr, from, to) {
+		arr.splice(to, 0, arr.splice(from, 1)[0])
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]

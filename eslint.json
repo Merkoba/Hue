@@ -44,7 +44,6 @@
     "YT": "readonly",
     "onYouTubeIframeAPIReady": "readonly",
     "ColorLib": "readonly",
-    "ctxmenu": "readonly",
     "dateFormat": "readonly"
   }
 }

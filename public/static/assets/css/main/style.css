@@ -1721,14 +1721,6 @@ pre {
 	height: 100vh;
 }
 
-.ctxmenu {
-	z-index: 999999999 !important;
-}
-
-.ctxmenu li span {
-	cursor: pointer;
-}
-
 .pos_absolute {
 	position: absolute;
 }
