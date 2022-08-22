@@ -735,8 +735,8 @@ Hue.edited_media_comment = function (data) {
       if (Hue.dataset(message, "type") === `${data.type}_change`) {
         let content = Hue.el(".announcement_content", message)
         content.textContent = oitem.message
-        let content_container = Hue.el(".announcement_content_container", message)
-        Hue.dataset(content_container, "original_message", data.comment)
+        let data_container = Hue.el_or_self(".unit_data_container", message)
+        Hue.dataset(data_container, "original_message", data.comment)
       }
     }
   }
