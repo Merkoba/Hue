@@ -71,7 +71,7 @@ module.exports = function (Hue) {
           
           edited = true
           id = data.edit_id
-          date = info.log_messages[i].date
+          date = info.log_messages[i].data.date
           quote = info.log_messages[i].data.quote
           quote_username = info.log_messages[i].data.quote_username
           quote_user_id = info.log_messages[i].data.quote_user_id
