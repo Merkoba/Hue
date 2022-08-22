@@ -752,7 +752,7 @@ const Utilz = function () {
 	}
 
 	// Move an item in an array
-	utilz.move_in_array = function(arr, from, to) {
+	utilz.move_in_array = function (arr, from, to) {
 		arr.splice(to, 0, arr.splice(from, 1)[0])
 	}
 
