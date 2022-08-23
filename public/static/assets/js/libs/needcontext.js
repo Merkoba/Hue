@@ -36,6 +36,14 @@ NeedContext.show = function (x, y, items) {
   
   let c = document.querySelector("#needcontext-container")
 
+  if (y < 5) {
+    y = 5
+  }
+
+  if (x < 5) {
+    x = 5
+  }
+
   if ((y + c.offsetHeight) + 5 > document.body.clientHeight) {
     y = document.body.clientHeight - c.offsetHeight - 5
   }
