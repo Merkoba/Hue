@@ -6,6 +6,12 @@ NeedContext.open = false
 NeedContext.keydown = false
 NeedContext.mousedown = false
 
+// Show based on an element
+NeedContext.show_on_element = function (el, items) {
+  let rect = el.getBoundingClientRect()
+  NeedContext.show(rect.left, rect.top, items)
+}
+
 // Show the menu
 NeedContext.show = function (x, y, items) {
   NeedContext.hide()

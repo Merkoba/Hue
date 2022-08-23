@@ -114,8 +114,7 @@ Hue.show_chat_context_menu = function (button) {
     })
   }
   
-  let rect = button.getBoundingClientRect()
-  NeedContext.show(rect.left, rect.top, items)
+  NeedContext.show_on_element(button, items)
 }
 
 // Hide the context menu
@@ -153,7 +152,5 @@ Hue.show_input_menu = function () {
   }
 
   let el = Hue.el("#footer_input_menu")
-  let rect = el.getBoundingClientRect()
-
-  NeedContext.show(rect.left, rect.top, items)
+  NeedContext.show_on_element(el, items)
 }
