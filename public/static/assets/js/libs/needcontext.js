@@ -139,12 +139,20 @@ NeedContext.init = function () {
   document.head.appendChild(style)
 
   document.addEventListener("mousedown", function (e) {
+    if (!NeedContext.open) {
+      return
+    }
+
     if (e.target.closest("#needcontext-container")) {
       NeedContext.mousedown = true
     }
   })  
 
   document.addEventListener("mouseup", function (e) {
+    if (!NeedContext.open) {
+      return
+    }
+    
     if (!e.target.closest("#needcontext-container")) {
       NeedContext.hide()
     } else if (NeedContext.mousedown) {
