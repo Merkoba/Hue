@@ -2,9 +2,6 @@
 
 // Main object
 const NeedContext = {}
-NeedContext.open = false
-NeedContext.keydown = false
-NeedContext.mousedown = false
 
 // Show based on an element
 NeedContext.show_on_element = function (el, items) {
@@ -61,13 +58,18 @@ NeedContext.show = function (x, y, items) {
   NeedContext.open = true
 }
 
+// Set defaults
+NeedContext.set_defaults = function () {
+  NeedContext.open = false
+  NeedContext.keydown = false
+  NeedContext.mousedown = false
+}
+
 // Hide the menu
 NeedContext.hide = function () {
   if (NeedContext.open) {
     NeedContext.container.remove()
-    NeedContext.open = false
-    NeedContext.keydown = false
-    NeedContext.mousedown = false
+    NeedContext.set_defaults()
   }
 }
 
@@ -152,7 +154,7 @@ NeedContext.init = function () {
     if (!NeedContext.open) {
       return
     }
-    
+
     if (!e.target.closest("#needcontext-container")) {
       NeedContext.hide()
     } else if (NeedContext.mousedown) {
@@ -189,6 +191,7 @@ NeedContext.init = function () {
     }
 
     e.stopPropagation()
+    NeedContext.keydown = false
 
     if (e.key === "Escape") {
       NeedContext.hide()
@@ -197,7 +200,9 @@ NeedContext.init = function () {
     }
 
     e.preventDefault()
-  })  
+  })
+
+  NeedContext.set_defaults()
 }
 
 // Start
