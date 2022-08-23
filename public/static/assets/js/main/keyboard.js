@@ -217,6 +217,17 @@ Hue.activate_key_detection = function () {
         }
       }
 
+      if (Hue.msg_delete_messages.is_open()) {
+        if (Hue.msg_delete_messages.is_highest()) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            Hue.delete_message_action()
+            e.preventDefault()
+          }
+
+          return
+        }
+      }
+
       return
     }
 

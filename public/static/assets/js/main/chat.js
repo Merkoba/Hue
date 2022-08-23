@@ -1546,8 +1546,7 @@ Hue.announce_log_cleared = function (data) {
 // Setup delete messages
 Hue.setup_delete_messages = function () {
   Hue.ev(Hue.el("#delete_messages_one"), "click", function () {
-    Hue.msg_delete_messages.close()
-    Hue.delete_message(Hue.delete_messages_id)
+    Hue.delete_message_action()
   })
 
   Hue.ev(Hue.el("#delete_messages_group"), "click", function () {
@@ -1564,6 +1563,12 @@ Hue.setup_delete_messages = function () {
     Hue.msg_delete_messages.close()
     Hue.delete_messages_below(Hue.delete_messages_id)
   })
+}
+
+// Delete message action
+Hue.delete_message_action = function () {
+  Hue.msg_delete_messages.close()
+  Hue.delete_message(Hue.delete_messages_id)
 }
 
 // Handles delete message
