@@ -1554,7 +1554,7 @@ pre {
 }
 
 .colortext {
-	background-color: rgb(25, 25, 25);
+	background-color: rgb(33, 33, 33) !important;
 	padding: 0.25em;
 }
 
