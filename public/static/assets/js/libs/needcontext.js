@@ -134,7 +134,7 @@ NeedContext.init = function () {
   let css = `
     #needcontext-main {
       position: fixed;
-      z-index: 999999;
+      z-index: 999999999;
       width: 100%;
       height: 100%;
       top: 0;
