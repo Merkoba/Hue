@@ -294,11 +294,11 @@ Hue.activate_key_detection = function () {
           Hue.cancel_edit()
         } else if (Hue.chat_scrolled) {
           Hue.goto_bottom(true)
-        } else {
-          if (has_value) {
-            Hue.clear_input()
-          }
-        }
+        } else if (has_value) {
+          Hue.clear_input()
+        } else if (Hue.footer_expanded) {
+          Hue.disable_footer_expand()
+        } 
 
         e.preventDefault()
         return
