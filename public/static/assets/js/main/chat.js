@@ -534,6 +534,10 @@ Hue.start_reply = function (target) {
     return
   }
 
+  if (Hue.modal_open) {
+    Hue.close_all_modals()
+  }
+
   let message = target.closest(".message")
   let unit = target.closest(".message_unit")
   let username = Hue.dataset(message, "username")
