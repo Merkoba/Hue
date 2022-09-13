@@ -247,5 +247,9 @@ Hue.remove_urls = function (text) {
     new_words.push(`(${hostname})`)
   }  
 
-  return new_words.join(" ")
+  let new_text = new_words.join(" ").replace(
+    Hue.textparser_regexes["anchor_link"].regex, ""
+  )  
+
+  return new_text.trim()
 }
