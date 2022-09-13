@@ -1028,7 +1028,7 @@ svg.action:hover {
 	padding: 0.25rem;
 }
 
-.chat_area .fresh_message, 
+#chat_area .fresh_message, 
 #message_board_container .fresh_message {
 	background: linear-gradient(.25turn, var(--altcolor_a), 50%, transparent);
 	background-clip: content-box;
