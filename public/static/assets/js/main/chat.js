@@ -647,6 +647,10 @@ Hue.setup_edit = function () {
 
 // Starts chat message editing
 Hue.start_edit = function (unit) {
+  if (Hue.modal_open) {
+    Hue.close_all_modals()
+  }
+    
   Hue.edit_container = unit.closest(".message")
   Hue.edit_unit = unit
   Hue.edit_original_message = Hue.dataset(unit.closest(".unit_data_container"), "original_message")
