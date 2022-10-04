@@ -268,6 +268,7 @@ html {
 #footer {
 	justify-content: flex-start !important;
 	position: relative;
+	transition: filter 0.2s linear;
 }
 
 .footer_expanded {
@@ -1877,4 +1878,8 @@ pre {
 
 .selected_message {
 	outline: 1px solid var(--text_color_a);
+}
+
+.flash_highlight {
+	filter: brightness(1.5);
 }

@@ -92,3 +92,14 @@ Hue.update_footer_toggle = function (type) {
     Hue.el(`#footer_${type}_toggle use`).href.baseVal = "#icon_toggle-off"
   }
 }
+
+// Highlight the footer
+// Highlight input
+Hue.highlight_footer = function () {
+  clearTimeout(Hue.highlight_footer_timeout)
+  Hue.el("#footer").classList.add("flash_highlight")
+
+  Hue.highlight_footer_timeout = setTimeout(function () {
+    Hue.el("#footer").classList.remove("flash_highlight")
+  }, Hue.highlight_footer_delay)
+}

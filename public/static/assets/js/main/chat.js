@@ -554,6 +554,7 @@ Hue.start_reply = function (target) {
 
   Hue.show_reply()
   Hue.set_input_placeholder(`Replying to: ${username}`)
+  Hue.highlight_footer()
 }
 
 // Show the reply info
@@ -657,6 +658,7 @@ Hue.start_edit = function (unit) {
   Hue.change_input(Hue.edit_original_message)
   Hue.hide_reply()
   Hue.show_edit()
+  Hue.highlight_footer()
 }
 
 // Show edit
@@ -1966,12 +1968,7 @@ Hue.unselect_message = function () {
 
 // Selected message action
 Hue.selected_message_action = function () {
-  let button = Hue.el(".chat_menu_button_container", Hue.selected_message)
-
-  if (button) {
-    Hue.show_chat_context_menu(button)
-  }
-
+  Hue.show_chat_context_menu(Hue.selected_message)
   Hue.unselect_message()
 }
 

@@ -131,7 +131,10 @@ module.exports = function (Hue) {
           id: data.id,
         })
 
-        Hue.handler.push_admin_log_message(socket, "deleted a message from the message board")         
+        if (item.user_id !== socket.hue_user_id) {
+          Hue.handler.push_admin_log_message(socket, "deleted a message from the message board")         
+        }
+        
         return
       }
     }
