@@ -1968,7 +1968,8 @@ Hue.unselect_message = function () {
 
 // Selected message action
 Hue.selected_message_action = function () {
-  Hue.show_chat_context_menu(Hue.selected_message)
+  let el = Hue.el_or_self(".unit_text", Hue.selected_message)
+  Hue.show_chat_context_menu(el)
   Hue.unselect_message()
 }
 
