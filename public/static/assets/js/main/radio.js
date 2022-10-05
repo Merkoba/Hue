@@ -89,7 +89,10 @@ Hue.after_radio_play = function () {
   Hue.check_radio_playing()
   Hue.scroll_to_radio_station()
   Hue.show_radio_icon()
-  Hue.start_radio_auto_timeout()
+  
+  if (Hue.room_state.radio_auto) {
+    Hue.start_radio_auto_timeout()
+  }
 }
 
 // Set radio player
