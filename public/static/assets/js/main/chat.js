@@ -1209,14 +1209,6 @@ Hue.scroll_events = function () {
   Hue.ev(chat, "scroll", function (e) {
     Hue.scroll_timer()
     Hue.update_scroll_percentage()
-
-    if (chat.scrollTop < Hue.last_chat_scrolltop) {
-      if (!Hue.chat_scrolled) {
-        Hue.check_scrollers()
-      }
-    }
-
-    Hue.last_chat_scrolltop = chat.scrollTop
   })
 }
 

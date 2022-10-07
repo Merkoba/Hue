@@ -97,7 +97,6 @@ Hue.dataset_obj = {}
 Hue.dataset_id = 0
 Hue.flipped = false
 Hue.command_book_created = false
-Hue.last_chat_scrolltop = 0
 Hue.radio_disabled = false
 Hue.hide_radio_delay = 1000
 Hue.reply_active = false
