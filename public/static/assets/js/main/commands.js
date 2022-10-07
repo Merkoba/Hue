@@ -648,6 +648,12 @@ Hue.commands = {
     },
     description: "Show the tv history",
   },  
+  "lock": {
+    action: (arg, ans) => {
+      Hue.lock_chat()
+    },
+    description: "Lock the chat in place",
+  },    
 }
 
 // Commands reserved to superusers

@@ -154,8 +154,7 @@ Hue.show_input_menu = function () {
   items.push({
     text: "Lock",
     action: function () {
-      Hue.show_top_scroller()
-      Hue.show_bottom_scroller()  
+      Hue.lock_chat()  
     }
   })  
 

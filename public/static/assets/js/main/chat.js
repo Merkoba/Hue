@@ -2000,3 +2000,9 @@ Hue.observe_message = function (unit) {
     Hue.chat_intersection_observer.observe(unit)
   }
 }
+
+// Lock the chat by showing scrollers
+Hue.lock_chat = function () {
+  Hue.show_top_scroller()
+  Hue.show_bottom_scroller()
+}
