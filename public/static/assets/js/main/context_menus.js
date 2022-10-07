@@ -151,6 +151,14 @@ Hue.show_input_menu = function () {
     })  
   }
 
+  items.push({
+    text: "Lock",
+    action: function () {
+      Hue.show_top_scroller()
+      Hue.show_bottom_scroller()  
+    }
+  })  
+
   let el = Hue.el("#footer_input_menu")
   NeedContext.show_on_element(el, items)
 }
