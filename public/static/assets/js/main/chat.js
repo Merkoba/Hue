@@ -1498,6 +1498,7 @@ Hue.activity_notification = function (username) {
   if (!Hue.started) {
     return
   }
+  
   if (!Hue.get_setting("show_activity_notifications")) {
     return
   }
