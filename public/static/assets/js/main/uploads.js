@@ -229,6 +229,7 @@ Hue.cancel_file_upload = function (date) {
 
   if (file.hue_data.action === "background_upload") {
     Hue.el("#admin_background").src = Hue.background
+    Hue.apply_background()
   } else if (file.hue_data.action === "profilepic_upload") {
     Hue.el("#user_profile_profilepic").src = Hue.get_profilepic(Hue.user_id)
   }
