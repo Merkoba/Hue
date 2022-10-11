@@ -1444,6 +1444,7 @@ Hue.setup_chat = function () {
 
   Hue.chat_resize_observer = new ResizeObserver(function () {
     Hue.check_max_chat_messages()
+    Hue.check_scrollers()
     Hue.goto_bottom()
   })
 
