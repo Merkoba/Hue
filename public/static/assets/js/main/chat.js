@@ -1274,7 +1274,7 @@ Hue.check_scrollers = function () {
     return
   }
 
-  let threshold = 5
+  let threshold = 100
   let area = Hue.el("#chat_area_parent")
   let max = area.scrollHeight - area.clientHeight
   let diff = max - area.scrollTop
