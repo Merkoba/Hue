@@ -930,6 +930,8 @@ Hue.jump_to_chat_message = function (message_id, highlight, container = "#chat_a
     block: "center"
   })
 
+  Hue.check_scrollers()
+
   if (highlight) {
     el.classList.add("fresh_message")
 
@@ -1095,9 +1097,7 @@ Hue.make_link_preview = function (args = {}) {
   let ans = {}
   ans.link_preview = false
 
-  let classes = args.image ?
-    "link_preview link_preview_with_image" :
-    "link_preview link_preview_no_image"
+  let classes = "link_preview"
   let image_classes = args.image ?
     "link_preview_image" :
     "nodisplay"
@@ -1144,8 +1144,7 @@ Hue.setup_link_preview = function (fmessage) {
 
   if (link_preview_image) {
     Hue.ev(link_preview_image, "error", function () {
-      link_preview_image.style.display = "none"
-      link_preview_el.classList.remove("link_preview_with_image")
+      this.style.display = "none"
     })
   }
 
@@ -1444,7 +1443,6 @@ Hue.setup_chat = function () {
 
   Hue.chat_resize_observer = new ResizeObserver(function () {
     Hue.check_max_chat_messages()
-    Hue.check_scrollers()
     Hue.goto_bottom()
   })
 

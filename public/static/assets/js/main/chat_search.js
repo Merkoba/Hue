@@ -125,10 +125,18 @@ Hue.show_chat_search = function (filter = "") {
         let profilepics = Hue.els(".profilepic", message)
 
         for (let pic of profilepics) {
-          Hue.ev(pic, "error", function (e) {
+          Hue.ev(pic, "error", function () {
             Hue.fallback_profilepic(this)
           })
         }
+
+        let link_img = Hue.el(".link_preview_image", message)
+
+        if (link_img) {
+          Hue.ev(link_img, "error", function () {
+            this.style.display = "none"
+          })
+        }      
         
         Hue.el("#chat_search_container").append(message)
       }
