@@ -115,7 +115,8 @@ Hue.show_chat_search = function (filter = "") {
 
       return match
     } else {
-      return it.textContent.toLowerCase().includes(filter)
+      let text = Hue.el_or_self(".unit_text", it)
+      return text.textContent.toLowerCase().includes(filter)
     }
   }
 
@@ -227,9 +228,7 @@ Hue.show_chat_search = function (filter = "") {
             }
           }
         } else if (mode === "announcement") {
-          let text = Hue.el(".unit_text", it)
-
-          if (filtercheck(text)) {
+          if (filtercheck(it)) {
             message_matched = true
           }
         }
