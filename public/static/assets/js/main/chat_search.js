@@ -227,7 +227,9 @@ Hue.show_chat_search = function (filter = "") {
             }
           }
         } else if (mode === "announcement") {
-          if (filtercheck(it)) {
+          let text = Hue.el(".unit_text", it)
+
+          if (filtercheck(text)) {
             message_matched = true
           }
         }
