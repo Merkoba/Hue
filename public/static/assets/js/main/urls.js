@@ -196,6 +196,12 @@ Hue.open_url_menu = function (data) {
   Hue.open_url_data = data
 
   Hue.msg_open_url.show(function () {
+    if (data.size) {
+      Hue.ev(Hue.el("#open_url_info_title_size"), "click", function () {
+        Hue.open_view_text(Hue.el("#open_url_info_text_size").textContent)
+      })
+    }
+
     if (data.title) {
       Hue.ev(Hue.el("#open_url_info_title_title"), "click", function () {
         Hue.open_view_text(Hue.el("#open_url_info_text_title").textContent)
