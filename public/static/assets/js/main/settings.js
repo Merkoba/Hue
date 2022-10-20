@@ -106,39 +106,6 @@ Hue.user_settings = {
         Hue.save_settings()
       }
     },
-  },
-  stop_radio_on_tv_play: {
-    widget_type: "checkbox",
-    description: "Whether to stop the radio when the tv starts playing",
-    action: (save = true) => {
-      Hue.settings.stop_radio_on_tv_play = Hue.el("#settings_stop_radio_on_tv_play").checked
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  stop_tv_on_radio_play: {
-    widget_type: "checkbox",
-    description: "Whether to stop the tv when the radio starts playing",
-    action: (save = true) => {
-      Hue.settings.stop_tv_on_radio_play = Hue.el("#settings_stop_tv_on_radio_play").checked
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  confirm_on_close: {
-    widget_type: "checkbox",
-    description: "Whether to show a confirm message when closing the application",
-    action: (save = true) => {
-      Hue.settings.confirm_on_close = Hue.el("#settings_confirm_on_close").checked
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
   }
 }
 
@@ -270,7 +237,9 @@ Hue.setup_settings_windows = function () {
   })
 
   Hue.ev(Hue.el("#settings_defaults"), "click", function () {
-    Hue.reset_settings()
+    Hue.show_confirm("Restore default settings", function () {
+      Hue.reset_settings()
+    })
   })
 }
 

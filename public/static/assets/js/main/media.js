@@ -435,12 +435,7 @@ Hue.change_media = function (args = {}) {
     }
 
     Hue.loaded_tv = item
-
     Hue[`show_${item.type}_tv`](args.play)
-
-    if (args.play) {
-      Hue.after_tv_play()
-    }
   } else {
     return
   }

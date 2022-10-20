@@ -149,16 +149,6 @@ Hue.get_element_sizes = function () {
   Hue.panel_height = Hue.el("#footer").offsetHeight
 }
 
-// Attach before-unload event
-Hue.start_before_unload = function () {
-  Hue.ev(window, "beforeunload", function (e) {
-    if (Hue.get_setting("confirm_on_close")) {
-      e.preventDefault()
-      return e.returnValue = "Are you sure?"
-    }
-  })
-}
-
 // Setup item picker
 Hue.setup_item_picker = function () {
   let container = Hue.el("#item_picker_container")

@@ -68,12 +68,7 @@ Hue.check_radio_play = function (radio) {
 
 // Play the audio player with a cache-busted url
 Hue.play_radio = function (radio) {
-  Hue.push_radio_queue(radio)
-
-  if (Hue.get_setting("stop_tv_on_radio_play")) {
-    Hue.stop_tv()
-  }
-  
+  Hue.push_radio_queue(radio)  
   Hue.playing_radio = radio
   Hue.radio_player.src = Hue.utilz.cache_bust_url(radio.url)
   Hue.radio_player.play()

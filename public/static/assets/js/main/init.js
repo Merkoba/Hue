@@ -179,7 +179,6 @@ Hue.init = function () {
   Hue.setup_chat_search()
   Hue.setup_change_role()
   Hue.setup_screen_capture()
-  Hue.start_before_unload()
   Hue.setup_admin_activity()
   Hue.setup_item_picker()
   Hue.setup_edit()

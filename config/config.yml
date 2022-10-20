@@ -149,9 +149,6 @@ settings_default_show_highlight_notifications: true
 settings_default_show_activity_notifications: true
 settings_default_show_user_join_notifications: true
 settings_default_show_user_leave_notifications: true
-settings_default_stop_radio_on_tv_play: true
-settings_default_stop_tv_on_radio_play: true
-settings_default_confirm_on_close: false
 
 # Default room state values
 room_state_default_image_enabled: true
