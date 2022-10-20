@@ -1743,7 +1743,15 @@ pre {
 }
 
 .flipped {
-	transform: rotateY(180deg);
+	transform: rotateY(180deg) !important;
+}
+
+.flopped_column {
+	flex-direction: column !important;
+}
+
+.flopped_row {
+	flex-direction: row-reverse !important;
 }
 
 .radio_station_playing {

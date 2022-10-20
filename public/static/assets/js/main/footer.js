@@ -54,6 +54,12 @@ Hue.setup_footer = function () {
       Hue.el("#input").focus()
     }
   })
+
+  Hue.ev(Hue.el("#footer_input_menu"), "auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.flop()
+    }
+  })
 }
 
 // Enabled footer expand

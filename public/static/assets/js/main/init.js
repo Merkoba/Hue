@@ -96,6 +96,7 @@ Hue.update_userlist_delay = 2000
 Hue.dataset_obj = {}
 Hue.dataset_id = 0
 Hue.flipped = false
+Hue.flopped = false
 Hue.command_book_created = false
 Hue.radio_disabled = false
 Hue.hide_radio_delay = 1000

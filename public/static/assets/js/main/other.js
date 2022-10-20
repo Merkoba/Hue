@@ -130,6 +130,23 @@ Hue.flip = function () {
   Hue.flipped = !Hue.flipped
 }
 
+// Rotate media
+Hue.flop = function () {
+  if (Hue.flopped) {
+    Hue.el("#main_rows_container").classList.remove("flopped_column")
+    Hue.el("#main_rows_container").classList.remove("flopped_row")
+    Hue.flash_info("Secret", "You discovered the other side")
+  } else {
+    if (Hue.room_state.main_layout === "column") {
+      Hue.el("#main_rows_container").classList.add("flopped_column")
+    } else {
+      Hue.el("#main_rows_container").classList.add("flopped_row")
+    }
+  }
+
+  Hue.flopped = !Hue.flopped
+}
+
 // Get the last 3 digits of a message id
 // Mainly used to turn things goldtext
 Hue.getcode = function (s = "") {
