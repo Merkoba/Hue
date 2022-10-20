@@ -146,7 +146,9 @@ Hue.setup_background_select = function () {
   })
 
   Hue.ev(Hue.el("#background_select_remove"), "click", function () {
-    Hue.change_background_source("")
+    Hue.show_confirm("Remove the current background", function () {
+      Hue.change_background_source("")
+    })
   })
 
   Hue.ev(Hue.el("#background_select_upload"), "click", function () {
