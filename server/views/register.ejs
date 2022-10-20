@@ -22,18 +22,15 @@
 			<form method="post" action="/register" name="register" onsubmit="return validate_form()">
 				<input type="text" placeholder="Username" name="username" id="register_username">
 
-				<div id="username_taken">
-					<div class="spacer3"></div>
-					<div class="error">Username is already taken</div>
-				</div>
-
 				<div class="spacer4"></div>
 				<input type="password" placeholder="Password" name="password" id="register_password">
 				<div class="spacer4"></div>
 				<input type="password" placeholder="Password Again" id="register_password2">
 
 				<div class="spacer4"></div>
-
+				<input type="text" placeholder="Code" name="code" id="register_code">
+				<div class="spacer4"></div>
+				
 				<% if(vars.recaptcha_enabled) {%>
 
 				<div class="g-recaptcha" data-sitekey="<%-vars.recaptcha_key%>" data-callback="recaptcha_callback"></div>
@@ -57,11 +54,7 @@
 				if (msg_info.is_open()) {
 					return false
 				}
-
-				if (Hue.el("#username_taken").style.display !== "none") {
-					return false
-				}
-
+				
 				if (recaptcha_enabled && !recaptcha_checked) {
 					return false
 				}
@@ -71,6 +64,7 @@
 				let username = Hue.el("#register_username").value
 				let password = Hue.el("#register_password").value
 				let password2 = Hue.el("#register_password2").value
+				let code = Hue.el("#register_code").value
 
 				if (username.length === 0) {
 					show_info("Username can't be empty")
@@ -112,6 +106,11 @@
 					return false
 				}
 
+				if (code.length === 0 || code.length > max_code_length) {
+					show_info("Invalid code")
+					return false
+				}
+
 				Hue.el("#btn_register").disabled = true
 
 				return true
@@ -127,8 +126,6 @@
 				if (username === current_username) {
 					return
 				}
-
-				Hue.el("#username_taken").style.display = "none"
 
 				if (username.length > max_username_length) {
 					username = username.substring(0, max_username_length)
