@@ -707,7 +707,7 @@ a.generic:hover {
 	justify-content: center;
 	background-color: var(--altbackground);
 	border-left: 0.06rem solid var(--altbackground);
-	opacity: 0.5;
+	opacity: 0.8;
 }
 
 .chat_menu_button:hover {
@@ -1868,7 +1868,7 @@ pre {
 
 .open_url_info_title {
 	text-decoration: underline;
-	opacity: 0.55;
+	opacity: 0.8;
 }
 
 .link_media_input {
