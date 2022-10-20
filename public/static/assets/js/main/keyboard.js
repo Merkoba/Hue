@@ -269,11 +269,18 @@ Hue.activate_key_detection = function () {
     } else if (e.key === "PageDown") {
       Hue.scroll_down()
     } else if (e.key === "ArrowUp") {
-      if (e.shiftKey || Hue.footer_expanded) {
+      if (Hue.footer_expanded) {
         return
       }
+
+      if (e.shiftKey) {
+        if (!Hue.input_has_value(true)) {
+          Hue.repeat_input()
+        }
+      } else {
+        Hue.select_message("up")
+      }
       
-      Hue.select_message("up")
       e.preventDefault()
       return
     } else if (e.key === "ArrowDown") {
