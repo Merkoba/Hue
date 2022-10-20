@@ -279,7 +279,6 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     c.vars.max_username_length = config.max_username_length
     c.vars.min_password_length = config.min_password_length
     c.vars.max_password_length = config.max_password_length
-    c.vars.max_code_length = sconfig.max_code_length
     c.vars.register_title = sconfig.register_title
     c.vars.recaptcha_enabled = sconfig.recaptcha_enabled
     c.vars.form_username = decodeURIComponent(req.query.form_username)
