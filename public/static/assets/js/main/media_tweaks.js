@@ -38,7 +38,9 @@ Hue.setup_media_tweaks = function () {
   })
 
   Hue.ev(Hue.el("#media_tweaks_defaults"), "click", function () {
-    Hue.apply_media_tweaks_defaults()
+    Hue.show_confirm("Restore media tweak defaults", function () {
+      Hue.apply_media_tweaks_defaults()
+    })
   })
 
   Hue.ev(Hue.el("#media_tweaks_tv_size_minus"), "click", function () {
@@ -92,12 +94,14 @@ Hue.setup_media_tweaks = function () {
   })
   
   Hue.ev(Hue.el("#media_tweaks_vertical_preset"), "click", function () {
-    Hue.change_media_layout("row")
-    Hue.change_main_layout("column")
-    Hue.do_chat_size_change(60)
-    Hue.set_media_enabled({type: "image", what: false})
-    Hue.set_media_enabled({type: "tv", what: true})
-    Hue.refresh_media_tweaks()
+    Hue.show_confirm("Apply vertical preset", function () {
+      Hue.change_media_layout("row")
+      Hue.change_main_layout("column")
+      Hue.do_chat_size_change(60)
+      Hue.set_media_enabled({type: "image", what: false})
+      Hue.set_media_enabled({type: "tv", what: true})
+      Hue.refresh_media_tweaks()
+    })
   })
 
   Hue.apply_media_percentages()
