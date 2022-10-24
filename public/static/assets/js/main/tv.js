@@ -231,6 +231,10 @@ Hue.after_show_tv = function () {
   Hue.apply_media_info("tv")
   Hue.fix_tv_frame()
   Hue.focus_input()
+
+  if (Hue.current_tv().type === "iframe" && Hue.el("#media_iframe_tv").src) {
+    Hue.el("#media_iframe_poster").style.display = "none"
+  }
 }
 
 // Attempts to change the tv source
