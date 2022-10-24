@@ -233,6 +233,7 @@ Hue.after_show_tv = function () {
   Hue.focus_input()
 
   if (Hue.current_tv().type === "iframe" && Hue.el("#media_iframe_tv").src) {
+    Hue.el("#media_iframe_tv").classList.add("noborder")
     Hue.el("#media_iframe_poster").style.display = "none"
   }
 }
