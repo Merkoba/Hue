@@ -13,8 +13,22 @@ module.exports = function (Hue) {
       return
     }
 
-    if (data.message.split("\n").length > Hue.config.max_num_newlines) {
+    let lines = data.message.split("\n")
+
+    if (lines.length > Hue.config.max_num_newlines) {
       return
+    }
+
+    if (lines.length > 1) {
+      for (let line of lines) {
+        Hue.handler.add_spam(socket)
+      }
+    }
+
+    if (data.message.length >= 140) {
+      for (let chunk of Hue.utilz.get_chunks(data.message, 140)) {
+        Hue.handler.add_spam(socket)
+      }
     }
 
     let quote = data.quote || ""

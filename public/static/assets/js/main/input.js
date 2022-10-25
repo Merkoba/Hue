@@ -206,3 +206,8 @@ Hue.check_footer_expand = function () {
     Hue.disable_footer_expand()
   }
 }
+
+// Add a new line at the end of the input
+Hue.add_input_new_line = function () {
+  Hue.change_input(Hue.get_input() + "\n")
+}

@@ -250,6 +250,7 @@ Hue.activate_key_detection = function () {
       if (e.shiftKey) {
         if (!Hue.footer_expanded) {
           Hue.enable_footer_expand()
+          Hue.add_input_new_line()
           e.preventDefault()
         }
 

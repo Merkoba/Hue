@@ -756,6 +756,11 @@ const Utilz = function () {
 		arr.splice(to, 0, arr.splice(from, 1)[0])
 	}
 
+	utilz.get_chunks = function (str, chunk_size) {
+    let chunk = new RegExp(`.{1,${chunk_size}}`, 'g')
+    return str.match(chunk)
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.video_extensions = ["mp4", "webm"]
 	utilz.video_types = ["video/mp4", "video/webm"]
