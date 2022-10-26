@@ -133,6 +133,7 @@ module.exports = function (Hue) {
     socket.hue_room_id = info.id
     socket.hue_bio = userinfo.bio
     socket.hue_joining = true
+    socket.hue_last_chat_message = Date.now()
     socket.join(socket.hue_room_id)
 
     if (await Hue.handler.check_multipe_joins(socket)) {

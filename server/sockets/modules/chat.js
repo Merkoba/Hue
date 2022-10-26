@@ -16,7 +16,7 @@ module.exports = function (Hue) {
     // Return if too spammy
     let spam_level = Hue.handler.get_spam_level(socket)
 
-    if (spam_level >= 12) {
+    if (spam_level >= Hue.sconfig.anti_spam_chat_limit) {
       return
     }
 
@@ -26,16 +26,27 @@ module.exports = function (Hue) {
       return
     }
 
+    // Add spam every other line
     if (lines.length > 1) {
-      for (let line of lines) {
+      let n = parseInt(lines.length / 2)
+
+      for (let i=0; i<n; i++) {
         Hue.handler.add_spam(socket)
       }
     }
 
-    if (data.message.length >= 140) {
-      for (let chunk of Hue.utilz.get_chunks(data.message, 140)) {
+    // Add chunk spam
+    if (data.message.length >= Hue.sconfig.anti_spam_chat_chunks) {
+      let n = parseInt(data.message.length / Hue.sconfig.anti_spam_chat_chunks)
+
+      for (let i=0; i<n; i++) {
         Hue.handler.add_spam(socket)
       }
+    }
+
+    // Check last message date spam
+    if (Date.now() - socket.hue_last_chat_message <= Hue.sconfig.anti_spam_chat_delay) {
+      Hue.handler.add_spam(socket)
     }
 
     let quote = data.quote || ""
@@ -166,6 +177,9 @@ module.exports = function (Hue) {
 
       Hue.db_manager.push_item("rooms", socket.hue_room_id, "log_messages", message)
     }
+
+    // Update last message date
+    Hue.handler.modify_socket_properties(socket.hue_user_id, { hue_last_chat_message: Date.now() })
   }
 
   // Generates IDs for messages
