@@ -1,5 +1,4 @@
 module.exports = function (Hue) {
-  
   Hue.handler.start_anti_spam = function (data) {
     Hue.handler.anti_spam_users = {}
     Hue.handler.anti_spam_timeout()
@@ -79,5 +78,16 @@ module.exports = function (Hue) {
     user.banned_until = Date.now() + (minutes * 1000 * 60)
     Hue.logger.log_error(`IP banned: ${socket.hue_ip_address}`)
     Hue.handler.anti_spam_kick(socket)
+  }
+
+  // Get anti spam level
+  Hue.handler.get_spam_level = function (socket) {
+    let user = Hue.handler.anti_spam_users[socket.hue_ip_address]
+
+    if (user) {
+      return user.level
+    } else {
+      return 0
+    }
   }
 }

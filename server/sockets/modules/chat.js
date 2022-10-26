@@ -13,6 +13,13 @@ module.exports = function (Hue) {
       return
     }
 
+    // Return if too spammy
+    let spam_level = Hue.handler.get_spam_level(socket)
+
+    if (spam_level >= 12) {
+      return
+    }
+
     let lines = data.message.split("\n")
 
     if (lines.length > Hue.config.max_num_newlines) {
