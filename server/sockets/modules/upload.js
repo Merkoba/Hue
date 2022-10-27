@@ -91,13 +91,10 @@ module.exports = function (Hue) {
 
     if (file.spam_charge > Hue.sconfig.upload_spam_charge) {
       let rounds = parseInt(file.spam_charge / Hue.sconfig.upload_spam_charge)
+      let spam_ans = await Hue.handler.add_spam(socket, rounds)
 
-      for (let i=0; i<rounds; i++) {
-        let spam_ans = await Hue.handler.add_spam(socket)
-        
-        if (!spam_ans) {
-          return
-        }
+      if (!spam_ans) {
+        return
       }
        
       file.spam_charge = 0

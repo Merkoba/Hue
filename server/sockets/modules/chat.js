@@ -29,19 +29,13 @@ module.exports = function (Hue) {
     // Add spam every other line
     if (lines.length > 1) {
       let n = parseInt(lines.length / 2)
-
-      for (let i=0; i<n; i++) {
-        Hue.handler.add_spam(socket)
-      }
+      Hue.handler.add_spam(socket, n)
     }
 
     // Add chunk spam
     if (data.message.length >= Hue.sconfig.anti_spam_chat_chunks) {
       let n = parseInt(data.message.length / Hue.sconfig.anti_spam_chat_chunks)
-
-      for (let i=0; i<n; i++) {
-        Hue.handler.add_spam(socket)
-      }
+      Hue.handler.add_spam(socket, n)
     }
 
     // Check last message date spam

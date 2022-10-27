@@ -31,8 +31,8 @@ module.exports = function (Hue) {
     Hue.handler.anti_spam_timeout()
   }  
 
-  // Add a spam point and check if user is banned
-  Hue.handler.add_spam = async function (socket) {
+  // Add spam points and check if user is banned
+  Hue.handler.add_spam = async function (socket, amount = 1) {
     return new Promise((resolve, reject) => {      
       if (!Hue.handler.anti_spam_users[socket.hue_ip_address]) {
         Hue.handler.anti_spam_users[socket.hue_ip_address] = {
@@ -49,7 +49,7 @@ module.exports = function (Hue) {
         return resolve("already_banned")
       }
 
-      user.level += 1
+      user.level += amount
   
       if (user.level >= Hue.sconfig.anti_spam_max_limit) {
         Hue.handler.anti_spam_ban(socket)
