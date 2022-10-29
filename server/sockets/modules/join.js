@@ -190,14 +190,11 @@ module.exports = function (Hue) {
     socket.hue_joining = false
     socket.hue_joined = true
 
-    let userlist = Hue.handler.prepare_userlist(Hue.handler.get_userlist(socket.hue_room_id))
-
     let user_data = {
       room_locked: false,
       room_name: info.name,
       username: socket.hue_username,
       topic: info.topic,
-      userlist: userlist,
       role: socket.hue_role,
       profilepic_version: userinfo.profilepic_version,
       background_color: info.background_color,
@@ -210,12 +207,22 @@ module.exports = function (Hue) {
       reg_date: userinfo.registration_date,
     }
 
-    if (data.no_message_log) {
+    if (data.no_log_messages) {
       user_data.log_messages = []
-      user_data.message_board_posts = []
     } else {
       user_data.log_messages = info.log_messages
+    }
+    
+    if (data.no_message_board_posts) {
+      user_data.message_board_posts = []
+    } else {
       user_data.message_board_posts = info.message_board_posts
+    }
+
+    if (data.no_userlist) {
+      user_data.userlist = []
+    } else {
+      user_data.userlist = Hue.handler.prepare_userlist(Hue.handler.get_userlist(socket.hue_room_id))
     }
 
     Hue.handler.user_emit(socket, "joined", user_data)

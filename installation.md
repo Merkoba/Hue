@@ -71,5 +71,11 @@ If other backend files changed then it's necessary to restart the server.
 
 >Failure to authenticate will result in a temporary ban to avoid abuse.
 
-"no_message_log" (boolean)
->If true, the server will not send the message log on join, which can save some bandwidth.
+"no_log_messages" (boolean)
+>If true, the server will not send the log messages on join, which can save some bandwidth.
+
+"no_message_board_posts" (boolean)
+>If true, the server will not send the message board posts on join, which can save some bandwidth.
+
+"no_userlist" (boolean)
+>If true, the server will not send the userlist on join, which can save some bandwidth.
