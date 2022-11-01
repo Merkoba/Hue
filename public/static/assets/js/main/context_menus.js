@@ -1,5 +1,5 @@
 // Show chat context menu
-Hue.show_chat_context_menu = function (button) {
+Hue.show_chat_context_menu = function (button, x, y) {
   let is_main = button.closest("#chat_area")
   let unit = button.closest(".message_unit")
 
@@ -114,7 +114,11 @@ Hue.show_chat_context_menu = function (button) {
     })
   }
   
-  NeedContext.show_on_element(button, items)
+  if (x !== undefined && y !== undefined) {
+    NeedContext.show(x, y, items)
+  } else {
+    NeedContext.show_on_element(button, items)
+  }
 }
 
 // Hide the context menu

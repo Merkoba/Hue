@@ -78,4 +78,31 @@ Hue.start_mouse_events = function () {
       Hue.process_write_whisper(`${username} > ${e.target.dataset.whisper}`)
     }
   })
+
+  Hue.ev(document, "auxclick", function (e) {
+    if (e.button !== 1) {
+      return
+    }
+
+    if (!e.target) {
+      return
+    }
+
+    if (e.target.tagName === "A") {
+      return
+    }    
+
+    if (!e.target.closest) {
+      return
+    }
+    
+    if (e.target.closest(".chat_content_container")) {
+      let container = e.target.closest(".chat_content_container")
+
+      if (container) {
+        let button = Hue.el(".chat_menu_button_container", container)
+        Hue.show_chat_context_menu(button, e.clientX, e.clientY)
+      }
+    }    
+  })
 }
