@@ -96,8 +96,8 @@ Hue.start_mouse_events = function () {
       return
     }
     
-    if (e.target.closest(".chat_content_container")) {
-      let container = e.target.closest(".chat_content_container")
+    if (e.target.closest(".chat_menu_button_main")) {
+      let container = e.target.closest(".chat_menu_button_main")
 
       if (container) {
         let button = Hue.el(".chat_menu_button_container", container)
