@@ -182,22 +182,8 @@ Hue.show_chat_search = function (filter = "") {
       let item = Hue.get_message_container_by_id(first_arg)
 
       if (item) {
-        let messages = []
-        let prev = item.previousElementSibling
-        let next = item.nextElementSibling
-        
-        if (prev) {
-          messages.push(Hue.clone(prev))
-        }
-        
-        messages.push(Hue.clone(item))
-
-        if (next) {
-          messages.push(Hue.clone(next))
-        }
-
         highlight_id = Hue.dataset(item, "message_id")
-        on_messages(messages)
+        on_messages([Hue.clone(item)])
       }
     } else {
       let messages = Hue.clone_children("#chat_area").reverse()

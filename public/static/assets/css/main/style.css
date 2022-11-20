@@ -1892,3 +1892,14 @@ pre {
 	filter: brightness(1.5);
 	box-shadow: 0 0 1.4rem var(--altcolor);
 }
+
+#needcontext-container {
+  background-color: var(--background_color) !important;
+  color: var(--text_color) !important;
+  border-color: var(--altcolor) !important;
+  font-size: var(--chat_font_size) !important;
+}
+
+.needcontext-item-selected {
+  background-color: var(--altbackground_a) !important;
+}
