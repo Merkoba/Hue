@@ -14,6 +14,7 @@ NeedContext.set_defaults = function () {
   NeedContext.open = false
   NeedContext.keydown = false
   NeedContext.mousedown = false
+  NeedContext.first_mousedown = false
 }
 
 // Show based on an element
@@ -57,6 +58,11 @@ NeedContext.show = function (x, y, items) {
   
   main.append(overlay)
   main.append(container)
+
+  main.addEventListener("contextmenu", function (e) {
+    e.preventDefault()
+  })
+
   document.body.appendChild(main)
   
   let c = document.querySelector("#needcontext-container")
@@ -122,9 +128,10 @@ NeedContext.select_down = function () {
 }
 
 // Do the selected action
-NeedContext.select_action = function () {
-  NeedContext.items[NeedContext.index].action()
+NeedContext.select_action = function (e) {
+  let item = NeedContext.items[NeedContext.index]
   NeedContext.hide()
+  item.action(e)
 }
 
 // Prepare css and events
@@ -180,9 +187,11 @@ NeedContext.init = function () {
   document.head.appendChild(style)
 
   document.addEventListener("mousedown", function (e) {
-    if (!NeedContext.open) {
+    if (!NeedContext.open || !e.target) {
       return
     }
+    
+    NeedContext.first_mousedown = true
 
     if (e.target.closest("#needcontext-container")) {
       NeedContext.mousedown = true
@@ -190,14 +199,16 @@ NeedContext.init = function () {
   })  
 
   document.addEventListener("mouseup", function (e) {
-    if (!NeedContext.open) {
+    if (!NeedContext.open || !e.target) {
       return
     }
 
     if (!e.target.closest("#needcontext-container")) {
-      NeedContext.hide()
+      if (NeedContext.first_mousedown) {
+        NeedContext.hide()
+      }
     } else if (NeedContext.mousedown) {
-      NeedContext.select_action()
+      NeedContext.select_action(e)
     }
 
     NeedContext.mousedown = false
@@ -235,7 +246,7 @@ NeedContext.init = function () {
     if (e.key === "Escape") {
       NeedContext.hide()
     } else if (e.key === "Enter") {
-      NeedContext.select_action()
+      NeedContext.select_action(e)
     }
 
     e.preventDefault()
