@@ -1,7 +1,8 @@
-// needcontext v1.0
+// needcontext v2.0
 
 // Main object
 const NeedContext = {}
+NeedContext.created = false
 
 // Overridable function to perform after show
 NeedContext.after_show = function () {}
@@ -15,58 +16,85 @@ NeedContext.set_defaults = function () {
   NeedContext.keydown = false
   NeedContext.mousedown = false
   NeedContext.first_mousedown = false
+  NeedContext.last_x = 0
+  NeedContext.last_y = 0
+}
+
+// Filter from keyboard input
+NeedContext.filter = function (key) {
+  let selected = false
+
+  for (let [i, item] of NeedContext.items.entries()) {
+    if (!item.text.toLowerCase().startsWith(key)) {
+      item.element.classList.add("needcontext-hidden")
+    } else {
+      item.element.classList.remove("needcontext-hidden")
+
+      if (!selected) {
+        NeedContext.select_item(i)
+      }
+
+      selected = true
+    }
+  }
+
+  if (!selected) {
+    for (let item of NeedContext.items) {
+      item.element.classList.remove("needcontext-hidden")
+    }
+
+    NeedContext.select_item(0)
+  }
 }
 
 // Show based on an element
-NeedContext.show_on_element = function (el, items) {
+NeedContext.show_on_element = function (el, items, expand = false, margin = 0) {
   let rect = el.getBoundingClientRect()
-  NeedContext.show(rect.left, rect.top, items)
+  NeedContext.show(rect.left, rect.top + margin, items)
+
+  if (expand) {
+    document.querySelector("#needcontext-container").style.minWidth = `${el.clientWidth}px`
+  }
 }
 
 // Show the menu
 NeedContext.show = function (x, y, items) {
+  if (!NeedContext.created) {
+    NeedContext.create()
+  }
+
   NeedContext.hide()
 
-  let main = document.createElement("div")
-  main.id = "needcontext-main"
-
-  let overlay = document.createElement("div")
-  overlay.id = "needcontext-overlay"  
-
-  let container = document.createElement("div")
-  container.id = "needcontext-container"
-
   items = items.slice(0)
+  let selected_index = 0
+  let c = NeedContext.container
+  c.innerHTML = ""
   
   for (let [i, item] of items.entries()) {
     let el = document.createElement("div")
     el.classList.add("needcontext-item")
-
     el.textContent = item.text
     el.dataset.index = i
+    item.index = i
 
     if (item.title) {
       el.title = item.title
+    }
+
+    if (item.selected) {
+      selected_index = i
     }
 
     el.addEventListener("mouseenter", function () {
       NeedContext.select_item(parseInt(el.dataset.index))
     })
 
-    container.append(el)
+    item.element = el
+    c.append(el)
   }
+
+  NeedContext.main.classList.remove("needcontext-hidden")
   
-  main.append(overlay)
-  main.append(container)
-
-  main.addEventListener("contextmenu", function (e) {
-    e.preventDefault()
-  })
-
-  document.body.appendChild(main)
-  
-  let c = document.querySelector("#needcontext-container")
-
   if (y < 5) {
     y = 5
   }
@@ -83,12 +111,14 @@ NeedContext.show = function (x, y, items) {
     x = document.body.clientWidth - c.offsetWidth - 5
   }
 
+  NeedContext.last_x = x
+  NeedContext.last_y = y
+
   c.style.left = `${x}px`
   c.style.top = `${y}px`
-  
-  NeedContext.main = main
+
   NeedContext.items = items
-  NeedContext.select_item(0)
+  NeedContext.select_item(selected_index)
   NeedContext.open = true
   NeedContext.after_show()
 }
@@ -96,7 +126,7 @@ NeedContext.show = function (x, y, items) {
 // Hide the menu
 NeedContext.hide = function () {
   if (NeedContext.open) {
-    NeedContext.main.remove()
+    NeedContext.main.classList.add("needcontext-hidden")
     NeedContext.set_defaults()
     NeedContext.after_hide()
   }
@@ -119,35 +149,91 @@ NeedContext.select_item = function (index) {
 
 // Select an item above
 NeedContext.select_up = function () {
-  let index
+  let waypoint = false
+  let first_visible
 
-  if (NeedContext.index === 0) {
-    index = NeedContext.items.length - 1
-  } else {
-    index = NeedContext.index - 1
+  for (let i=NeedContext.items.length-1; i>=0; i--) {
+    let item = NeedContext.items[i]
+
+    if (!NeedContext.is_visible(item.element)) {
+      continue
+    }
+
+    if (first_visible === undefined) {
+      first_visible = item.index
+    }    
+
+    if (waypoint) {
+      NeedContext.select_item(item.index)
+      return
+    }
+
+    if (item.index === NeedContext.index) {
+      waypoint = true
+    }
   }
-  
-  NeedContext.select_item(index)
+
+  NeedContext.select_item(first_visible)
 }
 
 // Select an item below
 NeedContext.select_down = function () {
-  let index
+  let waypoint = false
+  let first_visible
 
-  if (NeedContext.index === NeedContext.items.length - 1) {
-    index = 0
-  } else {
-    index = NeedContext.index + 1
+  for (let i=0; i<NeedContext.items.length; i++) {
+    let item = NeedContext.items[i]
+
+    if (!NeedContext.is_visible(item.element)) {
+      continue
+    }
+
+    if (first_visible === undefined) {
+      first_visible = item.index
+    }
+
+    if (waypoint) {
+      NeedContext.select_item(item.index)
+      return
+    }
+
+    if (item.index === NeedContext.index) {
+      waypoint = true
+    }
   }
 
-  NeedContext.select_item(index)
+  NeedContext.select_item(first_visible)
 }
 
 // Do the selected action
-NeedContext.select_action = function (e) {
-  let item = NeedContext.items[NeedContext.index]
+NeedContext.select_action = async function (e, index = NeedContext.index) {
+  let x = NeedContext.last_x
+  let y = NeedContext.last_y
+  let item = NeedContext.items[index]
+
+  function show_below (items) {
+    if (e.clientY) {
+      y = e.clientY
+    }
+
+    NeedContext.show(x, y, items)
+  }
+
   NeedContext.hide()
-  item.action(e)
+
+  if (item.action) {
+    item.action(e)
+  } else if (item.items) {
+    show_below(item.items)
+  } else if (item.get_items) {
+    let items = await item.get_items()
+    show_below(items)
+  }
+}
+
+// Check if item is hidden
+NeedContext.is_visible = function (el) {
+  return !el.classList.contains("needcontext-hidden")
 }
 
 // Prepare css and events
@@ -164,10 +250,8 @@ NeedContext.init = function () {
       left: 0;
     }
 
-    #needcontext-overlay {
-      position: relative;
-      z-index: 1;
-      background-color: transparent;
+    .needcontext-hidden {
+      display: none;
     }
     
     #needcontext-container {
@@ -263,12 +347,34 @@ NeedContext.init = function () {
       NeedContext.hide()
     } else if (e.key === "Enter") {
       NeedContext.select_action(e)
+    } else if (e.key.match(/^[a-z0-9]{1}$/i)) {
+      NeedContext.filter(e.key)
+    } else if (e.key === "Backspace") {
+      NeedContext.filter("")
     }
 
     e.preventDefault()
   })
 
   NeedContext.set_defaults()
+}
+
+// Create elements
+NeedContext.create = function () {
+  NeedContext.main = document.createElement("div")
+  NeedContext.main.id = "needcontext-main" 
+  NeedContext.main.classList.add("needcontext-hidden") 
+
+  NeedContext.container = document.createElement("div")
+  NeedContext.container.id = "needcontext-container"
+  
+  NeedContext.main.addEventListener("contextmenu", function (e) {
+    e.preventDefault()
+  })
+  
+  NeedContext.main.append(NeedContext.container)
+  document.body.appendChild(NeedContext.main)
+  NeedContext.created = true
 }
 
 // Start
