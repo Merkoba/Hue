@@ -693,19 +693,19 @@ const Utilz = function () {
 
 	// Check if file name is from an image source
 	utilz.is_image = function (src) {
-		let extension = Hue.utilz.get_extension(src).toLowerCase()
+		let extension = utilz.get_extension(src).toLowerCase()
     return extension && utilz.image_extensions.includes(extension)
 	}
 
 	// Check if file name is from a video source
 	utilz.is_video = function (src) {
-		let extension = Hue.utilz.get_extension(src).toLowerCase()
+		let extension = utilz.get_extension(src).toLowerCase()
     return extension && utilz.video_extensions.includes(extension)
 	}
 
 	// Check if file name is from an audio source
 	utilz.is_audio = function (src) {
-		let extension = Hue.utilz.get_extension(src).toLowerCase()
+		let extension = utilz.get_extension(src).toLowerCase()
     return extension && utilz.audio_extensions.includes(extension)
 	}
 
