@@ -111,24 +111,14 @@ Hue.cancel_change_theme = function () {
 // Get a random dark theme
 Hue.get_dark_theme = function () {
   let bg_color = Hue.colorlib.get_dark_color()
-  let text_color = Hue.colorlib.get_random_hex()
-  
-  if (Hue.colorlib.is_dark(text_color)) {
-    text_color = Hue.colorlib.get_lighter_or_darker(text_color, 0.66)
-  }
-
+  let text_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.69)
   return {bg_color: bg_color, text_color: text_color}
 }
 
 // Get a random light theme
 Hue.get_light_theme = function () {
   let bg_color = Hue.colorlib.get_light_color()
-  let text_color = Hue.colorlib.get_random_hex()
-  
-  if (Hue.colorlib.is_light(text_color)) {
-    text_color = Hue.colorlib.get_lighter_or_darker(text_color, 0.66)
-  }
-
+  let text_color = Hue.colorlib.get_lighter_or_darker(bg_color, 0.69)
   return {bg_color: bg_color, text_color: text_color}
 }
 
