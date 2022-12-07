@@ -250,7 +250,6 @@ const Utilz = function () {
 			let u = new URL(s)
 			let url = u.origin + u.pathname
 			let url_2 = url.split("//").slice(1).join("//")
-	
 			let matches = url_2.match(/\/.*\.(\w+)(?=$|[#?])/)
 	
 			if (matches) {
