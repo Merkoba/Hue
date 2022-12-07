@@ -247,10 +247,12 @@ const Utilz = function () {
 	// Extract extension from a string
 	utilz.get_extension = function (s) {
 		if (s.startsWith("http://") || s.startsWith("https://")) {
-			let s2 = s.split("//").slice(1).join("//")
-
-			let matches = s2.match(/\/.*\.(\w+)(?=$|[#?])/)
-
+			let u = new URL(s)
+			let url = u.origin + u.pathname
+			let url_2 = url.split("//").slice(1).join("//")
+	
+			let matches = url_2.match(/\/.*\.(\w+)(?=$|[#?])/)
+	
 			if (matches) {
 				return matches[1]
 			}
