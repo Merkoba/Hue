@@ -50,7 +50,7 @@ Hue.apply_theme = function (background_color = "", text_color = "") {
 
 // Show a window to select random themes
 Hue.generate_random_themes = function () {
-  let num_col_items = 6
+  let num_col_items = 5
 
   function create_item (theme) {
     let item = Hue.create("div", "random_theme_item action")
