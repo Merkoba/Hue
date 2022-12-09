@@ -114,7 +114,7 @@ Hue.get_dark_theme = function () {
   let text_color = Hue.colorlib.get_random_hex()
 
   if (Hue.colorlib.is_dark(text_color)) {
-    text_color = Hue.colorlib.get_lighter_or_darker(text_color, 0.69)
+    text_color = Hue.colorlib.get_lighter_or_darker(text_color, 0.74)
   }
 
   return {bg_color: bg_color, text_color: text_color}
@@ -126,7 +126,7 @@ Hue.get_light_theme = function () {
   let text_color = Hue.colorlib.get_random_hex()
 
   if (Hue.colorlib.is_light(text_color)) {
-    text_color = Hue.colorlib.get_lighter_or_darker(text_color, 0.69)
+    text_color = Hue.colorlib.get_lighter_or_darker(text_color, 0.74)
   }
 
   return {bg_color: bg_color, text_color: text_color}
