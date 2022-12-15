@@ -969,35 +969,3 @@ Hue.check_media_info = function () {
   document.documentElement.style.setProperty("--media_info_display", display)
   Hue.fix_frames()
 }
-
-// Previous media to load
-Hue.load_prev_media = function (type) {
-  if (Hue[`${type}_changed`].length < 2) {
-    return
-  }
-
-  let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type}`]) - 1
-
-  if (index < 0) {
-    index = Hue[`${type}_changed`].length - 1
-  }
-
-  let prev = Hue[`${type}_changed`][index]
-  Hue.load_media(prev)
-}
-
-// Next media to load
-Hue.load_next_media = function (type) {
-  if (Hue[`${type}_changed`].length < 2) {
-    return
-  }
-
-  let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type}`]) + 1
-
-  if (index > Hue[`${type}_changed`].length - 1) {
-    index = 0
-  }
-
-  let next = Hue[`${type}_changed`][index]
-  Hue.load_media(next)
-}

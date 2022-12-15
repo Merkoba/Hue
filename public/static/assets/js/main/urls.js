@@ -145,6 +145,10 @@ Hue.check_handle_url_options = function (text) {
 
 // Setups the Open URL picker window
 Hue.setup_open_url = function () {  
+  Hue.ev(Hue.el("#open_url_menu_copy"), "click", function () {
+    Hue.copy_string(Hue.open_url_data.source)
+  })
+
   Hue.ev(Hue.el("#open_url_menu_load"), "click", function () {
     Hue.load_media(Hue.open_url_data)
   })

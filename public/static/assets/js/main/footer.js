@@ -23,14 +23,6 @@ Hue.setup_footer = function () {
       Hue.set_media_locked({type: type, what: !Hue[`${type}_locked`]})
     })
 
-    Hue.ev(Hue.el(`#footer_${type}_prev`), "click", function () {
-      Hue.load_prev_media(type)
-    })
-
-    Hue.ev(Hue.el(`#footer_${type}_next`), "click", function () {
-      Hue.load_next_media(type)
-    })
-
     Hue.ev(Hue.el(`#footer_${type}_list`), "click", function () {
       Hue[`msg_${type}_picker`].close()
       Hue[`show_${type}_list`]()

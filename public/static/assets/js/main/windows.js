@@ -750,6 +750,7 @@ Hue.start_msg = function () {
 
   Hue.msg_open_url.set_title(Hue.template_titlebar({
     items: [
+      {id: "open_url_menu_copy", text: "Copy URL"},
       {id: "open_url_menu_load", text: "Load"},
       {id: "open_url_menu_link", text: "Link"},
       {id: "open_url_menu_context", text: "Context"},

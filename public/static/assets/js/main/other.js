@@ -1,6 +1,7 @@
 // Copies a string to the clipboard
 Hue.copy_string = function (text) {
   navigator.clipboard.writeText(text)
+  Hue.msg_info.show("Copied to clipboard")
 }
 
 // Feedback that an error occurred
