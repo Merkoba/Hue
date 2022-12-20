@@ -64,7 +64,6 @@ html {
 	flex-direction: row;
 	flex-shrink: 0;
 	overflow: hidden;
-	user-select: none;
 }
 
 .header_side {
@@ -270,7 +269,6 @@ html {
 	justify-content: flex-start !important;
 	position: relative;
 	transition: filter 0.2s linear, box-shadow 0.2s linear;
-	user-select: none;
 }
 
 .footer_expanded {
@@ -560,7 +558,6 @@ a.generic:hover {
 	word-break: break-word;
 	display: inline-block;
 	margin: 0.8rem;
-	user-select: none;
 }
 
 .userlist_item_details_container {
@@ -756,10 +753,6 @@ select {
 	color: var(--text_color);
 	border: 0;
 	outline: 0;
-}
-
-#media_tweaks {
-	user-select: none;
 }
 
 .media_tweaks_select {
@@ -968,7 +961,6 @@ input[type=checkbox] {
 
 #user_profile_username_container {
 	margin-bottom: 1rem;
-	user-select: none;
 }
 
 #user_profile_username {
@@ -996,6 +988,7 @@ input[type=checkbox] {
 .action, .actionbox, .actionbox_light {
 	transition: text-shadow 250ms, box-shadow 250ms;
 	cursor: pointer;
+	user-select: none;
 }
 
 .action:hover {
@@ -1037,7 +1030,7 @@ svg.action:hover {
 	padding: 0.25rem;
 }
 
-#chat_area .fresh_message,
+#chat_area .fresh_message, 
 #message_board_container .fresh_message {
 	background: linear-gradient(.25turn, var(--altcolor_a), 50%, transparent);
 	background-clip: content-box;
@@ -1120,7 +1113,6 @@ svg.action:hover {
 #admin_list_container,
 #ban_list_container {
 	gap: 1rem;
-	user-select: none;
 }
 
 .admin_list_item,
@@ -1234,7 +1226,7 @@ a.special_link:hover {
 }
 
 .noborder {
-	border: 0 !important;
+	border: 0 !important; 
 }
 
 .upload_comment_preview {
@@ -1326,10 +1318,6 @@ a.special_link:hover {
 	gap: 1.6rem;
 }
 
-#room_config {
-	user-select: none;
-}
-
 #room_config_topic_container {
 	margin-top: 1.6rem;
 }
@@ -1347,7 +1335,6 @@ a.special_link:hover {
 	gap: 0.5rem;
 	margin-top: 1.5rem;
 	margin-bottom: 1.5rem;
-	user-select: none;
 }
 
 .details_inputbox {
@@ -1358,10 +1345,6 @@ a.special_link:hover {
 
 .full_width {
 	width: 100%;
-}
-
-#command_book_container {
-	user-select: none;
 }
 
 .command_book_name {
@@ -1380,7 +1363,6 @@ a.special_link:hover {
 #user_profile_audioclip {
 	margin-top: 1.5rem;
 	margin-bottom: 1.5rem;
-	user-select: none;
 }
 
 pre {
@@ -1432,6 +1414,10 @@ pre {
 	border-radius: 25px;
 }
 
+.nice_row.pointer {
+	user-select: none;
+}
+
 .nice_row.pointer:hover {
 	background-color: var(--altbackground_a);
 }
@@ -1444,10 +1430,6 @@ pre {
 
 .notification_item_icon {
 	margin-right: 0.5rem;
-}
-
-.notification_item_content {
-	user-select: none;
 }
 
 #whispers_container {
@@ -1484,7 +1466,6 @@ pre {
 
 .message_board_user_details {
 	margin-bottom: 0.35rem;
-	user-select: none;
 }
 
 .message_board_profilepic {
@@ -1559,10 +1540,6 @@ pre {
 	display: none;
 }
 
-.message_board_delete {
-	user-select: none;
-}
-
 .expanded_image {
 	overflow: auto !important;
 	justify-content: initial !important;
@@ -1629,7 +1606,6 @@ pre {
 	padding-bottom: 0.25rem !important;
 	padding-right: 1.2rem !important;
 	padding-left: 1.2rem !important;
-	user-select: none !important;
 }
 
 .custom_titlebar_popup {
@@ -1708,10 +1684,6 @@ pre {
 	justify-content: center;
 }
 
-#main_menu {
-	user-select: none;
-}
-
 #main_menu .vertical_separator {
 	margin-top: 1.5rem !important;
 	margin-bottom: 1.5rem !important;
@@ -1771,13 +1743,8 @@ pre {
 	margin-right: 0.5rem;
 }
 
-.whisper_item_content {
-	user-select: none;
-}
-
 .profilepic {
 	border-radius: 50%;
-	user-select: none;
 }
 
 .flipped {
@@ -1790,10 +1757,6 @@ pre {
 
 .flopped_row {
 	flex-direction: row-reverse !important;
-}
-
-#radio_stations {
-	user-select: none;
 }
 
 .radio_station_playing {
@@ -1813,14 +1776,13 @@ pre {
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%); 
 	color: var(--text_color);
 	background-color:	var(--altbackground);
 	border: 2px solid var(--altcolor);
 	z-index: 10;
 	min-width: 14rem;
 	overflow: hidden;
-	user-select: none;
 }
 
 #flash_info_title_icon {
@@ -1840,7 +1802,6 @@ pre {
 
 #roomlist_container {
 	gap: 1rem;
-	user-select: none;
 }
 
 .roomlist_item {
