@@ -845,6 +845,7 @@ input[type=checkbox] {
 
 .pointer {
 	cursor: pointer;
+	user-select: none;
 }
 
 .input1 {
@@ -1412,10 +1413,6 @@ pre {
 	box-sizing: border-box;
 	text-align: left;
 	border-radius: 25px;
-}
-
-.nice_row.pointer {
-	user-select: none;
 }
 
 .nice_row.pointer:hover {
