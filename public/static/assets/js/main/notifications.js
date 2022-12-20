@@ -83,8 +83,10 @@ Hue.push_notification = function (args) {
   Hue.dataset(item, "otitle", t)
   Hue.dataset(item, "date", d)
 
+  let content = Hue.el(".notification_item_content", item)
+
   if (args.on_click) {
-    Hue.ev(item, "click", function () {
+    Hue.ev(content, "click", function () {
       args.on_click()
     })
   }

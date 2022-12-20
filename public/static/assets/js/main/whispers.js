@@ -367,12 +367,14 @@ Hue.push_whisper = function (message, on_click, read, data) {
   }
   
   item.title = title
-
+  
   Hue.dataset(item, "otitle", title)
   Hue.dataset(item, "date", date)
   Hue.dataset(item, "read", read)
+  
+  let content = Hue.el(".whisper_item_content", item)
 
-  Hue.ev(item, "click", function () {
+  Hue.ev(content, "click", function () {
     on_click()
   })
 

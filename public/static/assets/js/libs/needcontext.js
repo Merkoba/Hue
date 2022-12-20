@@ -10,6 +10,9 @@ NeedContext.after_show = function () {}
 // Overridable function to perform after hide
 NeedContext.after_hide = function () {}
 
+// Minimum menu width
+NeedContext.min_width = "unset"
+
 // Set defaults
 NeedContext.set_defaults = function () {
   NeedContext.open = false
@@ -24,26 +27,36 @@ NeedContext.set_defaults = function () {
 NeedContext.filter = function (key) {
   let selected = false
 
-  for (let [i, item] of NeedContext.items.entries()) {
-    if (!item.text.toLowerCase().startsWith(key)) {
-      item.element.classList.add("needcontext-hidden")
-    } else {
-      item.element.classList.remove("needcontext-hidden")
-
-      if (!selected) {
-        NeedContext.select_item(i)
+  if (key) {
+    for (let [i, item] of NeedContext.items.entries()) {
+      if (item.separator || !item.text.toLowerCase().startsWith(key)) {
+        item.element.classList.add("needcontext-hidden")
       }
 
-      selected = true
+      else {
+        item.element.classList.remove("needcontext-hidden")
+
+        if (!selected) {
+          NeedContext.select_item(i)
+        }
+
+        selected = true
+      }
     }
   }
 
   if (!selected) {
-    for (let item of NeedContext.items) {
-      item.element.classList.remove("needcontext-hidden")
+    for (let el of document.querySelectorAll(".needcontext-item")) {
+      el.classList.remove("needcontext-hidden")
     }
 
     NeedContext.select_item(0)
+  }
+
+  else {
+    for (let el of document.querySelectorAll(".needcontext-separator")) {
+      el.classList.add("needcontext-hidden")
+    }
   }
 }
 
@@ -69,32 +82,49 @@ NeedContext.show = function (x, y, items) {
   let selected_index = 0
   let c = NeedContext.container
   c.innerHTML = ""
-  
-  for (let [i, item] of items.entries()) {
+  let index = 0
+  NeedContext.items = []
+
+  for (let item of items) {
     let el = document.createElement("div")
     el.classList.add("needcontext-item")
-    el.textContent = item.text
-    el.dataset.index = i
-    item.index = i
 
-    if (item.title) {
-      el.title = item.title
+    if (item.separator) {
+      el.classList.add("needcontext-separator")
     }
 
-    if (item.selected) {
-      selected_index = i
-    }
+    else {
+      el.classList.add("needcontext-normal")
+      el.textContent = item.text
+      el.dataset.index = index
+      item.index = index
 
-    el.addEventListener("mouseenter", function () {
-      NeedContext.select_item(parseInt(el.dataset.index))
-    })
+      if (item.title) {
+        el.title = item.title
+      }
+
+      if (item.selected) {
+        selected_index = index
+      }
+
+      el.addEventListener("mousemove", function () {
+        let index = parseInt(el.dataset.index)
+
+        if (NeedContext.index !== index) {
+          NeedContext.select_item(index)
+        }
+      })
+
+      index += 1
+      NeedContext.items.push(item)
+    }
 
     item.element = el
     c.append(el)
   }
 
   NeedContext.main.classList.remove("needcontext-hidden")
-  
+
   if (y < 5) {
     y = 5
   }
@@ -117,9 +147,8 @@ NeedContext.show = function (x, y, items) {
   c.style.left = `${x}px`
   c.style.top = `${y}px`
 
-  document.querySelector("#needcontext-container").style.minWidth = "unset"
+  document.querySelector("#needcontext-container").style.minWidth = NeedContext.min_width
 
-  NeedContext.items = items
   NeedContext.select_item(selected_index)
   NeedContext.open = true
   NeedContext.after_show()
@@ -136,12 +165,14 @@ NeedContext.hide = function () {
 
 // Select an item by index
 NeedContext.select_item = function (index) {
-  let els = Array.from(document.querySelectorAll(".needcontext-item"))
+  let els = Array.from(document.querySelectorAll(".needcontext-normal"))
 
   for (let [i, el] of els.entries()) {
     if (i === index) {
       el.classList.add("needcontext-item-selected")
-    } else {
+    }
+
+    else {
       el.classList.remove("needcontext-item-selected")
     }
   }
@@ -163,7 +194,7 @@ NeedContext.select_up = function () {
 
     if (first_visible === undefined) {
       first_visible = item.index
-    }    
+    }
 
     if (waypoint) {
       NeedContext.select_item(item.index)
@@ -225,9 +256,13 @@ NeedContext.select_action = async function (e, index = NeedContext.index) {
 
   if (item.action) {
     item.action(e)
-  } else if (item.items) {
+  }
+
+  else if (item.items) {
     show_below(item.items)
-  } else if (item.get_items) {
+  }
+
+  else if (item.get_items) {
     let items = await item.get_items()
     show_below(items)
   }
@@ -255,9 +290,9 @@ NeedContext.init = function () {
     .needcontext-hidden {
       display: none;
     }
-    
+
     #needcontext-container {
-      z-index: 2
+      z-index: 2;
       position: relative;
       position: absolute;
       background-color: white;
@@ -271,18 +306,31 @@ NeedContext.init = function () {
       border: 1px solid #2B2F39;
       border-radius: 5px;
       cursor: pointer;
+      padding-top: 6px;
+      padding-bottom: 6px;
+      max-height: 80vh;
+      overflow: auto;
     }
 
-    .needcontext-item {
+    .needcontext-normal {
       padding-left: 10px;
       padding-right: 10px;
       padding-top: 3px;
       padding-bottom: 3px;
-    }   
+    }
+
+    .needcontext-separator {
+      border-top: 1px solid currentColor;
+      margin-left: 10px;
+      margin-right: 10px;
+      margin-top: 3px;
+      margin-bottom: 3px;
+      opacity: 0.7;
+    }
 
     .needcontext-item-selected {
       background-color: rgba(0, 0, 0, 0.18);
-    }    
+    }
   `
 
   style.innerText = css
@@ -292,13 +340,13 @@ NeedContext.init = function () {
     if (!NeedContext.open || !e.target) {
       return
     }
-    
+
     NeedContext.first_mousedown = true
 
     if (e.target.closest("#needcontext-container")) {
       NeedContext.mousedown = true
     }
-  })  
+  })
 
   document.addEventListener("mouseup", function (e) {
     if (!NeedContext.open || !e.target) {
@@ -309,7 +357,9 @@ NeedContext.init = function () {
       if (NeedContext.first_mousedown) {
         NeedContext.hide()
       }
-    } else if (NeedContext.mousedown) {
+    }
+
+    else if (NeedContext.mousedown) {
       NeedContext.select_action(e)
     }
 
@@ -323,10 +373,12 @@ NeedContext.init = function () {
 
     e.stopPropagation()
     NeedContext.keydown = true
-    
+
     if (e.key === "ArrowUp") {
       NeedContext.select_up()
-    } else if (e.key === "ArrowDown") {
+    }
+
+    else if (e.key === "ArrowDown") {
       NeedContext.select_down()
     }
 
@@ -347,11 +399,17 @@ NeedContext.init = function () {
 
     if (e.key === "Escape") {
       NeedContext.hide()
-    } else if (e.key === "Enter") {
+    }
+
+    else if (e.key === "Enter") {
       NeedContext.select_action(e)
-    } else if (e.key.match(/^[a-z0-9]{1}$/i)) {
+    }
+
+    else if (e.key.match(/^[a-z0-9]{1}$/i)) {
       NeedContext.filter(e.key)
-    } else if (e.key === "Backspace") {
+    }
+
+    else if (e.key === "Backspace") {
       NeedContext.filter("")
     }
 
@@ -364,16 +422,16 @@ NeedContext.init = function () {
 // Create elements
 NeedContext.create = function () {
   NeedContext.main = document.createElement("div")
-  NeedContext.main.id = "needcontext-main" 
-  NeedContext.main.classList.add("needcontext-hidden") 
+  NeedContext.main.id = "needcontext-main"
+  NeedContext.main.classList.add("needcontext-hidden")
 
   NeedContext.container = document.createElement("div")
   NeedContext.container.id = "needcontext-container"
-  
+
   NeedContext.main.addEventListener("contextmenu", function (e) {
     e.preventDefault()
   })
-  
+
   NeedContext.main.append(NeedContext.container)
   document.body.appendChild(NeedContext.main)
   NeedContext.created = true
