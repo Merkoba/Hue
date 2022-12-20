@@ -5,7 +5,7 @@ Hue.start_dropzone = function () {
   types = types.concat(Hue.utilz.image_types)
   types = types.concat(Hue.utilz.video_types)
   types = types.concat(Hue.utilz.audio_types)
-  
+
   Hue.dropzone = new Dropzone("body", {
     url: "/",
     maxFiles: 1,
@@ -13,7 +13,7 @@ Hue.start_dropzone = function () {
     acceptedFiles: types.join(","),
     clickable: "#dropzone_element"
   })
-  
+
   Hue.dropzone.on("addedfile", function (file) {
     Hue.process_file_added(file)
   })
@@ -24,7 +24,7 @@ Hue.start_dropzone = function () {
 
   Hue.dropzone.on("maxfilesexceeded", function (file) {
     Hue.dropzone.removeFile(file)
-  })  
+  })
 }
 
 // Process file upload
@@ -216,7 +216,7 @@ Hue.upload_file = function (args = {}) {
 // Deletes the local file and sends a signal to the server to try to cancel it on time
 Hue.cancel_file_upload = function (date) {
   let file = Hue.files[date]
-  
+
   if (!file) {
     return
   }

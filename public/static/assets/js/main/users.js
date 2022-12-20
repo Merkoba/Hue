@@ -123,7 +123,7 @@ Hue.replace_property_in_userlist_by_id = function (
         Hue.show_profile(item.username, item.user_id)
       }
     }
-  } 
+  }
 }
 
 // Gets the role of a user by username
@@ -210,7 +210,7 @@ Hue.get_user_by_user_id = function (id) {
 // Rebuilds the HTML of the user list window
 Hue.do_update_userlist = function (prop = "") {
   Hue.userlist.sort(Hue.compare_userlist)
-  
+
   if (Hue.msg_userlist.is_open()) {
     let uchange = true
 
@@ -426,7 +426,7 @@ Hue.user_disconnect = function (data) {
       "user-disconnect"
     )
   }
-  
+
   Hue.remove_from_userlist(data.user_id)
 
   let type = data.disconnection_type
@@ -441,7 +441,7 @@ Hue.user_disconnect = function (data) {
     Hue.show_profile(data.username, data.user_id)
   }
 
-  Hue.do_update_activity_bar = true  
+  Hue.do_update_activity_bar = true
 }
 
 // Announces that the operation cannot be applied to a certain user
@@ -618,7 +618,7 @@ Hue.show_profile = function (username, user_id = false) {
   }
 
   if (!user) {
-    
+
   }
 
   if (user_id) {
@@ -683,7 +683,7 @@ Hue.show_profile = function (username, user_id = false) {
     item.textContent = `Got Online: ${timeago}`
     item.title = nicedate
     Hue.el("#show_profile_info").append(item)
-    
+
     if (same_user) {
       Hue.el("#show_profile_edit").classList.remove("nodisplay")
     }
@@ -785,7 +785,7 @@ Hue.announce_role_change = function (data) {
 // Role setter for user
 Hue.set_role = function (rol, config = true) {
   Hue.role = rol
-  
+
   if (config) {
     Hue.config_room_config()
     Hue.config_main_menu()
@@ -957,7 +957,7 @@ Hue.audioclip_changed = function (data) {
     "audioclip_version",
     data.audioclip_version,
     false
-  )  
+  )
 
   if (data.user_id === Hue.open_profile_user.user_id) {
     Hue.show_profile(data.username, data.user_id)
@@ -1056,7 +1056,7 @@ Hue.update_user_activity = function (user_id) {
 Hue.get_profilepic = function (user_id) {
   let pi = `${Hue.config.public_media_directory}/user/${user_id}/profilepic.png`
   let user = Hue.get_user_by_user_id(user_id)
-  
+
   if (user) {
     pi += `?ver=${user.profilepic_version}`
   }
@@ -1068,7 +1068,7 @@ Hue.get_profilepic = function (user_id) {
 Hue.get_audioclip = function (user_id) {
   let pi = `${Hue.config.public_media_directory}/user/${user_id}/audioclip.mp3`
   let user = Hue.get_user_by_user_id(user_id)
-  
+
   if (user) {
     pi += `?ver=${user.audioclip_version}`
   }
@@ -1079,7 +1079,7 @@ Hue.get_audioclip = function (user_id) {
 // Checks if a user is in the room
 Hue.check_user_in_room = function (username) {
   let user = Hue.get_user_by_username(username)
-  
+
   if (!user) {
     Hue.user_not_in_room(username)
     return

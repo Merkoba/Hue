@@ -27,7 +27,7 @@ const Utilz = function () {
 				if (charge < level) {
 					ns.push(line)
 				}
-        
+
 				charge += 1
 			} else {
 				charge = 0
@@ -588,25 +588,25 @@ const Utilz = function () {
 				if (pos === -1 || n < pos) {
 					pos = n
 				}
-        
+
 				ns.push(n)
 			} else {
 				return s
 			}
 		}
-    
+
 		let new_lines = []
 		let spaces = ""
-      
+
 		for (let i=0; i<pos; i++) {
 			spaces += " "
 		}
-    
-		for (let line of lines) {    
+
+		for (let line of lines) {
 			let re = new RegExp(`(^${spaces})`)
 			new_lines.push(line.replace(re, ""))
 		}
-    
+
 		return new_lines.join("\n")
 	}
 

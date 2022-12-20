@@ -79,7 +79,7 @@ Hue.push_notification = function (args) {
   })
 
   item.title = t
-  
+
   Hue.dataset(item, "otitle", t)
   Hue.dataset(item, "date", d)
 
@@ -90,9 +90,9 @@ Hue.push_notification = function (args) {
       args.on_click()
     })
   }
-  
+
   Hue.el("#notifications_container").prepend(item)
-  
+
   let items = Hue.els(".notification_item")
 
   if (items.length > Hue.config.notifications_crop_limit) {

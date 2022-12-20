@@ -58,9 +58,9 @@ module.exports = function (Hue) {
     try {
       let res = await Hue.vars.fetch_2(url, {timeout: Hue.sconfig.link_fetch_timeout})
       let body = await res.text()
-  
+
       let $ = Hue.vars.cheerio.load(body)
-  
+
       if ($("title").length > 0) {
         response.title = Hue.utilz.single_space($("title").eq(0).text()) || ""
       } else if ($("meta[property=\"og:title\"]").length > 0) {
@@ -69,42 +69,42 @@ module.exports = function (Hue) {
             $("meta[property=\"og:title\"]").eq(0).attr("content")
           ) || ""
       }
-  
+
       let title_add_dots =
         response.title.length > Hue.sconfig.link_max_title_length
-  
+
       if (title_add_dots) {
         response.title =
           response.title.substring(0, Hue.sconfig.link_max_title_length).trim() +
           "..."
       }
-  
+
       response.description =
         Hue.utilz.single_space(
           $("meta[property=\"og:description\"]").eq(0).attr("content")
         ) || ""
-  
+
       let description_add_dots =
         response.description.length > Hue.sconfig.link_max_description_length
-  
+
       if (description_add_dots) {
         response.description =
           response.description
             .substring(0, Hue.sconfig.link_max_description_length)
             .trim() + "..."
       }
-  
+
       response.image =
         $("meta[property=\"og:image\"]").eq(0).attr("content") || ""
-  
+
       if (response.image.length > Hue.sconfig.link_max_image_length) {
         response.image = ""
       }
-  
+
       if (response.image) {
         if (response.image[0] === "/") {
           let ourl = new URL(url)
-  
+
           if (response.image[1] === "/") {
             response.image = `${ourl.protocol}${response.image}`
           } else {
@@ -112,8 +112,8 @@ module.exports = function (Hue) {
           }
         }
       }
-  
-      if (Hue.vars.redis_client_ready) { 
+
+      if (Hue.vars.redis_client_ready) {
         let obj = {
           "title": response.title,
           "description": response.description,
@@ -135,7 +135,7 @@ module.exports = function (Hue) {
         }
 
         Hue.vars.redis_client.HSET(`hue_link_${url}`, obj)
-      }      
+      }
     }
 
     return response

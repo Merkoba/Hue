@@ -49,7 +49,7 @@ Hue.urlize = function (el, limit_width = true) {
 
         if (limit_width) {
           let max = Hue.config.max_displayed_url
-  
+
           if (u.length > max) {
             u = `${u.substring(0, max)}...`
           }
@@ -86,11 +86,11 @@ Hue.handle_url = function (url) {
   if (url) {
     Hue.check_handle_url_options(url)
     Hue.handled_url = url
-    
+
     let url_el = Hue.el("#handle_url_url")
     url_el.textContent = url
     Hue.urlize(url_el)
-    
+
     Hue.msg_handle_url.show()
   }
 }
@@ -113,7 +113,7 @@ Hue.setup_drag_events = function () {
     Hue.load_media_link("image", Hue.handled_url, "")
     Hue.msg_handle_url.close()
   })
-  
+
   Hue.ev(Hue.el("#handle_url_tv"), "click", function () {
     Hue.load_media_link("tv", Hue.handled_url, "")
     Hue.msg_handle_url.close()
@@ -144,7 +144,7 @@ Hue.check_handle_url_options = function (text) {
 }
 
 // Setups the Open URL picker window
-Hue.setup_open_url = function () {  
+Hue.setup_open_url = function () {
   Hue.ev(Hue.el("#open_url_menu_copy"), "click", function () {
     Hue.copy_string(Hue.open_url_data.source)
   })
@@ -159,7 +159,7 @@ Hue.setup_open_url = function () {
   })
 
   Hue.ev(Hue.el("#open_url_menu_context"), "click", function () {
-    Hue.chat_search_by_id(Hue.open_url_data.id) 
+    Hue.chat_search_by_id(Hue.open_url_data.id)
     Hue.msg_open_url.close()
   })
 }
@@ -211,13 +211,13 @@ Hue.open_url_menu = function (data) {
         Hue.open_view_text(Hue.el("#open_url_info_text_title").textContent)
       })
     }
-    
+
     if (data.comment) {
       Hue.ev(Hue.el("#open_url_info_title_comment"), "click", function () {
         Hue.open_view_text(Hue.el("#open_url_info_text_comment").textContent)
       })
     }
-    
+
     if (data.source) {
       Hue.ev(Hue.el("#open_url_info_title_url"), "click", function () {
         Hue.open_view_text(Hue.el("#open_url_info_text_url").textContent)
@@ -255,11 +255,11 @@ Hue.remove_urls = function (text) {
 
   if (hostname && new_words.length === 1) {
     new_words.push(`(${hostname})`)
-  }  
+  }
 
   let new_text = new_words.join(" ").replace(
     Hue.textparser_regexes["anchor_link"].regex, ""
-  )  
+  )
 
   return new_text.trim()
 }

@@ -44,7 +44,7 @@ Hue.show_console_message = function () {
 // Dynamically generate a favicon
 Hue.generate_favicon = function (mode) {
   let color
-  
+
   if (mode === -1) {
     color = "#808080"
   } else if (mode === 0 || mode === 1) {
@@ -108,7 +108,7 @@ Hue.open_view_text = function (text) {
     let text_el = Hue.el("#view_text_text")
     text_el.textContent = text
     Hue.urlize(text_el, false)
-  })  
+  })
 }
 
 // Setup view text window
@@ -151,7 +151,7 @@ Hue.flop = function () {
 // Get the last 3 digits of a message id
 // Mainly used to turn things goldtext
 Hue.getcode = function (s = "") {
-  return s.slice(-3) 
+  return s.slice(-3)
 }
 
 // Show that a command is not allowed

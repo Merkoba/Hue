@@ -393,7 +393,7 @@ module.exports = function (Hue) {
     }
 
     let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
-    
+
     let ids = []
 
     for (let id of info.bans) {
@@ -457,11 +457,11 @@ module.exports = function (Hue) {
     if (data.original === data.new) {
       return
     }
-  
+
     if (data.new.length > Hue.config.max_username_length) {
       return
     }
-  
+
     if (Hue.utilz.clean_username(data.new) !== data.new) {
       return
     }
@@ -479,7 +479,7 @@ module.exports = function (Hue) {
       Hue.handler.user_emit(socket, "username_already_exists", {
         username: data.new
       })
-      
+
       return
     }
 
@@ -496,7 +496,7 @@ module.exports = function (Hue) {
       }
     )
 
-    Hue.handler.user_emit(socket, "done", {})    
+    Hue.handler.user_emit(socket, "done", {})
   }
 
   // Superuser function to change a user's password

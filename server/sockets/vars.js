@@ -20,7 +20,7 @@ module.exports = function (Hue) {
   Hue.vars.redis_client.on("connect", e => {
     Hue.vars.redis_client_ready = true
   })
-  
+
   Hue.vars.redis_client.connect().catch(console.error)
 
   Hue.vars.rooms = {}

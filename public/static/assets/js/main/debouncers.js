@@ -45,7 +45,7 @@ Hue.create_debouncers = function () {
   // Debounce timer for userlist update
   Hue.update_userlist = Hue.create_debouncer(function (prop) {
     Hue.do_update_userlist(prop)
-  }, Hue.update_userlist_delay)  
+  }, Hue.update_userlist_delay)
 
   // Debounce timer to hide the flash info window
   Hue.flash_info_timer = Hue.create_debouncer(function () {

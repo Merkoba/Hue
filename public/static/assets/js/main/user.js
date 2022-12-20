@@ -36,7 +36,7 @@ Hue.change_password = function (p1, p2) {
   }
 
   if (p1 !== p2) {
-    Hue.checkmsg("Passwords don't match")    
+    Hue.checkmsg("Passwords don't match")
     return false
   }
 
@@ -175,11 +175,11 @@ Hue.setup_user_profile = function () {
   })
 
   Hue.ev(Hue.el("#user_profile_change_username"), "click", function () {
-    Hue.show_change_username()    
+    Hue.show_change_username()
   })
 
   Hue.ev(Hue.el("#user_profile_change_password"), "click", function () {
-    Hue.show_change_password()    
+    Hue.show_change_password()
   })
 
   if (Hue.get_self_user().profilepic_version === 0) {
@@ -262,7 +262,7 @@ Hue.upload_profilepic = function () {
     action: "profilepic_upload",
     name: "profile.png",
   })
-  
+
   Hue.msg_profilepic_cropper.close()
 }
 
@@ -315,7 +315,7 @@ Hue.profilepic_selected = function (file, type) {
   }
 
   let reader = new FileReader()
-  
+
   reader.onload = function (e) {
     if (type === "drawing") {
       Hue.el("#profilepic_cropper_change").textContent = "Re-Draw"

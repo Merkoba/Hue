@@ -24,7 +24,7 @@ Hue.current_image = function () {
 Hue.show_image = function (force = false) {
   let item = Hue.loaded_image
   Hue.el("#media_image_error").style.display = "none"
-  
+
   if (force || Hue.el("#media_image_frame").src !== item.source) {
     Hue.el("#media_image_frame").src = item.source
   } else {
@@ -278,7 +278,7 @@ Hue.clear_view_image_info = function () {
 }
 
 // Shows the modal image window
-Hue.show_modal_image = function (id = 0) {  
+Hue.show_modal_image = function (id = 0) {
   let data
 
   if (id) {
@@ -465,7 +465,7 @@ Hue.show_image_upload_comment = function (file, type) {
       file.name,
       20
     )} (${Hue.utilz.size_string(file.size, 2)})`
-  
+
   Hue.el("#image_upload_name").textContent = name
   Hue.el("#Msg-titlebar-image_upload_comment").title = file.name
 
@@ -575,7 +575,7 @@ Hue.apply_view_image_resolution = function (image, src) {
 // Take a screenshot
 Hue.take_screenshot = async function () {
   let stream = await navigator.mediaDevices.getDisplayMedia({
-    audio: false, 
+    audio: false,
     video: {mediaSource: "screen"}
   })
 
@@ -613,7 +613,7 @@ Hue.make_random_image = function (target) {
   jdenticon.update(canvas, Hue.utilz.random_sequence(9), {
     backColor: Hue.colorlib.get_random_hex()
   })
-  
+
   canvas.toBlob(
     function (blob) {
       blob.name = "random.png"

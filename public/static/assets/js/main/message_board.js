@@ -27,7 +27,7 @@ Hue.setup_message_board = function () {
     }
 
     el = e.target.closest(".message_board_user_details")
-    
+
     if (el) {
       Hue.show_profile(username, user_id)
       return
@@ -96,7 +96,7 @@ Hue.do_message_board_edit = function (send = true) {
   let text = Hue.el(".message_board_text", post)
   let id = Hue.dataset(post, "id")
   let message = edit_area.value.trim()
-  
+
   content.style.display = "flex"
   edit_area.style.display = "none"
   btns.style.display = "flex"
@@ -111,7 +111,7 @@ Hue.do_message_board_edit = function (send = true) {
     if (message === text.textContent) {
       return
     }
-  
+
     Hue.socket_emit("message_board_post", {id: id, message: message})
   }
 }
@@ -145,7 +145,7 @@ Hue.add_post_to_message_board = function (data, edited) {
   Hue.dataset(post, "original_message", data.message)
 
   let profilepic = Hue.el(".message_board_profilepic", post)
-  
+
   Hue.ev(profilepic, "error", function () {
     Hue.fallback_profilepic(this)
   })
@@ -168,7 +168,7 @@ Hue.add_post_to_message_board = function (data, edited) {
     if (first_url && Hue.utilz.is_image(first_url)) {
       let image = Hue.el(".message_board_image", post)
       image.src = first_url
-      image.style.display = "block" 
+      image.style.display = "block"
       Hue.ev(image, "error", function () {
         image.remove()
       })
@@ -180,14 +180,14 @@ Hue.add_post_to_message_board = function (data, edited) {
       link_image.style.display = "block"
       Hue.ev(link_image, "error", function () {
         link_image.remove()
-      }) 
+      })
     }
   }
 
   if (data.link_title) {
     let link_title = Hue.el(".message_board_link_title", post)
     link_title.textContent = data.link_title
-    link_title.style.display = "block" 
+    link_title.style.display = "block"
   }
 
   if (data.link_description) {
@@ -200,7 +200,7 @@ Hue.add_post_to_message_board = function (data, edited) {
   let title = `${gets} | ${Hue.utilz.nice_date(data.date)}`
   post.title = title
   Hue.dataset(post, "otitle", title)
-  
+
   let content = Hue.el(".message_board_content", post)
 
   if (Hue.utilz.bingo(gets)) {
@@ -219,7 +219,7 @@ Hue.add_post_to_message_board = function (data, edited) {
   if (!edited) {
     Hue.el("#message_board_container").prepend(post)
     let posts = Hue.els("#message_board_container .message_board_post")
-  
+
     if (posts.length > Hue.config.max_message_board_posts) {
       posts.slice(-1)[0].remove()
     }
@@ -241,7 +241,7 @@ Hue.init_message_board = function (data) {
   }
 
   Hue.check_last_message_board_post()
-  
+
   if (Hue.unread_message_board_count > 0) {
     Hue.fresh_unread_message_board_posts()
     Hue.show_message_board("$fresh ")
@@ -343,7 +343,7 @@ Hue.check_last_message_board_post = function () {
         if (Hue.dataset(post, "date") <= date) {
           break
         }
-  
+
         count += 1
       }
 
@@ -384,7 +384,7 @@ Hue.deleted_message_board_post = function (data) {
 
 // After message board filter
 Hue.after_message_board_filtered = function () {
-  Hue.vertical_separator(Hue.el("#message_board_container"))  
+  Hue.vertical_separator(Hue.el("#message_board_container"))
 }
 
 // Remove all message board posts
@@ -434,7 +434,7 @@ Hue.edit_message_board_post = function (post) {
   let text = Hue.dataset(post, "original_message")
 
   content.style.display = "none"
-  
+
   edit_area.style.display = "block"
   edit_area.value = text
   edit_area.focus()

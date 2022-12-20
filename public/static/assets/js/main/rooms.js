@@ -66,9 +66,9 @@ Hue.update_roomlist = function (data) {
   for (let room of data.roomlist) {
     let item = Hue.create("div", "roomlist_item modal_item flex_column_center action")
     let topic = room.topic.substring(0, 200).trim()
-    
+
     item.innerHTML = Hue.template_roomlist_item({
-      name: room.name, 
+      name: room.name,
       topic: topic,
       modified: Hue.utilz.timeago(room.modified)
     })
@@ -79,7 +79,7 @@ Hue.update_roomlist = function (data) {
 
     let icon = Hue.el(".roomlist_icon", item)
     jdenticon.update(icon, room.name)
-    
+
     Hue.ev(item, "click", function () {
       Hue.show_open_room(room.id, room.name)
     })

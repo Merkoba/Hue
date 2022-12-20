@@ -110,7 +110,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     fs.readdirSync(dir).forEach(f => {
       let dirPath = path.join(dir, f)
       let isDirectory = fs.statSync(dirPath).isDirectory()
-      isDirectory ? 
+      isDirectory ?
         walkdir(dirPath, callback) : callback(path.join(dir, f))
     })
   }
@@ -241,7 +241,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   function do_login (req, res, next) {
     let username = req.body.username
     let password = req.body.password
-    let fromurl = decodeURIComponent(req.body.fromurl)    
+    let fromurl = decodeURIComponent(req.body.fromurl)
 
     db_manager.check_password(username, password, { password_date: true })
 
@@ -368,7 +368,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       let m = encodeURIComponent("There was a problem verifying you're not a robot")
       res.redirect(`/message?message=${m}`)
       console.error(err)
-    })    
+    })
   }
 
   // Helper function

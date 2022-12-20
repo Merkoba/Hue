@@ -7,15 +7,15 @@ Hue.start_mouse_events = function () {
 
     if (e.target.tagName === "A") {
       return
-    }    
+    }
 
     if (!e.target.closest) {
       return
     }
-    
+
     if (e.target.closest(".chat_area")) {
       let message = e.target.closest(".message")
-      
+
       if (message) {
         let id = Hue.dataset(message, "id")
         let username = Hue.dataset(message, "username")
@@ -59,7 +59,7 @@ Hue.start_mouse_events = function () {
           Hue.show_profile(username, user_id)
         } else if (e.target.closest(".chat_menu_button_container")) {
           Hue.show_chat_context_menu(e.target.closest(".chat_menu_button_container"))
-        } 
+        }
       }
     } else if (e.target.closest(".window_controls")) {
       let el = e.target.closest(".window_controls")
@@ -90,12 +90,12 @@ Hue.start_mouse_events = function () {
 
     if (e.target.tagName === "A") {
       return
-    }    
+    }
 
     if (!e.target.closest) {
       return
     }
-    
+
     if (e.target.closest(".chat_menu_button_main")) {
       let container = e.target.closest(".chat_menu_button_main")
 
@@ -103,6 +103,6 @@ Hue.start_mouse_events = function () {
         let button = Hue.el(".chat_menu_button_container", container)
         Hue.show_chat_context_menu(button, e.clientX, e.clientY)
       }
-    }    
+    }
   })
 }

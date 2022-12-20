@@ -102,7 +102,7 @@ Hue.show_youtube_tv = function (play = true) {
       Hue.youtube_tv_player.loadVideoById({
         videoId: id[1],
         startSeconds: seconds,
-      })      
+      })
     } else {
       Hue.youtube_tv_player.cueVideoById({
         videoId: id[1],
@@ -120,7 +120,7 @@ Hue.show_youtube_tv = function (play = true) {
         list: id[1][0],
         index: id[1][1]
       })
-    }   
+    }
   } else {
     return
   }
@@ -341,7 +341,7 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
       }
 
       return false
-    }    
+    }
   }
 
   if (just_check) {
@@ -598,7 +598,7 @@ Hue.process_tv_upload_comment = function () {
 // Setups the upload tv comment window
 Hue.setup_tv_upload_comment = function () {
   let video = Hue.el("#tv_upload_comment_video_preview")
-  
+
   Hue.ev(video, "error", function () {
     this.style.display = "none"
     Hue.el("#tv_upload_comment_video_feedback").style.display = "inline"
@@ -648,24 +648,24 @@ Hue.start_screen_capture = async function (seconds) {
   if (!seconds) {
     return
   }
-  
+
   let stream = await navigator.mediaDevices.getDisplayMedia({
-    audio: true, 
+    audio: true,
     video: {mediaSource: "screen"}
   })
 
-  let recorded_chunks = [] 
+  let recorded_chunks = []
   Hue.screen_capture_recorder = new MediaRecorder(stream)
 
   Hue.screen_capture_recorder.ondataavailable = function (e) {
     if (e.data.size > 0) {
       recorded_chunks.push(e.data)
-    }  
+    }
   }
 
   Hue.screen_capture_recorder.onstop = function () {
     stream.getTracks().forEach(track => track.stop())
-    
+
     const blob = new Blob(recorded_chunks, {
       type: "video/webm"
     })

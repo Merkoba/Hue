@@ -43,7 +43,7 @@ Hue.update_input_placeholder = function () {
   }
 
   let np = Hue.radio_now_playing_string()
-  
+
   if (np) {
     s += `  -  ${np}`
   }

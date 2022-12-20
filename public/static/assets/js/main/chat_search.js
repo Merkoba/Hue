@@ -40,7 +40,7 @@ Hue.show_chat_search = function (filter = "") {
     if (filter.startsWith("$user")) {
       let username = Hue.dataset(it, "username")
       let match = username && first_arg === username.toLowerCase()
-      
+
       if (match) {
         if (tail) {
           match = it.textContent.toLowerCase().includes(tail)
@@ -93,9 +93,9 @@ Hue.show_chat_search = function (filter = "") {
 
       return match
     } else if (filter.startsWith("$image")) {
-      let match = (Hue.dataset(it, "mode") === "announcement" && 
+      let match = (Hue.dataset(it, "mode") === "announcement" &&
                   Hue.dataset(it, "type") === "image_change")
-      
+
       if (match) {
         if (args) {
           match = it.textContent.toLowerCase().includes(args)
@@ -104,9 +104,9 @@ Hue.show_chat_search = function (filter = "") {
 
       return match
     } else if (filter.startsWith("$tv")) {
-      let match = (Hue.dataset(it, "mode") === "announcement" && 
+      let match = (Hue.dataset(it, "mode") === "announcement" &&
                   Hue.dataset(it, "type") === "tv_change")
-      
+
       if (match) {
         if (args) {
           match = it.textContent.toLowerCase().includes(args)
@@ -137,13 +137,13 @@ Hue.show_chat_search = function (filter = "") {
           Hue.ev(link_img, "error", function () {
             this.style.display = "none"
           })
-        }      
-        
+        }
+
         Hue.el("#chat_search_container").append(message)
       }
     } else {
       Hue.el("#chat_search_container").innerHTML = "<div class='center'>Nothing found</div>"
-    }     
+    }
   }
 
   Hue.el("#chat_search_container").innerHTML = ""
@@ -187,25 +187,25 @@ Hue.show_chat_search = function (filter = "") {
       }
     } else {
       let messages = Hue.clone_children("#chat_area").reverse()
-  
+
       messages.forEach(it => {
         it.removeAttribute("id")
       })
-  
+
       messages = messages.filter(it => {
         let mode = Hue.dataset(it, "mode")
         let message_matched = false
-  
+
         if (mode === "chat") {
           let containers = Hue.els(".chat_content_container", it)
-    
+
           for (let container of containers) {
             if (filtercheck(container)) {
               message_matched = true
               container.x_search_matched = true
             }
           }
-    
+
           if (message_matched) {
             for (let container of containers) {
               if (!container.x_search_matched) {
@@ -218,7 +218,7 @@ Hue.show_chat_search = function (filter = "") {
             message_matched = true
           }
         }
-  
+
         return message_matched
       })
 

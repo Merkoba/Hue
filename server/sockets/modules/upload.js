@@ -96,7 +96,7 @@ module.exports = function (Hue) {
       if (!spam_ans) {
         return
       }
-       
+
       file.spam_charge = 0
     }
 

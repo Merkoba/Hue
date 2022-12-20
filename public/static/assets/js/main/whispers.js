@@ -59,7 +59,7 @@ Hue.send_inline_whisper = function (arg) {
 
   for (let u of usplit) {
     let cu = Hue.check_user_in_room(u)
-    
+
     if (!cu) {
       continue
     }
@@ -80,7 +80,7 @@ Hue.write_whisper = function (usernames = [], type = "user") {
 
   for (let u of usernames) {
     let cu = Hue.check_user_in_room(u)
-    
+
     if (cu) {
       c_usernames.push(cu)
     } else {
@@ -138,7 +138,7 @@ Hue.update_whisper_users = function (username) {
       Hue.update_whisper_users(username)
     }))
   }
-  
+
   Hue.msg_userlist.close()
   Hue.focus_write_whisper()
 }
@@ -176,15 +176,15 @@ Hue.submit_write_whisper = function () {
 Hue.whisper_received = function (data) {
   data.mode = "received"
   let message = `Whisper from ${data.username}`
-  
-  let func = function () { 
-    Hue.show_whisper(data, "received") 
+
+  let func = function () {
+    Hue.show_whisper(data, "received")
   }
 
   let item = Hue.make_info_popup_item({icon: "envelope", message: message, push: false})
   data.notification = Hue.push_whisper(message, func, false, data)
   Hue.on_activity("whisper")
-  
+
   if (Hue.get_setting("open_whispers_automatically")) {
     if (!Hue.msg_whispers.is_open()) {
       Hue.show_whispers()
@@ -199,9 +199,9 @@ Hue.whisper_sent = function (data) {
   data.mode = "sent"
   let usernames = Array.from(data.users, x => x.username)
   let message = `Whisper sent to ${Hue.utilz.nice_list(usernames)}`
-  
-  let func = function () { 
-    Hue.show_whisper(data, "sent") 
+
+  let func = function () {
+    Hue.show_whisper(data, "sent")
   }
 
   let item = Hue.make_info_popup_item({icon: "envelope", message: message, push: false})
@@ -276,10 +276,10 @@ Hue.send_whisper = function (message) {
   let discarded = []
   let approved = []
 
-  
+
   for (let u of usernames) {
     let user = Hue.get_userlist_item_by_username(u)
-    
+
     if (!user) {
       discarded.push(user.username)
     } else {
@@ -357,7 +357,7 @@ Hue.push_whisper = function (message, on_click, read, data) {
         Hue.fallback_profilepic(this)
       })
     } else {
-      Hue.el(".profilepic", item).classList.add("nodisplay")  
+      Hue.el(".profilepic", item).classList.add("nodisplay")
     }
   } else {
     item.innerHTML = Hue.template_whisper_sent({
@@ -365,13 +365,13 @@ Hue.push_whisper = function (message, on_click, read, data) {
       message: message
     })
   }
-  
+
   item.title = title
-  
+
   Hue.dataset(item, "otitle", title)
   Hue.dataset(item, "date", date)
   Hue.dataset(item, "read", read)
-  
+
   let content = Hue.el(".whisper_item_content", item)
 
   Hue.ev(content, "click", function () {
@@ -387,7 +387,7 @@ Hue.push_whisper = function (message, on_click, read, data) {
   }
 
   Hue.el("#whispers_container").prepend(item)
-  
+
   let items = Hue.els(".whisper_item")
 
   if (items.length > Hue.config.whispers_crop_limit) {

@@ -198,7 +198,7 @@ Hue.server_update_events = {
   },
   message_board_cleared: (data) => {
     Hue.message_board_cleared(data)
-  },  
+  },
   audioclip_changed: (data) => {
     Hue.audioclip_changed(data)
   },

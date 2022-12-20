@@ -31,7 +31,7 @@ Hue.commands = {
       }
     },
     description: "Opens the search window. Accepts a query as an argument",
-  },  
+  },
   "voice": {
     action: (arg, ans) => {
       Hue.change_role(arg, "voice")
@@ -201,7 +201,7 @@ Hue.commands = {
       }
     },
     description: "(Only for superusers) Used to change a user's password",
-  }, 
+  },
   "createroom": {
     action: (arg, ans) => {
       if (arg) {
@@ -211,13 +211,13 @@ Hue.commands = {
       }
     },
     description: "(Only for superusers) Used to create rooms",
-  },   
+  },
   "deleteroom": {
     action: (arg, ans) => {
       Hue.delete_room()
     },
     description: "(Only for superusers) Used to delete rooms",
-  }, 
+  },
   "banuserid": {
     action: (arg, ans) => {
       Hue.ban_user_id(arg)
@@ -289,7 +289,7 @@ Hue.commands = {
       Hue.show_links()
     },
     description: "Shows chat messages that contain links",
-  },  
+  },
   "mainmenu": {
     action: (arg, ans) => {
       Hue.show_main_menu()
@@ -611,7 +611,7 @@ Hue.commands = {
       Hue.show_radio(arg)
     },
     description: "Open and filter the radio window",
-  },  
+  },
   "roomlist": {
     action: (arg, ans) => {
       Hue.show_roomlist(arg)
@@ -647,13 +647,13 @@ Hue.commands = {
       Hue.show_tv_list()
     },
     description: "Show the tv history",
-  },  
+  },
   "lock": {
     action: (arg, ans) => {
       Hue.lock_chat()
     },
     description: "Lock the chat in place",
-  },    
+  },
 }
 
 // Commands reserved to superusers
@@ -800,8 +800,8 @@ Hue.show_command_book = function (filter = "") {
 
       commands[key] = Hue.commands[key]
     }
-  
-    Hue.el("#command_book_container").innerHTML = 
+
+    Hue.el("#command_book_container").innerHTML =
       Hue.template_command_book_commands({commands: commands})
 
     Hue.ev(Hue.el("#command_book_container"), "click", function (e) {

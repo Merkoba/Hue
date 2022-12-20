@@ -183,7 +183,7 @@ Hue.init = function () {
   Hue.setup_admin_activity()
   Hue.setup_item_picker()
   Hue.setup_edit()
-  
+
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
   }

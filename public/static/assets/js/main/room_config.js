@@ -50,7 +50,7 @@ Hue.setup_room_config = function () {
 
   Hue.ev(Hue.el("#room_config_more_ban_list"), "click", function () {
     Hue.request_ban_list()
-  }) 
+  })
 
   Hue.ev(Hue.el("#admin_background"), "click", function () {
     Hue.msg_background_select.show()
@@ -132,7 +132,7 @@ Hue.config_admin_topic = function () {
 }
 
 // Setup background select
-Hue.setup_background_select = function () {  
+Hue.setup_background_select = function () {
   Hue.ev(Hue.el("#background_select_draw"), "click", function () {
     Hue.open_draw_image("background")
   })
@@ -140,7 +140,7 @@ Hue.setup_background_select = function () {
   Hue.ev(Hue.el("#background_select_random"), "click", function () {
     Hue.make_random_image("background")
   })
-  
+
   Hue.ev(Hue.el("#background_select_link"), "click", function () {
     Hue.open_link_background()
   })

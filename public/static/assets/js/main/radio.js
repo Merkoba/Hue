@@ -12,11 +12,11 @@ Hue.setup_radio = function () {
   ) || Hue.config.radios[0]
 
   Hue.setup_radio_player()
-  
+
   for (let radio of Hue.config.radios) {
     Hue.create_radio_station(radio)
   }
-  
+
   Hue.apply_radio_volume()
   Hue.fill_radio_queue()
 
@@ -68,7 +68,7 @@ Hue.check_radio_play = function (radio) {
 
 // Play the audio player with a cache-busted url
 Hue.play_radio = function (radio) {
-  Hue.push_radio_queue(radio)  
+  Hue.push_radio_queue(radio)
   Hue.playing_radio = radio
   Hue.radio_player.src = Hue.utilz.cache_bust_url(radio.url)
   Hue.radio_player.play()
@@ -84,7 +84,7 @@ Hue.after_radio_play = function () {
   Hue.check_radio_playing()
   Hue.scroll_to_radio_station()
   Hue.show_radio_icon()
-  
+
   if (Hue.room_state.radio_auto) {
     Hue.start_radio_auto_timeout()
   }
@@ -94,11 +94,11 @@ Hue.after_radio_play = function () {
 Hue.setup_radio_player = function () {
   Hue.radio_player = new Audio()
   Hue.radio_player.volume = Hue.room_state.radio_volume
-  
+
   Hue.ev(Hue.radio_player, "play", function (e) {
     Hue.after_radio_play()
   })
-  
+
   Hue.ev(Hue.radio_player, "pause", function (e) {
     Hue.after_radio_stop()
   })
@@ -141,9 +141,9 @@ Hue.scroll_to_radio_station = function () {
   if (!Hue.radio_is_playing()) {
     return
   }
-  
+
   let station = Hue.get_radio_station(Hue.playing_radio)
-  
+
   station.scrollIntoView({
     block: "center"
   })
@@ -169,13 +169,13 @@ Hue.check_radio_playing = function () {
 Hue.create_radio_station = function (radio) {
   let container = Hue.create("div", "radio_station nice_row modal_item pointer")
   container.innerHTML = Hue.template_radio_station()
-  
+
   let icon = Hue.el(".radio_station_icon", container)
   jdenticon.update(icon, radio.name)
-  
+
   let name = Hue.el(".radio_station_name", container)
   name.textContent = radio.name
-  
+
   Hue.ev(container, "click", function () {
     Hue.check_radio_play(radio)
   })
@@ -196,9 +196,9 @@ Hue.get_radio_station = function (radio) {
 // Increase or decrease radio volume
 Hue.change_radio_volume = function (direction, amount = 0.05) {
   let new_volume = Hue.room_state.radio_volume
-  
+
   if (direction === "up") {
-    new_volume += amount  
+    new_volume += amount
 
     if (new_volume > 1) {
       new_volume = 1
@@ -223,11 +223,11 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
   let vstring = Math.round(volume * 100)
   let fp = Hue.utilz.fillpad(vstring.toString(), 3, "0")
   Hue.el("#radio_volume").textContent = `Volume: ${fp}%`
-  
+
   if (Hue.started && !Hue.msg_radio.is_open()) {
     Hue.flash_info("Radio", `Volume: ${vstring}%`)
   }
-  
+
   if (volume >= 0.7) {
     Hue.el("#footer_radio_icon use").href.baseVal = "#icon_volume-full"
   } else if (volume > 0) {
@@ -235,9 +235,9 @@ Hue.apply_radio_volume = function (volume = Hue.room_state.radio_volume) {
   } else {
     Hue.el("#footer_radio_icon use").href.baseVal = "#icon_volume-mute"
   }
-  
+
   Hue.radio_player.volume = volume
-  
+
   if (Hue.room_state.radio_volume !== volume) {
     Hue.room_state.radio_volume = volume
     Hue.save_room_state()
@@ -281,7 +281,7 @@ Hue.radio_playstop = function () {
     return
   }
 
-  Hue.check_radio_play(Hue.playing_radio) 
+  Hue.check_radio_play(Hue.playing_radio)
 }
 
 // Get radio now playing string
@@ -293,7 +293,7 @@ Hue.radio_now_playing_string = function () {
   }
 }
 
-// Show the radio 
+// Show the radio
 Hue.show_radio = function (filter = "") {
   Hue.msg_radio.show(function () {
     if (filter.trim()) {
@@ -342,7 +342,7 @@ Hue.pick_radio_volume = function () {
   nums.reverse()
 
   let s = nums.map(x => x + "%")
-  
+
   Hue.show_item_picker("Radio Volume", s, function (item) {
     let vol = parseInt(item) / 100
     Hue.apply_radio_volume(vol)
@@ -384,7 +384,7 @@ Hue.stop_radio_auto_timeout = function () {
 // Start radio auto timeout
 Hue.start_radio_auto_timeout = function () {
   Hue.stop_radio_auto_timeout()
-  
+
   Hue.room_state.radio_auto_timeout = setTimeout(function () {
     if (Hue.radio_is_playing()) {
       Hue.play_random_radio()

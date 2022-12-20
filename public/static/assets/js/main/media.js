@@ -227,7 +227,7 @@ Hue.setup_media_pickers = function () {
   Hue.ev(Hue.el("#image_picker_upload"), "click", function () {
     Hue.msg_image_picker.close()
   })
-  
+
   Hue.ev(Hue.el("#image_picker_draw"), "click", function () {
     Hue.msg_image_picker.close()
     Hue.open_draw_image("image")
@@ -242,12 +242,12 @@ Hue.setup_media_pickers = function () {
     Hue.msg_image_picker.close()
     Hue.take_screenshot()
   })
-  
+
   Hue.ev(Hue.el("#tv_picker_link"), "click", function () {
     Hue.msg_tv_picker.close()
     Hue.show_link_tv()
-  }) 
-  
+  })
+
   Hue.ev(Hue.el("#tv_picker_upload"), "click", function () {
     Hue.msg_tv_picker.close()
   })
@@ -368,7 +368,7 @@ Hue.change_media = function (args = {}) {
     if (item.username !== Hue.username) {
       Hue.on_activity("media_change")
     }
-    
+
     return
   }
 
@@ -411,9 +411,9 @@ Hue.change_media = function (args = {}) {
       return
     }
 
-    if (!args.item && 
-      Hue.tv_locked && 
-      Hue.loaded_tv.source && 
+    if (!args.item &&
+      Hue.tv_locked &&
+      Hue.loaded_tv.source &&
       !args.current_source
     ) {
       return
@@ -455,20 +455,20 @@ Hue.apply_media_info = function (type) {
 
   let message = item.message.substring(0, Hue.config.max_media_info_length).trim()
   let container = Hue.el(`#media_${type}_info_container`)
-  
+
   Hue.el(".media_info", container).innerHTML = Hue.template_media_info_inner({
-    username: item.username, 
+    username: item.username,
     message: message,
     profilepic: Hue.get_profilepic(item.user_id)
   })
-  
+
   Hue.el(".media_info_timeago", container).textContent = Hue.utilz.timeago(item.date)
   container.title = item.info
 
   Hue.ev(Hue.el(".media_info_profilepic", container), "error", function () {
     Hue.fallback_profilepic(this)
   })
-    
+
   Hue.dataset(container, "otitle", item.info)
   Hue.dataset(container, "date", item.date)
   Hue.dataset(container, "type", type)
@@ -488,21 +488,21 @@ Hue.set_media_enabled = function (args) {
   if (args.what === Hue.room_state[`${args.type}_enabled`]) {
     return
   }
-  
+
   Hue.room_state[`${args.type}_enabled`] = args.what
-  
+
   if (Hue[`${args.type}_visible`] !== args.what) {
     Hue.change_media_visibility(args.type)
   }
-  
+
   let p = Hue.room_state.tv_display_percentage
-  
+
   if (p === 0 || p === 100) {
     Hue.set_default_tv_size()
   } else {
     Hue.save_room_state()
   }
-  
+
   Hue.update_footer_toggle(args.type)
 }
 
@@ -582,7 +582,7 @@ Hue.swap_media = function () {
   if (Hue.num_media_elements_visible() < 2) {
     return
   }
-  
+
   Hue.swap_display_positions()
 }
 
@@ -608,7 +608,7 @@ Hue.append_media_info = function (container, type) {
 // Some initial media info setups
 Hue.start_media_info = function () {
   Hue.append_media_info("#media_image_container", "image")
-  
+
   Hue.ev(Hue.el("#media"), "click", function (e) {
     let el = e.target.closest(".media_info_user")
 
@@ -646,7 +646,7 @@ Hue.media_string = function (what) {
 Hue.load_media = function (data) {
   Hue.set_media_enabled({type: data.media_type, what: true})
   Hue.set_media_locked({type: data.media_type, what: true})
-  
+
   Hue.change_media({
     type: data.media_type,
     item: data,
@@ -673,14 +673,14 @@ Hue.change_main_layout = function (what = "") {
     if (Hue.room_state.main_layout === what) {
       return
     }
-    
+
     Hue.room_state.main_layout = what
   } else {
     if (Hue.room_state.main_layout === "row") {
-      Hue.room_state.main_layout = "column"   
+      Hue.room_state.main_layout = "column"
     } else {
-      Hue.room_state.main_layout = "row" 
-    }    
+      Hue.room_state.main_layout = "row"
+    }
   }
 
   Hue.apply_media_percentages()
@@ -754,7 +754,7 @@ Hue.show_media_picker = function (type) {
 Hue.load_media_link = function (type, source, comment) {
   Hue.el(`#link_${type}_comment`).value = comment
   Hue.el(`#link_${type}_input`).value = source
-  
+
   Hue[`msg_link_${type}`].show(function () {
     Hue.el(`#link_${type}_comment`).focus()
   })
@@ -768,7 +768,7 @@ Hue.get_media_message = function (data) {
     message = data.title
     if (data.comment) {
       message += ` (${data.comment})`
-    }    
+    }
   } else if (data.comment) {
     message = data.comment
   }
@@ -776,7 +776,7 @@ Hue.get_media_message = function (data) {
   if (!message) {
     if (data.query) {
       message = data.query
-    } 
+    }
   }
 
   if (!message) {
@@ -890,7 +890,7 @@ Hue.setup_media_object = function (type, mode, odata = {}) {
         change: false
       })
     }
-    
+
     Hue.change_media({type: type})
   }
 }

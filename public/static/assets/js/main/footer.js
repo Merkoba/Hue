@@ -83,7 +83,7 @@ Hue.after_footer_expand_change = function () {
 // Update footer toggle
 Hue.update_footer_toggle = function (type) {
   let val = Hue.room_state[`${type}_enabled`]
-  
+
   if (val) {
     Hue.el(`#footer_${type}_toggle use`).href.baseVal = "#icon_toggle-on"
   } else {

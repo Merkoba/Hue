@@ -102,7 +102,7 @@ Hue.activate_key_detection = function () {
             e.preventDefault()
           }
         }
-      }      
+      }
 
       if (Hue.msg_open_room.is_open()) {
         if (Hue.msg_open_room.is_highest()) {
@@ -256,7 +256,7 @@ Hue.activate_key_detection = function () {
 
         return
       }
-      
+
       if (Hue.reply_active || Hue.edit_active || has_value) {
         Hue.submit_input()
       } else {
@@ -281,14 +281,14 @@ Hue.activate_key_detection = function () {
       } else {
         Hue.select_message("up")
       }
-      
+
       e.preventDefault()
       return
     } else if (e.key === "ArrowDown") {
       if (e.shiftKey || Hue.footer_expanded) {
         return
       }
-      
+
       Hue.select_message("down")
       e.preventDefault()
       return
@@ -306,22 +306,22 @@ Hue.activate_key_detection = function () {
           Hue.clear_input()
         } else if (Hue.footer_expanded) {
           Hue.disable_footer_expand()
-        } 
+        }
 
         e.preventDefault()
         return
-      }        
+      }
     } else if (e.key === "Backspace") {
       if (Hue.footer_expanded) {
         if (!has_value) {
           Hue.disable_footer_expand()
           e.preventDefault()
         }
-        
+
         return
       }
     }
-    
+
     if (!has_value) {
       Hue.unselect_message()
     }

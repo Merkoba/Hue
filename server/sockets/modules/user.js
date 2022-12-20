@@ -29,7 +29,7 @@ module.exports = function (Hue) {
       Hue.handler.user_emit(socket, "username_already_exists", {
         username: data.username
       })
-      
+
       return
     }
 
@@ -132,10 +132,10 @@ module.exports = function (Hue) {
 
     if (!Hue.vars.fs.existsSync(container)) {
       Hue.vars.fs.mkdirSync(container, { recursive: true })
-    }    
+    }
 
-    let path = Hue.vars.path.join(container, file_name) 
-    
+    let path = Hue.vars.path.join(container, file_name)
+
     try {
       await Hue.vars.fsp.writeFile(path, data.image_file)
       await Hue.handler.do_change_profilepic(socket, file_name)
@@ -185,8 +185,8 @@ module.exports = function (Hue) {
       Hue.vars.fs.mkdirSync(container, { recursive: true })
     }
 
-    let path = Hue.vars.path.join(container, file_name) 
-    
+    let path = Hue.vars.path.join(container, file_name)
+
     try {
       await Hue.vars.fsp.writeFile(path, data.audio_file)
       await Hue.handler.do_change_audioclip(socket, file_name)
@@ -201,7 +201,7 @@ module.exports = function (Hue) {
     let file_name = "audioclip.mp3"
     let container = Hue.vars.path.join(Hue.vars.media_root, "user", socket.hue_user_id)
     let path = Hue.vars.path.join(container, file_name)
-    
+
     if (Hue.vars.fs.existsSync(path)) {
       Hue.vars.fs.unlink(path, function (err) {
         if (err) {

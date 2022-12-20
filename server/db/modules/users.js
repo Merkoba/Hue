@@ -90,7 +90,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         resolve(false)
         return
       }
-      
+
       if (current_username === new_username) {
         resolve(false)
         return
@@ -159,7 +159,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.change_user_password = function (id, password) {
     return new Promise((resolve, reject) => {
       vars.bcrypt.hash(password, sconfig.encryption_cost)
-      
+
       .then(hash => {
         manager.get_user(["id", id])
 
@@ -173,7 +173,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
           reject(err)
           logger.log_error(err)
           return
-        })        
+        })
       })
 
       .catch(err => {

@@ -49,7 +49,7 @@ Hue.check_arrows = function (text) {
     if (text.replace(/&gt;/g, "").trim() === "") {
       return text
     }
-    
+
     if (text.startsWith("&gt;&gt;&gt;")) {
       text = `<div class='colortext redtext'>${Hue.remove_arrows(text, 3)}</div>`
     } else if (text.startsWith("&gt;&gt")) {
@@ -67,14 +67,14 @@ Hue.check_arrows = function (text) {
 // Remove arrows from the start of strings
 Hue.remove_arrows = function (text, num_arrows) {
   let regex = new RegExp(`^(&gt;){1,${num_arrows}}`, "gm")
-  
+
   let lines = text.split("\n")
   let new_lines = []
-  
+
   for (let line of lines) {
     new_lines.push(line.replace(regex, ""))
   }
-  
+
   let new_text = new_lines.join("\n")
   return Hue.utilz.untab_string(new_text).trim()
 }

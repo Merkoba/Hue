@@ -28,19 +28,19 @@ module.exports = function (Hue) {
     }
 
     let path = Hue.vars.path.join(container, file_name)
-    
+
     try {
       await Hue.vars.fsp.writeFile(path, data.file)
-  
+
       let obj = {}
-  
+
       obj.src = file_name
       obj.username = socket.hue_username
       obj.size = size
       obj.type = "upload"
       obj.comment = data.comment
       obj.file_name = data.file_name
-  
+
       await Hue.handler.do_change_media(socket, obj, type)
     } catch (err) {
       Hue.logger.log_error(err)
@@ -124,10 +124,10 @@ module.exports = function (Hue) {
         let files = await Hue.vars.fsp.readdir(container)
 
         files.sort().reverse()
-  
+
         for (let file of files.slice(Hue.config[`max_stored_${type}`])) {
           let path = Hue.vars.path.join(container, file)
-  
+
           Hue.vars.fs.unlink(path, function (err) {
             if (err) {
               Hue.logger.log_error(err)
@@ -162,7 +162,7 @@ module.exports = function (Hue) {
         }
       }
     }
-    
+
     if (edited) {
       info.modified = Date.now()
 
@@ -187,7 +187,7 @@ module.exports = function (Hue) {
 
       for (let file of files) {
         let path = Hue.vars.path.join(container, file)
-  
+
         Hue.vars.fs.unlink(path, function (err) {
           if (err) {
             Hue.logger.log_error(err)

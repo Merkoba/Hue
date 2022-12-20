@@ -38,7 +38,7 @@ module.exports = function (Hue) {
       Hue.handler.roomlist_timeout_action()
     }, Hue.sconfig.roomlist_loop_delay)
   }
-  
+
   // What to do on each roomlist timeout iteration
   Hue.handler.roomlist_timeout_action = async function () {
     try {

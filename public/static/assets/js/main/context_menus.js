@@ -6,7 +6,7 @@ Hue.show_chat_context_menu = function (button, x, y) {
   if (!unit) {
     return
   }
-  
+
   let items = []
   let message = button.closest(".message")
   let mode = Hue.dataset(message, "mode")
@@ -35,7 +35,7 @@ Hue.show_chat_context_menu = function (button, x, y) {
     })
 
     has_reply = true
-  }   
+  }
 
   if (user_id === Hue.user_id && (mode === "chat" || type === "image_change" || type === "tv_change")) {
     items.push({
@@ -75,23 +75,23 @@ Hue.show_chat_context_menu = function (button, x, y) {
         }
       })
     }
-  }   
-  
+  }
+
   items.push({
     text: "Hide",
     action: function () {
       Hue.show_confirm("Hide message. This won't delete it", function () {
         Hue.remove_message_from_context_menu(button)
-      })          
+      })
     }
   })
-  
-  if ((user_id === Hue.user_id || Hue.is_admin_or_op()) && 
+
+  if ((user_id === Hue.user_id || Hue.is_admin_or_op()) &&
     (mode === "chat" || type === "image_change" || type === "tv_change")) {
     items.push({
       text: "Delete",
       action: function () {
-        Hue.handle_delete_messages(id, user_id)      
+        Hue.handle_delete_messages(id, user_id)
       }
     })
   }
@@ -100,7 +100,7 @@ Hue.show_chat_context_menu = function (button, x, y) {
     items.push({
       text: "Handle",
       action: function () {
-        Hue.handle_url(url)     
+        Hue.handle_url(url)
       }
     })
   }
@@ -113,7 +113,7 @@ Hue.show_chat_context_menu = function (button, x, y) {
       }
     })
   }
-  
+
   if (x !== undefined && y !== undefined) {
     NeedContext.show(x, y, items)
   } else {
@@ -134,14 +134,14 @@ Hue.show_input_menu = function () {
     items.push({
       text: "Send",
       action: function () {
-        Hue.submit_input()    
+        Hue.submit_input()
       }
     })
 
     items.push({
       text: "Clear",
       action: function () {
-        Hue.clear_input()    
+        Hue.clear_input()
       }
     })
   }
@@ -150,17 +150,17 @@ Hue.show_input_menu = function () {
     items.push({
       text: "Repeat",
       action: function () {
-        Hue.repeat_input()    
+        Hue.repeat_input()
       }
-    })  
+    })
   }
 
   items.push({
     text: "Lock",
     action: function () {
-      Hue.lock_chat()  
+      Hue.lock_chat()
     }
-  })  
+  })
 
   let el = Hue.el("#footer_input_menu")
   NeedContext.show_on_element(el, items)

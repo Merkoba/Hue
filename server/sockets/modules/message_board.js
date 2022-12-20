@@ -1,6 +1,6 @@
 module.exports = function (Hue) {
   // Handles message board posting
-  Hue.handler.public.message_board_post = async function (socket, data) { 
+  Hue.handler.public.message_board_post = async function (socket, data) {
     if (!data.message) {
       return
     }
@@ -18,7 +18,7 @@ module.exports = function (Hue) {
     // If it's an edit
     if (data.id) {
       let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
-    
+
       for (let post of info.message_board_posts) {
         if (post.id === data.id) {
           if (post.user_id !== socket.hue_user_id) {
@@ -61,7 +61,7 @@ module.exports = function (Hue) {
     data.link_description = linkdata.description
     data.link_image = linkdata.image
     data.link_url = linkdata.url
-    
+
     let item = Hue.handler.push_message_board_post(socket, data)
     Hue.handler.room_emit(socket, "new_message_board_post", item)
 
@@ -132,9 +132,9 @@ module.exports = function (Hue) {
         })
 
         if (item.user_id !== socket.hue_user_id) {
-          Hue.handler.push_admin_log_message(socket, "deleted a message from the message board")         
+          Hue.handler.push_admin_log_message(socket, "deleted a message from the message board")
         }
-        
+
         return
       }
     }
@@ -146,7 +146,7 @@ module.exports = function (Hue) {
       Hue.handler.anti_spam_ban(socket)
       return
     }
-    
+
     let info = await Hue.db_manager.get_room(["id", socket.hue_room_id])
     info.message_board_posts = []
 

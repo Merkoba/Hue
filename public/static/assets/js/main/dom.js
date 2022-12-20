@@ -43,7 +43,7 @@ Hue.clone = function (el) {
 Hue.clone_children = function (query) {
   let items = []
   let children = Array.from(Hue.el(query).children)
-  
+
   for (let c of children) {
     items.push(Hue.clone(c))
   }
@@ -79,7 +79,7 @@ Hue.create = function (type, classes = "", id = "") {
 
   if (classes) {
     let classlist = classes.split(" ").filter(x => x != "")
-  
+
     for (let cls of classlist) {
       el.classList.add(cls)
     }

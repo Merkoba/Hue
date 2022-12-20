@@ -51,5 +51,5 @@ module.exports = function (vars, manager, config, sconfig, utilz, logger) {
       version: { type: "number", default: 0 },
       last_message_board_post_date: {type: "number", default: 0}
     }
-  } 
+  }
 }

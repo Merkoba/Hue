@@ -32,7 +32,7 @@ module.exports = function (Hue) {
     if (socket.hue_room_id === Hue.config.main_room_id) {
       return
     }
-    
+
     Hue.db_manager.delete_room(socket.hue_room_id)
     let room_files = Hue.vars.path.join(Hue.vars.media_root, "room", socket.hue_room_id)
     Hue.vars.fs.rmSync(room_files, {recursive: true, force: true})

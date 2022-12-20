@@ -49,7 +49,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   // Remove from memory cache
   manager.remove_from_cache = function (path, obj) {
     manager.cache[path] = undefined
-  }  
+  }
 
   // Check if path is in cache
   manager.path_in_cache = function (path) {
@@ -128,7 +128,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
             try {
               let obj = await check_file(type, path, query)
-              
+
               if (obj) {
                 resolve(obj)
                 return
@@ -185,7 +185,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             reject("Nothing found")
             return
           }
-          
+
           let proxy = manager.make_proxy_object(original, path, type)
           manager.add_to_cache(path, original, proxy)
           check_version(type, path, proxy)
@@ -264,7 +264,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
     if (obj) {
       obj[list_name].push(item)
-  
+
       if (obj[list_name].length > config[`max_${list_name}`]) {
         obj[list_name] = obj[list_name].slice(
           obj[list_name].length - config[`max_${list_name}`]

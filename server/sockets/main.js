@@ -22,14 +22,14 @@ module.exports = function (Hue) {
   }
 
   // Start the anti-spam system
-  Hue.vars.anti_spam = Hue.handler.start_anti_spam()  
+  Hue.vars.anti_spam = Hue.handler.start_anti_spam()
 
   // Start socker handler
   Hue.io.on("connection", async function (socket) {
     if (!socket) {
       return
     }
-    
+
     if (Hue.vars.exiting) {
       return
     }

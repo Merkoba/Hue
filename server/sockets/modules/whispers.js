@@ -12,11 +12,11 @@ module.exports = function (Hue) {
       if (!data.usernames || data.usernames.length === 0) {
         return
       }
-  
+
       if (data.usernames.length > Hue.config.max_whisper_users) {
         return
       }
-  
+
       for (let username of data.usernames) {
         if (
           !username.length ||
@@ -52,7 +52,7 @@ module.exports = function (Hue) {
           socket.hue_room_id,
           username
         )
-  
+
         if (sockets.length > 0) {
           users.push({
             user_id: sockets[0].hue_user_id,

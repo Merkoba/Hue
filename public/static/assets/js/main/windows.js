@@ -358,7 +358,7 @@ Hue.start_msg = function () {
         Hue.upload_media = undefined
       },
     })
-  )  
+  )
 
   Hue.msg_handle_url = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
@@ -384,7 +384,7 @@ Hue.start_msg = function () {
       id: "view_text",
       window_max_width: "40rem"
     })
-  )  
+  )
 
   Hue.msg_notifications = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
@@ -457,7 +457,7 @@ Hue.start_msg = function () {
       profilepic: Hue.config.profilepic_loading_url
     })
   )
-  
+
   Hue.msg_media_tweaks.set(
     Hue.template_media_tweaks({
       percentages: Hue.create_tweaks_percentages("tv"),
@@ -474,7 +474,7 @@ Hue.start_msg = function () {
       })
     })
   )
-  
+
   Hue.msg_message_board.set(
     Hue.template_message_board({
       window_controls: Hue.template_window_controls({
@@ -843,7 +843,7 @@ Hue.start_msg = function () {
       {id: "radio_random", text: "Random"},
       {id: "radio_volume", text: "Volume: 100%"},
       {
-        id: "radio_auto", text: "Auto: Off", 
+        id: "radio_auto", text: "Auto: Off",
         title: `Automatically change the station every ${Hue.config.radio_auto_minutes} minutes`
       },
     ]
@@ -1035,7 +1035,7 @@ Hue.show_action_popup = function (args = {}) {
 // Get the first visible item in a filtered container
 Hue.get_first_visible_modal_item = function (id) {
   let items = Hue.els(`#${id} .modal_item`)
-  
+
   for (let item of items) {
     if (!item.classList.contains("nodisplay")) {
       return item

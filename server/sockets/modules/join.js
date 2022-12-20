@@ -27,7 +27,7 @@ module.exports = function (Hue) {
 
     if (data.alternative) {
       socket.hue_login_method = "alternative"
-      
+
       if (!data.username || !data.password) {
         return Hue.handler.get_out(socket)
       }
@@ -212,7 +212,7 @@ module.exports = function (Hue) {
     } else {
       user_data.log_messages = info.log_messages
     }
-    
+
     if (data.no_message_board_posts) {
       user_data.message_board_posts = []
     } else {

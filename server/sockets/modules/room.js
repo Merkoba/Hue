@@ -191,15 +191,15 @@ module.exports = function (Hue) {
       if (!Hue.utilz.is_url(data.src)) {
         return
       }
-  
+
       data.src = data.src.replace(/\s/g, "").replace(/\.gifv/g, ".gif")
-  
+
       let extension = Hue.utilz.get_extension(data.src).toLowerCase()
-  
+
       if (!extension || !Hue.utilz.image_extensions.includes(extension)) {
         return
       }
-  
+
       await Hue.handler.do_change_background(socket, data.src, "external")
     }
   }
@@ -242,12 +242,12 @@ module.exports = function (Hue) {
               if (err) {
                 Hue.logger.log_error(err)
               }
-            })            
+            })
           }
         }
       } catch (err) {
         Hue.logger.log_error(err)
       }
     }
-  }  
+  }
 }

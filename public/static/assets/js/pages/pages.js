@@ -1,4 +1,4 @@
-/* global message:readonly */ 
+/* global message:readonly */
 
 const utilz = Utilz()
 

@@ -35,7 +35,7 @@ module.exports = function (Hue) {
           if (s.length > Hue.sconfig.data_items_max_number_length) {
             return false
           }
-        } else { 
+        } else {
           if (s.length > Hue.sconfig.data_items_max_string_length) {
             return false
           }

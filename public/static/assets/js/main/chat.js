@@ -175,7 +175,7 @@ Hue.make_chat_message = function (args = {}) {
   Hue.dataset(fmessage, "date", d)
   Hue.dataset(fmessage, "highlighted", highlighted)
   Hue.dataset(fmessage, "mode", "chat")
-  
+
   let content_container = Hue.el(".chat_content_container", fmessage)
   Hue.dataset(content_container, "id", args.id)
   Hue.dataset(content_container, "edited", args.edited)
@@ -377,7 +377,7 @@ Hue.insert_message = function (args = {}) {
           let clone = Hue.clone(content_container)
           item.replaceWith(clone)
           message_unit = Hue.el_or_self(".message_unit", clone)
-          
+
           if (Hue.last_selected_message) {
             if (args.id === Hue.dataset(Hue.last_selected_message, "id")) {
               Hue.last_selected_message = message_unit
@@ -651,7 +651,7 @@ Hue.start_edit = function (unit) {
   if (Hue.modal_open) {
     Hue.close_all_modals()
   }
-    
+
   Hue.edit_container = unit.closest(".message")
   Hue.edit_unit = unit
   Hue.edit_original_message = Hue.dataset(unit.closest(".unit_data_container"), "original_message")
@@ -679,7 +679,7 @@ Hue.hide_edit = function () {
 Hue.submit_edit = function () {
   let mode = Hue.dataset(Hue.edit_container, "mode")
   let edit_id
-  
+
   if (mode === "chat") {
     edit_id = Hue.dataset(Hue.edit_unit.closest(".chat_content_container"), "id")
   } else {
@@ -698,7 +698,7 @@ Hue.submit_edit = function () {
   if (new_message === Hue.edit_original_message) {
     Hue.clear_input()
     return
-  }  
+  }
 
   if (mode === "chat") {
     if (new_message.length === 0) {
@@ -1489,7 +1489,7 @@ Hue.activity_notification = function (username) {
   if (!Hue.started) {
     return
   }
-  
+
   if (!Hue.get_setting("show_activity_notifications")) {
     return
   }
@@ -1874,29 +1874,29 @@ Hue.remove_selected_classes = function () {
 // Check last selected message action
 Hue.check_last_selected_message = function () {
   let last_u = Hue.el_or_self(".message_unit", Hue.last_selected_message)
-          
+
   if (Hue.dataset(last_u, "visible")) {
     Hue.select_unit(Hue.last_selected_message)
   } else {
     Hue.select_middle_message()
-  } 
+  }
 }
 
 // Select next message in a direction
-Hue.select_message = function (direction = "up") { 
+Hue.select_message = function (direction = "up") {
   if (Hue.chat_scrolled) {
     if (Hue.selected_message) {
       let u = Hue.el_or_self(".message_unit", Hue.selected_message)
-  
+
       if (!Hue.dataset(u, "visible")) {
         Hue.remove_selected_classes()
-  
+
         if (Hue.last_selected_message) {
           Hue.check_last_selected_message()
         } else {
           Hue.select_middle_message()
         }
-        
+
         return
       }
     } else if (Hue.last_selected_message) {
@@ -1920,17 +1920,17 @@ Hue.select_message = function (direction = "up") {
     }
 
     let found = false
-  
+
     if (direction === "up") {
       units.reverse()
     }
-  
+
     for (let unit of units) {
       if (found) {
         Hue.select_unit(unit)
         return
       }
-  
+
       if (unit.classList.contains("selected_message")) {
         unit.classList.remove("selected_message")
         found = true

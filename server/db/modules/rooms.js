@@ -70,7 +70,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         let objs = []
         let path = manager.get_dir_path("rooms")
         let file_names = await vars.fsp.readdir(path)
-        
+
         for (let name of file_names) {
           if (name.startsWith(".")) {
             continue
@@ -78,17 +78,17 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
           let fpath = manager.get_file_path("rooms", name)
           let obj
-          
+
           if (manager.path_in_cache(fpath)) {
             obj = manager.cache[fpath].obj
           } else {
             let text = await vars.fsp.readFile(fpath, "utf8")
             obj = JSON.parse(text)
           }
-          
+
           objs.push({id: obj.id, name: obj.name, topic: obj.topic, modified: obj.modified})
         }
-  
+
         resolve(objs)
       } catch (err) {
         reject(err)

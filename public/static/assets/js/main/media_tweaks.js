@@ -10,7 +10,7 @@ Hue.setup_media_tweaks = function () {
 
   Hue.ev(Hue.el("#media_tweaks_revolve"), "click", function () {
     Hue.change_main_layout()
-  })   
+  })
 
   Hue.ev(Hue.el("#media_tweaks_tv_size"), "change", function () {
     let size = Hue.el("#media_tweaks_tv_size option:checked").value
@@ -77,7 +77,7 @@ Hue.setup_media_tweaks = function () {
     Hue.set_media_info_enabled(false)
     Hue.refresh_media_tweaks()
   })
-  
+
   Hue.ev(Hue.el("#media_tweaks_media_info_enabled_plus"), "click", function () {
     Hue.set_media_info_enabled(true)
     Hue.refresh_media_tweaks()
@@ -87,12 +87,12 @@ Hue.setup_media_tweaks = function () {
     Hue.set_chat_enabled(false)
     Hue.refresh_media_tweaks()
   })
-  
+
   Hue.ev(Hue.el("#media_tweaks_chat_enabled_plus"), "click", function () {
     Hue.set_chat_enabled(true)
     Hue.refresh_media_tweaks()
   })
-  
+
   Hue.ev(Hue.el("#media_tweaks_vertical_preset"), "click", function () {
     Hue.show_confirm("Apply vertical preset", function () {
       Hue.change_media_layout("row")
@@ -136,7 +136,7 @@ Hue.create_tweaks_chat_font_sizes = function () {
 
 // Shows the media tweaks
 Hue.show_media_tweaks = function () {
-  Hue.refresh_media_tweaks()  
+  Hue.refresh_media_tweaks()
   Hue.msg_media_tweaks.show()
 }
 

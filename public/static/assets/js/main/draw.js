@@ -163,7 +163,7 @@ Hue.setup_draw_image = function () {
 }
 
 // Prepares initial settings for the draw image window
-Hue.draw_image_prepare_settings = function () {  
+Hue.draw_image_prepare_settings = function () {
   Hue.ev(Hue.el("#draw_image_pencil_color"), "click", function () {
     Hue.set_draw_image_mode_input("pencil")
   })
@@ -408,7 +408,7 @@ Hue.upload_draw_image = function (canvas = "#draw_image_area", type = "drawing",
   Hue.el(canvas).toBlob(
     function (blob) {
       blob.name = name + ".png"
-      
+
       if (Hue.draw_image_target === "image") {
         Hue.show_image_upload_comment(blob, type)
       } else if (Hue.draw_image_target === "profilepic") {

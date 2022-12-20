@@ -37,7 +37,7 @@ Hue.apply_theme = function (background_color = "", text_color = "") {
   let altbackground = Hue.colorlib.get_lighter_or_darker(background_color, 0.09)
   let altbackground_a = Hue.colorlib.rgb_to_rgba(altbackground, 0.7)
   let text_color_a = Hue.colorlib.rgb_to_rgba(text_color, 0.7)
-  
+
   document.documentElement.style.setProperty("--text_color", text_color)
   document.documentElement.style.setProperty("--text_color_a", text_color_a)
   document.documentElement.style.setProperty("--altcolor", altcolor)
@@ -77,7 +77,7 @@ Hue.generate_random_themes = function () {
       } else {
         col.append(create_item(Hue.get_light_theme()))
       }
-  
+
       dark = !dark
     }
   }
@@ -143,7 +143,7 @@ Hue.apply_selected_theme = function () {
 
   Hue.show_confirm("Apply selected theme", function () {
     Hue.change_background_color(bg_color)
-    Hue.change_text_color(text_color)    
+    Hue.change_text_color(text_color)
   }, function () {
     Hue.cancel_change_theme()
   })
@@ -392,7 +392,7 @@ Hue.do_background_peek = function () {
 // Show background peek confirm
 Hue.show_background_peek_confirm = function () {
   Hue.show_confirm("Apply selected background", function () {
-    Hue.background_peek_action()   
+    Hue.background_peek_action()
     Hue.msg_background_select.close()
   }, function () {
     Hue.apply_background()

@@ -198,7 +198,7 @@ Hue.clear_admin_activity = function () {
 
   Hue.show_confirm("Delete all admin activity logs", function () {
     Hue.socket_emit("clear_admin_activity", {})
-  })  
+  })
 }
 
 // On admin activity clear
@@ -257,22 +257,22 @@ Hue.show_ban_list = function (data) {
   for (let user of data.list) {
     let el = Hue.create("div", "ban_list_item flex_row_center")
     el.innerHTML = Hue.template_ban_list_item()
-    
+
     let username = Hue.el(".ban_list_username", el)
     username.textContent = user.username
-    
+
     Hue.ev(username, "click", function () {
       Hue.show_profile(user.username, user.user_id)
     })
-    
+
     let unban = Hue.el(".ban_list_unban", el)
-    
+
     Hue.ev(unban, "click", function () {
       Hue.show_confirm(`Unban ${user.username}`, function () {
         Hue.unban(user.username)
-      })     
+      })
     })
-    
+
     Hue.horizontal_separator(el)
     container.append(el)
   }

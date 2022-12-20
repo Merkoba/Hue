@@ -54,7 +54,7 @@ Hue.setup_confirm = function () {
 }
 
 // Shows the confirm window
-Hue.show_confirm = function (message, action, action_cancel) {  
+Hue.show_confirm = function (message, action, action_cancel) {
   Hue.el("#confirm_message").textContent = message
   Hue.confirm_action = action
   Hue.confirm_action_cancel = action_cancel
@@ -122,7 +122,7 @@ Hue.timeago_action = function () {
   if (Hue.msg_modal_image.is_open()) {
     Hue.el("#modal_image_header_info .modal_image_timeago")
       .textContent = Hue.utilz.timeago(Hue.loaded_modal_image.date)
-  }  
+  }
 }
 
 // Show a message for a small time and close
