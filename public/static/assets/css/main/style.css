@@ -401,8 +401,8 @@ html {
 	align-items: center;
 	justify-content: center;
 	z-index: 99;
-	padding-left: 2rem;
-	padding-right: 2rem;
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
 	border: 0.06rem solid var(--altcolor_a);
 	flex-grow: 1;
 	flex-basis: 50%;
