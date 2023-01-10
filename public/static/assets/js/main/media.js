@@ -969,3 +969,16 @@ Hue.check_media_info = function () {
   document.documentElement.style.setProperty("--media_info_display", display)
   Hue.fix_frames()
 }
+
+// Reply to media
+Hue.reply_to_media = function (type) {
+  let item = Hue[`current_${type}`]()
+
+  if (item) {
+    let ans = Hue.get_message_by_id(item.id)
+
+    if (ans) {
+      Hue.start_reply(ans[0])
+    }
+  }
+}

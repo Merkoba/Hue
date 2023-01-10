@@ -69,6 +69,7 @@ Hue.commands = {
     description: "Kicks a user out of the room",
   },
   "tv": {
+    aliases: ["yt", "video"],
     action: (arg, ans) => {
       if (arg) {
         Hue.change_tv_source(arg)
@@ -97,6 +98,7 @@ Hue.commands = {
     description: "Show the upload tv window",
   },
   "image": {
+    aliases: ["img"],
     action: (arg, ans) => {
       if (arg) {
         Hue.change_image_source(arg)
@@ -692,8 +694,17 @@ Hue.setup_commands = function () {
       }
     }
 
-    Hue.commands_list.push(key)
-    Hue.commands_list_with_prefix.push(Hue.config.commands_prefix + key)
+    let cmds = [key]
+    let aliases = Hue.commands[key].aliases
+
+    if (aliases) {
+      cmds.push(...aliases)
+    }
+
+    for (let c of cmds) {
+      Hue.commands_list.push(c)
+      Hue.commands_list_with_prefix.push(Hue.config.commands_prefix + c)
+    }
   }
 
   Hue.commands_list.sort()
@@ -765,8 +776,32 @@ Hue.execute_command = function (message, ans) {
     }
   }
 
-  Hue.commands[command].action(arg, ans)
+  let c = Hue.search_command(command)
+
+  if (c) {
+    c.action(arg, ans)
+  }
+
   return ans
+}
+
+// Search for a command
+Hue.search_command = function (cmd) {
+  for (let key in Hue.commands) {
+    if (key === cmd) {
+      return Hue.commands[key]
+    }
+
+    let aliases = Hue.commands[key].aliases
+    
+    if (aliases) {
+      for (let a of aliases) {
+        if (a === cmd) {
+          return Hue.commands[key]
+        }
+      }
+    }
+  }
 }
 
 // Gives feedback on what type of command a command is

@@ -162,6 +162,20 @@ Hue.show_input_menu = function () {
     }
   })
 
+  items.push({
+    text: "@ Img",
+    action: function () {
+      Hue.reply_to_media("image")
+    }
+  })
+
+  items.push({
+    text: "@ TV",
+    action: function () {
+      Hue.reply_to_media("tv")
+    }
+  })
+
   let el = Hue.el("#footer_input_menu")
   NeedContext.show_on_element(el, items)
 }
