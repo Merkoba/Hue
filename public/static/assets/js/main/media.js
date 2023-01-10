@@ -972,11 +972,7 @@ Hue.check_media_info = function () {
 
 // Reply to media
 Hue.reply_to_media = function (type) {
-  let item = Hue[`loaded_${type}`]
-
-  if (!item || !item.id) {
-    item = Hue[`current_${type}`]()
-  }
+  let item = Hue.get_current_media(type)
 
   if (item && item.id) {
     let ans = Hue.get_message_by_id(item.id)
@@ -985,4 +981,19 @@ Hue.reply_to_media = function (type) {
       Hue.start_reply(ans[0])
     }
   }
+}
+
+// Get current media
+Hue.get_current_media = function (type) {
+  let item
+
+  if (Hue.room_state[`${type}_enabled`]) {
+    item = Hue[`loaded_${type}`]
+  }
+
+  if (!item || !item.id) {
+    item = Hue[`current_${type}`]()
+  }
+
+  return item
 }
