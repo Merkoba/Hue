@@ -29,7 +29,23 @@ Hue.start_mouse_events = function () {
         } else if (e.target.classList.contains("chat_quote_text")) {
           let quote = e.target.closest(".chat_quote")
           let id = Hue.dataset(quote, "quote_id")
-          Hue.chat_search_by_id(id)
+          let ans = Hue.get_message_by_id(id)
+
+          if (ans) {
+            let og = ans[0]
+            let type = Hue.dataset(og, "type")
+            let id = Hue.dataset(og, "id")
+
+            if (type === "image_change") {
+              Hue.show_modal_image(id)
+            } else if (type === "tv_change") {
+              Hue.open_url_menu_by_media_id("tv", id)
+            } else {
+              Hue.chat_search_by_id(id)
+            }
+          } else {
+            Hue.chat_search_by_id(id)
+          }
         } else if (e.target.classList.contains("chat_quote_username") ||
           e.target.classList.contains("chat_quote_profilepic")) {
           let quote = e.target.closest(".chat_quote")
