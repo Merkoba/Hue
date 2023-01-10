@@ -972,9 +972,13 @@ Hue.check_media_info = function () {
 
 // Reply to media
 Hue.reply_to_media = function (type) {
-  let item = Hue[`current_${type}`]()
+  let item = Hue[`loaded_${type}`]
 
-  if (item) {
+  if (!item || !item.id) {
+    item = Hue[`current_${type}`]()
+  }
+
+  if (item && item.id) {
     let ans = Hue.get_message_by_id(item.id)
 
     if (ans) {
