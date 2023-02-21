@@ -13,7 +13,7 @@ Hue.canvas_redraw = function (args = {}) {
     args.context.canvas.height
   )
 
-  args.context.lineJoin = "round"
+  args.context.lineCap = "round"
 
   let draw_bg = true
 
@@ -41,7 +41,6 @@ Hue.canvas_redraw = function (args = {}) {
 
     args.context.lineTo(args.click_x[i], args.click_y[i])
 
-    args.context.closePath()
     args.context.strokeStyle = args.colors[i]
 
     if (args.sizes) {
