@@ -210,11 +210,8 @@ Hue.prepare_active_media = function () {
 Hue.media_visibility_and_locks = function () {
   Hue.change_media_visibility("image")
   Hue.change_media_visibility("tv")
-
-  if (Hue.connections === 1) {
-    Hue.change_media_lock_text("image")
-    Hue.change_media_lock_text("tv")
-  }
+  Hue.change_media_lock_text("image")
+  Hue.change_media_lock_text("tv")
 }
 
 // More media picker configurations
