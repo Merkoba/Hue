@@ -1,6 +1,14 @@
 // Setup rooms
 Hue.setup_rooms = function () {
-  Hue.setup_open_room()
+  Hue.ev(Hue.el("#open_room_here"), "click", function () {
+    Hue.goto_url(Hue.open_room_id, "same")
+    Hue.msg_open_room.close()
+  })
+
+  Hue.ev(Hue.el("#open_room_new_tab"), "click", function () {
+    Hue.goto_url(Hue.open_room_id, "tab")
+    Hue.msg_open_room.close()
+  })
 }
 
 // Superuser command to create a room
@@ -26,19 +34,6 @@ Hue.show_open_room = function (id, name) {
   Hue.open_room_id = id
   Hue.el("#open_room_name").textContent = `Go to ${name || id}`
   Hue.msg_open_room.show()
-}
-
-// Setup open room
-Hue.setup_open_room = function () {
-  Hue.ev(Hue.el("#open_room_here"), "click", function () {
-    Hue.goto_url(Hue.open_room_id, "same")
-    Hue.msg_open_room.close()
-  })
-
-  Hue.ev(Hue.el("#open_room_new_tab"), "click", function () {
-    Hue.goto_url(Hue.open_room_id, "tab")
-    Hue.msg_open_room.close()
-  })
 }
 
 // Show feedback to the user after creating a room

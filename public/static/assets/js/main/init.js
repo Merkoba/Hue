@@ -183,6 +183,10 @@ Hue.init = function () {
   Hue.setup_admin_activity()
   Hue.setup_item_picker()
   Hue.setup_edit()
+  Hue.setup_user_profile()
+  Hue.setup_rooms()
+  Hue.setup_theme()
+  Hue.setup_commands()
 
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
@@ -218,15 +222,14 @@ Hue.on_join = function (data) {
   Hue.userlist = data.userlist
   Hue.alert_mode = Hue.last_favicon_mode
 
-  Hue.setup_commands()
   Hue.set_username(data.username)
   Hue.set_bio(data.bio)
   Hue.generate_favicon(Hue.alert_mode)
   Hue.update_userlist()
-  Hue.setup_theme(data)
+  Hue.prepare_theme(data)
   Hue.apply_background()
   Hue.apply_theme()
-  Hue.setup_active_media()
+  Hue.prepare_active_media()
   Hue.set_role(data.role, false)
   Hue.set_topic_info(data)
   Hue.update_title()
@@ -241,8 +244,7 @@ Hue.on_join = function (data) {
   Hue.fix_media_info()
   Hue.check_media_info()
   Hue.update_activity_bar()
-  Hue.setup_user_profile()
-  Hue.setup_rooms()
+  Hue.prepare_user_profile()
 
   Hue.at_startup()
 }

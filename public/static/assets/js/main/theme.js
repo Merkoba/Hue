@@ -1,9 +1,12 @@
-// Setups theme and background variables from initial data
-Hue.setup_theme = function (data) {
+// Prepare theme
+Hue.prepare_theme = function (data) {
   Hue.set_background(data, false)
   Hue.background_color = data.background_color
   Hue.text_color = data.text_color
+}
 
+// Setups theme and background variables from initial data
+Hue.setup_theme = function () {
   Hue.ev(Hue.el("#background"), "load", function () {
     if (Hue.background_preview) {
       Hue.hide_windows_temporarily()

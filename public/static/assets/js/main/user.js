@@ -137,6 +137,17 @@ Hue.set_bio = function (bio) {
   Hue.el("#user_profile_bio_textarea").value = Hue.bio
 }
 
+// Prepare user profile
+Hue.prepare_user_profile = function () {
+  Hue.el("#user_profile_reg_date").textContent = Hue.utilz.nice_date(Hue.user_reg_date)
+  Hue.el("#user_profile_id").textContent = `ID: ${Hue.user_id}`
+
+  if (Hue.get_self_user().profilepic_version === 0) {
+    Hue.show_user_profile()
+    Hue.show_info("You can select a profile image here")
+  }
+}
+
 // Setups the user profile
 Hue.setup_user_profile = function () {
   Hue.ev(Hue.el("#user_profile_profilepic"), "error", function () {
@@ -159,9 +170,6 @@ Hue.setup_user_profile = function () {
     }
   })
 
-  Hue.el("#user_profile_reg_date").textContent = Hue.utilz.nice_date(Hue.user_reg_date)
-  Hue.el("#user_profile_id").textContent = `ID: ${Hue.user_id}`
-
   Hue.ev(Hue.el("#user_profile_profilepic"), "click", function () {
     Hue.msg_profilepic_select.show()
   })
@@ -181,11 +189,6 @@ Hue.setup_user_profile = function () {
   Hue.ev(Hue.el("#user_profile_change_password"), "click", function () {
     Hue.show_change_password()
   })
-
-  if (Hue.get_self_user().profilepic_version === 0) {
-    Hue.show_user_profile()
-    Hue.show_info("You can select a profile image here")
-  }
 
   Hue.setup_profilepic_select()
   Hue.setup_audioclip_select()

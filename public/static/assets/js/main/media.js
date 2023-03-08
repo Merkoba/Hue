@@ -201,8 +201,8 @@ Hue.hide_media = function () {
   Hue.el("#media").style.display = "none"
 }
 
-// Setups media modes from initial data
-Hue.setup_active_media = function () {
+// Prepare media modes from initial data
+Hue.prepare_active_media = function () {
   Hue.media_visibility_and_locks()
 }
 
