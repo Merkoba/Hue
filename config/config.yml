@@ -237,6 +237,9 @@ image_blob_quality: 0.9
 # The max amount of likes a message can register
 max_likes: 100
 
+# The max amount of input history to remember
+max_input_history: 25
+
 # Radio stations available
 radios: 
   - name: Radio Name

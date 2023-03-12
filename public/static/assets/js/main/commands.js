@@ -656,6 +656,12 @@ Hue.commands = {
     },
     description: "Lock the chat in place",
   },
+  "repeat": {
+    action: (arg, ans) => {
+      Hue.show_input_history(arg)
+    },
+    description: "Show the input history",
+  },  
 }
 
 // Commands reserved to superusers
@@ -690,7 +696,6 @@ Hue.prepare_commands = function () {
   for (let key in Hue.commands) {
     if (Hue.superuser_commands.includes(key)) {
       if (!Hue.superuser) {
-        console.log(key)
         continue
       }
     }

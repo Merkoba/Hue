@@ -79,13 +79,6 @@ Hue.clear_input = function () {
   }
 }
 
-// Restore input from last value
-Hue.repeat_input = function () {
-  if (Hue.room_state.last_input) {
-    Hue.change_input(Hue.room_state.last_input)
-  }
-}
-
 // Changes the input
 Hue.change_input = function (s, to_end = true, focus = true) {
   Hue.disable_footer_expand()
@@ -195,6 +188,8 @@ Hue.process_input = function (args = {}) {
     })
   }
 
+  Hue.push_to_input_history(args.message)
+
   if (args.clr_input) {
     Hue.clear_input()
   }
@@ -210,4 +205,40 @@ Hue.check_footer_expand = function () {
 // Add a new line at the end of the input
 Hue.add_input_new_line = function () {
   Hue.change_input(Hue.get_input() + "\n")
+}
+
+// Push to input history
+Hue.push_to_input_history = function (message) {
+  Hue.input_history = Hue.input_history
+    .filter(x => x !== message)
+    .slice(0, Hue.config.max_input_history)
+
+  Hue.input_history.unshift(message)
+}
+
+// Show input history
+Hue.show_input_history = function (filter = "") {
+  let container = Hue.el("#input_history_container")
+  container.innerHTML = ""
+
+  for (let item of Hue.input_history) {
+    let el = Hue.create("div", "nice_row modal_item pointer")
+    el.textContent = item
+
+    Hue.ev(el, "click", function () {
+      Hue.change_input(item)
+      Hue.msg_input_history.close()
+    })
+
+    container.prepend(el)
+  }
+
+  console.log(filter)
+
+  Hue.msg_input_history.show(function () {
+    if (filter.trim()) {
+      Hue.el("#input_history_filter").value = filter
+      Hue.do_modal_filter()
+    }
+  })
 }

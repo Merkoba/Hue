@@ -150,7 +150,7 @@ Hue.show_input_menu = function () {
     items.push({
       text: "Repeat",
       action: function () {
-        Hue.repeat_input()
+        Hue.show_input_history()
       }
     })
   }

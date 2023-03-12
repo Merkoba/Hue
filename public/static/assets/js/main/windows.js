@@ -450,6 +450,13 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_input_history = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: "input_history",
+      window_width: "30rem",
+    })
+  )    
+
   // Set the templates
 
   Hue.msg_profile.set(
@@ -570,6 +577,16 @@ Hue.start_msg = function () {
       durations: Hue.config.screen_capture_durations
     })
   )
+
+  Hue.msg_input_history.set(
+    Hue.template_input_history({
+      window_controls: Hue.template_window_controls({
+        filter_mode: "auto",
+        filter_id: "input_history_filter",
+        filter_placeholder: "Filter"
+      })
+    })
+  )  
 
   Hue.msg_main_menu.set(Hue.template_main_menu())
   Hue.msg_room_config.set(Hue.template_room_config())
@@ -859,6 +876,7 @@ Hue.start_msg = function () {
   Hue.msg_command_book.set_title("Command Book")
   Hue.msg_user_profile.set_title("User Profile")
   Hue.msg_change_role.set_title("Change Role")
+  Hue.msg_input_history.set_title("Input History")
 }
 
 // This is called after a modal is shown

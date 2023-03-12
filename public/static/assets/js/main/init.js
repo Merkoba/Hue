@@ -103,6 +103,7 @@ Hue.hide_radio_delay = 1000
 Hue.reply_active = false
 Hue.edit_active = false
 Hue.highlight_footer_delay = 500
+Hue.input_history = []
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

@@ -273,15 +273,8 @@ Hue.activate_key_detection = function () {
       if (Hue.footer_expanded) {
         return
       }
-
-      if (e.shiftKey) {
-        if (!Hue.input_has_value(true)) {
-          Hue.repeat_input()
-        }
-      } else {
-        Hue.select_message("up")
-      }
-
+      
+      Hue.select_message("up")
       e.preventDefault()
       return
     } else if (e.key === "ArrowDown") {
