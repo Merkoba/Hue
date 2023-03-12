@@ -680,16 +680,17 @@ Hue.superuser_commands = [
   "disconnectuser"
 ]
 
-// Setups commands based on the commands object
+// Prepares commands based on the commands object
 // Makes sorted variations
 // Checks if anagrams collide
-Hue.setup_commands = function () {
+Hue.prepare_commands = function () {
   Hue.commands_list = []
   Hue.commands_list_with_prefix = []
 
   for (let key in Hue.commands) {
     if (Hue.superuser_commands.includes(key)) {
       if (!Hue.superuser) {
+        console.log(key)
         continue
       }
     }

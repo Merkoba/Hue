@@ -186,7 +186,6 @@ Hue.init = function () {
   Hue.setup_user_profile()
   Hue.setup_rooms()
   Hue.setup_theme()
-  Hue.setup_commands()
 
   if (Hue.debug_socket) {
     Hue.start_socket_stats()
@@ -226,6 +225,7 @@ Hue.on_join = function (data) {
   Hue.set_bio(data.bio)
   Hue.generate_favicon(Hue.alert_mode)
   Hue.update_userlist()
+  Hue.prepare_commands()
   Hue.prepare_theme(data)
   Hue.apply_background()
   Hue.apply_theme()
