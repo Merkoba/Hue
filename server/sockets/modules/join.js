@@ -159,6 +159,8 @@ module.exports = function (Hue) {
       return
     }
 
+    Hue.handler.log_user_data(socket)
+
     socket.hue_profilepic_version = userinfo.profilepic_version
     socket.hue_audioclip_version = userinfo.audioclip_version
 

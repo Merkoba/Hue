@@ -306,4 +306,11 @@ module.exports = function (Hue) {
       }
     }
   }
+
+  // Store user data incase abuse/attacks happen
+  Hue.handler.log_user_data = function (socket) {
+    let date = new Date().toISOString()
+    let info = `date: ${date} | username: ${socket.hue_username} | user_id: ${socket.hue_user_id} | ip: ${socket.hue_ip_address}`
+    Hue.logger.info(info)
+  }
 }
