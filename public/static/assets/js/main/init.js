@@ -15,6 +15,7 @@ Hue.load_scripts = true
 Hue.config = {}
 Hue.ls_settings = "settings_v1"
 Hue.ls_room_state = "room_state_v2"
+Hue.ls_input_history = "input_history_v2"
 Hue.roles = ["admin", "op", "voice"]
 Hue.topic = ""
 Hue.colorlib = ColorLib()
@@ -103,7 +104,6 @@ Hue.hide_radio_delay = 1000
 Hue.reply_active = false
 Hue.edit_active = false
 Hue.highlight_footer_delay = 500
-Hue.input_history = []
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

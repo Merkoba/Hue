@@ -32,6 +32,22 @@ Hue.setup_input = function () {
   Hue.ev(Hue.el("#footer_input_menu"), "click", function (e) {
     Hue.show_input_menu(e)
   })
+
+  Hue.get_input_history()
+}
+
+// Get input history from local storage
+Hue.get_input_history = function () {
+  Hue.input_history = Hue.get_local_storage(Hue.ls_input_history)
+
+  if (Hue.input_history === null) {
+    Hue.input_history = []
+  }
+}
+
+// Save input history
+Hue.save_input_history = function (force = true) {
+  Hue.save_local_storage(Hue.ls_input_history, Hue.input_history, force)
 }
 
 // Updates the input's placeholder
@@ -214,6 +230,7 @@ Hue.push_to_input_history = function (message) {
     .slice(0, Hue.config.max_input_history)
 
   Hue.input_history.unshift(message)
+  Hue.save_input_history()
 }
 
 // Show input history
@@ -230,10 +247,8 @@ Hue.show_input_history = function (filter = "") {
       Hue.msg_input_history.close()
     })
 
-    container.prepend(el)
+    container.append(el)
   }
-
-  console.log(filter)
 
   Hue.msg_input_history.show(function () {
     if (filter.trim()) {
