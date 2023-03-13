@@ -36,20 +36,6 @@ Hue.setup_input = function () {
   Hue.get_input_history()
 }
 
-// Get input history from local storage
-Hue.get_input_history = function () {
-  Hue.input_history = Hue.get_local_storage(Hue.ls_input_history)
-
-  if (Hue.input_history === null) {
-    Hue.input_history = []
-  }
-}
-
-// Save input history
-Hue.save_input_history = function (force = true) {
-  Hue.save_local_storage(Hue.ls_input_history, Hue.input_history, force)
-}
-
 // Updates the input's placeholder
 Hue.update_input_placeholder = function () {
   let s = `Hi ${Hue.username}, welcome to ${Hue.room_name}`
@@ -223,13 +209,27 @@ Hue.add_input_new_line = function () {
   Hue.change_input(Hue.get_input() + "\n")
 }
 
+// Get input history from local storage
+Hue.get_input_history = function () {
+  Hue.input_history = Hue.get_local_storage(Hue.ls_input_history)
+
+  if (Hue.input_history === null) {
+    Hue.input_history = []
+  }
+}
+
+// Save input history
+Hue.save_input_history = function (force = true) {
+  Hue.save_local_storage(Hue.ls_input_history, Hue.input_history, force)
+}
+
 // Push to input history
 Hue.push_to_input_history = function (message) {
   Hue.input_history = Hue.input_history
     .filter(x => x !== message)
     .slice(0, Hue.config.max_input_history)
 
-  Hue.input_history.unshift(message)
+  Hue.input_history.unshift({message: message, date: Date.now()})
   Hue.save_input_history()
 }
 
@@ -240,10 +240,11 @@ Hue.show_input_history = function (filter = "") {
 
   for (let item of Hue.input_history) {
     let el = Hue.create("div", "nice_row modal_item pointer")
-    el.textContent = item
+    el.textContent = item.message
+    el.title = Hue.utilz.nice_date(item.date)
 
     Hue.ev(el, "click", function () {
-      Hue.change_input(item)
+      Hue.change_input(item.message)
       Hue.msg_input_history.close()
     })
 
