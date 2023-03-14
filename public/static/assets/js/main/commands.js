@@ -69,7 +69,7 @@ Hue.commands = {
     description: "Kicks a user out of the room",
   },
   "tv": {
-    aliases: ["yt", "video"],
+    aliases: ["yt", "video", "v"],
     action: (arg, ans) => {
       if (arg) {
         Hue.change_tv_source(arg)
@@ -98,7 +98,7 @@ Hue.commands = {
     description: "Show the upload tv window",
   },
   "image": {
-    aliases: ["img"],
+    aliases: ["img", "i"],
     action: (arg, ans) => {
       if (arg) {
         Hue.change_image_source(arg)
