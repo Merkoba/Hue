@@ -763,7 +763,7 @@ Hue.execute_command = function (message, ans) {
     }
   }
 
-  if (cmd.length < 2) {
+  if (cmd.length === 0) {
     Hue.checkmsg("Invalid empty command")
     return ans
   }
