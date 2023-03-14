@@ -756,17 +756,17 @@ Hue.execute_command = function (message, ans) {
     cmd = cmd.substring(1)
   }
 
+  if (cmd.length === 0) {
+    Hue.checkmsg("Invalid empty command")
+    return ans
+  }
+
   if (Hue.superuser_commands.includes(cmd)) {
     if (!Hue.superuser) {
       Hue.not_allowed()
       return ans
     }
-  }
-
-  if (cmd.length === 0) {
-    Hue.checkmsg("Invalid empty command")
-    return ans
-  }
+  }  
 
   let cmd_sorted = cmd.split("").sort().join("")
   let command = Hue.commands_list_sorted_2[cmd_sorted]
