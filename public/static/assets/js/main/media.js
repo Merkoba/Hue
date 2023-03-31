@@ -440,10 +440,6 @@ Hue.change_media = function (args = {}) {
 
 // Sets a media info item with proper information and events
 Hue.apply_media_info = function (type) {
-  if (!Hue[`${type}_visible`]) {
-    return
-  }
-
   let item = Hue[`loaded_${type}`]
 
   if (!item.type) {
