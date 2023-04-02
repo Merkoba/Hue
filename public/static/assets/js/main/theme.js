@@ -193,9 +193,16 @@ Hue.set_background = function (data, apply = true) {
 Hue.apply_background = function (background = Hue.background, preview = false) {
   Hue.background_preview = preview
 
-  Hue.els(".background").forEach(it => {
-    it.src = background
-  })
+  if (Hue.settings.show_background) {
+    Hue.els(".background").forEach(it => {
+      it.src = background
+    })
+  }
+  else {
+    Hue.els(".background").forEach(it => {
+      it.src = ""
+    })    
+  }
 }
 
 // Background color setter

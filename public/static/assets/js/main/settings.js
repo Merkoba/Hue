@@ -2,6 +2,21 @@
 // Used to generate settings
 // And to declare what widget is used in the settings windows
 Hue.user_settings = {
+  show_background: {
+    widget_type: "checkbox",
+    description: "Whether to show the room's background image",
+    action: (save = true) => {
+      Hue.settings.show_background = Hue.el(
+        "#settings_show_background"
+      ).checked
+
+      if (save) {
+        Hue.save_settings()
+      }
+
+      Hue.apply_background()
+    },
+  },  
   highlight_current_username: {
     widget_type: "checkbox",
     description: "Whether messages containing the user's username must be highlighted",
