@@ -59,6 +59,12 @@ html {
 	filter: grayscale(100%);
 }
 
+@media (prefers-reduced-motion) {
+	.background {
+		display: none;
+	}
+}
+
 #header {
 	display: flex;
 	flex-direction: row;
