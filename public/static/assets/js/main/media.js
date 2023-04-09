@@ -515,7 +515,7 @@ Hue.set_media_locked = function (args) {
   Hue.change_media_lock_text(args.type)
 
   if (!args.what && args.change) {
-    Hue.change_media({type: args.type})
+    Hue.change_media({type: args.type, play: false})
   }
 }
 
