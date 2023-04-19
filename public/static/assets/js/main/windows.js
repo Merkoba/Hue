@@ -997,7 +997,6 @@ Hue.show_action_popup = function (args = {}) {
   }
 
   args = Object.assign(def_args, args)
-
   let on_click = function () {}
 
   if (args.on_click) {
@@ -1027,7 +1026,6 @@ Hue.show_action_popup = function (args = {}) {
   }
 
   let popup = Hue.create_popup(obj)
-
   let classes = ""
 
   if (args.on_click) {

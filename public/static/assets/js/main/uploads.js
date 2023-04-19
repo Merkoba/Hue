@@ -168,9 +168,7 @@ Hue.upload_file = function (args = {}) {
 
   args.file.hue_data.size = args.file.size
   args.file.hue_data.type = args.file.type
-
   let date = Date.now()
-
   args.file.hue_data.date = date
 
   if (args.file.hue_data.name !== undefined) {
@@ -182,7 +180,6 @@ Hue.upload_file = function (args = {}) {
   }
 
   args.file.hue_data.reader = Hue.create_file_reader(args.file)
-
   let slice = args.file.slice(0, Hue.config.upload_slice_size)
 
   Hue.files[date] = args.file
@@ -195,12 +192,19 @@ Hue.upload_file = function (args = {}) {
   }
 
   args.file.hue_data.percentage = 0
+  let icon = ""
+
+  if (args.action === "image_upload") {
+    icon = "image"
+  } else if (args.action === "tv_upload") {
+    icon = "tv"
+  }
 
   let obj = {
     message: `Uploading ${Hue.get_file_action_name(
       args.file.hue_data.action
     )}: 0%`,
-    icon: "image",
+    icon: icon,
     id: `uploading_${date}`,
     title: `Size: ${Hue.utilz.size_string(args.file.hue_data.size / 1024)}`,
     on_x_button_click: function () {
