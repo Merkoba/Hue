@@ -592,6 +592,12 @@ Hue.process_tv_upload_comment = function () {
 Hue.setup_tv_upload_comment = function () {
   let video = Hue.el("#tv_upload_comment_video_preview")
 
+  Hue.ev(video, "loadedmetadata", function () {
+    this.currentTime = 0
+    this.play()
+    this.pause()
+  })
+
   Hue.ev(video, "error", function () {
     this.style.display = "none"
     Hue.el("#tv_upload_comment_video_feedback").style.display = "inline"

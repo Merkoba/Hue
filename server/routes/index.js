@@ -56,7 +56,8 @@ module.exports = function (db_manager, config, sconfig, utilz) {
         filename: template_path,
       })({
         vars: {
-          commands_prefix: config.commands_prefix
+          commands_prefix: config.commands_prefix,
+          video_poster: config.video_poster,
         }
       })
     }
@@ -84,8 +85,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     const body_html_path = path.join(__dirname, "../views/main/body.ejs")
 
     const compiled_body_html_template = ejs.compile(
-      fs.readFileSync(body_html_path, "utf8"),
-      {
+      fs.readFileSync(body_html_path, "utf8"), {
         filename: body_html_path,
       }
     )
@@ -193,9 +193,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   // Login GET
   router.get("/login", check_url, function (req, res, next) {
     let c = {}
-
     c.vars = {}
-
     c.vars.fromurl = req.query.fromurl || ""
     c.vars.form_username = decodeURIComponent(req.query.form_username)
     c.vars.message = decodeURIComponent(req.query.message)
