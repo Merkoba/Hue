@@ -468,10 +468,7 @@ Hue.show_image_upload_comment = function (file, type) {
 
   Hue.el("#image_upload_name").textContent = name
   Hue.el("#Msg-titlebar-image_upload_comment").title = file.name
-
-  let blob = new Blob([file], {type: file.type})
-  let url = URL.createObjectURL(blob)
-  Hue.el("#image_upload_comment_image_preview").src = url
+  Hue.el("#image_upload_comment_image_preview").src = URL.createObjectURL(file)
 
   Hue.msg_image_upload_comment.show(function () {
     Hue.el("#image_upload_comment_input").focus()
