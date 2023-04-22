@@ -563,13 +563,9 @@ Hue.show_tv_upload_comment = function (file, type) {
   Hue.el("#tv_upload_name").textContent = name
   Hue.el("#Msg-titlebar-tv_upload_comment").title = file.name
 
-  let reader = new FileReader()
-
-  reader.onload = function (e) {
-    Hue.el("#tv_upload_comment_video_preview").src = e.target.result
-  }
-
-  reader.readAsDataURL(file)
+  let blob = new Blob([file], {type: file.type})
+  let url = URL.createObjectURL(blob)
+  Hue.el("#tv_upload_comment_video_preview").src = url
 
   Hue.msg_tv_upload_comment.show(function () {
     Hue.el("#tv_upload_comment_input").focus()

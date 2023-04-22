@@ -469,13 +469,9 @@ Hue.show_image_upload_comment = function (file, type) {
   Hue.el("#image_upload_name").textContent = name
   Hue.el("#Msg-titlebar-image_upload_comment").title = file.name
 
-  let reader = new FileReader()
-
-  reader.onload = function (e) {
-    Hue.el("#image_upload_comment_image_preview").src = e.target.result
-  }
-
-  reader.readAsDataURL(file)
+  let blob = new Blob([file], {type: file.type})
+  let url = URL.createObjectURL(blob)
+  Hue.el("#image_upload_comment_image_preview").src = url
 
   Hue.msg_image_upload_comment.show(function () {
     Hue.el("#image_upload_comment_input").focus()
