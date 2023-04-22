@@ -52,14 +52,10 @@ module.exports = function (db_manager, config, sconfig, utilz) {
         __dirname,
         `../views/main/templates/${file}`
       )
+
       templates_html += ejs.compile(fs.readFileSync(template_path, "utf8"), {
         filename: template_path,
-      })({
-        vars: {
-          commands_prefix: config.commands_prefix,
-          video_poster: config.video_poster,
-        }
-      })
+      })()
     }
 
     // Compile svg files
