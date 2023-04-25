@@ -1,4 +1,4 @@
-# >The name of the main room. This is the room that will be joined 
+# >The name of the main room. This is the room that will be joined
 # when going to the root url. This room is created automatically when first joined
 main_room_id: "main"
 
@@ -17,23 +17,17 @@ video_poster: "/static/assets/img/video_poster.jpg"
 # Separator used to separate the room name and the topic in the browser tab's title
 title_separator: " - "
 
-# The default tab title of a room. 
+# The default tab title of a room.
 # This appears before the room information has been gathered to set the first title
 default_title: "Hue | Chat room with images and tv"
 
 # The shown topic when the room is created
 default_topic: "No topic"
 
-# The amount of most recent images to have stored in a room
-max_stored_image: 50
-
-# The amount of most recent videos to have stored in a room
-max_stored_tv: 50
-
 # How many items are stored in images_changed and tv_changed
 media_changed_crop_limit: 500
 
-# How many notifications after the notifications items get cropped 
+# How many notifications after the notifications items get cropped
 # in the notifications window
 notifications_crop_limit: 500
 
@@ -56,8 +50,8 @@ max_media_info_length: 60
 # If something bigger is inputed it will get cropped to meet this limit
 max_input_length: 2500
 
-# The maximum length of a room topic. If a longer topic is tried to be set 
-# with /topic it will get cropped to meet this limit. /topicadd and 
+# The maximum length of a room topic. If a longer topic is tried to be set
+# with /topic it will get cropped to meet this limit. /topicadd and
 # /topicaddstart will throw an error if there is no more room to add to the topic
 max_topic_length: 2000
 
@@ -65,10 +59,10 @@ max_topic_length: 2000
 max_username_length: 20
 
 # This is a safety used when validating usernames on login
-# In case max or min username length configurations where changed 
-# when there were already users registered, this arbitrary big number 
-# is used to check something huge is not being inputed instead of checking 
-# with the username length configuration options, to avoid old username 
+# In case max or min username length configurations where changed
+# when there were already users registered, this arbitrary big number
+# is used to check something huge is not being inputed instead of checking
+# with the username length configuration options, to avoid old username
 # from not being able to login. This likely shouldn't be changed
 max_max_username_length: 300
 
@@ -107,7 +101,7 @@ max_media_source_length: 800
 # Maximum length of comments on media change
 max_media_comment_length: 200
 
-# Maximum length for the tab's title. Title consists of "room_name - topic" 
+# Maximum length for the tab's title. Title consists of "room_name - topic"
 # and is set automatically. If title is bigger it gets cropped
 max_title_length: 280
 
@@ -135,7 +129,7 @@ imgur_enabled: true
 iframes_enabled: true
 
 # Url lengths beyond this are ignored by the system
-# This is to avoid triggering actions on urls 
+# This is to avoid triggering actions on urls
 # that are likely wrong or meant as an attack
 max_url_length: 1000
 
@@ -171,7 +165,7 @@ room_state_default_last_radio_name: ""
 room_state_default_radio_auto: false
 room_state_default_last_input: ""
 
-# Maximum difference in time between a message and and another 
+# Maximum difference in time between a message and and another
 # from the same user to be displayed within the same post
 max_same_post_diff: 300000
 
@@ -242,10 +236,10 @@ max_likes: 100
 max_input_history: 100
 
 # Radio stations available
-radios: 
+radios:
   - name: Radio Name
     url: https://radiourl.net
-    
+
   - name: Other Radio
     url: https://otheradio.com
 

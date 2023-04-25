@@ -125,7 +125,7 @@ module.exports = function (Hue) {
 
         files.sort().reverse()
 
-        for (let file of files.slice(Hue.config[`max_stored_${type}`])) {
+        for (let file of files.slice(Hue.sconfig[`max_stored_${type}`])) {
           let path = Hue.vars.path.join(container, file)
 
           Hue.vars.fs.unlink(path, function (err) {
