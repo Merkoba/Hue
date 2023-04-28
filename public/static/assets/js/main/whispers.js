@@ -248,7 +248,6 @@ Hue.show_whisper = (data, mode) => {
   }
 
   Hue.show_whisper_data = data
-
   let message_html = Hue.utilz.make_html_safe(data.message)
   message_html = Hue.parse_text(message_html)
 
@@ -383,11 +382,9 @@ Hue.push_whisper = (message, on_click, read, data) => {
   }
 
   item.title = title
-
   Hue.dataset(item, `otitle`, title)
   Hue.dataset(item, `date`, date)
   Hue.dataset(item, `read`, read)
-
   let content = Hue.el(`.whisper_item_content`, item)
 
   Hue.ev(content, `click`, () => {
@@ -412,7 +409,6 @@ Hue.push_whisper = (message, on_click, read, data) => {
   }
 
   Hue.update_whispers_unread_count()
-
   let empty = Hue.el(`#whispers_container .empty_window_message`)
 
   if (empty) {
@@ -475,7 +471,6 @@ Hue.make_whisper_user = (user, mode, onclick) => {
   }
 
   Hue.ev(user_el, `click`, onclick)
-
   return user_el
 }
 
