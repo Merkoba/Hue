@@ -1,73 +1,76 @@
-const Utilz = function () {
+const Utilz = () => {
 	const utilz = {}
 
 	// Clean string util
-	utilz.single_space = function (s) {
-		return s.replace(/\s+/g, " ").trim()
+	utilz.single_space = (s) => {
+		return s.replace(/\s+/g, ` `).trim()
 	}
 
 	// Clean string util
-	utilz.clean_username = function (s) {
-		return s.replace(/[^a-z0-9]+/gi, "").replace(/ +/g, " ").trim()
+	utilz.clean_username = (s) => {
+		return s.replace(/[^a-z0-9]+/gi, ``).replace(/ +/g, ` `).trim()
 	}
 
 	// Clean string util
-	utilz.no_space = function (s) {
-		return s.replace(/\s+/g, "").trim()
+	utilz.no_space = (s) => {
+		return s.replace(/\s+/g, ``).trim()
 	}
 
 	// Replace multiple empty lines with a single one
-	utilz.remove_multiple_empty_lines = function (s, level = 1) {
+	utilz.remove_multiple_empty_lines = (s, level = 1) => {
 		let ns = []
 		let charge = 0
-		let split = s.split("\n")
+		let split = s.split(`\n`)
 
 		for (let line of split) {
-			if (line.trim() === "") {
+			if (line.trim() === ``) {
 				if (charge < level) {
 					ns.push(line)
 				}
 
 				charge += 1
-			} else {
+			}
+			else {
 				charge = 0
 				ns.push(line)
 			}
 		}
 
-		let pf = ns.join("\n")
+		let pf = ns.join(`\n`)
 
 		return pf
 	}
 
 	// Remove empty lines from the start
-	utilz.remove_pre_empty_lines = function (s) {
-		let split = s.split("\n")
+	utilz.remove_pre_empty_lines = (s) => {
+		let split = s.split(`\n`)
 		let counter = 0
 
 		for (let line of split) {
 			if (line.trim()) {
-				return split.slice(counter).join("\n")
-			} else {
+				return split.slice(counter).join(`\n`)
+			}
+			else {
 				counter += 1
 			}
 		}
 	}
 
 	// Clean string util
-	utilz.single_linebreak = function (s) {
-		return s.replace(/[\n\r]+/g, "\n").replace(/ +/g, " ").trim()
+	utilz.single_linebreak = (s) => {
+		return s.replace(/[\n\r]+/g, `\n`).replace(/ +/g, ` `).trim()
 	}
 
 	// Get a random int from min to max. Optional exclude a number
-	utilz.get_random_int = function (min, max, exclude = undefined) {
+	utilz.get_random_int = (min, max, exclude = undefined) => {
 		let num = Math.floor(Math.random() * (max - min + 1) + min)
 
 		if (exclude !== undefined) {
 			if (num === exclude) {
 				if (num + 1 <= max) {
 					num = num + 1
-				} else if (num - 1 >= min) {
+				}
+				else if (num - 1 >= min) {
 					num = num - 1
 				}
 			}
@@ -77,7 +80,7 @@ const Utilz = function () {
 	}
 
 	// Shuffle an array
-	utilz.shuffle_array = function (array) {
+	utilz.shuffle_array = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
 			let j = Math.floor(Math.random() * (i + 1))
 			let temp = array[i]
@@ -87,10 +90,10 @@ const Utilz = function () {
 	}
 
 	// Get a random string of n length
-	utilz.get_random_string = function (n) {
-		let text = ""
+	utilz.get_random_string = (n) => {
+		let text = ``
 
-		let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+		let possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`
 
 		for (let i = 0; i < n; i++) {
 			text += possible[utilz.get_random_int(0, possible.length - 1)]
@@ -100,8 +103,8 @@ const Utilz = function () {
 	}
 
 	// Ge a random sequence of numbers
-	utilz.random_sequence = function (n) {
-		let s = ""
+	utilz.random_sequence = (n) => {
+		let s = ``
 
 		for (let i = 0; i < n; i++) {
 			s += utilz.get_random_int(0, 9)
@@ -111,7 +114,7 @@ const Utilz = function () {
 	}
 
 	// Get id of youtube video from url
-	utilz.get_youtube_id = function (url) {
+	utilz.get_youtube_id = (url) => {
 		let v_id = false
 		let list_id = false
 
@@ -125,24 +128,25 @@ const Utilz = function () {
 		let index_match = url.match(/(?:\?|&)(index=[0-9]+)/)
 
 		if (list_match) {
-			list_id = list_match[1].replace("list=", "")
+			list_id = list_match[1].replace(`list=`, ``)
 		}
 
 		if (list_id && !v_id) {
 			let index = 0
 
 			if (index_match) {
-				index = parseInt(index_match[1].replace("index=", "")) - 1
+				index = parseInt(index_match[1].replace(`index=`, ``)) - 1
 			}
 
-			return ["list", [list_id, index]]
-		} else if (v_id) {
-			return ["video", v_id]
+			return [`list`, [list_id, index]]
+		}
+		else if (v_id) {
+			return [`video`, v_id]
 		}
 	}
 
 	// Get timestamp of a youtube video from url
-	utilz.get_youtube_time = function (url) {
+	utilz.get_youtube_time = (url) => {
 		let matches = url.match(/[\?|&]t=(\d+h)?(\d+m)?(\d+s)?(\d+)?/)
 
 		if (matches) {
@@ -163,13 +167,16 @@ const Utilz = function () {
 					continue
 				}
 
-				if (match.includes("h")) {
-					h = parseInt(match.replace("h", ""))
-				} else if (match.includes("m")) {
-					m = parseInt(match.replace("m", ""))
-				} else if (match.includes("s")) {
-					s = parseInt(match.replace("s", ""))
-				} else {
+				if (match.includes(`h`)) {
+					h = parseInt(match.replace(`h`, ``))
+				}
+				else if (match.includes(`m`)) {
+					m = parseInt(match.replace(`m`, ``))
+				}
+				else if (match.includes(`s`)) {
+					s = parseInt(match.replace(`s`, ``))
+				}
+				else {
 					t = parseInt(match)
 				}
 
@@ -194,40 +201,43 @@ const Utilz = function () {
 			}
 
 			return time
-		} else {
+		}
+		else {
 			return 0
 		}
 	}
 
 	// Get twitch id from url
-	utilz.get_twitch_id = function (url) {
+	utilz.get_twitch_id = (url) => {
 		let match = url.match(/.*twitch\.tv(?:\/videos)?\/(\w+)/)
 
 		if (match) {
-			if (match[0].includes("twitch.tv/videos/")) {
-				return ["video", match[1]]
-			} else if (match[0].includes("clips.twitch.tv")) {
+			if (match[0].includes(`twitch.tv/videos/`)) {
+				return [`video`, match[1]]
+			}
+			else if (match[0].includes(`clips.twitch.tv`)) {
 				return
-			} else {
-				return ["channel", match[1]]
+			}
+			else {
+				return [`channel`, match[1]]
 			}
 		}
 	}
 
 	// Round to specified decimal places
-	utilz.round = function (value, decimals) {
-		return Number(Math.round(value + "e" + decimals) + "e-" + decimals)
+	utilz.round = (value, decimals) => {
+		return Number(Math.round(value + `e` + decimals) + `e-` + decimals)
 	}
 
 	// Round to place or the place below
-	utilz.round2 = function (value, place) {
+	utilz.round2 = (value, place) => {
 		return Math.round(value / place) * place
 	}
 
 	// Get a string with nice seconds format
-	utilz.humanize_seconds = function (input, separator = ":") {
-		let pad = function (input) {
-			return input < 10 ? "0" + input : input
+	utilz.humanize_seconds = (input, separator = `:`) => {
+		let pad = (input) => {
+			return input < 10 ? `0` + input : input
 		}
 
 		let result = [
@@ -240,22 +250,23 @@ const Utilz = function () {
 	}
 
 	// Replace spaces with non-brekable spaces
-	utilz.nonbreak = function (s) {
-		return s.trim().split(" ").join("&nbsp;")
+	utilz.nonbreak = (s) => {
+		return s.trim().split(` `).join(`&nbsp;`)
 	}
 
 	// Extract extension from a string
-	utilz.get_extension = function (s) {
-		if (s.startsWith("http://") || s.startsWith("https://")) {
+	utilz.get_extension = (s) => {
+		if (s.startsWith(`http://`) || s.startsWith(`https://`)) {
 			let u = new URL(s)
 			let url = u.origin + u.pathname
-			let url_2 = url.split("//").slice(1).join("//")
+			let url_2 = url.split(`//`).slice(1).join(`//`)
 			let matches = url_2.match(/\/.*\.(\w+)(?=$|[#?])/)
-	
+
 			if (matches) {
 				return matches[1]
 			}
-		} else {
+		}
+		else {
 			let matches = s.match(/\.(\w+)(?=$|[#?])/)
 
 			if (matches) {
@@ -263,16 +274,17 @@ const Utilz = function () {
 			}
 		}
 
-		return ""
+		return ``
 	}
 
 	// Check if hex value is valid
-	utilz.validate_hex = function (hex, case_sensitive = true) {
+	utilz.validate_hex = (hex, case_sensitive = true) => {
 		let re
 
 		if (case_sensitive) {
 			re = /^#[0-9a-f]{6}$/
-		} else {
+		}
+		else {
 			re = /^#[0-9A-F]{6}$/i
 		}
 
@@ -280,7 +292,7 @@ const Utilz = function () {
 	}
 
 	// Get the code from an imgur url
-	utilz.get_imgur_image_code = function (src) {
+	utilz.get_imgur_image_code = (src) => {
 		let matches = src.match(/https?\:\/\/(?:i.)?imgur.com\/(\w{7,8})(?:\.\w+)?$/)
 
 		if (matches) {
@@ -289,27 +301,29 @@ const Utilz = function () {
 	}
 
 	// Capitalize words in a sentence
-	utilz.capitalize_words = function (s) {
+	utilz.capitalize_words = (s) => {
 		let ns = s.toLowerCase()
-			.split(" ")
+			.split(` `)
 			.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-			.join(" ")
+			.join(` `)
 
 		return ns
 	}
 
 	// Make a string of nicely separated items
-	utilz.nice_list = function (list) {
-		let s = ""
+	utilz.nice_list = (list) => {
+		let s = ``
 
 		for (let i = 0; i < list.length; i++) {
 			let item = list[i]
 
 			if (i === 0) {
 				s = item
-			} else if (i === list.length - 1) {
+			}
+			else if (i === list.length - 1) {
 				s = `${s} and ${item}`
-			} else {
+			}
+			else {
 				s = `${s}, ${item}`
 			}
 		}
@@ -318,13 +332,15 @@ const Utilz = function () {
 	}
 
 	// Check if string is a url
-	utilz.is_url = function (s) {
-		if (s.startsWith("http://") || s.startsWith("https://")) {
-			if (s.endsWith("]")) {
+	utilz.is_url = (s) => {
+		if (s.startsWith(`http://`) || s.startsWith(`https://`)) {
+			if (s.endsWith(`]`)) {
 				return false
-			} else if (s.endsWith("\"")) {
+			}
+			else if (s.endsWith(`"`)) {
 				return false
-			} else if (s.endsWith("'")) {
+			}
+			else if (s.endsWith(`'`)) {
 				return false
 			}
 
@@ -335,11 +351,11 @@ const Utilz = function () {
 	}
 
 	// Get first url from a string
-	utilz.get_first_url = function (s) {
-		let split = s.split("\n")
+	utilz.get_first_url = (s) => {
+		let split = s.split(`\n`)
 
 		for (let line of split) {
-			let split2 = line.split(" ")
+			let split2 = line.split(` `)
 
 			for (let word of split2) {
 				if (word) {
@@ -350,15 +366,15 @@ const Utilz = function () {
 			}
 		}
 
-		return ""
+		return ``
 	}
 
-	utilz.get_urls = function (s) {
+	utilz.get_urls = (s) => {
 		let urls = []
-		let split = s.split("\n")
+		let split = s.split(`\n`)
 
 		for (let line of split) {
-			let split2 = line.split(" ")
+			let split2 = line.split(` `)
 
 			for (let word of split2) {
 				if (word) {
@@ -373,54 +389,57 @@ const Utilz = function () {
 	}
 
 	// Crop a text from the left and add ...
-	utilz.slice_string_end = function (s, n = 10) {
+	utilz.slice_string_end = (s, n = 10) => {
 		s = s.trim()
 
 		let sliced = s.slice(-n).trim()
 
 		if (s.length > sliced.length) {
 			return `...${sliced}`
-		} else {
+		}
+		else {
 			return sliced
 		}
 	}
 
 	// Replace a string between point start and point end with what
-	utilz.replace_between = function (str, start, end, what) {
+	utilz.replace_between = (str, start, end, what) => {
 		return str.substring(0, start) + what + str.substring(end)
 	}
 
 	// Get a nice date string
-	utilz.nice_date = function (date = Date.now()) {
-		return dateFormat(date, "dd/mmm/yy | h:MM:ss tt")
+	utilz.nice_date = (date = Date.now()) => {
+		return dateFormat(date, `dd/mmm/yy | h:MM:ss tt`)
 	}
 
 	// Escape special characters
-	utilz.escape_special_characters = function (s) {
-		return s.replace(/[^A-Za-z0-9]/g, "\\$&")
+	utilz.escape_special_characters = (s) => {
+		return s.replace(/[^A-Za-z0-9]/g, `\\$&`)
 	}
 
 	// Get a string with the size in megabytes
-	utilz.size_string = function (size, mode = 1) {
+	utilz.size_string = (size, mode = 1) => {
 		if (mode === 1) {
 			return `${parseFloat(size / 1024).toFixed(2)} MB`
-		} else if (mode === 2) {
+		}
+		else if (mode === 2) {
 			return `${parseFloat(size / 1024 / 1024).toFixed(2)} MB`
 		}
 	}
 
 	// Check if object is empty
-	utilz.is_empty_object = function (obj) {
+	utilz.is_empty_object = (obj) => {
 		return Object.keys(obj).length === 0 && obj.constructor === Object
 	}
 
 	// Get a nice datetime string
-	utilz.nice_time = function (date1, date2) {
+	utilz.nice_time = (date1, date2) => {
 		let d
 
 		if (date1 > date2) {
 			d = (date1 - date2)
-		} else {
+		}
+		else {
 			d = (date2 - date1)
 		}
 
@@ -431,13 +450,16 @@ const Utilz = function () {
 
 			if (dm === 1) {
 				nt = `${dm} second`
-			} else {
+			}
+			else {
 				nt = `${dm} seconds`
 			}
-		} else {
+		}
+		else {
 			if (d === 1) {
 				nt = `${d} millisecond`
-			} else {
+			}
+			else {
 				nt = `${d} milliseconds`
 			}
 		}
@@ -446,12 +468,13 @@ const Utilz = function () {
 	}
 
 	// Remove the s from a word if singular
-	utilz.singular_or_plural = function (n, s) {
+	utilz.singular_or_plural = (n, s) => {
 		let ss
 
 		if (n === 1) {
 			ss = `${n} ${s.substring(0, s.length - 1)}`
-		} else {
+		}
+		else {
 			ss = `${n} ${s}`
 		}
 
@@ -459,44 +482,45 @@ const Utilz = function () {
 	}
 
 	// Check if it's a text element
-	utilz.is_textbox = function (element) {
+	utilz.is_textbox = (element) => {
 		let tag_name = element.tagName.toLowerCase()
 
-		if (tag_name === "textarea") return true
-		if (tag_name !== "input") return false
+		if (tag_name === `textarea`) return true
+		if (tag_name !== `input`) return false
 
-		let type = element.getAttribute("type")
+		let type = element.getAttribute(`type`)
 
 		if (!type) {
 			return false
 		}
 
 		let input_types = [
-			"text",
-			"password",
-			"number",
-			"email",
-			"tel",
-			"url",
-			"search",
-			"date",
-			"datetime",
-			"datetime-local",
-			"time",
-			"month",
-			"week"
+			`text`,
+			`password`,
+			`number`,
+			`email`,
+			`tel`,
+			`url`,
+			`search`,
+			`date`,
+			`datetime`,
+			`datetime-local`,
+			`time`,
+			`month`,
+			`week`
 		]
 
 		return input_types.includes(type.toLowerCase())
 	}
 
 	// Crop a string and add ... to it
-	utilz.get_limited_string = function (s, n) {
+	utilz.get_limited_string = (s, n) => {
 		let title
 
 		if (s.length > n) {
 			title = `${s.substring(0, n)}...`
-		} else {
+		}
+		else {
 			title = s
 		}
 
@@ -504,12 +528,12 @@ const Utilz = function () {
 	}
 
 	// Turn a string into safe HTML by replacing < and > to safe versions
-	utilz.make_html_safe = function (s) {
-		return s.replace(/\</g, "&lt;").replace(/\>/g, "&gt;")
+	utilz.make_html_safe = (s) => {
+		return s.replace(/\</g, `&lt;`).replace(/\>/g, `&gt;`)
 	}
 
 	// Find the similarity between two strings
-	utilz.string_similarity = function (s1, s2) {
+	utilz.string_similarity = (s1, s2) => {
 		let longer = s1
 		let shorter = s2
 
@@ -528,7 +552,7 @@ const Utilz = function () {
 	}
 
 	// Find the similarity distance between two strings
-	utilz.string_similarity_distance = function (s1, s2) {
+	utilz.string_similarity_distance = (s1, s2) => {
 		s1 = s1.toLowerCase()
 		s2 = s2.toLowerCase()
 
@@ -540,7 +564,8 @@ const Utilz = function () {
 			for (let j = 0; j <= s2.length; j++) {
 				if (i == 0) {
 					costs[j] = j
-				} else {
+				}
+				else {
 					if (j > 0) {
 						let new_value = costs[j - 1]
 
@@ -564,9 +589,9 @@ const Utilz = function () {
 	}
 
 	// Remove extra tabbing from the left side
-	utilz.untab_string = function (s) {
-		s = s.replace(/\t/gm, "  ")
-		let lines = s.split("\n")
+	utilz.untab_string = (s) => {
+		s = s.replace(/\t/gm, `  `)
+		let lines = s.split(`\n`)
 
 		if (lines.length <= 1) {
 			return s
@@ -581,7 +606,7 @@ const Utilz = function () {
 			}
 
 			let m = line.match(/^\s+/)
-			
+
 			if (m) {
 				let n = m[0].length
 
@@ -590,24 +615,25 @@ const Utilz = function () {
 				}
 
 				ns.push(n)
-			} else {
+			}
+			else {
 				return s
 			}
 		}
 
 		let new_lines = []
-		let spaces = ""
+		let spaces = ``
 
 		for (let i=0; i<pos; i++) {
-			spaces += " "
+			spaces += ` `
 		}
 
 		for (let line of lines) {
 			let re = new RegExp(`(^${spaces})`)
-			new_lines.push(line.replace(re, ""))
+			new_lines.push(line.replace(re, ``))
 		}
 
-		return new_lines.join("\n")
+		return new_lines.join(`\n`)
 	}
 
 	utilz.MINUTE = 60000
@@ -616,42 +642,50 @@ const Utilz = function () {
 	utilz.YEAR = 31536000000
 
 	// Return a timeago string
-	utilz.timeago = function (date) {
+	utilz.timeago = (date) => {
 		let diff = Date.now() - date
 		let s
 
 		if (diff < utilz.MINUTE) {
-			s = "just now"
-		} else if (diff < utilz.HOUR) {
+			s = `just now`
+		}
+		else if (diff < utilz.HOUR) {
 			let n = Math.floor(diff / 60 / 1000)
 
 			if (n === 1) {
 				s = `${n} minute ago`
-			} else {
+			}
+			else {
 				s = `${n} minutes ago`
 			}
-		} else if (diff >= utilz.HOUR && diff < utilz.DAY) {
+		}
+		else if (diff >= utilz.HOUR && diff < utilz.DAY) {
 			let n = Math.floor(diff / 60 / 60 / 1000)
 
 			if (n === 1) {
 				s = `${n} hour ago`
-			} else {
+			}
+			else {
 				s = `${n} hours ago`
 			}
-		} else if (diff >= utilz.DAY && diff < utilz.YEAR) {
+		}
+		else if (diff >= utilz.DAY && diff < utilz.YEAR) {
 			let n = Math.floor(diff / 24 / 60 / 60 / 1000)
 
 			if (n === 1) {
 				s = `${n} day ago`
-			} else {
+			}
+			else {
 				s = `${n} days ago`
 			}
-		} else if (diff >= utilz.YEAR) {
+		}
+		else if (diff >= utilz.YEAR) {
 			let n = Math.floor(diff / 365 / 24 / 60 / 60 / 1000)
 
 			if (n === 1) {
 				s = `${n} year ago`
-			} else {
+			}
+			else {
 				s = `${n} years ago`
 			}
 		}
@@ -660,7 +694,7 @@ const Utilz = function () {
 	}
 
 	// Fill from the left with c character to get to n ammount
-	utilz.fillpad = function (s, n, c) {
+	utilz.fillpad = (s, n, c) => {
 		let olen = s.length
 
 		for (let i=0; i<(n - olen); i++) {
@@ -671,13 +705,13 @@ const Utilz = function () {
 	}
 
 	// Get a nicely formatted time
-	utilz.get_time = function () {
+	utilz.get_time = () => {
 		let c = utilz.time_components(new Date())
 		return `${c.hours}:${c.minutes}:${c.seconds}`
 	}
 
 	// Show information with date
-	utilz.loginfo = function (s) {
+	utilz.loginfo = (s) => {
 		try {
 			console.info(`[${utilz.get_time()}] ${s}`)
 		} catch (err) {
@@ -686,59 +720,59 @@ const Utilz = function () {
 	}
 
 	// Make a url with a parameter that prevents caching
-	utilz.cache_bust_url = function (s) {
+	utilz.cache_bust_url = (s) => {
 		let url = new URL(s)
-    url.searchParams.set("cache-buster", Date.now())
+    url.searchParams.set(`cache-buster`, Date.now())
 		return url
 	}
 
 	// Check if file name is from an image source
-	utilz.is_image = function (src) {
+	utilz.is_image = (src) => {
 		let extension = utilz.get_extension(src).toLowerCase()
     return extension && utilz.image_extensions.includes(extension)
 	}
 
 	// Check if file name is from a video source
-	utilz.is_video = function (src) {
+	utilz.is_video = (src) => {
 		let extension = utilz.get_extension(src).toLowerCase()
     return extension && utilz.video_extensions.includes(extension)
 	}
 
 	// Check if file name is from an audio source
-	utilz.is_audio = function (src) {
+	utilz.is_audio = (src) => {
 		let extension = utilz.get_extension(src).toLowerCase()
     return extension && utilz.audio_extensions.includes(extension)
 	}
 
 	// Check if all items in an array are equal
-	utilz.bingo = function (s) {
-		let split = s.split("").filter(x => x !== "")
+	utilz.bingo = (s) => {
+		let split = s.split(``).filter(x => x !== ``)
 		return new Set(split).size === 1
 	}
 
 	// Get date time components, hours, minutes, seconds
-	utilz.time_components = function (ms) {
+	utilz.time_components = (ms) => {
 		let date = new Date(ms)
-		let hours = utilz.fillpad(date.getHours().toString(), 2, "0")
-		let minutes = utilz.fillpad(date.getMinutes().toString(), 2, "0")
-		let seconds = utilz.fillpad(date.getSeconds().toString(), 2, "0")
+		let hours = utilz.fillpad(date.getHours().toString(), 2, `0`)
+		let minutes = utilz.fillpad(date.getMinutes().toString(), 2, `0`)
+		let seconds = utilz.fillpad(date.getSeconds().toString(), 2, `0`)
 		return {hours: hours, minutes: minutes, seconds: seconds}
 	}
 
 	// Get hostname from url
-	utilz.get_hostname = function (url) {
+	utilz.get_hostname = (url) => {
 		return new URL(url).hostname
 	}
 
 	// Number range with a certain increment
-	utilz.number_range = function (to, from, increment) {
+	utilz.number_range = (to, from, increment) => {
 		let numbers = []
 		let n = to
 
 		while (n < 1000000) {
 			numbers.push(n)
 			n += increment
-			
+
 			if (n > from) {
 				break
 			}
@@ -748,22 +782,22 @@ const Utilz = function () {
 	}
 
 	// Get the middle item of an array
-	utilz.get_middle_item = function (arr) {
+	utilz.get_middle_item = (arr) => {
 		return arr[Math.round((arr.length - 1) / 2)]
 	}
 
 	// Move an item in an array
-	utilz.move_in_array = function (arr, from, to) {
+	utilz.move_in_array = (arr, from, to) => {
 		arr.splice(to, 0, arr.splice(from, 1)[0])
 	}
 
-	utilz.media_types = ["image", "tv"]
-	utilz.video_extensions = ["mp4", "webm"]
-	utilz.video_types = ["video/mp4", "video/webm"]
-	utilz.audio_extensions = ["mp3", "ogg", "wav", "flac"]
-	utilz.audio_types = ["audio/mpeg", "audio/ogg", "audio/wav", "audio/flac"]
-	utilz.image_extensions = ["jpg", "jpeg", "png", "gif", "webp", "bmp"]
-	utilz.image_types = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/bmp"]
+	utilz.media_types = [`image`, `tv`]
+	utilz.video_extensions = [`mp4`, `webm`]
+	utilz.video_types = [`video/mp4`, `video/webm`]
+	utilz.audio_extensions = [`mp3`, `ogg`, `wav`, `flac`]
+	utilz.audio_types = [`audio/mpeg`, `audio/ogg`, `audio/wav`, `audio/flac`]
+	utilz.image_extensions = [`jpg`, `jpeg`, `png`, `gif`, `webp`, `bmp`]
+	utilz.image_types = [`image/jpeg`, `image/png`, `image/gif`, `image/webp`, `image/bmp`]
 
 	return utilz
 }
