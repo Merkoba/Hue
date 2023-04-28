@@ -28,6 +28,7 @@ Hue.process_write_whisper = (arg) => {
       Hue.checkmsg(
         `Multiple usernames matched. Use the proper > syntax. For example ${Hue.config.commands_prefix}whisper bob > hi`
       )
+
       return
     }
     else {
