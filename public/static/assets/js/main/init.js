@@ -1,6 +1,5 @@
 // TS: 1
 
-// Main App Object
 // All client variables and functions go here
 const App = {}
 
@@ -125,7 +124,6 @@ App.media_info_tv_data = []
 // This is the first function that gets executed
 App.init = () => {
   App.load_date_1 = Date.now()
-
   App.create_debouncers()
   App.setup_textparser_regexes()
   App.activate_key_detection()
@@ -205,10 +203,8 @@ App.on_join = (data) => {
   App.image_changed = []
   App.tv_changed = []
   App.superuser = data.superuser
-
   App.load_date_3 = Date.now()
   App.loginfo(`Joined Room`)
-
   App.room_locked = data.room_locked
 
   if (data.room_locked) {
@@ -246,7 +242,6 @@ App.on_join = (data) => {
   App.check_media_info()
   App.update_activity_bar()
   App.prepare_user_profile()
-
   App.at_startup()
 }
 
@@ -276,6 +271,7 @@ App.at_startup = () => {
   else {
     let d1 = App.last_message_date
     let d2 = App.get_last_message_date()
+
     if (d2 > d1) {
       App.on_activity(`message`)
     }
