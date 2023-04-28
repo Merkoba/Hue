@@ -1,4 +1,4 @@
-module.exports = function (Hue) {
+module.exports = (Hue) => {
   // Main handler object
   Hue.handler = {}
   Hue.handler.public = {}
@@ -7,14 +7,14 @@ module.exports = function (Hue) {
   Hue.vars = {}
 
   // Fill the vars object
-  require("./vars")(Hue)
+  require(`./vars`)(Hue)
 
   // Get the module file names and arguments
-  const modules = Hue.vars.fs.readdirSync(Hue.vars.path.join(__dirname, "modules"))
+  const modules = Hue.vars.fs.readdirSync(Hue.vars.path.join(__dirname, `modules`))
 
   // Fill the handler object
   for (let module of modules) {
-    if (!module.endsWith(".js")) {
+    if (!module.endsWith(`.js`)) {
       continue
     }
 
@@ -25,7 +25,7 @@ module.exports = function (Hue) {
   Hue.vars.anti_spam = Hue.handler.start_anti_spam()
 
   // Start socker handler
-  Hue.io.on("connection", async function (socket) {
+  Hue.io.on(`connection`, async (socket) => {
     if (!socket) {
       return
     }
@@ -47,13 +47,14 @@ module.exports = function (Hue) {
       if (Hue.handler.user_is_banned(socket)) {
         return Hue.handler.get_out(socket)
       }
-    } catch (err) {
+    }
+    catch (err) {
       Hue.logger.log_error(err)
     }
 
     // Goes to a public function
     // If there is no such public function the user is kicked out
-    socket.on("server_method", async function (data) {
+    socket.on(`server_method`, async (data) => {
       if (Hue.vars.exiting) {
         return
       }
@@ -81,7 +82,7 @@ module.exports = function (Hue) {
           return
         }
 
-        if (!data || typeof data !== "object") {
+        if (!data || typeof data !== `object`) {
           return
         }
 
@@ -92,26 +93,28 @@ module.exports = function (Hue) {
         }
 
         await Hue.handler.public[m](socket, data)
-      } catch (err) {
+      }
+      catch (err) {
         Hue.logger.log_error(err)
       }
     })
 
     // Socket disconnect handler
-    socket.on("disconnect", async function (reason) {
+    socket.on(`disconnect`, async (reason) => {
       try {
         if (!reason) {
-          reason = "unknown"
+          reason = `unknown`
         }
 
         reason = reason.toLowerCase()
 
-        if (reason.includes("timeout")) {
+        if (reason.includes(`timeout`)) {
           socket.hue_pinged = true
         }
 
         await Hue.handler.disconnect(socket)
-      } catch (err) {
+      }
+      catch (err) {
         Hue.logger.log_error(err)
       }
     })
