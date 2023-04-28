@@ -61,11 +61,9 @@ module.exports = (Hue) => {
             },
           }
         )
-
         .then((res) => {
           return res.json()
         })
-
         .then(async (response) => {
           if (!response.data || !Array.isArray(response.data)) {
             return
@@ -110,7 +108,6 @@ module.exports = (Hue) => {
 
           Hue.handler.user_emit(socket, `image_not_found`, {})
         })
-
         .catch((err) => {
           Hue.logger.log_error(err)
         })

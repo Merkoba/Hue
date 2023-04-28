@@ -241,7 +241,6 @@ Hue.setup_profilepic_cropper = () => {
       circle: true,
       quality: Hue.config.image_blob_quality,
     })
-
     .then((blob) => {
       Hue.profilepic_preview_blob = blob
       Hue.el(`#profilepic_preview_image`).src = URL.createObjectURL(blob)
@@ -356,7 +355,6 @@ Hue.profilepic_selected = (file, type) => {
         url: e.target.result,
         points: [],
       })
-
       .then(() => {
         Hue.profilepic_cropper.setZoom(0)
       })

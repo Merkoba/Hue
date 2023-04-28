@@ -3,11 +3,9 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   manager.get_user = (query) => {
     return new Promise((resolve, reject) => {
       manager.find_one(`users`, query)
-
       .then(user => {
         resolve(user)
       })
-
       .catch(err => {
         resolve(false)
       })
@@ -18,11 +16,9 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   manager.get_users = (ids) => {
     return new Promise((resolve, reject) => {
       manager.find_multiple(`users`, ids)
-
       .then(users => {
         resolve(users)
       })
-
       .catch(err => {
         resolve([])
       })
@@ -33,14 +29,12 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   manager.create_user = (info) => {
     return new Promise((resolve, reject) => {
       manager.get_user([`username`, info.username])
-
       .then(euser => {
         if (euser) {
           resolve(`error`)
           return
         }
       })
-
       .catch(err => {
         reject(err)
         logger.log_error(err)
@@ -49,7 +43,6 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
 
       vars.bcrypt
         .hash(info.password, sconfig.encryption_cost)
-
         .then(hash => {
           let user = {}
 
@@ -63,19 +56,16 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
           manager.fill_defaults(`users`, user)
           user.version = vars.users_version
           manager.insert_one(`users`, user)
-
           .then(result => {
             resolve(result)
             return
           })
-
           .catch(err => {
             reject(err)
             logger.log_error(err)
             return
           })
         })
-
         .catch(err => {
           reject(err)
           logger.log_error(err)
@@ -98,12 +88,10 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
 
       if (current_username.toLowerCase() === new_username.toLowerCase()) {
         manager.get_user([`username`, current_username])
-
         .then(the_user => {
           the_user.username = new_username
           resolve(true)
         })
-
         .catch(err => {
           reject(err)
           logger.log_error(err)
@@ -112,7 +100,6 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
 
       manager
         .get_user([`id`, id], { username: 1 })
-
         .then((user) => {
           if (!user) {
             resolve(false)
@@ -121,7 +108,6 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
           else {
             manager
               .get_user([`username`, new_username])
-
               .then((user2) => {
                 if (user2) {
                   resolve(false)
@@ -129,19 +115,16 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
                 }
                 else {
                   manager.get_user([`username`, current_username])
-
                   .then(the_user => {
                     the_user.username = new_username
                     resolve(true)
                   })
-
                   .catch(err => {
                     reject(err)
                     logger.log_error(err)
                   })
                 }
               })
-
               .catch(err => {
                 reject(err)
                 logger.log_error(err)
@@ -149,7 +132,6 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
               })
           }
         })
-
         .catch(err => {
           reject(err)
           logger.log_error(err)
@@ -161,23 +143,19 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   manager.change_user_password = (id, password) => {
     return new Promise((resolve, reject) => {
       vars.bcrypt.hash(password, sconfig.encryption_cost)
-
       .then(hash => {
         manager.get_user([`id`, id])
-
         .then(user => {
           user.password = hash
           user.password_date = Date.now()
           resolve(`ok`)
         })
-
         .catch(err => {
           reject(err)
           logger.log_error(err)
           return
         })
       })
-
       .catch(err => {
         reject(err)
         logger.log_error(err)
@@ -192,7 +170,6 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
     return new Promise((resolve, reject) => {
       manager
         .get_user([`username`, username])
-
         .then((user) => {
           if (!user) {
             resolve({ user: null, valid: false })
@@ -200,12 +177,10 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
           else {
             vars.bcrypt
               .compare(password, user.password)
-
               .then((valid) => {
                 resolve({ user: user, valid: valid })
                 return
               })
-
               .catch(err => {
                 reject(err)
                 logger.log_error(err)
@@ -213,7 +188,6 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
               })
           }
         })
-
         .catch(err => {
           reject(err)
           logger.log_error(err)

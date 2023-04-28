@@ -159,7 +159,6 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     else {
       db_manager
         .get_user([`id`, req.session.user_id], { password_date: 1 })
-
         .then((user) => {
           if (!user || req.session.password_date !== user.password_date) {
             req.session.destroy(() => {})
@@ -181,7 +180,6 @@ module.exports = (db_manager, config, sconfig, utilz) => {
             )
           }
         })
-
         .catch((err) => {
           console.error(err)
         })
@@ -241,7 +239,6 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     let fromurl = decodeURIComponent(req.body.fromurl)
 
     db_manager.check_password(username, password, { password_date: true })
-
     .then((ans) => {
       if (ans.valid) {
         req.session.user_id = ans.user.id
@@ -260,7 +257,6 @@ module.exports = (db_manager, config, sconfig, utilz) => {
         res.redirect(`/login?message=${m}&form_username=${form_username}`)
       }
     })
-
     .catch((err) => {
       console.error(err)
     })
@@ -343,6 +339,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     }
 
     console.info(`Fetching Recaptcha...`)
+
     fetch(`https://www.google.com/recaptcha/api/siteverify`, {
       method: `POST`,
       body: `secret=${sconfig.recaptcha_secret_key}&response=${recaptcha_response}&remoteip=${remote_ip}`,
@@ -350,9 +347,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
         "Content-Type": `application/x-www-form-urlencoded; charset=utf-8`,
       },
     })
-
     .then((res) => res.json())
-
     .then((json) => {
       if (json.success) {
         callback()
@@ -362,7 +357,6 @@ module.exports = (db_manager, config, sconfig, utilz) => {
         res.redirect(`/message?message=${m}`)
       }
     })
-
     .catch((err) => {
       let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
       res.redirect(`/message?message=${m}`)
@@ -389,7 +383,6 @@ module.exports = (db_manager, config, sconfig, utilz) => {
       .get_user(
         [`username`, username], { username: 1 }
       )
-
       .then((user) => {
         if (!user) {
           db_manager
@@ -397,12 +390,10 @@ module.exports = (db_manager, config, sconfig, utilz) => {
               username: username,
               password: password
             })
-
             .then((ans) => {
               res.redirect(`/login`)
               return
             })
-
             .catch((err) => {
               console.error(err)
             })
@@ -411,7 +402,6 @@ module.exports = (db_manager, config, sconfig, utilz) => {
           already_exists(res, username)
         }
       })
-
       .catch((err) => {
         console.error(err)
       })

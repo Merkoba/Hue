@@ -79,11 +79,9 @@ module.exports = (Hue) => {
             .fetch_2(
               `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${Hue.sconfig.youtube_api_key}`
             )
-
             .then((res) => {
               return res.json()
             })
-
             .then(async (response) => {
               if (response.items !== undefined && response.items.length > 0) {
                 data.type = `youtube`
@@ -95,7 +93,6 @@ module.exports = (Hue) => {
                 return
               }
             })
-
             .catch((err) => {
               Hue.handler.user_emit(socket, `video_not_found`, {})
               Hue.logger.log_error(err)
@@ -170,7 +167,6 @@ module.exports = (Hue) => {
 
           Hue.vars
             .fetch_2(data.src)
-
             .then(async (res) => {
               let xframe_options = res.headers.get(`x-frame-options`) || ``
 
@@ -187,7 +183,6 @@ module.exports = (Hue) => {
                 await Hue.handler.do_change_media(socket, data, `tv`)
               }
             })
-
             .catch((err) => {
               Hue.handler.user_emit(socket, `cannot_embed_iframe`, {})
             })
@@ -210,11 +205,9 @@ module.exports = (Hue) => {
             Hue.sconfig.youtube_api_key
           }`
         )
-
         .then((res) => {
           return res.json()
         })
-
         .then(async (response) => {
           if (response.items !== undefined && response.items.length > 0) {
             for (let item of response.items) {
@@ -241,7 +234,6 @@ module.exports = (Hue) => {
             Hue.handler.user_emit(socket, `video_not_found`, {})
           }
         })
-
         .catch((err) => {
           Hue.logger.log_error(err)
         })

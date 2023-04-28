@@ -103,7 +103,6 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
       if (query[0] === `id`) {
         let path = manager.get_file_path(type, query[1])
         check_file(type, path, query)
-
         .then(obj => {
           if (obj) {
             resolve(obj)
@@ -112,7 +111,6 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
             reject(`Nothing found`)
           }
         })
-
         .catch(err => {
           reject(`Nothing found`)
         })

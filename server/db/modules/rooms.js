@@ -3,12 +3,10 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   manager.get_room = (query) => {
     return new Promise((resolve, reject) => {
       manager.find_one(`rooms`, query)
-
       .then(room => {
         resolve(room)
         return
       })
-
       .catch(err => {
         resolve(false)
       })
@@ -19,12 +17,10 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   manager.get_rooms = (ids) => {
     return new Promise((resolve, reject) => {
       manager.find_multiple(`rooms`, ids)
-
       .then(rooms => {
         resolve(rooms)
         return
       })
-
       .catch(err => {
         resolve([])
       })
@@ -50,12 +46,10 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
       room.name = data.name !== undefined ? data.name : `No Name`
 
       manager.insert_one(`rooms`, room)
-
       .then(ans => {
         resolve(room)
         return
       })
-
       .catch(err => {
         reject(err)
         logger.log_error(err)

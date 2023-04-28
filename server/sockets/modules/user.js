@@ -65,11 +65,9 @@ module.exports = (Hue) => {
     }
 
     Hue.db_manager.change_user_password(socket.hue_user_id, data.password)
-
     .then(ans => {
       Hue.handler.user_emit(socket, `password_changed`, {})
     })
-
     .catch(err => {
       Hue.logger.log_error(err)
     })
