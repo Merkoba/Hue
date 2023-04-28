@@ -1,5 +1,5 @@
 // Function to turn url text into actual links
-Hue.urlize = function (el, limit_width = true) {
+Hue.urlize = (el, limit_width = true) => {
   if (!el) {
     return
   }
@@ -13,7 +13,7 @@ Hue.urlize = function (el, limit_width = true) {
 
     let split = html.split(/\s+/)
     let matches = []
-    let reg = /(?:^|\s|<|>)\"?(https?:\/\/(?:[^"|\s|<|>]*)+)/
+    let reg = /(?:^|\s|<|>)\`?(https?:\/\/(?:[^`|\s|<|>]*)+)/
 
     for (let s of split) {
       let result = reg.exec(s)
@@ -28,7 +28,7 @@ Hue.urlize = function (el, limit_width = true) {
     }
 
     function on_matches (matches, html) {
-      let cls = "generic action"
+      let cls = `generic action`
       let used_urls = []
 
       for (let i = 0; i < matches.length; i++) {
@@ -42,7 +42,7 @@ Hue.urlize = function (el, limit_width = true) {
 
         let rep = new RegExp(
           Hue.utilz.escape_special_characters(matches[i]),
-          "g"
+          `g`
         )
 
         let u = matches[i]
@@ -63,31 +63,33 @@ Hue.urlize = function (el, limit_width = true) {
 
       el.innerHTML = html
     }
-  } catch (err) {
+  }
+  catch (err) {
     console.error(err)
   }
 }
 
 // Goes to a url
-Hue.goto_url = function (url, mode, encode = false) {
+Hue.goto_url = (url, mode, encode = false) => {
   if (encode) {
     url = encodeURI(url)
   }
-  if (mode === "tab") {
+  if (mode === `tab`) {
     window.open(url, url.substring(0, 200))
-  } else {
+  }
+  else {
     Hue.user_leaving = true
     window.location = url
   }
 }
 
 // Handle URLS
-Hue.handle_url = function (url) {
+Hue.handle_url = (url) => {
   if (url) {
     Hue.check_handle_url_options(url)
     Hue.handled_url = url
 
-    let url_el = Hue.el("#handle_url_url")
+    let url_el = Hue.el(`#handle_url_url`)
     url_el.textContent = url
     Hue.urlize(url_el)
 
@@ -96,7 +98,7 @@ Hue.handle_url = function (url) {
 }
 
 // Handle url chat action
-Hue.handle_url_chat = function () {
+Hue.handle_url_chat = () => {
   Hue.change_input(Hue.handled_url)
   Hue.msg_handle_url.close()
 }
@@ -104,61 +106,64 @@ Hue.handle_url_chat = function () {
 // Setups drop listeners
 // This is used to display actions when dropping a URL
 // Like changing the tv when dropping a YouTube URL
-Hue.setup_drag_events = function () {
-  Hue.ev(Hue.el("#handle_url_chat"), "click", function () {
+Hue.setup_drag_events = () => {
+  Hue.ev(Hue.el(`#handle_url_chat`), `click`, () => {
     Hue.handle_url_chat()
   })
 
-  Hue.ev(Hue.el("#handle_url_image"), "click", function () {
-    Hue.load_media_link("image", Hue.handled_url, "")
+  Hue.ev(Hue.el(`#handle_url_image`), `click`, () => {
+    Hue.load_media_link(`image`, Hue.handled_url, ``)
     Hue.msg_handle_url.close()
   })
 
-  Hue.ev(Hue.el("#handle_url_tv"), "click", function () {
-    Hue.load_media_link("tv", Hue.handled_url, "")
+  Hue.ev(Hue.el(`#handle_url_tv`), `click`, () => {
+    Hue.load_media_link(`tv`, Hue.handled_url, ``)
     Hue.msg_handle_url.close()
   })
 }
 
 // Changes button visibility based on url
-Hue.check_handle_url_options = function (text) {
+Hue.check_handle_url_options = (text) => {
   if (text && text.length < Hue.config.max_input_length) {
-    Hue.el("#handle_url_chat").style.display = "inline-block"
-  } else {
-    Hue.el("#handle_url_chat").style.display = "none"
+    Hue.el(`#handle_url_chat`).style.display = `inline-block`
+  }
+  else {
+    Hue.el(`#handle_url_chat`).style.display = `none`
   }
 
   if (Hue.change_image_source(text, true)) {
-    Hue.el("#handle_url_image").style.display = "inline-block"
-  } else {
-    Hue.el("#handle_url_image").style.display = "none"
+    Hue.el(`#handle_url_image`).style.display = `inline-block`
+  }
+  else {
+    Hue.el(`#handle_url_image`).style.display = `none`
   }
 
   if (Hue.change_tv_source(text, true)) {
-    Hue.el("#handle_url_tv").style.display = "inline-block"
-  } else {
-    Hue.el("#handle_url_tv").style.display = "none"
+    Hue.el(`#handle_url_tv`).style.display = `inline-block`
+  }
+  else {
+    Hue.el(`#handle_url_tv`).style.display = `none`
   }
 
-  Hue.horizontal_separator(Hue.el("#handle_url_titlebar"))
+  Hue.horizontal_separator(Hue.el(`#handle_url_titlebar`))
 }
 
 // Setups the Open URL picker window
-Hue.setup_open_url = function () {
-  Hue.ev(Hue.el("#open_url_menu_copy"), "click", function () {
+Hue.setup_open_url = () => {
+  Hue.ev(Hue.el(`#open_url_menu_copy`), `click`, () => {
     Hue.copy_string(Hue.open_url_data.source)
   })
 
-  Hue.ev(Hue.el("#open_url_menu_load"), "click", function () {
+  Hue.ev(Hue.el(`#open_url_menu_load`), `click`, () => {
     Hue.load_media(Hue.open_url_data)
   })
 
-  Hue.ev(Hue.el("#open_url_menu_link"), "click", function () {
+  Hue.ev(Hue.el(`#open_url_menu_link`), `click`, () => {
     Hue.load_media_link(Hue.open_url_data.media_type, Hue.open_url_data.source, Hue.open_url_data.comment)
     Hue.msg_open_url.close()
   })
 
-  Hue.ev(Hue.el("#open_url_menu_context"), "click", function () {
+  Hue.ev(Hue.el(`#open_url_menu_context`), `click`, () => {
     Hue.chat_search_by_id(Hue.open_url_data.id)
     Hue.msg_open_url.close()
   })
@@ -166,22 +171,24 @@ Hue.setup_open_url = function () {
 
 // Shows the Open URL menu
 // This is used to show actions for links and media
-Hue.open_url_menu = function (data) {
+Hue.open_url_menu = (data) => {
   if (data !== Hue[`loaded_${data.media_type}`] || !Hue.room_state[`${data.media_type}_enabled`]) {
-    Hue.el("#open_url_menu_load").textContent = "Load"
-  } else {
-    Hue.el("#open_url_menu_load").textContent = "Reload"
+    Hue.el(`#open_url_menu_load`).textContent = `Load`
+  }
+  else {
+    Hue.el(`#open_url_menu_load`).textContent = `Reload`
   }
 
   if (Hue[`change_${data.media_type}_source`](data.source, true)) {
-    Hue.el("#open_url_menu_link").style.display = "inline-block"
-  } else {
-    Hue.el("#open_url_menu_link").style.display = "none"
+    Hue.el(`#open_url_menu_link`).style.display = `inline-block`
+  }
+  else {
+    Hue.el(`#open_url_menu_link`).style.display = `none`
   }
 
-  Hue.horizontal_separator(Hue.el("#open_url_titlebar"))
+  Hue.horizontal_separator(Hue.el(`#open_url_titlebar`))
 
-  let el = Hue.el("#open_url_info")
+  let el = Hue.el(`#open_url_info`)
 
   let size
 
@@ -199,38 +206,38 @@ Hue.open_url_menu = function (data) {
   Hue.urlize(el)
   Hue.open_url_data = data
 
-  Hue.msg_open_url.show(function () {
+  Hue.msg_open_url.show(() => {
     if (data.size) {
-      Hue.ev(Hue.el("#open_url_info_title_size"), "click", function () {
-        Hue.open_view_text(Hue.el("#open_url_info_text_size").textContent)
+      Hue.ev(Hue.el(`#open_url_info_title_size`), `click`, () => {
+        Hue.open_view_text(Hue.el(`#open_url_info_text_size`).textContent)
       })
     }
 
     if (data.title) {
-      Hue.ev(Hue.el("#open_url_info_title_title"), "click", function () {
-        Hue.open_view_text(Hue.el("#open_url_info_text_title").textContent)
+      Hue.ev(Hue.el(`#open_url_info_title_title`), `click`, () => {
+        Hue.open_view_text(Hue.el(`#open_url_info_text_title`).textContent)
       })
     }
 
     if (data.comment) {
-      Hue.ev(Hue.el("#open_url_info_title_comment"), "click", function () {
-        Hue.open_view_text(Hue.el("#open_url_info_text_comment").textContent)
+      Hue.ev(Hue.el(`#open_url_info_title_comment`), `click`, () => {
+        Hue.open_view_text(Hue.el(`#open_url_info_text_comment`).textContent)
       })
     }
 
     if (data.source) {
-      Hue.ev(Hue.el("#open_url_info_title_url"), "click", function () {
-        Hue.open_view_text(Hue.el("#open_url_info_text_url").textContent)
+      Hue.ev(Hue.el(`#open_url_info_title_url`), `click`, () => {
+        Hue.open_view_text(Hue.el(`#open_url_info_text_url`).textContent)
       })
     }
   })
 }
 
 // Replace urls with dummy text
-Hue.remove_urls = function (text) {
-  let split = text.split(" ")
+Hue.remove_urls = (text) => {
+  let split = text.split(` `)
   let new_words = []
-  let hostname = ""
+  let hostname = ``
 
   for (let word of split) {
     if (Hue.utilz.is_url(word)) {
@@ -240,15 +247,19 @@ Hue.remove_urls = function (text) {
       let is_audio = Hue.utilz.is_audio(word)
 
       if (is_video) {
-        new_words.push("(Video Link)")
-      } else if (is_audio) {
-        new_words.push("(Audio Link)")
-      } else if (is_image) {
-        new_words.push("(Image Link)")
-      } else {
-        new_words.push("(Link)")
+        new_words.push(`(Video Link)`)
       }
-    } else {
+      else if (is_audio) {
+        new_words.push(`(Audio Link)`)
+      }
+      else if (is_image) {
+        new_words.push(`(Image Link)`)
+      }
+      else {
+        new_words.push(`(Link)`)
+      }
+    }
+    else {
       new_words.push(word)
     }
   }
@@ -257,8 +268,8 @@ Hue.remove_urls = function (text) {
     new_words.push(`(${hostname})`)
   }
 
-  let new_text = new_words.join(" ").replace(
-    Hue.textparser_regexes["anchor_link"].regex, ""
+  let new_text = new_words.join(` `).replace(
+    Hue.textparser_regexes[`anchor_link`].regex, ``
   )
 
   return new_text.trim()

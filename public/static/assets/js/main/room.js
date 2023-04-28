@@ -1,5 +1,5 @@
 // Gets the room state localStorage object
-Hue.get_room_state = function () {
+Hue.get_room_state = () => {
   let room_state_all = Hue.get_local_storage(Hue.ls_room_state)
 
   if (room_state_all === null) {
@@ -15,8 +15,8 @@ Hue.get_room_state = function () {
   let changed = false
 
   for (let key in Hue.config) {
-    if (key.startsWith("room_state_default_")) {
-      let setting = key.replace("room_state_default_", "")
+    if (key.startsWith(`room_state_default_`)) {
+      let setting = key.replace(`room_state_default_`, ``)
       if (Hue.room_state[setting] === undefined) {
         Hue.room_state[setting] = Hue.config[key]
         changed = true
@@ -30,7 +30,7 @@ Hue.get_room_state = function () {
 }
 
 // Saves the room state localStorage object
-Hue.save_room_state = function () {
+Hue.save_room_state = () => {
   let room_state_all = Hue.get_local_storage(Hue.ls_room_state)
 
   if (room_state_all === null) {
@@ -42,12 +42,12 @@ Hue.save_room_state = function () {
 }
 
 // Show the room name
-Hue.show_room_name = function () {
+Hue.show_room_name = () => {
   Hue.checkmsg(`Room: ${Hue.room_name}`)
 }
 
 // Change the name of the room
-Hue.change_room_name = function (arg) {
+Hue.change_room_name = (arg) => {
   if (!Hue.is_admin_or_op()) {
     return
   }
@@ -57,32 +57,33 @@ Hue.change_room_name = function (arg) {
   )
 
   if (arg === Hue.room_name) {
-    Hue.checkmsg("That's already the room name")
+    Hue.checkmsg(`That's already the room name`)
     return
   }
 
   if (arg.length > 0) {
-    Hue.socket_emit("change_room_name", { name: arg })
+    Hue.socket_emit(`change_room_name`, { name: arg })
   }
 }
 
 // Gets the topic
-Hue.get_topic = function () {
+Hue.get_topic = () => {
   if (Hue.topic) {
     return Hue.topic
-  } else {
+  }
+  else {
     return Hue.config.default_topic
   }
 }
 
 // Shows the topic
-Hue.show_topic = function () {
+Hue.show_topic = () => {
   Hue.show_info(Hue.template_topic({topic: Hue.get_topic()}))
-  Hue.urlize(Hue.el("#topic_container"))
+  Hue.urlize(Hue.el(`#topic_container`))
 }
 
 // Announces room name changes
-Hue.announce_room_name_change = function (data) {
+Hue.announce_room_name_change = (data) => {
   if (data.name !== Hue.room_name) {
     Hue.show_room_notification(
       data.username,
@@ -96,13 +97,13 @@ Hue.announce_room_name_change = function (data) {
 }
 
 // Room name setter
-Hue.set_room_name = function (name) {
+Hue.set_room_name = (name) => {
   Hue.room_name = name
   Hue.config_admin_room_name()
 }
 
 // Changes the topic
-Hue.change_topic = function (dtopic) {
+Hue.change_topic = (dtopic) => {
   if (!Hue.is_admin_or_op()) {
     return
   }
@@ -113,15 +114,16 @@ Hue.change_topic = function (dtopic) {
 
   if (dtopic.length > 0) {
     if (Hue.topic !== dtopic) {
-      Hue.socket_emit("change_topic", { topic: dtopic })
-    } else {
-      Hue.checkmsg("Topic is already set to that")
+      Hue.socket_emit(`change_topic`, { topic: dtopic })
+    }
+    else {
+      Hue.checkmsg(`Topic is already set to that`)
     }
   }
 }
 
 // Announces topic changes
-Hue.announce_topic_change = function (data) {
+Hue.announce_topic_change = (data) => {
   if (data.topic !== Hue.topic) {
     Hue.show_room_notification(
       data.username,
@@ -134,10 +136,10 @@ Hue.announce_topic_change = function (data) {
 }
 
 // Sets topic data with received data
-Hue.set_topic_info = function (data) {
+Hue.set_topic_info = (data) => {
   if (!data) {
     data = {}
-    data.topic = ""
+    data.topic = ``
   }
 
   Hue.topic = data.topic
@@ -145,7 +147,7 @@ Hue.set_topic_info = function (data) {
 }
 
 // Requests the admin activity list from the server
-Hue.request_admin_activity = function (filter = "") {
+Hue.request_admin_activity = (filter = ``) => {
   if (!Hue.is_admin_or_op()) {
     Hue.not_an_op()
     return
@@ -153,83 +155,83 @@ Hue.request_admin_activity = function (filter = "") {
 
   Hue.admin_activity_filter_string = filter
 
-  Hue.socket_emit("get_admin_activity", {})
+  Hue.socket_emit(`get_admin_activity`, {})
 }
 
 // Setup admin activity
-Hue.setup_admin_activity = function () {
-  Hue.ev(Hue.el("#admin_activity_clear"), "click", function () {
+Hue.setup_admin_activity = () => {
+  Hue.ev(Hue.el(`#admin_activity_clear`), `click`, () => {
     Hue.clear_admin_activity()
   })
 }
 
 // Shows the admin activity list
-Hue.show_admin_activity = function (messages) {
-  Hue.el("#admin_activity_container").innerHTML = ""
+Hue.show_admin_activity = (messages) => {
+  Hue.el(`#admin_activity_container`).innerHTML = ``
 
-  Hue.msg_admin_activity.show(function () {
+  Hue.msg_admin_activity.show(() => {
     for (let data of messages) {
       let nice_date = Hue.utilz.nice_date(data.date)
 
-      let s = "<div class='admin_activity_message'></div><div class='admin_activity_date'></div>"
+      let s = `<div class='admin_activity_message'></div><div class='admin_activity_date'></div>`
 
-      let el = Hue.create("div", "modal_item admin_activity_item dynamic_title")
+      let el = Hue.create(`div`, `modal_item admin_activity_item dynamic_title`)
       el.title = nice_date
       el.innerHTML = s
 
-      Hue.el(".admin_activity_message", el).textContent = `${data.username} ${data.content}`
-      Hue.el(".admin_activity_date", el).textContent = nice_date
-      Hue.dataset(el, "date", data.date)
-      Hue.dataset(el, "otitle", nice_date)
-      Hue.el("#admin_activity_container").prepend(el)
+      Hue.el(`.admin_activity_message`, el).textContent = `${data.username} ${data.content}`
+      Hue.el(`.admin_activity_date`, el).textContent = nice_date
+      Hue.dataset(el, `date`, data.date)
+      Hue.dataset(el, `otitle`, nice_date)
+      Hue.el(`#admin_activity_container`).prepend(el)
     }
 
-    Hue.el("#admin_activity_filter").value = Hue.admin_activity_filter_string
+    Hue.el(`#admin_activity_filter`).value = Hue.admin_activity_filter_string
     Hue.do_modal_filter()
   })
 }
 
 // Clear admin activity
-Hue.clear_admin_activity = function () {
+Hue.clear_admin_activity = () => {
   if (!Hue.is_admin()) {
     Hue.not_allowed()
     return
   }
 
-  Hue.show_confirm("Delete all admin activity logs", function () {
-    Hue.socket_emit("clear_admin_activity", {})
+  Hue.show_confirm(`Delete all admin activity logs`, () => {
+    Hue.socket_emit(`clear_admin_activity`, {})
   })
 }
 
 // On admin activity clear
-Hue.admin_activity_cleared = function () {
-  Hue.el("#admin_activity_container").innerHTML = ""
+Hue.admin_activity_cleared = () => {
+  Hue.el(`#admin_activity_container`).innerHTML = ``
 }
 
 // Requests the admin list
-Hue.request_admin_list = function () {
+Hue.request_admin_list = () => {
   if (!Hue.is_admin_or_op()) {
     Hue.not_an_op()
     return
   }
 
-  Hue.socket_emit("get_admin_list", {})
+  Hue.socket_emit(`get_admin_list`, {})
 }
 
 // Shows the admin list
-Hue.show_admin_list = function (data) {
-  let container = Hue.el("#admin_list_container")
-  container.innerHTML = ""
+Hue.show_admin_list = (data) => {
+  let container = Hue.el(`#admin_list_container`)
+  container.innerHTML = ``
   data.list.sort(Hue.compare_userlist)
 
   for (let user of data.list) {
-    let el = Hue.create("div", "admin_list_item action")
+    let el = Hue.create(`div`, `admin_list_item action`)
     el.innerHTML = Hue.template_admin_list_item()
 
-    Hue.el(".admin_list_username", el).textContent = user.username
-    Hue.el(".admin_list_role", el).textContent = `(${Hue.get_pretty_role_name(user.role)})`
+    Hue.el(`.admin_list_username`, el).textContent = user.username
+    Hue.el(`.admin_list_role`, el).textContent = `(${Hue.get_pretty_role_name(user.role)})`
 
-    Hue.ev(el, "click", function () {
+    Hue.ev(el, `click`, () => {
       Hue.show_profile(user.username, user.user_id)
     })
 
@@ -240,35 +242,35 @@ Hue.show_admin_list = function (data) {
 }
 
 // Requests the ban list
-Hue.request_ban_list = function () {
+Hue.request_ban_list = () => {
   if (!Hue.is_admin_or_op()) {
     Hue.not_an_op()
     return
   }
 
-  Hue.socket_emit("get_ban_list", {})
+  Hue.socket_emit(`get_ban_list`, {})
 }
 
 // Shows the ban list
-Hue.show_ban_list = function (data) {
-  let container = Hue.el("#ban_list_container")
-  container.innerHTML = ""
+Hue.show_ban_list = (data) => {
+  let container = Hue.el(`#ban_list_container`)
+  container.innerHTML = ``
 
   for (let user of data.list) {
-    let el = Hue.create("div", "ban_list_item flex_row_center")
+    let el = Hue.create(`div`, `ban_list_item flex_row_center`)
     el.innerHTML = Hue.template_ban_list_item()
 
-    let username = Hue.el(".ban_list_username", el)
+    let username = Hue.el(`.ban_list_username`, el)
     username.textContent = user.username
 
-    Hue.ev(username, "click", function () {
+    Hue.ev(username, `click`, () => {
       Hue.show_profile(user.username, user.user_id)
     })
 
-    let unban = Hue.el(".ban_list_unban", el)
+    let unban = Hue.el(`.ban_list_unban`, el)
 
-    Hue.ev(unban, "click", function () {
-      Hue.show_confirm(`Unban ${user.username}`, function () {
+    Hue.ev(unban, `click`, () => {
+      Hue.show_confirm(`Unban ${user.username}`, () => {
         Hue.unban(user.username)
       })
     })

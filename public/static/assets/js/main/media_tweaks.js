@@ -1,105 +1,105 @@
 // Additional media tweaks configurations
-Hue.setup_media_tweaks = function () {
-  Hue.ev(Hue.el("#media_tweaks_swap"), "click", function () {
+Hue.setup_media_tweaks = () => {
+  Hue.ev(Hue.el(`#media_tweaks_swap`), `click`, () => {
     Hue.swap_media()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_rotate"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_rotate`), `click`, () => {
     Hue.swap_media_layout()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_revolve"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_revolve`), `click`, () => {
     Hue.change_main_layout()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_tv_size"), "change", function () {
-    let size = Hue.el("#media_tweaks_tv_size option:checked").value
+  Hue.ev(Hue.el(`#media_tweaks_tv_size`), `change`, () => {
+    let size = Hue.el(`#media_tweaks_tv_size option:checked`).value
     Hue.do_media_tv_size_change(size)
   })
 
-  Hue.ev(Hue.el("#media_tweaks_chat_size"), "change", function () {
-    let size = Hue.el("#media_tweaks_chat_size option:checked").value
+  Hue.ev(Hue.el(`#media_tweaks_chat_size`), `change`, () => {
+    let size = Hue.el(`#media_tweaks_chat_size option:checked`).value
     Hue.do_chat_size_change(size)
   })
 
-  Hue.ev(Hue.el("#media_tweaks_chat_font_size"), "change", function () {
-    let size = Hue.el("#media_tweaks_chat_font_size option:checked").value
+  Hue.ev(Hue.el(`#media_tweaks_chat_font_size`), `change`, () => {
+    let size = Hue.el(`#media_tweaks_chat_font_size option:checked`).value
     Hue.do_chat_font_size_change(size)
   })
 
-  Hue.ev(Hue.el("#media_tweaks_media_info_enabled"), "change", function () {
-    let enabled = Hue.el("#media_tweaks_media_info_enabled option:checked").value === "enabled"
+  Hue.ev(Hue.el(`#media_tweaks_media_info_enabled`), `change`, () => {
+    let enabled = Hue.el(`#media_tweaks_media_info_enabled option:checked`).value === `enabled`
     Hue.set_media_info_enabled(enabled)
   })
 
-  Hue.ev(Hue.el("#media_tweaks_chat_enabled"), "change", function () {
-    let enabled = Hue.el("#media_tweaks_chat_enabled option:checked").value === "enabled"
+  Hue.ev(Hue.el(`#media_tweaks_chat_enabled`), `change`, () => {
+    let enabled = Hue.el(`#media_tweaks_chat_enabled option:checked`).value === `enabled`
     Hue.set_chat_enabled(enabled)
   })
 
-  Hue.ev(Hue.el("#media_tweaks_defaults"), "click", function () {
-    Hue.show_confirm("Restore media tweak defaults", function () {
+  Hue.ev(Hue.el(`#media_tweaks_defaults`), `click`, () => {
+    Hue.show_confirm(`Restore media tweak defaults`, () => {
       Hue.apply_media_tweaks_defaults()
     })
   })
 
-  Hue.ev(Hue.el("#media_tweaks_tv_size_minus"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_tv_size_minus`), `click`, () => {
     Hue.decrease_tv_percentage()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_tv_size_plus"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_tv_size_plus`), `click`, () => {
     Hue.increase_tv_percentage()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_chat_size_minus"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_chat_size_minus`), `click`, () => {
     Hue.decrease_chat_percentage()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_chat_size_plus"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_chat_size_plus`), `click`, () => {
     Hue.increase_chat_percentage()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_chat_font_size_minus"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_chat_font_size_minus`), `click`, () => {
     Hue.decrease_chat_font_size()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_chat_font_size_plus"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_chat_font_size_plus`), `click`, () => {
     Hue.increase_chat_font_size()
     Hue.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_media_info_enabled_minus"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_media_info_enabled_minus`), `click`, () => {
     Hue.set_media_info_enabled(false)
     Hue.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_media_info_enabled_plus"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_media_info_enabled_plus`), `click`, () => {
     Hue.set_media_info_enabled(true)
     Hue.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_chat_enabled_minus"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_chat_enabled_minus`), `click`, () => {
     Hue.set_chat_enabled(false)
     Hue.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_chat_enabled_plus"), "click", function () {
+  Hue.ev(Hue.el(`#media_tweaks_chat_enabled_plus`), `click`, () => {
     Hue.set_chat_enabled(true)
     Hue.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el("#media_tweaks_vertical_preset"), "click", function () {
-    Hue.show_confirm("Apply vertical preset", function () {
-      Hue.change_media_layout("row")
-      Hue.change_main_layout("column")
+  Hue.ev(Hue.el(`#media_tweaks_vertical_preset`), `click`, () => {
+    Hue.show_confirm(`Apply vertical preset`, () => {
+      Hue.change_media_layout(`row`)
+      Hue.change_main_layout(`column`)
       Hue.do_chat_size_change(60)
-      Hue.set_media_enabled({type: "image", what: false})
-      Hue.set_media_enabled({type: "tv", what: true})
+      Hue.set_media_enabled({type: `image`, what: false})
+      Hue.set_media_enabled({type: `tv`, what: true})
       Hue.refresh_media_tweaks()
     })
   })
@@ -110,8 +110,8 @@ Hue.setup_media_tweaks = function () {
 }
 
 // Percentages for media tweaks
-Hue.create_tweaks_percentages = function () {
-  let html = ""
+Hue.create_tweaks_percentages = () => {
+  let html = ``
 
   for (let p = Hue.media_max_percentage; p >= Hue.media_min_percentage; p -= 5) {
     html += `<option value='${p}'>${p}%</option>`
@@ -121,8 +121,8 @@ Hue.create_tweaks_percentages = function () {
 }
 
 // Chat sizes for media tweaks
-Hue.create_tweaks_chat_font_sizes = function () {
-  let html = ""
+Hue.create_tweaks_chat_font_sizes = () => {
+  let html = ``
   let size = Hue.max_chat_font_size
 
   while (size >= Hue.min_chat_font_size) {
@@ -135,50 +135,52 @@ Hue.create_tweaks_chat_font_sizes = function () {
 }
 
 // Shows the media tweaks
-Hue.show_media_tweaks = function () {
+Hue.show_media_tweaks = () => {
   Hue.refresh_media_tweaks()
   Hue.msg_media_tweaks.show()
 }
 
 // Refresh media tweaks widgets
-Hue.refresh_media_tweaks = function () {
-  Hue.els("#media_tweaks_tv_size option").forEach(it => {
+Hue.refresh_media_tweaks = () => {
+  Hue.els(`#media_tweaks_tv_size option`).forEach(it => {
     if (it.value == Hue.room_state.tv_display_percentage) {
       it.selected = true
     }
   })
 
-  Hue.els("#media_tweaks_chat_size option").forEach(it => {
+  Hue.els(`#media_tweaks_chat_size option`).forEach(it => {
     if (it.value == Hue.room_state.chat_display_percentage) {
       it.selected = true
     }
   })
 
-  Hue.els("#media_tweaks_chat_font_size option").forEach(it => {
+  Hue.els(`#media_tweaks_chat_font_size option`).forEach(it => {
     if (it.value == Hue.room_state.chat_font_size) {
       it.selected = true
     }
   })
 
-  Hue.els("#media_tweaks_media_info_enabled option").forEach(it => {
+  Hue.els(`#media_tweaks_media_info_enabled option`).forEach(it => {
     if (Hue.room_state.media_info_enabled) {
-      if (it.value === "enabled") {
+      if (it.value === `enabled`) {
         it.selected = true
       }
-    } else {
-      if (it.value === "disabled") {
+    }
+    else {
+      if (it.value === `disabled`) {
         it.selected = true
       }
     }
   })
 
-  Hue.els("#media_tweaks_chat_enabled option").forEach(it => {
+  Hue.els(`#media_tweaks_chat_enabled option`).forEach(it => {
     if (Hue.room_state.chat_enabled) {
-      if (it.value === "enabled") {
+      if (it.value === `enabled`) {
         it.selected = true
       }
-    } else {
-      if (it.value === "disabled") {
+    }
+    else {
+      if (it.value === `disabled`) {
         it.selected = true
       }
     }
@@ -186,13 +188,13 @@ Hue.refresh_media_tweaks = function () {
 }
 
 // Apply media defaults
-Hue.apply_media_tweaks_defaults = function () {
+Hue.apply_media_tweaks_defaults = () => {
   Hue.set_default_chat_font_size()
   Hue.set_default_tv_position()
   Hue.set_default_chat_enabled()
   Hue.set_default_media_info_enabled()
-  Hue.set_media_enabled({type: "image", what: true})
-  Hue.set_media_enabled({type: "tv", what: true})
+  Hue.set_media_enabled({type: `image`, what: true})
+  Hue.set_media_enabled({type: `tv`, what: true})
   Hue.set_default_main_layout()
   Hue.set_default_media_layout()
   Hue.set_default_tv_size()

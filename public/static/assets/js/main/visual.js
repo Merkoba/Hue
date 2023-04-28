@@ -1,11 +1,11 @@
 // Remove & add vertical or horizontal separators
-Hue.apply_separator = function (el, cls) {
-  Hue.els(":scope > .separator", el).forEach(it => {
+Hue.apply_separator = (el, cls) => {
+  Hue.els(`:scope > .separator`, el).forEach(it => {
     it.remove()
   })
 
   let elems = Array.from(el.children).filter(it => {
-    return it.style.display !== "none" && !it.classList.contains("nodisplay")
+    return it.style.display !== `none` && !it.classList.contains(`nodisplay`)
   })
 
   for (let i=0; i<elems.length; i++) {
@@ -13,56 +13,56 @@ Hue.apply_separator = function (el, cls) {
       break
     }
 
-    let sep = Hue.create("div", "separator")
+    let sep = Hue.create(`div`, `separator`)
     sep.classList.add(cls)
-    elems[i].insertAdjacentElement("afterend", sep)
+    elems[i].insertAdjacentElement(`afterend`, sep)
   }
 }
 
 // Add horizontal separators
-Hue.horizontal_separator = function (el) {
-  Hue.apply_separator(el, "horizontal_separator")
+Hue.horizontal_separator = (el) => {
+  Hue.apply_separator(el, `horizontal_separator`)
 }
 
 // Add vertical separators
-Hue.vertical_separator = function (el) {
-  Hue.apply_separator(el, "vertical_separator")
+Hue.vertical_separator = (el) => {
+  Hue.apply_separator(el, `vertical_separator`)
 }
 
 // Applies separation to generic horizontal separator classes
-Hue.setup_generic_separators = function () {
-  Hue.els(".generic_horizontal_separator").forEach(it => {
+Hue.setup_generic_separators = () => {
+  Hue.els(`.generic_horizontal_separator`).forEach(it => {
     Hue.horizontal_separator(it)
   })
 
-  Hue.els(".generic_vertical_separator").forEach(it => {
+  Hue.els(`.generic_vertical_separator`).forEach(it => {
     Hue.vertical_separator(it)
   })
 }
 
 // This hides the loading animation and makes the main container visible
-Hue.make_main_container_visible = function () {
-  Hue.el("#main_container").style.opacity = 1
-  Hue.el("#main_container").style.pointerEvents = "initial"
+Hue.make_main_container_visible = () => {
+  Hue.el(`#main_container`).style.opacity = 1
+  Hue.el(`#main_container`).style.pointerEvents = `initial`
 }
 
 // Setups the confirm window
-Hue.setup_confirm = function () {
-  Hue.ev(Hue.el("#confirm_button_confirm"), "click", function () {
+Hue.setup_confirm = () => {
+  Hue.ev(Hue.el(`#confirm_button_confirm`), `click`, () => {
     Hue.on_confirm()
   })
 }
 
 // Shows the confirm window
-Hue.show_confirm = function (message, action, action_cancel) {
-  Hue.el("#confirm_message").textContent = message
+Hue.show_confirm = (message, action, action_cancel) => {
+  Hue.el(`#confirm_message`).textContent = message
   Hue.confirm_action = action
   Hue.confirm_action_cancel = action_cancel
   Hue.msg_confirm.show()
 }
 
 // On confirm action
-Hue.on_confirm = function () {
+Hue.on_confirm = () => {
   if (Hue.confirm_action) {
     Hue.confirm_action()
     Hue.confirm_action = undefined
@@ -73,7 +73,7 @@ Hue.on_confirm = function () {
 }
 
 // On confirm cancel action
-Hue.on_confirm_cancel = function () {
+Hue.on_confirm_cancel = () => {
   if (Hue.confirm_action_cancel) {
     Hue.confirm_action_cancel()
     Hue.confirm_action_cancel = undefined
@@ -81,83 +81,84 @@ Hue.on_confirm_cancel = function () {
 }
 
 // Simple window to display information
-Hue.show_info = function (info) {
+Hue.show_info = (info) => {
   Hue.msg_info.show(info)
 }
 
 // Show info window or show in chat
-Hue.checkmsg = function (s) {
+Hue.checkmsg = (s) => {
   if (Hue.modal_open) {
     Hue.show_info(s)
-  } else {
+  }
+  else {
     Hue.feedback(s)
   }
 }
 
 // Shows feedback with the current date in the nice date format
-Hue.show_current_date = function () {
+Hue.show_current_date = () => {
   Hue.checkmsg(Hue.utilz.nice_date())
 }
 
 // Start timeago checks
-Hue.start_timeago = function () {
+Hue.start_timeago = () => {
   setInterval(() => {
     Hue.timeago_action()
   }, Hue.timeago_delay)
 }
 
 // The timeago action
-Hue.timeago_action = function () {
-  Hue.els(".chat_area").forEach(it => {
-    Hue.els(".chat_timeago", it).forEach(it2 => {
-      let message = it2.closest(".message")
-      it2.textContent = Hue.utilz.timeago(Hue.dataset(message, "date"))
+Hue.timeago_action = () => {
+  Hue.els(`.chat_area`).forEach(it => {
+    Hue.els(`.chat_timeago`, it).forEach(it2 => {
+      let message = it2.closest(`.message`)
+      it2.textContent = Hue.utilz.timeago(Hue.dataset(message, `date`))
     })
   })
 
-  Hue.els("#media .media_info_container").forEach(it => {
-    Hue.el(".media_info_timeago", it).textContent = Hue.utilz.timeago(Hue.dataset(it, "date"))
+  Hue.els(`#media .media_info_container`).forEach(it => {
+    Hue.el(`.media_info_timeago`, it).textContent = Hue.utilz.timeago(Hue.dataset(it, `date`))
   })
 
   if (Hue.msg_modal_image.is_open()) {
-    Hue.el("#modal_image_header_info .modal_image_timeago")
+    Hue.el(`#modal_image_header_info .modal_image_timeago`)
       .textContent = Hue.utilz.timeago(Hue.loaded_modal_image.date)
   }
 }
 
 // Show a message for a small time and close
-Hue.flash_info = function (title, text) {
-  let el = Hue.el("#flash_info")
-  let text_el = Hue.el("#flash_info_text")
+Hue.flash_info = (title, text) => {
+  let el = Hue.el(`#flash_info`)
+  let text_el = Hue.el(`#flash_info_text`)
   text_el.textContent = text
-  let title_el = Hue.el("#flash_info_title_text")
+  let title_el = Hue.el(`#flash_info_title_text`)
   title_el.textContent = title
-  let icon_el = Hue.el("#flash_info_title_icon")
+  let icon_el = Hue.el(`#flash_info_title_icon`)
   jdenticon.update(icon_el, title)
-  el.style.display = "flex"
+  el.style.display = `flex`
   Hue.flash_info_timer()
 }
 
 // Hide the flash info window
-Hue.hide_flash_info = function () {
-  let el = Hue.el("#flash_info")
-  el.style.display = "none"
+Hue.hide_flash_info = () => {
+  let el = Hue.el(`#flash_info`)
+  el.style.display = `none`
 }
 
 // Get some element measurements
-Hue.get_element_sizes = function () {
-  Hue.panel_height = Hue.el("#footer").offsetHeight
+Hue.get_element_sizes = () => {
+  Hue.panel_height = Hue.el(`#footer`).offsetHeight
 }
 
 // Setup item picker
-Hue.setup_item_picker = function () {
-  let container = Hue.el("#item_picker_container")
+Hue.setup_item_picker = () => {
+  let container = Hue.el(`#item_picker_container`)
 
-  Hue.ev(container, "click", function (e) {
-    let el = e.target.closest(".item_picker_item")
+  Hue.ev(container, `click`, (e) => {
+    let el = e.target.closest(`.item_picker_item`)
 
     if (el) {
-      let item = Hue.dataset(el, "item")
+      let item = Hue.dataset(el, `item`)
       Hue.item_picker_callback(item)
       Hue.msg_item_picker.close()
     }
@@ -165,14 +166,14 @@ Hue.setup_item_picker = function () {
 }
 
 // Select an item from a list
-Hue.show_item_picker = function (title, items, callback) {
-  let container = Hue.el("#item_picker_container")
-  container.innerHTML = ""
+Hue.show_item_picker = (title, items, callback) => {
+  let container = Hue.el(`#item_picker_container`)
+  container.innerHTML = ``
 
   for (let item of items) {
-    let el = Hue.create("div", "item_picker_item nice_row pointer justify_center")
+    let el = Hue.create(`div`, `item_picker_item nice_row pointer justify_center`)
     el.textContent = item
-    Hue.dataset(el, "item", item)
+    Hue.dataset(el, `item`, item)
     container.append(el)
   }
 

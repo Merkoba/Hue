@@ -13,10 +13,10 @@ Hue.server_update_events = {
     Hue.upload_ended(data)
   },
   image_source_changed: (data) => {
-    Hue.setup_media_object("image", "change", data)
+    Hue.setup_media_object(`image`, `change`, data)
   },
   tv_source_changed: (data) => {
-    Hue.setup_media_object("tv", "change", data)
+    Hue.setup_media_object(`tv`, `change`, data)
   },
   profilepic_changed: (data) => {
     Hue.profilepic_changed(data)
@@ -55,65 +55,65 @@ Hue.server_update_events = {
     Hue.receive_ban_count(data)
   },
   nothing_to_unban: (data) => {
-    Hue.checkmsg("There was nothing to unban")
+    Hue.checkmsg(`There was nothing to unban`)
   },
   nothing_to_clear: (data) => {
-    Hue.checkmsg("There was nothing to clear")
+    Hue.checkmsg(`There was nothing to clear`)
   },
   forbidden_user: (data) => {
     Hue.forbidden_user()
   },
   nothing_was_found: (data) => {
-    Hue.checkmsg("Nothing was found")
+    Hue.checkmsg(`Nothing was found`)
   },
   user_not_found: (data) => {
-    Hue.checkmsg("User doesn't exist")
+    Hue.checkmsg(`User doesn't exist`)
   },
   user_not_in_room: (data) => {
     Hue.user_not_in_room()
   },
   no_ops_to_remove: (data) => {
-    Hue.checkmsg("There were no ops to remove")
+    Hue.checkmsg(`There were no ops to remove`)
   },
   no_voices_to_reset: (data) => {
-    Hue.checkmsg("There were no voices to reset")
+    Hue.checkmsg(`There were no voices to reset`)
   },
   no_ops_to_reset: (data) => {
-    Hue.checkmsg("There were no ops to reset")
+    Hue.checkmsg(`There were no ops to reset`)
   },
   is_already: (data) => {
     Hue.is_already(data.who, data.what)
   },
   user_already_banned: (data) => {
-    Hue.checkmsg("User is already banned")
+    Hue.checkmsg(`User is already banned`)
   },
   user_already_unbanned: (data) => {
-    Hue.checkmsg("User is already unbanned")
+    Hue.checkmsg(`User is already unbanned`)
   },
   image_not_found: (data) => {
-    Hue.checkmsg("The image couldn't be found")
+    Hue.checkmsg(`The image couldn't be found`)
   },
   song_not_found: (data) => {
-    Hue.checkmsg("The song couldn't be found")
+    Hue.checkmsg(`The song couldn't be found`)
   },
   video_not_found: (data) => {
-    Hue.checkmsg("The video couldn't be found")
+    Hue.checkmsg(`The video couldn't be found`)
   },
   image_cooldown_wait: (data) => {
     Hue.checkmsg(
-      "The image was changed recently. You must wait a while before changing it again"
+      `The image was changed recently. You must wait a while before changing it again`
     )
   },
   tv_cooldown_wait: (data) => {
     Hue.checkmsg(
-      "The tv was changed recently. You must wait a while before changing it again"
+      `The tv was changed recently. You must wait a while before changing it again`
     )
   },
   room_created: (data) => {
     Hue.on_room_created(data)
   },
   redirect: (data) => {
-    Hue.goto_url(data.location, "same")
+    Hue.goto_url(data.location, `same`)
   },
   username_already_exists: (data) => {
     Hue.checkmsg(`${data.username} already exists`)
@@ -158,13 +158,13 @@ Hue.server_update_events = {
     Hue.pong_received(data)
   },
   cannot_embed_iframe: (data) => {
-    Hue.checkmsg("That website cannot be embedded")
+    Hue.checkmsg(`That website cannot be embedded`)
   },
   same_image: (data) => {
-    Hue.checkmsg("Image is already set to that")
+    Hue.checkmsg(`Image is already set to that`)
   },
   same_tv: (data) => {
-    Hue.checkmsg("TV is already set to that")
+    Hue.checkmsg(`TV is already set to that`)
   },
   receive_admin_activity: (data) => {
     Hue.show_admin_activity(data.messages)
@@ -203,7 +203,7 @@ Hue.server_update_events = {
     Hue.audioclip_changed(data)
   },
   done: (data) => {
-    Hue.checkmsg("Done")
+    Hue.checkmsg(`Done`)
   },
   edited_media_comment: (data) => {
     Hue.edited_media_comment(data)
@@ -233,7 +233,7 @@ Hue.server_update_events = {
     Hue.ip_address_received(data)
   },
   data_not_found: (data) => {
-    Hue.checkmsg("Data couldn't be found")
+    Hue.checkmsg(`Data couldn't be found`)
   },
   message_board_wait: (data) => {
     Hue.show_message_board_wait_message(data.remaining)
@@ -247,7 +247,7 @@ Hue.server_update_events = {
 }
 
 // Centralized function to initiate a socket emit to the server
-Hue.socket_emit = function (destination, data = {}, force = false) {
+Hue.socket_emit = (destination, data = {}, force = false) => {
   if (!force) {
     if (!Hue.connected && !Hue.room_locked) {
       return
@@ -270,27 +270,28 @@ Hue.socket_emit = function (destination, data = {}, force = false) {
 
 // Checks the socket emit queue to send the next emit
 // A throttled queue is used to control the rate in which emits are sent
-Hue.check_emit_queue = function () {
+Hue.check_emit_queue = () => {
   if (Hue.emit_queue.length > 0) {
     let obj = Hue.emit_queue[0]
 
-    if (obj !== "first") {
+    if (obj !== `first`) {
       Hue.do_socket_emit(obj)
     }
 
     Hue.emit_queue.shift()
 
-    Hue.emit_queue_timeout = setTimeout(function () {
+    Hue.emit_queue_timeout = setTimeout(() => {
       Hue.check_emit_queue()
     }, Hue.config.socket_emit_throttle)
-  } else {
+  }
+  else {
     clearTimeout(Hue.emit_queue_timeout)
     Hue.emit_queue_timeout = undefined
   }
 }
 
 // Actually do the socket emit
-Hue.do_socket_emit = function (obj) {
+Hue.do_socket_emit = (obj) => {
   if (Hue.debug_socket) {
     Hue.loginfo(
       `Emit: ${obj.destination} | Data: ${JSON.stringify(obj.data).substring(
@@ -301,30 +302,30 @@ Hue.do_socket_emit = function (obj) {
   }
 
   obj.data.server_method_name = obj.destination
-  Hue.socket.emit("server_method", obj.data)
+  Hue.socket.emit(`server_method`, obj.data)
 }
 
 // Starts and setups the client's socket
-Hue.start_socket = function () {
-  Hue.socket = io("/", {
+Hue.start_socket = () => {
+  Hue.socket = io(`/`, {
     reconnection: false,
   })
 
-  Hue.socket.on("connect", () => {
-    Hue.loginfo("Socket Connected", "color:green")
+  Hue.socket.on(`connect`, () => {
+    Hue.loginfo(`Socket Connected`, `color:green`)
     Hue.connecting = false
 
-    Hue.socket_emit("join_room", {
+    Hue.socket_emit(`join_room`, {
       room_id: Hue.room_id,
       user_id: Hue.user_id,
       token: Hue.jwt_token
     }, true)
   })
 
-  Hue.socket.on("connect_error", () => {
+  Hue.socket.on(`connect_error`, () => {
     if (Hue.connecting) {
       if (Hue.started) {
-        setTimeout(function () {
+        setTimeout(() => {
           Hue.connecting = false
           Hue.on_disconnect()
         }, 3000)
@@ -332,8 +333,8 @@ Hue.start_socket = function () {
     }
   })
 
-  Hue.socket.on("disconnect", (reason) => {
-    Hue.loginfo(`Socket Disconnected - Reason: ${reason}`, "color:red")
+  Hue.socket.on(`disconnect`, (reason) => {
+    Hue.loginfo(`Socket Disconnected - Reason: ${reason}`, `color:red`)
     Hue.connected = false
 
     if (Hue.started) {
@@ -341,7 +342,7 @@ Hue.start_socket = function () {
     }
   })
 
-  Hue.socket.on("update", (obj) => {
+  Hue.socket.on(`update`, (obj) => {
     let type = obj.type
     let data = obj.data
 
@@ -363,7 +364,7 @@ Hue.start_socket = function () {
 }
 
 // Actions on disconnect
-Hue.on_disconnect = function () {
+Hue.on_disconnect = () => {
   if (Hue.user_leaving) {
     return
   }
@@ -381,17 +382,17 @@ Hue.on_disconnect = function () {
   Hue.last_message_date = Hue.get_last_message_date()
   Hue.generate_favicon(-1)
 
-  if (!Hue.el("#reconnecting_feedback")) {
-    Hue.feedback("Reconnecting...", { container_id: "reconnecting_feedback" })
+  if (!Hue.el(`#reconnecting_feedback`)) {
+    Hue.feedback(`Reconnecting...`, { container_id: `reconnecting_feedback` })
   }
 
-  setTimeout(function () {
+  setTimeout(() => {
     Hue.refresh_client()
   }, 5000)
 }
 
 // Some stats in socket i/o
-Hue.start_socket_stats = function () {
+Hue.start_socket_stats = () => {
   setInterval(() => {
     Hue.loginfo(`Socket Messsages IN/OUT (last 10 minutes): ${Hue.num_socket_in}/${Hue.num_socket_out}`)
     Hue.num_socket_in = 0

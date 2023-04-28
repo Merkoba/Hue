@@ -1,6 +1,6 @@
 // Setups most keyboard events
-Hue.activate_key_detection = function () {
-  Hue.ev(document, "keydown", (e) => {
+Hue.activate_key_detection = () => {
+  Hue.ev(document, `keydown`, (e) => {
     if (!Hue.started) {
       return
     }
@@ -9,7 +9,7 @@ Hue.activate_key_detection = function () {
       return
     }
 
-    if (e.key === "Tab") {
+    if (e.key === `Tab`) {
       if (
         Hue.modal_open &&
         Hue.msg_change_password.is_open() ||
@@ -18,7 +18,8 @@ Hue.activate_key_detection = function () {
         Hue.msg_link_tv.is_open()
       ) {
         // Continue
-      } else {
+      }
+      else {
         if (e.ctrlKey) {
           return
         }
@@ -28,7 +29,7 @@ Hue.activate_key_detection = function () {
     }
 
     if (Hue.editing_message_board) {
-      if (e.key === "Enter") {
+      if (e.key === `Enter`) {
         Hue.do_message_board_edit()
         e.preventDefault()
         return
@@ -36,7 +37,7 @@ Hue.activate_key_detection = function () {
     }
 
     if (Hue.modal_open) {
-      if (e.key === "Escape") {
+      if (e.key === `Escape`) {
         if (e.shiftKey) {
           Hue.close_all_modals()
           e.preventDefault()
@@ -44,19 +45,22 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (e.target.closest(".filter_input")) {
-        let c = e.target.closest(".Msg-content-container")
+      if (e.target.closest(`.filter_input`)) {
+        let c = e.target.closest(`.Msg-content-container`)
 
-        if (e.key === "PageUp") {
+        if (e.key === `PageUp`) {
           c.scrollTop = 0
           e.preventDefault()
-        } else if (e.key === "PageDown") {
+        }
+        else if (e.key === `PageDown`) {
           c.scrollTop = c.scrollHeight
           e.preventDefault()
-        } else if (e.key === "ArrowUp") {
+        }
+        else if (e.key === `ArrowUp`) {
           c.scrollTop -= Hue.chat_scroll_amount
           e.preventDefault()
-        } else if (e.key === "ArrowDown") {
+        }
+        else if (e.key === `ArrowDown`) {
           c.scrollTop += Hue.chat_scroll_amount
           e.preventDefault()
         }
@@ -66,7 +70,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_link_image.is_open()) {
         if (Hue.msg_link_image.is_highest()) {
-          if (e.key === "Enter") {
+          if (e.key === `Enter`) {
             Hue.link_image_submit()
             e.preventDefault()
           }
@@ -77,7 +81,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_link_tv.is_open()) {
         if (Hue.msg_link_tv.is_highest()) {
-          if (e.key === "Enter") {
+          if (e.key === `Enter`) {
             Hue.link_tv_submit()
             e.preventDefault()
           }
@@ -88,7 +92,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_image_upload_comment.is_open()) {
         if (Hue.msg_image_upload_comment.is_highest()) {
-          if (e.key === "Enter") {
+          if (e.key === `Enter`) {
             Hue.process_image_upload_comment()
             e.preventDefault()
           }
@@ -97,7 +101,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_tv_upload_comment.is_open()) {
         if (Hue.msg_tv_upload_comment.is_highest()) {
-          if (e.key === "Enter") {
+          if (e.key === `Enter`) {
             Hue.process_tv_upload_comment()
             e.preventDefault()
           }
@@ -106,11 +110,12 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_open_room.is_open()) {
         if (Hue.msg_open_room.is_highest()) {
-          if (e.key === "Enter") {
+          if (e.key === `Enter`) {
             if (e.shiftKey) {
-              Hue.el("#open_room_here").click()
-            } else {
-              Hue.el("#open_room_new_tab").click()
+              Hue.el(`#open_room_here`).click()
+            }
+            else {
+              Hue.el(`#open_room_new_tab`).click()
             }
 
             e.preventDefault()
@@ -122,7 +127,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_link_background.is_open()) {
         if (Hue.msg_link_background.is_highest()) {
-          if (e.key === "Enter") {
+          if (e.key === `Enter`) {
             Hue.link_background_action()
             e.preventDefault()
           }
@@ -133,16 +138,19 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_modal_image.is_open()) {
         if (Hue.msg_modal_image.is_highest()) {
-          if (e.key === "ArrowLeft") {
+          if (e.key === `ArrowLeft`) {
             Hue.modal_image_prev_click()
             e.preventDefault()
-          } else if (e.key === "ArrowRight") {
+          }
+          else if (e.key === `ArrowRight`) {
             Hue.modal_image_next_click()
             e.preventDefault()
-          } else if (e.key === "ArrowUp") {
+          }
+          else if (e.key === `ArrowUp`) {
             Hue.modal_image_next_click()
             e.preventDefault()
-          } else if (e.key === "ArrowDown") {
+          }
+          else if (e.key === `ArrowDown`) {
             Hue.modal_image_prev_click()
             e.preventDefault()
           }
@@ -153,7 +161,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_change_username.is_open()) {
         if (Hue.msg_change_username.is_highest()) {
-          if (e.key === "Enter" && !e.shiftKey) {
+          if (e.key === `Enter` && !e.shiftKey) {
             Hue.submit_change_username()
             e.preventDefault()
           }
@@ -164,7 +172,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_change_password.is_open()) {
         if (Hue.msg_change_password.is_highest()) {
-          if (e.key === "Enter" && !e.shiftKey) {
+          if (e.key === `Enter` && !e.shiftKey) {
             Hue.submit_change_password()
             e.preventDefault()
           }
@@ -175,7 +183,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_handle_url.is_open()) {
         if (Hue.msg_handle_url.is_highest()) {
-          if (e.key === "Enter") {
+          if (e.key === `Enter`) {
             Hue.handle_url_chat()
             e.preventDefault()
           }
@@ -186,7 +194,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_confirm.is_open()) {
         if (Hue.msg_confirm.is_highest()) {
-          if (e.key === "Enter" && !e.shiftKey) {
+          if (e.key === `Enter` && !e.shiftKey) {
             Hue.on_confirm()
             e.preventDefault()
           }
@@ -197,7 +205,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_message_board.is_open()) {
         if (Hue.msg_message_board.is_highest()) {
-          if (e.key === "Enter" && !e.shiftKey) {
+          if (e.key === `Enter` && !e.shiftKey) {
             Hue.submit_message_board_post()
             e.preventDefault()
           }
@@ -208,7 +216,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_write_whisper.is_open()) {
         if (Hue.msg_write_whisper.is_highest()) {
-          if (e.key === "Enter" && !e.shiftKey) {
+          if (e.key === `Enter` && !e.shiftKey) {
             Hue.submit_write_whisper()
             e.preventDefault()
           }
@@ -219,7 +227,7 @@ Hue.activate_key_detection = function () {
 
       if (Hue.msg_delete_messages.is_open()) {
         if (Hue.msg_delete_messages.is_highest()) {
-          if (e.key === "Enter" && !e.shiftKey) {
+          if (e.key === `Enter` && !e.shiftKey) {
             Hue.delete_message_action()
             e.preventDefault()
           }
@@ -231,8 +239,8 @@ Hue.activate_key_detection = function () {
       return
     }
 
-    if (e.key === "Control" || e.ctrlKey) {
-      if (e.key !== "v") {
+    if (e.key === `Control` || e.ctrlKey) {
+      if (e.key !== `v`) {
         return
       }
     }
@@ -240,7 +248,7 @@ Hue.activate_key_detection = function () {
     Hue.focus_input()
     let has_value = Hue.input_has_value()
 
-    if (e.key === "Enter") {
+    if (e.key === `Enter`) {
       if (Hue.selected_message) {
         Hue.selected_message_action()
         e.preventDefault()
@@ -259,52 +267,64 @@ Hue.activate_key_detection = function () {
 
       if (Hue.reply_active || Hue.edit_active || has_value) {
         Hue.submit_input()
-      } else {
+      }
+      else {
         Hue.goto_bottom(true)
       }
 
       e.preventDefault()
       return
-    } else if (e.key === "PageUp") {
+    }
+    else if (e.key === `PageUp`) {
       Hue.scroll_up()
-    } else if (e.key === "PageDown") {
+    }
+    else if (e.key === `PageDown`) {
       Hue.scroll_down()
-    } else if (e.key === "ArrowUp") {
+    }
+    else if (e.key === `ArrowUp`) {
       if (Hue.footer_expanded) {
         return
       }
-      
-      Hue.select_message("up")
+
+      Hue.select_message(`up`)
       e.preventDefault()
       return
-    } else if (e.key === "ArrowDown") {
+    }
+    else if (e.key === `ArrowDown`) {
       if (e.shiftKey || Hue.footer_expanded) {
         return
       }
 
-      Hue.select_message("down")
+      Hue.select_message(`down`)
       e.preventDefault()
       return
-    } else if (e.key === "Escape") {
+    }
+    else if (e.key === `Escape`) {
       if (!e.shiftKey) {
         if (Hue.selected_message) {
           Hue.unselect_message()
-        } else if (Hue.reply_active) {
+        }
+        else if (Hue.reply_active) {
           Hue.cancel_reply()
-        } else if (Hue.edit_active) {
+        }
+        else if (Hue.edit_active) {
           Hue.cancel_edit()
-        } else if (Hue.chat_scrolled) {
+        }
+        else if (Hue.chat_scrolled) {
           Hue.goto_bottom(true)
-        } else if (has_value) {
+        }
+        else if (has_value) {
           Hue.clear_input()
-        } else if (Hue.footer_expanded) {
+        }
+        else if (Hue.footer_expanded) {
           Hue.disable_footer_expand()
         }
 
         e.preventDefault()
         return
       }
-    } else if (e.key === "Backspace") {
+    }
+    else if (e.key === `Backspace`) {
       if (Hue.footer_expanded) {
         if (!has_value) {
           Hue.disable_footer_expand()
@@ -320,12 +340,12 @@ Hue.activate_key_detection = function () {
     }
   })
 
-  Hue.ev(document, "input", function (e) {
+  Hue.ev(document, `input`, (e) => {
     if (!Hue.started) {
       return false
     }
 
-    if (e.target.closest(".filter_input")) {
+    if (e.target.closest(`.filter_input`)) {
       Hue.modal_filter()
     }
   })

@@ -1,15 +1,17 @@
 // Centralized function to get localStorage objects
-Hue.get_local_storage = function (ls_name) {
+Hue.get_local_storage = (ls_name) => {
   let obj
 
   if (localStorage[ls_name]) {
     try {
       obj = JSON.parse(localStorage.getItem(ls_name))
-    } catch (err) {
+    }
+    catch (err) {
       localStorage.removeItem(ls_name)
       obj = null
     }
-  } else {
+  }
+  else {
     obj = null
   }
 
@@ -17,18 +19,19 @@ Hue.get_local_storage = function (ls_name) {
 }
 
 // Centralized function to save localStorage objects
-Hue.save_local_storage = function (ls_name, obj, force = false) {
+Hue.save_local_storage = (ls_name, obj, force = false) => {
   Hue.local_storage_to_save[ls_name] = obj
 
   if (force) {
     Hue.do_save_local_storage()
-  } else {
+  }
+  else {
     Hue.save_local_storage_timer()
   }
 }
 
 // Do the actual localStorage save
-Hue.do_save_local_storage = function () {
+Hue.do_save_local_storage = () => {
   for (let ls_name in Hue.local_storage_to_save) {
     let obj = Hue.local_storage_to_save[ls_name]
 
@@ -41,8 +44,8 @@ Hue.do_save_local_storage = function () {
 }
 
 // Setups localStorage events
-Hue.setup_local_storage = function () {
-  Hue.ev(window, "storage", function (e) {
+Hue.setup_local_storage = () => {
+  Hue.ev(window, `storage`, (e) => {
     if (e.key !== Hue.ls_settings) {
       return
     }
@@ -51,7 +54,8 @@ Hue.setup_local_storage = function () {
 
     try {
       obj = JSON.parse(e.newValue)
-    } catch (err) {
+    }
+    catch (err) {
       return
     }
 

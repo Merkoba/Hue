@@ -2,7 +2,7 @@
 // Between file loaded and init ready
 // Between init ready and join
 // Between join and everything ready
-Hue.compare_load_dates = function () {
+Hue.compare_load_dates = () => {
   let time_1 = Hue.utilz.nice_time(Hue.load_date_1, Hue.load_date_2)
   let time_2 = Hue.utilz.nice_time(Hue.load_date_2, Hue.load_date_3)
   let time_3 = Hue.utilz.nice_time(Hue.load_date_3, Hue.load_date_4)

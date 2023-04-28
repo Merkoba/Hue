@@ -1,68 +1,76 @@
 // Starts Dropzone events for file drag and drop events
 // This also handles normal uploads by clicking the Upload button
-Hue.start_dropzone = function () {
+Hue.start_dropzone = () => {
   let types = []
   types = types.concat(Hue.utilz.image_types)
   types = types.concat(Hue.utilz.video_types)
   types = types.concat(Hue.utilz.audio_types)
 
-  Hue.dropzone = new Dropzone("body", {
-    url: "/",
+  Hue.dropzone = new Dropzone(`body`, {
+    url: `/`,
     maxFiles: 1,
     autoProcessQueue: false,
-    acceptedFiles: types.join(","),
-    clickable: "#dropzone_element"
+    acceptedFiles: types.join(`,`),
+    clickable: `#dropzone_element`
   })
 
-  Hue.dropzone.on("addedfile", function (file) {
+  Hue.dropzone.on(`addedfile`, (file) => {
     Hue.process_file_added(file)
   })
 
-  Hue.dropzone.on("dragenter", function () {
+  Hue.dropzone.on(`dragenter`, () => {
     Hue.upload_media = undefined
   })
 
-  Hue.dropzone.on("maxfilesexceeded", function (file) {
+  Hue.dropzone.on(`maxfilesexceeded`, (file) => {
     Hue.dropzone.removeFile(file)
   })
 }
 
 // Process file upload
-Hue.do_process_file_added = function (file) {
+Hue.do_process_file_added = (file) => {
   let is_image = Hue.utilz.is_image(file.name)
   let is_video = Hue.utilz.is_video(file.name)
   let is_audio = Hue.utilz.is_audio(file.name)
 
   if (Hue.upload_media) {
-    if (Hue.upload_media === "image") {
+    if (Hue.upload_media === `image`) {
       if (is_image) {
         Hue.upload_image(file)
-      } else if (is_video || is_audio) {
+      }
+      else if (is_video || is_audio) {
         Hue.upload_video(file)
       }
-    } else if (Hue.upload_media === "tv") {
+    }
+    else if (Hue.upload_media === `tv`) {
       if (is_video || is_audio) {
         Hue.upload_video(file)
-      } else if (is_image) {
+      }
+      else if (is_image) {
         Hue.upload_image(file)
       }
-    } else if (Hue.upload_media === "background") {
+    }
+    else if (Hue.upload_media === `background`) {
       if (is_image) {
         Hue.background_selected(file)
       }
-    } else if (Hue.upload_media === "profilepic") {
+    }
+    else if (Hue.upload_media === `profilepic`) {
       if (is_image) {
-        Hue.profilepic_selected(file, "upload")
+        Hue.profilepic_selected(file, `upload`)
       }
-    } else if (Hue.upload_media === "audioclip") {
+    }
+    else if (Hue.upload_media === `audioclip`) {
       if (is_audio) {
         Hue.audioclip_selected(file)
       }
     }
-  } else {
+  }
+  else {
     if (is_image) {
       Hue.upload_image(file)
-    } else if (is_video || is_audio) {
+    }
+    else if (is_video || is_audio) {
       Hue.upload_video(file)
     }
   }
@@ -71,17 +79,18 @@ Hue.do_process_file_added = function (file) {
 }
 
 // Trigger dropzone click
-Hue.trigger_dropzone = function () {
-  Hue.el("#dropzone_element").click()
+Hue.trigger_dropzone = () => {
+  Hue.el(`#dropzone_element`).click()
 }
 
 // Handle generic image upload
-Hue.upload_image = function (file) {
+Hue.upload_image = (file) => {
   if (Hue.msg_room_config.is_open()) {
     Hue.background_selected(file)
     return
-  } else if (Hue.msg_user_profile.is_open()) {
-    Hue.profilepic_selected(file, "upload")
+  }
+  else if (Hue.msg_user_profile.is_open()) {
+    Hue.profilepic_selected(file, `upload`)
     return
   }
 
@@ -90,7 +99,7 @@ Hue.upload_image = function (file) {
   let size = file.size / 1024
 
   if (size > Hue.config.max_image_size) {
-    Hue.show_info("File is too big")
+    Hue.show_info(`File is too big`)
     return
   }
 
@@ -98,17 +107,17 @@ Hue.upload_image = function (file) {
     return
   }
 
-  Hue.show_image_upload_comment(file, "upload")
+  Hue.show_image_upload_comment(file, `upload`)
 }
 
 // Handle generic video upload
-Hue.upload_video = function (file) {
+Hue.upload_video = (file) => {
   Hue.focus_input()
 
   let size = file.size / 1024
 
   if (size > Hue.config.max_tv_size) {
-    Hue.show_info("File is too big")
+    Hue.show_info(`File is too big`)
     return
   }
 
@@ -119,15 +128,15 @@ Hue.upload_video = function (file) {
     return
   }
 
-  Hue.show_tv_upload_comment(file, "upload")
+  Hue.show_tv_upload_comment(file, `upload`)
 }
 
 // Creates a file reader for files
-Hue.create_file_reader = function (file) {
+Hue.create_file_reader = (file) => {
   let reader = new FileReader()
 
-  Hue.ev(reader, "loadend", function (e) {
-    Hue.socket_emit("slice_upload", {
+  Hue.ev(reader, `loadend`, (e) => {
+    Hue.socket_emit(`slice_upload`, {
       data: reader.result,
       action: file.hue_data.action,
       name: file.hue_data.name,
@@ -145,7 +154,7 @@ Hue.create_file_reader = function (file) {
 // Sets all required data
 // Creates a file reader
 // Starts a sliced upload
-Hue.upload_file = function (args = {}) {
+Hue.upload_file = (args = {}) => {
   if (!args.file || !args.action) {
     return
   }
@@ -158,7 +167,8 @@ Hue.upload_file = function (args = {}) {
 
   if (args.name) {
     args.file.hue_data.name = args.name
-  } else {
+  }
+  else {
     args.file.hue_data.name = args.file.name
   }
 
@@ -174,9 +184,10 @@ Hue.upload_file = function (args = {}) {
   if (args.file.hue_data.name !== undefined) {
     args.file.hue_data.name = Hue.utilz
       .no_space(args.file.hue_data.name)
-      .replace(/.gifv/g, ".gif")
-  } else {
-    args.file.hue_data.name = "no_name"
+      .replace(/.gifv/g, `.gif`)
+  }
+  else {
+    args.file.hue_data.name = `no_name`
   }
 
   args.file.hue_data.reader = Hue.create_file_reader(args.file)
@@ -187,17 +198,19 @@ Hue.upload_file = function (args = {}) {
 
   if (args.file.hue_data.next >= 100) {
     args.file.hue_data.sending_last_slice = true
-  } else {
+  }
+  else {
     args.file.hue_data.sending_last_slice = false
   }
 
   args.file.hue_data.percentage = 0
-  let icon = ""
+  let icon = ``
 
-  if (args.action === "image_upload") {
-    icon = "image"
-  } else if (args.action === "tv_upload") {
-    icon = "tv"
+  if (args.action === `image_upload`) {
+    icon = `image`
+  }
+  else if (args.action === `tv_upload`) {
+    icon = `tv`
   }
 
   let obj = {
@@ -207,7 +220,7 @@ Hue.upload_file = function (args = {}) {
     icon: icon,
     id: `uploading_${date}`,
     title: `Size: ${Hue.utilz.size_string(args.file.hue_data.size / 1024)}`,
-    on_x_button_click: function () {
+    on_x_button_click: () => {
       Hue.cancel_file_upload(date)
     }
   }
@@ -218,7 +231,7 @@ Hue.upload_file = function (args = {}) {
 
 // Cancels a file upload
 // Deletes the local file and sends a signal to the server to try to cancel it on time
-Hue.cancel_file_upload = function (date) {
+Hue.cancel_file_upload = (date) => {
   let file = Hue.files[date]
 
   if (!file) {
@@ -229,22 +242,23 @@ Hue.cancel_file_upload = function (date) {
     return
   }
 
-  Hue.change_upload_status(file, "Cancelled", true)
+  Hue.change_upload_status(file, `Cancelled`, true)
 
-  if (file.hue_data.action === "background_upload") {
-    Hue.el("#admin_background").src = Hue.background
+  if (file.hue_data.action === `background_upload`) {
+    Hue.el(`#admin_background`).src = Hue.background
     Hue.apply_background()
-  } else if (file.hue_data.action === "profilepic_upload") {
-    Hue.el("#user_profile_profilepic").src = Hue.get_profilepic(Hue.user_id)
+  }
+  else if (file.hue_data.action === `profilepic_upload`) {
+    Hue.el(`#user_profile_profilepic`).src = Hue.get_profilepic(Hue.user_id)
   }
 
   delete Hue.files[date]
-  Hue.socket_emit("cancel_upload", { date: date })
+  Hue.socket_emit(`cancel_upload`, { date: date })
 }
 
 // Gets the percentage based on the next file slice to be uploaded
 // Last slice would be 100
-Hue.get_file_next = function (file) {
+Hue.get_file_next = (file) => {
   let next = Math.floor(
     ((Hue.config.upload_slice_size * 1) / file.hue_data.size) * 100
   )
@@ -257,12 +271,12 @@ Hue.get_file_next = function (file) {
 }
 
 // Updates the upload status announcement based on upload progress
-Hue.change_upload_status = function (file, status, clear = false) {
+Hue.change_upload_status = (file, status, clear = false) => {
   if (!file.hue_popup || !file.hue_popup.content) {
     return
   }
 
-  Hue.el(".action_popup_message", file.hue_popup.content).textContent =
+  Hue.el(`.action_popup_message`, file.hue_popup.content).textContent =
     `Uploading ${Hue.get_file_action_name(file.hue_data.action)}: ${status}`
 
   if (clear) {
@@ -271,24 +285,27 @@ Hue.change_upload_status = function (file, status, clear = false) {
 }
 
 // Gets proper names for file upload types
-Hue.get_file_action_name = function (action) {
-  let s = ""
+Hue.get_file_action_name = (action) => {
+  let s = ``
 
-  if (action === "image_upload") {
-    s = "image"
-  } else if (action === "profilepic_upload") {
-    s = "profile image"
-  } else if (action === "background_upload") {
-    s = "background image"
-  } else if (action === "audioclip_upload") {
-    s = "audio clip"
+  if (action === `image_upload`) {
+    s = `image`
+  }
+  else if (action === `profilepic_upload`) {
+    s = `profile image`
+  }
+  else if (action === `background_upload`) {
+    s = `background image`
+  }
+  else if (action === `audioclip_upload`) {
+    s = `audio clip`
   }
 
   return s
 }
 
 // This is called whenever the server asks for the next slice of a file upload
-Hue.request_slice_upload = function (data) {
+Hue.request_slice_upload = (data) => {
   let file = Hue.files[data.date]
 
   if (!file) {
@@ -317,16 +334,16 @@ Hue.request_slice_upload = function (data) {
 }
 
 // What to do when a file upload finishes
-Hue.upload_ended = function (data) {
+Hue.upload_ended = (data) => {
   let file = Hue.files[data.date]
 
   if (file) {
-    Hue.change_upload_status(file, "100%", true)
+    Hue.change_upload_status(file, `100%`, true)
     delete Hue.files[data.date]
   }
 }
 
 // Shows an error message on file upload failure
-Hue.show_upload_error = function () {
-  Hue.checkmsg("The file could not be uploaded")
+Hue.show_upload_error = () => {
+  Hue.checkmsg(`The file could not be uploaded`)
 }

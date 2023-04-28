@@ -1,5 +1,5 @@
 // Generates an array of autocompletable words on demand
-Hue.generate_words_to_autocomplete = function () {
+Hue.generate_words_to_autocomplete = () => {
   let usernames = []
   let susernames = []
 
@@ -25,7 +25,7 @@ Hue.generate_words_to_autocomplete = function () {
 }
 
 // Tries to find the closest item to autocomplate after a tab action
-Hue.get_closest_autocomplete = function (element, w) {
+Hue.get_closest_autocomplete = (element, w) => {
   let info = Hue.tab_info[element.id]
   let l = Hue.generate_words_to_autocomplete()
   let wl = w.toLowerCase()
@@ -63,11 +63,11 @@ Hue.get_closest_autocomplete = function (element, w) {
     return Hue.get_closest_autocomplete(element, w)
   }
 
-  return ""
+  return ``
 }
 
 // Attemps to autocomplete a word after a user presses tab on a textbox
-Hue.tabbed = function (element) {
+Hue.tabbed = (element) => {
   if (!element.id) {
     return
   }
@@ -79,13 +79,13 @@ Hue.tabbed = function (element) {
     info = Hue.tab_info[element.id]
   }
 
-  if (info.tabbed_word !== "") {
+  if (info.tabbed_word !== ``) {
     Hue.replace_tabbed(element, info.tabbed_word)
     return
   }
 
   let split = element.selectionStart
-  let value = element.value.replace(/\n/g, " ")
+  let value = element.value.replace(/\n/g, ` `)
   let a = value.substring(0, split).match(/[^ ]*$/)[0]
   let b = value.substring(split).match(/^[^ ]*/)[0]
   let word = a + b
@@ -93,26 +93,27 @@ Hue.tabbed = function (element) {
   info.tabbed_start = split - a.length
   info.tabbed_end = split + b.length
 
-  if (word !== "") {
+  if (word !== ``) {
     info.tabbed_word = word
     Hue.replace_tabbed(element, word)
   }
 }
 
 // Replaces current word next to the caret with the selected autocomplete item
-Hue.replace_tabbed = function (element, word) {
+Hue.replace_tabbed = (element, word) => {
   let info = Hue.tab_info[element.id]
   let result = Hue.get_closest_autocomplete(element, word)
 
   if (result) {
-    if (element.value[info.tabbed_end] === " ") {
+    if (element.value[info.tabbed_end] === ` `) {
       element.value = Hue.utilz.replace_between(
         element.value,
         info.tabbed_start,
         info.tabbed_end,
         result
       )
-    } else {
+    }
+    else {
       element.value = Hue.utilz.replace_between(
         element.value,
         info.tabbed_start,
@@ -131,14 +132,14 @@ Hue.replace_tabbed = function (element, word) {
 }
 
 // Resets 'tabbed' state generated after autocompleting words
-Hue.clear_tabbed = function (element) {
+Hue.clear_tabbed = (element) => {
   if (!element.id) {
     return
   }
 
   Hue.tab_info[element.id] = {
     tabbed_list: [],
-    tabbed_word: "",
+    tabbed_word: ``,
     tabbed_start: 0,
     tabbed_end: 0,
   }
@@ -146,10 +147,10 @@ Hue.clear_tabbed = function (element) {
 
 // Setups autocomplete functionality
 // This allows to have tab autocomplete on all allowed textboxes
-Hue.setup_autocomplete = function () {
-  Hue.ev(Hue.el("body"), "keydown", function (e) {
+Hue.setup_autocomplete = () => {
+  Hue.ev(Hue.el(`body`), `keydown`, (e) => {
     if (Hue.utilz.is_textbox(e.target)) {
-      if (e.key === "Tab") {
+      if (e.key === `Tab`) {
         let value = e.target.value
 
         if (value.length > 0) {
@@ -162,7 +163,7 @@ Hue.setup_autocomplete = function () {
     }
   })
 
-  Hue.ev(Hue.el("body"), "click", function (e) {
+  Hue.ev(Hue.el(`body`), `click`, (e) => {
     if (Hue.utilz.is_textbox(e.target)) {
       Hue.clear_tabbed(e.target)
     }

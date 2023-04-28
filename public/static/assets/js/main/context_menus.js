@@ -1,35 +1,35 @@
 // Show chat context menu
-Hue.show_chat_context_menu = function (button, x, y) {
-  let is_main = button.closest("#chat_area")
-  let unit = button.closest(".message_unit")
+Hue.show_chat_context_menu = (button, x, y) => {
+  let is_main = button.closest(`#chat_area`)
+  let unit = button.closest(`.message_unit`)
 
   if (!unit) {
     return
   }
 
   let items = []
-  let message = button.closest(".message")
-  let mode = Hue.dataset(message, "mode")
-  let type = Hue.dataset(message, "type")
-  let user_id = Hue.dataset(message, "user_id")
-  let id = Hue.dataset(unit, "id")
-  let likes = Hue.dataset(unit, "likes")
-  let message_id = Hue.dataset(message, "message_id")
-  let url = ""
+  let message = button.closest(`.message`)
+  let mode = Hue.dataset(message, `mode`)
+  let type = Hue.dataset(message, `type`)
+  let user_id = Hue.dataset(message, `user_id`)
+  let id = Hue.dataset(unit, `id`)
+  let likes = Hue.dataset(unit, `likes`)
+  let message_id = Hue.dataset(message, `message_id`)
+  let url = ``
 
-  if (mode === "chat") {
-    let container = button.closest(".chat_content_container")
-    url = Hue.dataset(container, "first_url")
+  if (mode === `chat`) {
+    let container = button.closest(`.chat_content_container`)
+    url = Hue.dataset(container, `first_url`)
   }
 
   let has_reply = false
   let has_edit = false
 
-  if (mode === "chat" || type === "image_change" || type === "tv_change") {
+  if (mode === `chat` || type === `image_change` || type === `tv_change`) {
     items.push({
-      text: "Reply",
-      action: function () {
-        let el = Hue.el(".unit_text", button.closest(".message_unit"))
+      text: `Reply`,
+      action: () => {
+        let el = Hue.el(`.unit_text`, button.closest(`.message_unit`))
         Hue.start_reply(el)
       }
     })
@@ -37,11 +37,11 @@ Hue.show_chat_context_menu = function (button, x, y) {
     has_reply = true
   }
 
-  if (user_id === Hue.user_id && (mode === "chat" || type === "image_change" || type === "tv_change")) {
+  if (user_id === Hue.user_id && (mode === `chat` || type === `image_change` || type === `tv_change`)) {
     items.push({
-      text: "Edit",
-      action: function () {
-        let el = Hue.el(".unit_text", button.closest(".message_unit"))
+      text: `Edit`,
+      action: () => {
+        let el = Hue.el(`.unit_text`, button.closest(`.message_unit`))
         Hue.start_edit(el)
       }
     })
@@ -55,22 +55,22 @@ Hue.show_chat_context_menu = function (button, x, y) {
     }
   }
 
-  if (mode === "chat" || type === "image_change" || type === "tv_change") {
-    let text = "Like"
-    let type = "like"
-    let included = Hue.dataset(unit, "likes").some(x => x.user_id === Hue.user_id)
+  if (mode === `chat` || type === `image_change` || type === `tv_change`) {
+    let text = `Like`
+    let type = `like`
+    let included = Hue.dataset(unit, `likes`).some(x => x.user_id === Hue.user_id)
 
     // Check if the user already like the post
     if (included) {
-      text = "Unlike"
-      type = "unlike"
+      text = `Unlike`
+      type = `unlike`
     }
 
-    if (type === "unlike" || (type === "like" && likes.length < Hue.config.max_likes)) {
+    if (type === `unlike` || (type === `like` && likes.length < Hue.config.max_likes)) {
       items.push({
         text: text,
-        action: function () {
-          let el = Hue.el(".unit_text", button.closest(".message_unit"))
+        action: () => {
+          let el = Hue.el(`.unit_text`, button.closest(`.message_unit`))
           Hue.like_message(el, type)
         }
       })
@@ -78,19 +78,19 @@ Hue.show_chat_context_menu = function (button, x, y) {
   }
 
   items.push({
-    text: "Hide",
-    action: function () {
-      Hue.show_confirm("Hide message. This won't delete it", function () {
+    text: `Hide`,
+    action: () => {
+      Hue.show_confirm(`Hide message. This won't delete it`, () => {
         Hue.remove_message_from_context_menu(button)
       })
     }
   })
 
   if ((user_id === Hue.user_id || Hue.is_admin_or_op()) &&
-    (mode === "chat" || type === "image_change" || type === "tv_change")) {
+    (mode === `chat` || type === `image_change` || type === `tv_change`)) {
     items.push({
-      text: "Delete",
-      action: function () {
+      text: `Delete`,
+      action: () => {
         Hue.handle_delete_messages(id, user_id)
       }
     })
@@ -98,8 +98,8 @@ Hue.show_chat_context_menu = function (button, x, y) {
 
   if (url) {
     items.push({
-      text: "Handle",
-      action: function () {
+      text: `Handle`,
+      action: () => {
         Hue.handle_url(url)
       }
     })
@@ -107,8 +107,8 @@ Hue.show_chat_context_menu = function (button, x, y) {
 
   if (!is_main) {
     items.push({
-      text: "Jump",
-      action: function () {
+      text: `Jump`,
+      action: () => {
         Hue.jump_to_chat_message(message_id, true)
       }
     })
@@ -116,31 +116,32 @@ Hue.show_chat_context_menu = function (button, x, y) {
 
   if (x !== undefined && y !== undefined) {
     NeedContext.show(x, y, items)
-  } else {
+  }
+  else {
     NeedContext.show_on_element(button, items)
   }
 }
 
 // Hide the context menu
-Hue.hide_context_menu = function () {
+Hue.hide_context_menu = () => {
   NeedContext.hide()
 }
 
 // Show input menu
-Hue.show_input_menu = function () {
+Hue.show_input_menu = () => {
   let items = []
 
   if (Hue.get_input(true)) {
     items.push({
-      text: "Send",
-      action: function () {
+      text: `Send`,
+      action: () => {
         Hue.submit_input()
       }
     })
 
     items.push({
-      text: "Clear",
-      action: function () {
+      text: `Clear`,
+      action: () => {
         Hue.clear_input()
       }
     })
@@ -148,34 +149,34 @@ Hue.show_input_menu = function () {
 
   if (Hue.room_state.last_input && !Hue.get_input(true)) {
     items.push({
-      text: "Repeat",
-      action: function () {
+      text: `Repeat`,
+      action: () => {
         Hue.show_input_history()
       }
     })
   }
 
   items.push({
-    text: "Lock",
-    action: function () {
+    text: `Lock`,
+    action: () => {
       Hue.lock_chat()
     }
   })
 
   items.push({
-    text: "@ Img",
-    action: function () {
-      Hue.reply_to_media("image")
+    text: `@ Img`,
+    action: () => {
+      Hue.reply_to_media(`image`)
     }
   })
 
   items.push({
-    text: "@ TV",
-    action: function () {
-      Hue.reply_to_media("tv")
+    text: `@ TV`,
+    action: () => {
+      Hue.reply_to_media(`tv`)
     }
   })
 
-  let el = Hue.el("#footer_input_menu")
+  let el = Hue.el(`#footer_input_menu`)
   NeedContext.show_on_element(el, items)
 }

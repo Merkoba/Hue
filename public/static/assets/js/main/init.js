@@ -13,15 +13,15 @@ Hue.load_scripts = true
 
 // Initial variables declarations
 Hue.config = {}
-Hue.ls_settings = "settings_v1"
-Hue.ls_room_state = "room_state_v2"
-Hue.ls_input_history = "input_history_v3"
-Hue.roles = ["admin", "op", "voice"]
-Hue.topic = ""
+Hue.ls_settings = `settings_v1`
+Hue.ls_room_state = `room_state_v2`
+Hue.ls_input_history = `input_history_v3`
+Hue.roles = [`admin`, `op`, `voice`]
+Hue.topic = ``
 Hue.colorlib = ColorLib()
 Hue.userlist = []
 Hue.all_usernames = []
-Hue.role = ""
+Hue.role = ``
 Hue.tab_info = {}
 Hue.modal_open = false
 Hue.commands_list_sorted = {}
@@ -46,13 +46,13 @@ Hue.emit_queue = []
 Hue.has_focus = false
 Hue.mouse_is_down = false
 Hue.user_leaving = false
-Hue.admin_activity_filter_string = ""
+Hue.admin_activity_filter_string = ``
 Hue.active_modal = false
 Hue.activity_list = []
 Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 250
 Hue.chat_scrolled = false
-Hue.userlist_mode = "normal"
+Hue.userlist_mode = `normal`
 Hue.first_media_change = false
 Hue.calc_round_places = 10
 Hue.loaded_image = {}
@@ -123,7 +123,7 @@ Hue.media_info_tv_data = []
 
 // This runs after the application's load event
 // This is the first function that gets executed
-Hue.init = function () {
+Hue.init = () => {
   Hue.load_date_1 = Date.now()
 
   Hue.create_debouncers()
@@ -198,7 +198,7 @@ Hue.init = function () {
 
 // What to do after the user's socket joins the room
 // This handles the first signal received after a successful connection
-Hue.on_join = function (data) {
+Hue.on_join = (data) => {
   Hue.connections += 1
   Hue.started = false
   Hue.started_safe = false
@@ -207,7 +207,7 @@ Hue.on_join = function (data) {
   Hue.superuser = data.superuser
 
   Hue.load_date_3 = Date.now()
-  Hue.loginfo("Joined Room")
+  Hue.loginfo(`Joined Room`)
 
   Hue.room_locked = data.room_locked
 
@@ -252,12 +252,12 @@ Hue.on_join = function (data) {
 
 // This executes at the end of the join function
 // When the client is ready for use
-Hue.at_startup = function () {
+Hue.at_startup = () => {
   Hue.date_joined = Date.now()
   Hue.connected = true
   Hue.started = true
 
-  setTimeout(function () {
+  setTimeout(() => {
     Hue.started_safe = true
   }, 2000)
 
@@ -272,17 +272,18 @@ Hue.at_startup = function () {
   if (Hue.connections === 1) {
     Hue.show_joined()
     Hue.make_main_container_visible()
-  } else {
+  }
+  else {
     let d1 = Hue.last_message_date
     let d2 = Hue.get_last_message_date()
     if (d2 > d1) {
-      Hue.on_activity("message")
+      Hue.on_activity(`message`)
     }
 
     Hue.show_room_notification(
       Hue.username,
-      "Re-connected",
-      "user"
+      `Re-connected`,
+      `user`
     )
   }
 
