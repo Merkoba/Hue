@@ -252,7 +252,7 @@ App.show_whisper = (data, mode) => {
   let message_html = App.utilz.make_html_safe(data.message)
   message_html = App.parse_text(message_html)
 
-  if (mode === "sent") {
+  if (mode === `sent`) {
     message_html = `<div class="show_whisper_detail">You said:</div>${message_html}`
   }
 
