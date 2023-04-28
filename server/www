@@ -65,7 +65,7 @@ function build_config() {
 	if (!fs.existsSync(banlist_path)) {
 		fs.writeFileSync(banlist_path, "{}", "utf-8")
 	}
-	
+
 	let xbanlist = JSON.parse(fs.readFileSync(banlist_path, "utf8"))
 	let changed = false
 
@@ -152,7 +152,7 @@ const logger = winston.createLogger({
 			filename: path.join(__dirname, "../logs/info.log"),
 			level: "info",
 			timestamp: (new Date()).toLocaleTimeString()
-		})		
+		})
 	]
 })
 
@@ -274,4 +274,4 @@ process.on("SIGINT", function () {
 })
 
 // Backup db files in case something goes wrong
-create_db_backup()
+// create_db_backup()

@@ -1,14 +1,14 @@
-module.exports = function (Hue) {
+module.exports = (Hue) => {
   // Handles whispers
-  Hue.handler.public.whisper = async function (socket, data) {
-    if (data.type === "system_broadcast") {
+  Hue.handler.public.whisper = async (socket, data) => {
+    if (data.type === `system_broadcast`) {
       if (!socket.hue_superuser) {
         Hue.handler.anti_spam_ban(socket)
         return
       }
     }
 
-    if (data.type === "user") {
+    if (data.type === `user`) {
       if (!data.usernames || data.usernames.length === 0) {
         return
       }
@@ -39,14 +39,14 @@ module.exports = function (Hue) {
       return
     }
 
-    if (data.message.split("\n").length > Hue.config.max_num_newlines) {
+    if (data.message.split(`\n`).length > Hue.config.max_num_newlines) {
       return
     }
 
     let users = []
     let usernames = [...new Set(data.usernames)]
 
-    if (data.type === "user") {
+    if (data.type === `user`) {
       for (let username of usernames) {
         let sockets = await Hue.handler.get_user_sockets_per_room_by_username(
           socket.hue_room_id,
@@ -60,7 +60,7 @@ module.exports = function (Hue) {
           })
 
           for (let socc of sockets) {
-            Hue.handler.user_emit(socc, "whisper", {
+            Hue.handler.user_emit(socc, `whisper`, {
               room: socket.hue_room_id,
               user_id: socket.hue_user_id,
               username: socket.hue_username,
@@ -68,15 +68,17 @@ module.exports = function (Hue) {
               type: data.type
             })
           }
-        } else {
-          Hue.handler.user_emit(socket, "user_not_in_room", {})
+        }
+        else {
+          Hue.handler.user_emit(socket, `user_not_in_room`, {})
         }
       }
 
       data.users = users
-      Hue.handler.user_emit(socket, "whisper_sent", data)
-    } else if (data.type === "system_broadcast") {
-      Hue.handler.system_emit(socket, "system_broadcast", {
+      Hue.handler.user_emit(socket, `whisper_sent`, data)
+    }
+    else if (data.type === `system_broadcast`) {
+      Hue.handler.system_emit(socket, `system_broadcast`, {
         username: Hue.sconfig.system_username,
         message: data.message,
         type: data.type

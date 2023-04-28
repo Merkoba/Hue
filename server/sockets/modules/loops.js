@@ -1,8 +1,8 @@
-module.exports = function (Hue) {
+module.exports = (Hue) => {
   // Starts a timeout to check for stale files to be removed
   // These are files that failed to be uploaded
-  Hue.handler.start_files_timeout = function () {
-    setTimeout(function () {
+  Hue.handler.start_files_timeout = () => {
+    setTimeout(() => {
       if (Hue.vars.exiting) {
         return
       }
@@ -12,7 +12,7 @@ module.exports = function (Hue) {
   }
 
   // What to do on each files timeout iteration
-  Hue.handler.files_timeout_action = function () {
+  Hue.handler.files_timeout_action = () => {
     try {
       for (let key in Hue.vars.files) {
         let file = Hue.vars.files[key]
@@ -21,7 +21,8 @@ module.exports = function (Hue) {
           delete Hue.vars.files[key]
         }
       }
-    } catch (err) {
+    }
+    catch (err) {
       Hue.logger.log_error(err)
     }
 
@@ -29,8 +30,8 @@ module.exports = function (Hue) {
   }
 
   // Update the config with current roomlist data
-  Hue.handler.start_roomlist_timeout = function () {
-    setTimeout(function () {
+  Hue.handler.start_roomlist_timeout = () => {
+    setTimeout(() => {
       if (Hue.vars.exiting) {
         return
       }
@@ -40,10 +41,11 @@ module.exports = function (Hue) {
   }
 
   // What to do on each roomlist timeout iteration
-  Hue.handler.roomlist_timeout_action = async function () {
+  Hue.handler.roomlist_timeout_action = async () => {
     try {
       Hue.roomlist = await Hue.db_manager.get_roomlist()
-    } catch (err) {
+    }
+    catch (err) {
       Hue.logger.log_error(err)
     }
 

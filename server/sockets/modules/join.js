@@ -1,6 +1,6 @@
-module.exports = function (Hue) {
+module.exports = (Hue) => {
   // Sets initial hue_* variables on connection
-  Hue.handler.connection = function (socket) {
+  Hue.handler.connection = (socket) => {
     socket.hue_pinged = false
     socket.hue_kicked = false
     socket.hue_banned = false
@@ -8,11 +8,11 @@ module.exports = function (Hue) {
     socket.hue_joined = false
     socket.hue_superuser = false
     socket.hue_locked = false
-    socket.hue_info1 = ""
+    socket.hue_info1 = ``
   }
 
   // Attempts to join a room
-  Hue.handler.public.join_room = async function (socket, data) {
+  Hue.handler.public.join_room = async (socket, data) => {
     if (socket.hue_joining || socket.hue_joined) {
       return
     }
@@ -26,7 +26,7 @@ module.exports = function (Hue) {
     }
 
     if (data.alternative) {
-      socket.hue_login_method = "alternative"
+      socket.hue_login_method = `alternative`
 
       if (!data.username || !data.password) {
         return Hue.handler.get_out(socket)
@@ -46,8 +46,9 @@ module.exports = function (Hue) {
       if (data.password.length > Hue.config.max_max_password_length) {
         return Hue.handler.get_out(socket)
       }
-    } else {
-      socket.hue_login_method = "normal"
+    }
+    else {
+      socket.hue_login_method = `normal`
       data.user_id = data.user_id.trim()
 
       if (data.user_id === undefined || data.token === undefined) {
@@ -78,21 +79,23 @@ module.exports = function (Hue) {
 
       socket.hue_user_id = userinfo.id
 
-      let info = await Hue.db_manager.get_room(["id", data.room_id])
+      let info = await Hue.db_manager.get_room([`id`, data.room_id])
 
       if (!info) {
         return Hue.handler.get_out(socket)
       }
 
       await Hue.handler.do_join(socket, info, userinfo, data)
-    } else {
+    }
+    else {
       Hue.vars.jwt.verify(data.token, Hue.sconfig.jwt_secret, async function (
         err,
         decoded
       ) {
         if (err) {
           return Hue.handler.get_out(socket)
-        } else if (
+        }
+        else if (
           decoded.data === undefined ||
           decoded.data.id === undefined
         ) {
@@ -101,16 +104,17 @@ module.exports = function (Hue) {
 
         if (decoded.data.id !== data.user_id) {
           return Hue.handler.get_out(socket)
-        } else {
+        }
+        else {
           socket.hue_user_id = data.user_id
 
-          let info = await Hue.db_manager.get_room(["id", data.room_id])
+          let info = await Hue.db_manager.get_room([`id`, data.room_id])
 
           if (!info) {
             return Hue.handler.get_out(socket)
           }
 
-          let userinfo = await Hue.db_manager.get_user(["id", socket.hue_user_id])
+          let userinfo = await Hue.db_manager.get_user([`id`, socket.hue_user_id])
 
           if (!userinfo) {
             return Hue.handler.get_out(socket)
@@ -123,7 +127,7 @@ module.exports = function (Hue) {
   }
 
   // Does a room join after successful authentication
-  Hue.handler.do_join = async function (socket, info, userinfo, data) {
+  Hue.handler.do_join = async (socket, info, userinfo, data) => {
     socket.hue_username = userinfo.username
 
     if (Hue.handler.user_is_banned(socket)) {
@@ -152,7 +156,7 @@ module.exports = function (Hue) {
       socket.leave(socket.hue_room_id)
       socket.hue_locked = true
 
-      Hue.handler.user_emit(socket, "joined", {
+      Hue.handler.user_emit(socket, `joined`, {
         room_locked: true,
       })
 
@@ -171,7 +175,7 @@ module.exports = function (Hue) {
     socket.hue_role = info.keys[socket.hue_user_id] || Hue.vars.default_role
 
     if (!Hue.vars.roles.includes(socket.hue_role)) {
-      socket.hue_role = "voice"
+      socket.hue_role = `voice`
     }
 
     if (Hue.vars.user_rooms[socket.hue_user_id] === undefined) {
@@ -211,26 +215,29 @@ module.exports = function (Hue) {
 
     if (data.no_log_messages) {
       user_data.log_messages = []
-    } else {
+    }
+    else {
       user_data.log_messages = info.log_messages
     }
 
     if (data.no_message_board_posts) {
       user_data.message_board_posts = []
-    } else {
+    }
+    else {
       user_data.message_board_posts = info.message_board_posts
     }
 
     if (data.no_userlist) {
       user_data.userlist = []
-    } else {
+    }
+    else {
       user_data.userlist = Hue.handler.prepare_userlist(Hue.handler.get_userlist(socket.hue_room_id))
     }
 
-    Hue.handler.user_emit(socket, "joined", user_data)
+    Hue.handler.user_emit(socket, `joined`, user_data)
 
     if (!already_connected) {
-      Hue.handler.broadcast_emit(socket, "user_joined", {
+      Hue.handler.broadcast_emit(socket, `user_joined`, {
         user_id: socket.hue_user_id,
         username: socket.hue_username,
         role: socket.hue_role,

@@ -1,6 +1,6 @@
-module.exports = function (Hue) {
+module.exports = (Hue) => {
   // Checks if the user is already connected through another socket
-  Hue.handler.user_already_connected = async function (socket) {
+  Hue.handler.user_already_connected = async (socket) => {
     try {
       let sockets = await Hue.handler.get_room_sockets(socket.hue_room_id)
 
@@ -11,14 +11,15 @@ module.exports = function (Hue) {
       }
 
       return false
-    } catch (err) {
+    }
+    catch (err) {
       Hue.logger.log_error(err)
       return true
     }
   }
 
   // Returns the list of sockets of a user in a room, by user id
-  Hue.handler.get_user_sockets_per_room = async function (room_id, user_id) {
+  Hue.handler.get_user_sockets_per_room = async (room_id, user_id) => {
     try {
       let clients = []
       let sockets = await Hue.handler.get_room_sockets(room_id)
@@ -30,13 +31,14 @@ module.exports = function (Hue) {
       }
 
       return clients
-    } catch (err) {
+    }
+    catch (err) {
       Hue.logger.log_error(err)
     }
   }
 
   // Returns the list of sockets of a user in a room, by username
-  Hue.handler.get_user_sockets_per_room_by_username = async function (room_id, username) {
+  Hue.handler.get_user_sockets_per_room_by_username = async (room_id, username) => {
     try {
       let clients = []
       let sockets = await Hue.handler.get_room_sockets(room_id)
@@ -48,13 +50,14 @@ module.exports = function (Hue) {
       }
 
       return clients
-    } catch (err) {
+    }
+    catch (err) {
       Hue.logger.log_error(err)
     }
   }
 
   // Returns the list of sockets of a user in a room, by socket id
-  Hue.handler.get_room_socket_by_id = async function (room_id, id) {
+  Hue.handler.get_room_socket_by_id = async (room_id, id) => {
     try {
       let sockets = await Hue.handler.get_room_sockets(room_id)
 
@@ -63,18 +66,19 @@ module.exports = function (Hue) {
           return socc
         }
       }
-    } catch (err) {
+    }
+    catch (err) {
       Hue.logger.log_error(err)
     }
   }
 
   // Gets the list of sockets of a room
-  Hue.handler.get_room_sockets = async function (room_id) {
+  Hue.handler.get_room_sockets = async (room_id) => {
     return await Hue.io.in(room_id).fetchSockets()
   }
 
   // Checks if a user exceeds the maximum amounts of sockets allowed per room
-  Hue.handler.check_socket_limit = async function (socket) {
+  Hue.handler.check_socket_limit = async (socket) => {
     try {
       let num = 0
       let rooms = Hue.vars.user_rooms[socket.hue_user_id]
@@ -90,17 +94,19 @@ module.exports = function (Hue) {
 
       if (num > Hue.sconfig.max_sockets_per_user) {
         return true
-      } else {
+      }
+      else {
         return false
       }
-    } catch (err) {
+    }
+    catch (err) {
       Hue.logger.log_error(err)
       return true
     }
   }
 
   // Checks if a user has multiple simultaneous join attempts
-  Hue.handler.check_multipe_joins = async function (socket) {
+  Hue.handler.check_multipe_joins = async (socket) => {
     try {
       let sockets = await Hue.handler.get_room_sockets(socket.hue_room_id)
 
@@ -118,15 +124,16 @@ module.exports = function (Hue) {
       }
 
       return false
-    } catch (err) {
+    }
+    catch (err) {
       Hue.logger.log_error(err)
       return true
     }
   }
 
   // Sends a pong response
-  Hue.handler.public.ping_server = function (socket, data) {
-    Hue.handler.user_emit(socket, "pong_received", { date: data.date })
+  Hue.handler.public.ping_server = (socket, data) => {
+    Hue.handler.user_emit(socket, `pong_received`, { date: data.date })
   }
 
   // Changes socket properties to all sockets of a user
@@ -166,22 +173,22 @@ module.exports = function (Hue) {
   }
 
   // Disconnect room sockets
-  Hue.handler.disconnect_room_sockets = function (socket) {
+  Hue.handler.disconnect_room_sockets = (socket) => {
     Hue.io.in(socket.hue_room_id).disconnectSockets()
   }
 
   // Get all socket ids
-  Hue.handler.get_socket_ids = async function () {
+  Hue.handler.get_socket_ids = async () => {
     return await Hue.io.allSockets()
   }
 
   // Get socket by id
-  Hue.handler.get_socket_by_id = function (id) {
+  Hue.handler.get_socket_by_id = (id) => {
     return Hue.io.sockets.sockets.get(id)
   }
 
   // Get all sockets
-  Hue.handler.get_all_sockets = async function () {
+  Hue.handler.get_all_sockets = async () => {
     let sockets = []
     let ids = await Hue.handler.get_socket_ids()
 

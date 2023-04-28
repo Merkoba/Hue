@@ -1,7 +1,7 @@
-module.exports = function (Hue) {
+module.exports = (Hue) => {
   // Receives sliced files uploads and requests more slices
   // Sends uploaded files to respective functions
-  Hue.handler.public.slice_upload = async function (socket, data) {
+  Hue.handler.public.slice_upload = async (socket, data) => {
     if (!data || !data.data || data.data.length > Hue.config.upload_slice_size) {
       await Hue.handler.add_spam(socket)
       return
@@ -17,24 +17,27 @@ module.exports = function (Hue) {
         return
       }
 
-      let ext = data.name.split(".").pop(-1).toLowerCase()
+      let ext = data.name.split(`.`).pop(-1).toLowerCase()
 
-      if (data.action.includes("image")) {
-        if (data.action === "profilepic_upload") {
-          if (ext !== "png") {
+      if (data.action.includes(`image`)) {
+        if (data.action === `profilepic_upload`) {
+          if (ext !== `png`) {
             return
           }
-        } else {
+        }
+        else {
           if (!Hue.utilz.image_extensions.includes(ext)) {
             return
           }
         }
-      } else if (data.action === "tv_upload") {
+      }
+      else if (data.action === `tv_upload`) {
         if (!Hue.utilz.video_extensions.includes(ext) && !Hue.utilz.audio_extensions.includes(ext)) {
           return
         }
-      } else if (data.action === "audioclip_upload") {
-        if (ext !== "mp3") {
+      }
+      else if (data.action === `audioclip_upload`) {
+        if (ext !== `mp3`) {
           return
         }
       }
@@ -70,19 +73,21 @@ module.exports = function (Hue) {
     let fsize = file.received / 1024
 
     if (
-      file.action === "image_upload" ||
-      file.action === "background_upload"
+      file.action === `image_upload` ||
+      file.action === `background_upload`
     ) {
       if (fsize > Hue.config.max_image_size) {
         delete Hue.vars.files[key]
         return
       }
-    } else if (file.action === "audioclip_upload") {
+    }
+    else if (file.action === `audioclip_upload`) {
       if (fsize > Hue.config.max_audioclip_size) {
         delete Hue.vars.files[key]
         return
       }
-    } else if (file.action === "tv_upload") {
+    }
+    else if (file.action === `tv_upload`) {
       if (fsize > Hue.config.max_tv_size) {
         delete Hue.vars.files[key]
         return
@@ -103,49 +108,55 @@ module.exports = function (Hue) {
     file.updated = Date.now()
 
     if (file.slice * Hue.config.upload_slice_size >= file.size) {
-      Hue.handler.user_emit(socket, "upload_ended", { date: data.date })
+      Hue.handler.user_emit(socket, `upload_ended`, { date: data.date })
 
       let full_file = Buffer.concat(file.data)
 
       try {
-        if (data.action === "image_upload") {
+        if (data.action === `image_upload`) {
           await Hue.handler.upload_media(socket, {
             file: full_file,
             file_name: file.name,
             extension: file.extension,
             comment: file.comment,
-          }, "image")
-        } else if (data.action === "tv_upload") {
+          }, `image`)
+        }
+        else if (data.action === `tv_upload`) {
           await Hue.handler.upload_media(socket, {
             file: full_file,
             file_name: file.name,
             extension: file.extension,
             comment: file.comment,
-          }, "tv")
-        } else if (data.action === "profilepic_upload") {
+          }, `tv`)
+        }
+        else if (data.action === `profilepic_upload`) {
           await Hue.handler.upload_profilepic(socket, {
             image_file: full_file,
           })
-        } else if (data.action === "background_upload") {
+        }
+        else if (data.action === `background_upload`) {
           await Hue.handler.upload_background(socket, {
             image_file: full_file,
             extension: file.extension,
           })
-        } else if (data.action === "audioclip_upload") {
+        }
+        else if (data.action === `audioclip_upload`) {
           await Hue.handler.upload_audioclip(socket, {
             audio_file: full_file,
             extension: file.extension,
           })
         }
-      } catch (err) {
+      }
+      catch (err) {
         delete Hue.vars.files[key]
         Hue.logger.log_error(err)
         return
       }
 
       delete Hue.vars.files[key]
-    } else {
-      Hue.handler.user_emit(socket, "request_slice_upload", {
+    }
+    else {
+      Hue.handler.user_emit(socket, `request_slice_upload`, {
         current_slice: file.slice,
         date: data.date,
       })
@@ -153,7 +164,7 @@ module.exports = function (Hue) {
   }
 
   // Flags a file as cancelled
-  Hue.handler.public.cancel_upload = function (socket, data) {
+  Hue.handler.public.cancel_upload = (socket, data) => {
     let key = `${socket.hue_user_id}_${data.date}`
     let file = Hue.vars.files[key]
 

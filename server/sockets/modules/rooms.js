@@ -1,6 +1,6 @@
-module.exports = function (Hue) {
+module.exports = (Hue) => {
   // Handles room creation
-  Hue.handler.public.create_room = async function (socket, data) {
+  Hue.handler.public.create_room = async (socket, data) => {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
       return
@@ -19,11 +19,11 @@ module.exports = function (Hue) {
 
     data.user_id = socket.hue_user_id
     let ans = await Hue.db_manager.create_room(data)
-    Hue.handler.user_emit(socket, "room_created", { id: ans.id })
+    Hue.handler.user_emit(socket, `room_created`, { id: ans.id })
   }
 
   // Handles room deletion
-  Hue.handler.public.delete_room = function (socket, data) {
+  Hue.handler.public.delete_room = (socket, data) => {
     if (!socket.hue_superuser) {
       Hue.handler.anti_spam_ban(socket)
       return
@@ -34,14 +34,14 @@ module.exports = function (Hue) {
     }
 
     Hue.db_manager.delete_room(socket.hue_room_id)
-    let room_files = Hue.vars.path.join(Hue.vars.media_root, "room", socket.hue_room_id)
+    let room_files = Hue.vars.path.join(Hue.vars.media_root, `room`, socket.hue_room_id)
     Hue.vars.fs.rmSync(room_files, {recursive: true, force: true})
     Hue.handler.disconnect_room_sockets(socket)
   }
 
   // Get rooms data to update in client
-  Hue.handler.public.get_roomlist = function (socket, data) {
-    Hue.handler.user_emit(socket, "receive_roomlist", {
+  Hue.handler.public.get_roomlist = (socket, data) => {
+    Hue.handler.user_emit(socket, `receive_roomlist`, {
       roomlist: Hue.roomlist
     })
   }

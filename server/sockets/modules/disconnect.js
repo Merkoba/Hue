@@ -1,11 +1,11 @@
-module.exports = function (Hue) {
+module.exports = (Hue) => {
   // Do a socket disconnect
-  Hue.handler.do_disconnect = function (socc) {
+  Hue.handler.do_disconnect = (socc) => {
     socc.disconnect()
   }
 
   // On disconnect
-  Hue.handler.disconnect = async function (socket) {
+  Hue.handler.disconnect = async (socket) => {
     if (socket.hue_user_id === undefined) {
       return
     }
@@ -41,16 +41,19 @@ module.exports = function (Hue) {
       let type
 
       if (socket.hue_pinged) {
-        type = "pinged"
-      } else if (socket.hue_kicked) {
-        type = "kicked"
-      } else if (socket.hue_banned) {
-        type = "banned"
-      } else {
-        type = "disconnection"
+        type = `pinged`
+      }
+      else if (socket.hue_kicked) {
+        type = `kicked`
+      }
+      else if (socket.hue_banned) {
+        type = `banned`
+      }
+      else {
+        type = `disconnection`
       }
 
-      Hue.handler.room_emit(socket, "user_disconnected", {
+      Hue.handler.room_emit(socket, `user_disconnected`, {
         user_id: socket.hue_user_id,
         username: socket.hue_username,
         info1: socket.hue_info1,
@@ -61,7 +64,7 @@ module.exports = function (Hue) {
   }
 
   // Disconnect other sockets from user
-  Hue.handler.public.disconnect_others = async function (socket, data) {
+  Hue.handler.public.disconnect_others = async (socket, data) => {
     let amount = 0
 
     for (let room_id of Hue.vars.user_rooms[socket.hue_user_id]) {
@@ -76,14 +79,15 @@ module.exports = function (Hue) {
       }
     }
 
-    Hue.handler.user_emit(socket, "others_disconnected", { amount: amount })
+    Hue.handler.user_emit(socket, `others_disconnected`, { amount: amount })
   }
 
   // Disconnect a socket
-  Hue.handler.get_out = function (socket) {
+  Hue.handler.get_out = (socket) => {
     try {
       Hue.handler.do_disconnect(socket)
-    } catch (err) {
+    }
+    catch (err) {
       Hue.logger.log_error(err)
     }
   }
