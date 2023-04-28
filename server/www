@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-const fs = require("fs")
-const path = require("path")
-const tar = require("tar")
-const YAML = require("yaml")
+const fs = require(`fs`)
+const path = require(`path`)
+const tar = require(`tar`)
+const YAML = require(`yaml`)
 
-const utilz = require("../public/static/assets/js/libs/utilz.js")()
+const utilz = require(`../public/static/assets/js/libs/utilz.js`)()
 
 function normalizePort(val) {
 	let port = parseInt(val, 10)
@@ -18,34 +18,36 @@ function normalizePort(val) {
 	}
 }
 
-const config_path = path.join(__dirname, "../config/config.yml")
-const user_config_path = path.join(__dirname, "../config/user_config.yml")
-const sconfig_path = path.join(__dirname, "../config/config.secret.yml")
-const user_sconfig_path = path.join(__dirname, "../config/user_config.secret.yml")
+const config_path = path.join(__dirname, `../config/config.yml`)
+const user_config_path = path.join(__dirname, `../config/user_config.yml`)
+const sconfig_path = path.join(__dirname, `../config/config.secret.yml`)
+const user_sconfig_path = path.join(__dirname, `../config/user_config.secret.yml`)
 const config = {}
 const sconfig = {}
 const config_check_delay = 5000
-const banlist_path = path.join(__dirname, "../config/banlist.json")
+const banlist_path = path.join(__dirname, `../config/banlist.json`)
 const banlist = {}
 
-let config_mtime = ""
+let config_mtime = ``
 
 function build_config() {
-	let xconfig = YAML.parse(fs.readFileSync(config_path, "utf8"))
-	let xsconfig = YAML.parse(fs.readFileSync(sconfig_path, "utf8"))
+	let xconfig = YAML.parse(fs.readFileSync(config_path, `utf8`))
+	let xsconfig = YAML.parse(fs.readFileSync(sconfig_path, `utf8`))
 
 	if (fs.existsSync(user_config_path)) {
-		let user_config = YAML.parse(fs.readFileSync(user_config_path, "utf8"))
+		let user_config = YAML.parse(fs.readFileSync(user_config_path, `utf8`))
 		Object.assign(xconfig, user_config)
-	} else {
-		utilz.loginfo("No user config file found")
+	}
+	else {
+		utilz.loginfo(`No user config file found`)
 	}
 
 	if (fs.existsSync(user_sconfig_path)) {
-		let user_sconfig = YAML.parse(fs.readFileSync(user_sconfig_path, "utf8"))
+		let user_sconfig = YAML.parse(fs.readFileSync(user_sconfig_path, `utf8`))
 		Object.assign(xsconfig, user_sconfig)
-	} else {
-		utilz.loginfo("No user secret config file found")
+	}
+	else {
+		utilz.loginfo(`No user secret config file found`)
 	}
 
 	Object.keys(config).forEach(function(key) {
@@ -63,10 +65,10 @@ function build_config() {
 	//Banlist
 
 	if (!fs.existsSync(banlist_path)) {
-		fs.writeFileSync(banlist_path, "{}", "utf-8")
+		fs.writeFileSync(banlist_path, `{}`, `utf-8`)
 	}
 
-	let xbanlist = JSON.parse(fs.readFileSync(banlist_path, "utf8"))
+	let xbanlist = JSON.parse(fs.readFileSync(banlist_path, `utf8`))
 	let changed = false
 
 	if (xbanlist.usernames === undefined) {
@@ -85,7 +87,7 @@ function build_config() {
 	}
 
 	if (changed) {
-		fs.writeFileSync(banlist_path, JSON.stringify(xbanlist), "utf-8")
+		fs.writeFileSync(banlist_path, JSON.stringify(xbanlist), `utf-8`)
 	}
 
 	Object.keys(banlist).forEach(function(key) {
@@ -96,12 +98,12 @@ function build_config() {
 
 	config.mtime = Date.now()
 	config_mtime = get_config_mtime()
-	utilz.loginfo("Config built")
+	utilz.loginfo(`Config built`)
 }
 
 function get_config_mtime() {
-	let mtime = ""
-	let files = fs.readdirSync(path.join(__dirname, "../config"))
+	let mtime = ``
+	let files = fs.readdirSync(path.join(__dirname, `../config`))
 
 	for(let file of files) {
 		mtime += fs.statSync(path.join(__dirname, `../config/${file}`)).mtime.toString()
@@ -127,80 +129,80 @@ function create_db_backup() {
 		},
 		[`${store_path}/users`, `${store_path}/rooms`]
 	).then(res => {
-		utilz.loginfo("DB backup created")
+		utilz.loginfo(`DB backup created`)
 	}).catch(err => {
 		console.error(err)
 	})
 }
 
-const port = normalizePort(process.env.PORT || "3210")
+const port = normalizePort(process.env.PORT || `3210`)
 
 build_config()
 start_config_check()
 
-const winston = require("winston")
+const winston = require(`winston`)
 
 const logger = winston.createLogger({
 	format: winston.format.simple(),
 	transports: [
 		new winston.transports.File({
-			filename: path.join(__dirname, "../logs/error.log"),
-			level: "error",
+			filename: path.join(__dirname, `../logs/error.log`),
+			level: `error`,
 			timestamp: (new Date()).toLocaleTimeString()
 		}),
 		new winston.transports.File({
-			filename: path.join(__dirname, "../logs/info.log"),
-			level: "info",
+			filename: path.join(__dirname, `../logs/info.log`),
+			level: `info`,
 			timestamp: (new Date()).toLocaleTimeString()
 		})
 	]
 })
 
 if (logger.log_error !== undefined) {
-	console.error("logger.log_error is reserved")
+	console.error(`logger.log_error is reserved`)
 }
 
-logger.log_error = function (msg) {
-	if (process.env.NODE_ENV === "development") {
+logger.log_error = (msg) => {
+	if (process.env.NODE_ENV === `development`) {
 		console.error(msg)
 	}
 
 	if (msg instanceof Error) {
-		msg = JSON.stringify(msg.stack, null, 2).replace(/\\n/g, "\r\n")
+		msg = JSON.stringify(msg.stack, null, 2).replace(/\\n/g, `\r\n`)
 	}
 
 	msg = `${new Date().toLocaleString()}\r\n${msg}`
 
 	logger.log({
-		level: "error",
+		level: `error`,
 		message: msg
 	})
 }
 
-const db_manager = require("./db/main.js")(config, sconfig, utilz, logger)
+const db_manager = require(`./db/main.js`)(config, sconfig, utilz, logger)
 
 // Check if main room exists
-let main_room_path = path.join(__dirname, "../", `${sconfig.db_store_path}/rooms/${config.main_room_id}`)
+let main_room_path = path.join(__dirname, `../`, `${sconfig.db_store_path}/rooms/${config.main_room_id}`)
 
 // If it doesn't exist then create a minimal room object
 if (!fs.existsSync(main_room_path)) {
 	let obj = {id: config.main_room_id, name: sconfig.default_main_room_name}
-	fs.writeFileSync(main_room_path, JSON.stringify(obj), "utf-8")
-	utilz.loginfo("Main room created")
+	fs.writeFileSync(main_room_path, JSON.stringify(obj), `utf-8`)
+	utilz.loginfo(`Main room created`)
 }
 
-const app = require("./app")(db_manager, config, sconfig, utilz)
-const debug = require("debug")("hue:server")
-const http = require("http")
+const app = require(`./app`)(db_manager, config, sconfig, utilz)
+const debug = require(`debug`)(`hue:server`)
+const http = require(`http`)
 
-app.set("port", port)
+app.set(`port`, port)
 
 const server = http.createServer(app)
 
-server.on("error", on_error)
-server.on("listening", on_listening)
+server.on(`error`, on_error)
+server.on(`listening`, on_listening)
 
-const io = require("socket.io")(server, {
+const io = require(`socket.io`)(server, {
 	pingTimeout: 60000
 })
 
@@ -217,25 +219,25 @@ Hue.logger = logger
 Hue.banlist = banlist
 Hue.banlist_path = banlist_path
 
-require("./sockets/main")(Hue)
+require(`./sockets/main`)(Hue)
 
 function on_error(error) {
-	if (error.syscall !== "listen") {
+	if (error.syscall !== `listen`) {
 		throw error
 	}
 
-	let bind = typeof port === "string" ?
-		"Pipe " + port :
-		"Port " + port
+	let bind = typeof port === `string` ?
+		`Pipe ` + port :
+		`Port ` + port
 
 	switch (error.code) {
-		case "EACCES":
-			console.error(bind + " requires elevated privileges")
+		case `EACCES`:
+			console.error(bind + ` requires elevated privileges`)
 			process.exit(1)
 			break
 
-		case "EADDRINUSE":
-			console.error(bind + " is already in use")
+		case `EADDRINUSE`:
+			console.error(bind + ` is already in use`)
 			process.exit(1)
 			break
 
@@ -247,11 +249,11 @@ function on_error(error) {
 function on_listening() {
 	let addr = server.address()
 
-	let bind = typeof addr === "string" ?
-		"pipe " + addr :
-		"port " + addr.port
+	let bind = typeof addr === `string` ?
+		`pipe ` + addr :
+		`port ` + addr.port
 
-	debug("Listening on " + bind)
+	debug(`Listening on ` + bind)
 }
 
 function do_shutdown() {
@@ -260,18 +262,19 @@ function do_shutdown() {
 	io.httpServer.close()
 	io.close()
 
-	server.close(function () {
+	server.close(() => {
 		process.exit(0)
 	})
 }
 
-process.on("SIGINT", function () {
-	if (process.env.NODE_ENV === "development") {
+process.on(`SIGINT`, () => {
+	if (process.env.NODE_ENV === `development`) {
 		process.exit(0)
-	} else {
+	}
+	else {
 		do_shutdown()
 	}
 })
 
 // Backup db files in case something goes wrong
-// create_db_backup()
+create_db_backup()

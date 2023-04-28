@@ -85,12 +85,12 @@ Hue.remove_from_userlist = (user_id) => {
 }
 
 // Replaces a property of a user in the userlist by username
-Hue.replace_property_in_userlist_by_username = function (
+Hue.replace_property_in_userlist_by_username = (
   username,
   prop,
   new_value,
   update = true
-) {
+) => {
   let item = Hue.get_userlist_item_by_username(username)
 
   if (item) {
@@ -106,12 +106,12 @@ Hue.replace_property_in_userlist_by_username = function (
 }
 
 // Replaces a property of a user in the userlist by user id
-Hue.replace_property_in_userlist_by_id = function (
+Hue.replace_property_in_userlist_by_id = (
   user_id,
   prop,
   new_value,
   update = true
-) {
+) => {
   let item = Hue.get_userlist_item_by_user_id(user_id)
 
   if (item) {

@@ -7,11 +7,11 @@ Hue.setup_textparser_regexes = () => {
     `gm`
   )
 
-  Hue.textparser_regexes[`whisper_link`].replace_function = function (
+  Hue.textparser_regexes[`whisper_link`].replace_function = (
     g1,
     g2,
     g3
-  ) {
+  ) => {
     return `<span class="whisper_link special_link" data-whisper="${g2}" title="[Whisper] ${g2}">${g3.replace(/\s+/, `&nbsp;`)}</span>`
   }
 
@@ -21,7 +21,7 @@ Hue.setup_textparser_regexes = () => {
     `gm`
   )
 
-  Hue.textparser_regexes["anchor_link"].replace_function = function (g1, g2, g3) {
+  Hue.textparser_regexes["anchor_link"].replace_function = (g1, g2, g3) => {
     return `<a href="${g2}" class="anchor_link special_link" target="_blank">${g3.trim().replace(/\s+/, `&nbsp;`)}</a>`
   }
 }

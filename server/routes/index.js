@@ -1,15 +1,15 @@
-module.exports = function (db_manager, config, sconfig, utilz) {
+module.exports = (db_manager, config, sconfig, utilz) => {
   // Initial declarations
-  const fs = require("fs")
-  const path = require("path")
-  const ejs = require("ejs")
-  const jwt = require("jsonwebtoken")
-  const express = require("express")
-  const fetch = require("node-fetch")
+  const fs = require(`fs`)
+  const path = require(`path`)
+  const ejs = require(`ejs`)
+  const jwt = require(`jsonwebtoken`)
+  const express = require(`express`)
+  const fetch = require(`node-fetch`)
   const router = express.Router()
   const view_check_delay = 5000
   let config_mtime = 0
-  let view_mtime = ""
+  let view_mtime = ``
 
   // Object used to pass arguments
   const view = {}
@@ -18,7 +18,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   start_view_check()
 
   function build_view () {
-    Object.keys(view).forEach(function (key) {
+    Object.keys(view).forEach((key) => {
       delete view[key]
     })
 
@@ -35,16 +35,16 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     handler.public = {}
 
     // This holds the templates html to pass to the body compilation
-    let templates_html = ""
+    let templates_html = ``
 
     // Get the template file names
     const template_files = fs.readdirSync(
-      path.join(__dirname, "../views/main/templates")
+      path.join(__dirname, `../views/main/templates`)
     )
 
     // Get all the templates html
     for (let file of template_files) {
-      if (!file.endsWith(".ejs")) {
+      if (!file.endsWith(`.ejs`)) {
         continue
       }
 
@@ -53,35 +53,35 @@ module.exports = function (db_manager, config, sconfig, utilz) {
         `../views/main/templates/${file}`
       )
 
-      templates_html += ejs.compile(fs.readFileSync(template_path, "utf8"), {
+      templates_html += ejs.compile(fs.readFileSync(template_path, `utf8`), {
         filename: template_path,
       })()
     }
 
     // Compile svg files
 
-    const svg_path = path.join(__dirname, "../views/main/svg")
+    const svg_path = path.join(__dirname, `../views/main/svg`)
     const svg_files = fs.readdirSync(svg_path)
 
     // Get all the svg html
 
-    let svg_templates = "<div id='svg_templates' class='nodisplay'>"
+    let svg_templates = `<div id='svg_templates' class='nodisplay'>`
 
     for (let file of svg_files) {
-      let h = fs.readFileSync(path.join(svg_path, file), "utf8").trim()
-      let name = `icon_${file.replace(".svg", "")}`
-      h = h.replace("<svg", `<svg id="${name}" fill="currentColor"`)
+      let h = fs.readFileSync(path.join(svg_path, file), `utf8`).trim()
+      let name = `icon_${file.replace(`.svg`, ``)}`
+      h = h.replace(`<svg`, `<svg id="${name}" fill="currentColor"`)
       svg_templates += `\n${h}\n`
     }
 
-    svg_templates += "</div>"
+    svg_templates += `</div>`
 
     // Create the main body template
 
-    const body_html_path = path.join(__dirname, "../views/main/body.ejs")
+    const body_html_path = path.join(__dirname, `../views/main/body.ejs`)
 
     const compiled_body_html_template = ejs.compile(
-      fs.readFileSync(body_html_path, "utf8"), {
+      fs.readFileSync(body_html_path, `utf8`), {
         filename: body_html_path,
       }
     )
@@ -99,7 +99,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     view_mtime = get_view_mtime()
     config_mtime = config.mtime
-    utilz.loginfo("View built")
+    utilz.loginfo(`View built`)
   }
 
   function walkdir (dir, callback) {
@@ -112,9 +112,9 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   }
 
   function get_view_mtime () {
-    let mtime = ""
+    let mtime = ``
 
-    walkdir(path.join(__dirname, "../views/main"), function (file) {
+    walkdir(path.join(__dirname, `../views/main`), (file) => {
       mtime += fs.statSync(file).mtime.toString()
     })
 
@@ -139,7 +139,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       let id = req.params.id.substr(0, sconfig.max_room_id_length)
 
       if (id === config.main_room_id) {
-        res.redirect("/")
+        res.redirect(`/`)
         return
       }
     }
@@ -155,22 +155,24 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     if (req.session.user_id === undefined) {
       res.redirect(`/login?fromurl=${fromurl}`)
-    } else {
+    }
+    else {
       db_manager
-        .get_user(["id", req.session.user_id], { password_date: 1 })
+        .get_user([`id`, req.session.user_id], { password_date: 1 })
 
         .then((user) => {
           if (!user || req.session.password_date !== user.password_date) {
-            req.session.destroy(function () {})
+            req.session.destroy(() => {})
             res.redirect(`/login?fromurl=${fromurl}`)
-          } else {
+          }
+          else {
             jwt.sign(
               {
                 exp: Math.floor(Date.now() + sconfig.jwt_expiration),
                 data: { id: req.session.user_id },
               },
               sconfig.jwt_secret,
-              function (err, token) {
+              (err, token) => {
                 if (!err) {
                   req.jwt_token = token
                   next()
@@ -187,10 +189,10 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   }
 
   // Login GET
-  router.get("/login", check_url, function (req, res, next) {
+  router.get(`/login`, check_url, (req, res, next) => {
     let c = {}
     c.vars = {}
-    c.vars.fromurl = req.query.fromurl || ""
+    c.vars.fromurl = req.query.fromurl || ``
     c.vars.form_username = decodeURIComponent(req.query.form_username)
     c.vars.message = decodeURIComponent(req.query.message)
     c.vars.max_max_username_length = config.max_max_username_length
@@ -203,11 +205,11 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       c.vars.recaptcha_key = sconfig.recaptcha_key
     }
 
-    res.render("login", c)
+    res.render(`login`, c)
   })
 
   // Login POST
-  router.post("/login", function (req, res, next) {
+  router.post(`/login`, (req, res, next) => {
     let username = req.body.username
     let password = req.body.password
 
@@ -223,10 +225,11 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     }
 
     if (sconfig.recaptcha_enabled) {
-      check_captcha(req, res, function () {
+      check_captcha(req, res, () => {
         do_login(req, res, next)
       })
-    } else {
+    }
+    else {
       do_login(req, res, next)
     }
   })
@@ -244,15 +247,15 @@ module.exports = function (db_manager, config, sconfig, utilz) {
         req.session.user_id = ans.user.id
         req.session.password_date = ans.user.password_date
 
-        if (fromurl === undefined || fromurl === "" || fromurl === "/login") {
-          res.redirect("/")
-        } else {
+        if (fromurl === undefined || fromurl === `` || fromurl === `/login`) {
+          res.redirect(`/`)
+        }
+        else {
           res.redirect(fromurl)
         }
       } else {
-        req.session.destroy(function () {})
-
-        let m = encodeURIComponent("Wrong username or password")
+        req.session.destroy(() => {})
+        let m = encodeURIComponent(`Wrong username or password`)
         let form_username = encodeURIComponent(username)
         res.redirect(`/login?message=${m}&form_username=${form_username}`)
       }
@@ -264,7 +267,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   }
 
   // Register GET
-  router.get("/register", check_url, function (req, res, next) {
+  router.get(`/register`, check_url, (req, res, next) => {
     let c = {}
 
     c.vars = {}
@@ -281,11 +284,11 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       c.vars.recaptcha_key = sconfig.recaptcha_key
     }
 
-    res.render("register", c)
+    res.render(`register`, c)
   })
 
   // Register POST
-  router.post("/register", function (req, res, next) {
+  router.post(`/register`, (req, res, next) => {
     let username = req.body.username
     let password = req.body.password
     let code = req.body.code
@@ -316,34 +319,35 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     }
 
     if (sconfig.recaptcha_enabled) {
-      check_captcha(req, res, function () {
+      check_captcha(req, res, () => {
         do_register(req, res, next)
       })
-    } else {
+    }
+    else {
       do_register(req, res, next)
     }
   })
 
   // Check captcha and run a callback
   function check_captcha (req, res, callback) {
-    let recaptcha_response = req.body["g-recaptcha-response"]
+    let recaptcha_response = req.body[`g-recaptcha-response`]
     let remote_ip =
-      req.headers["x-forwarded-for"] || req.connection.remoteAddress
+      req.headers[`x-forwarded-for`] || req.connection.remoteAddress
 
     if (
       recaptcha_response === undefined ||
-      recaptcha_response === "" ||
+      recaptcha_response === `` ||
       recaptcha_response === null
     ) {
       return
     }
 
-    console.info("Fetching Recaptcha...")
-    fetch("https://www.google.com/recaptcha/api/siteverify", {
-      method: "POST",
+    console.info(`Fetching Recaptcha...`)
+    fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+      method: `POST`,
       body: `secret=${sconfig.recaptcha_secret_key}&response=${recaptcha_response}&remoteip=${remote_ip}`,
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "Content-Type": `application/x-www-form-urlencoded; charset=utf-8`,
       },
     })
 
@@ -352,14 +356,15 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     .then((json) => {
       if (json.success) {
         callback()
-      } else {
-        let m = encodeURIComponent("There was a problem verifying you're not a robot")
+      }
+      else {
+        let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
         res.redirect(`/message?message=${m}`)
       }
     })
 
     .catch((err) => {
-      let m = encodeURIComponent("There was a problem verifying you're not a robot")
+      let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
       res.redirect(`/message?message=${m}`)
       console.error(err)
     })
@@ -367,7 +372,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
   // Helper function
   function already_exists (res, username) {
-    let m = encodeURIComponent("Username already exists")
+    let m = encodeURIComponent(`Username already exists`)
     let form_username = encodeURIComponent(username)
 
     res.redirect(
@@ -382,7 +387,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     db_manager
       .get_user(
-        ["username", username], { username: 1 }
+        [`username`, username], { username: 1 }
       )
 
       .then((user) => {
@@ -394,14 +399,15 @@ module.exports = function (db_manager, config, sconfig, utilz) {
             })
 
             .then((ans) => {
-              res.redirect("/login")
+              res.redirect(`/login`)
               return
             })
 
             .catch((err) => {
               console.error(err)
             })
-        } else {
+        }
+        else {
           already_exists(res, username)
         }
       })
@@ -412,37 +418,37 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   }
 
   // Shows a page with a message
-  router.get("/message", check_url, function (req, res, next) {
+  router.get(`/message`, check_url, (req, res, next) => {
     let c = {}
     c.vars = {}
     c.vars.message2 = decodeURIComponent(req.query.message)
-    res.render("message", c)
+    res.render(`message`, c)
   })
 
   // Logs out the user
-  router.get("/logout", function (req, res, next) {
-    req.session.destroy(function () {})
+  router.get("/logout", (req, res, next) => {
+    req.session.destroy(() => {})
     res.redirect("/login")
   })
 
   // Enter root
-  router.get("/", [check_url, require_login], function (req, res, next) {
+  router.get(`/`, [check_url, require_login], (req, res, next) => {
     view.vars.room_id = config.main_room_id
     view.vars.user_id = req.session.user_id
     view.vars.jwt_token = req.jwt_token
-    res.render("main/main", view)
+    res.render(`main/main`, view)
   })
 
   // Enter a room
-  router.get("/:id(\\w+)", [check_url, require_login], function (
+  router.get(`/:id(\\w+)`, [check_url, require_login], (
     req,
     res,
     next
-  ) {
+  ) => {
     view.vars.room_id = req.params.id.substr(0, sconfig.max_room_id_length)
     view.vars.user_id = req.session.user_id
     view.vars.jwt_token = req.jwt_token
-    res.render("main/main", view)
+    res.render(`main/main`, view)
   })
 
   return router

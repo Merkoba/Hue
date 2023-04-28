@@ -1,10 +1,10 @@
 // Generates a regex with a specified string to check for highlights
 // It handles various scenarious like `word,` `@word` `word...`
-Hue.generate_highlights_regex = function (
+Hue.generate_highlights_regex = (
   word,
   case_insensitive = false,
   escape = true
-) {
+) => {
   let flags = `gm`
 
   if (case_insensitive) {
