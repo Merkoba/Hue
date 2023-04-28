@@ -1,8 +1,8 @@
-module.exports = function (manager, vars, config, sconfig, utilz, logger) {
+module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   // Finds a user with the given query
-  manager.get_user = function (query) {
+  manager.get_user = (query) => {
     return new Promise((resolve, reject) => {
-      manager.find_one("users", query)
+      manager.find_one(`users`, query)
 
       .then(user => {
         resolve(user)
@@ -15,9 +15,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Finds users with the given ids
-  manager.get_users = function (ids) {
+  manager.get_users = (ids) => {
     return new Promise((resolve, reject) => {
-      manager.find_multiple("users", ids)
+      manager.find_multiple(`users`, ids)
 
       .then(users => {
         resolve(users)
@@ -30,13 +30,13 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Creates a user
-  manager.create_user = function (info) {
+  manager.create_user = (info) => {
     return new Promise((resolve, reject) => {
-      manager.get_user(["username", info.username])
+      manager.get_user([`username`, info.username])
 
       .then(euser => {
         if (euser) {
-          resolve("error")
+          resolve(`error`)
           return
         }
       })
@@ -60,9 +60,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             registration_date: Date.now(),
           }
 
-          manager.fill_defaults("users", user)
+          manager.fill_defaults(`users`, user)
           user.version = vars.users_version
-          manager.insert_one("users", user)
+          manager.insert_one(`users`, user)
 
           .then(result => {
             resolve(result)
@@ -84,7 +84,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Changes the username
-  manager.change_username = function (id, current_username, new_username) {
+  manager.change_username = (id, current_username, new_username) => {
     return new Promise((resolve, reject) => {
       if (vars.reserved_usernames.includes(new_username.toLowerCase())) {
         resolve(false)
@@ -97,7 +97,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       }
 
       if (current_username.toLowerCase() === new_username.toLowerCase()) {
-        manager.get_user(["username", current_username])
+        manager.get_user([`username`, current_username])
 
         .then(the_user => {
           the_user.username = new_username
@@ -111,22 +111,24 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       }
 
       manager
-        .get_user(["id", id], { username: 1 })
+        .get_user([`id`, id], { username: 1 })
 
         .then((user) => {
           if (!user) {
             resolve(false)
             return
-          } else {
+          }
+          else {
             manager
-              .get_user(["username", new_username])
+              .get_user([`username`, new_username])
 
               .then((user2) => {
                 if (user2) {
                   resolve(false)
                   return
-                } else {
-                  manager.get_user(["username", current_username])
+                }
+                else {
+                  manager.get_user([`username`, current_username])
 
                   .then(the_user => {
                     the_user.username = new_username
@@ -156,17 +158,17 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Dedicated function to change user password
-  manager.change_user_password = function (id, password) {
+  manager.change_user_password = (id, password) => {
     return new Promise((resolve, reject) => {
       vars.bcrypt.hash(password, sconfig.encryption_cost)
 
       .then(hash => {
-        manager.get_user(["id", id])
+        manager.get_user([`id`, id])
 
         .then(user => {
           user.password = hash
           user.password_date = Date.now()
-          resolve("ok")
+          resolve(`ok`)
         })
 
         .catch(err => {
@@ -186,15 +188,16 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
   // Checks if a user with a given username and password matches the stored password
   // This uses bcrypt to compare with the encrypted password version
-  manager.check_password = function (username, password) {
+  manager.check_password = (username, password) => {
     return new Promise((resolve, reject) => {
       manager
-        .get_user(["username", username])
+        .get_user([`username`, username])
 
         .then((user) => {
           if (!user) {
             resolve({ user: null, valid: false })
-          } else {
+          }
+          else {
             vars.bcrypt
               .compare(password, user.password)
 

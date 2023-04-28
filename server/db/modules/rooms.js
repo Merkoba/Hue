@@ -1,8 +1,8 @@
-module.exports = function (manager, vars, config, sconfig, utilz, logger) {
+module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   // Finds a room with the given query
-  manager.get_room = function (query) {
+  manager.get_room = (query) => {
     return new Promise((resolve, reject) => {
-      manager.find_one("rooms", query)
+      manager.find_one(`rooms`, query)
 
       .then(room => {
         resolve(room)
@@ -16,9 +16,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Finds rooms with the given ids
-  manager.get_rooms = function (ids) {
+  manager.get_rooms = (ids) => {
     return new Promise((resolve, reject) => {
-      manager.find_multiple("rooms", ids)
+      manager.find_multiple(`rooms`, ids)
 
       .then(rooms => {
         resolve(rooms)
@@ -32,11 +32,11 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Creates a room
-  manager.create_room = function (data) {
+  manager.create_room = (data) => {
     return new Promise((resolve, reject) => {
       let room = {}
 
-      manager.fill_defaults("rooms", room)
+      manager.fill_defaults(`rooms`, room)
       room.version = vars.rooms_version
 
       if (data.id !== undefined) {
@@ -44,12 +44,12 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
       }
 
       if (data.user_id !== undefined) {
-        room.keys[data.user_id] = "admin"
+        room.keys[data.user_id] = `admin`
       }
 
-      room.name = data.name !== undefined ? data.name : "No Name"
+      room.name = data.name !== undefined ? data.name : `No Name`
 
-      manager.insert_one("rooms", room)
+      manager.insert_one(`rooms`, room)
 
       .then(ans => {
         resolve(room)
@@ -64,25 +64,26 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Get room objects to form a room list (sync)
-  manager.get_roomlist = function () {
+  manager.get_roomlist = () => {
     return new Promise(async (resolve, reject) => {
       try {
         let objs = []
-        let path = manager.get_dir_path("rooms")
+        let path = manager.get_dir_path(`rooms`)
         let file_names = await vars.fsp.readdir(path)
 
         for (let name of file_names) {
-          if (name.startsWith(".")) {
+          if (name.startsWith(`.`)) {
             continue
           }
 
-          let fpath = manager.get_file_path("rooms", name)
+          let fpath = manager.get_file_path(`rooms`, name)
           let obj
 
           if (manager.path_in_cache(fpath)) {
             obj = manager.cache[fpath].obj
-          } else {
-            let text = await vars.fsp.readFile(fpath, "utf8")
+          }
+          else {
+            let text = await vars.fsp.readFile(fpath, `utf8`)
             obj = JSON.parse(text)
           }
 
@@ -90,7 +91,8 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
         }
 
         resolve(objs)
-      } catch (err) {
+      }
+      catch (err) {
         reject(err)
         logger.log_error(err)
       }
@@ -98,8 +100,8 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Delete a room file and remove object (sync)
-  manager.delete_room = function (id) {
-    let fpath = manager.get_file_path("rooms", id)
+  manager.delete_room = (id) => {
+    let fpath = manager.get_file_path(`rooms`, id)
     vars.fs.rmSync(fpath)
     manager.remove_from_cache(fpath)
   }

@@ -1,15 +1,16 @@
-const fs = require("fs")
-const path = require("path")
-const root_path = path.join(__dirname, "../../../")
+const fs = require(`fs`)
+const path = require(`path`)
+const root_path = path.join(__dirname, `../../../`)
 
-module.exports = function (manager, vars, config, sconfig, utilz, logger) {
+module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   // Write to a file
   function write_file (path) {
     clearTimeout(manager.cache[path].timeout)
 
     if (Date.now() - manager.cache[path].last_write > sconfig.db_write_file_timeout_limit) {
       do_write_file(path)
-    } else {
+    }
+    else {
       manager.cache[path].timeout = setTimeout(() => {
         do_write_file(path)
       }, sconfig.db_write_file_timeout)
@@ -27,12 +28,13 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
   // Do the write file operation
   function do_write_file (path) {
-    utilz.loginfo(`Writing: ${path.split("/").slice(-2).join("/")}`)
+    utilz.loginfo(`Writing: ${path.split(`/`).slice(-2).join(`/`)}`)
     manager.cache[path].last_write = Date.now()
 
     try {
-      fs.writeFileSync(path, JSON.stringify(manager.cache[path].obj), "utf8")
-    } catch (err) {
+      fs.writeFileSync(path, JSON.stringify(manager.cache[path].obj), `utf8`)
+    }
+    catch (err) {
       logger.log_error(err)
     }
   }
@@ -40,34 +42,34 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   manager.cache = {}
 
   // Add to memory cache
-  manager.add_to_cache = function (path, obj, proxy) {
+  manager.add_to_cache = (path, obj, proxy) => {
     if (manager.cache[path] === undefined) {
       manager.cache[path] = {timeout: undefined, last_write: 0, obj: obj, proxy: proxy}
     }
   }
 
   // Remove from memory cache
-  manager.remove_from_cache = function (path, obj) {
+  manager.remove_from_cache = (path, obj) => {
     manager.cache[path] = undefined
   }
 
   // Check if path is in cache
-  manager.path_in_cache = function (path) {
+  manager.path_in_cache = (path) => {
     return manager.cache[path] && manager.cache[path].obj
   }
 
   // Get the full dir path
-  manager.get_dir_path = function (type) {
+  manager.get_dir_path = (type) => {
     return path.join(root_path, `${sconfig.db_store_path}/${type}`)
   }
 
   // Get the full file path
-  manager.get_file_path = function (type, file_name) {
+  manager.get_file_path = (type, file_name) => {
     return path.join(root_path, `${sconfig.db_store_path}/${type}/${file_name}`)
   }
 
   // Make proxy object to handle property updates
-  manager.make_proxy_object = function (obj, path, type) {
+  manager.make_proxy_object = (obj, path, type) => {
     let schema = vars[`${type}_schema`]()
 
     let handler = {
@@ -81,10 +83,12 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
             target[property] = value
             target.modified = Date.now()
             write_file(path)
-          } else {
+          }
+          else {
             logger.log_error(`DB Engine: '${property}' is the wrong type`)
           }
-        } else {
+        }
+        else {
           logger.log_error(`DB Engine: '${property}' is not in the schema`)
         }
       }
@@ -94,33 +98,35 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Find one result
-  manager.find_one = function (type, query) {
+  manager.find_one = (type, query) => {
     return new Promise((resolve, reject) => {
-      if (query[0] === "id") {
+      if (query[0] === `id`) {
         let path = manager.get_file_path(type, query[1])
         check_file(type, path, query)
 
         .then(obj => {
           if (obj) {
             resolve(obj)
-          } else {
-            reject("Nothing found")
+          }
+          else {
+            reject(`Nothing found`)
           }
         })
 
         .catch(err => {
-          reject("Nothing found")
+          reject(`Nothing found`)
         })
-      } else {
+      }
+      else {
         fs.readdir(manager.get_dir_path(type), async (err, file_names) => {
           if (err) {
             logger.log_error(err)
-            reject("Nothing found")
+            reject(`Nothing found`)
             return
           }
 
           for (let file_name of file_names) {
-            if (file_name.startsWith(".")) {
+            if (file_name.startsWith(`.`)) {
               continue
             }
 
@@ -133,10 +139,11 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
                 resolve(obj)
                 return
               }
-            } catch (err) {}
+            }
+            catch (err) {}
           }
 
-          reject("Nothing found")
+          reject(`Nothing found`)
           return
         })
       }
@@ -144,15 +151,16 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Find multiple results based on a list of ids
-  manager.find_multiple = function (type, ids) {
+  manager.find_multiple = (type, ids) => {
     return new Promise(async (resolve, reject) => {
       let objs = []
 
       for (let id of ids) {
         try {
-          let obj = await manager.find_one(type, ["id", id])
+          let obj = await manager.find_one(type, [`id`, id])
           objs.push(obj)
-        } catch (err) {}
+        }
+        catch (err) {}
       }
 
       resolve(objs)
@@ -167,13 +175,15 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
         if (check_file_query(type, proxy, query)) {
           resolve(proxy)
-        } else {
-          reject("Nothing found")
         }
-      } else {
-        fs.readFile(path, "utf8", (err, text) => {
+        else {
+          reject(`Nothing found`)
+        }
+      }
+      else {
+        fs.readFile(path, `utf8`, (err, text) => {
           if (err) {
-            reject("Nothing found")
+            reject(`Nothing found`)
             return
           }
 
@@ -181,8 +191,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
           try {
             original = JSON.parse(text)
-          } catch (err) {
-            reject("Nothing found")
+          }
+          catch (err) {
+            reject(`Nothing found`)
             return
           }
 
@@ -192,8 +203,9 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
           if (check_file_query(type, proxy, query)) {
             resolve(proxy)
-          } else {
-            reject("Nothing found")
+          }
+          else {
+            reject(`Nothing found`)
           }
         })
       }
@@ -209,7 +221,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
     let prop_1 = original[query[0]]
     let prop_2 = query[1]
 
-    if (type === "users" && query[0] === "username") {
+    if (type === `users` && query[0] === `username`) {
       prop_1 = prop_1.toLowerCase()
       prop_2 = prop_2.toLowerCase()
     }
@@ -218,7 +230,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Insert a new file in the proper directory
-  manager.insert_one = function (type, original) {
+  manager.insert_one = (type, original) => {
     return new Promise((resolve, reject) => {
       if (!original.id) {
         original.id = `${Math.round(new Date() / 1000)}_${utilz.get_random_string(4)}`
@@ -234,7 +246,7 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
 
   // Fill unexisting keys with defaults
   // Also remove obsolete keys
-  manager.fill_defaults = function (type, obj) {
+  manager.fill_defaults = (type, obj) => {
     let schema = vars[`${type}_schema`]()
 
     // Fill defaults
@@ -259,8 +271,8 @@ module.exports = function (manager, vars, config, sconfig, utilz, logger) {
   }
 
   // Push an item to a list and keep at a proper size
-  manager.push_item = async function (type, id, list_name, item) {
-    let obj = await manager.find_one(type, ["id", id])
+  manager.push_item = async (type, id, list_name, item) => {
+    let obj = await manager.find_one(type, [`id`, id])
 
     if (obj) {
       obj[list_name].push(item)
