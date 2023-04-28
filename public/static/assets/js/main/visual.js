@@ -1,6 +1,6 @@
 // Remove & add vertical or horizontal separators
-Hue.apply_separator = (el, cls) => {
-  Hue.els(`:scope > .separator`, el).forEach(it => {
+App.apply_separator = (el, cls) => {
+  App.els(`:scope > .separator`, el).forEach(it => {
     it.remove()
   })
 
@@ -13,171 +13,171 @@ Hue.apply_separator = (el, cls) => {
       break
     }
 
-    let sep = Hue.create(`div`, `separator`)
+    let sep = App.create(`div`, `separator`)
     sep.classList.add(cls)
     elems[i].insertAdjacentElement(`afterend`, sep)
   }
 }
 
 // Add horizontal separators
-Hue.horizontal_separator = (el) => {
-  Hue.apply_separator(el, `horizontal_separator`)
+App.horizontal_separator = (el) => {
+  App.apply_separator(el, `horizontal_separator`)
 }
 
 // Add vertical separators
-Hue.vertical_separator = (el) => {
-  Hue.apply_separator(el, `vertical_separator`)
+App.vertical_separator = (el) => {
+  App.apply_separator(el, `vertical_separator`)
 }
 
 // Applies separation to generic horizontal separator classes
-Hue.setup_generic_separators = () => {
-  Hue.els(`.generic_horizontal_separator`).forEach(it => {
-    Hue.horizontal_separator(it)
+App.setup_generic_separators = () => {
+  App.els(`.generic_horizontal_separator`).forEach(it => {
+    App.horizontal_separator(it)
   })
 
-  Hue.els(`.generic_vertical_separator`).forEach(it => {
-    Hue.vertical_separator(it)
+  App.els(`.generic_vertical_separator`).forEach(it => {
+    App.vertical_separator(it)
   })
 }
 
 // This hides the loading animation and makes the main container visible
-Hue.make_main_container_visible = () => {
-  Hue.el(`#main_container`).style.opacity = 1
-  Hue.el(`#main_container`).style.pointerEvents = `initial`
+App.make_main_container_visible = () => {
+  App.el(`#main_container`).style.opacity = 1
+  App.el(`#main_container`).style.pointerEvents = `initial`
 }
 
 // Setups the confirm window
-Hue.setup_confirm = () => {
-  Hue.ev(Hue.el(`#confirm_button_confirm`), `click`, () => {
-    Hue.on_confirm()
+App.setup_confirm = () => {
+  App.ev(App.el(`#confirm_button_confirm`), `click`, () => {
+    App.on_confirm()
   })
 }
 
 // Shows the confirm window
-Hue.show_confirm = (message, action, action_cancel) => {
-  Hue.el(`#confirm_message`).textContent = message
-  Hue.confirm_action = action
-  Hue.confirm_action_cancel = action_cancel
-  Hue.msg_confirm.show()
+App.show_confirm = (message, action, action_cancel) => {
+  App.el(`#confirm_message`).textContent = message
+  App.confirm_action = action
+  App.confirm_action_cancel = action_cancel
+  App.msg_confirm.show()
 }
 
 // On confirm action
-Hue.on_confirm = () => {
-  if (Hue.confirm_action) {
-    Hue.confirm_action()
-    Hue.confirm_action = undefined
-    Hue.confirm_action_cancel = undefined
+App.on_confirm = () => {
+  if (App.confirm_action) {
+    App.confirm_action()
+    App.confirm_action = undefined
+    App.confirm_action_cancel = undefined
   }
 
-  Hue.msg_confirm.close()
+  App.msg_confirm.close()
 }
 
 // On confirm cancel action
-Hue.on_confirm_cancel = () => {
-  if (Hue.confirm_action_cancel) {
-    Hue.confirm_action_cancel()
-    Hue.confirm_action_cancel = undefined
+App.on_confirm_cancel = () => {
+  if (App.confirm_action_cancel) {
+    App.confirm_action_cancel()
+    App.confirm_action_cancel = undefined
   }
 }
 
 // Simple window to display information
-Hue.show_info = (info) => {
-  Hue.msg_info.show(info)
+App.show_info = (info) => {
+  App.msg_info.show(info)
 }
 
 // Show info window or show in chat
-Hue.checkmsg = (s) => {
-  if (Hue.modal_open) {
-    Hue.show_info(s)
+App.checkmsg = (s) => {
+  if (App.modal_open) {
+    App.show_info(s)
   }
   else {
-    Hue.feedback(s)
+    App.feedback(s)
   }
 }
 
 // Shows feedback with the current date in the nice date format
-Hue.show_current_date = () => {
-  Hue.checkmsg(Hue.utilz.nice_date())
+App.show_current_date = () => {
+  App.checkmsg(App.utilz.nice_date())
 }
 
 // Start timeago checks
-Hue.start_timeago = () => {
+App.start_timeago = () => {
   setInterval(() => {
-    Hue.timeago_action()
-  }, Hue.timeago_delay)
+    App.timeago_action()
+  }, App.timeago_delay)
 }
 
 // The timeago action
-Hue.timeago_action = () => {
-  Hue.els(`.chat_area`).forEach(it => {
-    Hue.els(`.chat_timeago`, it).forEach(it2 => {
+App.timeago_action = () => {
+  App.els(`.chat_area`).forEach(it => {
+    App.els(`.chat_timeago`, it).forEach(it2 => {
       let message = it2.closest(`.message`)
-      it2.textContent = Hue.utilz.timeago(Hue.dataset(message, `date`))
+      it2.textContent = App.utilz.timeago(App.dataset(message, `date`))
     })
   })
 
-  Hue.els(`#media .media_info_container`).forEach(it => {
-    Hue.el(`.media_info_timeago`, it).textContent = Hue.utilz.timeago(Hue.dataset(it, `date`))
+  App.els(`#media .media_info_container`).forEach(it => {
+    App.el(`.media_info_timeago`, it).textContent = App.utilz.timeago(App.dataset(it, `date`))
   })
 
-  if (Hue.msg_modal_image.is_open()) {
-    Hue.el(`#modal_image_header_info .modal_image_timeago`)
-      .textContent = Hue.utilz.timeago(Hue.loaded_modal_image.date)
+  if (App.msg_modal_image.is_open()) {
+    App.el(`#modal_image_header_info .modal_image_timeago`)
+      .textContent = App.utilz.timeago(App.loaded_modal_image.date)
   }
 }
 
 // Show a message for a small time and close
-Hue.flash_info = (title, text) => {
-  let el = Hue.el(`#flash_info`)
-  let text_el = Hue.el(`#flash_info_text`)
+App.flash_info = (title, text) => {
+  let el = App.el(`#flash_info`)
+  let text_el = App.el(`#flash_info_text`)
   text_el.textContent = text
-  let title_el = Hue.el(`#flash_info_title_text`)
+  let title_el = App.el(`#flash_info_title_text`)
   title_el.textContent = title
-  let icon_el = Hue.el(`#flash_info_title_icon`)
+  let icon_el = App.el(`#flash_info_title_icon`)
   jdenticon.update(icon_el, title)
   el.style.display = `flex`
-  Hue.flash_info_timer()
+  App.flash_info_timer()
 }
 
 // Hide the flash info window
-Hue.hide_flash_info = () => {
-  let el = Hue.el(`#flash_info`)
+App.hide_flash_info = () => {
+  let el = App.el(`#flash_info`)
   el.style.display = `none`
 }
 
 // Get some element measurements
-Hue.get_element_sizes = () => {
-  Hue.panel_height = Hue.el(`#footer`).offsetHeight
+App.get_element_sizes = () => {
+  App.panel_height = App.el(`#footer`).offsetHeight
 }
 
 // Setup item picker
-Hue.setup_item_picker = () => {
-  let container = Hue.el(`#item_picker_container`)
+App.setup_item_picker = () => {
+  let container = App.el(`#item_picker_container`)
 
-  Hue.ev(container, `click`, (e) => {
+  App.ev(container, `click`, (e) => {
     let el = e.target.closest(`.item_picker_item`)
 
     if (el) {
-      let item = Hue.dataset(el, `item`)
-      Hue.item_picker_callback(item)
-      Hue.msg_item_picker.close()
+      let item = App.dataset(el, `item`)
+      App.item_picker_callback(item)
+      App.msg_item_picker.close()
     }
   })
 }
 
 // Select an item from a list
-Hue.show_item_picker = (title, items, callback) => {
-  let container = Hue.el(`#item_picker_container`)
+App.show_item_picker = (title, items, callback) => {
+  let container = App.el(`#item_picker_container`)
   container.innerHTML = ``
 
   for (let item of items) {
-    let el = Hue.create(`div`, `item_picker_item nice_row pointer justify_center`)
+    let el = App.create(`div`, `item_picker_item nice_row pointer justify_center`)
     el.textContent = item
-    Hue.dataset(el, `item`, item)
+    App.dataset(el, `item`, item)
     container.append(el)
   }
 
-  Hue.item_picker_callback = callback
-  Hue.msg_item_picker.set_title(title)
-  Hue.msg_item_picker.show()
+  App.item_picker_callback = callback
+  App.msg_item_picker.set_title(title)
+  App.msg_item_picker.show()
 }

@@ -1,7 +1,7 @@
 // Setups most keyboard events
-Hue.activate_key_detection = () => {
-  Hue.ev(document, `keydown`, (e) => {
-    if (!Hue.started) {
+App.activate_key_detection = () => {
+  App.ev(document, `keydown`, (e) => {
+    if (!App.started) {
       return
     }
 
@@ -11,11 +11,11 @@ Hue.activate_key_detection = () => {
 
     if (e.key === `Tab`) {
       if (
-        Hue.modal_open &&
-        Hue.msg_change_password.is_open() ||
-        Hue.msg_message_board.is_open() ||
-        Hue.msg_link_image.is_open() ||
-        Hue.msg_link_tv.is_open()
+        App.modal_open &&
+        App.msg_change_password.is_open() ||
+        App.msg_message_board.is_open() ||
+        App.msg_link_image.is_open() ||
+        App.msg_link_tv.is_open()
       ) {
         // Continue
       }
@@ -28,18 +28,18 @@ Hue.activate_key_detection = () => {
       }
     }
 
-    if (Hue.editing_message_board) {
+    if (App.editing_message_board) {
       if (e.key === `Enter`) {
-        Hue.do_message_board_edit()
+        App.do_message_board_edit()
         e.preventDefault()
         return
       }
     }
 
-    if (Hue.modal_open) {
+    if (App.modal_open) {
       if (e.key === `Escape`) {
         if (e.shiftKey) {
-          Hue.close_all_modals()
+          App.close_all_modals()
           e.preventDefault()
           return
         }
@@ -57,21 +57,21 @@ Hue.activate_key_detection = () => {
           e.preventDefault()
         }
         else if (e.key === `ArrowUp`) {
-          c.scrollTop -= Hue.chat_scroll_amount
+          c.scrollTop -= App.chat_scroll_amount
           e.preventDefault()
         }
         else if (e.key === `ArrowDown`) {
-          c.scrollTop += Hue.chat_scroll_amount
+          c.scrollTop += App.chat_scroll_amount
           e.preventDefault()
         }
 
         return
       }
 
-      if (Hue.msg_link_image.is_open()) {
-        if (Hue.msg_link_image.is_highest()) {
+      if (App.msg_link_image.is_open()) {
+        if (App.msg_link_image.is_highest()) {
           if (e.key === `Enter`) {
-            Hue.link_image_submit()
+            App.link_image_submit()
             e.preventDefault()
           }
 
@@ -79,10 +79,10 @@ Hue.activate_key_detection = () => {
         }
       }
 
-      if (Hue.msg_link_tv.is_open()) {
-        if (Hue.msg_link_tv.is_highest()) {
+      if (App.msg_link_tv.is_open()) {
+        if (App.msg_link_tv.is_highest()) {
           if (e.key === `Enter`) {
-            Hue.link_tv_submit()
+            App.link_tv_submit()
             e.preventDefault()
           }
 
@@ -90,32 +90,32 @@ Hue.activate_key_detection = () => {
         }
       }
 
-      if (Hue.msg_image_upload_comment.is_open()) {
-        if (Hue.msg_image_upload_comment.is_highest()) {
+      if (App.msg_image_upload_comment.is_open()) {
+        if (App.msg_image_upload_comment.is_highest()) {
           if (e.key === `Enter`) {
-            Hue.process_image_upload_comment()
+            App.process_image_upload_comment()
             e.preventDefault()
           }
         }
       }
 
-      if (Hue.msg_tv_upload_comment.is_open()) {
-        if (Hue.msg_tv_upload_comment.is_highest()) {
+      if (App.msg_tv_upload_comment.is_open()) {
+        if (App.msg_tv_upload_comment.is_highest()) {
           if (e.key === `Enter`) {
-            Hue.process_tv_upload_comment()
+            App.process_tv_upload_comment()
             e.preventDefault()
           }
         }
       }
 
-      if (Hue.msg_open_room.is_open()) {
-        if (Hue.msg_open_room.is_highest()) {
+      if (App.msg_open_room.is_open()) {
+        if (App.msg_open_room.is_highest()) {
           if (e.key === `Enter`) {
             if (e.shiftKey) {
-              Hue.el(`#open_room_here`).click()
+              App.el(`#open_room_here`).click()
             }
             else {
-              Hue.el(`#open_room_new_tab`).click()
+              App.el(`#open_room_new_tab`).click()
             }
 
             e.preventDefault()
@@ -125,10 +125,10 @@ Hue.activate_key_detection = () => {
         }
       }
 
-      if (Hue.msg_link_background.is_open()) {
-        if (Hue.msg_link_background.is_highest()) {
+      if (App.msg_link_background.is_open()) {
+        if (App.msg_link_background.is_highest()) {
           if (e.key === `Enter`) {
-            Hue.link_background_action()
+            App.link_background_action()
             e.preventDefault()
           }
 
@@ -136,22 +136,22 @@ Hue.activate_key_detection = () => {
         }
       }
 
-      if (Hue.msg_modal_image.is_open()) {
-        if (Hue.msg_modal_image.is_highest()) {
+      if (App.msg_modal_image.is_open()) {
+        if (App.msg_modal_image.is_highest()) {
           if (e.key === `ArrowLeft`) {
-            Hue.modal_image_prev_click()
+            App.modal_image_prev_click()
             e.preventDefault()
           }
           else if (e.key === `ArrowRight`) {
-            Hue.modal_image_next_click()
+            App.modal_image_next_click()
             e.preventDefault()
           }
           else if (e.key === `ArrowUp`) {
-            Hue.modal_image_next_click()
+            App.modal_image_next_click()
             e.preventDefault()
           }
           else if (e.key === `ArrowDown`) {
-            Hue.modal_image_prev_click()
+            App.modal_image_prev_click()
             e.preventDefault()
           }
 
@@ -159,10 +159,10 @@ Hue.activate_key_detection = () => {
         }
       }
 
-      if (Hue.msg_change_username.is_open()) {
-        if (Hue.msg_change_username.is_highest()) {
+      if (App.msg_change_username.is_open()) {
+        if (App.msg_change_username.is_highest()) {
           if (e.key === `Enter` && !e.shiftKey) {
-            Hue.submit_change_username()
+            App.submit_change_username()
             e.preventDefault()
           }
 
@@ -170,10 +170,10 @@ Hue.activate_key_detection = () => {
         }
       }
 
-      if (Hue.msg_change_password.is_open()) {
-        if (Hue.msg_change_password.is_highest()) {
+      if (App.msg_change_password.is_open()) {
+        if (App.msg_change_password.is_highest()) {
           if (e.key === `Enter` && !e.shiftKey) {
-            Hue.submit_change_password()
+            App.submit_change_password()
             e.preventDefault()
           }
 
@@ -181,10 +181,10 @@ Hue.activate_key_detection = () => {
         }
       }
 
-      if (Hue.msg_handle_url.is_open()) {
-        if (Hue.msg_handle_url.is_highest()) {
+      if (App.msg_handle_url.is_open()) {
+        if (App.msg_handle_url.is_highest()) {
           if (e.key === `Enter`) {
-            Hue.handle_url_chat()
+            App.handle_url_chat()
             e.preventDefault()
           }
 
@@ -192,10 +192,10 @@ Hue.activate_key_detection = () => {
         }
       }
 
-      if (Hue.msg_confirm.is_open()) {
-        if (Hue.msg_confirm.is_highest()) {
+      if (App.msg_confirm.is_open()) {
+        if (App.msg_confirm.is_highest()) {
           if (e.key === `Enter` && !e.shiftKey) {
-            Hue.on_confirm()
+            App.on_confirm()
             e.preventDefault()
           }
 
@@ -203,10 +203,10 @@ Hue.activate_key_detection = () => {
         }
       }
 
-      if (Hue.msg_message_board.is_open()) {
-        if (Hue.msg_message_board.is_highest()) {
+      if (App.msg_message_board.is_open()) {
+        if (App.msg_message_board.is_highest()) {
           if (e.key === `Enter` && !e.shiftKey) {
-            Hue.submit_message_board_post()
+            App.submit_message_board_post()
             e.preventDefault()
           }
 
@@ -214,10 +214,10 @@ Hue.activate_key_detection = () => {
         }
       }
 
-      if (Hue.msg_write_whisper.is_open()) {
-        if (Hue.msg_write_whisper.is_highest()) {
+      if (App.msg_write_whisper.is_open()) {
+        if (App.msg_write_whisper.is_highest()) {
           if (e.key === `Enter` && !e.shiftKey) {
-            Hue.submit_write_whisper()
+            App.submit_write_whisper()
             e.preventDefault()
           }
 
@@ -225,10 +225,10 @@ Hue.activate_key_detection = () => {
         }
       }
 
-      if (Hue.msg_delete_messages.is_open()) {
-        if (Hue.msg_delete_messages.is_highest()) {
+      if (App.msg_delete_messages.is_open()) {
+        if (App.msg_delete_messages.is_highest()) {
           if (e.key === `Enter` && !e.shiftKey) {
-            Hue.delete_message_action()
+            App.delete_message_action()
             e.preventDefault()
           }
 
@@ -245,79 +245,79 @@ Hue.activate_key_detection = () => {
       }
     }
 
-    Hue.focus_input()
-    let has_value = Hue.input_has_value()
+    App.focus_input()
+    let has_value = App.input_has_value()
 
     if (e.key === `Enter`) {
-      if (Hue.selected_message) {
-        Hue.selected_message_action()
+      if (App.selected_message) {
+        App.selected_message_action()
         e.preventDefault()
         return
       }
 
       if (e.shiftKey) {
-        if (!Hue.footer_expanded) {
-          Hue.enable_footer_expand()
-          Hue.add_input_new_line()
+        if (!App.footer_expanded) {
+          App.enable_footer_expand()
+          App.add_input_new_line()
           e.preventDefault()
         }
 
         return
       }
 
-      if (Hue.reply_active || Hue.edit_active || has_value) {
-        Hue.submit_input()
+      if (App.reply_active || App.edit_active || has_value) {
+        App.submit_input()
       }
       else {
-        Hue.goto_bottom(true)
+        App.goto_bottom(true)
       }
 
       e.preventDefault()
       return
     }
     else if (e.key === `PageUp`) {
-      Hue.scroll_up()
+      App.scroll_up()
     }
     else if (e.key === `PageDown`) {
-      Hue.scroll_down()
+      App.scroll_down()
     }
     else if (e.key === `ArrowUp`) {
-      if (Hue.footer_expanded) {
+      if (App.footer_expanded) {
         return
       }
 
-      Hue.select_message(`up`)
+      App.select_message(`up`)
       e.preventDefault()
       return
     }
     else if (e.key === `ArrowDown`) {
-      if (e.shiftKey || Hue.footer_expanded) {
+      if (e.shiftKey || App.footer_expanded) {
         return
       }
 
-      Hue.select_message(`down`)
+      App.select_message(`down`)
       e.preventDefault()
       return
     }
     else if (e.key === `Escape`) {
       if (!e.shiftKey) {
-        if (Hue.selected_message) {
-          Hue.unselect_message()
+        if (App.selected_message) {
+          App.unselect_message()
         }
-        else if (Hue.reply_active) {
-          Hue.cancel_reply()
+        else if (App.reply_active) {
+          App.cancel_reply()
         }
-        else if (Hue.edit_active) {
-          Hue.cancel_edit()
+        else if (App.edit_active) {
+          App.cancel_edit()
         }
-        else if (Hue.chat_scrolled) {
-          Hue.goto_bottom(true)
+        else if (App.chat_scrolled) {
+          App.goto_bottom(true)
         }
         else if (has_value) {
-          Hue.clear_input()
+          App.clear_input()
         }
-        else if (Hue.footer_expanded) {
-          Hue.disable_footer_expand()
+        else if (App.footer_expanded) {
+          App.disable_footer_expand()
         }
 
         e.preventDefault()
@@ -325,9 +325,9 @@ Hue.activate_key_detection = () => {
       }
     }
     else if (e.key === `Backspace`) {
-      if (Hue.footer_expanded) {
+      if (App.footer_expanded) {
         if (!has_value) {
-          Hue.disable_footer_expand()
+          App.disable_footer_expand()
           e.preventDefault()
         }
 
@@ -336,17 +336,17 @@ Hue.activate_key_detection = () => {
     }
 
     if (!has_value) {
-      Hue.unselect_message()
+      App.unselect_message()
     }
   })
 
-  Hue.ev(document, `input`, (e) => {
-    if (!Hue.started) {
+  App.ev(document, `input`, (e) => {
+    if (!App.started) {
       return false
     }
 
     if (e.target.closest(`.filter_input`)) {
-      Hue.modal_filter()
+      App.modal_filter()
     }
   })
 }

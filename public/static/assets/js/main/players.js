@@ -1,38 +1,38 @@
 // Loads YouTube script or creates players
-Hue.load_youtube = async (what = ``) => {
-  if (Hue.youtube_loaded) {
+App.load_youtube = async (what = ``) => {
+  if (App.youtube_loaded) {
     if (
-      Hue.youtube_tv_player_requested &&
-      Hue.youtube_tv_player === undefined
+      App.youtube_tv_player_requested &&
+      App.youtube_tv_player === undefined
     ) {
-      Hue.create_youtube_tv_player()
+      App.create_youtube_tv_player()
     }
 
     return
   }
 
-  if (Hue.youtube_loading) {
+  if (App.youtube_loading) {
     return
   }
 
-  Hue.youtube_loading = true
+  App.youtube_loading = true
 
-  await Hue.load_script(`https://www.youtube.com/iframe_api`)
+  await App.load_script(`https://www.youtube.com/iframe_api`)
 
-  Hue.youtube_loaded = true
+  App.youtube_loaded = true
 }
 
 // Create tv YouTube player
-Hue.create_youtube_tv_player = () => {
-  Hue.youtube_tv_player_requested = false
+App.create_youtube_tv_player = () => {
+  App.youtube_tv_player_requested = false
 
   let html = `<div id='media_youtube_tv' class='video_frame'></div>`
-  Hue.el(`#media_youtube_tv_container`).innerHTML = html
-  Hue.add_media_info(`media_youtube_tv_container`)
+  App.el(`#media_youtube_tv_container`).innerHTML = html
+  App.add_media_info(`media_youtube_tv_container`)
 
-  Hue.yt_tv_player = new YT.Player(`media_youtube_tv`, {
+  App.yt_tv_player = new YT.Player(`media_youtube_tv`, {
     events: {
-      onReady: Hue.on_youtube_tv_player_ready,
+      onReady: App.on_youtube_tv_player_ready,
     },
     playerVars: {
       iv_load_policy: 3,
@@ -46,67 +46,67 @@ Hue.create_youtube_tv_player = () => {
 
 // This gets executed when the YouTube iframe API is ready
 onYouTubeIframeAPIReady = () => {
-  if (Hue.youtube_tv_player_requested) {
-    Hue.create_youtube_tv_player()
+  if (App.youtube_tv_player_requested) {
+    App.create_youtube_tv_player()
   }
 }
 
 // This gets executed when the tv YouTube player is ready
-Hue.on_youtube_tv_player_ready = () => {
-  Hue.youtube_tv_player = Hue.yt_tv_player
+App.on_youtube_tv_player_ready = () => {
+  App.youtube_tv_player = App.yt_tv_player
 
-  if (Hue.youtube_tv_player_request) {
-    Hue.change_media(Hue.youtube_tv_player_request)
-    Hue.youtube_tv_player_request = false
+  if (App.youtube_tv_player_request) {
+    App.change_media(App.youtube_tv_player_request)
+    App.youtube_tv_player_request = false
   }
 }
 
 // Loads the Soundcloud script and creates players
-Hue.start_soundcloud = async () => {
-  if (Hue.soundcloud_loaded) {
+App.start_soundcloud = async () => {
+  if (App.soundcloud_loaded) {
     if (
-      Hue.soundcloud_tv_player_requested &&
-      Hue.soundcloud_tv_player === undefined
+      App.soundcloud_tv_player_requested &&
+      App.soundcloud_tv_player === undefined
     ) {
-      Hue.create_soundcloud_tv_player()
+      App.create_soundcloud_tv_player()
     }
   }
 
-  if (Hue.soundcloud_loading) {
+  if (App.soundcloud_loading) {
     return
   }
 
-  Hue.soundcloud_loading = true
-  await Hue.load_script(`https://w.soundcloud.com/player/api.js`)
-  Hue.soundcloud_loaded = true
+  App.soundcloud_loading = true
+  await App.load_script(`https://w.soundcloud.com/player/api.js`)
+  App.soundcloud_loaded = true
 
-  if (Hue.soundcloud_tv_player_requested) {
-    Hue.create_soundcloud_tv_player()
+  if (App.soundcloud_tv_player_requested) {
+    App.create_soundcloud_tv_player()
   }
 }
 
 // Creates the tv Soundcloud player
-Hue.create_soundcloud_tv_player = () => {
-  Hue.soundcloud_tv_player_requested = false
+App.create_soundcloud_tv_player = () => {
+  App.soundcloud_tv_player_requested = false
 
   try {
     let src =
       `https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536`
 
-    Hue.el(`#media_soundcloud_tv_container`)
+    App.el(`#media_soundcloud_tv_container`)
       .innerHTML = `<iframe width="640px" height="360px"
         id='media_soundcloud_tv' class='video_frame' src='${src}'></iframe>`
 
-    Hue.add_media_info(`media_soundcloud_tv_container`)
+    App.add_media_info(`media_soundcloud_tv_container`)
 
     let _soundcloud_tv_player = SC.Widget(`media_soundcloud_tv`)
 
     _soundcloud_tv_player.bind(SC.Widget.Events.READY, () => {
-      Hue.soundcloud_tv_player = _soundcloud_tv_player
+      App.soundcloud_tv_player = _soundcloud_tv_player
 
-      if (Hue.soundcloud_tv_player_request) {
-        Hue.change_media(Hue.soundcloud_tv_player_request)
-        Hue.soundcloud_tv_player_request = false
+      if (App.soundcloud_tv_player_request) {
+        App.change_media(App.soundcloud_tv_player_request)
+        App.soundcloud_tv_player_request = false
       }
     })
   }
@@ -121,60 +121,60 @@ Hue.create_soundcloud_tv_player = () => {
 // Then the respective script gets loaded if it's not loaded yet,
 // and the player gets created
 // A change event is called after player creation
-Hue.request_media = (player, args) => {
-  Hue[`${player}_requested`] = true
-  Hue[`${player}_request`] = args
+App.request_media = (player, args) => {
+  App[`${player}_requested`] = true
+  App[`${player}_request`] = args
 
   if (player === `youtube_tv_player`) {
-    Hue.load_youtube()
+    App.load_youtube()
   }
   else if (player === `twitch_tv_player`) {
-    Hue.start_twitch()
+    App.start_twitch()
   }
   else if (player === `soundcloud_tv_player`) {
-    Hue.start_soundcloud()
+    App.start_soundcloud()
   }
 }
 
 // Function to add a frame info after creating a player
-Hue.add_media_info = (container_id) => {
-  Hue.append_media_info(`#${container_id}`, `tv`)
+App.add_media_info = (container_id) => {
+  App.append_media_info(`#${container_id}`, `tv`)
 }
 
 // Loads Twitch script and creates player
-Hue.start_twitch = async () => {
-  if (Hue.twitch_loaded) {
-    if (Hue.twitch_tv_player_requested && Hue.twitch_tv_player === undefined) {
-      Hue.create_twitch_tv_player()
+App.start_twitch = async () => {
+  if (App.twitch_loaded) {
+    if (App.twitch_tv_player_requested && App.twitch_tv_player === undefined) {
+      App.create_twitch_tv_player()
     }
 
     return
   }
 
-  if (Hue.twitch_loading) {
+  if (App.twitch_loading) {
     return
   }
 
-  Hue.twitch_loading = true
+  App.twitch_loading = true
 
-  await Hue.load_script(`https://player.twitch.tv/js/embed/v1.js`)
+  await App.load_script(`https://player.twitch.tv/js/embed/v1.js`)
 
-  Hue.twitch_loaded = true
+  App.twitch_loaded = true
 
-  if (Hue.twitch_tv_player_requested) {
-    Hue.create_twitch_tv_player()
+  if (App.twitch_tv_player_requested) {
+    App.create_twitch_tv_player()
   }
 }
 
 // Creates the tv Twitch player
-Hue.create_twitch_tv_player = () => {
-  Hue.twitch_tv_player_requested = false
+App.create_twitch_tv_player = () => {
+  App.twitch_tv_player_requested = false
 
-  let c = Hue.current_tv()
+  let c = App.current_tv()
   let channel = `dummy`
 
   if (c.type === `twitch`) {
-    channel = Hue.utilz.get_twitch_id(c.source)[1]
+    channel = App.utilz.get_twitch_id(c.source)[1]
   }
 
   try {
@@ -185,17 +185,17 @@ Hue.create_twitch_tv_player = () => {
       channel: channel
     })
 
-    Hue.ev(twch_tv_player, Twitch.Player.READY, () => {
-      Hue.twitch_tv_player = twch_tv_player
+    App.ev(twch_tv_player, Twitch.Player.READY, () => {
+      App.twitch_tv_player = twch_tv_player
 
-      let iframe = Hue.el(`#media_twitch_tv_container iframe`)
+      let iframe = App.el(`#media_twitch_tv_container iframe`)
       iframe.id = `media_twitch_tv`
       iframe.classList.add(`video_frame`)
-      Hue.add_media_info(`media_twitch_tv_container`)
+      App.add_media_info(`media_twitch_tv_container`)
 
-      if (Hue.twitch_tv_player_request) {
-        Hue.change_media(Hue.twitch_tv_player_request)
-        Hue.twitch_tv_player_request = false
+      if (App.twitch_tv_player_request) {
+        App.change_media(App.twitch_tv_player_request)
+        App.twitch_tv_player_request = false
       }
     })
   }

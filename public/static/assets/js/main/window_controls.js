@@ -1,6 +1,6 @@
 // Focuses the filter widget of a modal
-Hue.focus_modal_filter = (instance) => {
-  let filter = Hue.el(`#Msg-content-${instance.options.id} .filter_input`)
+App.focus_modal_filter = (instance) => {
+  let filter = App.el(`#Msg-content-${instance.options.id} .filter_input`)
 
   if (filter) {
     filter.focus()
@@ -8,9 +8,9 @@ Hue.focus_modal_filter = (instance) => {
 }
 
 // Empties the filter of a modal and updates it
-Hue.reset_modal_filter = (instance) => {
+App.reset_modal_filter = (instance) => {
   let id = instance.options.id
-  let filter = Hue.el(`#Msg-content-${id} .filter_input`)
+  let filter = App.el(`#Msg-content-${id} .filter_input`)
 
   if (filter) {
     if (id === `info` || filter.dataset.mode === `manual`) {
@@ -19,23 +19,23 @@ Hue.reset_modal_filter = (instance) => {
 
     if (filter.value) {
       filter.value = ``
-      Hue.do_modal_filter(id)
+      App.do_modal_filter(id)
     }
   }
 }
 
 // Filter action for normal filter windows
-Hue.do_modal_filter = (id = false) => {
+App.do_modal_filter = (id = false) => {
   if (!id) {
-    if (!Hue.active_modal) {
+    if (!App.active_modal) {
       return
     }
 
-    id = Hue.active_modal.options.id
+    id = App.active_modal.options.id
   }
 
   if (id === `chat_search`) {
-    Hue.show_chat_search(Hue.el(`#chat_search_filter`).value)
+    App.show_chat_search(App.el(`#chat_search_filter`).value)
     return
   }
 
@@ -47,7 +47,7 @@ Hue.do_modal_filter = (id = false) => {
     }
 
     if (filter.startsWith(`$user`)) {
-      let username = Hue.dataset(it, `username`)
+      let username = App.dataset(it, `username`)
       let match = username && first_arg === username.toLowerCase()
 
       if (match) {
@@ -59,7 +59,7 @@ Hue.do_modal_filter = (id = false) => {
       return match
     }
     else if (filter.startsWith(`$fresh`)) {
-      let match = Hue.dataset(it, `fresh`)
+      let match = App.dataset(it, `fresh`)
 
       if (match) {
         if (args) {
@@ -89,11 +89,11 @@ Hue.do_modal_filter = (id = false) => {
     }
   }
 
-  let win = Hue.el(`#Msg-content-${id}`)
-  let filter_el = Hue.el(`.filter_input`, win)
-  let filter0 = Hue.utilz.single_space(filter_el.value).trim()
+  let win = App.el(`#Msg-content-${id}`)
+  let filter_el = App.el(`.filter_input`, win)
+  let filter0 = App.utilz.single_space(filter_el.value).trim()
   let filter = filter0.toLowerCase()
-  let items = Hue.els(`.modal_item`, win)
+  let items = App.els(`.modal_item`, win)
   let args, first_arg, tail
 
   if (filter && items.length) {
@@ -131,19 +131,19 @@ Hue.do_modal_filter = (id = false) => {
       }
     })
 
-    Hue[`${id}_filtered`] = true
+    App[`${id}_filtered`] = true
   }
   else {
     items.forEach(it => {
       it.classList.remove(`nodisplay`)
     })
 
-    Hue[`${id}_filtered`] = false
+    App[`${id}_filtered`] = false
   }
 
-  Hue.scroll_modal_to_top(id)
+  App.scroll_modal_to_top(id)
 
-  if (Hue[`after_${id}_filtered`]) {
-    Hue[`after_${id}_filtered`]()
+  if (App[`after_${id}_filtered`]) {
+    App[`after_${id}_filtered`]()
   }
 }

@@ -1,34 +1,34 @@
 // Setup chat search
-Hue.setup_chat_search = () => {
-  Hue.ev(Hue.el(`#chat_search_highlights`), `click`, () => {
-    Hue.show_highlights()
+App.setup_chat_search = () => {
+  App.ev(App.el(`#chat_search_highlights`), `click`, () => {
+    App.show_highlights()
   })
 
-  Hue.ev(Hue.el(`#chat_search_links`), `click`, () => {
-    Hue.show_links()
+  App.ev(App.el(`#chat_search_links`), `click`, () => {
+    App.show_links()
   })
 
-  Hue.ev(Hue.el(`#chat_search_user`), `click`, () => {
-    Hue.show_user_messages()
+  App.ev(App.el(`#chat_search_user`), `click`, () => {
+    App.show_user_messages()
   })
 
-  Hue.ev(Hue.el(`#chat_search_image`), `click`, () => {
-    Hue.show_image_list()
+  App.ev(App.el(`#chat_search_image`), `click`, () => {
+    App.show_image_list()
   })
 
-  Hue.ev(Hue.el(`#chat_search_tv`), `click`, () => {
-    Hue.show_tv_list()
+  App.ev(App.el(`#chat_search_tv`), `click`, () => {
+    App.show_tv_list()
   })
 }
 
 // Resets chat search filter state
-Hue.reset_chat_search_filter = () => {
-  Hue.el(`#chat_search_filter`).value = ``
-  Hue.el(`#chat_search_container`).innerHTML = ``
+App.reset_chat_search_filter = () => {
+  App.el(`#chat_search_filter`).value = ``
+  App.el(`#chat_search_container`).innerHTML = ``
 }
 
 // Shows the chat search window
-Hue.show_chat_search = (filter = ``) => {
+App.show_chat_search = (filter = ``) => {
   let finished = false
   let highlight_id
 
@@ -38,7 +38,7 @@ Hue.show_chat_search = (filter = ``) => {
     }
 
     if (filter.startsWith(`$user`)) {
-      let username = Hue.dataset(it, `username`)
+      let username = App.dataset(it, `username`)
       let match = username && first_arg === username.toLowerCase()
 
       if (match) {
@@ -50,7 +50,7 @@ Hue.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$highlights`)) {
-      let match = Hue.dataset(it, `highlighted`)
+      let match = App.dataset(it, `highlighted`)
 
       if (match) {
         if (args) {
@@ -61,12 +61,12 @@ Hue.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$fresh_highlights`)) {
-      if (!Hue.latest_highlight) {
+      if (!App.latest_highlight) {
         finished = true
         return
       }
 
-      let match = Hue.dataset(it, `highlighted`)
+      let match = App.dataset(it, `highlighted`)
 
       if (match) {
         if (args) {
@@ -75,8 +75,8 @@ Hue.show_chat_search = (filter = ``) => {
       }
 
       if (match) {
-        let id1 = Hue.dataset(it, `id`)
-        let id2 = Hue.dataset(Hue.latest_highlight, `id`)
+        let id1 = App.dataset(it, `id`)
+        let id2 = App.dataset(App.latest_highlight, `id`)
         if (id1 === id2) {
           finished = true
         }
@@ -97,8 +97,8 @@ Hue.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$image`)) {
-      let match = (Hue.dataset(it, `mode`) === `announcement` &&
-                  Hue.dataset(it, `type`) === `image_change`)
+      let match = (App.dataset(it, `mode`) === `announcement` &&
+                  App.dataset(it, `type`) === `image_change`)
 
       if (match) {
         if (args) {
@@ -109,8 +109,8 @@ Hue.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$tv`)) {
-      let match = (Hue.dataset(it, `mode`) === `announcement` &&
-                  Hue.dataset(it, `type`) === `tv_change`)
+      let match = (App.dataset(it, `mode`) === `announcement` &&
+                  App.dataset(it, `type`) === `tv_change`)
 
       if (match) {
         if (args) {
@@ -121,7 +121,7 @@ Hue.show_chat_search = (filter = ``) => {
       return match
     }
     else {
-      let text = Hue.el_or_self(`.unit_text`, it)
+      let text = App.el_or_self(`.unit_text`, it)
       return text.textContent.toLowerCase().includes(filter)
     }
   }
@@ -129,33 +129,33 @@ Hue.show_chat_search = (filter = ``) => {
   function on_messages (messages) {
     if (messages.length) {
       for (let message of messages) {
-        let profilepics = Hue.els(`.profilepic`, message)
+        let profilepics = App.els(`.profilepic`, message)
 
         for (let pic of profilepics) {
-          Hue.ev(pic, `error`, () => {
-            Hue.fallback_profilepic(pic)
+          App.ev(pic, `error`, () => {
+            App.fallback_profilepic(pic)
           })
         }
 
-        let link_img = Hue.el(`.link_preview_image`, message)
+        let link_img = App.el(`.link_preview_image`, message)
 
         if (link_img) {
-          Hue.ev(link_img, `error`, () => {
+          App.ev(link_img, `error`, () => {
             link_img.style.display = `none`
           })
         }
 
-        Hue.el(`#chat_search_container`).append(message)
+        App.el(`#chat_search_container`).append(message)
       }
     }
     else {
-      Hue.el(`#chat_search_container`).innerHTML = `<div class='center'>Nothing found</div>`
+      App.el(`#chat_search_container`).innerHTML = `<div class='center'>Nothing found</div>`
     }
   }
 
-  Hue.el(`#chat_search_container`).innerHTML = ``
-  Hue.el(`#chat_search_filter`).value = filter
-  let filter0 = Hue.utilz.single_space(filter).trim()
+  App.el(`#chat_search_container`).innerHTML = ``
+  App.el(`#chat_search_filter`).value = filter
+  let filter0 = App.utilz.single_space(filter).trim()
   filter = filter0.toLowerCase()
   let args, first_arg, tail
 
@@ -186,26 +186,26 @@ Hue.show_chat_search = (filter = ``) => {
     }
 
     if (filter.startsWith(`$id`)) {
-      let item = Hue.get_message_container_by_id(first_arg)
+      let item = App.get_message_container_by_id(first_arg)
 
       if (item) {
-        highlight_id = Hue.dataset(item, `message_id`)
-        on_messages([Hue.clone(item)])
+        highlight_id = App.dataset(item, `message_id`)
+        on_messages([App.clone(item)])
       }
     }
     else {
-      let messages = Hue.clone_children(`#chat_area`).reverse()
+      let messages = App.clone_children(`#chat_area`).reverse()
 
       messages.forEach(it => {
         it.removeAttribute(`id`)
       })
 
       messages = messages.filter(it => {
-        let mode = Hue.dataset(it, `mode`)
+        let mode = App.dataset(it, `mode`)
         let message_matched = false
 
         if (mode === `chat`) {
-          let containers = Hue.els(`.chat_content_container`, it)
+          let containers = App.els(`.chat_content_container`, it)
 
           for (let container of containers) {
             if (filtercheck(container)) {
@@ -236,35 +236,35 @@ Hue.show_chat_search = (filter = ``) => {
 
   }
   else {
-    Hue.el(`#chat_search_container`).innerHTML = `<div class='center'>Search recent messages</div>`
+    App.el(`#chat_search_container`).innerHTML = `<div class='center'>Search recent messages</div>`
   }
 
-  Hue.msg_chat_search.show(() => {
+  App.msg_chat_search.show(() => {
     if (highlight_id) {
-      Hue.jump_to_chat_message(highlight_id, true, `#chat_search_container`)
+      App.jump_to_chat_message(highlight_id, true, `#chat_search_container`)
     }
     else {
-      Hue.scroll_modal_to_top(`chat_search`)
+      App.scroll_modal_to_top(`chat_search`)
     }
   })
 }
 
 // Show links in chat search
-Hue.show_links = () => {
-  Hue.show_chat_search(`$links `)
+App.show_links = () => {
+  App.show_chat_search(`$links `)
 }
 
 // Show image messages
-Hue.show_image_list = () => {
-  Hue.show_chat_search(`$image `)
+App.show_image_list = () => {
+  App.show_chat_search(`$image `)
 }
 
 // Show tv messages
-Hue.show_tv_list = () => {
-  Hue.show_chat_search(`$tv `)
+App.show_tv_list = () => {
+  App.show_chat_search(`$tv `)
 }
 
 // Do a chat search by id
-Hue.chat_search_by_id = (id) => {
-  Hue.show_chat_search(`$id ${id}`)
+App.chat_search_by_id = (id) => {
+  App.show_chat_search(`$id ${id}`)
 }

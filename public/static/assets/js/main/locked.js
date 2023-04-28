@@ -1,13 +1,13 @@
 // If the user is banned the client enters locked mode
 // This only shows a simple menu with a few navigation options
-Hue.start_locked_mode = () => {
-  Hue.el(`#header`).style.display = `none`
-  Hue.el(`#footer`).style.display = `none`
-  Hue.show_locked_mode()
-  Hue.make_main_container_visible()
+App.start_locked_mode = () => {
+  App.el(`#header`).style.display = `none`
+  App.el(`#footer`).style.display = `none`
+  App.show_locked_mode()
+  App.make_main_container_visible()
 }
 
 // Show the locked menu
-Hue.show_locked_mode = () => {
-  Hue.msg_locked.show()
+App.show_locked_mode = () => {
+  App.msg_locked.show()
 }

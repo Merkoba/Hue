@@ -1,9 +1,9 @@
-module.exports = (Hue) => {
+module.exports = (App) => {
   // Handles whispers
-  Hue.handler.public.whisper = async (socket, data) => {
+  App.handler.public.whisper = async (socket, data) => {
     if (data.type === `system_broadcast`) {
       if (!socket.hue_superuser) {
-        Hue.handler.anti_spam_ban(socket)
+        App.handler.anti_spam_ban(socket)
         return
       }
     }
@@ -13,14 +13,14 @@ module.exports = (Hue) => {
         return
       }
 
-      if (data.usernames.length > Hue.config.max_whisper_users) {
+      if (data.usernames.length > App.config.max_whisper_users) {
         return
       }
 
       for (let username of data.usernames) {
         if (
           !username.length ||
-          username.length > Hue.config.max_max_username_length
+          username.length > App.config.max_max_username_length
         ) {
           return
         }
@@ -35,11 +35,11 @@ module.exports = (Hue) => {
       return
     }
 
-    if (data.message.length > Hue.config.max_whispers_post_length) {
+    if (data.message.length > App.config.max_whispers_post_length) {
       return
     }
 
-    if (data.message.split(`\n`).length > Hue.config.max_num_newlines) {
+    if (data.message.split(`\n`).length > App.config.max_num_newlines) {
       return
     }
 
@@ -48,7 +48,7 @@ module.exports = (Hue) => {
 
     if (data.type === `user`) {
       for (let username of usernames) {
-        let sockets = await Hue.handler.get_user_sockets_per_room_by_username(
+        let sockets = await App.handler.get_user_sockets_per_room_by_username(
           socket.hue_room_id,
           username
         )
@@ -60,7 +60,7 @@ module.exports = (Hue) => {
           })
 
           for (let socc of sockets) {
-            Hue.handler.user_emit(socc, `whisper`, {
+            App.handler.user_emit(socc, `whisper`, {
               room: socket.hue_room_id,
               user_id: socket.hue_user_id,
               username: socket.hue_username,
@@ -70,16 +70,16 @@ module.exports = (Hue) => {
           }
         }
         else {
-          Hue.handler.user_emit(socket, `user_not_in_room`, {})
+          App.handler.user_emit(socket, `user_not_in_room`, {})
         }
       }
 
       data.users = users
-      Hue.handler.user_emit(socket, `whisper_sent`, data)
+      App.handler.user_emit(socket, `whisper_sent`, data)
     }
     else if (data.type === `system_broadcast`) {
-      Hue.handler.system_emit(socket, `system_broadcast`, {
-        username: Hue.sconfig.system_username,
+      App.handler.system_emit(socket, `system_broadcast`, {
+        username: App.sconfig.system_username,
         message: data.message,
         type: data.type
       })

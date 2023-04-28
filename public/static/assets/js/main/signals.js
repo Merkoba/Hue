@@ -1,39 +1,39 @@
 // Reloads the client
-Hue.reload_client = () => {
-  Hue.user_leaving = true
+App.reload_client = () => {
+  App.user_leaving = true
   window.location = window.location
 }
 
 // Reconnect asynchronously
-Hue.refresh_client = () => {
-  if (Hue.connecting || Hue.room_locked || Hue.socket.connected) {
+App.refresh_client = () => {
+  if (App.connecting || App.room_locked || App.socket.connected) {
     return
   }
 
-  Hue.connecting = true
-  Hue.start_socket()
+  App.connecting = true
+  App.start_socket()
 }
 
 // Simple emit to check server response
-Hue.ping_server = () => {
-  Hue.socket_emit(`ping_server`, { date: Date.now() })
+App.ping_server = () => {
+  App.socket_emit(`ping_server`, { date: Date.now() })
 }
 
 // Calculates how much time the pong response took to arrive
-Hue.pong_received = (data) => {
-  let nice_time = Hue.utilz.nice_time(Date.now(), data.date)
-  Hue.checkmsg(`Pong: ${nice_time}`)
+App.pong_received = (data) => {
+  let nice_time = App.utilz.nice_time(Date.now(), data.date)
+  App.checkmsg(`Pong: ${nice_time}`)
 }
 
 // Superuser signal that tells all clients to refresh
-Hue.send_system_restart_signal = () => {
-  Hue.show_confirm(`Run superuser command`, () => {
-    Hue.socket_emit(`system_restart_signal`, {})
+App.send_system_restart_signal = () => {
+  App.show_confirm(`Run superuser command`, () => {
+    App.socket_emit(`system_restart_signal`, {})
   })
 }
 
 // When the system suggests a refresh
-Hue.system_restart_signal = () => {
-  let item = Hue.make_info_popup_item({icon: `info`, message: `Refresh is recommended`})
-  Hue.show_popup(Hue.make_info_popup(), item)
+App.system_restart_signal = () => {
+  let item = App.make_info_popup_item({icon: `info`, message: `Refresh is recommended`})
+  App.show_popup(App.make_info_popup(), item)
 }

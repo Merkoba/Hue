@@ -1,6 +1,6 @@
-module.exports = (Hue) => {
+module.exports = (App) => {
   // Does an emit to a user
-  Hue.handler.user_emit = (socket, type, args = {}) => {
+  App.handler.user_emit = (socket, type, args = {}) => {
     let obj = {}
 
     obj.type = type
@@ -10,7 +10,7 @@ module.exports = (Hue) => {
   }
 
   // Does an emit to a room
-  Hue.handler.room_emit = (socket, type, args = {}) => {
+  App.handler.room_emit = (socket, type, args = {}) => {
     let room_id
 
     if (typeof socket === `object`) {
@@ -25,11 +25,11 @@ module.exports = (Hue) => {
     obj.type = type
     obj.data = args
 
-    Hue.io.sockets.in(room_id).emit(`update`, obj)
+    App.io.sockets.in(room_id).emit(`update`, obj)
   }
 
   // Does an emit to all the room except for the user
-  Hue.handler.broadcast_emit = (socket, type, args = {}) => {
+  App.handler.broadcast_emit = (socket, type, args = {}) => {
     let room_id
 
     if (typeof socket === `object`) {
@@ -48,22 +48,22 @@ module.exports = (Hue) => {
   }
 
   // Does a system wide emit
-  Hue.handler.system_emit = (socket, type, args = {}) => {
+  App.handler.system_emit = (socket, type, args = {}) => {
     let obj = {}
 
     obj.type = type
     obj.data = args
 
-    Hue.io.emit(`update`, obj)
+    App.io.emit(`update`, obj)
   }
 
   // Sends system restart signals
-  Hue.handler.public.system_restart_signal = (socket, data) => {
+  App.handler.public.system_restart_signal = (socket, data) => {
     if (!socket.hue_superuser) {
-      Hue.handler.anti_spam_ban(socket)
+      App.handler.anti_spam_ban(socket)
       return
     }
 
-    Hue.handler.system_emit(socket, `system_restart_signal`, {})
+    App.handler.system_emit(socket, `system_restart_signal`, {})
   }
 }

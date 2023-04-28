@@ -1,5 +1,5 @@
 // Show chat context menu
-Hue.show_chat_context_menu = (button, x, y) => {
+App.show_chat_context_menu = (button, x, y) => {
   let is_main = button.closest(`#chat_area`)
   let unit = button.closest(`.message_unit`)
 
@@ -9,17 +9,17 @@ Hue.show_chat_context_menu = (button, x, y) => {
 
   let items = []
   let message = button.closest(`.message`)
-  let mode = Hue.dataset(message, `mode`)
-  let type = Hue.dataset(message, `type`)
-  let user_id = Hue.dataset(message, `user_id`)
-  let id = Hue.dataset(unit, `id`)
-  let likes = Hue.dataset(unit, `likes`)
-  let message_id = Hue.dataset(message, `message_id`)
+  let mode = App.dataset(message, `mode`)
+  let type = App.dataset(message, `type`)
+  let user_id = App.dataset(message, `user_id`)
+  let id = App.dataset(unit, `id`)
+  let likes = App.dataset(unit, `likes`)
+  let message_id = App.dataset(message, `message_id`)
   let url = ``
 
   if (mode === `chat`) {
     let container = button.closest(`.chat_content_container`)
-    url = Hue.dataset(container, `first_url`)
+    url = App.dataset(container, `first_url`)
   }
 
   let has_reply = false
@@ -29,20 +29,20 @@ Hue.show_chat_context_menu = (button, x, y) => {
     items.push({
       text: `Reply`,
       action: () => {
-        let el = Hue.el(`.unit_text`, button.closest(`.message_unit`))
-        Hue.start_reply(el)
+        let el = App.el(`.unit_text`, button.closest(`.message_unit`))
+        App.start_reply(el)
       }
     })
 
     has_reply = true
   }
 
-  if (user_id === Hue.user_id && (mode === `chat` || type === `image_change` || type === `tv_change`)) {
+  if (user_id === App.user_id && (mode === `chat` || type === `image_change` || type === `tv_change`)) {
     items.push({
       text: `Edit`,
       action: () => {
-        let el = Hue.el(`.unit_text`, button.closest(`.message_unit`))
-        Hue.start_edit(el)
+        let el = App.el(`.unit_text`, button.closest(`.message_unit`))
+        App.start_edit(el)
       }
     })
 
@@ -50,15 +50,15 @@ Hue.show_chat_context_menu = (button, x, y) => {
   }
 
   if (has_reply && has_edit) {
-    if (user_id === Hue.user_id) {
-      Hue.utilz.move_in_array(items, items.length - 1, items.length - 2)
+    if (user_id === App.user_id) {
+      App.utilz.move_in_array(items, items.length - 1, items.length - 2)
     }
   }
 
   if (mode === `chat` || type === `image_change` || type === `tv_change`) {
     let text = `Like`
     let type = `like`
-    let included = Hue.dataset(unit, `likes`).some(x => x.user_id === Hue.user_id)
+    let included = App.dataset(unit, `likes`).some(x => x.user_id === App.user_id)
 
     // Check if the user already like the post
     if (included) {
@@ -66,12 +66,12 @@ Hue.show_chat_context_menu = (button, x, y) => {
       type = `unlike`
     }
 
-    if (type === `unlike` || (type === `like` && likes.length < Hue.config.max_likes)) {
+    if (type === `unlike` || (type === `like` && likes.length < App.config.max_likes)) {
       items.push({
         text: text,
         action: () => {
-          let el = Hue.el(`.unit_text`, button.closest(`.message_unit`))
-          Hue.like_message(el, type)
+          let el = App.el(`.unit_text`, button.closest(`.message_unit`))
+          App.like_message(el, type)
         }
       })
     }
@@ -80,18 +80,18 @@ Hue.show_chat_context_menu = (button, x, y) => {
   items.push({
     text: `Hide`,
     action: () => {
-      Hue.show_confirm(`Hide message. This won't delete it`, () => {
-        Hue.remove_message_from_context_menu(button)
+      App.show_confirm(`Hide message. This won't delete it`, () => {
+        App.remove_message_from_context_menu(button)
       })
     }
   })
 
-  if ((user_id === Hue.user_id || Hue.is_admin_or_op()) &&
+  if ((user_id === App.user_id || App.is_admin_or_op()) &&
     (mode === `chat` || type === `image_change` || type === `tv_change`)) {
     items.push({
       text: `Delete`,
       action: () => {
-        Hue.handle_delete_messages(id, user_id)
+        App.handle_delete_messages(id, user_id)
       }
     })
   }
@@ -100,7 +100,7 @@ Hue.show_chat_context_menu = (button, x, y) => {
     items.push({
       text: `Handle`,
       action: () => {
-        Hue.handle_url(url)
+        App.handle_url(url)
       }
     })
   }
@@ -109,7 +109,7 @@ Hue.show_chat_context_menu = (button, x, y) => {
     items.push({
       text: `Jump`,
       action: () => {
-        Hue.jump_to_chat_message(message_id, true)
+        App.jump_to_chat_message(message_id, true)
       }
     })
   }
@@ -123,35 +123,35 @@ Hue.show_chat_context_menu = (button, x, y) => {
 }
 
 // Hide the context menu
-Hue.hide_context_menu = () => {
+App.hide_context_menu = () => {
   NeedContext.hide()
 }
 
 // Show input menu
-Hue.show_input_menu = () => {
+App.show_input_menu = () => {
   let items = []
 
-  if (Hue.get_input(true)) {
+  if (App.get_input(true)) {
     items.push({
       text: `Send`,
       action: () => {
-        Hue.submit_input()
+        App.submit_input()
       }
     })
 
     items.push({
       text: `Clear`,
       action: () => {
-        Hue.clear_input()
+        App.clear_input()
       }
     })
   }
 
-  if (Hue.room_state.last_input && !Hue.get_input(true)) {
+  if (App.room_state.last_input && !App.get_input(true)) {
     items.push({
       text: `Repeat`,
       action: () => {
-        Hue.show_input_history()
+        App.show_input_history()
       }
     })
   }
@@ -159,24 +159,24 @@ Hue.show_input_menu = () => {
   items.push({
     text: `Lock`,
     action: () => {
-      Hue.lock_chat()
+      App.lock_chat()
     }
   })
 
   items.push({
     text: `@ Img`,
     action: () => {
-      Hue.reply_to_media(`image`)
+      App.reply_to_media(`image`)
     }
   })
 
   items.push({
     text: `@ TV`,
     action: () => {
-      Hue.reply_to_media(`tv`)
+      App.reply_to_media(`tv`)
     }
   })
 
-  let el = Hue.el(`#footer_input_menu`)
+  let el = App.el(`#footer_input_menu`)
   NeedContext.show_on_element(el, items)
 }

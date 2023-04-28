@@ -1,9 +1,9 @@
 // Returns the current room tv
 // The last tv in the tv changed array
 // This is not necesarily the user's loaded tv
-Hue.current_tv = () => {
-  if (Hue.tv_changed.length > 0) {
-    return Hue.tv_changed[Hue.tv_changed.length - 1]
+App.current_tv = () => {
+  if (App.tv_changed.length > 0) {
+    return App.tv_changed[App.tv_changed.length - 1]
   }
   else {
     return {}
@@ -11,83 +11,83 @@ Hue.current_tv = () => {
 }
 
 // Pushes a changed tv into the tv changed array
-Hue.push_tv_changed = (data) => {
-  Hue.tv_changed.push(data)
+App.push_tv_changed = (data) => {
+  App.tv_changed.push(data)
 
-  if (Hue.tv_changed.length > Hue.config.media_changed_crop_limit) {
-    Hue.tv_changed = Hue.tv_changed.slice(
-      Hue.tv_changed.length - Hue.config.media_changed_crop_limit
+  if (App.tv_changed.length > App.config.media_changed_crop_limit) {
+    App.tv_changed = App.tv_changed.slice(
+      App.tv_changed.length - App.config.media_changed_crop_limit
     )
   }
 }
 
 // Stops all defined tv players
-Hue.stop_tv = () => {
-  if (Hue.youtube_tv_player) {
-    Hue.youtube_tv_player.pauseVideo()
+App.stop_tv = () => {
+  if (App.youtube_tv_player) {
+    App.youtube_tv_player.pauseVideo()
   }
 
-  if (Hue.twitch_tv_player) {
-    Hue.twitch_tv_player.pause()
+  if (App.twitch_tv_player) {
+    App.twitch_tv_player.pause()
   }
 
-  if (Hue.soundcloud_tv_player) {
-    Hue.soundcloud_tv_player.pause()
+  if (App.soundcloud_tv_player) {
+    App.soundcloud_tv_player.pause()
   }
 
-  if (Hue.el(`#media_video_tv`)) {
-    Hue.el(`#media_video_tv`).pause()
+  if (App.el(`#media_video_tv`)) {
+    App.el(`#media_video_tv`).pause()
   }
 }
 
 // Plays the active loaded tv
-Hue.play_tv = () => {
-  if (!Hue.tv_visible) {
+App.play_tv = () => {
+  if (!App.tv_visible) {
     return
   }
 
-  if (Hue.current_tv().type === `youtube`) {
-    if (Hue.youtube_tv_player) {
-      Hue.youtube_tv_player.playVideo()
+  if (App.current_tv().type === `youtube`) {
+    if (App.youtube_tv_player) {
+      App.youtube_tv_player.playVideo()
     }
   }
-  else if (Hue.current_tv().type === `twitch`) {
-    if (Hue.twitch_tv_player) {
-      Hue.twitch_tv_player.play()
+  else if (App.current_tv().type === `twitch`) {
+    if (App.twitch_tv_player) {
+      App.twitch_tv_player.play()
     }
   }
-  else if (Hue.current_tv().type === `soundcloud`) {
-    if (Hue.soundcloud_tv_player) {
-      Hue.soundcloud_tv_player.play()
+  else if (App.current_tv().type === `soundcloud`) {
+    if (App.soundcloud_tv_player) {
+      App.soundcloud_tv_player.play()
     }
   }
-  else if (Hue.current_tv().type === `video`) {
-    if (Hue.el(`#media_video_tv`)) {
-      Hue.el(`#media_video_tv`).play()
+  else if (App.current_tv().type === `video`) {
+    if (App.el(`#media_video_tv`)) {
+      App.el(`#media_video_tv`).play()
     }
   }
-  else if (Hue.current_tv().type === `iframe`) {
-    let iframe = Hue.el(`#media_iframe_tv`)
+  else if (App.current_tv().type === `iframe`) {
+    let iframe = App.el(`#media_iframe_tv`)
     iframe.classList.add(`noborder`)
-    iframe.src = Hue.current_tv().source
-    Hue.el(`#media_iframe_poster`).style.display = `none`
+    iframe.src = App.current_tv().source
+    App.el(`#media_iframe_poster`).style.display = `none`
   }
 }
 
 // Destroys all tv players that don't match the item's type
 // Makes the item's type visible
-Hue.hide_tv = (item = false) => {
-  Hue.els(`#media_tv .media_container`).forEach(it => {
+App.hide_tv = (item = false) => {
+  App.els(`#media_tv .media_container`).forEach(it => {
     let type = it.id.replace(`media_`, ``).replace(`_tv_container`, ``)
 
     if (!item || item.type !== type) {
-      let el = Hue.create(`div`, `media_container`)
+      let el = App.create(`div`, `media_container`)
       el.id = it.id
       el.style.display = `none`
       it.replaceWith(el)
-      Hue[`${type}_tv_player`] = undefined
-      Hue[`${type}_tv_player_requested`] = false
-      Hue[`${type}_tv_player_request`] = false
+      App[`${type}_tv_player`] = undefined
+      App[`${type}_tv_player_requested`] = false
+      App[`${type}_tv_player_request`] = false
     }
     else {
       it.style.display = `flex`
@@ -96,22 +96,22 @@ Hue.hide_tv = (item = false) => {
 }
 
 // Loads a YouTube video
-Hue.show_youtube_tv = (play = true) => {
-  let item = Hue.loaded_tv
-  Hue.before_show_tv(item)
-  let id = Hue.utilz.get_youtube_id(item.source)
+App.show_youtube_tv = (play = true) => {
+  let item = App.loaded_tv
+  App.before_show_tv(item)
+  let id = App.utilz.get_youtube_id(item.source)
 
   if (id[0] === `video`) {
-    let seconds = Hue.utilz.get_youtube_time(item.source)
+    let seconds = App.utilz.get_youtube_time(item.source)
 
     if (play) {
-      Hue.youtube_tv_player.loadVideoById({
+      App.youtube_tv_player.loadVideoById({
         videoId: id[1],
         startSeconds: seconds,
       })
     }
     else {
-      Hue.youtube_tv_player.cueVideoById({
+      App.youtube_tv_player.cueVideoById({
         videoId: id[1],
         startSeconds: seconds,
       })
@@ -119,13 +119,13 @@ Hue.show_youtube_tv = (play = true) => {
   }
   else if (id[0] === `list`) {
     if (play) {
-      Hue.youtube_tv_player.loadPlaylist({
+      App.youtube_tv_player.loadPlaylist({
         list: id[1][0],
         index: id[1][1]
       })
     }
     else {
-      Hue.youtube_tv_player.cuePlaylist({
+      App.youtube_tv_player.cuePlaylist({
         list: id[1][0],
         index: id[1][1]
       })
@@ -135,119 +135,119 @@ Hue.show_youtube_tv = (play = true) => {
     return
   }
 
-  Hue.after_show_tv()
+  App.after_show_tv()
 }
 
 // Loads a Twitch video
-Hue.show_twitch_tv = (play = true) => {
-  let item = Hue.loaded_tv
-  Hue.before_show_tv(item)
-  let id = Hue.utilz.get_twitch_id(item.source)
+App.show_twitch_tv = (play = true) => {
+  let item = App.loaded_tv
+  App.before_show_tv(item)
+  let id = App.utilz.get_twitch_id(item.source)
 
   if (id[0] === `video`) {
-    Hue.twitch_tv_player.setVideoSource(item.source)
+    App.twitch_tv_player.setVideoSource(item.source)
   }
   else if (id[0] === `channel`) {
-    Hue.twitch_tv_player.setChannel(id[1])
+    App.twitch_tv_player.setChannel(id[1])
   }
   else {
     return
   }
 
   if (play) {
-    Hue.twitch_tv_player.play()
+    App.twitch_tv_player.play()
   }
   else {
-    clearTimeout(Hue.play_twitch_tv_player_timeout)
-    Hue.twitch_tv_player.pause()
+    clearTimeout(App.play_twitch_tv_player_timeout)
+    App.twitch_tv_player.pause()
   }
 
-  Hue.after_show_tv(play)
+  App.after_show_tv(play)
 }
 
 // Loads a Soundcloud video
-Hue.show_soundcloud_tv = (play = true) => {
-  let item = Hue.loaded_tv
-  Hue.before_show_tv(item)
+App.show_soundcloud_tv = (play = true) => {
+  let item = App.loaded_tv
+  App.before_show_tv(item)
 
-  Hue.soundcloud_tv_player.load(item.source, {
+  App.soundcloud_tv_player.load(item.source, {
     auto_play: false,
     single_active: false,
     show_artwork: true,
     callback: () => {
       if (play) {
-        Hue.soundcloud_tv_player.play()
+        App.soundcloud_tv_player.play()
       }
     },
   })
 
-  Hue.after_show_tv()
+  App.after_show_tv()
 }
 
 // Loads a <video> video
-Hue.show_video_tv = (play = true) => {
-  let item = Hue.loaded_tv
+App.show_video_tv = (play = true) => {
+  let item = App.loaded_tv
 
-  if (!Hue.el(`#media_video_tv`)) {
-    let s = Hue.template_media_video_tv({
-      info: Hue.get_media_info_html(`tv`),
-      poster: Hue.config.video_poster
+  if (!App.el(`#media_video_tv`)) {
+    let s = App.template_media_video_tv({
+      info: App.get_media_info_html(`tv`),
+      poster: App.config.video_poster
     })
 
-    Hue.el(`#media_video_tv_container`).innerHTML = s
+    App.el(`#media_video_tv_container`).innerHTML = s
   }
 
-  Hue.before_show_tv(item)
-  Hue.el(`#media_video_tv`).src = item.source
+  App.before_show_tv(item)
+  App.el(`#media_video_tv`).src = item.source
 
   if (play) {
-    Hue.el(`#media_video_tv`).play()
+    App.el(`#media_video_tv`).play()
   }
 
-  Hue.after_show_tv()
+  App.after_show_tv()
 }
 
 // Loads an iframe as the tv
-Hue.show_iframe_tv = (play = true) => {
-  let item = Hue.loaded_tv
+App.show_iframe_tv = (play = true) => {
+  let item = App.loaded_tv
 
-  if (!Hue.el(`#media_iframe_tv`)) {
-    let s = Hue.template_media_iframe_tv({info: Hue.get_media_info_html(`tv`)})
-    Hue.el(`#media_iframe_tv_container`).innerHTML = s
-    Hue.setup_iframe_tv()
+  if (!App.el(`#media_iframe_tv`)) {
+    let s = App.template_media_iframe_tv({info: App.get_media_info_html(`tv`)})
+    App.el(`#media_iframe_tv_container`).innerHTML = s
+    App.setup_iframe_tv()
   }
 
-  Hue.before_show_tv(item)
-  let iframe = Hue.el(`#media_iframe_tv`)
+  App.before_show_tv(item)
+  let iframe = App.el(`#media_iframe_tv`)
 
   if (play) {
     iframe.classList.add(`noborder`)
     iframe.src = item.source
-    Hue.el(`#media_iframe_poster`).style.display = `none`
+    App.el(`#media_iframe_poster`).style.display = `none`
   }
   else {
     iframe.classList.remove(`noborder`)
-    Hue.el(`#media_iframe_poster`).style.display = `block`
+    App.el(`#media_iframe_poster`).style.display = `block`
   }
 
-  Hue.after_show_tv()
+  App.after_show_tv()
 }
 
 // This gets called before any tv video is loaded
-Hue.before_show_tv = (item) => {
-  Hue.stop_tv()
-  Hue.hide_tv(item)
+App.before_show_tv = (item) => {
+  App.stop_tv()
+  App.hide_tv(item)
 }
 
 // This gets called after any tv video is loaded
-Hue.after_show_tv = () => {
-  Hue.apply_media_info(`tv`)
-  Hue.fix_tv_frame()
-  Hue.focus_input()
+App.after_show_tv = () => {
+  App.apply_media_info(`tv`)
+  App.fix_tv_frame()
+  App.focus_input()
 
-  if (Hue.current_tv().type === `iframe` && Hue.el(`#media_iframe_tv`).src) {
-    Hue.el(`#media_iframe_tv`).classList.add(`noborder`)
-    Hue.el(`#media_iframe_poster`).style.display = `none`
+  if (App.current_tv().type === `iframe` && App.el(`#media_iframe_tv`).src) {
+    App.el(`#media_iframe_tv`).classList.add(`noborder`)
+    App.el(`#media_iframe_poster`).style.display = `none`
   }
 }
 
@@ -255,7 +255,7 @@ Hue.after_show_tv = () => {
 // It considers room state and permissions
 // It considers text or url to determine if it's valid
 // It includes a 'just check' flag to only return true or false
-Hue.change_tv_source = (src, just_check = false, comment = ``) => {
+App.change_tv_source = (src, just_check = false, comment = ``) => {
   let feedback = true
 
   if (just_check) {
@@ -263,14 +263,14 @@ Hue.change_tv_source = (src, just_check = false, comment = ``) => {
   }
 
   if (!comment) {
-    let r = Hue.get_media_change_inline_comment(`tv`, src)
+    let r = App.get_media_change_inline_comment(`tv`, src)
     src = r.source
     comment = r.comment
   }
 
-  if (comment.length > Hue.config.max_media_comment_length) {
+  if (comment.length > App.config.max_media_comment_length) {
     if (feedback) {
-      Hue.checkmsg(`Comment is too long`)
+      App.checkmsg(`Comment is too long`)
     }
 
     return false
@@ -280,9 +280,9 @@ Hue.change_tv_source = (src, just_check = false, comment = ``) => {
     return false
   }
 
-  src = Hue.utilz.single_space(src)
+  src = App.utilz.single_space(src)
 
-  if (src.length > Hue.config.max_media_source_length) {
+  if (src.length > App.config.max_media_source_length) {
     return false
   }
 
@@ -290,53 +290,53 @@ Hue.change_tv_source = (src, just_check = false, comment = ``) => {
     return false
   }
 
-  if (src === Hue.current_tv().source || src === Hue.current_tv().query) {
+  if (src === App.current_tv().source || src === App.current_tv().query) {
     if (feedback) {
-      Hue.checkmsg(`TV is already set to that`)
+      App.checkmsg(`TV is already set to that`)
     }
 
     return false
   }
 
-  if (Hue.utilz.is_url(src)) {
+  if (App.utilz.is_url(src)) {
     if (src.includes(`youtube.com`) || src.includes(`youtu.be`)) {
-      if (Hue.utilz.get_youtube_id(src) && !Hue.config.youtube_enabled) {
+      if (App.utilz.get_youtube_id(src) && !App.config.youtube_enabled) {
         if (feedback) {
-          Hue.checkmsg(`YouTube support is not enabled`)
+          App.checkmsg(`YouTube support is not enabled`)
         }
 
         return false
       }
     }
     else {
-      let extension = Hue.utilz.get_extension(src).toLowerCase()
+      let extension = App.utilz.get_extension(src).toLowerCase()
 
       if (extension) {
-        let is_image = Hue.utilz.is_image(src)
-        let is_video = Hue.utilz.is_video(src)
+        let is_image = App.utilz.is_image(src)
+        let is_video = App.utilz.is_video(src)
 
         if (is_image || is_video) {
           // OK
         }
         else if (is_image) {
           if (feedback) {
-            Hue.checkmsg(`That doesn't seem to be a video`)
+            App.checkmsg(`That doesn't seem to be a video`)
           }
 
           return false
         }
-        else if (!Hue.config.iframes_enabled) {
+        else if (!App.config.iframes_enabled) {
           if (feedback) {
-            Hue.checkmsg(`IFrame support is not enabled`)
+            App.checkmsg(`IFrame support is not enabled`)
           }
 
           return false
         }
       }
       else {
-        if (!Hue.config.iframes_enabled) {
+        if (!App.config.iframes_enabled) {
           if (feedback) {
-            Hue.checkmsg(`IFrame support is not enabled`)
+            App.checkmsg(`IFrame support is not enabled`)
           }
 
           return false
@@ -345,17 +345,17 @@ Hue.change_tv_source = (src, just_check = false, comment = ``) => {
     }
   }
   else {
-    if (src.length > Hue.config.safe_limit_1) {
+    if (src.length > App.config.safe_limit_1) {
       if (feedback) {
-        Hue.checkmsg(`Query is too long`)
+        App.checkmsg(`Query is too long`)
       }
 
       return false
     }
 
-    if (!Hue.config.youtube_enabled) {
+    if (!App.config.youtube_enabled) {
       if (feedback) {
-        Hue.checkmsg(`YouTube support is not enabled`)
+        App.checkmsg(`YouTube support is not enabled`)
       }
 
       return false
@@ -366,57 +366,57 @@ Hue.change_tv_source = (src, just_check = false, comment = ``) => {
     return true
   }
 
-  Hue.do_tv_change(src, comment)
+  App.do_tv_change(src, comment)
 }
 
 // Do tv change socket emit
-Hue.do_tv_change = (src, comment) => {
-  Hue.socket_emit(`change_tv_source`, {
+App.do_tv_change = (src, comment) => {
+  App.socket_emit(`change_tv_source`, {
     src: src,
     comment: comment
   })
 }
 
 // Does the change of tv display percentage
-Hue.do_media_tv_size_change = (size) => {
+App.do_media_tv_size_change = (size) => {
   if (size === `max`) {
-    size = Hue.media_max_percentage
+    size = App.media_max_percentage
   }
   else if (size === `min`) {
-    size = Hue.media_min_percentage
+    size = App.media_min_percentage
   }
   else if (size === `default`) {
-    size = Hue.config.room_state_default_tv_display_percentage
+    size = App.config.room_state_default_tv_display_percentage
   }
 
-  size = Hue.limit_media_percentage(Hue.utilz.round2(size, 5))
+  size = App.limit_media_percentage(App.utilz.round2(size, 5))
 
-  Hue.room_state.tv_display_percentage = size
-  Hue.save_room_state()
-  Hue.apply_media_percentages()
+  App.room_state.tv_display_percentage = size
+  App.save_room_state()
+  App.apply_media_percentages()
 }
 
 // Increases the tv display percentage
-Hue.increase_tv_percentage = () => {
-  let size = Hue.room_state.tv_display_percentage
+App.increase_tv_percentage = () => {
+  let size = App.room_state.tv_display_percentage
   size += 5
-  size = Hue.utilz.round2(size, 5)
-  Hue.do_media_tv_size_change(size)
+  size = App.utilz.round2(size, 5)
+  App.do_media_tv_size_change(size)
 }
 
 // Decreases the tv display percentage
-Hue.decrease_tv_percentage = () => {
-  let size = Hue.room_state.tv_display_percentage
+App.decrease_tv_percentage = () => {
+  let size = App.room_state.tv_display_percentage
   size -= 5
-  size = Hue.utilz.round2(size, 5)
-  Hue.do_media_tv_size_change(size)
+  size = App.utilz.round2(size, 5)
+  App.do_media_tv_size_change(size)
 }
 
 // Gets the id of the visible tv frame
-Hue.get_visible_video_frame_id = () => {
+App.get_visible_video_frame_id = () => {
   let id = false
 
-  for (let item of Hue.els(`.video_frame`)) {
+  for (let item of App.els(`.video_frame`)) {
     if (item.parentElement.style.display !== `none`) {
       id = item.id
       break
@@ -427,54 +427,54 @@ Hue.get_visible_video_frame_id = () => {
 }
 
 // Sets the tv display percentage to default
-Hue.set_default_tv_size = () => {
-  Hue.do_media_tv_size_change(`default`)
+App.set_default_tv_size = () => {
+  App.do_media_tv_size_change(`default`)
 }
 
 // Setup for the tv iframe
-Hue.setup_iframe_tv = () => {
-  Hue.ev(Hue.el(`#media_iframe_poster`), `click`, () => {
-    Hue.play_tv()
+App.setup_iframe_tv = () => {
+  App.ev(App.el(`#media_iframe_poster`), `click`, () => {
+    App.play_tv()
   })
 }
 
 // Updates dimensions of the visible tv frame
-Hue.fix_tv_frame = () => {
-  let id = Hue.get_visible_video_frame_id()
+App.fix_tv_frame = () => {
+  let id = App.get_visible_video_frame_id()
 
   if (id) {
-    Hue.fix_frame(id)
+    App.fix_frame(id)
   }
 }
 
 // Show link tv
-Hue.show_link_tv = () => {
-  Hue.msg_link_tv.show()
+App.show_link_tv = () => {
+  App.msg_link_tv.show()
 }
 
 // Submit link tv
-Hue.link_tv_submit = () => {
-  let val = Hue.el(`#link_tv_input`).value.trim()
+App.link_tv_submit = () => {
+  let val = App.el(`#link_tv_input`).value.trim()
 
   if (val !== ``) {
-    Hue.change_tv_source(val)
-    Hue.close_all_modals()
+    App.change_tv_source(val)
+    App.close_all_modals()
   }
 }
 
 // Checks if tv is abled to be synced with another user
-Hue.can_sync_tv = () => {
-  if (!Hue.room_state.tv_enabled) {
+App.can_sync_tv = () => {
+  if (!App.room_state.tv_enabled) {
     return false
   }
 
-  if (Hue.loaded_tv.type === `youtube`) {
-    if (!Hue.youtube_tv_player) {
+  if (App.loaded_tv.type === `youtube`) {
+    if (!App.youtube_tv_player) {
       return false
     }
   }
-  else if (Hue.loaded_tv.type === `video`) {
-    if (!Hue.el(`#media_video_tv`)) {
+  else if (App.loaded_tv.type === `video`) {
+    if (!App.el(`#media_video_tv`)) {
       return false
     }
   }
@@ -486,49 +486,49 @@ Hue.can_sync_tv = () => {
 }
 
 // Sends a request to the server to send a request to the user to report video progress
-Hue.sync_tv = (username) => {
-  if (!Hue.can_sync_tv()) {
+App.sync_tv = (username) => {
+  if (!App.can_sync_tv()) {
     return
   }
 
-  if (!Hue.user_is_online_by_username(username)) {
+  if (!App.user_is_online_by_username(username)) {
     return
   }
 
-  Hue.socket_emit(`sync_tv`, {
+  App.socket_emit(`sync_tv`, {
     username: username,
-    tv_source: Hue.loaded_tv.source
+    tv_source: App.loaded_tv.source
   })
 }
 
 // Responds to a tv sync request to send it back to a user
-Hue.report_tv_progress = (data) => {
-  if (!Hue.can_sync_tv()) {
+App.report_tv_progress = (data) => {
+  if (!App.can_sync_tv()) {
     return
   }
 
-  if (Hue.loaded_tv.source !== data.tv_source) {
+  if (App.loaded_tv.source !== data.tv_source) {
     return
   }
 
-  let ttype = Hue.loaded_tv.type
+  let ttype = App.loaded_tv.type
   let progress
 
   if (ttype === `youtube`) {
-    progress = Math.round(Hue.youtube_tv_player.getCurrentTime())
+    progress = Math.round(App.youtube_tv_player.getCurrentTime())
   }
   else if (ttype === `video`) {
-    progress = Math.round(Hue.el(`#media_video_tv`).currentTime)
+    progress = Math.round(App.el(`#media_video_tv`).currentTime)
   }
 
   if (progress) {
-    Hue.socket_emit(`report_tv_progress`, {
+    App.socket_emit(`report_tv_progress`, {
       requester: data.requester,
       progress: progress,
       type: ttype,
     })
 
-    Hue.show_room_notification(
+    App.show_room_notification(
       data.requester_username,
       `${data.requester_username} synced their tv with yours`
     )
@@ -536,140 +536,140 @@ Hue.report_tv_progress = (data) => {
 }
 
 // After the server sends a user's tv progress response
-Hue.receive_tv_progress = (data) => {
-  if (!Hue.can_sync_tv()) {
+App.receive_tv_progress = (data) => {
+  if (!App.can_sync_tv()) {
     return
   }
 
   if (data.type === `youtube`) {
-    if (Hue.loaded_tv.type !== `youtube`) {
+    if (App.loaded_tv.type !== `youtube`) {
       return
     }
 
-    let id = Hue.utilz.get_youtube_id(Hue.loaded_tv.source)
+    let id = App.utilz.get_youtube_id(App.loaded_tv.source)
 
     if (id[0] === `video`) {
-      Hue.youtube_tv_player.loadVideoById({
+      App.youtube_tv_player.loadVideoById({
         videoId: id[1],
         startSeconds: data.progress,
       })
     }
   }
   else if (data.type === `video`) {
-    if (Hue.loaded_tv.type !== `video`) {
+    if (App.loaded_tv.type !== `video`) {
       return
     }
 
-    Hue.el(`#media_video_tv`).currentTime = data.progress
-    Hue.el(`#media_video_tv`).play()
+    App.el(`#media_video_tv`).currentTime = data.progress
+    App.el(`#media_video_tv`).play()
   }
 }
 
 // Shows the window to add a comment to a video upload
-Hue.show_tv_upload_comment = (file, type) => {
-  Hue.el(`#tv_upload_comment_video_feedback`).style.display = `none`
-  Hue.el(`#tv_upload_comment_video_preview`).style.display = `block`
+App.show_tv_upload_comment = (file, type) => {
+  App.el(`#tv_upload_comment_video_feedback`).style.display = `none`
+  App.el(`#tv_upload_comment_video_preview`).style.display = `block`
 
-  Hue.tv_upload_comment_file = file
-  Hue.tv_upload_comment_type = type
+  App.tv_upload_comment_file = file
+  App.tv_upload_comment_type = type
 
   if (type === `upload`) {
-    Hue.el(`#tv_upload_comment_change`).textContent = `Re-Choose`
+    App.el(`#tv_upload_comment_change`).textContent = `Re-Choose`
   }
   else if (type === `capture`) {
-    Hue.el(`#tv_upload_comment_change`).textContent = `Re-Capture`
+    App.el(`#tv_upload_comment_change`).textContent = `Re-Capture`
   }
 
-  let name = `${Hue.utilz.slice_string_end(
+  let name = `${App.utilz.slice_string_end(
       file.name,
       20
-    )} (${Hue.utilz.size_string(file.size, 2)})`
+    )} (${App.utilz.size_string(file.size, 2)})`
 
-  Hue.el(`#tv_upload_name`).textContent = name
-  Hue.el(`#Msg-titlebar-tv_upload_comment`).title = file.name
-  Hue.el(`#tv_upload_comment_video_preview`).src = URL.createObjectURL(file)
+  App.el(`#tv_upload_name`).textContent = name
+  App.el(`#Msg-titlebar-tv_upload_comment`).title = file.name
+  App.el(`#tv_upload_comment_video_preview`).src = URL.createObjectURL(file)
 
-  Hue.msg_tv_upload_comment.show(() => {
-    Hue.el(`#tv_upload_comment_input`).focus()
+  App.msg_tv_upload_comment.show(() => {
+    App.el(`#tv_upload_comment_input`).focus()
   })
 }
 
 // Submits the upload tv comment window
 // Uploads the file and the optional comment
-Hue.process_tv_upload_comment = () => {
-  if (!Hue.msg_tv_upload_comment.is_open()) {
+App.process_tv_upload_comment = () => {
+  if (!App.msg_tv_upload_comment.is_open()) {
     return
   }
 
-  let file = Hue.tv_upload_comment_file
-  let type = Hue.tv_upload_comment_type
-  let comment = Hue.utilz.single_space(Hue.el(`#tv_upload_comment_input`).value)
+  let file = App.tv_upload_comment_file
+  let type = App.tv_upload_comment_type
+  let comment = App.utilz.single_space(App.el(`#tv_upload_comment_input`).value)
 
-  if (comment.length > Hue.config.max_media_comment_length) {
+  if (comment.length > App.config.max_media_comment_length) {
     return
   }
 
-  Hue.upload_file({ file: file, action: `tv_upload`, comment: comment })
-  Hue.close_all_modals()
+  App.upload_file({ file: file, action: `tv_upload`, comment: comment })
+  App.close_all_modals()
 }
 
 // Setups the upload tv comment window
-Hue.setup_tv_upload_comment = () => {
-  let video = Hue.el(`#tv_upload_comment_video_preview`)
+App.setup_tv_upload_comment = () => {
+  let video = App.el(`#tv_upload_comment_video_preview`)
 
-  Hue.ev(video, `loadedmetadata`, () => {
+  App.ev(video, `loadedmetadata`, () => {
     video.currentTime = 0
     video.play()
     video.pause()
   })
 
-  Hue.ev(video, `error`, () => {
+  App.ev(video, `error`, () => {
     video.style.display = `none`
-    Hue.el(`#tv_upload_comment_video_feedback`).style.display = `inline`
+    App.el(`#tv_upload_comment_video_feedback`).style.display = `inline`
   })
 
-  Hue.ev(Hue.el(`#tv_upload_comment_change`), `click`, () => {
-    if (Hue.tv_upload_comment_type === `upload`) {
-      Hue.msg_tv_upload_comment.close()
-      Hue.show_upload_tv()
+  App.ev(App.el(`#tv_upload_comment_change`), `click`, () => {
+    if (App.tv_upload_comment_type === `upload`) {
+      App.msg_tv_upload_comment.close()
+      App.show_upload_tv()
     }
-    else if (Hue.tv_upload_comment_type === `capture`) {
-      Hue.msg_tv_upload_comment.close()
-      Hue.screen_capture()
+    else if (App.tv_upload_comment_type === `capture`) {
+      App.msg_tv_upload_comment.close()
+      App.screen_capture()
     }
   })
 
-  Hue.ev(Hue.el(`#tv_upload_comment_submit`), `click`, () => {
-    Hue.process_tv_upload_comment()
+  App.ev(App.el(`#tv_upload_comment_submit`), `click`, () => {
+    App.process_tv_upload_comment()
   })
 }
 
 // Trigger upload tv picker
-Hue.show_upload_tv = () => {
-  Hue.upload_media = `tv`
-  Hue.trigger_dropzone()
+App.show_upload_tv = () => {
+  App.upload_media = `tv`
+  App.trigger_dropzone()
 }
 
 // Setup screen capture
-Hue.setup_screen_capture = () => {
-  Hue.ev(Hue.el(`#screen_capture_options_container`), `click`, (e) => {
+App.setup_screen_capture = () => {
+  App.ev(App.el(`#screen_capture_options_container`), `click`, (e) => {
     let el = e.target.closest(`.screen_capture_duration`)
 
     if (el) {
       let seconds = parseInt(el.dataset.seconds)
-      Hue.msg_screen_capture_options.close()
-      Hue.start_screen_capture(seconds)
+      App.msg_screen_capture_options.close()
+      App.start_screen_capture(seconds)
     }
   })
 }
 
 // Show screen capture options
-Hue.screen_capture = () => {
-  Hue.msg_screen_capture_options.show()
+App.screen_capture = () => {
+  App.msg_screen_capture_options.show()
 }
 
 // Start capturing the screen and upload it as tv
-Hue.start_screen_capture = async (seconds) => {
+App.start_screen_capture = async (seconds) => {
   if (!seconds) {
     return
   }
@@ -680,15 +680,15 @@ Hue.start_screen_capture = async (seconds) => {
   })
 
   let recorded_chunks = []
-  Hue.screen_capture_recorder = new MediaRecorder(stream)
+  App.screen_capture_recorder = new MediaRecorder(stream)
 
-  Hue.screen_capture_recorder.ondataavailable = (e) => {
+  App.screen_capture_recorder.ondataavailable = (e) => {
     if (e.data.size > 0) {
       recorded_chunks.push(e.data)
     }
   }
 
-  Hue.screen_capture_recorder.onstop = () => {
+  App.screen_capture_recorder.onstop = () => {
     stream.getTracks().forEach(track => track.stop())
 
     const blob = new Blob(recorded_chunks, {
@@ -696,28 +696,28 @@ Hue.start_screen_capture = async (seconds) => {
     })
 
     blob.name = `capture.webm`
-    Hue.show_tv_upload_comment(blob, `capture`)
+    App.show_tv_upload_comment(blob, `capture`)
     recorded_chunks = []
   }
 
-  Hue.screen_capture_popup = Hue.show_action_popup({
+  App.screen_capture_popup = App.show_action_popup({
     message: `Close this to stop capture`,
     title: `Screen Capture`,
     on_x_button_click: () => {
-      Hue.stop_screen_capture()
+      App.stop_screen_capture()
     }
   })
 
-  Hue.screen_capture_recorder.start(200)
+  App.screen_capture_recorder.start(200)
 
-  Hue.screen_capture_timeout = setTimeout(() => {
-    Hue.stop_screen_capture()
+  App.screen_capture_timeout = setTimeout(() => {
+    App.stop_screen_capture()
   }, seconds * 1000)
 }
 
 // Stop screen capture
-Hue.stop_screen_capture = () => {
-  clearTimeout(Hue.screen_capture_timeout)
-  Hue.screen_capture_popup.close()
-  Hue.screen_capture_recorder.stop()
+App.stop_screen_capture = () => {
+  clearTimeout(App.screen_capture_timeout)
+  App.screen_capture_popup.close()
+  App.screen_capture_recorder.stop()
 }

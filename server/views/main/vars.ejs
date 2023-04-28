@@ -1,37 +1,35 @@
-<% 
-	for(let key in config) {
+<%
+	for (let key in config) {
 		let v = config[key]
 
-		if(v === undefined) {
+		if (v === undefined) {
 			console.error(`${key} is undefined`)
 			continue
 		}
 
-		%>Hue.config.<%-key%> = <%
+		%>App.config.<%-key%> = <%
 
-		if(typeof v === "string") {
-			%>`<%-v%>`; <% 
+		if (typeof v === "string") {
+			%>`<%-v%>`; <%
 		}
-
 		else {
 			%><%-JSON.stringify(v)%>; <%
 		}
 	}
 
-	for(let key in vars) {
+	for (let key in vars) {
 		let v = vars[key]
-		
-		if(v === undefined) {
+
+		if (v === undefined) {
 			console.error(`${key} is undefined`)
 			continue
 		}
-			
-		%>Hue.<%-key%> = <%
-			
-		if(typeof v === "string") {
-			%>`<%-v%>`; <% 
+
+		%>App.<%-key%> = <%
+
+		if (typeof v === "string") {
+			%>`<%-v%>`; <%
 		}
-			
 		else {
 			%><%-JSON.stringify(v)%>; <%
 		}

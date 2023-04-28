@@ -1,53 +1,53 @@
 // Setups the header
-Hue.setup_header = () => {
-  Hue.ev(Hue.el(`#header_main_menu`), `click`, () => {
-    Hue.show_main_menu()
+App.setup_header = () => {
+  App.ev(App.el(`#header_main_menu`), `click`, () => {
+    App.show_main_menu()
   })
 
-  Hue.ev(Hue.el(`#header_main_menu`), `auxclick`, (e) => {
+  App.ev(App.el(`#header_main_menu`), `auxclick`, (e) => {
     if (e.which === 2) {
-      Hue.flip()
+      App.flip()
     }
   })
 
-  Hue.ev(Hue.el(`#header_users`), `click`, () => {
-    Hue.show_userlist_window()
+  App.ev(App.el(`#header_users`), `click`, () => {
+    App.show_userlist_window()
   })
 
-  Hue.ev(Hue.el(`#header_message_board`), `click`, () => {
-    Hue.show_message_board()
+  App.ev(App.el(`#header_message_board`), `click`, () => {
+    App.show_message_board()
   })
 
-  Hue.ev(Hue.el(`#header_notifications`), `click`, () => {
-    Hue.show_notifications()
+  App.ev(App.el(`#header_notifications`), `click`, () => {
+    App.show_notifications()
   })
 
-  Hue.ev(Hue.el(`#header_whispers`), `click`, () => {
-    Hue.show_whispers()
+  App.ev(App.el(`#header_whispers`), `click`, () => {
+    App.show_whispers()
   })
 
-  Hue.ev(Hue.el(`#header_notifications_enabled`), `click`, () => {
-    Hue.toggle_notifications_enabled()
+  App.ev(App.el(`#header_notifications_enabled`), `click`, () => {
+    App.toggle_notifications_enabled()
   })
 
-  Hue.set_notifications_enabled_icon()
+  App.set_notifications_enabled_icon()
 }
 
 // Apply notifications enabled icon
-Hue.set_notifications_enabled_icon = () => {
-  if (Hue.room_state.notifications_enabled) {
-    Hue.el(`#header_notifications_enabled use`).href.baseVal = `#icon_unlocked`
+App.set_notifications_enabled_icon = () => {
+  if (App.room_state.notifications_enabled) {
+    App.el(`#header_notifications_enabled use`).href.baseVal = `#icon_unlocked`
   }
   else {
-    Hue.el(`#header_notifications_enabled use`).href.baseVal = `#icon_locked`
+    App.el(`#header_notifications_enabled use`).href.baseVal = `#icon_locked`
   }
 }
 
 // Toggle notifications enabled
-Hue.toggle_notifications_enabled = () => {
-  Hue.room_state.notifications_enabled = !Hue.room_state.notifications_enabled
-  Hue.set_notifications_enabled_icon()
-  let what = Hue.room_state.notifications_enabled ? `enabled` : `disabled`
-  Hue.flash_info(`Info`, `Notification popups are now ${what}`)
-  Hue.save_room_state()
+App.toggle_notifications_enabled = () => {
+  App.room_state.notifications_enabled = !App.room_state.notifications_enabled
+  App.set_notifications_enabled_icon()
+  let what = App.room_state.notifications_enabled ? `enabled` : `disabled`
+  App.flash_info(`Info`, `Notification popups are now ${what}`)
+  App.save_room_state()
 }

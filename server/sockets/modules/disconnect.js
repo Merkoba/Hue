@@ -1,38 +1,38 @@
-module.exports = (Hue) => {
+module.exports = (App) => {
   // Do a socket disconnect
-  Hue.handler.do_disconnect = (socc) => {
+  App.handler.do_disconnect = (socc) => {
     socc.disconnect()
   }
 
   // On disconnect
-  Hue.handler.disconnect = async (socket) => {
+  App.handler.disconnect = async (socket) => {
     if (socket.hue_user_id === undefined) {
       return
     }
 
-    if (await Hue.handler.user_already_connected(socket)) {
+    if (await App.handler.user_already_connected(socket)) {
       return
     }
 
     if (socket.hue_room_id !== undefined) {
-      if (Hue.vars.rooms[socket.hue_room_id] === undefined) {
+      if (App.vars.rooms[socket.hue_room_id] === undefined) {
         return
       }
 
-      delete Hue.vars.rooms[socket.hue_room_id].userlist[socket.hue_user_id]
+      delete App.vars.rooms[socket.hue_room_id].userlist[socket.hue_user_id]
 
-      if (Hue.vars.user_rooms[socket.hue_user_id] !== undefined) {
-        for (let i = 0; i < Hue.vars.user_rooms[socket.hue_user_id].length; i++) {
-          let room_id = Hue.vars.user_rooms[socket.hue_user_id][i]
+      if (App.vars.user_rooms[socket.hue_user_id] !== undefined) {
+        for (let i = 0; i < App.vars.user_rooms[socket.hue_user_id].length; i++) {
+          let room_id = App.vars.user_rooms[socket.hue_user_id][i]
 
           if (socket.hue_room_id === room_id) {
-            Hue.vars.user_rooms[socket.hue_user_id].splice(i, 1)
+            App.vars.user_rooms[socket.hue_user_id].splice(i, 1)
             break
           }
         }
 
-        if (Hue.vars.user_rooms[socket.hue_user_id].length === 0) {
-          delete Hue.vars.user_rooms[socket.hue_user_id]
+        if (App.vars.user_rooms[socket.hue_user_id].length === 0) {
+          delete App.vars.user_rooms[socket.hue_user_id]
         }
       }
     }
@@ -53,7 +53,7 @@ module.exports = (Hue) => {
         type = `disconnection`
       }
 
-      Hue.handler.room_emit(socket, `user_disconnected`, {
+      App.handler.room_emit(socket, `user_disconnected`, {
         user_id: socket.hue_user_id,
         username: socket.hue_username,
         info1: socket.hue_info1,
@@ -64,11 +64,11 @@ module.exports = (Hue) => {
   }
 
   // Disconnect other sockets from user
-  Hue.handler.public.disconnect_others = async (socket, data) => {
+  App.handler.public.disconnect_others = async (socket, data) => {
     let amount = 0
 
-    for (let room_id of Hue.vars.user_rooms[socket.hue_user_id]) {
-      for (let socc of await Hue.handler.get_user_sockets_per_room(
+    for (let room_id of App.vars.user_rooms[socket.hue_user_id]) {
+      for (let socc of await App.handler.get_user_sockets_per_room(
         room_id,
         socket.hue_user_id
       )) {
@@ -79,16 +79,16 @@ module.exports = (Hue) => {
       }
     }
 
-    Hue.handler.user_emit(socket, `others_disconnected`, { amount: amount })
+    App.handler.user_emit(socket, `others_disconnected`, { amount: amount })
   }
 
   // Disconnect a socket
-  Hue.handler.get_out = (socket) => {
+  App.handler.get_out = (socket) => {
     try {
-      Hue.handler.do_disconnect(socket)
+      App.handler.do_disconnect(socket)
     }
     catch (err) {
-      Hue.logger.log_error(err)
+      App.logger.log_error(err)
     }
   }
 }

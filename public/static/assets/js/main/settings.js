@@ -1,32 +1,32 @@
 // User settings object
 // Used to generate settings
 // And to declare what widget is used in the settings windows
-Hue.user_settings = {
+App.user_settings = {
   show_background: {
     widget_type: `checkbox`,
     description: `Whether to show the room's background image`,
     action: (save = true) => {
-      Hue.settings.show_background = Hue.el(
+      App.settings.show_background = App.el(
         `#settings_show_background`
       ).checked
 
       if (save) {
-        Hue.save_settings()
+        App.save_settings()
       }
 
-      Hue.apply_background()
+      App.apply_background()
     },
   },
   highlight_current_username: {
     widget_type: `checkbox`,
     description: `Whether messages containing the user's username must be highlighted`,
     action: (save = true) => {
-      Hue.settings.highlight_current_username = Hue.el(
+      App.settings.highlight_current_username = App.el(
         `#settings_highlight_current_username`
       ).checked
 
       if (save) {
-        Hue.save_settings()
+        App.save_settings()
       }
     },
   },
@@ -34,14 +34,14 @@ Hue.user_settings = {
     widget_type: `checkbox`,
     description: `Whether username highlight checks are case insensitive or not`,
     action: (save = true) => {
-      Hue.settings.case_insensitive_username_highlights = Hue.el(
+      App.settings.case_insensitive_username_highlights = App.el(
         `#settings_case_insensitive_username_highlights`
       ).checked
 
-      Hue.generate_mentions_regex()
+      App.generate_mentions_regex()
 
       if (save) {
-        Hue.save_settings()
+        App.save_settings()
       }
     },
   },
@@ -49,10 +49,10 @@ Hue.user_settings = {
     widget_type: `checkbox`,
     description: `Whether messages received should open in a window automatically`,
     action: (save = true) => {
-      Hue.settings.open_whispers_automatically = Hue.el(`#settings_open_whispers_automatically`).checked
+      App.settings.open_whispers_automatically = App.el(`#settings_open_whispers_automatically`).checked
 
       if (save) {
-        Hue.save_settings()
+        App.save_settings()
       }
     },
   },
@@ -60,10 +60,10 @@ Hue.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to embed other images automatically`,
     action: (save = true) => {
-      Hue.settings.embed_images = Hue.el(`#settings_embed_images`).checked
+      App.settings.embed_images = App.el(`#settings_embed_images`).checked
 
       if (save) {
-        Hue.save_settings()
+        App.save_settings()
       }
     },
   },
@@ -71,10 +71,10 @@ Hue.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show related information of chat links when available`,
     action: (save = true) => {
-      Hue.settings.show_link_previews = Hue.el(`#settings_show_link_previews`).checked
+      App.settings.show_link_previews = App.el(`#settings_show_link_previews`).checked
 
       if (save) {
-        Hue.save_settings()
+        App.save_settings()
       }
     },
   },
@@ -82,10 +82,10 @@ Hue.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show desktop notifications on highlights`,
     action: (save = true) => {
-      Hue.settings.show_highlight_notifications = Hue.el(`#settings_show_highlight_notifications`).checked
+      App.settings.show_highlight_notifications = App.el(`#settings_show_highlight_notifications`).checked
 
       if (save) {
-        Hue.save_settings()
+        App.save_settings()
       }
     },
   },
@@ -93,10 +93,10 @@ Hue.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show desktop notifications on activity after your last message`,
     action: (save = true) => {
-      Hue.settings.show_activity_notifications = Hue.el(`#settings_show_activity_notifications`).checked
+      App.settings.show_activity_notifications = App.el(`#settings_show_activity_notifications`).checked
 
       if (save) {
-        Hue.save_settings()
+        App.save_settings()
       }
     },
   },
@@ -104,10 +104,10 @@ Hue.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show notifications when users join`,
     action: (save = true) => {
-      Hue.settings.show_user_join_notifications = Hue.el(`#settings_show_user_join_notifications`).checked
+      App.settings.show_user_join_notifications = App.el(`#settings_show_user_join_notifications`).checked
 
       if (save) {
-        Hue.save_settings()
+        App.save_settings()
       }
     },
   },
@@ -115,57 +115,57 @@ Hue.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show notifications when users leave`,
     action: (save = true) => {
-      Hue.settings.show_user_leave_notifications = Hue.el(`#settings_show_user_leave_notifications`).checked
+      App.settings.show_user_leave_notifications = App.el(`#settings_show_user_leave_notifications`).checked
 
       if (save) {
-        Hue.save_settings()
+        App.save_settings()
       }
     },
   }
 }
 
 // Gets the settings localStorage object
-Hue.get_settings = () => {
-  Hue.settings = Hue.get_local_storage(Hue.ls_settings)
+App.get_settings = () => {
+  App.settings = App.get_local_storage(App.ls_settings)
 
-  if (Hue.settings === null) {
-    Hue.settings = {}
+  if (App.settings === null) {
+    App.settings = {}
   }
 
   let changed = false
 
-  for (let setting in Hue.user_settings) {
-    if (Hue.settings[setting] === undefined) {
-      Hue.settings[setting] =
-        Hue.config[`settings_default_${setting}`]
+  for (let setting in App.user_settings) {
+    if (App.settings[setting] === undefined) {
+      App.settings[setting] =
+        App.config[`settings_default_${setting}`]
       changed = true
     }
   }
 
   if (changed) {
-    Hue.save_settings()
+    App.save_settings()
   }
 }
 
 // Saves the settings localStorage object
-Hue.save_settings = (force = false) => {
-  Hue.save_local_storage(Hue.ls_settings, Hue.settings, force)
+App.save_settings = (force = false) => {
+  App.save_local_storage(App.ls_settings, App.settings, force)
 }
 
 // Starts the settings windows widgets with current state
-Hue.start_settings_widgets = () => {
-  for (let setting in Hue.user_settings) {
-    Hue.modify_setting_widget(setting)
+App.start_settings_widgets = () => {
+  for (let setting in App.user_settings) {
+    App.modify_setting_widget(setting)
   }
 }
 
 // Updates a setting widget based on the setting state
-Hue.modify_setting_widget = (setting_name) => {
-  let widget_type = Hue.user_settings[setting_name].widget_type
-  let item = Hue.el(`#settings_${setting_name}`)
+App.modify_setting_widget = (setting_name) => {
+  let widget_type = App.user_settings[setting_name].widget_type
+  let item = App.el(`#settings_${setting_name}`)
 
   if (widget_type === `checkbox`) {
-    item.checked = Hue.settings[setting_name]
+    item.checked = App.settings[setting_name]
   }
   else if (
     widget_type === `textarea` ||
@@ -174,11 +174,11 @@ Hue.modify_setting_widget = (setting_name) => {
     widget_type === `range` ||
     widget_type === `color`
   ) {
-    item.value = Hue.settings[setting_name]
+    item.value = App.settings[setting_name]
   }
   else if (widget_type === `select`) {
-    Hue.els(`option`, item).forEach(it => {
-      if (it.value == Hue.settings[setting_name]) {
+    App.els(`option`, item).forEach(it => {
+      if (it.value == App.settings[setting_name]) {
         it.selected = true
       }
     })
@@ -186,31 +186,31 @@ Hue.modify_setting_widget = (setting_name) => {
 }
 
 // Starts listeners for settings windows widgets's change
-Hue.start_settings_widgets_listeners = () => {
-  for (let key in Hue.user_settings) {
-    let setting = Hue.user_settings[key]
-    let item = Hue.el(`#settings_${key}`)
+App.start_settings_widgets_listeners = () => {
+  for (let key in App.user_settings) {
+    let setting = App.user_settings[key]
+    let item = App.el(`#settings_${key}`)
 
     if (
       setting.widget_type === `checkbox` ||
       setting.widget_type === `select`
     ) {
-      Hue.ev(item, `change`, () => setting.action())
+      App.ev(item, `change`, () => setting.action())
     }
     else if (
       setting.widget_type === `textarea` ||
       setting.widget_type === `text`
     ) {
-      Hue.ev(item, `blur`, () => setting.action())
+      App.ev(item, `blur`, () => setting.action())
     }
     else if (
       setting.widget_type === `number` ||
       setting.widget_type === `color`
     ) {
-      Hue.ev(item, `change`, () => setting.action())
+      App.ev(item, `change`, () => setting.action())
     }
     else if (setting.widget_type === `range`) {
-      Hue.ev(item, `input change`, () => {
+      App.ev(item, `input change`, () => {
         setting.action()
       })
     }
@@ -218,67 +218,67 @@ Hue.start_settings_widgets_listeners = () => {
 }
 
 // Executes all settings action functions
-Hue.call_setting_actions = (save = true) => {
-  for (let key in Hue.user_settings) {
-    let setting = Hue.user_settings[key]
+App.call_setting_actions = (save = true) => {
+  for (let key in App.user_settings) {
+    let setting = App.user_settings[key]
     setting.action(save)
   }
 }
 
 // Reset the settings of a certain type
-Hue.reset_settings = (empty = true) => {
+App.reset_settings = (empty = true) => {
   if (empty) {
-    Hue.settings = {}
-    Hue.save_settings(true)
+    App.settings = {}
+    App.save_settings(true)
   }
 
-  Hue.get_settings()
-  Hue.start_settings_widgets()
-  Hue.call_setting_actions(false)
-  Hue.call_setting_actions(false)
+  App.get_settings()
+  App.start_settings_widgets()
+  App.call_setting_actions(false)
+  App.call_setting_actions(false)
 }
 
 // Show the settings window
-Hue.show_settings = (filter = ``) => {
-  Hue.msg_settings.show(() => {
+App.show_settings = (filter = ``) => {
+  App.msg_settings.show(() => {
     if (filter.trim()) {
-      Hue.el(`#settings_filter`).value = filter
-      Hue.do_modal_filter()
+      App.el(`#settings_filter`).value = filter
+      App.do_modal_filter()
     }
   })
 }
 
 // Setup the settings windows
-Hue.setup_settings_windows = () => {
-  Hue.set_user_settings_titles()
+App.setup_settings_windows = () => {
+  App.set_user_settings_titles()
 
-  Hue.ev(Hue.el(`#settings_notifications`), `click`, () => {
-    Hue.request_desktop_notifications_permission()
+  App.ev(App.el(`#settings_notifications`), `click`, () => {
+    App.request_desktop_notifications_permission()
   })
 
-  Hue.ev(Hue.el(`#settings_defaults`), `click`, () => {
-    Hue.show_confirm(`Restore default settings`, () => {
-      Hue.reset_settings()
+  App.ev(App.el(`#settings_defaults`), `click`, () => {
+    App.show_confirm(`Restore default settings`, () => {
+      App.reset_settings()
     })
   })
 }
 
 // Setting getter
-Hue.get_setting = (name) => {
-  return Hue.settings[name]
+App.get_setting = (name) => {
+  return App.settings[name]
 }
 
 // Sets the hover titles for the setttings widgets
-Hue.set_user_settings_titles = () => {
-  for (let key in Hue.user_settings) {
-    let setting = Hue.user_settings[key]
-    let value = Hue.config[`settings_default_${key}`]
+App.set_user_settings_titles = () => {
+  for (let key in App.user_settings) {
+    let setting = App.user_settings[key]
+    let value = App.config[`settings_default_${key}`]
 
     if (typeof value === `string`) {
       value = `"${value}"`
     }
 
     let title = `${setting.description} (${key}) (Default: ${value})`
-    Hue.el(`#settings_${key}`).closest(`.settings_item`).title = title
+    App.el(`#settings_${key}`).closest(`.settings_item`).title = title
   }
 }

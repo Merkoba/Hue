@@ -1,11 +1,11 @@
-module.exports = (Hue) => {
+module.exports = (App) => {
   // Get a file name using the date and random numbers
-  Hue.handler.generate_media_file_name = (extension) => {
-    return `${Date.now()}_${Hue.utilz.random_sequence(3)}.${extension}`
+  App.handler.generate_media_file_name = (extension) => {
+    return `${Date.now()}_${App.utilz.random_sequence(3)}.${extension}`
   }
 
   // Handles sliced media uploads
-  Hue.handler.upload_media = async (socket, data, type) => {
+  App.handler.upload_media = async (socket, data, type) => {
     if (data.file === undefined) {
       return
     }
@@ -16,21 +16,21 @@ module.exports = (Hue) => {
 
     let size = data.file.byteLength / 1024
 
-    if (size === 0 || size > Hue.config[`max_${type}_size`]) {
+    if (size === 0 || size > App.config[`max_${type}_size`]) {
       return
     }
 
-    let file_name = Hue.handler.generate_media_file_name(data.extension)
-    let container = Hue.vars.path.join(Hue.vars.media_root, `room`, socket.hue_room_id, type)
+    let file_name = App.handler.generate_media_file_name(data.extension)
+    let container = App.vars.path.join(App.vars.media_root, `room`, socket.hue_room_id, type)
 
-    if (!Hue.vars.fs.existsSync(container)) {
-      Hue.vars.fs.mkdirSync(container, { recursive: true })
+    if (!App.vars.fs.existsSync(container)) {
+      App.vars.fs.mkdirSync(container, { recursive: true })
     }
 
-    let path = Hue.vars.path.join(container, file_name)
+    let path = App.vars.path.join(container, file_name)
 
     try {
-      await Hue.vars.fsp.writeFile(path, data.file)
+      await App.vars.fsp.writeFile(path, data.file)
 
       let obj = {}
 
@@ -41,16 +41,16 @@ module.exports = (Hue) => {
       obj.comment = data.comment
       obj.file_name = data.file_name
 
-      await Hue.handler.do_change_media(socket, obj, type)
+      await App.handler.do_change_media(socket, obj, type)
     }
     catch (err) {
-      Hue.logger.log_error(err)
-      Hue.handler.user_emit(socket, `upload_error`, {})
+      App.logger.log_error(err)
+      App.handler.user_emit(socket, `upload_error`, {})
     }
   }
 
   // Completes media source changes
-  Hue.handler.do_change_media = async (socket, data, type) => {
+  App.handler.do_change_media = async (socket, data, type) => {
     let room_id, user_id
 
     if (typeof socket === `object`) {
@@ -62,7 +62,7 @@ module.exports = (Hue) => {
       user_id = `none`
     }
 
-    let id = Hue.handler.generate_message_id()
+    let id = App.handler.generate_message_id()
     let date = Date.now()
     let comment = data.comment || data.file_name || ``
     let size = data.size || 0
@@ -70,7 +70,7 @@ module.exports = (Hue) => {
     let likes = []
 
     if (data.title) {
-      title = Hue.vars.he.decode(data.title)
+      title = App.vars.he.decode(data.title)
     }
 
     if (data.query === undefined) {
@@ -81,7 +81,7 @@ module.exports = (Hue) => {
       user_id = ``
     }
 
-    Hue.handler.room_emit(room_id, `${type}_source_changed`, {
+    App.handler.room_emit(room_id, `${type}_source_changed`, {
       id: id,
       user_id: user_id,
       source: data.src,
@@ -112,41 +112,41 @@ module.exports = (Hue) => {
       }
     }
 
-    Hue.db_manager.push_item(`rooms`, socket.hue_room_id, `log_messages`, message)
+    App.db_manager.push_item(`rooms`, socket.hue_room_id, `log_messages`, message)
 
     // Remove left over files
     if (data.type === `upload`) {
-      let container = Hue.vars.path.join(Hue.vars.media_root, `room`, socket.hue_room_id, type)
+      let container = App.vars.path.join(App.vars.media_root, `room`, socket.hue_room_id, type)
 
-      if (!Hue.vars.fs.existsSync(container)) {
+      if (!App.vars.fs.existsSync(container)) {
         return
       }
 
       try {
-        let files = await Hue.vars.fsp.readdir(container)
+        let files = await App.vars.fsp.readdir(container)
 
         files.sort().reverse()
 
-        for (let file of files.slice(Hue.sconfig[`max_stored_${type}`])) {
-          let path = Hue.vars.path.join(container, file)
+        for (let file of files.slice(App.sconfig[`max_stored_${type}`])) {
+          let path = App.vars.path.join(container, file)
 
-          Hue.vars.fs.unlink(path, (err) => {
+          App.vars.fs.unlink(path, (err) => {
             if (err) {
-              Hue.logger.log_error(err)
+              App.logger.log_error(err)
             }
           })
         }
       }
       catch (err) {
-        Hue.logger.log_error(err)
+        App.logger.log_error(err)
       }
     }
   }
 
   // Edit the comment of a media change
-  Hue.handler.public.edit_media_comment = async (socket, data) => {
+  App.handler.public.edit_media_comment = async (socket, data) => {
     let edited = false
-    let info = await Hue.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
 
     for (let i = 0; i < info.log_messages.length; i++) {
       let message = info.log_messages[i]
@@ -170,7 +170,7 @@ module.exports = (Hue) => {
     if (edited) {
       info.modified = Date.now()
 
-      Hue.handler.room_emit(socket, `edited_media_comment`, {
+      App.handler.room_emit(socket, `edited_media_comment`, {
         type: data.type,
         id: data.id,
         comment: data.comment
@@ -179,34 +179,34 @@ module.exports = (Hue) => {
   }
 
   // Delete all media files of a certain type from a room
-  Hue.handler.delete_media_files = async (room_id, type) => {
-    let container = Hue.vars.path.join(Hue.vars.media_root, `room`, room_id, type)
+  App.handler.delete_media_files = async (room_id, type) => {
+    let container = App.vars.path.join(App.vars.media_root, `room`, room_id, type)
 
-    if (!Hue.vars.fs.existsSync(container)) {
+    if (!App.vars.fs.existsSync(container)) {
       return
     }
 
     try {
-      let files = await Hue.vars.fsp.readdir(container)
+      let files = await App.vars.fsp.readdir(container)
 
       for (let file of files) {
-        let path = Hue.vars.path.join(container, file)
+        let path = App.vars.path.join(container, file)
 
-        Hue.vars.fs.unlink(path, (err) => {
+        App.vars.fs.unlink(path, (err) => {
           if (err) {
-            Hue.logger.log_error(err)
+            App.logger.log_error(err)
           }
         })
       }
     }
     catch (err) {
-      Hue.logger.log_error(err)
+      App.logger.log_error(err)
     }
   }
 
   // Get the last media object from the message log
-  Hue.handler.get_last_media = async (room_id, type) => {
-    let info = await Hue.db_manager.get_room([`id`, room_id])
+  App.handler.get_last_media = async (room_id, type) => {
+    let info = await App.db_manager.get_room([`id`, room_id])
 
     for (let item of info.log_messages.slice(0).reverse()) {
       if (item.type === type) {

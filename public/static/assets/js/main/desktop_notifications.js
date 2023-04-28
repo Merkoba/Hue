@@ -1,11 +1,11 @@
 7 // Triggers the browser notifications permission prompt if not yet active
-Hue.request_desktop_notifications_permission = () => {
+App.request_desktop_notifications_permission = () => {
   if (typeof Notification === `undefined`) {
     return
   }
 
-  if (Hue.has_desktop_notifications_permission()) {
-    Hue.checkmsg(`Desktop Notifications are already enabled`)
+  if (App.has_desktop_notifications_permission()) {
+    App.checkmsg(`Desktop Notifications are already enabled`)
     return
   }
 
@@ -13,7 +13,7 @@ Hue.request_desktop_notifications_permission = () => {
 }
 
 // Checks if browser notification permission is already granted
-Hue.has_desktop_notifications_permission = () => {
+App.has_desktop_notifications_permission = () => {
   if (typeof Notification === `undefined`) {
     return
   }
@@ -22,41 +22,41 @@ Hue.has_desktop_notifications_permission = () => {
 }
 
 // Shows a browser notification
-Hue.show_desktop_notification = (s) => {
+App.show_desktop_notification = (s) => {
   if (typeof Notification === `undefined`) {
     return
   }
 
-  if (!Hue.has_desktop_notifications_permission()) {
+  if (!App.has_desktop_notifications_permission()) {
     return
   }
 
   let n = new Notification(s)
 
-  Hue.ev(n, `click`, (e) => {
+  App.ev(n, `click`, (e) => {
     window.focus()
     e.target.close()
   })
 }
 
 // Shows a browser notification alerting of a highlight
-Hue.show_highlight_desktop_notification = (username) => {
-  if (!Hue.has_desktop_notifications_permission()) {
+App.show_highlight_desktop_notification = (username) => {
+  if (!App.has_desktop_notifications_permission()) {
     return
   }
 
-  Hue.show_desktop_notification(
-    `New highlight in ${Hue.room_name.substring(0, 40)} (from ${username})`
+  App.show_desktop_notification(
+    `New highlight in ${App.room_name.substring(0, 40)} (from ${username})`
   )
 }
 
 // Shows a browser notification alerting an after message
-Hue.show_activity_desktop_notification = (username) => {
-  if (!Hue.has_desktop_notifications_permission()) {
+App.show_activity_desktop_notification = (username) => {
+  if (!App.has_desktop_notifications_permission()) {
     return
   }
 
-  Hue.show_desktop_notification(
-    `Activity in ${Hue.room_name.substring(0, 40)} (from ${username})`
+  App.show_desktop_notification(
+    `Activity in ${App.room_name.substring(0, 40)} (from ${username})`
   )
 }

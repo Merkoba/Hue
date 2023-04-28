@@ -1,116 +1,116 @@
 // Setup radios
-Hue.setup_radio = () => {
-  if (Hue.config.radios.length === 0) {
-    Hue.radio_disabled = true
-    Hue.el(`#footer_radio_container`).classList.add(`nodisplay`)
-    Hue.horizontal_separator(Hue.el(`#footer_media_items`))
+App.setup_radio = () => {
+  if (App.config.radios.length === 0) {
+    App.radio_disabled = true
+    App.el(`#footer_radio_container`).classList.add(`nodisplay`)
+    App.horizontal_separator(App.el(`#footer_media_items`))
     return
   }
 
-  Hue.playing_radio = Hue.config.radios.find(
-    x => x.name === Hue.room_state.last_radio_name
-  ) || Hue.config.radios[0]
+  App.playing_radio = App.config.radios.find(
+    x => x.name === App.room_state.last_radio_name
+  ) || App.config.radios[0]
 
-  Hue.setup_radio_player()
+  App.setup_radio_player()
 
-  for (let radio of Hue.config.radios) {
-    Hue.create_radio_station(radio)
+  for (let radio of App.config.radios) {
+    App.create_radio_station(radio)
   }
 
-  Hue.apply_radio_volume()
-  Hue.fill_radio_queue()
+  App.apply_radio_volume()
+  App.fill_radio_queue()
 
   let wheel_func = (e) => {
-    Hue.change_radio_volume(e.deltaY > 0 ? `down` : `up`)
+    App.change_radio_volume(e.deltaY > 0 ? `down` : `up`)
   }
 
-  Hue.ev(Hue.el(`#radio_volume`), `wheel`, wheel_func)
-  Hue.ev(Hue.el(`#footer_radio_container`), `wheel`, wheel_func)
+  App.ev(App.el(`#radio_volume`), `wheel`, wheel_func)
+  App.ev(App.el(`#footer_radio_container`), `wheel`, wheel_func)
 
-  Hue.ev(Hue.el(`#radio_playstop`), `click`, () => {
-    Hue.radio_playstop()
+  App.ev(App.el(`#radio_playstop`), `click`, () => {
+    App.radio_playstop()
   })
 
-  Hue.ev(Hue.el(`#radio_random`), `click`, () => {
-    Hue.clear_radio_filter()
-    Hue.play_random_radio()
+  App.ev(App.el(`#radio_random`), `click`, () => {
+    App.clear_radio_filter()
+    App.play_random_radio()
   })
 
-  Hue.ev(Hue.el(`#radio_volume`), `click`, () => {
-    Hue.pick_radio_volume()
+  App.ev(App.el(`#radio_volume`), `click`, () => {
+    App.pick_radio_volume()
   })
 
-  Hue.ev(Hue.el(`#radio_filter`), `keydown`, (e) => {
+  App.ev(App.el(`#radio_filter`), `keydown`, (e) => {
     if (e.key === `Enter`) {
-      Hue.play_first_radio()
+      App.play_first_radio()
     }
   })
 
-  Hue.ev(Hue.el(`#footer_radio_container`), `mouseenter`, (e) => {
-    e.target.title = Hue.playing_radio.name
+  App.ev(App.el(`#footer_radio_container`), `mouseenter`, (e) => {
+    e.target.title = App.playing_radio.name
   })
 
-  Hue.ev(Hue.el(`#radio_auto`), `click`, () => {
-    Hue.toggle_radio_auto()
+  App.ev(App.el(`#radio_auto`), `click`, () => {
+    App.toggle_radio_auto()
   })
 
-  Hue.set_radio_auto_text()
+  App.set_radio_auto_text()
 }
 
 // Play or pause radio
-Hue.check_radio_play = (radio) => {
-  if (Hue.is_playing_radio(radio) && Hue.radio_is_playing()) {
-    Hue.stop_radio()
+App.check_radio_play = (radio) => {
+  if (App.is_playing_radio(radio) && App.radio_is_playing()) {
+    App.stop_radio()
   }
   else {
-    Hue.play_radio(radio)
+    App.play_radio(radio)
   }
 }
 
 // Play the audio player with a cache-busted url
-Hue.play_radio = (radio) => {
-  Hue.push_radio_queue(radio)
-  Hue.playing_radio = radio
-  Hue.radio_player.src = Hue.utilz.cache_bust_url(radio.url)
-  Hue.radio_player.play()
-  Hue.apply_radio_station_effects()
-  Hue.check_radio_playing()
-  Hue.room_state.last_radio_name = radio.name
-  Hue.save_room_state()
+App.play_radio = (radio) => {
+  App.push_radio_queue(radio)
+  App.playing_radio = radio
+  App.radio_player.src = App.utilz.cache_bust_url(radio.url)
+  App.radio_player.play()
+  App.apply_radio_station_effects()
+  App.check_radio_playing()
+  App.room_state.last_radio_name = radio.name
+  App.save_room_state()
 }
 
 // After radio play
-Hue.after_radio_play = () => {
-  Hue.apply_radio_station_effects()
-  Hue.check_radio_playing()
-  Hue.scroll_to_radio_station()
-  Hue.show_radio_icon()
+App.after_radio_play = () => {
+  App.apply_radio_station_effects()
+  App.check_radio_playing()
+  App.scroll_to_radio_station()
+  App.show_radio_icon()
 
-  if (Hue.room_state.radio_auto) {
-    Hue.start_radio_auto_timeout()
+  if (App.room_state.radio_auto) {
+    App.start_radio_auto_timeout()
   }
 }
 
 // Set radio player
-Hue.setup_radio_player = () => {
-  Hue.radio_player = new Audio()
-  Hue.radio_player.volume = Hue.room_state.radio_volume
+App.setup_radio_player = () => {
+  App.radio_player = new Audio()
+  App.radio_player.volume = App.room_state.radio_volume
 
-  Hue.ev(Hue.radio_player, `play`, (e) => {
-    Hue.after_radio_play()
+  App.ev(App.radio_player, `play`, (e) => {
+    App.after_radio_play()
   })
 
-  Hue.ev(Hue.radio_player, `pause`, (e) => {
-    Hue.after_radio_stop()
+  App.ev(App.radio_player, `pause`, (e) => {
+    App.after_radio_stop()
   })
 }
 
 // Apply radio station effects
-Hue.apply_radio_station_effects = () => {
-  for (let station of Hue.els(`.radio_station`)) {
-    let radio = Hue.dataset(station, `radio`)
+App.apply_radio_station_effects = () => {
+  for (let station of App.els(`.radio_station`)) {
+    let radio = App.dataset(station, `radio`)
 
-    if (Hue.is_playing_radio(radio) && Hue.radio_is_playing()) {
+    if (App.is_playing_radio(radio) && App.radio_is_playing()) {
       station.classList.add(`radio_station_playing`)
     }
     else {
@@ -120,31 +120,31 @@ Hue.apply_radio_station_effects = () => {
 }
 
 // Check if it's playing radio
-Hue.is_playing_radio = (radio) => {
-  return Hue.playing_radio.name === radio.name
+App.is_playing_radio = (radio) => {
+  return App.playing_radio.name === radio.name
 }
 
 // Stops the audio player
-Hue.stop_radio = () => {
-  Hue.radio_player.pause()
+App.stop_radio = () => {
+  App.radio_player.pause()
 }
 
 // After stop radio
-Hue.after_radio_stop = () => {
-  Hue.stop_radio_auto_timeout()
-  Hue.apply_radio_station_effects()
-  Hue.check_radio_playing()
-  Hue.hide_radio_icon()
-  Hue.radio_player.src = ``
+App.after_radio_stop = () => {
+  App.stop_radio_auto_timeout()
+  App.apply_radio_station_effects()
+  App.check_radio_playing()
+  App.hide_radio_icon()
+  App.radio_player.src = ``
 }
 
 // Scroll stations list to playing station
-Hue.scroll_to_radio_station = () => {
-  if (!Hue.radio_is_playing()) {
+App.scroll_to_radio_station = () => {
+  if (!App.radio_is_playing()) {
     return
   }
 
-  let station = Hue.get_radio_station(Hue.playing_radio)
+  let station = App.get_radio_station(App.playing_radio)
 
   station.scrollIntoView({
     block: `center`
@@ -152,53 +152,53 @@ Hue.scroll_to_radio_station = () => {
 }
 
 // Check if radio is playing
-Hue.radio_is_playing = () => {
-  return Hue.radio_player && !Hue.radio_player.paused
+App.radio_is_playing = () => {
+  return App.radio_player && !App.radio_player.paused
 }
 
 // Check if radio is playing and perform actions
-Hue.check_radio_playing = () => {
-  if (Hue.radio_is_playing()) {
-    Hue.el(`#radio_playstop`).textContent = `Stop`
+App.check_radio_playing = () => {
+  if (App.radio_is_playing()) {
+    App.el(`#radio_playstop`).textContent = `Stop`
   }
   else {
-    Hue.el(`#radio_playstop`).textContent = `Play`
+    App.el(`#radio_playstop`).textContent = `Play`
   }
 
-  Hue.update_input_placeholder()
+  App.update_input_placeholder()
 }
 
 // Create a radio station
-Hue.create_radio_station = (radio) => {
-  let container = Hue.create(`div`, `radio_station nice_row modal_item pointer`)
-  container.innerHTML = Hue.template_radio_station()
+App.create_radio_station = (radio) => {
+  let container = App.create(`div`, `radio_station nice_row modal_item pointer`)
+  container.innerHTML = App.template_radio_station()
 
-  let icon = Hue.el(`.radio_station_icon`, container)
+  let icon = App.el(`.radio_station_icon`, container)
   jdenticon.update(icon, radio.name)
 
-  let name = Hue.el(`.radio_station_name`, container)
+  let name = App.el(`.radio_station_name`, container)
   name.textContent = radio.name
 
-  Hue.ev(container, `click`, () => {
-    Hue.check_radio_play(radio)
+  App.ev(container, `click`, () => {
+    App.check_radio_play(radio)
   })
 
-  Hue.dataset(container, `radio`, radio)
-  Hue.el(`#radio_stations`).append(container)
+  App.dataset(container, `radio`, radio)
+  App.el(`#radio_stations`).append(container)
 }
 
 // Get radio station
-Hue.get_radio_station = (radio) => {
-  for (let el of Hue.els(`.radio_station`)) {
-    if (Hue.dataset(el, `radio`).name === radio.name) {
+App.get_radio_station = (radio) => {
+  for (let el of App.els(`.radio_station`)) {
+    if (App.dataset(el, `radio`).name === radio.name) {
       return el
     }
   }
 }
 
 // Increase or decrease radio volume
-Hue.change_radio_volume = (direction, amount = 0.05) => {
-  let new_volume = Hue.room_state.radio_volume
+App.change_radio_volume = (direction, amount = 0.05) => {
+  let new_volume = App.room_state.radio_volume
 
   if (direction === `up`) {
     new_volume += amount
@@ -215,85 +215,85 @@ Hue.change_radio_volume = (direction, amount = 0.05) => {
     }
   }
 
-  new_volume = Hue.utilz.round(new_volume, 2)
+  new_volume = App.utilz.round(new_volume, 2)
 
-  if (Hue.room_state.radio_volume !== new_volume) {
-    Hue.apply_radio_volume(new_volume)
+  if (App.room_state.radio_volume !== new_volume) {
+    App.apply_radio_volume(new_volume)
   }
 }
 
 // Apply radio volume to all players
-Hue.apply_radio_volume = (volume = Hue.room_state.radio_volume) => {
+App.apply_radio_volume = (volume = App.room_state.radio_volume) => {
   let vstring = Math.round(volume * 100)
-  let fp = Hue.utilz.fillpad(vstring.toString(), 3, `0`)
-  Hue.el(`#radio_volume`).textContent = `Volume: ${fp}%`
+  let fp = App.utilz.fillpad(vstring.toString(), 3, `0`)
+  App.el(`#radio_volume`).textContent = `Volume: ${fp}%`
 
-  if (Hue.started && !Hue.msg_radio.is_open()) {
-    Hue.flash_info(`Radio`, `Volume: ${vstring}%`)
+  if (App.started && !App.msg_radio.is_open()) {
+    App.flash_info(`Radio`, `Volume: ${vstring}%`)
   }
 
   if (volume >= 0.7) {
-    Hue.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-full`
+    App.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-full`
   }
   else if (volume > 0) {
-    Hue.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-mid`
+    App.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-mid`
   }
   else {
-    Hue.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-mute`
+    App.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-mute`
   }
 
-  Hue.radio_player.volume = volume
+  App.radio_player.volume = volume
 
-  if (Hue.room_state.radio_volume !== volume) {
-    Hue.room_state.radio_volume = volume
-    Hue.save_room_state()
+  if (App.room_state.radio_volume !== volume) {
+    App.room_state.radio_volume = volume
+    App.save_room_state()
   }
 }
 
 // Play a random radio station
-Hue.play_random_radio = () => {
-  if (Hue.radio_disabled) {
+App.play_random_radio = () => {
+  if (App.radio_disabled) {
     return
   }
 
-  Hue.play_radio(Hue.get_random_radio())
+  App.play_radio(App.get_random_radio())
 }
 
 // Get first random radio queue station
-Hue.get_random_radio = () => {
-  return Hue.radio_queue[0]
+App.get_random_radio = () => {
+  return App.radio_queue[0]
 }
 
 // Push back played station to end of radio queue
-Hue.push_radio_queue = (radio) => {
-  for (let [i, r] of Hue.radio_queue.entries()) {
+App.push_radio_queue = (radio) => {
+  for (let [i, r] of App.radio_queue.entries()) {
     if (r.name === radio.name) {
-      Hue.radio_queue.push(Hue.radio_queue.splice(i, 1)[0])
+      App.radio_queue.push(App.radio_queue.splice(i, 1)[0])
       break
     }
   }
 }
 
 // Fill stations for the random button
-Hue.fill_radio_queue = () => {
-  Hue.radio_queue = Hue.config.radios.slice(0)
-  Hue.utilz.shuffle_array(Hue.radio_queue)
+App.fill_radio_queue = () => {
+  App.radio_queue = App.config.radios.slice(0)
+  App.utilz.shuffle_array(App.radio_queue)
 }
 
 // Play or stop the radio
 // Select random station if none is playing
-Hue.radio_playstop = () => {
-  if (!Hue.playing_radio || Hue.radio_disabled) {
+App.radio_playstop = () => {
+  if (!App.playing_radio || App.radio_disabled) {
     return
   }
 
-  Hue.check_radio_play(Hue.playing_radio)
+  App.check_radio_play(App.playing_radio)
 }
 
 // Get radio now playing string
-Hue.radio_now_playing_string = () => {
-  if (Hue.radio_is_playing()) {
-    return `Listening to ${Hue.playing_radio.name}`
+App.radio_now_playing_string = () => {
+  if (App.radio_is_playing()) {
+    return `Listening to ${App.playing_radio.name}`
   }
   else {
     return ``
@@ -301,67 +301,67 @@ Hue.radio_now_playing_string = () => {
 }
 
 // Show the radio
-Hue.show_radio = (filter = ``) => {
-  Hue.msg_radio.show(() => {
+App.show_radio = (filter = ``) => {
+  App.msg_radio.show(() => {
     if (filter.trim()) {
-      Hue.el(`#radio_filter`).value = filter
-      Hue.do_modal_filter()
+      App.el(`#radio_filter`).value = filter
+      App.do_modal_filter()
     }
     else {
-      Hue.scroll_to_radio_station()
+      App.scroll_to_radio_station()
     }
   })
 }
 
 // Hide the radio
-Hue.hide_radio = () => {
-  Hue.msg_radio.close()
+App.hide_radio = () => {
+  App.msg_radio.close()
 }
 
 // Highlight the radio footer
-Hue.show_radio_icon = () => {
-  Hue.el(`#footer_radio_icon`).classList.remove(`nodisplay`)
+App.show_radio_icon = () => {
+  App.el(`#footer_radio_icon`).classList.remove(`nodisplay`)
 }
 
 // Unhighlight the radio footer
-Hue.hide_radio_icon = () => {
-  Hue.el(`#footer_radio_icon`).classList.add(`nodisplay`)
+App.hide_radio_icon = () => {
+  App.el(`#footer_radio_icon`).classList.add(`nodisplay`)
 }
 
 // Play first selected radio
-Hue.play_first_radio = () => {
-  for (let station of Hue.els(`.radio_station`)) {
+App.play_first_radio = () => {
+  for (let station of App.els(`.radio_station`)) {
     if (!station.classList.contains(`nodisplay`)) {
-      Hue.play_radio(Hue.dataset(station, `radio`))
+      App.play_radio(App.dataset(station, `radio`))
       return
     }
   }
 }
 
 // Clear radio filter
-Hue.clear_radio_filter = () => {
-  Hue.el(`#radio_filter`).value = ``
-  Hue.do_modal_filter()
+App.clear_radio_filter = () => {
+  App.el(`#radio_filter`).value = ``
+  App.do_modal_filter()
 }
 
 // Show a picker to select radio volume
-Hue.pick_radio_volume = () => {
-  let nums = Hue.utilz.number_range(0, 100, 10)
+App.pick_radio_volume = () => {
+  let nums = App.utilz.number_range(0, 100, 10)
   nums.reverse()
 
   let s = nums.map(x => x + `%`)
 
-  Hue.show_item_picker(`Radio Volume`, s, (item) => {
+  App.show_item_picker(`Radio Volume`, s, (item) => {
     let vol = parseInt(item) / 100
-    Hue.apply_radio_volume(vol)
+    App.apply_radio_volume(vol)
   })
 }
 
 // Set radio auto text
-Hue.set_radio_auto_text = () => {
-  let el = Hue.el(`#radio_auto`)
+App.set_radio_auto_text = () => {
+  let el = App.el(`#radio_auto`)
 
-  if (Hue.room_state.radio_auto) {
+  if (App.room_state.radio_auto) {
     el.textContent = `Auto: On`
   }
   else {
@@ -370,34 +370,34 @@ Hue.set_radio_auto_text = () => {
 }
 
 // Toggle radio auto
-Hue.toggle_radio_auto = () => {
-  Hue.room_state.radio_auto = !Hue.room_state.radio_auto
+App.toggle_radio_auto = () => {
+  App.room_state.radio_auto = !App.room_state.radio_auto
 
-  if (Hue.room_state.radio_auto) {
-    if (Hue.radio_is_playing()) {
-      Hue.start_radio_auto_timeout()
+  if (App.room_state.radio_auto) {
+    if (App.radio_is_playing()) {
+      App.start_radio_auto_timeout()
     }
   }
   else {
-    Hue.stop_radio_auto_timeout()
+    App.stop_radio_auto_timeout()
   }
 
-  Hue.set_radio_auto_text()
-  Hue.save_room_state()
+  App.set_radio_auto_text()
+  App.save_room_state()
 }
 
 // Stop radio auto timeout
-Hue.stop_radio_auto_timeout = () => {
-  clearTimeout(Hue.room_state.radio_auto_timeout)
+App.stop_radio_auto_timeout = () => {
+  clearTimeout(App.room_state.radio_auto_timeout)
 }
 
 // Start radio auto timeout
-Hue.start_radio_auto_timeout = () => {
-  Hue.stop_radio_auto_timeout()
+App.start_radio_auto_timeout = () => {
+  App.stop_radio_auto_timeout()
 
-  Hue.room_state.radio_auto_timeout = setTimeout(() => {
-    if (Hue.radio_is_playing()) {
-      Hue.play_random_radio()
+  App.room_state.radio_auto_timeout = setTimeout(() => {
+    if (App.radio_is_playing()) {
+      App.play_random_radio()
     }
-  }, Hue.config.radio_auto_minutes * 60 * 1000)
+  }, App.config.radio_auto_minutes * 60 * 1000)
 }

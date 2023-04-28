@@ -1,119 +1,119 @@
 // Additional media tweaks configurations
-Hue.setup_media_tweaks = () => {
-  Hue.ev(Hue.el(`#media_tweaks_swap`), `click`, () => {
-    Hue.swap_media()
+App.setup_media_tweaks = () => {
+  App.ev(App.el(`#media_tweaks_swap`), `click`, () => {
+    App.swap_media()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_rotate`), `click`, () => {
-    Hue.swap_media_layout()
+  App.ev(App.el(`#media_tweaks_rotate`), `click`, () => {
+    App.swap_media_layout()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_revolve`), `click`, () => {
-    Hue.change_main_layout()
+  App.ev(App.el(`#media_tweaks_revolve`), `click`, () => {
+    App.change_main_layout()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_tv_size`), `change`, () => {
-    let size = Hue.el(`#media_tweaks_tv_size option:checked`).value
-    Hue.do_media_tv_size_change(size)
+  App.ev(App.el(`#media_tweaks_tv_size`), `change`, () => {
+    let size = App.el(`#media_tweaks_tv_size option:checked`).value
+    App.do_media_tv_size_change(size)
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_chat_size`), `change`, () => {
-    let size = Hue.el(`#media_tweaks_chat_size option:checked`).value
-    Hue.do_chat_size_change(size)
+  App.ev(App.el(`#media_tweaks_chat_size`), `change`, () => {
+    let size = App.el(`#media_tweaks_chat_size option:checked`).value
+    App.do_chat_size_change(size)
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_chat_font_size`), `change`, () => {
-    let size = Hue.el(`#media_tweaks_chat_font_size option:checked`).value
-    Hue.do_chat_font_size_change(size)
+  App.ev(App.el(`#media_tweaks_chat_font_size`), `change`, () => {
+    let size = App.el(`#media_tweaks_chat_font_size option:checked`).value
+    App.do_chat_font_size_change(size)
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_media_info_enabled`), `change`, () => {
-    let enabled = Hue.el(`#media_tweaks_media_info_enabled option:checked`).value === `enabled`
-    Hue.set_media_info_enabled(enabled)
+  App.ev(App.el(`#media_tweaks_media_info_enabled`), `change`, () => {
+    let enabled = App.el(`#media_tweaks_media_info_enabled option:checked`).value === `enabled`
+    App.set_media_info_enabled(enabled)
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_chat_enabled`), `change`, () => {
-    let enabled = Hue.el(`#media_tweaks_chat_enabled option:checked`).value === `enabled`
-    Hue.set_chat_enabled(enabled)
+  App.ev(App.el(`#media_tweaks_chat_enabled`), `change`, () => {
+    let enabled = App.el(`#media_tweaks_chat_enabled option:checked`).value === `enabled`
+    App.set_chat_enabled(enabled)
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_defaults`), `click`, () => {
-    Hue.show_confirm(`Restore media tweak defaults`, () => {
-      Hue.apply_media_tweaks_defaults()
+  App.ev(App.el(`#media_tweaks_defaults`), `click`, () => {
+    App.show_confirm(`Restore media tweak defaults`, () => {
+      App.apply_media_tweaks_defaults()
     })
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_tv_size_minus`), `click`, () => {
-    Hue.decrease_tv_percentage()
-    Hue.refresh_media_tweaks()
+  App.ev(App.el(`#media_tweaks_tv_size_minus`), `click`, () => {
+    App.decrease_tv_percentage()
+    App.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_tv_size_plus`), `click`, () => {
-    Hue.increase_tv_percentage()
-    Hue.refresh_media_tweaks()
+  App.ev(App.el(`#media_tweaks_tv_size_plus`), `click`, () => {
+    App.increase_tv_percentage()
+    App.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_chat_size_minus`), `click`, () => {
-    Hue.decrease_chat_percentage()
-    Hue.refresh_media_tweaks()
+  App.ev(App.el(`#media_tweaks_chat_size_minus`), `click`, () => {
+    App.decrease_chat_percentage()
+    App.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_chat_size_plus`), `click`, () => {
-    Hue.increase_chat_percentage()
-    Hue.refresh_media_tweaks()
+  App.ev(App.el(`#media_tweaks_chat_size_plus`), `click`, () => {
+    App.increase_chat_percentage()
+    App.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_chat_font_size_minus`), `click`, () => {
-    Hue.decrease_chat_font_size()
-    Hue.refresh_media_tweaks()
+  App.ev(App.el(`#media_tweaks_chat_font_size_minus`), `click`, () => {
+    App.decrease_chat_font_size()
+    App.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_chat_font_size_plus`), `click`, () => {
-    Hue.increase_chat_font_size()
-    Hue.refresh_media_tweaks()
+  App.ev(App.el(`#media_tweaks_chat_font_size_plus`), `click`, () => {
+    App.increase_chat_font_size()
+    App.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_media_info_enabled_minus`), `click`, () => {
-    Hue.set_media_info_enabled(false)
-    Hue.refresh_media_tweaks()
+  App.ev(App.el(`#media_tweaks_media_info_enabled_minus`), `click`, () => {
+    App.set_media_info_enabled(false)
+    App.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_media_info_enabled_plus`), `click`, () => {
-    Hue.set_media_info_enabled(true)
-    Hue.refresh_media_tweaks()
+  App.ev(App.el(`#media_tweaks_media_info_enabled_plus`), `click`, () => {
+    App.set_media_info_enabled(true)
+    App.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_chat_enabled_minus`), `click`, () => {
-    Hue.set_chat_enabled(false)
-    Hue.refresh_media_tweaks()
+  App.ev(App.el(`#media_tweaks_chat_enabled_minus`), `click`, () => {
+    App.set_chat_enabled(false)
+    App.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_chat_enabled_plus`), `click`, () => {
-    Hue.set_chat_enabled(true)
-    Hue.refresh_media_tweaks()
+  App.ev(App.el(`#media_tweaks_chat_enabled_plus`), `click`, () => {
+    App.set_chat_enabled(true)
+    App.refresh_media_tweaks()
   })
 
-  Hue.ev(Hue.el(`#media_tweaks_vertical_preset`), `click`, () => {
-    Hue.show_confirm(`Apply vertical preset`, () => {
-      Hue.change_media_layout(`row`)
-      Hue.change_main_layout(`column`)
-      Hue.do_chat_size_change(60)
-      Hue.set_media_enabled({type: `image`, what: false})
-      Hue.set_media_enabled({type: `tv`, what: true})
-      Hue.refresh_media_tweaks()
+  App.ev(App.el(`#media_tweaks_vertical_preset`), `click`, () => {
+    App.show_confirm(`Apply vertical preset`, () => {
+      App.change_media_layout(`row`)
+      App.change_main_layout(`column`)
+      App.do_chat_size_change(60)
+      App.set_media_enabled({type: `image`, what: false})
+      App.set_media_enabled({type: `tv`, what: true})
+      App.refresh_media_tweaks()
     })
   })
 
-  Hue.apply_media_percentages()
-  Hue.apply_media_positions()
-  Hue.change_media_layout()
+  App.apply_media_percentages()
+  App.apply_media_positions()
+  App.change_media_layout()
 }
 
 // Percentages for media tweaks
-Hue.create_tweaks_percentages = () => {
+App.create_tweaks_percentages = () => {
   let html = ``
 
-  for (let p = Hue.media_max_percentage; p >= Hue.media_min_percentage; p -= 5) {
+  for (let p = App.media_max_percentage; p >= App.media_min_percentage; p -= 5) {
     html += `<option value='${p}'>${p}%</option>`
   }
 
@@ -121,47 +121,47 @@ Hue.create_tweaks_percentages = () => {
 }
 
 // Chat sizes for media tweaks
-Hue.create_tweaks_chat_font_sizes = () => {
+App.create_tweaks_chat_font_sizes = () => {
   let html = ``
-  let size = Hue.max_chat_font_size
+  let size = App.max_chat_font_size
 
-  while (size >= Hue.min_chat_font_size) {
-    let n = Hue.utilz.round(size, 1)
+  while (size >= App.min_chat_font_size) {
+    let n = App.utilz.round(size, 1)
     html += `<option value='${n}'>${n}x</option>`
-    size = Hue.utilz.round(size - 0.1, 1)
+    size = App.utilz.round(size - 0.1, 1)
   }
 
   return html
 }
 
 // Shows the media tweaks
-Hue.show_media_tweaks = () => {
-  Hue.refresh_media_tweaks()
-  Hue.msg_media_tweaks.show()
+App.show_media_tweaks = () => {
+  App.refresh_media_tweaks()
+  App.msg_media_tweaks.show()
 }
 
 // Refresh media tweaks widgets
-Hue.refresh_media_tweaks = () => {
-  Hue.els(`#media_tweaks_tv_size option`).forEach(it => {
-    if (it.value == Hue.room_state.tv_display_percentage) {
+App.refresh_media_tweaks = () => {
+  App.els(`#media_tweaks_tv_size option`).forEach(it => {
+    if (it.value == App.room_state.tv_display_percentage) {
       it.selected = true
     }
   })
 
-  Hue.els(`#media_tweaks_chat_size option`).forEach(it => {
-    if (it.value == Hue.room_state.chat_display_percentage) {
+  App.els(`#media_tweaks_chat_size option`).forEach(it => {
+    if (it.value == App.room_state.chat_display_percentage) {
       it.selected = true
     }
   })
 
-  Hue.els(`#media_tweaks_chat_font_size option`).forEach(it => {
-    if (it.value == Hue.room_state.chat_font_size) {
+  App.els(`#media_tweaks_chat_font_size option`).forEach(it => {
+    if (it.value == App.room_state.chat_font_size) {
       it.selected = true
     }
   })
 
-  Hue.els(`#media_tweaks_media_info_enabled option`).forEach(it => {
-    if (Hue.room_state.media_info_enabled) {
+  App.els(`#media_tweaks_media_info_enabled option`).forEach(it => {
+    if (App.room_state.media_info_enabled) {
       if (it.value === `enabled`) {
         it.selected = true
       }
@@ -173,8 +173,8 @@ Hue.refresh_media_tweaks = () => {
     }
   })
 
-  Hue.els(`#media_tweaks_chat_enabled option`).forEach(it => {
-    if (Hue.room_state.chat_enabled) {
+  App.els(`#media_tweaks_chat_enabled option`).forEach(it => {
+    if (App.room_state.chat_enabled) {
       if (it.value === `enabled`) {
         it.selected = true
       }
@@ -188,19 +188,19 @@ Hue.refresh_media_tweaks = () => {
 }
 
 // Apply media defaults
-Hue.apply_media_tweaks_defaults = () => {
-  Hue.set_default_chat_font_size()
-  Hue.set_default_tv_position()
-  Hue.set_default_chat_enabled()
-  Hue.set_default_media_info_enabled()
-  Hue.set_media_enabled({type: `image`, what: true})
-  Hue.set_media_enabled({type: `tv`, what: true})
-  Hue.set_default_main_layout()
-  Hue.set_default_media_layout()
-  Hue.set_default_tv_size()
-  Hue.set_default_chat_size()
-  Hue.save_room_state()
-  Hue.change_media_layout()
-  Hue.apply_media_positions()
-  Hue.refresh_media_tweaks()
+App.apply_media_tweaks_defaults = () => {
+  App.set_default_chat_font_size()
+  App.set_default_tv_position()
+  App.set_default_chat_enabled()
+  App.set_default_media_info_enabled()
+  App.set_media_enabled({type: `image`, what: true})
+  App.set_media_enabled({type: `tv`, what: true})
+  App.set_default_main_layout()
+  App.set_default_media_layout()
+  App.set_default_tv_size()
+  App.set_default_chat_size()
+  App.save_room_state()
+  App.change_media_layout()
+  App.apply_media_positions()
+  App.refresh_media_tweaks()
 }

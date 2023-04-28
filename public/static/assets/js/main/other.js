@@ -1,28 +1,28 @@
 // Copies a string to the clipboard
-Hue.copy_string = (text) => {
+App.copy_string = (text) => {
   navigator.clipboard.writeText(text)
-  Hue.msg_info.show(`Copied to clipboard`)
+  App.msg_info.show(`Copied to clipboard`)
 }
 
 // Feedback that an error occurred
-Hue.error_occurred = () => {
-  Hue.checkmsg(`An error occurred`)
+App.error_occurred = () => {
+  App.checkmsg(`An error occurred`)
 }
 
 // Wrapper to show a confirmation dialog before running a function
-Hue.needs_confirm = (func, s = false) => {
+App.needs_confirm = (func, s = false) => {
   if (!s) {
     s = `Are you sure?`
   }
 
   if (confirm(s)) {
-    Hue[func]()
+    App[func]()
   }
 }
 
 // Wrapper to show a confirmation dialog before running a function
 // This one takes a full function and not just the name
-Hue.needs_confirm_2 = (func, s = false) => {
+App.needs_confirm_2 = (func, s = false) => {
   if (!s) {
     s = `Are you sure?`
   }
@@ -33,7 +33,7 @@ Hue.needs_confirm_2 = (func, s = false) => {
 }
 
 // Prints an informational console message
-Hue.show_console_message = () => {
+App.show_console_message = () => {
   let s =
     `🤔 Want to work with us? It's pretty much 99.99% risks, some negligible fraction AI, a couple bureaucracies to keep people minimally pissed off, and a whole lot of creativity.`
   let style = `font-size:1.4rem`
@@ -42,7 +42,7 @@ Hue.show_console_message = () => {
 }
 
 // Dynamically generate a favicon
-Hue.generate_favicon = (mode) => {
+App.generate_favicon = (mode) => {
   let color
 
   if (mode === -1) {
@@ -58,7 +58,7 @@ Hue.generate_favicon = (mode) => {
     return
   }
 
-  let canvas = Hue.create(`canvas`)
+  let canvas = App.create(`canvas`)
 
   canvas.height = 256
   canvas.width = 256
@@ -81,107 +81,107 @@ Hue.generate_favicon = (mode) => {
   context.fillStyle = color
   context.fillRect(center - (side / 2), center - (side / 2), side, side)
 
-  let link = Hue.el(`link[rel*='icon']`) || Hue.create(`link`)
+  let link = App.el(`link[rel*='icon']`) || App.create(`link`)
 
   link.type = `image/x-icon`
   link.rel = `shortcut icon`
   link.href = canvas.toDataURL()
 
-  Hue.el(`head`).appendChild(link)
-  Hue.favicon_mode = mode
+  App.el(`head`).appendChild(link)
+  App.favicon_mode = mode
 }
 
 // Centralized console info printer
-Hue.loginfo = (message, style=``) => {
-  console.info(`🤡 %c(${Hue.utilz.nice_date(Date.now())}) %c${message}`, `color:blue`, style)
+App.loginfo = (message, style=``) => {
+  console.info(`🤡 %c(${App.utilz.nice_date(Date.now())}) %c${message}`, `color:blue`, style)
 }
 
 // Centralized function to return a chat icon svg
-Hue.get_chat_icon = (name) => {
+App.get_chat_icon = (name) => {
   return `<svg class='chat_icon'><use href='#icon_${name}'></svg>`
 }
 
 // Centralized function to return an icon
-Hue.get_icon = (name, cls=``) => {
+App.get_icon = (name, cls=``) => {
   return `<svg class='other_icon ${cls}'><use href='#icon_${name}'></svg>`
 }
 
 // Open view text
-Hue.open_view_text = (text) => {
-  Hue.msg_view_text.show(() => {
-    let text_el = Hue.el(`#view_text_text`)
+App.open_view_text = (text) => {
+  App.msg_view_text.show(() => {
+    let text_el = App.el(`#view_text_text`)
     text_el.textContent = text
-    Hue.urlize(text_el, false)
+    App.urlize(text_el, false)
   })
 }
 
 // Setup view text window
-Hue.setup_view_text = () => {
-  Hue.ev(Hue.el(`#view_text_copy`), `click`, () => {
-    Hue.copy_string(Hue.el(`#view_text_text`).textContent)
-    Hue.msg_view_text.close()
+App.setup_view_text = () => {
+  App.ev(App.el(`#view_text_copy`), `click`, () => {
+    App.copy_string(App.el(`#view_text_text`).textContent)
+    App.msg_view_text.close()
   })
 }
 
 // Rotate screen
-Hue.flip = () => {
-  if (Hue.flipped) {
-    Hue.el(`#main_container`).classList.remove(`flipped`)
-    Hue.flash_info(`Secret`, `You discovered the mirror`)
+App.flip = () => {
+  if (App.flipped) {
+    App.el(`#main_container`).classList.remove(`flipped`)
+    App.flash_info(`Secret`, `You discovered the mirror`)
   }
   else {
-    Hue.el(`#main_container`).classList.add(`flipped`)
+    App.el(`#main_container`).classList.add(`flipped`)
   }
 
-  Hue.flipped = !Hue.flipped
+  App.flipped = !App.flipped
 }
 
 // Rotate media
-Hue.flop = () => {
-  if (Hue.flopped) {
-    Hue.el(`#main_rows_container`).classList.remove(`flopped_column`)
-    Hue.el(`#main_rows_container`).classList.remove(`flopped_row`)
-    Hue.flash_info(`Secret`, `You discovered the other side`)
+App.flop = () => {
+  if (App.flopped) {
+    App.el(`#main_rows_container`).classList.remove(`flopped_column`)
+    App.el(`#main_rows_container`).classList.remove(`flopped_row`)
+    App.flash_info(`Secret`, `You discovered the other side`)
   }
   else {
-    if (Hue.room_state.main_layout === `column`) {
-      Hue.el(`#main_rows_container`).classList.add(`flopped_column`)
+    if (App.room_state.main_layout === `column`) {
+      App.el(`#main_rows_container`).classList.add(`flopped_column`)
     }
     else {
-      Hue.el(`#main_rows_container`).classList.add(`flopped_row`)
+      App.el(`#main_rows_container`).classList.add(`flopped_row`)
     }
   }
 
-  Hue.flopped = !Hue.flopped
+  App.flopped = !App.flopped
 }
 
 // Get the last 3 digits of a message id
 // Mainly used to turn things goldtext
-Hue.getcode = (s = ``) => {
+App.getcode = (s = ``) => {
   return s.slice(-3)
 }
 
 // Show that a command is not allowed
-Hue.not_allowed = () => {
-  Hue.checkmsg(`You don't have permission to run that command`)
+App.not_allowed = () => {
+  App.checkmsg(`You don't have permission to run that command`)
 }
 
 // Item already included
-Hue.item_already_included = () => {
-  Hue.checkmsg(`Item already included`)
+App.item_already_included = () => {
+  App.checkmsg(`Item already included`)
 }
 
 // Item included just now
-Hue.item_included = () => {
-  Hue.checkmsg(`Item included successfully`)
+App.item_included = () => {
+  App.checkmsg(`Item included successfully`)
 }
 
 // Item is not included
-Hue.item_not_included = () => {
-  Hue.checkmsg(`Item is not included`)
+App.item_not_included = () => {
+  App.checkmsg(`Item is not included`)
 }
 
 // Item removed just now
-Hue.item_removed = () => {
-  Hue.checkmsg(`Item removed successfully`)
+App.item_removed = () => {
+  App.checkmsg(`Item removed successfully`)
 }

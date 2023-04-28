@@ -1,6 +1,6 @@
-module.exports = (Hue) => {
+module.exports = (App) => {
   // Handles tv source changes
-  Hue.handler.public.change_tv_source = async (socket, data) => {
+  App.handler.public.change_tv_source = async (socket, data) => {
     if (data.src === undefined) {
       return
     }
@@ -9,23 +9,23 @@ module.exports = (Hue) => {
       return
     }
 
-    if (data.src.length > Hue.config.max_media_source_length) {
+    if (data.src.length > App.config.max_media_source_length) {
       return
     }
 
     if (data.query) {
-      if (data.query.length > Hue.config.safe_limit_1) {
+      if (data.query.length > App.config.safe_limit_1) {
         return
       }
     }
 
     if (data.comment) {
-      if (data.comment.length > Hue.config.max_media_comment_length) {
+      if (data.comment.length > App.config.max_media_comment_length) {
         return
       }
     }
 
-    if (data.src !== Hue.utilz.single_space(data.src)) {
+    if (data.src !== App.utilz.single_space(data.src)) {
       return
     }
 
@@ -36,27 +36,27 @@ module.exports = (Hue) => {
 
     data.username = socket.hue_username
 
-    let media_info = await Hue.handler.get_last_media(socket.hue_room_id, `tv`)
+    let media_info = await App.handler.get_last_media(socket.hue_room_id, `tv`)
 
     if (media_info) {
       if (media_info.source === data.src || media_info.query === data.src) {
-        Hue.handler.user_emit(socket, `same_tv`, {})
+        App.handler.user_emit(socket, `same_tv`, {})
         return
       }
 
-      if (Date.now() - media_info.date < Hue.sconfig.tv_change_cooldown) {
-        Hue.handler.user_emit(socket, `tv_cooldown_wait`, {})
+      if (Date.now() - media_info.date < App.sconfig.tv_change_cooldown) {
+        App.handler.user_emit(socket, `tv_cooldown_wait`, {})
         return
       }
     }
 
-    if (Hue.utilz.is_url(data.src)) {
+    if (App.utilz.is_url(data.src)) {
       if (data.src.includes(`youtube.com`) || data.src.includes(`youtu.be`)) {
-        if (!Hue.config.youtube_enabled) {
+        if (!App.config.youtube_enabled) {
           return
         }
 
-        let id = Hue.utilz.get_youtube_id(data.src)
+        let id = App.utilz.get_youtube_id(data.src)
 
         if (id) {
           let st
@@ -71,13 +71,13 @@ module.exports = (Hue) => {
             pid = id[1][0]
           }
           else {
-            Hue.handler.user_emit(socket, `video_not_found`, {})
+            App.handler.user_emit(socket, `video_not_found`, {})
             return
           }
 
-          Hue.vars
+          App.vars
             .fetch_2(
-              `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${Hue.sconfig.youtube_api_key}`
+              `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${App.sconfig.youtube_api_key}`
             )
             .then((res) => {
               return res.json()
@@ -86,32 +86,32 @@ module.exports = (Hue) => {
               if (response.items !== undefined && response.items.length > 0) {
                 data.type = `youtube`
                 data.title = response.items[0].snippet.title
-                await Hue.handler.do_change_media(socket, data, `tv`)
+                await App.handler.do_change_media(socket, data, `tv`)
               }
               else {
-                Hue.handler.user_emit(socket, `video_not_found`, {})
+                App.handler.user_emit(socket, `video_not_found`, {})
                 return
               }
             })
             .catch((err) => {
-              Hue.handler.user_emit(socket, `video_not_found`, {})
-              Hue.logger.log_error(err)
+              App.handler.user_emit(socket, `video_not_found`, {})
+              App.logger.log_error(err)
             })
         }
         else {
-          Hue.handler.user_emit(socket, `video_not_found`, {})
+          App.handler.user_emit(socket, `video_not_found`, {})
         }
       }
       else if (data.src.includes(`twitch.tv`)) {
-        let info = Hue.utilz.get_twitch_id(data.src)
+        let info = App.utilz.get_twitch_id(data.src)
 
         if (info && info[0] === `channel`) {
           data.type = `twitch`
           data.title = info[1]
-          await Hue.handler.do_change_media(socket, data, `tv`)
+          await App.handler.do_change_media(socket, data, `tv`)
         }
         else {
-          Hue.handler.user_emit(socket, `video_not_found`, {})
+          App.handler.user_emit(socket, `video_not_found`, {})
           return
         }
       }
@@ -124,20 +124,20 @@ module.exports = (Hue) => {
           data.title = data.src
         }
 
-        await Hue.handler.do_change_media(socket, data, `tv`)
+        await App.handler.do_change_media(socket, data, `tv`)
       }
       else {
-        let extension = Hue.utilz.get_extension(data.src).toLowerCase()
+        let extension = App.utilz.get_extension(data.src).toLowerCase()
 
         if (extension) {
           if (
-            Hue.utilz.video_extensions.includes(extension) ||
-            Hue.utilz.audio_extensions.includes(extension)
+            App.utilz.video_extensions.includes(extension) ||
+            App.utilz.audio_extensions.includes(extension)
           ) {
             data.type = `video`
           }
           else {
-            if (!Hue.config.iframes_enabled) {
+            if (!App.config.iframes_enabled) {
               return
             }
 
@@ -145,7 +145,7 @@ module.exports = (Hue) => {
           }
         }
         else {
-          if (!Hue.config.iframes_enabled) {
+          if (!App.config.iframes_enabled) {
             return
           }
 
@@ -155,17 +155,17 @@ module.exports = (Hue) => {
         data.title = ``
 
         if (data.type === `iframe`) {
-          if (Hue.sconfig.https_enabled && data.src.includes(`http://`)) {
-            Hue.handler.user_emit(socket, `cannot_embed_iframe`, {})
+          if (App.sconfig.https_enabled && data.src.includes(`http://`)) {
+            App.handler.user_emit(socket, `cannot_embed_iframe`, {})
             return
           }
 
-          if ((data.src + `/`).includes(Hue.sconfig.site_root)) {
-            Hue.handler.user_emit(socket, `cannot_embed_iframe`, {})
+          if ((data.src + `/`).includes(App.sconfig.site_root)) {
+            App.handler.user_emit(socket, `cannot_embed_iframe`, {})
             return
           }
 
-          Hue.vars
+          App.vars
             .fetch_2(data.src)
             .then(async (res) => {
               let xframe_options = res.headers.get(`x-frame-options`) || ``
@@ -176,33 +176,33 @@ module.exports = (Hue) => {
                 xframe_options === `deny` ||
                 xframe_options === `sameorigin`
               ) {
-                Hue.handler.user_emit(socket, `cannot_embed_iframe`, {})
+                App.handler.user_emit(socket, `cannot_embed_iframe`, {})
                 return
               }
               else {
-                await Hue.handler.do_change_media(socket, data, `tv`)
+                await App.handler.do_change_media(socket, data, `tv`)
               }
             })
             .catch((err) => {
-              Hue.handler.user_emit(socket, `cannot_embed_iframe`, {})
+              App.handler.user_emit(socket, `cannot_embed_iframe`, {})
             })
         }
         else {
-          await Hue.handler.do_change_media(socket, data, `tv`)
+          await App.handler.do_change_media(socket, data, `tv`)
         }
       }
     }
     else {
-      if (!Hue.config.youtube_enabled) {
+      if (!App.config.youtube_enabled) {
         return
       }
 
-      Hue.vars
+      App.vars
         .fetch_2(
           `https://www.googleapis.com/youtube/v3/search?q=${encodeURIComponent(
             data.src
           )}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&videoEmbeddable=true&key=${
-            Hue.sconfig.youtube_api_key
+            App.sconfig.youtube_api_key
           }`
         )
         .then((res) => {
@@ -223,30 +223,30 @@ module.exports = (Hue) => {
               data.query = data.src
               data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
               data.title = response.items[0].snippet.title
-              await Hue.handler.do_change_media(socket, data, `tv`)
+              await App.handler.do_change_media(socket, data, `tv`)
               return
             }
 
-            Hue.handler.user_emit(socket, `video_not_found`, {})
+            App.handler.user_emit(socket, `video_not_found`, {})
             return
           }
           else {
-            Hue.handler.user_emit(socket, `video_not_found`, {})
+            App.handler.user_emit(socket, `video_not_found`, {})
           }
         })
         .catch((err) => {
-          Hue.logger.log_error(err)
+          App.logger.log_error(err)
         })
     }
   }
 
   // Receives a request to ask another user for their tv video progress
-  Hue.handler.public.sync_tv = async (socket, data) => {
+  App.handler.public.sync_tv = async (socket, data) => {
     if (!data.username) {
       return
     }
 
-    let sockets = await Hue.handler.get_user_sockets_per_room_by_username(
+    let sockets = await App.handler.get_user_sockets_per_room_by_username(
       socket.hue_room_id,
       data.username
     )
@@ -268,7 +268,7 @@ module.exports = (Hue) => {
       return
     }
 
-    Hue.handler.user_emit(first_socket, `report_tv_progress`, {
+    App.handler.user_emit(first_socket, `report_tv_progress`, {
       requester: socket.id,
       requester_username: socket.hue_username,
       tv_source: data.tv_source
@@ -276,12 +276,12 @@ module.exports = (Hue) => {
   }
 
   // If a user responds this sends the progress to another user
-  Hue.handler.public.report_tv_progress = async (socket, data) => {
+  App.handler.public.report_tv_progress = async (socket, data) => {
     if (!data.requester || !data.progress) {
       return
     }
 
-    let requester_socket = await Hue.handler.get_room_socket_by_id(
+    let requester_socket = await App.handler.get_room_socket_by_id(
       socket.hue_room_id,
       data.requester
     )
@@ -290,7 +290,7 @@ module.exports = (Hue) => {
       return
     }
 
-    Hue.handler.user_emit(requester_socket, `receive_tv_progress`, {
+    App.handler.user_emit(requester_socket, `receive_tv_progress`, {
       progress: data.progress,
       type: data.type,
     })

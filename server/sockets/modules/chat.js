@@ -1,6 +1,6 @@
-module.exports = (Hue) => {
+module.exports = (App) => {
   // Handles chat messages
-  Hue.handler.public.sendchat = async (socket, data) => {
+  App.handler.public.sendchat = async (socket, data) => {
     if (data.message === undefined) {
       return
     }
@@ -9,38 +9,38 @@ module.exports = (Hue) => {
       return
     }
 
-    if (data.message.length > Hue.config.max_input_length) {
+    if (data.message.length > App.config.max_input_length) {
       return
     }
 
     // Return if too spammy
-    let spam_level = Hue.handler.get_spam_level(socket)
+    let spam_level = App.handler.get_spam_level(socket)
 
-    if (spam_level >= Hue.sconfig.anti_spam_chat_limit) {
+    if (spam_level >= App.sconfig.anti_spam_chat_limit) {
       return
     }
 
     let lines = data.message.split(`\n`)
 
-    if (lines.length > Hue.config.max_num_newlines) {
+    if (lines.length > App.config.max_num_newlines) {
       return
     }
 
     // Add spam every other line
     if (lines.length > 1) {
       let n = parseInt(lines.length / 2)
-      Hue.handler.add_spam(socket, n)
+      App.handler.add_spam(socket, n)
     }
 
     // Add chunk spam
-    if (data.message.length >= Hue.sconfig.anti_spam_chat_chunks) {
-      let n = parseInt(data.message.length / Hue.sconfig.anti_spam_chat_chunks)
-      Hue.handler.add_spam(socket, n)
+    if (data.message.length >= App.sconfig.anti_spam_chat_chunks) {
+      let n = parseInt(data.message.length / App.sconfig.anti_spam_chat_chunks)
+      App.handler.add_spam(socket, n)
     }
 
     // Check last message date spam
-    if (Date.now() - socket.hue_last_chat_message <= Hue.sconfig.anti_spam_chat_delay) {
-      Hue.handler.add_spam(socket)
+    if (Date.now() - socket.hue_last_chat_message <= App.sconfig.anti_spam_chat_delay) {
+      App.handler.add_spam(socket)
     }
 
     let quote = data.quote || ``
@@ -48,7 +48,7 @@ module.exports = (Hue) => {
     let quote_user_id = data.quote_user_id || ``
     let quote_id = data.quote_id || ``
 
-    if (quote.length > Hue.config.quote_max_length + 10) {
+    if (quote.length > App.config.quote_max_length + 10) {
       return
     }
 
@@ -56,22 +56,22 @@ module.exports = (Hue) => {
       return
     }
 
-    if (quote_username.length > Hue.config.max_username_length) {
+    if (quote_username.length > App.config.max_username_length) {
       return
     }
 
-    if (quote_user_id.length > Hue.sconfig.max_user_id_length) {
+    if (quote_user_id.length > App.sconfig.max_user_id_length) {
       return
     }
 
-    if (quote_id.length > Hue.sconfig.max_message_id_length) {
+    if (quote_id.length > App.sconfig.max_message_id_length) {
       return
     }
 
     let id, date, edited, username, linkdata, likes
 
     if (data.edit_id) {
-      let info = await Hue.db_manager.get_room([`id`, socket.hue_room_id])
+      let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
 
       if (!info) {
         return
@@ -84,7 +84,7 @@ module.exports = (Hue) => {
           }
 
           if (!linkdata) {
-            linkdata = await Hue.handler.process_message_links(data.message)
+            linkdata = await App.handler.process_message_links(data.message)
           }
 
           info.log_messages[i].data.edited = true
@@ -115,7 +115,7 @@ module.exports = (Hue) => {
     }
     else {
       date = Date.now()
-      id = Hue.handler.generate_message_id()
+      id = App.handler.generate_message_id()
       username = socket.hue_username
       edited = false
       quote = data.quote
@@ -126,10 +126,10 @@ module.exports = (Hue) => {
     }
 
     if (!linkdata) {
-      linkdata = await Hue.handler.process_message_links(data.message)
+      linkdata = await App.handler.process_message_links(data.message)
     }
 
-    Hue.handler.room_emit(socket, `chat_message`, {
+    App.handler.room_emit(socket, `chat_message`, {
       id: id,
       user_id: socket.hue_user_id,
       username: username,
@@ -170,29 +170,29 @@ module.exports = (Hue) => {
         }
       }
 
-      Hue.db_manager.push_item(`rooms`, socket.hue_room_id, `log_messages`, message)
+      App.db_manager.push_item(`rooms`, socket.hue_room_id, `log_messages`, message)
     }
 
     // Update last message date
-    Hue.handler.modify_socket_properties(socket.hue_user_id, { hue_last_chat_message: Date.now() })
+    App.handler.modify_socket_properties(socket.hue_user_id, { hue_last_chat_message: Date.now() })
   }
 
   // Generates IDs for messages
-  Hue.handler.generate_message_id = () => {
-    return `${Date.now()}_${Hue.utilz.random_sequence(3)}`
+  App.handler.generate_message_id = () => {
+    return `${Date.now()}_${App.utilz.random_sequence(3)}`
   }
 
   // Deletes a message
-  Hue.handler.public.delete_message = async (socket, data) => {
+  App.handler.public.delete_message = async (socket, data) => {
     if (!data.id) {
       return
     }
 
-    if (data.id.length > Hue.sconfig.max_message_id_length) {
+    if (data.id.length > App.sconfig.max_message_id_length) {
       return
     }
 
-    let info = await Hue.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
 
     if (!info) {
       return
@@ -221,7 +221,7 @@ module.exports = (Hue) => {
 
     if (message) {
       if (!message.data.user_id) {
-        if (!Hue.handler.is_admin_or_op(socket)) {
+        if (!App.handler.is_admin_or_op(socket)) {
           return
         }
 
@@ -229,35 +229,35 @@ module.exports = (Hue) => {
         messages.splice(message_index, 1)
       }
       else if (message.data.user_id !== socket.hue_user_id) {
-        if (!Hue.handler.is_admin_or_op(socket)) {
+        if (!App.handler.is_admin_or_op(socket)) {
           return
         }
 
-        let userinfo = await Hue.db_manager.get_user([`id`, message.data.user_id])
+        let userinfo = await App.db_manager.get_user([`id`, message.data.user_id])
 
         if (!userinfo) {
-          Hue.handler.user_emit(socket, `user_not_found`, {})
+          App.handler.user_emit(socket, `user_not_found`, {})
           return
         }
 
         let id = userinfo.id
-        let current_role = info.keys[id] || Hue.vars.default_role
+        let current_role = info.keys[id] || App.vars.default_role
         message_username = userinfo.username
 
         if (!socket.hue_superuser) {
           if (current_role === `admin`) {
-            Hue.handler.user_emit(socket, `forbidden_user`, {})
+            App.handler.user_emit(socket, `forbidden_user`, {})
             return
           }
           else if (current_role === `op`) {
             if (socket.hue_role !== `admin`) {
-              Hue.handler.user_emit(socket, `forbidden_user`, {})
+              App.handler.user_emit(socket, `forbidden_user`, {})
               return
             }
           }
           else {
-            if (!Hue.handler.is_admin_or_op(socket)) {
-              Hue.handler.user_emit(socket, `forbidden_user`, {})
+            if (!App.handler.is_admin_or_op(socket)) {
+              App.handler.user_emit(socket, `forbidden_user`, {})
               return
             }
           }
@@ -281,43 +281,43 @@ module.exports = (Hue) => {
       if (deleted) {
         info.modified = Date.now()
 
-        Hue.handler.room_emit(socket, `message_deleted`, {
+        App.handler.room_emit(socket, `message_deleted`, {
           user_id: socket.hue_user_id,
           username: socket.hue_username,
           id: message_id
         })
 
         if (message_user_id !== socket.hue_user_id && message_username) {
-          Hue.handler.push_admin_log_message(socket, `deleted a message from "${message_username}"`)
+          App.handler.push_admin_log_message(socket, `deleted a message from "${message_username}"`)
         }
       }
     }
   }
 
   // Deletes all messages and remove media
-  Hue.handler.public.clear_log = async (socket, data) => {
-    if (!Hue.handler.is_admin(socket)) {
-      Hue.handler.anti_spam_ban(socket)
+  App.handler.public.clear_log = async (socket, data) => {
+    if (!App.handler.is_admin(socket)) {
+      App.handler.anti_spam_ban(socket)
       return
     }
 
-    let info = await Hue.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
     info.log_messages = []
 
-    Hue.handler.room_emit(socket, `log_cleared`, {
+    App.handler.room_emit(socket, `log_cleared`, {
       user_id: socket.hue_user_id,
       username: socket.hue_username
     })
 
-    await Hue.handler.delete_media_files(socket.hue_room_id, `image`)
-    await Hue.handler.delete_media_files(socket.hue_room_id, `tv`)
-    await Hue.handler.push_admin_log_message(socket, `cleared the log`)
+    await App.handler.delete_media_files(socket.hue_room_id, `image`)
+    await App.handler.delete_media_files(socket.hue_room_id, `tv`)
+    await App.handler.push_admin_log_message(socket, `cleared the log`)
   }
 
   // Deletes all messages above a message
-  Hue.handler.public.delete_messages_above = async (socket, data) => {
-    if (!Hue.handler.is_admin(socket)) {
-      Hue.handler.anti_spam_ban(socket)
+  App.handler.public.delete_messages_above = async (socket, data) => {
+    if (!App.handler.is_admin(socket)) {
+      App.handler.anti_spam_ban(socket)
       return
     }
 
@@ -325,11 +325,11 @@ module.exports = (Hue) => {
       return
     }
 
-    if (data.id.length > Hue.sconfig.max_message_id_length) {
+    if (data.id.length > App.sconfig.max_message_id_length) {
       return
     }
 
-    let info = await Hue.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
 
     if (!info) {
       return
@@ -340,22 +340,22 @@ module.exports = (Hue) => {
       if (message.data.id === data.id) {
         info.log_messages = info.log_messages.slice(i)
 
-        Hue.handler.room_emit(socket, `deleted_messages_above`, {
+        App.handler.room_emit(socket, `deleted_messages_above`, {
           user_id: socket.hue_user_id,
           username: socket.hue_username,
           id: data.id
         })
 
-        Hue.handler.push_admin_log_message(socket, `deleted messages above`)
+        App.handler.push_admin_log_message(socket, `deleted messages above`)
         return
       }
     }
   }
 
   // Deletes all messages above a message
-  Hue.handler.public.delete_messages_below = async (socket, data) => {
-    if (!Hue.handler.is_admin(socket)) {
-      Hue.handler.anti_spam_ban(socket)
+  App.handler.public.delete_messages_below = async (socket, data) => {
+    if (!App.handler.is_admin(socket)) {
+      App.handler.anti_spam_ban(socket)
       return
     }
 
@@ -363,11 +363,11 @@ module.exports = (Hue) => {
       return
     }
 
-    if (data.id.length > Hue.sconfig.max_message_id_length) {
+    if (data.id.length > App.sconfig.max_message_id_length) {
       return
     }
 
-    let info = await Hue.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
 
     if (!info) {
       return
@@ -378,20 +378,20 @@ module.exports = (Hue) => {
       if (message.data.id === data.id) {
         info.log_messages = info.log_messages.slice(0, i + 1)
 
-        Hue.handler.room_emit(socket, `deleted_messages_below`, {
+        App.handler.room_emit(socket, `deleted_messages_below`, {
           user_id: socket.hue_user_id,
           username: socket.hue_username,
           id: data.id
         })
 
-        Hue.handler.push_admin_log_message(socket, `deleted messages below`)
+        App.handler.push_admin_log_message(socket, `deleted messages below`)
         return
       }
     }
   }
 
   // Like or Unlike a message
-  Hue.handler.public.like_message = async (socket, data) => {
+  App.handler.public.like_message = async (socket, data) => {
     if (!data.id) {
       return
     }
@@ -400,7 +400,7 @@ module.exports = (Hue) => {
       return
     }
 
-    let info = await Hue.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
 
     for (let i=0; i<info.log_messages.length; i++) {
       if (info.log_messages[i].data.id === data.id) {
@@ -419,7 +419,7 @@ module.exports = (Hue) => {
               return
             }
 
-            if (info.log_messages[i].data.likes.length >= Hue.config.max_likes) {
+            if (info.log_messages[i].data.likes.length >= App.config.max_likes) {
               return
             }
 
@@ -438,7 +438,7 @@ module.exports = (Hue) => {
           }
 
           info.modified = Date.now()
-          Hue.handler.room_emit(socket, `liked_message`, {id: data.id, obj: obj, type: type})
+          App.handler.room_emit(socket, `liked_message`, {id: data.id, obj: obj, type: type})
         }
 
         return

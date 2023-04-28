@@ -1,6 +1,6 @@
 // This handles new users joining the room
-Hue.user_join = (data) => {
-  Hue.add_to_userlist({
+App.user_join = (data) => {
+  App.add_to_userlist({
     user_id: data.user_id,
     username: data.username,
     role: data.role,
@@ -10,20 +10,20 @@ Hue.user_join = (data) => {
     audioclip_version: data.audioclip_version
   })
 
-  if (data.user_id !== Hue.user_id) {
-    Hue.on_activity(`join`)
+  if (data.user_id !== App.user_id) {
+    App.on_activity(`join`)
   }
 
-  if (Hue.open_profile_user_id === data.user_id) {
-    Hue.show_profile(data.username, data.user_id)
+  if (App.open_profile_user_id === data.user_id) {
+    App.show_profile(data.username, data.user_id)
   }
 
-  if (Hue.started) {
-    Hue.do_update_activity_bar = true
+  if (App.started) {
+    App.do_update_activity_bar = true
   }
 
-  if (Hue.get_setting(`show_user_join_notifications`)) {
-    Hue.show_room_notification(
+  if (App.get_setting(`show_user_join_notifications`)) {
+    App.show_room_notification(
       data.username,
       `${data.username} joined`,
       `user`
@@ -32,34 +32,34 @@ Hue.user_join = (data) => {
 }
 
 // Updates the user count in the header and user list
-Hue.update_usercount = () => {
-  let s = `${Hue.utilz.singular_or_plural(Hue.userlist.length, `Users`)} Online`
+App.update_usercount = () => {
+  let s = `${App.utilz.singular_or_plural(App.userlist.length, `Users`)} Online`
 
-  Hue.el(`#header_users_count`).textContent = `(${Hue.userlist.length})`
+  App.el(`#header_users_count`).textContent = `(${App.userlist.length})`
 
-  if (Hue.userlist_mode === `normal`) {
-    Hue.msg_userlist.set_title(s)
+  if (App.userlist_mode === `normal`) {
+    App.msg_userlist.set_title(s)
   }
 }
 
 // Adds a user to the user list
-Hue.add_to_userlist = (args = {}) => {
-  for (let i = 0; i < Hue.userlist.length; i++) {
-    if (Hue.userlist[i].user_id === args.user_id) {
-      Hue.userlist[i].user_id = args.user_id
-      Hue.userlist[i].username = args.username
-      Hue.userlist[i].role = args.role
-      Hue.userlist[i].profilepic_version = args.profilepic_version
-      Hue.userlist[i].bio = args.bio
-      Hue.userlist[i].audioclip_version = args.audioclip_version
-      Hue.userlist[i].last_activity = args.last_activity
+App.add_to_userlist = (args = {}) => {
+  for (let i = 0; i < App.userlist.length; i++) {
+    if (App.userlist[i].user_id === args.user_id) {
+      App.userlist[i].user_id = args.user_id
+      App.userlist[i].username = args.username
+      App.userlist[i].role = args.role
+      App.userlist[i].profilepic_version = args.profilepic_version
+      App.userlist[i].bio = args.bio
+      App.userlist[i].audioclip_version = args.audioclip_version
+      App.userlist[i].last_activity = args.last_activity
 
-      Hue.update_userlist()
+      App.update_userlist()
       return
     }
   }
 
-  Hue.userlist.push({
+  App.userlist.push({
     user_id: args.user_id,
     username: args.username,
     role: args.role,
@@ -70,74 +70,74 @@ Hue.add_to_userlist = (args = {}) => {
     last_activity: args.last_activity
   })
 
-  Hue.update_userlist()
+  App.update_userlist()
 }
 
 // Removes a user from the user list
-Hue.remove_from_userlist = (user_id) => {
-  for (let i = 0; i < Hue.userlist.length; i++) {
-    if (Hue.userlist[i].user_id === user_id) {
-      Hue.userlist.splice(i, 1)
-      Hue.update_userlist()
+App.remove_from_userlist = (user_id) => {
+  for (let i = 0; i < App.userlist.length; i++) {
+    if (App.userlist[i].user_id === user_id) {
+      App.userlist.splice(i, 1)
+      App.update_userlist()
       break
     }
   }
 }
 
 // Replaces a property of a user in the userlist by username
-Hue.replace_property_in_userlist_by_username = (
+App.replace_property_in_userlist_by_username = (
   username,
   prop,
   new_value,
   update = true
 ) => {
-  let item = Hue.get_userlist_item_by_username(username)
+  let item = App.get_userlist_item_by_username(username)
 
   if (item) {
     item[prop] = new_value
 
     if (update) {
-      Hue.update_userlist(prop)
-      if (Hue.open_profile_user_id === item.user_id) {
-        Hue.show_profile(item.username, item.user_id)
+      App.update_userlist(prop)
+      if (App.open_profile_user_id === item.user_id) {
+        App.show_profile(item.username, item.user_id)
       }
     }
   }
 }
 
 // Replaces a property of a user in the userlist by user id
-Hue.replace_property_in_userlist_by_id = (
+App.replace_property_in_userlist_by_id = (
   user_id,
   prop,
   new_value,
   update = true
 ) => {
-  let item = Hue.get_userlist_item_by_user_id(user_id)
+  let item = App.get_userlist_item_by_user_id(user_id)
 
   if (item) {
     item[prop] = new_value
 
     if (update) {
-      Hue.update_userlist(prop)
-      if (Hue.open_profile_user_id === item.user_id) {
-        Hue.show_profile(item.username, item.user_id)
+      App.update_userlist(prop)
+      if (App.open_profile_user_id === item.user_id) {
+        App.show_profile(item.username, item.user_id)
       }
     }
   }
 }
 
 // Gets the role of a user by username
-Hue.get_role = (username) => {
-  for (let i = 0; i < Hue.userlist.length; i++) {
-    if (Hue.userlist[i].username === username) {
-      return Hue.userlist[i].role
+App.get_role = (username) => {
+  for (let i = 0; i < App.userlist.length; i++) {
+    if (App.userlist[i].username === username) {
+      return App.userlist[i].role
     }
   }
 }
 
 // Gets the short form of a specified role
 // These are displayed next to the usernames in the user list
-Hue.role_tag = (p) => {
+App.role_tag = (p) => {
   let s
 
   if (p === `admin`) {
@@ -157,7 +157,7 @@ Hue.role_tag = (p) => {
 }
 
 // Gets the full proper name of a specified role
-Hue.get_pretty_role_name = (p) => {
+App.get_pretty_role_name = (p) => {
   let s
 
   if (p === `admin`) {
@@ -177,8 +177,8 @@ Hue.get_pretty_role_name = (p) => {
 }
 
 // Gets a user from the user list by username
-Hue.get_user_by_username = (username) => {
-  for (let user of Hue.userlist) {
+App.get_user_by_username = (username) => {
+  for (let user of App.userlist) {
     if (user.username.toLowerCase() === username.toLowerCase()) {
       return user
     }
@@ -186,8 +186,8 @@ Hue.get_user_by_username = (username) => {
 }
 
 // Get userlist item by username
-Hue.get_userlist_item_by_username = (username) => {
-  for (let item of Hue.userlist) {
+App.get_userlist_item_by_username = (username) => {
+  for (let item of App.userlist) {
     if (item.username.toLowerCase() === username.toLowerCase()) {
       return item
     }
@@ -195,8 +195,8 @@ Hue.get_userlist_item_by_username = (username) => {
 }
 
 // Get userlist item by user id
-Hue.get_userlist_item_by_user_id = (user_id) => {
-  for (let item of Hue.userlist) {
+App.get_userlist_item_by_user_id = (user_id) => {
+  for (let item of App.userlist) {
     if (item.user_id === user_id) {
       return item
     }
@@ -204,8 +204,8 @@ Hue.get_userlist_item_by_user_id = (user_id) => {
 }
 
 // Gets a user from the user list by ID
-Hue.get_user_by_user_id = (id) => {
-  for (let user of Hue.userlist) {
+App.get_user_by_user_id = (id) => {
+  for (let user of App.userlist) {
     if (user.user_id === id) {
       return user
     }
@@ -214,10 +214,10 @@ Hue.get_user_by_user_id = (id) => {
 
 // Handles a user list update
 // Rebuilds the HTML of the user list window
-Hue.do_update_userlist = (prop = ``) => {
-  Hue.userlist.sort(Hue.compare_userlist)
+App.do_update_userlist = (prop = ``) => {
+  App.userlist.sort(App.compare_userlist)
 
-  if (Hue.msg_userlist.is_open()) {
+  if (App.msg_userlist.is_open()) {
     let uchange = true
 
     if (prop) {
@@ -229,75 +229,75 @@ Hue.do_update_userlist = (prop = ``) => {
     }
 
     if (uchange) {
-      Hue.update_userlist_window()
+      App.update_userlist_window()
     }
   }
 
-  Hue.update_usercount()
+  App.update_usercount()
 }
 
 // Some configurations for the userlist window
-Hue.setup_userlist_window = () => {
-  Hue.ev(Hue.el(`#userlist`), `click`, (e) => {
+App.setup_userlist_window = () => {
+  App.ev(App.el(`#userlist`), `click`, (e) => {
     let el = e.target.closest(`.userlist_item`)
 
     if (el) {
-      let username = Hue.dataset(el, `username`)
-      let user_id = Hue.dataset(el, `user_id`)
+      let username = App.dataset(el, `username`)
+      let user_id = App.dataset(el, `user_id`)
 
-      if (Hue.userlist_mode === `normal`) {
-        Hue.show_profile(username, user_id)
+      if (App.userlist_mode === `normal`) {
+        App.show_profile(username, user_id)
       }
-      else if (Hue.userlist_mode === `whisper`) {
-        Hue.update_whisper_users(username)
+      else if (App.userlist_mode === `whisper`) {
+        App.update_whisper_users(username)
       }
     }
   })
 }
 
 // Fills the userlist window with user information
-Hue.update_userlist_window = (filter_out = []) => {
-  let container = Hue.create(`div`)
+App.update_userlist_window = (filter_out = []) => {
+  let container = App.create(`div`)
 
-  for (let i = 0; i < Hue.userlist.length; i++) {
-    let user = Hue.userlist[i]
+  for (let i = 0; i < App.userlist.length; i++) {
+    let user = App.userlist[i]
 
     if (filter_out.includes(user.username)) {
       continue
     }
 
-    let pi = Hue.get_profilepic(user.user_id)
-    let el = Hue.create(`div`, `modal_item userlist_item user_item`)
-    el.innerHTML = Hue.template_userlist_item({profilepic: pi})
+    let pi = App.get_profilepic(user.user_id)
+    let el = App.create(`div`, `modal_item userlist_item user_item`)
+    el.innerHTML = App.template_userlist_item({profilepic: pi})
 
-    let image = Hue.el(`.userlist_item_profilepic`, el)
+    let image = App.el(`.userlist_item_profilepic`, el)
 
-    Hue.ev(image, `error`, (e) => {
-      Hue.fallback_profilepic(image)
+    App.ev(image, `error`, (e) => {
+      App.fallback_profilepic(image)
     })
 
-    let role_tag = Hue.role_tag(user.role)
-    let role_element = Hue.el(`.userlist_item_role`, el)
+    let role_tag = App.role_tag(user.role)
+    let role_element = App.el(`.userlist_item_role`, el)
     role_element.textContent = role_tag
-    let username = Hue.el(`.userlist_item_username`, el)
+    let username = App.el(`.userlist_item_username`, el)
     username.textContent = user.username
-    Hue.dataset(el, `username`, user.username)
-    Hue.dataset(el, `user_id`, user.user_id)
+    App.dataset(el, `username`, user.username)
+    App.dataset(el, `user_id`, user.user_id)
     container.append(el)
   }
 
-  Hue.el(`#userlist`).innerHTML = ``
-  Hue.el(`#userlist`).append(container)
+  App.el(`#userlist`).innerHTML = ``
+  App.el(`#userlist`).append(container)
 
-  if (Hue.userlist_filtered) {
-    Hue.do_modal_filter(`userlist`)
+  if (App.userlist_filtered) {
+    App.do_modal_filter(`userlist`)
   }
 }
 
 // Used to sort the user list by order of roles
 // Admins at the top, voice at the bottom, etc
 // It sorts in alphabetical order on equal roles
-Hue.compare_userlist = (a, b) => {
+App.compare_userlist = (a, b) => {
   if (a.role === ``) {
     a.role = `voice`
   }
@@ -345,26 +345,26 @@ Hue.compare_userlist = (a, b) => {
 }
 
 // Returns true or false depending if the user is online
-Hue.user_is_online_by_username = (username) => {
-  let user = Hue.get_user_by_username(username)
+App.user_is_online_by_username = (username) => {
+  let user = App.get_user_by_username(username)
   return Boolean(user)
 }
 
 // Checks if a user is controllable
 // Basically a user's role is below the user's role
 // An admin can control other admins
-Hue.user_is_controllable = (user) => {
-  if (user.user_id === Hue.user_id) {
+App.user_is_controllable = (user) => {
+  if (user.user_id === App.user_id) {
     return true
   }
 
-  if (!Hue.is_admin_or_op()) {
+  if (!App.is_admin_or_op()) {
     return false
   }
 
   if (
     (user.role === `admin` || user.role === `op`) &&
-    Hue.role !== `admin`
+    App.role !== `admin`
   ) {
     return false
   }
@@ -373,28 +373,28 @@ Hue.user_is_controllable = (user) => {
 }
 
 // Shows the user list window
-Hue.show_userlist_window = (mode = `normal`, filter = ``) => {
-  Hue.userlist_mode = mode
+App.show_userlist_window = (mode = `normal`, filter = ``) => {
+  App.userlist_mode = mode
 
   if (mode === `normal`) {
-    Hue.update_usercount()
-    Hue.update_userlist_window()
+    App.update_usercount()
+    App.update_userlist_window()
   }
   else if (mode === `whisper`) {
-    Hue.msg_userlist.set_title(`Add User`)
-    Hue.update_userlist_window(Hue.whisper_users)
+    App.msg_userlist.set_title(`Add User`)
+    App.update_userlist_window(App.whisper_users)
   }
 
-  Hue.msg_userlist.show(() => {
+  App.msg_userlist.show(() => {
     if (filter.trim()) {
-      Hue.el(`#userlist_filter`).value = filter
-      Hue.do_modal_filter()
+      App.el(`#userlist_filter`).value = filter
+      App.do_modal_filter()
     }
   })
 }
 
 // Sorts a user list by activity date
-Hue.sort_userlist_by_activity = (a, b) => {
+App.sort_userlist_by_activity = (a, b) => {
   if (a.last_activity > b.last_activity) {
     return -1
   }
@@ -407,7 +407,7 @@ Hue.sort_userlist_by_activity = (a, b) => {
 }
 
 // Sorts a user list by activity username
-Hue.sort_userlist_by_username = (a, b) => {
+App.sort_userlist_by_username = (a, b) => {
   if (a.username.toLowerCase() < b.username.toLowerCase()) {
     return -1
   }
@@ -420,97 +420,97 @@ Hue.sort_userlist_by_username = (a, b) => {
 }
 
 // Updates the profile image of a user in the userlist
-Hue.update_user_profilepic = (id, version) => {
-  for (let i = 0; i < Hue.userlist.length; i++) {
-    let user = Hue.userlist[i]
+App.update_user_profilepic = (id, version) => {
+  for (let i = 0; i < App.userlist.length; i++) {
+    let user = App.userlist[i]
 
     if (user.user_id === id) {
-      Hue.userlist[i].profilepic_version = version
+      App.userlist[i].profilepic_version = version
       return
     }
   }
 }
 
 // What to do when a user disconnects
-Hue.user_disconnect = (data) => {
-  if (Hue.get_setting(`show_user_leave_notifications`)) {
-    Hue.show_room_notification(
+App.user_disconnect = (data) => {
+  if (App.get_setting(`show_user_leave_notifications`)) {
+    App.show_room_notification(
       data.username,
       `${data.username} left`,
       `user-disconnect`
     )
   }
 
-  Hue.remove_from_userlist(data.user_id)
+  App.remove_from_userlist(data.user_id)
 
   let type = data.disconnection_type
 
   if (type === `banned`) {
-    if (Hue.msg_ban_list.is_open()) {
-      Hue.request_ban_list()
+    if (App.msg_ban_list.is_open()) {
+      App.request_ban_list()
     }
   }
 
-  if (Hue.open_profile_username === data.username) {
-    Hue.show_profile(data.username, data.user_id)
+  if (App.open_profile_username === data.username) {
+    App.show_profile(data.username, data.user_id)
   }
 
-  Hue.do_update_activity_bar = true
+  App.do_update_activity_bar = true
 }
 
 // Announces that the operation cannot be applied to a certain user
 // This is usually because the user's role is not low enough
-Hue.forbidden_user = () => {
-  Hue.checkmsg(`That operation is forbidden on that user`)
+App.forbidden_user = () => {
+  App.checkmsg(`That operation is forbidden on that user`)
 }
 
 // Announces username changes
-Hue.announce_new_username = (data) => {
-  Hue.replace_property_in_userlist_by_username(
+App.announce_new_username = (data) => {
+  App.replace_property_in_userlist_by_username(
     data.old_username,
     `username`,
     data.username
   )
 
-  if (Hue.username === data.old_username) {
-    Hue.set_username(data.username)
+  if (App.username === data.old_username) {
+    App.set_username(data.username)
 
-    Hue.show_room_notification(
+    App.show_room_notification(
       data.username,
       `You are now known as ${data.username}`
     )
 
-    Hue.update_input_placeholder()
+    App.update_input_placeholder()
   }
   else {
-    Hue.show_room_notification(
+    App.show_room_notification(
       data.username,
       `${data.old_username} is now known as ${data.username}`
     )
   }
 
-  if (Hue.msg_admin_list.is_open()) {
-    Hue.request_admin_list()
+  if (App.msg_admin_list.is_open()) {
+    App.request_admin_list()
   }
 
-  Hue.update_activity_bar()
+  App.update_activity_bar()
 }
 
 // Returns feedback on wether a user is in the room or not
-Hue.user_not_in_room = (username) => {
+App.user_not_in_room = (username) => {
   if (username) {
-    Hue.checkmsg(`${username} is not in the room`)
+    App.checkmsg(`${username} is not in the room`)
   }
   else {
-    Hue.checkmsg(`User is not in the room`)
+    App.checkmsg(`User is not in the room`)
   }
 }
 
 // Returns a list of usernames matched by a string
 // It splits and joins the string until a user in the user list matches
 // Or returns an empty array
-Hue.get_matching_usernames = (s) => {
-  let user = Hue.get_user_by_username(s)
+App.get_matching_usernames = (s) => {
+  let user = App.get_user_by_username(s)
 
   if (user) {
     return [user.username]
@@ -525,7 +525,7 @@ Hue.get_matching_usernames = (s) => {
       username = `${username} ${split[i]}`
     }
 
-    let user = Hue.get_userlist_item_by_username(username)
+    let user = App.get_userlist_item_by_username(username)
 
     if (user) {
       matches.push(username)
@@ -536,105 +536,105 @@ Hue.get_matching_usernames = (s) => {
 }
 
 // Setups user profile windows
-Hue.setup_show_profile = () => {
-  Hue.ev(Hue.el(`#show_profile_whisper`), `click`, () => {
-    Hue.write_whisper([Hue.open_profile_username])
-    Hue.msg_profile.close()
+App.setup_show_profile = () => {
+  App.ev(App.el(`#show_profile_whisper`), `click`, () => {
+    App.write_whisper([App.open_profile_username])
+    App.msg_profile.close()
   })
 
-  Hue.ev(Hue.el(`#show_profile_sync_tv`), `click`, () => {
-    Hue.sync_tv(Hue.open_profile_username)
-    Hue.msg_profile.close()
+  App.ev(App.el(`#show_profile_sync_tv`), `click`, () => {
+    App.sync_tv(App.open_profile_username)
+    App.msg_profile.close()
   })
 
-  Hue.ev(Hue.el(`#show_profile_profilepic`), `click`, () => {
-    if (Hue.audioclip) {
-      Hue.stop_audioclip()
+  App.ev(App.el(`#show_profile_profilepic`), `click`, () => {
+    if (App.audioclip) {
+      App.stop_audioclip()
     }
     else {
-      Hue.play_audioclip()
+      App.play_audioclip()
     }
   })
 
-  let pic = Hue.el(`#show_profile_profilepic`)
+  let pic = App.el(`#show_profile_profilepic`)
 
-  Hue.ev(pic, `error`, () => {
-    Hue.fallback_profilepic(pic)
+  App.ev(pic, `error`, () => {
+    App.fallback_profilepic(pic)
   })
 
-  Hue.ev(Hue.el(`#show_profile_search`), `click`, () => {
-    Hue.show_user_messages(Hue.open_profile_username)
-    Hue.msg_profile.close()
+  App.ev(App.el(`#show_profile_search`), `click`, () => {
+    App.show_user_messages(App.open_profile_username)
+    App.msg_profile.close()
   })
 
-  Hue.ev(Hue.el(`#show_profile_posts`), `click`, () => {
-    Hue.show_message_board(`$user ${Hue.open_profile_username} `)
-    Hue.msg_profile.close()
+  App.ev(App.el(`#show_profile_posts`), `click`, () => {
+    App.show_message_board(`$user ${App.open_profile_username} `)
+    App.msg_profile.close()
   })
 
-  Hue.ev(Hue.el(`#show_profile_edit`), `click`, () => {
-    Hue.show_user_profile()
-    Hue.msg_profile.close()
+  App.ev(App.el(`#show_profile_edit`), `click`, () => {
+    App.show_user_profile()
+    App.msg_profile.close()
   })
 
-  Hue.ev(Hue.el(`#show_profile_change_role`), `click`, () => {
-    Hue.change_role_username = Hue.open_profile_username
-    Hue.msg_change_role.show()
+  App.ev(App.el(`#show_profile_change_role`), `click`, () => {
+    App.change_role_username = App.open_profile_username
+    App.msg_change_role.show()
   })
 
-  Hue.ev(Hue.el(`#show_profile_kick`), `click`, () => {
-    Hue.show_confirm(`Disconnect the user from the room`, () => {
-      Hue.kick(Hue.open_profile_username)
+  App.ev(App.el(`#show_profile_kick`), `click`, () => {
+    App.show_confirm(`Disconnect the user from the room`, () => {
+      App.kick(App.open_profile_username)
     })
   })
 
-  Hue.ev(Hue.el(`#show_profile_ban`), `click`, () => {
-    Hue.show_confirm(`Ban the user from joining the room`, () => {
-      Hue.ban(Hue.open_profile_username)
+  App.ev(App.el(`#show_profile_ban`), `click`, () => {
+    App.show_confirm(`Ban the user from joining the room`, () => {
+      App.ban(App.open_profile_username)
     })
   })
 }
 
 // Stars the profile audio
-Hue.play_audioclip = (user_id = Hue.open_profile_user_id) => {
-  Hue.stop_audioclip()
-  Hue.audioclip = Hue.create(`audio`)
+App.play_audioclip = (user_id = App.open_profile_user_id) => {
+  App.stop_audioclip()
+  App.audioclip = App.create(`audio`)
 
-  Hue.audioclip.onended = () => {
-    Hue.stop_audioclip()
+  App.audioclip.onended = () => {
+    App.stop_audioclip()
   }
 
-  Hue.ev(Hue.audioclip, `error`, (e) => {
-    if (Hue.audioclip) {
-      Hue.show_info(`User has no audioclip`)
-      Hue.stop_audioclip()
+  App.ev(App.audioclip, `error`, (e) => {
+    if (App.audioclip) {
+      App.show_info(`User has no audioclip`)
+      App.stop_audioclip()
     }
   })
 
-  Hue.audioclip.src = Hue.get_audioclip(user_id)
-  Hue.audioclip.play()
+  App.audioclip.src = App.get_audioclip(user_id)
+  App.audioclip.play()
 }
 
 // Stops the profile audio
-Hue.stop_audioclip = () => {
-  if (Hue.audioclip) {
-    Hue.audioclip.pause()
-    Hue.audioclip = undefined
+App.stop_audioclip = () => {
+  if (App.audioclip) {
+    App.audioclip.pause()
+    App.audioclip = undefined
   }
 }
 
 // Shows a user's profile window
-Hue.show_profile = (username, user_id = false) => {
+App.show_profile = (username, user_id = false) => {
   let id
   let role = `Offline`
   let bio = ``
   let user = false
 
   if (user_id) {
-    user = Hue.get_user_by_user_id(user_id)
+    user = App.get_user_by_user_id(user_id)
   }
   else if (username) {
-    user = Hue.get_user_by_username(username)
+    user = App.get_user_by_username(username)
   }
 
   if (!user) {
@@ -651,109 +651,109 @@ Hue.show_profile = (username, user_id = false) => {
   let same_user = false
 
   if (user) {
-    same_user = user.user_id === Hue.user_id
-    Hue.el(`#show_profile_details`).style.display = `block`
-    role = Hue.get_pretty_role_name(user.role)
+    same_user = user.user_id === App.user_id
+    App.el(`#show_profile_details`).style.display = `block`
+    role = App.get_pretty_role_name(user.role)
     bio = user.bio
     username = user.username
-    Hue.open_profile_user = user
+    App.open_profile_user = user
   }
   else {
-    Hue.el(`#show_profile_details`).style.display = `none`
+    App.el(`#show_profile_details`).style.display = `none`
   }
 
-  Hue.open_profile_user_id = id
-  Hue.open_profile_username = username
-  let pi = Hue.get_profilepic(id)
-  Hue.el(`#show_profile_role`).textContent = `Role: ${role}`
+  App.open_profile_user_id = id
+  App.open_profile_username = username
+  let pi = App.get_profilepic(id)
+  App.el(`#show_profile_role`).textContent = `Role: ${role}`
 
-  Hue.el(`#show_profile_bio`).innerHTML =
-    Hue.utilz.make_html_safe(bio).replace(/\n+/g, ` <br> `)
-  Hue.urlize(Hue.el(`#show_profile_bio`))
+  App.el(`#show_profile_bio`).innerHTML =
+    App.utilz.make_html_safe(bio).replace(/\n+/g, ` <br> `)
+  App.urlize(App.el(`#show_profile_bio`))
 
-  Hue.el(`#show_profile_profilepic`).src = pi
+  App.el(`#show_profile_profilepic`).src = pi
 
   if (username) {
-    Hue.el(`#show_profile_buttons`).classList.remove(`nodisplay`)
+    App.el(`#show_profile_buttons`).classList.remove(`nodisplay`)
   }
   else {
-    Hue.el(`#show_profile_buttons`).classList.add(`nodisplay`)
+    App.el(`#show_profile_buttons`).classList.add(`nodisplay`)
   }
 
   if (user) {
-    Hue.el(`#show_profile_whisper`).style.display = `block`
-    Hue.el(`#show_profile_sync_tv`).style.display = `flex`
+    App.el(`#show_profile_whisper`).style.display = `block`
+    App.el(`#show_profile_sync_tv`).style.display = `flex`
   }
   else {
-    Hue.el(`#show_profile_whisper`).style.display = `none`
-    Hue.el(`#show_profile_sync_tv`).style.display = `none`
+    App.el(`#show_profile_whisper`).style.display = `none`
+    App.el(`#show_profile_sync_tv`).style.display = `none`
   }
 
-  Hue.dataset(Hue.el(`#show_profile_change_role`), `username`, username)
+  App.dataset(App.el(`#show_profile_change_role`), `username`, username)
 
-  if (username && Hue.is_admin_or_op() && !same_user) {
-    Hue.el(`#show_profile_op_buttons`).classList.remove(`nodisplay`)
+  if (username && App.is_admin_or_op() && !same_user) {
+    App.el(`#show_profile_op_buttons`).classList.remove(`nodisplay`)
   }
   else {
-    Hue.el(`#show_profile_op_buttons`).classList.add(`nodisplay`)
+    App.el(`#show_profile_op_buttons`).classList.add(`nodisplay`)
   }
 
-  Hue.el(`#show_profile_info`).innerHTML = ``
-  Hue.el(`#show_profile_edit`).classList.add(`nodisplay`)
+  App.el(`#show_profile_info`).innerHTML = ``
+  App.el(`#show_profile_edit`).classList.add(`nodisplay`)
 
   if (user) {
-    let item = Hue.create(`div`)
-    let nicedate = Hue.utilz.nice_date(user.date_joined)
-    let timeago = Hue.utilz.timeago(user.date_joined)
+    let item = App.create(`div`)
+    let nicedate = App.utilz.nice_date(user.date_joined)
+    let timeago = App.utilz.timeago(user.date_joined)
     item.textContent = `Got Online: ${timeago}`
     item.title = nicedate
-    Hue.el(`#show_profile_info`).append(item)
+    App.el(`#show_profile_info`).append(item)
 
     if (same_user) {
-      Hue.el(`#show_profile_edit`).classList.remove(`nodisplay`)
+      App.el(`#show_profile_edit`).classList.remove(`nodisplay`)
     }
   }
 
-  let item = Hue.create(`div`)
+  let item = App.create(`div`)
   item.textContent = `ID: ${id}`
-  Hue.el(`#show_profile_info`).append(item)
-  Hue.msg_profile.set_title(username || ``)
-  Hue.msg_profile.show()
+  App.el(`#show_profile_info`).append(item)
+  App.msg_profile.set_title(username || ``)
+  App.msg_profile.show()
 }
 
 // Announces a user's profile image change
-Hue.profilepic_changed = (data) => {
-  let user = Hue.get_user_by_user_id(data.user_id)
+App.profilepic_changed = (data) => {
+  let user = App.get_user_by_user_id(data.user_id)
 
   if (!user) {
     return
   }
 
-  Hue.update_user_profilepic(data.user_id, data.profilepic_version)
-  let src = Hue.get_profilepic(data.user_id)
+  App.update_user_profilepic(data.user_id, data.profilepic_version)
+  let src = App.get_profilepic(data.user_id)
 
-  if (data.user_id === Hue.user_id) {
-    Hue.el(`#user_profile_profilepic`).src = src
+  if (data.user_id === App.user_id) {
+    App.el(`#user_profile_profilepic`).src = src
   }
 
-  Hue.show_room_notification(
+  App.show_room_notification(
     user.username,
     `${user.username} changed their profile image`
   )
 
-  Hue.update_activity_bar_profilepic(data.user_id, src)
+  App.update_activity_bar_profilepic(data.user_id, src)
 }
 
 // When any user changes their bio
-Hue.bio_changed = (data) => {
-  Hue.replace_property_in_userlist_by_username(data.username, `bio`, data.bio)
+App.bio_changed = (data) => {
+  App.replace_property_in_userlist_by_username(data.username, `bio`, data.bio)
 
-  if (data.username === Hue.username) {
-    Hue.set_bio(data.bio)
+  if (data.username === App.username) {
+    App.set_bio(data.bio)
   }
 
   if (data.bio) {
-    Hue.show_room_notification(
+    App.show_room_notification(
       data.username,
       `${data.username} changed their bio`
     )
@@ -761,99 +761,99 @@ Hue.bio_changed = (data) => {
 }
 
 // Changes a user's role
-Hue.change_role = (username, role) => {
-  if (!Hue.is_admin_or_op()) {
+App.change_role = (username, role) => {
+  if (!App.is_admin_or_op()) {
     return
   }
 
-  if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
-    if (username === Hue.username) {
-      Hue.checkmsg(`You can't assign a role to yourself`)
+  if (username.length > 0 && username.length <= App.config.max_max_username_length) {
+    if (username === App.username) {
+      App.checkmsg(`You can't assign a role to yourself`)
       return
     }
 
-    if ((role === `admin` || role === `op`) && Hue.role !== `admin`) {
-      Hue.forbidden_user()
+    if ((role === `admin` || role === `op`) && App.role !== `admin`) {
+      App.forbidden_user()
       return
     }
 
-    if (!Hue.roles.includes(role)) {
-      Hue.checkmsg(`Invalid role`)
+    if (!App.roles.includes(role)) {
+      App.checkmsg(`Invalid role`)
       return
     }
 
-    Hue.socket_emit(`change_role`, { username: username, role: role })
+    App.socket_emit(`change_role`, { username: username, role: role })
   }
 }
 
 // Announces a user's role change
-Hue.announce_role_change = (data) => {
-  if (Hue.username === data.username2) {
-    Hue.set_role(data.role)
+App.announce_role_change = (data) => {
+  if (App.username === data.username2) {
+    App.set_role(data.role)
   }
 
-  Hue.show_room_notification(
+  App.show_room_notification(
     data.username1,
     `${data.username1} gave ${data.role} to ${data.username2}`
   )
-  Hue.replace_property_in_userlist_by_username(
+  App.replace_property_in_userlist_by_username(
     data.username2,
     `role`,
     data.role
   )
 
-  if (Hue.msg_admin_list.is_open()) {
-    Hue.request_admin_list()
+  if (App.msg_admin_list.is_open()) {
+    App.request_admin_list()
   }
 }
 
 // Role setter for user
-Hue.set_role = (rol, config = true) => {
-  Hue.role = rol
+App.set_role = (rol, config = true) => {
+  App.role = rol
 
   if (config) {
-    Hue.config_room_config()
-    Hue.config_main_menu()
+    App.config_room_config()
+    App.config_main_menu()
   }
 
-  Hue.el(`#user_profile_role`).textContent = `(${Hue.get_pretty_role_name(rol)})`
-  Hue.setup_message_board_permissions()
+  App.el(`#user_profile_role`).textContent = `(${App.get_pretty_role_name(rol)})`
+  App.setup_message_board_permissions()
 }
 
 // Bans a user
-Hue.ban = (username) => {
-  if (!Hue.is_admin_or_op()) {
+App.ban = (username) => {
+  if (!App.is_admin_or_op()) {
     return
   }
 
-  if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
-    if (username === Hue.username) {
-      Hue.checkmsg(`You can't ban yourself`)
+  if (username.length > 0 && username.length <= App.config.max_max_username_length) {
+    if (username === App.username) {
+      App.checkmsg(`You can't ban yourself`)
       return
     }
 
-    Hue.socket_emit(`ban`, { username: username })
+    App.socket_emit(`ban`, { username: username })
   }
 }
 
 // Unbans a user
-Hue.unban = (username) => {
-  if (!Hue.is_admin_or_op()) {
+App.unban = (username) => {
+  if (!App.is_admin_or_op()) {
     return
   }
 
-  if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
-    if (username === Hue.username) {
-      Hue.checkmsg(`You can't unban yourself`)
+  if (username.length > 0 && username.length <= App.config.max_max_username_length) {
+    if (username === App.username) {
+      App.checkmsg(`You can't unban yourself`)
       return
     }
 
-    Hue.socket_emit(`unban`, { username: username })
+    App.socket_emit(`unban`, { username: username })
   }
 }
 
 // Shows a window with the number of users banned
-Hue.receive_ban_count = (data) => {
+App.receive_ban_count = (data) => {
   let s
 
   if (data.count === 1) {
@@ -863,140 +863,140 @@ Hue.receive_ban_count = (data) => {
     s = `There are ${data.count} users banned`
   }
 
-  Hue.checkmsg(s)
+  App.checkmsg(s)
 }
 
 // Kicks a user
-Hue.kick = (username) => {
-  if (!Hue.is_admin_or_op()) {
+App.kick = (username) => {
+  if (!App.is_admin_or_op()) {
     return
   }
 
-  if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
-    if (username === Hue.username) {
-      Hue.checkmsg(`You can't kick yourself`)
+  if (username.length > 0 && username.length <= App.config.max_max_username_length) {
+    if (username === App.username) {
+      App.checkmsg(`You can't kick yourself`)
       return
     }
 
-    if (!Hue.check_user_in_room(username)) {
+    if (!App.check_user_in_room(username)) {
       return
     }
 
-    let rol = Hue.get_role(username)
+    let rol = App.get_role(username)
 
-    if ((rol === `admin` || rol === `op`) && Hue.role !== `admin`) {
-      Hue.forbidden_user()
+    if ((rol === `admin` || rol === `op`) && App.role !== `admin`) {
+      App.forbidden_user()
       return
     }
 
-    Hue.socket_emit(`kick`, { username: username })
+    App.socket_emit(`kick`, { username: username })
   }
 }
 
 // Announces that a user was banned
-Hue.announce_ban = (data) => {
-  Hue.show_room_notification(
+App.announce_ban = (data) => {
+  App.show_room_notification(
     data.username1,
     `${data.username1} banned ${data.username2}`
   )
 
-  if (Hue.msg_ban_list.is_open()) {
-    Hue.request_ban_list()
+  if (App.msg_ban_list.is_open()) {
+    App.request_ban_list()
   }
 }
 
 // Announces that a user was unbanned
-Hue.announce_unban = (data) => {
-  Hue.show_room_notification(
+App.announce_unban = (data) => {
+  App.show_room_notification(
     data.username1,
     `${data.username1} unbanned ${data.username2}`
   )
 
-  if (Hue.msg_ban_list.is_open()) {
-    Hue.request_ban_list()
+  if (App.msg_ban_list.is_open()) {
+    App.request_ban_list()
   }
 }
 
 // Checks if a user already has a certain role
-Hue.is_already = (who, what) => {
-  Hue.checkmsg(`${who} already has ${what}`)
+App.is_already = (who, what) => {
+  App.checkmsg(`${who} already has ${what}`)
 }
 
 // Checks if a role is that of an admin or an operator
 // Without arguments it checks the user's role
-Hue.is_admin_or_op = (user) => {
-  let r = user ? user.role : Hue.role
+App.is_admin_or_op = (user) => {
+  let r = user ? user.role : App.role
   return r === `admin` || r === `op`
 }
 
 // Checks if a role is that of an admin
-Hue.is_admin = (user) => {
-  let r = user ? user.role : Hue.role
+App.is_admin = (user) => {
+  let r = user ? user.role : App.role
   return r === `admin`
 }
 
 // Superuser command to change to any role
-Hue.annex = (rol = `admin`) => {
-  if (!Hue.roles.includes(rol)) {
-    Hue.checkmsg(`Invalid role`)
+App.annex = (rol = `admin`) => {
+  if (!App.roles.includes(rol)) {
+    App.checkmsg(`Invalid role`)
     return
   }
 
-  Hue.show_confirm(`Run superuser command`, () => {
-    Hue.socket_emit(`annex`, { username: Hue.username, role: rol })
+  App.show_confirm(`Run superuser command`, () => {
+    App.socket_emit(`annex`, { username: App.username, role: rol })
   })
 }
 
 // Superuser command to send a system broadcast
-Hue.system_broadcast = () => {
-  Hue.show_confirm(`Run superuser command`, () => {
-    Hue.write_whisper([], `system_broadcast`)
+App.system_broadcast = () => {
+  App.show_confirm(`Run superuser command`, () => {
+    App.write_whisper([], `system_broadcast`)
   })
 }
 
 // If username is valid and it is not in all_usernames add it
-Hue.push_to_all_usernames = (username) => {
+App.push_to_all_usernames = (username) => {
   if (username) {
-    if (!Hue.all_usernames.includes(username)) {
-      Hue.all_usernames.push(username)
+    if (!App.all_usernames.includes(username)) {
+      App.all_usernames.push(username)
 
-      if (Hue.all_usernames.length > 1000) {
-        Hue.all_usernames.shift()
+      if (App.all_usernames.length > 1000) {
+        App.all_usernames.shift()
       }
     }
   }
 }
 
 // When a user changes the audio audio clip
-Hue.audioclip_changed = (data) => {
-  let user = Hue.get_user_by_user_id(data.user_id)
+App.audioclip_changed = (data) => {
+  let user = App.get_user_by_user_id(data.user_id)
 
-  Hue.replace_property_in_userlist_by_id(
+  App.replace_property_in_userlist_by_id(
     data.user_id,
     `audioclip`,
     data.audioclip,
     false
   )
 
-  Hue.replace_property_in_userlist_by_id(
+  App.replace_property_in_userlist_by_id(
     data.user_id,
     `audioclip_version`,
     data.audioclip_version,
     false
   )
 
-  if (data.user_id === Hue.open_profile_user.user_id) {
-    Hue.show_profile(data.username, data.user_id)
+  if (data.user_id === App.open_profile_user.user_id) {
+    App.show_profile(data.username, data.user_id)
   }
 
-  Hue.show_room_notification(
+  App.show_room_notification(
     data.username,
     `${user.username} changed their audio clip`
   )
 }
 
 // Superuser command to change a user's username
-Hue.modusername = (arg) => {
+App.modusername = (arg) => {
   let original_username, new_username
 
   if (arg.includes(` > `)) {
@@ -1028,23 +1028,23 @@ Hue.modusername = (arg) => {
     return
   }
 
-  if (new_username.length > Hue.config.max_username_length) {
-    Hue.checkmsg(`Username is too long`)
+  if (new_username.length > App.config.max_username_length) {
+    App.checkmsg(`Username is too long`)
     return
   }
 
-  if (Hue.utilz.clean_username(new_username) !== new_username) {
-    Hue.checkmsg(`Username contains invalid characters`)
+  if (App.utilz.clean_username(new_username) !== new_username) {
+    App.checkmsg(`Username contains invalid characters`)
     return
   }
 
-  Hue.show_confirm(`Run superuser command`, () => {
-    Hue.socket_emit(`modusername`, {original: original_username, new: new_username})
+  App.show_confirm(`Run superuser command`, () => {
+    App.socket_emit(`modusername`, {original: original_username, new: new_username})
   })
 }
 
 // Superuser command to change a user's password
-Hue.modpassword = (arg) => {
+App.modpassword = (arg) => {
   let split = arg.split(` `).filter(x => x !== ``)
 
   if (split.length !== 2) {
@@ -1054,35 +1054,35 @@ Hue.modpassword = (arg) => {
   let username = split[0]
   let password = split[1]
 
-  if (password.length < Hue.config.min_password_length) {
-    Hue.checkmsg(
-      `Password is too short. It must be at least ${Hue.config.min_password_length} characters long`
+  if (password.length < App.config.min_password_length) {
+    App.checkmsg(
+      `Password is too short. It must be at least ${App.config.min_password_length} characters long`
     )
 
     return
   }
 
-  if (password.length > Hue.config.max_password_length) {
-    Hue.checkmsg(`Password is too long`)
+  if (password.length > App.config.max_password_length) {
+    App.checkmsg(`Password is too long`)
     return
   }
 
-  Hue.show_confirm(`Run superuser command`, () => {
-    Hue.socket_emit(`modpassword`, { username: username, password: password })
+  App.show_confirm(`Run superuser command`, () => {
+    App.socket_emit(`modpassword`, { username: username, password: password })
   })
 }
 
 // Updates user activity to current date
-Hue.update_user_activity = (user_id) => {
-  let user = Hue.get_user_by_user_id(user_id)
+App.update_user_activity = (user_id) => {
+  let user = App.get_user_by_user_id(user_id)
   user.last_activity = Date.now()
-  Hue.do_update_activity_bar = true
+  App.do_update_activity_bar = true
 }
 
 // Get a profilepic path
-Hue.get_profilepic = (user_id) => {
-  let pi = `${Hue.config.public_media_directory}/user/${user_id}/profilepic.png`
-  let user = Hue.get_user_by_user_id(user_id)
+App.get_profilepic = (user_id) => {
+  let pi = `${App.config.public_media_directory}/user/${user_id}/profilepic.png`
+  let user = App.get_user_by_user_id(user_id)
 
   if (user) {
     pi += `?ver=${user.profilepic_version}`
@@ -1092,9 +1092,9 @@ Hue.get_profilepic = (user_id) => {
 }
 
 // Get audioclip path
-Hue.get_audioclip = (user_id) => {
-  let pi = `${Hue.config.public_media_directory}/user/${user_id}/audioclip.mp3`
-  let user = Hue.get_user_by_user_id(user_id)
+App.get_audioclip = (user_id) => {
+  let pi = `${App.config.public_media_directory}/user/${user_id}/audioclip.mp3`
+  let user = App.get_user_by_user_id(user_id)
 
   if (user) {
     pi += `?ver=${user.audioclip_version}`
@@ -1104,11 +1104,11 @@ Hue.get_audioclip = (user_id) => {
 }
 
 // Checks if a user is in the room
-Hue.check_user_in_room = (username) => {
-  let user = Hue.get_user_by_username(username)
+App.check_user_in_room = (username) => {
+  let user = App.get_user_by_username(username)
 
   if (!user) {
-    Hue.user_not_in_room(username)
+    App.user_not_in_room(username)
     return
   }
 
@@ -1116,40 +1116,40 @@ Hue.check_user_in_room = (username) => {
 }
 
 // Show user posts
-Hue.show_user_messages = (username = Hue.username) => {
-  Hue.show_chat_search(`$user ${username} `)
+App.show_user_messages = (username = App.username) => {
+  App.show_chat_search(`$user ${username} `)
 }
 
 // Apply fallback profilepic
-Hue.fallback_profilepic = (el) => {
-  if (el.src !== Hue.config.profilepic_loading_url) {
-    el.src = Hue.config.profilepic_loading_url
+App.fallback_profilepic = (el) => {
+  if (el.src !== App.config.profilepic_loading_url) {
+    el.src = App.config.profilepic_loading_url
   }
 }
 
 // Setup change role
-Hue.setup_change_role = () => {
-  Hue.ev(Hue.el(`#change_role_admin`), `click`, () => {
-    Hue.show_confirm(`Operator abilities plus can add/remove operators`, () => {
-      Hue.change_role(Hue.change_role_username, `admin`)
+App.setup_change_role = () => {
+  App.ev(App.el(`#change_role_admin`), `click`, () => {
+    App.show_confirm(`Operator abilities plus can add/remove operators`, () => {
+      App.change_role(App.change_role_username, `admin`)
     })
 
-    Hue.msg_change_role.close()
+    App.msg_change_role.close()
   })
 
-  Hue.ev(Hue.el(`#change_role_op`), `click`, () => {
-    Hue.show_confirm(`Enable access to operator features and commands`, () => {
-      Hue.change_role(Hue.change_role_username, `op`)
+  App.ev(App.el(`#change_role_op`), `click`, () => {
+    App.show_confirm(`Enable access to operator features and commands`, () => {
+      App.change_role(App.change_role_username, `op`)
     })
 
-    Hue.msg_change_role.close()
+    App.msg_change_role.close()
   })
 
-  Hue.ev(Hue.el(`#change_role_voice`), `click`, () => {
-    Hue.show_confirm(`Can interact with users and change media but no operator abilities`, () => {
-      Hue.change_role(Hue.change_role_username, `voice`)
+  App.ev(App.el(`#change_role_voice`), `click`, () => {
+    App.show_confirm(`Can interact with users and change media but no operator abilities`, () => {
+      App.change_role(App.change_role_username, `voice`)
     })
 
-    Hue.msg_change_role.close()
+    App.msg_change_role.close()
   })
 }

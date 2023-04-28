@@ -1,6 +1,6 @@
-module.exports = (Hue) => {
+module.exports = (App) => {
   // Handles image source changes
-  Hue.handler.public.change_image_source = async (socket, data) => {
+  App.handler.public.change_image_source = async (socket, data) => {
     if (data.src === undefined) {
       return
     }
@@ -9,55 +9,55 @@ module.exports = (Hue) => {
       return
     }
 
-    if (data.src.length > Hue.config.max_media_source_length) {
+    if (data.src.length > App.config.max_media_source_length) {
       return
     }
 
     if (data.query) {
-      if (data.query.length > Hue.config.safe_limit_1) {
+      if (data.query.length > App.config.safe_limit_1) {
         return
       }
     }
 
     if (data.comment) {
-      if (data.comment.length > Hue.config.max_media_comment_length) {
+      if (data.comment.length > App.config.max_media_comment_length) {
         return
       }
     }
 
-    if (data.src !== Hue.utilz.single_space(data.src)) {
+    if (data.src !== App.utilz.single_space(data.src)) {
       return
     }
 
-    let media_info = await Hue.handler.get_last_media(socket.hue_room_id, `image`)
+    let media_info = await App.handler.get_last_media(socket.hue_room_id, `image`)
 
     if (media_info) {
       if (media_info.source === data.src || media_info.query === data.src) {
-        Hue.handler.user_emit(socket, `same_image`, {})
+        App.handler.user_emit(socket, `same_image`, {})
         return
       }
 
-      if (Date.now() - media_info.date < Hue.sconfig.image_change_cooldown) {
-        Hue.handler.user_emit(socket, `image_cooldown_wait`, {})
+      if (Date.now() - media_info.date < App.sconfig.image_change_cooldown) {
+        App.handler.user_emit(socket, `image_cooldown_wait`, {})
         return
       }
     }
 
     data.src = data.src.replace(/\.gifv/g, `.gif`)
 
-    if (!Hue.utilz.is_url(data.src) && !data.src.startsWith(`/`)) {
-      if (!Hue.config.imgur_enabled) {
+    if (!App.utilz.is_url(data.src) && !data.src.startsWith(`/`)) {
+      if (!App.config.imgur_enabled) {
         return
       }
 
-      Hue.vars
+      App.vars
         .fetch_2(
           `https://api.imgur.com/3/gallery/search/?q=${encodeURIComponent(
             data.src
           )}`,
           {
             headers: {
-              Authorization: `Client-ID ${Hue.sconfig.imgur_client_id}`,
+              Authorization: `Client-ID ${App.sconfig.imgur_client_id}`,
             },
           }
         )
@@ -81,7 +81,7 @@ module.exports = (Hue) => {
                   obj.type = `link`
                   obj.comment = data.comment
 
-                  await Hue.handler.do_change_media(socket, obj, `image`)
+                  await App.handler.do_change_media(socket, obj, `image`)
 
                   return
                 }
@@ -97,7 +97,7 @@ module.exports = (Hue) => {
                     obj.type = `link`
                     obj.comment = data.comment
 
-                    await Hue.handler.do_change_media(socket, obj, `image`)
+                    await App.handler.do_change_media(socket, obj, `image`)
 
                     return
                   }
@@ -106,16 +106,16 @@ module.exports = (Hue) => {
             }
           }
 
-          Hue.handler.user_emit(socket, `image_not_found`, {})
+          App.handler.user_emit(socket, `image_not_found`, {})
         })
         .catch((err) => {
-          Hue.logger.log_error(err)
+          App.logger.log_error(err)
         })
     }
     else {
-      let extension = Hue.utilz.get_extension(data.src).toLowerCase()
+      let extension = App.utilz.get_extension(data.src).toLowerCase()
 
-      if (!extension || !Hue.utilz.image_extensions.includes(extension)) {
+      if (!extension || !App.utilz.image_extensions.includes(extension)) {
         return
       }
 
@@ -127,7 +127,7 @@ module.exports = (Hue) => {
       obj.type = `link`
       obj.comment = data.comment
 
-      await Hue.handler.do_change_media(socket, obj, `image`)
+      await App.handler.do_change_media(socket, obj, `image`)
     }
   }
 }

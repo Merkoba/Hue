@@ -1,5 +1,5 @@
 // Centralized function to get localStorage objects
-Hue.get_local_storage = (ls_name) => {
+App.get_local_storage = (ls_name) => {
   let obj
 
   if (localStorage[ls_name]) {
@@ -19,34 +19,34 @@ Hue.get_local_storage = (ls_name) => {
 }
 
 // Centralized function to save localStorage objects
-Hue.save_local_storage = (ls_name, obj, force = false) => {
-  Hue.local_storage_to_save[ls_name] = obj
+App.save_local_storage = (ls_name, obj, force = false) => {
+  App.local_storage_to_save[ls_name] = obj
 
   if (force) {
-    Hue.do_save_local_storage()
+    App.do_save_local_storage()
   }
   else {
-    Hue.save_local_storage_timer()
+    App.save_local_storage_timer()
   }
 }
 
 // Do the actual localStorage save
-Hue.do_save_local_storage = () => {
-  for (let ls_name in Hue.local_storage_to_save) {
-    let obj = Hue.local_storage_to_save[ls_name]
+App.do_save_local_storage = () => {
+  for (let ls_name in App.local_storage_to_save) {
+    let obj = App.local_storage_to_save[ls_name]
 
     obj = JSON.stringify(obj)
 
     localStorage.setItem(ls_name, obj)
   }
 
-  Hue.local_storage_to_save = {}
+  App.local_storage_to_save = {}
 }
 
 // Setups localStorage events
-Hue.setup_local_storage = () => {
-  Hue.ev(window, `storage`, (e) => {
-    if (e.key !== Hue.ls_settings) {
+App.setup_local_storage = () => {
+  App.ev(window, `storage`, (e) => {
+    if (e.key !== App.ls_settings) {
       return
     }
 
@@ -59,12 +59,12 @@ Hue.setup_local_storage = () => {
       return
     }
 
-    if (Hue.utilz.is_empty_object(obj)) {
+    if (App.utilz.is_empty_object(obj)) {
       return
     }
 
-    if (e.key === Hue.ls_settings) {
-      Hue.reset_settings(false)
+    if (e.key === App.ls_settings) {
+      App.reset_settings(false)
     }
   }, false)
 }

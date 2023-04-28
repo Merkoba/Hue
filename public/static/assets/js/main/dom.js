@@ -1,15 +1,15 @@
 // Select a single element
-Hue.el = (query, root = document) => {
+App.el = (query, root = document) => {
   return root.querySelector(query)
 }
 
 // Select an array of elements
-Hue.els = (query, root = document) => {
+App.els = (query, root = document) => {
   return Array.from(root.querySelectorAll(query))
 }
 
 // Select a single element or self
-Hue.el_or_self = (query, root = document) => {
+App.el_or_self = (query, root = document) => {
   let el = root.querySelector(query)
 
   if (!el) {
@@ -22,7 +22,7 @@ Hue.el_or_self = (query, root = document) => {
 }
 
 // Select an array of elements or self
-Hue.els_or_self = (query, root = document) => {
+App.els_or_self = (query, root = document) => {
   let els = Array.from(root.querySelectorAll(query))
 
   if (els.length === 0) {
@@ -35,24 +35,24 @@ Hue.els_or_self = (query, root = document) => {
 }
 
 // Clone element
-Hue.clone = (el) => {
+App.clone = (el) => {
   return el.cloneNode(true)
 }
 
 // Clone element children
-Hue.clone_children = (query) => {
+App.clone_children = (query) => {
   let items = []
-  let children = Array.from(Hue.el(query).children)
+  let children = Array.from(App.el(query).children)
 
   for (let c of children) {
-    items.push(Hue.clone(c))
+    items.push(App.clone(c))
   }
 
   return items
 }
 
 // Data set manager
-Hue.dataset = (el, value, setvalue) => {
+App.dataset = (el, value, setvalue) => {
   if (!el) {
     return
   }
@@ -60,22 +60,22 @@ Hue.dataset = (el, value, setvalue) => {
   let id = el.dataset.dataset_id
 
   if (!id) {
-    id = Hue.dataset_id
-    Hue.dataset_id += 1
+    id = App.dataset_id
+    App.dataset_id += 1
     el.dataset.dataset_id = id
-    Hue.dataset_obj[id] = {}
+    App.dataset_obj[id] = {}
   }
 
   if (setvalue !== undefined) {
-    Hue.dataset_obj[id][value] = setvalue
+    App.dataset_obj[id][value] = setvalue
   }
   else {
-    return Hue.dataset_obj[id][value]
+    return App.dataset_obj[id][value]
   }
 }
 
 // Create an html element
-Hue.create = (type, classes = ``, id = ``) => {
+App.create = (type, classes = ``, id = ``) => {
   let el = document.createElement(type)
 
   if (classes) {
@@ -94,6 +94,6 @@ Hue.create = (type, classes = ``, id = ``) => {
 }
 
 // Add an event listener
-Hue.ev = (element, action, callback, extra) => {
+App.ev = (element, action, callback, extra) => {
   element.addEventListener(action, callback, extra)
 }

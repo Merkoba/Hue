@@ -12,7 +12,7 @@
 
 			function recaptcha_callback() {
 				recaptcha_checked = true
-			}			
+			}
 
 			function validate_form() {
 				if (msg_info.is_open()) {
@@ -23,10 +23,10 @@
 					return false
 				}
 
-				Hue.el("#login_username").value = Hue.el("#login_username").value.trim()
+				App.el("#login_username").value = App.el("#login_username").value.trim()
 
-				let username = Hue.el("#login_username").value
-				let password = Hue.el("#login_password").value
+				let username = App.el("#login_username").value
+				let password = App.el("#login_password").value
 
 				if (username.length === 0) {
 					show_info("Username can't be empty")
@@ -48,7 +48,7 @@
 					return false
 				}
 
-				Hue.el("#btn_login").disabled = true
+				App.el("#btn_login").disabled = true
 
 				return true
 			}
@@ -67,18 +67,18 @@
 				<input type="text" placeholder="Username" name="username" id="login_username">
 				<div class="spacer4"></div>
 				<input type="password" placeholder="Password" name="password" id="login_password">
-				
+
 				<div class="spacer4"></div>
 
 				<% if(vars.recaptcha_enabled) {%>
 
 				<div class="g-recaptcha" data-sitekey="<%-vars.recaptcha_key%>" data-callback="recaptcha_callback"></div>
 				<div class="spacer4"></div>
-				
+
 				<%}%>
 
 				<input id="btn_login" type="submit" value="Login">
-			</form>	
+			</form>
 
 			<div class="spacer1"></div>
 
@@ -89,10 +89,10 @@
 		</div>
 
 		<script>
-			Hue.el("#login_username").focus()
+			App.el("#login_username").focus()
 
 			if(form_username && form_username !== "undefined") {
-				Hue.el("#login_username").value = form_username
+				App.el("#login_username").value = form_username
 			}
 		</script>
 	</body>

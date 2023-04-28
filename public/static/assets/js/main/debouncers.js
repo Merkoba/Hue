@@ -1,5 +1,5 @@
 // Centralized function to create debouncers
-Hue.create_debouncer = (func, delay) => {
+App.create_debouncer = (func, delay) => {
   return (() => {
     let timer
 
@@ -15,50 +15,50 @@ Hue.create_debouncer = (func, delay) => {
 
 // Creates all debouncers
 // These are functions that get executed after not being called after a set delay
-Hue.create_debouncers = () => {
+App.create_debouncers = () => {
   // Debounce timer for saving a localStorage object
   // This was done to avoid saving loops
-  Hue.save_local_storage_timer = Hue.create_debouncer(() => {
-    Hue.do_save_local_storage()
-  }, Hue.local_storage_save_delay)
+  App.save_local_storage_timer = App.create_debouncer(() => {
+    App.do_save_local_storage()
+  }, App.local_storage_save_delay)
 
   // Debounce window resize timer
-  Hue.resize_timer = Hue.create_debouncer(() => {
-    Hue.on_resize()
-  }, Hue.resize_delay)
+  App.resize_timer = App.create_debouncer(() => {
+    App.on_resize()
+  }, App.resize_delay)
 
   // Starts chat area scroll events
-  Hue.scroll_timer = Hue.create_debouncer(() => {
-    Hue.check_scrollers()
-  }, Hue.scroll_delay)
+  App.scroll_timer = App.create_debouncer(() => {
+    App.check_scrollers()
+  }, App.scroll_delay)
 
   // Debounce timer for image modal scrollwheel in the 'previous' direction
-  Hue.modal_image_prev_wheel_timer = Hue.create_debouncer(() => {
-    Hue.modal_image_prev_click()
-  }, Hue.wheel_delay)
+  App.modal_image_prev_wheel_timer = App.create_debouncer(() => {
+    App.modal_image_prev_click()
+  }, App.wheel_delay)
 
   // Debounce timer for image modal scrollwheel in the 'next direction
-  Hue.modal_image_next_wheel_timer = Hue.create_debouncer(() => {
-    Hue.modal_image_next_click()
-  }, Hue.wheel_delay)
+  App.modal_image_next_wheel_timer = App.create_debouncer(() => {
+    App.modal_image_next_click()
+  }, App.wheel_delay)
 
   // Debounce timer for userlist update
-  Hue.update_userlist = Hue.create_debouncer((prop) => {
-    Hue.do_update_userlist(prop)
-  }, Hue.update_userlist_delay)
+  App.update_userlist = App.create_debouncer((prop) => {
+    App.do_update_userlist(prop)
+  }, App.update_userlist_delay)
 
   // Debounce timer to hide the flash info window
-  Hue.flash_info_timer = Hue.create_debouncer(() => {
-    Hue.hide_flash_info()
-  }, Hue.flash_info_delay)
+  App.flash_info_timer = App.create_debouncer(() => {
+    App.hide_flash_info()
+  }, App.flash_info_delay)
 
   // Debounce timer to process files added
-  Hue.process_file_added = Hue.create_debouncer((file) => {
-    Hue.do_process_file_added(file)
-  }, Hue.file_added_delay)
+  App.process_file_added = App.create_debouncer((file) => {
+    App.do_process_file_added(file)
+  }, App.file_added_delay)
 
   // Modal filter debouncer
-  Hue.modal_filter = Hue.create_debouncer(() => {
-    Hue.do_modal_filter()
-  }, Hue.filter_delay)
+  App.modal_filter = App.create_debouncer(() => {
+    App.do_modal_filter()
+  }, App.filter_delay)
 }

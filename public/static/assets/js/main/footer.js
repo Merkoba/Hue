@@ -1,106 +1,106 @@
 // Setups more footer elements
-Hue.setup_footer = () => {
+App.setup_footer = () => {
   let media = [`image`, `tv`]
 
   for (let type of media) {
-    Hue.ev(Hue.el(`#footer_${type}_icon`), `click`, () => {
-      Hue.show_media_picker(type)
+    App.ev(App.el(`#footer_${type}_icon`), `click`, () => {
+      App.show_media_picker(type)
     })
 
-    Hue.ev(Hue.el(`#footer_${type}_icon`), `auxclick`, (e) => {
+    App.ev(App.el(`#footer_${type}_icon`), `auxclick`, (e) => {
       if (e.button === 1) {
         if (type === `image`) {
-          Hue.show_modal_image()
+          App.show_modal_image()
         }
       }
     })
 
-    Hue.ev(Hue.el(`#footer_${type}_toggle`), `click`, () => {
-      Hue.set_media_enabled({type: type, what: !Hue.room_state[`${type}_enabled`]})
+    App.ev(App.el(`#footer_${type}_toggle`), `click`, () => {
+      App.set_media_enabled({type: type, what: !App.room_state[`${type}_enabled`]})
     })
 
-    Hue.ev(Hue.el(`#footer_${type}_lock`), `click`, () => {
-      Hue.set_media_locked({type: type, what: !Hue[`${type}_locked`]})
+    App.ev(App.el(`#footer_${type}_lock`), `click`, () => {
+      App.set_media_locked({type: type, what: !App[`${type}_locked`]})
     })
 
-    Hue.ev(Hue.el(`#footer_${type}_list`), `click`, () => {
-      Hue[`msg_${type}_picker`].close()
-      Hue[`show_${type}_list`]()
+    App.ev(App.el(`#footer_${type}_list`), `click`, () => {
+      App[`msg_${type}_picker`].close()
+      App[`show_${type}_list`]()
     })
 
-    Hue.update_footer_toggle(type)
+    App.update_footer_toggle(type)
   }
 
-  Hue.ev(Hue.el(`#footer_radio_container`), `click`, () => {
-    Hue.show_radio()
+  App.ev(App.el(`#footer_radio_container`), `click`, () => {
+    App.show_radio()
   })
 
-  Hue.ev(Hue.el(`#footer_radio_container`), `auxclick`, (e) => {
+  App.ev(App.el(`#footer_radio_container`), `auxclick`, (e) => {
     if (e.button === 1) {
-      Hue.radio_playstop()
+      App.radio_playstop()
     }
   })
 
-  let footer_items = Hue.el(`#footer_items`)
+  let footer_items = App.el(`#footer_items`)
 
-  Hue.ev(footer_items, `click`, (e) => {
+  App.ev(footer_items, `click`, (e) => {
     if (e.target === footer_items) {
-      Hue.el(`#input`).focus()
+      App.el(`#input`).focus()
     }
   })
 
-  Hue.ev(Hue.el(`#footer_input_menu`), `auxclick`, (e) => {
+  App.ev(App.el(`#footer_input_menu`), `auxclick`, (e) => {
     if (e.which === 2) {
-      Hue.flop()
+      App.flop()
     }
   })
 }
 
 // Enabled footer expand
-Hue.enable_footer_expand = () => {
-  if (Hue.footer_expanded) {
+App.enable_footer_expand = () => {
+  if (App.footer_expanded) {
     return
   }
 
-  Hue.el(`#footer`).classList.add(`footer_expanded`)
-  Hue.after_footer_expand_change()
+  App.el(`#footer`).classList.add(`footer_expanded`)
+  App.after_footer_expand_change()
 }
 
 // Disable footer expand
-Hue.disable_footer_expand = () => {
-  if (!Hue.footer_expanded) {
+App.disable_footer_expand = () => {
+  if (!App.footer_expanded) {
     return
   }
 
-  Hue.el(`#footer`).classList.remove(`footer_expanded`)
-  Hue.after_footer_expand_change()
+  App.el(`#footer`).classList.remove(`footer_expanded`)
+  App.after_footer_expand_change()
 }
 
 // After footer expand change
-Hue.after_footer_expand_change = () => {
-  Hue.footer_expanded = !Hue.footer_expanded
-  Hue.fix_frames()
+App.after_footer_expand_change = () => {
+  App.footer_expanded = !App.footer_expanded
+  App.fix_frames()
 }
 
 // Update footer toggle
-Hue.update_footer_toggle = (type) => {
-  let val = Hue.room_state[`${type}_enabled`]
+App.update_footer_toggle = (type) => {
+  let val = App.room_state[`${type}_enabled`]
 
   if (val) {
-    Hue.el(`#footer_${type}_toggle use`).href.baseVal = `#icon_toggle-on`
+    App.el(`#footer_${type}_toggle use`).href.baseVal = `#icon_toggle-on`
   }
   else {
-    Hue.el(`#footer_${type}_toggle use`).href.baseVal = `#icon_toggle-off`
+    App.el(`#footer_${type}_toggle use`).href.baseVal = `#icon_toggle-off`
   }
 }
 
 // Highlight the footer
 // Highlight input
-Hue.highlight_footer = () => {
-  clearTimeout(Hue.highlight_footer_timeout)
-  Hue.el(`#footer`).classList.add(`flash_highlight`)
+App.highlight_footer = () => {
+  clearTimeout(App.highlight_footer_timeout)
+  App.el(`#footer`).classList.add(`flash_highlight`)
 
-  Hue.highlight_footer_timeout = setTimeout(() => {
-    Hue.el(`#footer`).classList.remove(`flash_highlight`)
-  }, Hue.highlight_footer_delay)
+  App.highlight_footer_timeout = setTimeout(() => {
+    App.el(`#footer`).classList.remove(`flash_highlight`)
+  }, App.highlight_footer_delay)
 }

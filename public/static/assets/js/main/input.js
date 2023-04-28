@@ -1,66 +1,66 @@
 // On input change
-Hue.on_input_change = () => {
-  let input = Hue.el(`#input`)
+App.on_input_change = () => {
+  let input = App.el(`#input`)
 
   if (input.clientHeight < input.scrollHeight) {
-    Hue.enable_footer_expand()
+    App.enable_footer_expand()
   }
 
-  Hue.check_footer_expand()
+  App.check_footer_expand()
 }
 
 // Setups events for the main input
-Hue.setup_input = () => {
-  Hue.ev(Hue.el(`#input`), `input`, () => {
-    Hue.on_input_change()
+App.setup_input = () => {
+  App.ev(App.el(`#input`), `input`, () => {
+    App.on_input_change()
   })
 
-  Hue.ev(Hue.el(`#input`), `paste`, (e) => {
+  App.ev(App.el(`#input`), `paste`, (e) => {
     let items = (e.clipboardData || e.originalEvent.clipboardData).items
 
     for (let index in items) {
       let item = items[index]
 
       if (item.kind === `file`) {
-        Hue.dropzone.addFile(item.getAsFile())
+        App.dropzone.addFile(item.getAsFile())
         e.preventDefault()
         return
       }
     }
   })
 
-  Hue.ev(Hue.el(`#footer_input_menu`), `click`, (e) => {
-    Hue.show_input_menu(e)
+  App.ev(App.el(`#footer_input_menu`), `click`, (e) => {
+    App.show_input_menu(e)
   })
 
-  Hue.get_input_history()
+  App.get_input_history()
 }
 
 // Updates the input's placeholder
-Hue.update_input_placeholder = () => {
-  let s = `Hi ${Hue.username}, welcome to ${Hue.room_name}`
+App.update_input_placeholder = () => {
+  let s = `Hi ${App.username}, welcome to ${App.room_name}`
 
-  if (Hue.topic) {
-    s += `  -  ${Hue.topic}`
+  if (App.topic) {
+    s += `  -  ${App.topic}`
   }
 
-  let np = Hue.radio_now_playing_string()
+  let np = App.radio_now_playing_string()
 
   if (np) {
     s += `  -  ${np}`
   }
 
-  Hue.set_input_placeholder(s)
+  App.set_input_placeholder(s)
 }
 
 // Set input placeholder
-Hue.set_input_placeholder = (s) => {
-  Hue.el(`#input`).placeholder = s
+App.set_input_placeholder = (s) => {
+  App.el(`#input`).placeholder = s
 }
 
 // Input has value
-Hue.input_has_value = (trim) => {
-  let s = Hue.get_input()
+App.input_has_value = (trim) => {
+  let s = App.get_input()
 
   if (trim) {
     s = s.trim()
@@ -70,90 +70,90 @@ Hue.input_has_value = (trim) => {
 }
 
 // Clears the input
-Hue.clear_input = () => {
-  if (Hue.input_has_value(true)) {
-    Hue.room_state.last_input = Hue.get_input().substring(0, Hue.config.max_input_length)
-    Hue.save_room_state()
+App.clear_input = () => {
+  if (App.input_has_value(true)) {
+    App.room_state.last_input = App.get_input().substring(0, App.config.max_input_length)
+    App.save_room_state()
   }
 
-  if (Hue.input_has_value()) {
-    Hue.change_input(``)
+  if (App.input_has_value()) {
+    App.change_input(``)
   }
 }
 
 // Changes the input
-Hue.change_input = (s, to_end = true, focus = true) => {
-  Hue.disable_footer_expand()
-  Hue.el(`#input`).value = s
+App.change_input = (s, to_end = true, focus = true) => {
+  App.disable_footer_expand()
+  App.el(`#input`).value = s
 
   if (to_end) {
-    Hue.input_to_end()
+    App.input_to_end()
   }
 
   if (focus) {
-    Hue.focus_input()
+    App.focus_input()
   }
 
-  Hue.on_input_change()
+  App.on_input_change()
 }
 
 // Focuses the input
-Hue.focus_input = () => {
-  if (Hue.modal_open) {
+App.focus_input = () => {
+  if (App.modal_open) {
     return
   }
 
-  Hue.el(`#input`).focus()
+  App.el(`#input`).focus()
 }
 
 // Removes focus on the input
-Hue.blur_input = () => {
-  Hue.el(`#input`).blur()
+App.blur_input = () => {
+  App.el(`#input`).blur()
 }
 
 // Moves the input's caret to the end
-Hue.input_to_end = () => {
-  Hue.el(`#input`).scrollLeft = Hue.el(`#input`).scrollWidth
+App.input_to_end = () => {
+  App.el(`#input`).scrollLeft = App.el(`#input`).scrollWidth
 }
 
 // Does a submit action from the input
-Hue.submit_input = () => {
-  if (Hue.reply_active) {
-    Hue.submit_reply()
+App.submit_input = () => {
+  if (App.reply_active) {
+    App.submit_reply()
   }
-  else if (Hue.edit_active) {
-    Hue.submit_edit()
+  else if (App.edit_active) {
+    App.submit_edit()
   }
   else {
-    if (Hue.input_has_value()) {
-      if (!Hue.input_has_value(true)) {
-        Hue.clear_input()
+    if (App.input_has_value()) {
+      if (!App.input_has_value(true)) {
+        App.clear_input()
         return
       }
 
-      Hue.process_input({
-        message: Hue.get_input()
+      App.process_input({
+        message: App.get_input()
       })
 
-      Hue.disable_footer_expand()
+      App.disable_footer_expand()
     }
   }
 }
 
 // Get the input value
-Hue.get_input = () => {
-  return Hue.el(`#input`).value
+App.get_input = () => {
+  return App.el(`#input`).value
 }
 
 // Turns this * into this *
-Hue.input_to_thirdperson = (text) => {
-  Hue.process_input({message: `* ${text} *`})
+App.input_to_thirdperson = (text) => {
+  App.process_input({message: `* ${text} *`})
 }
 
 // Process user's input messages
 // Checks if it is a command and executes it
 // Or sends a chat message to the server
-Hue.process_input = (args = {}) => {
+App.process_input = (args = {}) => {
   let def_args = {
     clr_input: true
   }
@@ -164,26 +164,26 @@ Hue.process_input = (args = {}) => {
     return
   }
 
-  args.message = Hue.utilz.remove_pre_empty_lines(args.message)
-  args.message = Hue.utilz.remove_multiple_empty_lines(args.message)
-  args.message = Hue.utilz.untab_string(args.message).trimEnd()
+  args.message = App.utilz.remove_pre_empty_lines(args.message)
+  args.message = App.utilz.remove_multiple_empty_lines(args.message)
+  args.message = App.utilz.untab_string(args.message).trimEnd()
 
   let message_split = args.message.split(`\n`)
   let num_lines = message_split.length
 
-  if (num_lines === 1 && Hue.is_command(args.message) && !args.edit_id) {
-    let ans = Hue.execute_command(args.message, {
+  if (num_lines === 1 && App.is_command(args.message) && !args.edit_id) {
+    let ans = App.execute_command(args.message, {
       clr_input: args.clr_input,
     })
 
     args.clr_input = ans.clr_input
   }
   else {
-    if (args.message.length > Hue.config.max_input_length) {
-      args.message = args.message.substring(0, Hue.config.max_input_length)
+    if (args.message.length > App.config.max_input_length) {
+      args.message = args.message.substring(0, App.config.max_input_length)
     }
 
-    Hue.socket_emit(`sendchat`, {
+    App.socket_emit(`sendchat`, {
       message: args.message,
       edit_id: args.edit_id,
       quote: args.quote,
@@ -193,71 +193,71 @@ Hue.process_input = (args = {}) => {
     })
   }
 
-  Hue.push_to_input_history(args.message)
+  App.push_to_input_history(args.message)
 
   if (args.clr_input) {
-    Hue.clear_input()
+    App.clear_input()
   }
 }
 
 // Check input expand
-Hue.check_footer_expand = () => {
-  if (!Hue.input_has_value()) {
-    Hue.disable_footer_expand()
+App.check_footer_expand = () => {
+  if (!App.input_has_value()) {
+    App.disable_footer_expand()
   }
 }
 
 // Add a new line at the end of the input
-Hue.add_input_new_line = () => {
-  Hue.change_input(Hue.get_input() + `\n`)
+App.add_input_new_line = () => {
+  App.change_input(App.get_input() + `\n`)
 }
 
 // Get input history from local storage
-Hue.get_input_history = () => {
-  Hue.input_history = Hue.get_local_storage(Hue.ls_input_history)
+App.get_input_history = () => {
+  App.input_history = App.get_local_storage(App.ls_input_history)
 
-  if (Hue.input_history === null) {
-    Hue.input_history = []
+  if (App.input_history === null) {
+    App.input_history = []
   }
 }
 
 // Save input history
-Hue.save_input_history = (force = true) => {
-  Hue.save_local_storage(Hue.ls_input_history, Hue.input_history, force)
+App.save_input_history = (force = true) => {
+  App.save_local_storage(App.ls_input_history, App.input_history, force)
 }
 
 // Push to input history
-Hue.push_to_input_history = (message) => {
-  Hue.input_history = Hue.input_history
+App.push_to_input_history = (message) => {
+  App.input_history = App.input_history
     .filter(x => x !== message)
-    .slice(0, Hue.config.max_input_history)
+    .slice(0, App.config.max_input_history)
 
-  Hue.input_history.unshift({message: message, date: Date.now()})
-  Hue.save_input_history()
+  App.input_history.unshift({message: message, date: Date.now()})
+  App.save_input_history()
 }
 
 // Show input history
-Hue.show_input_history = (filter = ``) => {
-  let container = Hue.el(`#input_history_container`)
+App.show_input_history = (filter = ``) => {
+  let container = App.el(`#input_history_container`)
   container.innerHTML = ``
 
-  for (let item of Hue.input_history) {
-    let el = Hue.create(`div`, `nice_row modal_item pointer`)
+  for (let item of App.input_history) {
+    let el = App.create(`div`, `nice_row modal_item pointer`)
     el.textContent = item.message
-    el.title = Hue.utilz.nice_date(item.date)
+    el.title = App.utilz.nice_date(item.date)
 
-    Hue.ev(el, `click`, () => {
-      Hue.change_input(item.message)
-      Hue.msg_input_history.close()
+    App.ev(el, `click`, () => {
+      App.change_input(item.message)
+      App.msg_input_history.close()
     })
 
     container.append(el)
   }
 
-  Hue.msg_input_history.show(() => {
+  App.msg_input_history.show(() => {
     if (filter.trim()) {
-      Hue.el(`#input_history_filter`).value = filter
-      Hue.do_modal_filter()
+      App.el(`#input_history_filter`).value = filter
+      App.do_modal_filter()
     }
   })
 }

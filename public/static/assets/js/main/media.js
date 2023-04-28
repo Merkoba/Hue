@@ -1,24 +1,24 @@
 // Setups media
-Hue.setup_media = () => {
-  Hue.ev(Hue.el(`#media_image_frame`), `click`, () => {
-    Hue.show_modal_image()
+App.setup_media = () => {
+  App.ev(App.el(`#media_image_frame`), `click`, () => {
+    App.show_modal_image()
   })
 
-  Hue.ev(Hue.el(`#media_image_error`), `click`, () => {
-    Hue.show_modal_image()
+  App.ev(App.el(`#media_image_error`), `click`, () => {
+    App.show_modal_image()
   })
 
-  Hue.ev(Hue.el(`.media_picker_content`, Hue.msg_image_picker.window), `click`, (e) => {
-    Hue.media_picker_item_click(e.target)
+  App.ev(App.el(`.media_picker_content`, App.msg_image_picker.window), `click`, (e) => {
+    App.media_picker_item_click(e.target)
   })
 
-  Hue.ev(Hue.el(`.media_picker_content`, Hue.msg_tv_picker.window), `click`, (e) => {
-    Hue.media_picker_item_click(e.target)
+  App.ev(App.el(`.media_picker_content`, App.msg_tv_picker.window), `click`, (e) => {
+    App.media_picker_item_click(e.target)
   })
 }
 
 // On media picker item click
-Hue.media_picker_item_click = (el) => {
+App.media_picker_item_click = (el) => {
   let container = el.closest(`.announcement_content_container`)
 
   if (container) {
@@ -34,65 +34,65 @@ Hue.media_picker_item_click = (el) => {
       return
     }
 
-    Hue.el(`.announcement_content`, container).click()
+    App.el(`.announcement_content`, container).click()
   }
 }
 
 // Get min or max media percentage
-Hue.limit_media_percentage = (size) => {
-  if (size < Hue.media_min_percentage) {
-    size = Hue.media_min_percentage
+App.limit_media_percentage = (size) => {
+  if (size < App.media_min_percentage) {
+    size = App.media_min_percentage
   }
-  else if (size > Hue.media_max_percentage) {
-    size = Hue.media_max_percentage
+  else if (size > App.media_max_percentage) {
+    size = App.media_max_percentage
   }
 
   return size
 }
 
 // Applies percentages changes to the chat and media elements based on current state
-Hue.apply_media_percentages = () => {
-  let mode = Hue.room_state.media_layout
-  let p1 = Hue.limit_media_percentage(Hue.room_state.tv_display_percentage)
+App.apply_media_percentages = () => {
+  let mode = App.room_state.media_layout
+  let p1 = App.limit_media_percentage(App.room_state.tv_display_percentage)
   let p2 = 100 - p1
 
   if (mode === `column`) {
-    Hue.el(`#media_tv`).style.height = `${p1}%`
-    Hue.el(`#media_image`).style.height = `${p2}%`
-    Hue.el(`#media_tv`).style.width = `100%`
-    Hue.el(`#media_image`).style.width = `100%`
+    App.el(`#media_tv`).style.height = `${p1}%`
+    App.el(`#media_image`).style.height = `${p2}%`
+    App.el(`#media_tv`).style.width = `100%`
+    App.el(`#media_image`).style.width = `100%`
   }
   else if (mode === `row`) {
-    Hue.el(`#media_tv`).style.width = `${p1}%`
-    Hue.el(`#media_image`).style.width = `${p2}%`
-    Hue.el(`#media_tv`).style.height = `100%`
-    Hue.el(`#media_image`).style.height = `100%`
+    App.el(`#media_tv`).style.width = `${p1}%`
+    App.el(`#media_image`).style.width = `${p2}%`
+    App.el(`#media_tv`).style.height = `100%`
+    App.el(`#media_image`).style.height = `100%`
   }
 
-  let c1 = Hue.limit_media_percentage(Hue.room_state.chat_display_percentage)
+  let c1 = App.limit_media_percentage(App.room_state.chat_display_percentage)
   let c2 = 100 - c1
 
-  if (Hue.room_state.main_layout === `column`) {
-    Hue.el(`#main_rows_container`).style.flexDirection = `column-reverse`
-    Hue.el(`#chat_main`).style.height = `${c1}%`
-    Hue.el(`#media`).style.height = `${c2}%`
-    Hue.el(`#chat_main`).style.width = `100%`
-    Hue.el(`#media`).style.width = `100%`
+  if (App.room_state.main_layout === `column`) {
+    App.el(`#main_rows_container`).style.flexDirection = `column-reverse`
+    App.el(`#chat_main`).style.height = `${c1}%`
+    App.el(`#media`).style.height = `${c2}%`
+    App.el(`#chat_main`).style.width = `100%`
+    App.el(`#media`).style.width = `100%`
   }
   else {
-    Hue.el(`#main_rows_container`).style.flexDirection = `row`
-    Hue.el(`#chat_main`).style.width = `${c1}%`
-    Hue.el(`#media`).style.width = `${c2}%`
-    Hue.el(`#chat_main`).style.height = `100%`
-    Hue.el(`#media`).style.height = `100%`
+    App.el(`#main_rows_container`).style.flexDirection = `row`
+    App.el(`#chat_main`).style.width = `${c1}%`
+    App.el(`#media`).style.width = `${c2}%`
+    App.el(`#chat_main`).style.height = `100%`
+    App.el(`#media`).style.height = `100%`
   }
 
-  Hue.fix_frames()
+  App.fix_frames()
 }
 
 // Applies the image and tv positions based on current state
-Hue.apply_media_positions = () => {
-  let p = Hue.room_state.tv_display_position
+App.apply_media_positions = () => {
+  let p = App.room_state.tv_display_position
   let tvp
   let ip
 
@@ -105,42 +105,42 @@ Hue.apply_media_positions = () => {
     ip = 1
   }
 
-  Hue.el(`#media_image`).style.order = ip
-  Hue.el(`#media_tv`).style.order = tvp
+  App.el(`#media_image`).style.order = ip
+  App.el(`#media_tv`).style.order = tvp
 }
 
-Hue.swap_display_positions = () => {
-  Hue.room_state.tv_display_position =
-    Hue.room_state.tv_display_position === `top` ? `bottom` : `top`
-  Hue.save_room_state()
-  Hue.apply_media_positions()
+App.swap_display_positions = () => {
+  App.room_state.tv_display_position =
+    App.room_state.tv_display_position === `top` ? `bottom` : `top`
+  App.save_room_state()
+  App.apply_media_positions()
 }
 
 // Initial change for current media
-Hue.start_active_media = () => {
-  Hue.change_media({
+App.start_active_media = () => {
+  App.change_media({
     type: `image`,
     play: false
   })
 
-  Hue.change_media({
+  App.change_media({
     type: `tv`,
     play: false
   })
 
-  Hue.first_media_change = true
+  App.first_media_change = true
 }
 
 // Removes and item from a media changed array
-Hue.remove_item_from_media_changed = (type, id) => {
-  Hue[`${type}_changed`] = Hue[`${type}_changed`].filter((x) => x.id !== id)
+App.remove_item_from_media_changed = (type, id) => {
+  App[`${type}_changed`] = App[`${type}_changed`].filter((x) => x.id !== id)
 }
 
 // Checks how many elements (image, tv) are visible in the media section
-Hue.num_media_elements_visible = () => {
+App.num_media_elements_visible = () => {
   let num = 0
 
-  Hue.els(`#media_split .media_main_container`).forEach(it => {
+  App.els(`#media_split .media_main_container`).forEach(it => {
     if (it.style.display !== `none`) {
       num += 1
     }
@@ -152,8 +152,8 @@ Hue.num_media_elements_visible = () => {
 // Tries to separate a comment from a URL when using change media commands
 // The proper way is to use '/image url > comment'
 // But if the > is ommitted it will still try to determine what each part is
-Hue.get_media_change_inline_comment = (type, source) => {
-  let comment = Hue.el(`#link_${type}_comment`).value
+App.get_media_change_inline_comment = (type, source) => {
+  let comment = App.el(`#link_${type}_comment`).value
 
   if (comment) {
     // OK
@@ -169,7 +169,7 @@ Hue.get_media_change_inline_comment = (type, source) => {
     let cm = []
 
     for (let sp of split) {
-      if (Hue.utilz.is_url(sp) && !url) {
+      if (App.utilz.is_url(sp) && !url) {
         url = sp
       }
       else {
@@ -191,12 +191,12 @@ Hue.get_media_change_inline_comment = (type, source) => {
 
 // Creates a media object from initial data
 // For instance it gets all the 'tv_*' properties
-Hue.get_media_object_from_init_data = (type) => {
+App.get_media_object_from_init_data = (type) => {
   let obj = {}
 
-  for (let key in Hue.init_data) {
+  for (let key in App.init_data) {
     if (key.startsWith(`${type}_`)) {
-      obj[key.replace(`${type}_`, ``)] = Hue.init_data[key]
+      obj[key.replace(`${type}_`, ``)] = App.init_data[key]
     }
   }
 
@@ -204,90 +204,90 @@ Hue.get_media_object_from_init_data = (type) => {
 }
 
 // Hides the media area (image and tv)
-Hue.hide_media = () => {
-  Hue.el(`#media`).style.display = `none`
+App.hide_media = () => {
+  App.el(`#media`).style.display = `none`
 }
 
 // Prepare media modes from initial data
-Hue.prepare_active_media = () => {
-  Hue.media_visibility_and_locks()
+App.prepare_active_media = () => {
+  App.media_visibility_and_locks()
 }
 
 // Changes media visibility and locks based on current state
-Hue.media_visibility_and_locks = () => {
-  Hue.change_media_visibility(`image`)
-  Hue.change_media_visibility(`tv`)
-  Hue.change_media_lock_text(`image`)
-  Hue.change_media_lock_text(`tv`)
+App.media_visibility_and_locks = () => {
+  App.change_media_visibility(`image`)
+  App.change_media_visibility(`tv`)
+  App.change_media_lock_text(`image`)
+  App.change_media_lock_text(`tv`)
 }
 
 // More media picker configurations
-Hue.setup_media_pickers = () => {
-  Hue.ev(Hue.el(`#image_picker_link`), `click`, () => {
-    Hue.msg_image_picker.close()
-    Hue.show_link_image()
+App.setup_media_pickers = () => {
+  App.ev(App.el(`#image_picker_link`), `click`, () => {
+    App.msg_image_picker.close()
+    App.show_link_image()
   })
 
-  Hue.ev(Hue.el(`#image_picker_upload`), `click`, () => {
-    Hue.msg_image_picker.close()
+  App.ev(App.el(`#image_picker_upload`), `click`, () => {
+    App.msg_image_picker.close()
   })
 
-  Hue.ev(Hue.el(`#image_picker_draw`), `click`, () => {
-    Hue.msg_image_picker.close()
-    Hue.open_draw_image(`image`)
+  App.ev(App.el(`#image_picker_draw`), `click`, () => {
+    App.msg_image_picker.close()
+    App.open_draw_image(`image`)
   })
 
-  Hue.ev(Hue.el(`#image_picker_random`), `click`, () => {
-    Hue.msg_image_picker.close()
-    Hue.make_random_image(`image`)
+  App.ev(App.el(`#image_picker_random`), `click`, () => {
+    App.msg_image_picker.close()
+    App.make_random_image(`image`)
   })
 
-  Hue.ev(Hue.el(`#image_picker_screenshot`), `click`, () => {
-    Hue.msg_image_picker.close()
-    Hue.take_screenshot()
+  App.ev(App.el(`#image_picker_screenshot`), `click`, () => {
+    App.msg_image_picker.close()
+    App.take_screenshot()
   })
 
-  Hue.ev(Hue.el(`#tv_picker_link`), `click`, () => {
-    Hue.msg_tv_picker.close()
-    Hue.show_link_tv()
+  App.ev(App.el(`#tv_picker_link`), `click`, () => {
+    App.msg_tv_picker.close()
+    App.show_link_tv()
   })
 
-  Hue.ev(Hue.el(`#tv_picker_upload`), `click`, () => {
-    Hue.msg_tv_picker.close()
+  App.ev(App.el(`#tv_picker_upload`), `click`, () => {
+    App.msg_tv_picker.close()
   })
 
-  Hue.ev(Hue.el(`#tv_picker_capture`), `click`, () => {
-    Hue.msg_tv_picker.close()
-    Hue.screen_capture()
+  App.ev(App.el(`#tv_picker_capture`), `click`, () => {
+    App.msg_tv_picker.close()
+    App.screen_capture()
   })
 
-  Hue.ev(Hue.el(`#image_picker_upload`), `click`, () => {
-    Hue.msg_tv_picker.close()
-    Hue.show_upload_image()
+  App.ev(App.el(`#image_picker_upload`), `click`, () => {
+    App.msg_tv_picker.close()
+    App.show_upload_image()
   })
 
-  Hue.ev(Hue.el(`#tv_picker_upload`), `click`, () => {
-    Hue.msg_tv_picker.close()
-    Hue.show_upload_tv()
+  App.ev(App.el(`#tv_picker_upload`), `click`, () => {
+    App.msg_tv_picker.close()
+    App.show_upload_tv()
   })
 }
 
 // Setup tv link window
-Hue.setup_media_link = () => {
-  Hue.ev(Hue.el(`#link_image_submit`), `click`, () => {
-    Hue.link_image_submit()
+App.setup_media_link = () => {
+  App.ev(App.el(`#link_image_submit`), `click`, () => {
+    App.link_image_submit()
   })
 
-  Hue.ev(Hue.el(`#link_tv_submit`), `click`, () => {
-    Hue.link_tv_submit()
+  App.ev(App.el(`#link_tv_submit`), `click`, () => {
+    App.link_tv_submit()
   })
 }
 
 // Updates the dimensions of a specified element
 // It grows the element as much as it can while maintaining the aspect ratio
 // This is done by making calculations with the element and parent's ratios
-Hue.fix_frame = (frame_id, test_parent_height = false) => {
-  let frame = Hue.el(`#${frame_id}`)
+App.fix_frame = (frame_id, test_parent_height = false) => {
+  let frame = App.el(`#${frame_id}`)
   let frame_ratio
 
   if (frame_id === `media_image_frame`) {
@@ -299,7 +299,7 @@ Hue.fix_frame = (frame_id, test_parent_height = false) => {
 
   let parent = frame.parentElement
   let info_height = 0
-  let info = Hue.els(`.media_info`, frame.parentElement)
+  let info = App.els(`.media_info`, frame.parentElement)
 
   if (info.length > 0) {
     info_height = info[0].offsetHeight
@@ -341,19 +341,19 @@ Hue.fix_frame = (frame_id, test_parent_height = false) => {
 }
 
 // Updates dimensions of the image and tv
-Hue.fix_frames = () => {
-  if (!Hue.started) {
+App.fix_frames = () => {
+  if (!App.started) {
     return
   }
 
-  Hue.fix_tv_frame()
-  Hue.fix_image_frame()
+  App.fix_tv_frame()
+  App.fix_image_frame()
 }
 
 // This handles all media load
 // It will attempt to load and play media taking into account the room state
 // It is responsible to initiate the construction of all required media players
-Hue.change_media = (args = {}) => {
+App.change_media = (args = {}) => {
   let def_args = {
     force: false,
     play: true,
@@ -367,30 +367,30 @@ Hue.change_media = (args = {}) => {
   if (args.item) {
     item = args.item
   }
-  else if (args.current_source && Hue[`loaded_${args.type}`].source) {
-    item = Hue[`loaded_${args.type}`]
+  else if (args.current_source && App[`loaded_${args.type}`].source) {
+    item = App[`loaded_${args.type}`]
   }
   else {
-    item = Hue[`current_${args.type}`]()
+    item = App[`current_${args.type}`]()
   }
 
-  if (!Hue.has_focus) {
-    if (item.username !== Hue.username) {
-      Hue.on_activity(`media_change`)
+  if (!App.has_focus) {
+    if (item.username !== App.username) {
+      App.on_activity(`media_change`)
     }
 
     return
   }
 
   if (args.type === `image`) {
-    if (!args.force && Hue.loaded_image.source === Hue.current_image().source) {
-      Hue.loaded_image = item
+    if (!args.force && App.loaded_image.source === App.current_image().source) {
+      App.loaded_image = item
       return
     }
   }
   else if (args.type === `tv`) {
-    if (!args.force && Hue.loaded_tv.source === Hue.current_tv().source) {
-      Hue.loaded_tv = item
+    if (!args.force && App.loaded_tv.source === App.current_tv().source) {
+      App.loaded_tv = item
       return
     }
   }
@@ -399,56 +399,56 @@ Hue.change_media = (args = {}) => {
   }
 
   if (args.type === `image`) {
-    if (!Hue.room_state.image_enabled) {
+    if (!App.room_state.image_enabled) {
       return
     }
 
     if (
       !args.item &&
-      Hue.image_locked &&
-      Hue.loaded_image.source &&
+      App.image_locked &&
+      App.loaded_image.source &&
       !args.current_source
     ) {
       return
     }
 
-    if (!Hue.room_state.image_enabled) {
+    if (!App.room_state.image_enabled) {
       return
     }
 
-    Hue.loaded_image = item
-    Hue.show_image(args.force)
+    App.loaded_image = item
+    App.show_image(args.force)
   }
   else if (args.type === `tv`) {
-    if (!Hue.room_state.tv_enabled) {
+    if (!App.room_state.tv_enabled) {
       return
     }
 
     if (!args.item &&
-      Hue.tv_locked &&
-      Hue.loaded_tv.source &&
+      App.tv_locked &&
+      App.loaded_tv.source &&
       !args.current_source
     ) {
       return
     }
 
-    if (!Hue.room_state.tv_enabled) {
+    if (!App.room_state.tv_enabled) {
       return
     }
 
-    if (!Hue.loaded_tv.source && !args.force) {
+    if (!App.loaded_tv.source && !args.force) {
       args.play = false
     }
 
     if (item.type !== `video` && item.type !== `iframe`) {
-      if (Hue[`${item.type}_tv_player`] === undefined) {
-        Hue.request_media(`${item.type}_tv_player`, args)
+      if (App[`${item.type}_tv_player`] === undefined) {
+        App.request_media(`${item.type}_tv_player`, args)
         return
       }
     }
 
-    Hue.loaded_tv = item
-    Hue[`show_${item.type}_tv`](args.play)
+    App.loaded_tv = item
+    App[`show_${item.type}_tv`](args.play)
   }
   else {
     return
@@ -456,198 +456,198 @@ Hue.change_media = (args = {}) => {
 }
 
 // Sets a media info item with proper information and events
-Hue.apply_media_info = (type) => {
-  let item = Hue[`loaded_${type}`]
+App.apply_media_info = (type) => {
+  let item = App[`loaded_${type}`]
 
   if (!item.type) {
     return
   }
 
-  let message = item.message.substring(0, Hue.config.max_media_info_length).trim()
-  let container = Hue.el(`#media_${type}_info_container`)
+  let message = item.message.substring(0, App.config.max_media_info_length).trim()
+  let container = App.el(`#media_${type}_info_container`)
 
-  Hue.el(`.media_info`, container).innerHTML = Hue.template_media_info_inner({
+  App.el(`.media_info`, container).innerHTML = App.template_media_info_inner({
     username: item.username,
     message: message,
-    profilepic: Hue.get_profilepic(item.user_id)
+    profilepic: App.get_profilepic(item.user_id)
   })
 
-  Hue.el(`.media_info_timeago`, container).textContent = Hue.utilz.timeago(item.date)
+  App.el(`.media_info_timeago`, container).textContent = App.utilz.timeago(item.date)
   container.title = item.info
-  let pic = Hue.el(`.media_info_profilepic`, container)
+  let pic = App.el(`.media_info_profilepic`, container)
 
-  Hue.ev(pic, `error`, () => {
-    Hue.fallback_profilepic(pic)
+  App.ev(pic, `error`, () => {
+    App.fallback_profilepic(pic)
   })
 
-  Hue.dataset(container, `otitle`, item.info)
-  Hue.dataset(container, `date`, item.date)
-  Hue.dataset(container, `type`, type)
-  Hue.dataset(container, `id`, item.id)
-  Hue.dataset(container, `username`, item.username)
-  Hue.dataset(container, `user_id`, item.user_id)
+  App.dataset(container, `otitle`, item.info)
+  App.dataset(container, `date`, item.date)
+  App.dataset(container, `type`, type)
+  App.dataset(container, `id`, item.id)
+  App.dataset(container, `username`, item.username)
+  App.dataset(container, `user_id`, item.user_id)
 }
 
 // Some fixes on reconneciton
-Hue.fix_media_info = () => {
-  Hue.apply_media_info(`image`)
-  Hue.apply_media_info(`tv`)
+App.fix_media_info = () => {
+  App.apply_media_info(`image`)
+  App.apply_media_info(`tv`)
 }
 
 // Sets media visibility
-Hue.set_media_enabled = (args) => {
-  if (args.what === Hue.room_state[`${args.type}_enabled`]) {
+App.set_media_enabled = (args) => {
+  if (args.what === App.room_state[`${args.type}_enabled`]) {
     return
   }
 
-  Hue.room_state[`${args.type}_enabled`] = args.what
+  App.room_state[`${args.type}_enabled`] = args.what
 
-  if (Hue[`${args.type}_visible`] !== args.what) {
-    Hue.change_media_visibility(args.type)
+  if (App[`${args.type}_visible`] !== args.what) {
+    App.change_media_visibility(args.type)
   }
 
-  let p = Hue.room_state.tv_display_percentage
+  let p = App.room_state.tv_display_percentage
 
   if (p === 0 || p === 100) {
-    Hue.set_default_tv_size()
+    App.set_default_tv_size()
   }
   else {
-    Hue.save_room_state()
+    App.save_room_state()
   }
 
-  Hue.update_footer_toggle(args.type)
+  App.update_footer_toggle(args.type)
 }
 
 // Set the lock of media
-Hue.set_media_locked = (args) => {
+App.set_media_locked = (args) => {
   let def_args = {
     change: true
   }
 
   args = Object.assign(def_args, args)
 
-  if (args.what === Hue[`${args.type}_locked`]) {
+  if (args.what === App[`${args.type}_locked`]) {
     return
   }
 
-  Hue[`${args.type}_locked`] = args.what
-  Hue.change_media_lock_text(args.type)
+  App[`${args.type}_locked`] = args.what
+  App.change_media_lock_text(args.type)
 
   if (!args.what && args.change) {
-    Hue.change_media({type: args.type, play: false})
+    App.change_media({type: args.type, play: false})
   }
 }
 
 // Toggles media locks for any type
-Hue.change_media_lock_text = (type) => {
-  if (Hue[`${type}_locked`]) {
-    Hue.el(`#footer_${type}_lock`).textContent = `Unlock`
-    Hue.el(`#footer_${type}_lock`).textContent = `Unlock`
-    Hue.el(`#footer_${type}_lock`).classList.add(`underlined`)
+App.change_media_lock_text = (type) => {
+  if (App[`${type}_locked`]) {
+    App.el(`#footer_${type}_lock`).textContent = `Unlock`
+    App.el(`#footer_${type}_lock`).textContent = `Unlock`
+    App.el(`#footer_${type}_lock`).classList.add(`underlined`)
   }
   else {
-    Hue.el(`#footer_${type}_lock`).textContent = `Lock`
-    Hue.el(`#footer_${type}_lock`).classList.remove(`underlined`)
+    App.el(`#footer_${type}_lock`).textContent = `Lock`
+    App.el(`#footer_${type}_lock`).classList.remove(`underlined`)
   }
 }
 
 // Changes the media layout between row and column
-Hue.change_media_layout = (mode = false) => {
+App.change_media_layout = (mode = false) => {
   if (!mode) {
-    mode = Hue.room_state.media_layout
+    mode = App.room_state.media_layout
   }
   else {
-    Hue.room_state.media_layout = mode
-    Hue.save_room_state()
+    App.room_state.media_layout = mode
+    App.save_room_state()
   }
 
   if (mode === `column`) {
-    Hue.el(`#media_split`).style.flexDirection = `column`
+    App.el(`#media_split`).style.flexDirection = `column`
 
-    Hue.els(`.media_main_container`).forEach(it => {
+    App.els(`.media_main_container`).forEach(it => {
       it.style.width = `100%`
       it.style.height = `50%`
     })
   }
   else if (mode === `row`) {
-    Hue.el(`#media_split`).style.flexDirection = `row`
+    App.el(`#media_split`).style.flexDirection = `row`
 
-    Hue.els(`.media_main_container`).forEach(it => {
+    App.els(`.media_main_container`).forEach(it => {
       it.style.width = `50%`
       it.style.height = `100%`
     })
   }
 
-  Hue.apply_media_percentages()
-  Hue.fix_frames()
+  App.apply_media_percentages()
+  App.fix_frames()
 }
 
 // Apply default media layout
-Hue.set_default_media_layout = () => {
-  Hue.change_media_layout(Hue.config.room_state_default_media_layout)
+App.set_default_media_layout = () => {
+  App.change_media_layout(App.config.room_state_default_media_layout)
 }
 
 // Switches between row and column media layout mode
-Hue.swap_media_layout = () => {
-  Hue.change_media_layout(Hue.room_state.media_layout === `row` ? `column` : `row`)
+App.swap_media_layout = () => {
+  App.change_media_layout(App.room_state.media_layout === `row` ? `column` : `row`)
 }
 
 // Swaps media
-Hue.swap_media = () => {
-  if (Hue.num_media_elements_visible() < 2) {
+App.swap_media = () => {
+  if (App.num_media_elements_visible() < 2) {
     return
   }
 
-  Hue.swap_display_positions()
+  App.swap_display_positions()
 }
 
 // Default image and tv position
-Hue.set_default_tv_position = () => {
-  Hue.room_state.tv_display_position = Hue.config.room_state_default_tv_display_position
-  Hue.save_room_state()
-  Hue.apply_media_positions()
+App.set_default_tv_position = () => {
+  App.room_state.tv_display_position = App.config.room_state_default_tv_display_position
+  App.save_room_state()
+  App.apply_media_positions()
 }
 
 // Get html for media info items
-Hue.get_media_info_html = (type) => {
-  return Hue.template_media_info({type: type})
+App.get_media_info_html = (type) => {
+  return App.template_media_info({type: type})
 }
 
 // Append media inf
-Hue.append_media_info = (container, type) => {
-  let el = Hue.create(`div`)
-  el.innerHTML = Hue.get_media_info_html(type)
-  Hue.el(container).append(el)
+App.append_media_info = (container, type) => {
+  let el = App.create(`div`)
+  el.innerHTML = App.get_media_info_html(type)
+  App.el(container).append(el)
 }
 
 // Some initial media info setups
-Hue.start_media_info = () => {
-  Hue.append_media_info(`#media_image_container`, `image`)
+App.start_media_info = () => {
+  App.append_media_info(`#media_image_container`, `image`)
 
-  Hue.ev(Hue.el(`#media`), `click`, (e) => {
+  App.ev(App.el(`#media`), `click`, (e) => {
     let el = e.target.closest(`.media_info_user`)
 
     if (el) {
-      let username = Hue.dataset(el.closest(`.media_info_container`), `username`)
-      let user_id = Hue.dataset(el.closest(`.media_info_container`), `user_id`)
-      Hue.show_profile(username, user_id)
+      let username = App.dataset(el.closest(`.media_info_container`), `username`)
+      let user_id = App.dataset(el.closest(`.media_info_container`), `user_id`)
+      App.show_profile(username, user_id)
     }
   })
 
-  Hue.ev(Hue.el(`#media`), `click`, (e) => {
+  App.ev(App.el(`#media`), `click`, (e) => {
     let el = e.target.closest(`.media_info_details`)
 
     if (el) {
       let media_info = el.closest(`.media_info_container`)
-      let type = Hue.dataset(media_info, `type`)
-      let id = Hue.dataset(media_info, `id`)
-      Hue.open_url_menu_by_media_id(type, id)
+      let type = App.dataset(media_info, `type`)
+      let id = App.dataset(media_info, `id`)
+      App.open_url_menu_by_media_id(type, id)
     }
   })
 }
 
 // Get proper media string
-Hue.media_string = (what) => {
+App.media_string = (what) => {
   if (what === `chat`) {
     return `Chat`
   }
@@ -660,22 +660,22 @@ Hue.media_string = (what) => {
 }
 
 // Load or restart media
-Hue.load_media = (data) => {
-  Hue.set_media_enabled({type: data.media_type, what: true})
-  Hue.set_media_locked({type: data.media_type, what: true})
+App.load_media = (data) => {
+  App.set_media_enabled({type: data.media_type, what: true})
+  App.set_media_locked({type: data.media_type, what: true})
 
-  Hue.change_media({
+  App.change_media({
     type: data.media_type,
     item: data,
     force: true
   })
 
-  Hue.close_all_modals()
+  App.close_all_modals()
 }
 
 // Get media item by id
-Hue.get_media_item = (type, id) => {
-  for (let item of Hue[`${type}_changed`]) {
+App.get_media_item = (type, id) => {
+  for (let item of App[`${type}_changed`]) {
     if (item.id === id) {
       return item
     }
@@ -685,44 +685,44 @@ Hue.get_media_item = (type, id) => {
 }
 
 // Change the main layout row|column
-Hue.change_main_layout = (what = ``) => {
+App.change_main_layout = (what = ``) => {
   if (what) {
-    if (Hue.room_state.main_layout === what) {
+    if (App.room_state.main_layout === what) {
       return
     }
 
-    Hue.room_state.main_layout = what
+    App.room_state.main_layout = what
   }
   else {
-    if (Hue.room_state.main_layout === `row`) {
-      Hue.room_state.main_layout = `column`
+    if (App.room_state.main_layout === `row`) {
+      App.room_state.main_layout = `column`
     }
     else {
-      Hue.room_state.main_layout = `row`
+      App.room_state.main_layout = `row`
     }
   }
 
-  Hue.apply_media_percentages()
-  Hue.goto_bottom(true)
-  Hue.save_room_state()
+  App.apply_media_percentages()
+  App.goto_bottom(true)
+  App.save_room_state()
 }
 
 // Set default main layout row|column
-Hue.set_default_main_layout = () => {
-  Hue.room_state.main_layout = Hue.config.room_state_default_main_layout
-  Hue.save_room_state()
-  Hue.apply_media_percentages()
+App.set_default_main_layout = () => {
+  App.room_state.main_layout = App.config.room_state_default_main_layout
+  App.save_room_state()
+  App.apply_media_percentages()
 }
 
 // Show the open url menu with data
-Hue.open_url_menu_by_media_id = (type, id) => {
-  let data = Hue.get_media_item(type, id)
-  Hue.open_url_menu(data)
+App.open_url_menu_by_media_id = (type, id) => {
+  let data = App.get_media_item(type, id)
+  App.open_url_menu(data)
 }
 
 // Send a media edit comment emit to the server
-Hue.do_edit_media_comment = (type, id, comment) => {
-  Hue.socket_emit(`edit_media_comment`, {
+App.do_edit_media_comment = (type, id, comment) => {
+  App.socket_emit(`edit_media_comment`, {
     type: type,
     id: id,
     comment: comment
@@ -730,57 +730,57 @@ Hue.do_edit_media_comment = (type, id, comment) => {
 }
 
 // After response from the server after editing media comment
-Hue.edited_media_comment = (data) => {
+App.edited_media_comment = (data) => {
   let oitem = undefined
 
-  for (let item of Hue[`${data.type}_changed`]) {
+  for (let item of App[`${data.type}_changed`]) {
     if (item.id === data.id) {
       item.comment = data.comment
-      item.message = Hue.get_media_message(item)
+      item.message = App.get_media_message(item)
       oitem = item
       break
     }
   }
 
-  let messages = Hue.els(`.media_announcement`)
+  let messages = App.els(`.media_announcement`)
 
   for (let message of messages) {
-    if (Hue.dataset(message, `id`) === data.id) {
-      if (Hue.dataset(message, `type`) === `${data.type}_change`) {
-        let content = Hue.el(`.announcement_content`, message)
+    if (App.dataset(message, `id`) === data.id) {
+      if (App.dataset(message, `type`) === `${data.type}_change`) {
+        let content = App.el(`.announcement_content`, message)
         content.textContent = oitem.message
-        let data_container = Hue.el_or_self(`.unit_data_container`, message)
-        Hue.dataset(data_container, `original_message`, data.comment)
+        let data_container = App.el_or_self(`.unit_data_container`, message)
+        App.dataset(data_container, `original_message`, data.comment)
       }
     }
   }
 
-  Hue.apply_media_info(data.type)
+  App.apply_media_info(data.type)
 
-  if (Hue.msg_modal_image.is_open()) {
-    if (Hue.loaded_modal_image.id === data.id) {
-      Hue.show_modal_image(Hue.loaded_modal_image.id)
+  if (App.msg_modal_image.is_open()) {
+    if (App.loaded_modal_image.id === data.id) {
+      App.show_modal_image(App.loaded_modal_image.id)
     }
   }
 }
 
 // Shows the media picker window
-Hue.show_media_picker = (type) => {
-  Hue[`msg_${type}_picker`].show()
+App.show_media_picker = (type) => {
+  App[`msg_${type}_picker`].show()
 }
 
 // Load media picker
-Hue.load_media_link = (type, source, comment) => {
-  Hue.el(`#link_${type}_comment`).value = comment
-  Hue.el(`#link_${type}_input`).value = source
+App.load_media_link = (type, source, comment) => {
+  App.el(`#link_${type}_comment`).value = comment
+  App.el(`#link_${type}_input`).value = source
 
-  Hue[`msg_link_${type}`].show(() => {
-    Hue.el(`#link_${type}_comment`).focus()
+  App[`msg_link_${type}`].show(() => {
+    App.el(`#link_${type}_comment`).focus()
   })
 }
 
 // Generate Image or TV item messages
-Hue.get_media_message = (data) => {
+App.get_media_message = (data) => {
   let message = ``
 
   if (data.title) {
@@ -809,10 +809,10 @@ Hue.get_media_message = (data) => {
   }
 
   if (data.type === `youtube`) {
-    let time = Hue.utilz.get_youtube_time(data.source)
+    let time = App.utilz.get_youtube_time(data.source)
 
     if (time !== 0) {
-      message += ` (At ${Hue.utilz.humanize_seconds(time)})`
+      message += ` (At ${App.utilz.humanize_seconds(time)})`
     }
   }
 
@@ -822,7 +822,7 @@ Hue.get_media_message = (data) => {
 // Setups a media object
 // This handles media objects received live from the server or from logged messages
 // This is the entry function for media objects to get registered, announced, and be ready for use
-Hue.setup_media_object = (type, mode, odata = {}) => {
+App.setup_media_object = (type, mode, odata = {}) => {
   let data = {}
 
   data.id = odata.id
@@ -843,19 +843,19 @@ Hue.setup_media_object = (type, mode, odata = {}) => {
   }
 
   if (data.type === `upload`) {
-    data.source = `${Hue.config.public_media_directory}/room/${Hue.room_id}/${type}/${data.source}`
+    data.source = `${App.config.public_media_directory}/room/${App.room_id}/${type}/${data.source}`
   }
 
   data.nice_date = data.date
-    ? Hue.utilz.nice_date(data.date)
-    : Hue.utilz.nice_date()
+    ? App.utilz.nice_date(data.date)
+    : App.utilz.nice_date()
 
   if (data.source.startsWith(`/`)) {
     data.source = window.location.origin + data.source
   }
   else if (data.source.startsWith(window.location.origin)) {
     if (!data.size) {
-      for (let obj of Hue[`${type}_changed`]) {
+      for (let obj of App[`${type}_changed`]) {
         if (obj.source === data.source) {
           data.type = obj.type
           data.size = obj.size
@@ -869,12 +869,12 @@ Hue.setup_media_object = (type, mode, odata = {}) => {
     data.date = Date.now()
   }
 
-  data.info = data.id ? `${Hue.getcode(data.id)}` : ``
+  data.info = data.id ? `${App.getcode(data.id)}` : ``
   data.info_html = ``
 
   if (data.size) {
-    data.info += ` | Size: ${Hue.utilz.size_string(data.size)}`
-    data.info_html += `<div>Size: ${Hue.utilz.size_string(data.size)}</div>`
+    data.info += ` | Size: ${App.utilz.size_string(data.size)}`
+    data.info_html += `<div>Size: ${App.utilz.size_string(data.size)}</div>`
   }
 
   if (data.query) {
@@ -883,11 +883,11 @@ Hue.setup_media_object = (type, mode, odata = {}) => {
 
   data.info += ` | ${data.nice_date}`
   data.info_html += `<div title='${data.nice_date}' class='modal_${type}_timeago'></div>`
-  data.hostname = Hue.utilz.get_hostname(data.source)
-  data.message = Hue.get_media_message(data)
+  data.hostname = App.utilz.get_hostname(data.source)
+  data.message = App.get_media_message(data)
 
   if (data.message) {
-    data.message_id = Hue.announce_media(type, data).message_id
+    data.message_id = App.announce_media(type, data).message_id
   }
 
   if (type === `tv`) {
@@ -897,31 +897,31 @@ Hue.setup_media_object = (type, mode, odata = {}) => {
   }
 
   if (!data.username) {
-    data.info = `Default ${Hue.utilz.capitalize_words(type)}`
+    data.info = `Default ${App.utilz.capitalize_words(type)}`
   }
 
   if (mode === `change` || mode === `show`) {
-    Hue[`push_${type}_changed`](data)
+    App[`push_${type}_changed`](data)
   }
 
   if (mode === `change`) {
-    if (data.user_id === Hue.user_id) {
-      Hue.set_media_locked({
+    if (data.user_id === App.user_id) {
+      App.set_media_locked({
         type: type,
         what: false,
         change: false
       })
     }
 
-    Hue.change_media({type: type})
+    App.change_media({type: type})
   }
 }
 
 // Announce a media change to the chat
-Hue.announce_media = (type, data) => {
-  return Hue.public_feedback(data.message, {
+App.announce_media = (type, data) => {
+  return App.public_feedback(data.message, {
     id: data.id,
-    brk: Hue.get_chat_icon(type),
+    brk: App.get_chat_icon(type),
     title: data.info,
     date: data.date,
     type: data.type,
@@ -935,88 +935,88 @@ Hue.announce_media = (type, data) => {
 }
 
 // Changes the media visibility based on current state
-Hue.change_media_visibility = (type, play = false) => {
-  if (Hue.room_state[`${type}_enabled`]) {
-    Hue.el(`#media`).style.display = `flex`
-    Hue.el(`#media_${type}`).style.display = `flex`
+App.change_media_visibility = (type, play = false) => {
+  if (App.room_state[`${type}_enabled`]) {
+    App.el(`#media`).style.display = `flex`
+    App.el(`#media_${type}`).style.display = `flex`
 
-    if (Hue.first_media_change && Hue.started) {
-      Hue.change_media({type: type, force: true, current_source: Hue[`${type}_locked`], play: play})
+    if (App.first_media_change && App.started) {
+      App.change_media({type: type, force: true, current_source: App[`${type}_locked`], play: play})
     }
 
-    Hue[`${type}_visible`] = true
-    Hue[`fix_${type}_frame`]()
+    App[`${type}_visible`] = true
+    App[`fix_${type}_frame`]()
   }
   else {
-    Hue.el(`#media_${type}`).style.display = `none`
+    App.el(`#media_${type}`).style.display = `none`
 
-    if (Hue.num_media_elements_visible() === 0) {
-      Hue.hide_media()
+    if (App.num_media_elements_visible() === 0) {
+      App.hide_media()
     }
 
-    Hue[`${type}_visible`] = false
+    App[`${type}_visible`] = false
   }
 
   if (type === `image`) {
-    if (Hue.tv_visible) {
-      Hue.fix_tv_frame()
+    if (App.tv_visible) {
+      App.fix_tv_frame()
     }
   }
   else if (type == `tv`) {
-    if (Hue.image_visible) {
-      Hue.fix_image_frame()
+    if (App.image_visible) {
+      App.fix_image_frame()
     }
 
-    if (!Hue.tv_visible) {
-      Hue.stop_tv()
+    if (!App.tv_visible) {
+      App.stop_tv()
     }
   }
 }
 
 // Set media info enabled
-Hue.set_media_info_enabled = (what) => {
-  Hue.room_state.media_info_enabled = what
-  Hue.check_media_info()
-  Hue.save_room_state()
+App.set_media_info_enabled = (what) => {
+  App.room_state.media_info_enabled = what
+  App.check_media_info()
+  App.save_room_state()
 }
 
 // Set default media info enabled
-Hue.set_default_media_info_enabled = () => {
-  Hue.room_state.media_info_enabled = Hue.config.room_state_default_media_info_enabled
-  Hue.check_media_info()
-  Hue.save_room_state()
+App.set_default_media_info_enabled = () => {
+  App.room_state.media_info_enabled = App.config.room_state_default_media_info_enabled
+  App.check_media_info()
+  App.save_room_state()
 }
 
 // Check media info
-Hue.check_media_info = () => {
-  let display = Hue.room_state.media_info_enabled ? `flex` : `none`
+App.check_media_info = () => {
+  let display = App.room_state.media_info_enabled ? `flex` : `none`
   document.documentElement.style.setProperty(`--media_info_display`, display)
-  Hue.fix_frames()
+  App.fix_frames()
 }
 
 // Reply to media
-Hue.reply_to_media = (type) => {
-  let item = Hue.get_current_media(type)
+App.reply_to_media = (type) => {
+  let item = App.get_current_media(type)
 
   if (item && item.id) {
-    let ans = Hue.get_message_by_id(item.id)
+    let ans = App.get_message_by_id(item.id)
 
     if (ans) {
-      Hue.start_reply(ans[0])
+      App.start_reply(ans[0])
     }
   }
 }
 
 // Get current media
-Hue.get_current_media = (type) => {
+App.get_current_media = (type) => {
   let item
 
-  if (Hue.room_state[`${type}_enabled`]) {
-    item = Hue[`loaded_${type}`]
+  if (App.room_state[`${type}_enabled`]) {
+    item = App[`loaded_${type}`]
   }
 
   if (!item || !item.id) {
-    item = Hue[`current_${type}`]()
+    item = App[`current_${type}`]()
   }
 
   return item

@@ -1,10 +1,10 @@
 // Pushes a changed image into the image changed array
-Hue.push_image_changed = (data) => {
-  Hue.image_changed.push(data)
+App.push_image_changed = (data) => {
+  App.image_changed.push(data)
 
-  if (Hue.image_changed.length > Hue.config.media_changed_crop_limit) {
-    Hue.image_changed = Hue.image_changed.slice(
-      Hue.image_changed.length - Hue.config.media_changed_crop_limit
+  if (App.image_changed.length > App.config.media_changed_crop_limit) {
+    App.image_changed = App.image_changed.slice(
+      App.image_changed.length - App.config.media_changed_crop_limit
     )
   }
 }
@@ -12,9 +12,9 @@ Hue.push_image_changed = (data) => {
 // Returns the current room image
 // The last image in the image changed array
 // This is not necesarily the user's loaded image
-Hue.current_image = () => {
-  if (Hue.image_changed.length > 0) {
-    return Hue.image_changed[Hue.image_changed.length - 1]
+App.current_image = () => {
+  if (App.image_changed.length > 0) {
+    return App.image_changed[App.image_changed.length - 1]
   }
   else {
     return {}
@@ -22,15 +22,15 @@ Hue.current_image = () => {
 }
 
 // Loads an image with a specified item
-Hue.show_image = (force = false) => {
-  let item = Hue.loaded_image
-  Hue.el(`#media_image_error`).style.display = `none`
+App.show_image = (force = false) => {
+  let item = App.loaded_image
+  App.el(`#media_image_error`).style.display = `none`
 
-  if (force || Hue.el(`#media_image_frame`).src !== item.source) {
-    Hue.el(`#media_image_frame`).src = item.source
+  if (force || App.el(`#media_image_frame`).src !== item.source) {
+    App.el(`#media_image_frame`).src = item.source
   }
   else {
-    Hue.after_image_load(false)
+    App.after_image_load(false)
   }
 }
 
@@ -38,7 +38,7 @@ Hue.show_image = (force = false) => {
 // It considers room state and permissions
 // It considers text or url to determine if it's valid
 // It includes a 'just check' flag to only return true or false
-Hue.change_image_source = (src, just_check = false, comment = ``) => {
+App.change_image_source = (src, just_check = false, comment = ``) => {
   let feedback = true
 
   if (just_check) {
@@ -46,14 +46,14 @@ Hue.change_image_source = (src, just_check = false, comment = ``) => {
   }
 
   if (!comment) {
-    let r = Hue.get_media_change_inline_comment(`image`, src)
+    let r = App.get_media_change_inline_comment(`image`, src)
     src = r.source
     comment = r.comment
   }
 
-  if (comment.length > Hue.config.max_media_comment_length) {
+  if (comment.length > App.config.max_media_comment_length) {
     if (feedback) {
-      Hue.checkmsg(`Comment is too long`)
+      App.checkmsg(`Comment is too long`)
     }
 
     return false
@@ -63,9 +63,9 @@ Hue.change_image_source = (src, just_check = false, comment = ``) => {
     return false
   }
 
-  src = Hue.utilz.single_space(src)
+  src = App.utilz.single_space(src)
 
-  if (src.length > Hue.config.max_media_source_length) {
+  if (src.length > App.config.max_media_source_length) {
     return false
   }
 
@@ -73,36 +73,36 @@ Hue.change_image_source = (src, just_check = false, comment = ``) => {
     return false
   }
 
-  if (src === Hue.current_image().source || src === Hue.current_image().query) {
+  if (src === App.current_image().source || src === App.current_image().query) {
     if (feedback) {
-      Hue.checkmsg(`Image is already set to that`)
+      App.checkmsg(`Image is already set to that`)
     }
 
     return false
   }
-  else if (Hue.utilz.is_url(src)) {
+  else if (App.utilz.is_url(src)) {
     src = src.replace(/\.gifv/g, `.gif`)
 
-    if (!Hue.utilz.is_image(src)) {
+    if (!App.utilz.is_image(src)) {
       if (feedback) {
-        Hue.checkmsg(`That doesn't seem to be an image`)
+        App.checkmsg(`That doesn't seem to be an image`)
       }
 
       return false
     }
   }
   else {
-    if (src.length > Hue.config.safe_limit_1) {
+    if (src.length > App.config.safe_limit_1) {
       if (feedback) {
-        Hue.checkmsg(`Query is too long`)
+        App.checkmsg(`Query is too long`)
       }
 
       return false
     }
 
-    if (!Hue.config.imgur_enabled) {
+    if (!App.config.imgur_enabled) {
       if (feedback) {
-        Hue.checkmsg(`Imgur support is not enabled`)
+        App.checkmsg(`Imgur support is not enabled`)
       }
 
       return false
@@ -113,70 +113,70 @@ Hue.change_image_source = (src, just_check = false, comment = ``) => {
     return true
   }
 
-  Hue.emit_change_image_source(src, comment)
+  App.emit_change_image_source(src, comment)
 }
 
 // Sends an emit to change the image source
-Hue.emit_change_image_source = (url, comment = ``) => {
-  Hue.socket_emit(`change_image_source`, { src: url, comment: comment })
+App.emit_change_image_source = (url, comment = ``) => {
+  App.socket_emit(`change_image_source`, { src: url, comment: comment })
 }
 
 // Updates dimensions of the image
-Hue.fix_image_frame = () => {
-  if (!Hue.image_visible) {
+App.fix_image_frame = () => {
+  if (!App.image_visible) {
     return
   }
 
-  if (!Hue.el(`#media_image_frame`).naturalHeight) {
+  if (!App.el(`#media_image_frame`).naturalHeight) {
     return
   }
 
-  Hue.fix_frame(`media_image_frame`)
+  App.fix_frame(`media_image_frame`)
 }
 
 // When clicking the Previous button in the image modal window
-Hue.modal_image_prev_click = () => {
-  if (Hue.image_changed.length < 2) {
+App.modal_image_prev_click = () => {
+  if (App.image_changed.length < 2) {
     return
   }
 
-  let index = Hue.image_changed.indexOf(Hue.loaded_modal_image) - 1
+  let index = App.image_changed.indexOf(App.loaded_modal_image) - 1
 
   if (index < 0) {
-    index = Hue.image_changed.length - 1
+    index = App.image_changed.length - 1
   }
 
-  let prev = Hue.image_changed[index]
-  Hue.show_modal_image(prev.id)
+  let prev = App.image_changed[index]
+  App.show_modal_image(prev.id)
 }
 
 // When clicking the Next button in the image modal window
-Hue.modal_image_next_click = (e) => {
-  if (Hue.image_changed.length < 2) {
+App.modal_image_next_click = (e) => {
+  if (App.image_changed.length < 2) {
     return
   }
 
-  let index = Hue.image_changed.indexOf(Hue.loaded_modal_image) + 1
+  let index = App.image_changed.indexOf(App.loaded_modal_image) + 1
 
-  if (index > Hue.image_changed.length - 1) {
+  if (index > App.image_changed.length - 1) {
     index = 0
   }
 
-  let next = Hue.image_changed[index]
-  Hue.show_modal_image(next.id)
+  let next = App.image_changed[index]
+  App.show_modal_image(next.id)
 }
 
 // Setups image modal window events
-Hue.setup_modal_image = () => {
-  let img = Hue.el(`#modal_image`)
+App.setup_modal_image = () => {
+  let img = App.el(`#modal_image`)
 
-  Hue.ev(img, `load`, () => {
-    Hue.el(`#modal_image`).style.display = `block`
+  App.ev(img, `load`, () => {
+    App.el(`#modal_image`).style.display = `block`
   })
 
-  Hue.ev(img, `error`, () => {
-    Hue.el(`#modal_image`).style.display = `none`
-    Hue.el(`#modal_image_error`).style.display = `block`
+  App.ev(img, `error`, () => {
+    App.el(`#modal_image`).style.display = `none`
+    App.el(`#modal_image_error`).style.display = `block`
   })
 
   let f = (e) => {
@@ -184,422 +184,422 @@ Hue.setup_modal_image = () => {
       return
     }
 
-    if (Hue.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
+    if (App.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
       return
     }
 
     let direction = e.deltaY > 0 ? `down` : `up`
 
     if (direction === `up`) {
-      Hue.modal_image_next_wheel_timer()
+      App.modal_image_next_wheel_timer()
     }
     else if (direction === `down`) {
-      Hue.modal_image_prev_wheel_timer()
+      App.modal_image_prev_wheel_timer()
     }
   }
 
-  Hue.ev(Hue.el(`#Msg-window-modal_image`), `wheel`, f)
+  App.ev(App.el(`#Msg-window-modal_image`), `wheel`, f)
 
-  Hue.ev(Hue.el(`#modal_image_container`), `click`, () => {
-    if (Hue.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
-      Hue.restore_modal_image()
+  App.ev(App.el(`#modal_image_container`), `click`, () => {
+    if (App.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
+      App.restore_modal_image()
     }
     else {
-      Hue.hide_modal_image()
+      App.hide_modal_image()
     }
   })
 
-  Hue.ev(Hue.el(`#modal_image_arrow_prev`), `click`, (e) => {
-    Hue.modal_image_prev_click()
+  App.ev(App.el(`#modal_image_arrow_prev`), `click`, (e) => {
+    App.modal_image_prev_click()
   })
 
-  Hue.ev(Hue.el(`#modal_image_arrow_next`), `click`, (e) => {
-    Hue.modal_image_next_click()
+  App.ev(App.el(`#modal_image_arrow_next`), `click`, (e) => {
+    App.modal_image_next_click()
   })
 
-  Hue.ev(Hue.el(`#modal_image_toolbar_expand`), `click`, (e) => {
-    if (Hue.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
-      Hue.restore_modal_image()
+  App.ev(App.el(`#modal_image_toolbar_expand`), `click`, (e) => {
+    if (App.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
+      App.restore_modal_image()
     }
     else {
-      Hue.expand_modal_image()
+      App.expand_modal_image()
     }
   })
 
-  Hue.ev(Hue.el(`#modal_image_toolbar_menu`), `click`, (e) => {
-    Hue.open_url_menu(Hue.loaded_modal_image)
+  App.ev(App.el(`#modal_image_toolbar_menu`), `click`, (e) => {
+    App.open_url_menu(App.loaded_modal_image)
   })
 
-  Hue.ev(Hue.el(`#modal_image_toolbar_list`), `click`, (e) => {
-    Hue.show_image_list()
+  App.ev(App.el(`#modal_image_toolbar_list`), `click`, (e) => {
+    App.show_image_list()
   })
 
-  let subheader = Hue.el(`#modal_image_subheader`)
+  let subheader = App.el(`#modal_image_subheader`)
 
-  Hue.ev(subheader, `click`, () => {
-    Hue.open_view_text(subheader.textContent)
+  App.ev(subheader, `click`, () => {
+    App.open_view_text(subheader.textContent)
   })
 
-  Hue.ev(Hue.el(`#modal_image_profilepic`), `click`, (e) => {
-    let data = Hue.loaded_modal_image
-    Hue.show_profile(data.username, data.user_id)
+  App.ev(App.el(`#modal_image_profilepic`), `click`, (e) => {
+    let data = App.loaded_modal_image
+    App.show_profile(data.username, data.user_id)
   })
 
-  Hue.ev(Hue.el(`#modal_image_username`), `click`, (e) => {
-    let data = Hue.loaded_modal_image
-    Hue.show_profile(data.username, data.user_id)
+  App.ev(App.el(`#modal_image_username`), `click`, (e) => {
+    let data = App.loaded_modal_image
+    App.show_profile(data.username, data.user_id)
   })
 }
 
 // Expand modal image to give it full height
-Hue.expand_modal_image = () => {
-  Hue.el(`#modal_image_container`).classList.add(`expanded_image`)
-  Hue.el(`#modal_image_toolbar_expand`).textContent = `Restore`
+App.expand_modal_image = () => {
+  App.el(`#modal_image_container`).classList.add(`expanded_image`)
+  App.el(`#modal_image_toolbar_expand`).textContent = `Restore`
 }
 
 // Restore expanded modal image
-Hue.restore_modal_image = () => {
-  Hue.el(`#modal_image_container`).classList.remove(`expanded_image`)
-  Hue.el(`#modal_image_toolbar_expand`).textContent = `Expand`
+App.restore_modal_image = () => {
+  App.el(`#modal_image_container`).classList.remove(`expanded_image`)
+  App.el(`#modal_image_toolbar_expand`).textContent = `Expand`
 }
 
 // Expand view image to give it full height
-Hue.expand_view_image = () => {
-  Hue.el(`#view_image_container`).classList.add(`expanded_image`)
-  Hue.el(`#view_image_toolbar_expand`).textContent = `Restore`
+App.expand_view_image = () => {
+  App.el(`#view_image_container`).classList.add(`expanded_image`)
+  App.el(`#view_image_toolbar_expand`).textContent = `Restore`
 }
 
 // Restore expanded view image
-Hue.restore_view_image = () => {
-  Hue.el(`#view_image_container`).classList.remove(`expanded_image`)
-  Hue.el(`#view_image_toolbar_expand`).textContent = `Expand`
+App.restore_view_image = () => {
+  App.el(`#view_image_container`).classList.remove(`expanded_image`)
+  App.el(`#view_image_toolbar_expand`).textContent = `Expand`
 }
 
 // Clears image information in the modal image window
-Hue.clear_modal_image_info = () => {
-  Hue.el(`#modal_image_header_info`).innerHTML = ``
-  Hue.el(`#modal_image_subheader`).textContent = ``
+App.clear_modal_image_info = () => {
+  App.el(`#modal_image_header_info`).innerHTML = ``
+  App.el(`#modal_image_subheader`).textContent = ``
 }
 
 // Clears information in the view image window
-Hue.clear_view_image_info = () => {
-  Hue.el(`#view_image_subheader`).textContent = ``
+App.clear_view_image_info = () => {
+  App.el(`#view_image_subheader`).textContent = ``
 }
 
 // Shows the modal image window
-Hue.show_modal_image = (id = 0) => {
+App.show_modal_image = (id = 0) => {
   let data
 
   if (id) {
-    data = Hue.get_media_item(`image`, id)
+    data = App.get_media_item(`image`, id)
   }
-  else if (Hue.loaded_image.source) {
-    data = Hue.loaded_image
+  else if (App.loaded_image.source) {
+    data = App.loaded_image
   }
 
   if (!data) {
-    data = Hue.image_changed[Hue.image_changed.length - 1]
+    data = App.image_changed[App.image_changed.length - 1]
   }
 
-  Hue.loaded_modal_image = data
-  let img = Hue.el(`#modal_image`)
+  App.loaded_modal_image = data
+  let img = App.el(`#modal_image`)
   img.style.display = `none`
-  Hue.el(`#modal_image_error`).style.display = `none`
+  App.el(`#modal_image_error`).style.display = `none`
   img.src = data.source
 
-  Hue.el(`#modal_image_header_info`).innerHTML = data.info_html
-  Hue.el(`#modal_image_header_info .modal_image_timeago`)
-    .textContent = Hue.utilz.timeago(data.date)
+  App.el(`#modal_image_header_info`).innerHTML = data.info_html
+  App.el(`#modal_image_header_info .modal_image_timeago`)
+    .textContent = App.utilz.timeago(data.date)
 
-  Hue.horizontal_separator(Hue.el(`#modal_image_header_info`))
+  App.horizontal_separator(App.el(`#modal_image_header_info`))
 
   if (data.comment || data.query || data.hostname) {
-    Hue.el(`#modal_image_subheader`).textContent = data.comment || data.query || data.hostname
+    App.el(`#modal_image_subheader`).textContent = data.comment || data.query || data.hostname
   }
   else {
-    Hue.el(`#modal_image_subheader`).textContent = ``
+    App.el(`#modal_image_subheader`).textContent = ``
   }
 
   let dummy_image = new Image()
 
   dummy_image.onload = () => {
-    Hue.apply_modal_image_resolution(dummy_image, data.source)
+    App.apply_modal_image_resolution(dummy_image, data.source)
   }
 
   dummy_image.src = data.source
 
-  let profilepic = Hue.el(`#modal_image_profilepic`)
-  profilepic.src = Hue.get_profilepic(data.user_id)
+  let profilepic = App.el(`#modal_image_profilepic`)
+  profilepic.src = App.get_profilepic(data.user_id)
 
-  Hue.ev(profilepic, `error`, () => {
-    Hue.fallback_profilepic(profilepic)
+  App.ev(profilepic, `error`, () => {
+    App.fallback_profilepic(profilepic)
   })
 
-  Hue.el(`#modal_image_username`).textContent = data.username
+  App.el(`#modal_image_username`).textContent = data.username
 
-  Hue.horizontal_separator(Hue.el(`#modal_image_header_info_container`))
-  Hue.msg_modal_image.show()
+  App.horizontal_separator(App.el(`#modal_image_header_info_container`))
+  App.msg_modal_image.show()
 }
 
 // Hide modal image
-Hue.hide_modal_image = () => {
-  Hue.msg_modal_image.close()
+App.hide_modal_image = () => {
+  App.msg_modal_image.close()
 }
 
 // Starts events for the image
-Hue.start_image_events = () => {
-  Hue.ev(Hue.el(`#media_image_frame`), `load`, (e) => {
-    Hue.after_image_load()
+App.start_image_events = () => {
+  App.ev(App.el(`#media_image_frame`), `load`, (e) => {
+    App.after_image_load()
   })
 
-  Hue.ev(Hue.el(`#media_image_frame`), `error`, () => {
-    Hue.el(`#media_image_frame`).style.display = `none`
-    Hue.el(`#media_image_error`).style.display = `initial`
-    Hue.apply_media_info(`image`)
+  App.ev(App.el(`#media_image_frame`), `error`, () => {
+    App.el(`#media_image_frame`).style.display = `none`
+    App.el(`#media_image_error`).style.display = `initial`
+    App.apply_media_info(`image`)
   })
 
-  Hue.el(`#media_image_frame`).style.height = 0
-  Hue.el(`#media_image_frame`).style.width = 0
+  App.el(`#media_image_frame`).style.height = 0
+  App.el(`#media_image_frame`).style.width = 0
 }
 
 // This runs after an image successfully loads
-Hue.after_image_load = (ok = true) => {
-  Hue.el(`#media_image_frame`).style.display = `initial`
-  Hue.apply_media_info(`image`)
+App.after_image_load = (ok = true) => {
+  App.el(`#media_image_frame`).style.display = `initial`
+  App.apply_media_info(`image`)
 
   if (ok) {
-    Hue.fix_image_frame()
+    App.fix_image_frame()
   }
 }
 
 // Setups image view when clicked
 // When an image in the chat is clicked the image is shown full sized in a window
-Hue.setup_view_image = () => {
-  let img = Hue.el(`#view_image`)
+App.setup_view_image = () => {
+  let img = App.el(`#view_image`)
 
-  Hue.ev(img, `load`, () => {
+  App.ev(img, `load`, () => {
     img.style.display = `block`
   })
 
-  Hue.ev(img, `error`, () => {
-    Hue.el(`#view_image`).style.display = `none`
-    Hue.el(`#view_image_error`).style.display = `block`
+  App.ev(img, `error`, () => {
+    App.el(`#view_image`).style.display = `none`
+    App.el(`#view_image_error`).style.display = `block`
   })
 
-  Hue.ev(Hue.el(`#view_image_container`), `click`, () => {
-    if (Hue.el(`#view_image_container`).classList.contains(`expanded_image`)) {
-      Hue.restore_view_image()
+  App.ev(App.el(`#view_image_container`), `click`, () => {
+    if (App.el(`#view_image_container`).classList.contains(`expanded_image`)) {
+      App.restore_view_image()
     }
     else {
-      Hue.msg_view_image.close()
+      App.msg_view_image.close()
     }
   })
 
-  Hue.ev(Hue.el(`#view_image_toolbar_expand`), `click`, (e) => {
-    if (Hue.el(`#view_image_container`).classList.contains(`expanded_image`)) {
-      Hue.restore_view_image()
+  App.ev(App.el(`#view_image_toolbar_expand`), `click`, (e) => {
+    if (App.el(`#view_image_container`).classList.contains(`expanded_image`)) {
+      App.restore_view_image()
     }
     else {
-      Hue.expand_view_image()
+      App.expand_view_image()
     }
   })
 
-  Hue.ev(Hue.el(`#view_image_toolbar_url`), `click`, () => {
-    Hue.open_view_text(Hue.view_image_source)
+  App.ev(App.el(`#view_image_toolbar_url`), `click`, () => {
+    App.open_view_text(App.view_image_source)
   })
 
-  Hue.ev(Hue.el(`#view_image_toolbar_link`), `click`, () => {
-    Hue.load_media_link(`image`, Hue.view_image_source, ``)
-    Hue.msg_open_url.close()
+  App.ev(App.el(`#view_image_toolbar_link`), `click`, () => {
+    App.load_media_link(`image`, App.view_image_source, ``)
+    App.msg_open_url.close()
   })
 
-  Hue.ev(Hue.el(`#view_image_profilepic`), `click`, (e) => {
-    Hue.show_profile(Hue.view_image_username, Hue.view_image_user_id)
+  App.ev(App.el(`#view_image_profilepic`), `click`, (e) => {
+    App.show_profile(App.view_image_username, App.view_image_user_id)
   })
 
-  Hue.ev(Hue.el(`#view_image_username`), `click`, (e) => {
-    Hue.show_profile(Hue.view_image_username, Hue.view_image_user_id)
+  App.ev(App.el(`#view_image_username`), `click`, (e) => {
+    App.show_profile(App.view_image_username, App.view_image_user_id)
   })
 
-  let subheader = Hue.el(`#view_image_subheader`)
+  let subheader = App.el(`#view_image_subheader`)
 
-  Hue.ev(subheader, `click`, () => {
-    Hue.open_view_text(subheader.textContent)
+  App.ev(subheader, `click`, () => {
+    App.open_view_text(subheader.textContent)
   })
 }
 
 // Shows a window with an image at full size
-Hue.view_image = (src, username, user_id) => {
+App.view_image = (src, username, user_id) => {
   src = src.replace(`.gifv`, `.gif`)
-  Hue.el(`#view_image`).style.display = `none`
-  Hue.el(`#view_image_error`).style.display = `none`
-  Hue.el(`#view_image`).src = src
+  App.el(`#view_image`).style.display = `none`
+  App.el(`#view_image_error`).style.display = `none`
+  App.el(`#view_image`).src = src
 
-  let hostname = Hue.utilz.get_hostname(src)
-  Hue.el(`#view_image_subheader`).textContent = hostname
+  let hostname = App.utilz.get_hostname(src)
+  App.el(`#view_image_subheader`).textContent = hostname
 
   let dummy_image = new Image()
 
   dummy_image.onload = () => {
-    Hue.apply_view_image_resolution(dummy_image, src)
+    App.apply_view_image_resolution(dummy_image, src)
   }
 
-  let profilepic = Hue.el(`#view_image_profilepic`)
-  profilepic.src = Hue.get_profilepic(user_id)
-  Hue.ev(profilepic, `error`, () => {
-    Hue.fallback_profilepic(profilepic)
+  let profilepic = App.el(`#view_image_profilepic`)
+  profilepic.src = App.get_profilepic(user_id)
+  App.ev(profilepic, `error`, () => {
+    App.fallback_profilepic(profilepic)
   })
 
-  Hue.el(`#view_image_username`).textContent = username
+  App.el(`#view_image_username`).textContent = username
 
   dummy_image.src = src
-  Hue.view_image_source = src
-  Hue.view_image_username = username
-  Hue.view_image_user_id = user_id
-  Hue.msg_view_image.show()
+  App.view_image_source = src
+  App.view_image_username = username
+  App.view_image_user_id = user_id
+  App.msg_view_image.show()
 }
 
 // Shows the window to add a comment to an image upload
-Hue.show_image_upload_comment = (file, type) => {
-  Hue.el(`#image_upload_comment_image_feedback`).style.display = `none`
-  Hue.el(`#image_upload_comment_image_preview`).style.display = `block`
+App.show_image_upload_comment = (file, type) => {
+  App.el(`#image_upload_comment_image_feedback`).style.display = `none`
+  App.el(`#image_upload_comment_image_preview`).style.display = `block`
 
-  Hue.image_upload_comment_file = file
-  Hue.image_upload_comment_type = type
+  App.image_upload_comment_file = file
+  App.image_upload_comment_type = type
 
   if (type === `drawing`) {
-    Hue.el(`#image_upload_comment_change`).textContent = `Re-Draw`
+    App.el(`#image_upload_comment_change`).textContent = `Re-Draw`
   }
   else if (type === `upload`) {
-    Hue.el(`#image_upload_comment_change`).textContent = `Re-Choose`
+    App.el(`#image_upload_comment_change`).textContent = `Re-Choose`
   }
   else if (type === `screenshot`) {
-    Hue.el(`#image_upload_comment_change`).textContent = `Re-Take`
+    App.el(`#image_upload_comment_change`).textContent = `Re-Take`
   }
   else if (type === `random_canvas`) {
-    Hue.el(`#image_upload_comment_change`).textContent = `Re-Generate`
+    App.el(`#image_upload_comment_change`).textContent = `Re-Generate`
   }
 
-  let name = `${Hue.utilz.slice_string_end(
+  let name = `${App.utilz.slice_string_end(
       file.name,
       20
-    )} (${Hue.utilz.size_string(file.size, 2)})`
+    )} (${App.utilz.size_string(file.size, 2)})`
 
-  Hue.el(`#image_upload_name`).textContent = name
-  Hue.el(`#Msg-titlebar-image_upload_comment`).title = file.name
-  Hue.el(`#image_upload_comment_image_preview`).src = URL.createObjectURL(file)
+  App.el(`#image_upload_name`).textContent = name
+  App.el(`#Msg-titlebar-image_upload_comment`).title = file.name
+  App.el(`#image_upload_comment_image_preview`).src = URL.createObjectURL(file)
 
-  Hue.msg_image_upload_comment.show(() => {
-    Hue.el(`#image_upload_comment_input`).focus()
+  App.msg_image_upload_comment.show(() => {
+    App.el(`#image_upload_comment_input`).focus()
   })
 }
 
 // Setups the upload image comment window
-Hue.setup_image_upload_comment = () => {
-  let image = Hue.el(`#image_upload_comment_image_preview`)
+App.setup_image_upload_comment = () => {
+  let image = App.el(`#image_upload_comment_image_preview`)
 
-  Hue.ev(image, `error`, () => {
+  App.ev(image, `error`, () => {
     image.style.display = `none`
-    Hue.el(`#image_upload_comment_image_feedback`).style.display = `inline`
+    App.el(`#image_upload_comment_image_feedback`).style.display = `inline`
   })
 
-  Hue.ev(Hue.el(`#image_upload_comment_submit`), `click`, () => {
-    Hue.process_image_upload_comment()
+  App.ev(App.el(`#image_upload_comment_submit`), `click`, () => {
+    App.process_image_upload_comment()
   })
 
-  Hue.ev(Hue.el(`#image_upload_comment_change`), `click`, () => {
-    if (Hue.image_upload_comment_type === `drawing`) {
-      Hue.msg_image_upload_comment.close()
-      Hue.open_draw_image(`image`)
+  App.ev(App.el(`#image_upload_comment_change`), `click`, () => {
+    if (App.image_upload_comment_type === `drawing`) {
+      App.msg_image_upload_comment.close()
+      App.open_draw_image(`image`)
     }
-    else if (Hue.image_upload_comment_type === `upload`) {
-      Hue.msg_image_upload_comment.close()
-      Hue.show_upload_image()
+    else if (App.image_upload_comment_type === `upload`) {
+      App.msg_image_upload_comment.close()
+      App.show_upload_image()
     }
-    else if (Hue.image_upload_comment_type === `screenshot`) {
-      Hue.msg_image_upload_comment.close()
-      Hue.take_screenshot()
+    else if (App.image_upload_comment_type === `screenshot`) {
+      App.msg_image_upload_comment.close()
+      App.take_screenshot()
     }
-    else if (Hue.image_upload_comment_type === `random_canvas`) {
-      Hue.make_random_image(`image`)
+    else if (App.image_upload_comment_type === `random_canvas`) {
+      App.make_random_image(`image`)
     }
   })
 }
 
 // Submits the upload image comment window
 // Uploads the file and the optional comment
-Hue.process_image_upload_comment = () => {
-  if (!Hue.msg_image_upload_comment.is_open()) {
+App.process_image_upload_comment = () => {
+  if (!App.msg_image_upload_comment.is_open()) {
     return
   }
 
-  let file = Hue.image_upload_comment_file
-  let comment = Hue.utilz.single_space(Hue.el(`#image_upload_comment_input`).value)
+  let file = App.image_upload_comment_file
+  let comment = App.utilz.single_space(App.el(`#image_upload_comment_input`).value)
 
-  if (comment.length > Hue.config.max_media_comment_length) {
+  if (comment.length > App.config.max_media_comment_length) {
     return
   }
 
-  Hue.upload_file({ file: file, action: `image_upload`, comment: comment })
-  Hue.close_all_modals()
+  App.upload_file({ file: file, action: `image_upload`, comment: comment })
+  App.close_all_modals()
 }
 
 // Show link image
-Hue.show_link_image = () => {
-  Hue.msg_link_image.show()
+App.show_link_image = () => {
+  App.msg_link_image.show()
 }
 
 // Submit link image
-Hue.link_image_submit = () => {
-  let val = Hue.el(`#link_image_input`).value.trim()
+App.link_image_submit = () => {
+  let val = App.el(`#link_image_input`).value.trim()
 
   if (val !== ``) {
-    Hue.change_image_source(val)
-    Hue.close_all_modals()
+    App.change_image_source(val)
+    App.close_all_modals()
   }
 }
 
 // Trigger upload image picker
-Hue.show_upload_image = () => {
-  Hue.upload_media = `image`
-  Hue.trigger_dropzone()
+App.show_upload_image = () => {
+  App.upload_media = `image`
+  App.trigger_dropzone()
 }
 
 // Apply modal image resolution to modal image
-Hue.apply_modal_image_resolution = (image, src) => {
+App.apply_modal_image_resolution = (image, src) => {
   if (image.src !== src) {
     return
   }
 
-  let subheader = Hue.el(`#modal_image_subheader`)
+  let subheader = App.el(`#modal_image_subheader`)
   let text = subheader.textContent
   subheader.textContent = `${text} (${image.width} x ${image.height})`
 }
 
 // Apply modal image resolution to view image
-Hue.apply_view_image_resolution = (image, src) => {
+App.apply_view_image_resolution = (image, src) => {
   if (image.src !== src) {
     return
   }
 
-  let subheader = Hue.el(`#view_image_subheader`)
+  let subheader = App.el(`#view_image_subheader`)
   let text = subheader.textContent
   subheader.textContent = `${text} (${image.width} x ${image.height})`
 }
 
 // Take a screenshot
-Hue.take_screenshot = async () => {
+App.take_screenshot = async () => {
   let stream = await navigator.mediaDevices.getDisplayMedia({
     audio: false,
     video: {mediaSource: `screen`}
   })
 
-  let video = Hue.create(`video`)
-  let canvas = Hue.create(`canvas`)
+  let video = App.create(`video`)
+  let canvas = App.create(`canvas`)
   let context = canvas.getContext(`2d`)
   video.srcObject = stream
 
-  Hue.ev(video, `loadeddata`, async () => {
+  App.ev(video, `loadeddata`, async () => {
     stream.getTracks().forEach(track => track.stop())
     let { videoWidth, videoHeight } = video
     canvas.width = videoWidth
@@ -610,23 +610,23 @@ Hue.take_screenshot = async () => {
     canvas.toBlob(
       (blob) => {
         blob.name = `screenshot.jpg`
-        Hue.show_image_upload_comment(blob, `screenshot`)
+        App.show_image_upload_comment(blob, `screenshot`)
       },
       `image/jpeg`,
-      Hue.config.image_blob_quality
+      App.config.image_blob_quality
     )
   })
 }
 
 // Make a random image
-Hue.make_random_image = (target) => {
-  let canvas = Hue.create(`canvas`)
+App.make_random_image = (target) => {
+  let canvas = App.create(`canvas`)
 
   canvas.width = 1280
   canvas.height = 1280
 
-  jdenticon.update(canvas, Hue.utilz.random_sequence(9), {
-    backColor: Hue.colorlib.get_random_hex()
+  jdenticon.update(canvas, App.utilz.random_sequence(9), {
+    backColor: App.colorlib.get_random_hex()
   })
 
   canvas.toBlob(
@@ -634,16 +634,16 @@ Hue.make_random_image = (target) => {
       blob.name = `random.png`
 
       if (target === `image`) {
-        Hue.show_image_upload_comment(blob, `random_canvas`)
+        App.show_image_upload_comment(blob, `random_canvas`)
       }
       else if (target === `profilepic`) {
-        Hue.profilepic_selected(blob, `random_canvas`)
+        App.profilepic_selected(blob, `random_canvas`)
       }
       else if (target === `background`) {
-        Hue.background_selected(blob)
+        App.background_selected(blob)
       }
     },
     `image/png`,
-    Hue.config.image_blob_quality
+    App.config.image_blob_quality
   )
 }

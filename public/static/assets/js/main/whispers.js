@@ -1,45 +1,45 @@
 // Processes whisper commands to determine how to handle the operation
-Hue.process_write_whisper = (arg) => {
+App.process_write_whisper = (arg) => {
   if (!arg) {
-    Hue.checkmsg(`Format: ${Hue.config.commands_prefix}whisper [username] [message]`)
+    App.checkmsg(`Format: ${App.config.commands_prefix}whisper [username] [message]`)
     return
   }
 
-  let user = Hue.get_user_by_username(arg)
+  let user = App.get_user_by_username(arg)
 
   if (arg.includes(`>`)) {
-    Hue.send_inline_whisper(arg)
+    App.send_inline_whisper(arg)
   }
   else if (user) {
-    Hue.write_whisper([user.username], `user`)
+    App.write_whisper([user.username], `user`)
   }
   else if (arg.includes(`&&`)) {
     let split = arg.split(`&&`).map((x) => x.trim())
-    Hue.write_whisper(split, `user`)
+    App.write_whisper(split, `user`)
   }
   else {
-    let matches = Hue.get_matching_usernames(arg)
+    let matches = App.get_matching_usernames(arg)
     if (matches.length === 1) {
       let message = arg.replace(matches[0], ``)
       let arg2 = `${matches[0]} > ${message}`
-      Hue.send_inline_whisper(arg2)
+      App.send_inline_whisper(arg2)
     }
     else if (matches.length > 1) {
-      Hue.checkmsg(
-        `Multiple usernames matched. Use the proper > syntax. For example ${Hue.config.commands_prefix}whisper bob > hi`
+      App.checkmsg(
+        `Multiple usernames matched. Use the proper > syntax. For example ${App.config.commands_prefix}whisper bob > hi`
       )
 
       return
     }
     else {
-      Hue.user_not_in_room()
+      App.user_not_in_room()
       return
     }
   }
 }
 
 // Sends a whisper using the inline format (/whisper user > hello)
-Hue.send_inline_whisper = (arg) => {
+App.send_inline_whisper = (arg) => {
   let split = arg.split(`>`)
 
   if (split.length < 2) {
@@ -48,7 +48,7 @@ Hue.send_inline_whisper = (arg) => {
 
   let username = split[0].trim()
   let usplit = username.split(`&&`).map(x => x.trim())
-  let message = Hue.utilz.single_space(split.slice(1).join(`>`))
+  let message = App.utilz.single_space(split.slice(1).join(`>`))
 
   if (!message) {
     return
@@ -57,14 +57,14 @@ Hue.send_inline_whisper = (arg) => {
   let message_split = message.split(`\n`)
   let num_lines = message_split.length
 
-  if (num_lines > Hue.config.max_num_newlines) {
+  if (num_lines > App.config.max_num_newlines) {
     return
   }
 
   let c_usernames = []
 
   for (let u of usplit) {
-    let cu = Hue.check_user_in_room(u)
+    let cu = App.check_user_in_room(u)
 
     if (!cu) {
       continue
@@ -77,15 +77,15 @@ Hue.send_inline_whisper = (arg) => {
     return
   }
 
-  Hue.do_send_whisper({message: message, usernames: c_usernames, type: `user`})
+  App.do_send_whisper({message: message, usernames: c_usernames, type: `user`})
 }
 
 // Shows the window to write whispers
-Hue.write_whisper = (usernames = [], type = `user`) => {
+App.write_whisper = (usernames = [], type = `user`) => {
   let c_usernames = []
 
   for (let u of usernames) {
-    let cu = Hue.check_user_in_room(u)
+    let cu = App.check_user_in_room(u)
 
     if (cu) {
       c_usernames.push(cu)
@@ -96,189 +96,189 @@ Hue.write_whisper = (usernames = [], type = `user`) => {
   }
 
   if (type === `user`) {
-    Hue.el(`#write_whisper_add_user`).style.display = `block`
+    App.el(`#write_whisper_add_user`).style.display = `block`
   }
   else {
-    Hue.el(`#write_whisper_add_user`).style.display = `none`
+    App.el(`#write_whisper_add_user`).style.display = `none`
   }
 
-  Hue.horizontal_separator(Hue.el(`#write_whisper_titlebar`))
+  App.horizontal_separator(App.el(`#write_whisper_titlebar`))
 
-  Hue.message_type = type
-  Hue.whisper_users = []
+  App.message_type = type
+  App.whisper_users = []
 
   for (let username of c_usernames) {
-    Hue.update_whisper_users(username)
+    App.update_whisper_users(username)
   }
 
-  Hue.msg_write_whisper.show(() => {
-    Hue.focus_write_whisper()
+  App.msg_write_whisper.show(() => {
+    App.focus_write_whisper()
   })
 
   if (usernames.length === 0) {
     if (type !== `system_broadcast`) {
-      Hue.show_userlist_window(`whisper`)
+      App.show_userlist_window(`whisper`)
     }
   }
 }
 
 // Updates the user receivers in the whisper window after picking a username in the user list
-Hue.update_whisper_users = (username) => {
-  if (!Hue.whisper_users.includes(username)) {
-    Hue.whisper_users.push(username)
+App.update_whisper_users = (username) => {
+  if (!App.whisper_users.includes(username)) {
+    App.whisper_users.push(username)
   }
   else {
-    for (let i = 0; i < Hue.whisper_users.length; i++) {
-      let u = Hue.whisper_users[i]
+    for (let i = 0; i < App.whisper_users.length; i++) {
+      let u = App.whisper_users[i]
 
       if (u === username) {
-        Hue.whisper_users.splice(i, 1)
+        App.whisper_users.splice(i, 1)
         break
       }
     }
   }
 
-  let users_el = Hue.el(`#write_whisper_users`)
+  let users_el = App.el(`#write_whisper_users`)
   users_el.innerHTML = ``
 
-  for (let username of Hue.whisper_users) {
-    let user = Hue.get_user_by_username(username)
-    users_el.append(Hue.make_whisper_user(user, `sent`, () => {
-      Hue.update_whisper_users(username)
+  for (let username of App.whisper_users) {
+    let user = App.get_user_by_username(username)
+    users_el.append(App.make_whisper_user(user, `sent`, () => {
+      App.update_whisper_users(username)
     }))
   }
 
-  Hue.msg_userlist.close()
-  Hue.focus_write_whisper()
+  App.msg_userlist.close()
+  App.focus_write_whisper()
 }
 
 // Submits the whisper window form
 // Handles different types of whispers
-Hue.submit_write_whisper = () => {
-  let message = Hue.utilz.remove_multiple_empty_lines(Hue.el(`#write_whisper_area`).value).trim()
-  let diff = Hue.config.max_whispers_post_length - message.length
+App.submit_write_whisper = () => {
+  let message = App.utilz.remove_multiple_empty_lines(App.el(`#write_whisper_area`).value).trim()
+  let diff = App.config.max_whispers_post_length - message.length
 
-  if (diff === Hue.config.max_whispers_post_length) {
+  if (diff === App.config.max_whispers_post_length) {
     return
   }
   else if (diff < 0) {
-    Hue.checkmsg(`Character limit exceeded by ${Math.abs(diff)}`)
+    App.checkmsg(`Character limit exceeded by ${Math.abs(diff)}`)
     return
   }
 
   let message_split = message.split(`\n`)
   let num_lines = message_split.length
 
-  if (num_lines > Hue.config.max_num_newlines) {
-    Hue.checkmsg(`Too many linebreaks`)
+  if (num_lines > App.config.max_num_newlines) {
+    App.checkmsg(`Too many linebreaks`)
     return
   }
 
-  let ans = Hue.send_whisper(message)
+  let ans = App.send_whisper(message)
 
   if (ans) {
-    Hue.el(`#write_whisper_area`).value = ``
-    Hue.msg_write_whisper.close()
+    App.el(`#write_whisper_area`).value = ``
+    App.msg_write_whisper.close()
   }
 }
 
 // On whisper received
-Hue.whisper_received = (data) => {
+App.whisper_received = (data) => {
   data.mode = `received`
   let message = `Whisper from ${data.username}`
 
   let func = () => {
-    Hue.show_whisper(data, `received`)
+    App.show_whisper(data, `received`)
   }
 
-  let item = Hue.make_info_popup_item({icon: `envelope`, message: message, push: false})
-  data.notification = Hue.push_whisper(message, func, false, data)
-  Hue.on_activity(`whisper`)
+  let item = App.make_info_popup_item({icon: `envelope`, message: message, push: false})
+  data.notification = App.push_whisper(message, func, false, data)
+  App.on_activity(`whisper`)
 
-  if (Hue.get_setting(`open_whispers_automatically`)) {
-    if (!Hue.msg_whispers.is_open()) {
-      Hue.show_whispers()
+  if (App.get_setting(`open_whispers_automatically`)) {
+    if (!App.msg_whispers.is_open()) {
+      App.show_whispers()
     }
   }
   else {
-    Hue.show_popup(Hue.make_info_popup(func), item)
+    App.show_popup(App.make_info_popup(func), item)
   }
 }
 
 // On whisper sent
-Hue.whisper_sent = (data) => {
+App.whisper_sent = (data) => {
   data.mode = `sent`
   let usernames = Array.from(data.users, x => x.username)
-  let message = `Whisper sent to ${Hue.utilz.nice_list(usernames)}`
+  let message = `Whisper sent to ${App.utilz.nice_list(usernames)}`
 
   let func = () => {
-    Hue.show_whisper(data, `sent`)
+    App.show_whisper(data, `sent`)
   }
 
-  let item = Hue.make_info_popup_item({icon: `envelope`, message: message, push: false})
-  data.notification = Hue.push_whisper(message, func, true, data)
-  Hue.show_popup(Hue.make_info_popup(func), item)
+  let item = App.make_info_popup_item({icon: `envelope`, message: message, push: false})
+  data.notification = App.push_whisper(message, func, true, data)
+  App.show_popup(App.make_info_popup(func), item)
 }
 
 // Shows a whisper message
-Hue.show_whisper = (data, mode) => {
-  let container = Hue.el(`#show_whisper_container`)
-  let write_button = Hue.el(`#show_whisper_write`)
+App.show_whisper = (data, mode) => {
+  let container = App.el(`#show_whisper_container`)
+  let write_button = App.el(`#show_whisper_write`)
   let users
 
   if (mode === `received`) {
     users = [{username: data.username, user_id: data.user_id}]
-    Hue.dataset(container, `username`, data.username)
-    Hue.dataset(container, `user_id`, data.user_id)
+    App.dataset(container, `username`, data.username)
+    App.dataset(container, `user_id`, data.user_id)
     write_button.textContent = `Reply`
   }
   else if (mode === `sent`) {
     users = data.users
-    Hue.dataset(container, `username`, Hue.username)
-    Hue.dataset(container, `user_id`, Hue.user_id)
+    App.dataset(container, `username`, App.username)
+    App.dataset(container, `user_id`, App.user_id)
     write_button.textContent = `Write Again`
   }
 
-  let users_el = Hue.el(`#show_whisper_users`)
+  let users_el = App.el(`#show_whisper_users`)
   users_el.innerHTML = ``
 
   for (let user of users) {
-    users_el.append(Hue.make_whisper_user(user, mode, () => {
-      Hue.show_profile(user.username, user.user_id)
+    users_el.append(App.make_whisper_user(user, mode, () => {
+      App.show_profile(user.username, user.user_id)
     }))
   }
 
-  Hue.show_whisper_data = data
-  let message_html = Hue.utilz.make_html_safe(data.message)
-  message_html = Hue.parse_text(message_html)
+  App.show_whisper_data = data
+  let message_html = App.utilz.make_html_safe(data.message)
+  message_html = App.parse_text(message_html)
 
   if (mode === "sent") {
     message_html = `<div class="show_whisper_detail">You said:</div>${message_html}`
   }
 
-  let text_el = Hue.el(`#show_whisper_text`)
+  let text_el = App.el(`#show_whisper_text`)
   text_el.innerHTML = message_html
-  Hue.urlize(text_el)
+  App.urlize(text_el)
 
-  if (!Hue.dataset(data.notification, `read`)) {
-    let message_el = Hue.el(`.whisper_item_message`, data.notification)
+  if (!App.dataset(data.notification, `read`)) {
+    let message_el = App.el(`.whisper_item_message`, data.notification)
     let text = message_el.textContent.replace(/\s\(unread\)$/, ``)
     message_el.textContent = text
-    Hue.dataset(data.notification, `read`, true)
-    Hue.update_whispers_unread_count()
+    App.dataset(data.notification, `read`, true)
+    App.update_whispers_unread_count()
   }
 
-  Hue.msg_show_whisper.show()
+  App.msg_show_whisper.show()
 }
 
 // Sends a whisper to user(s)
-Hue.send_whisper = (message) => {
-  if (Hue.message_type === `system_broadcast`) {
-    Hue.do_send_whisper({message: message, usernames: [], type: Hue.message_type})
+App.send_whisper = (message) => {
+  if (App.message_type === `system_broadcast`) {
+    App.do_send_whisper({message: message, usernames: [], type: App.message_type})
     return true
   }
 
-  let usernames = Hue.whisper_users
+  let usernames = App.whisper_users
 
   if (!usernames) {
     return false
@@ -288,7 +288,7 @@ Hue.send_whisper = (message) => {
   let approved = []
 
   for (let u of usernames) {
-    let user = Hue.get_userlist_item_by_username(u)
+    let user = App.get_userlist_item_by_username(u)
 
     if (!user) {
       discarded.push(user.username)
@@ -302,97 +302,97 @@ Hue.send_whisper = (message) => {
     return false
   }
 
-  Hue.do_send_whisper({message: message, usernames: approved, type: Hue.message_type})
+  App.do_send_whisper({message: message, usernames: approved, type: App.message_type})
   return true
 }
 
 // Does the whisper emit
-Hue.do_send_whisper = (data) => {
-  Hue.socket_emit(`whisper`, data)
+App.do_send_whisper = (data) => {
+  App.socket_emit(`whisper`, data)
 }
 
 // Setups whispers
-Hue.setup_whispers = () => {
-  Hue.ev(Hue.el(`#write_whisper_send`), `click`, () => {
-    Hue.submit_write_whisper()
+App.setup_whispers = () => {
+  App.ev(App.el(`#write_whisper_send`), `click`, () => {
+    App.submit_write_whisper()
   })
 
-  Hue.ev(Hue.el(`#write_whisper_add_user`), `click`, () => {
-    if (Hue.whisper_users.length >= Hue.config.max_whisper_users) {
-      Hue.show_info(`Max whisper users reached`)
+  App.ev(App.el(`#write_whisper_add_user`), `click`, () => {
+    if (App.whisper_users.length >= App.config.max_whisper_users) {
+      App.show_info(`Max whisper users reached`)
       return
     }
 
-    Hue.show_userlist_window(`whisper`)
+    App.show_userlist_window(`whisper`)
   })
 
-  Hue.ev(Hue.el(`#show_whisper_write`), `click`, () => {
-    Hue.msg_show_whisper.close()
+  App.ev(App.el(`#show_whisper_write`), `click`, () => {
+    App.msg_show_whisper.close()
 
-    if (Hue.show_whisper_data.users) {
-      let usernames = Array.from(Hue.show_whisper_data.users, x => x.username)
-      Hue.write_whisper(usernames, `user`)
+    if (App.show_whisper_data.users) {
+      let usernames = Array.from(App.show_whisper_data.users, x => x.username)
+      App.write_whisper(usernames, `user`)
     }
     else {
-      Hue.write_whisper([Hue.show_whisper_data.username], `user`)
+      App.write_whisper([App.show_whisper_data.username], `user`)
     }
   })
 
-  Hue.ev(Hue.el(`#start_write_whisper`), `click`, () => {
-    Hue.write_whisper([], `user`)
+  App.ev(App.el(`#start_write_whisper`), `click`, () => {
+    App.write_whisper([], `user`)
   })
 
-  Hue.ev(Hue.el(`#whispers_clear`), `click`, () => {
-    Hue.show_confirm(`Remove all whispers from the window`, () => {
-      Hue.clear_whispers()
+  App.ev(App.el(`#whispers_clear`), `click`, () => {
+    App.show_confirm(`Remove all whispers from the window`, () => {
+      App.clear_whispers()
     })
   })
 
-  Hue.set_whispers_info()
+  App.set_whispers_info()
 }
 
 // Pushes a new whisper to the whispers window
-Hue.push_whisper = (message, on_click, read, data) => {
+App.push_whisper = (message, on_click, read, data) => {
   let date = Date.now()
-  let title = Hue.utilz.nice_date(date)
-  let item = Hue.create(`div`, `whisper_item modal_item dynamic_title`)
+  let title = App.utilz.nice_date(date)
+  let item = App.create(`div`, `whisper_item modal_item dynamic_title`)
 
   if (data.mode === `received`) {
-    item.innerHTML = Hue.template_whisper_received({
+    item.innerHTML = App.template_whisper_received({
       date: title,
-      profilepic: Hue.get_profilepic(data.user_id),
+      profilepic: App.get_profilepic(data.user_id),
       message: message
     })
 
     if (data.user_id) {
-      let pic = Hue.el(`.profilepic`, item)
+      let pic = App.el(`.profilepic`, item)
 
-      Hue.ev(pic, `error`, () => {
-        Hue.fallback_profilepic(pic)
+      App.ev(pic, `error`, () => {
+        App.fallback_profilepic(pic)
       })
     }
     else {
-      Hue.el(`.profilepic`, item).classList.add(`nodisplay`)
+      App.el(`.profilepic`, item).classList.add(`nodisplay`)
     }
   }
   else {
-    item.innerHTML = Hue.template_whisper_sent({
+    item.innerHTML = App.template_whisper_sent({
       date: title,
       message: message
     })
   }
 
   item.title = title
-  Hue.dataset(item, `otitle`, title)
-  Hue.dataset(item, `date`, date)
-  Hue.dataset(item, `read`, read)
-  let content = Hue.el(`.whisper_item_content`, item)
+  App.dataset(item, `otitle`, title)
+  App.dataset(item, `date`, date)
+  App.dataset(item, `read`, read)
+  let content = App.el(`.whisper_item_content`, item)
 
-  Hue.ev(content, `click`, () => {
+  App.ev(content, `click`, () => {
     on_click()
   })
 
-  let message_el = Hue.el(`.whisper_item_message`, item)
+  let message_el = App.el(`.whisper_item_message`, item)
 
   if (read) {
     message_el.textContent = message
@@ -401,16 +401,16 @@ Hue.push_whisper = (message, on_click, read, data) => {
     message_el.textContent = `${message} (unread)`
   }
 
-  Hue.el(`#whispers_container`).prepend(item)
+  App.el(`#whispers_container`).prepend(item)
 
-  let items = Hue.els(`.whisper_item`)
+  let items = App.els(`.whisper_item`)
 
-  if (items.length > Hue.config.whispers_crop_limit) {
-    Hue.els(`#whispers_container .whisper_item`).slice(-1)[0].remove()
+  if (items.length > App.config.whispers_crop_limit) {
+    App.els(`#whispers_container .whisper_item`).slice(-1)[0].remove()
   }
 
-  Hue.update_whispers_unread_count()
-  let empty = Hue.el(`#whispers_container .empty_window_message`)
+  App.update_whispers_unread_count()
+  let empty = App.el(`#whispers_container .empty_window_message`)
 
   if (empty) {
     empty.remove()
@@ -420,27 +420,27 @@ Hue.push_whisper = (message, on_click, read, data) => {
 }
 
 // Shows information about the recent whispers
-Hue.show_whispers = (filter = ``) => {
-  Hue.msg_whispers.show(() => {
+App.show_whispers = (filter = ``) => {
+  App.msg_whispers.show(() => {
     if (filter.trim()) {
-      Hue.el(`#whispers_filter`).value = filter
-      Hue.do_modal_filter()
+      App.el(`#whispers_filter`).value = filter
+      App.do_modal_filter()
     }
   })
 }
 
 // Updates the whispers unread count
-Hue.update_whispers_unread_count = () => {
-  let num = Math.min(100, Hue.get_unread_whispers())
-  Hue.el(`#header_whispers_count`).textContent = `(${num})`
+App.update_whispers_unread_count = () => {
+  let num = Math.min(100, App.get_unread_whispers())
+  App.el(`#header_whispers_count`).textContent = `(${num})`
 }
 
 // Get a list of unread whispers
-Hue.get_unread_whispers = () => {
+App.get_unread_whispers = () => {
   let num_unread = 0
 
-  Hue.els(`.whisper_item`).forEach(it => {
-    if (!Hue.dataset(it, `read`)) {
+  App.els(`.whisper_item`).forEach(it => {
+    if (!App.dataset(it, `read`)) {
       num_unread += 1
     }
   })
@@ -449,44 +449,44 @@ Hue.get_unread_whispers = () => {
 }
 
 // Make whisper user
-Hue.make_whisper_user = (user, mode, onclick) => {
-  let user_el = Hue.create(`div`, `user_item`)
-  user_el.innerHTML = Hue.template_whisper_user()
-  let profilepic = Hue.el(`.show_whisper_profilepic`, user_el)
+App.make_whisper_user = (user, mode, onclick) => {
+  let user_el = App.create(`div`, `user_item`)
+  user_el.innerHTML = App.template_whisper_user()
+  let profilepic = App.el(`.show_whisper_profilepic`, user_el)
 
   if (user.user_id) {
-    profilepic.src = Hue.get_profilepic(user.user_id)
-    Hue.ev(profilepic, `error`, () => {
-      Hue.fallback_profilepic(profilepic)
+    profilepic.src = App.get_profilepic(user.user_id)
+    App.ev(profilepic, `error`, () => {
+      App.fallback_profilepic(profilepic)
     })
   }
   else {
     profilepic.classList.add(`nodisplay`)
   }
 
-  let username_el = Hue.el(`.show_whisper_username`, user_el)
+  let username_el = App.el(`.show_whisper_username`, user_el)
   username_el.textContent = user.username
 
   if (mode === `received`) {
     username_el.textContent += ` says:`
   }
 
-  Hue.ev(user_el, `click`, onclick)
+  App.ev(user_el, `click`, onclick)
   return user_el
 }
 
 // Clear whispers
-Hue.clear_whispers = () => {
-  Hue.set_whispers_info()
-  Hue.update_whispers_unread_count()
+App.clear_whispers = () => {
+  App.set_whispers_info()
+  App.update_whispers_unread_count()
 }
 
 // Set whispers info
-Hue.set_whispers_info = () => {
-  Hue.el(`#whispers_container`).innerHTML = Hue.template_whispers_info()
+App.set_whispers_info = () => {
+  App.el(`#whispers_container`).innerHTML = App.template_whispers_info()
 }
 
 // Focus write whisper
-Hue.focus_write_whisper = () => {
-  Hue.el(`#write_whisper_area`).focus()
+App.focus_write_whisper = () => {
+  App.el(`#write_whisper_area`).focus()
 }

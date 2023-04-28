@@ -1,8 +1,8 @@
 // Makes popups used for events like join and part
-Hue.make_info_popup = (on_click = () => {}) => {
-  let autoclose_delay = Hue.config.notifications_close_delay
+App.make_info_popup = (on_click = () => {}) => {
+  let autoclose_delay = App.config.notifications_close_delay
 
-  let popup = Hue.create_popup({
+  let popup = App.create_popup({
     position: `topright`,
     autoclose: true,
     autoclose_delay: autoclose_delay,
@@ -19,7 +19,7 @@ Hue.make_info_popup = (on_click = () => {}) => {
 }
 
 // Makes standard info popup items
-Hue.make_info_popup_item = (args = {}) => {
+App.make_info_popup_item = (args = {}) => {
   let def_args = {
     icon: `info`,
     action: true,
@@ -36,7 +36,7 @@ Hue.make_info_popup_item = (args = {}) => {
   }
 
   if (args.push) {
-    Hue.push_notification({
+    App.push_notification({
       icon: args.icon,
       message: args.message,
       on_click: args.on_click,
@@ -44,7 +44,7 @@ Hue.make_info_popup_item = (args = {}) => {
     })
   }
 
-  return Hue.template_popup_item({
+  return App.template_popup_item({
     icon: args.icon,
     message: args.message,
     classes: classes
@@ -52,7 +52,7 @@ Hue.make_info_popup_item = (args = {}) => {
 }
 
 // Pushes a new notification to the notifications window
-Hue.push_notification = (args) => {
+App.push_notification = (args) => {
   let def_args = {
     icon: `info`,
     increase_counter: true
@@ -61,7 +61,7 @@ Hue.push_notification = (args) => {
   args = Object.assign(def_args, args)
 
   let d = Date.now()
-  let t = Hue.utilz.nice_date(d)
+  let t = App.utilz.nice_date(d)
 
   let content_classes = ``
 
@@ -69,9 +69,9 @@ Hue.push_notification = (args) => {
     content_classes = `pointer`
   }
 
-  let item = Hue.create(`div`, `notification_item modal_item dynamic_title`)
+  let item = App.create(`div`, `notification_item modal_item dynamic_title`)
 
-  item.innerHTML = Hue.template_notification({
+  item.innerHTML = App.template_notification({
     content_classes: content_classes,
     icon: args.icon,
     message: args.message,
@@ -80,33 +80,33 @@ Hue.push_notification = (args) => {
 
   item.title = t
 
-  Hue.dataset(item, `otitle`, t)
-  Hue.dataset(item, `date`, d)
+  App.dataset(item, `otitle`, t)
+  App.dataset(item, `date`, d)
 
-  let content = Hue.el(`.notification_item_content`, item)
+  let content = App.el(`.notification_item_content`, item)
 
   if (args.on_click) {
-    Hue.ev(content, `click`, () => {
+    App.ev(content, `click`, () => {
       args.on_click()
     })
   }
 
-  Hue.el(`#notifications_container`).prepend(item)
+  App.el(`#notifications_container`).prepend(item)
 
-  let items = Hue.els(`.notification_item`)
+  let items = App.els(`.notification_item`)
 
-  if (items.length > Hue.config.notifications_crop_limit) {
+  if (items.length > App.config.notifications_crop_limit) {
     items.slice(-1)[0].remove()
   }
 
-  if (args.increase_counter && !Hue.msg_notifications.is_open() && !Hue.has_focus) {
-    if (Hue.notifications_count < 100) {
-      Hue.notifications_count += 1
-      Hue.el(`#header_notifications_count`).textContent = `(${Hue.notifications_count})`
+  if (args.increase_counter && !App.msg_notifications.is_open() && !App.has_focus) {
+    if (App.notifications_count < 100) {
+      App.notifications_count += 1
+      App.el(`#header_notifications_count`).textContent = `(${App.notifications_count})`
     }
   }
 
-  let empty = Hue.el(`#notifications_container .empty_window_message`)
+  let empty = App.el(`#notifications_container .empty_window_message`)
 
   if (empty) {
     empty.remove()
@@ -114,54 +114,54 @@ Hue.push_notification = (args) => {
 }
 
 // Shows information about the recent info popups
-Hue.show_notifications = (filter = ``) => {
-  Hue.msg_notifications.show(() => {
+App.show_notifications = (filter = ``) => {
+  App.msg_notifications.show(() => {
     if (filter.trim()) {
-      Hue.el(`#notifications_filter`).value = filter
-      Hue.do_modal_filter()
+      App.el(`#notifications_filter`).value = filter
+      App.do_modal_filter()
     }
 
-    Hue.notifications_count = 0
-    Hue.el(`#header_notifications_count`).textContent = `(0)`
+    App.notifications_count = 0
+    App.el(`#header_notifications_count`).textContent = `(0)`
   })
 }
 
 // Centralized function for room changes
-Hue.show_room_notification = (username, message, icon = `info`) => {
-  let user = Hue.get_user_by_username(username)
+App.show_room_notification = (username, message, icon = `info`) => {
+  let user = App.get_user_by_username(username)
 
   let f = () => {
     if (user) {
-      Hue.show_profile(user.username, user.user_id)
+      App.show_profile(user.username, user.user_id)
     }
     else {
-      Hue.show_profile(username)
+      App.show_profile(username)
     }
   }
 
-  let item = Hue.make_info_popup_item({
+  let item = App.make_info_popup_item({
     message: message,
     on_click: f,
     icon: icon
   })
 
-  Hue.show_popup(Hue.make_info_popup(f), item)
+  App.show_popup(App.make_info_popup(f), item)
 }
 
 // Another centralized function for room changes
-Hue.show_action_notification = (message, icon, f) => {
-  let item = Hue.make_info_popup_item({
+App.show_action_notification = (message, icon, f) => {
+  let item = App.make_info_popup_item({
     message: message,
     on_click: f,
     icon: icon
   })
 
-  Hue.show_popup(Hue.make_info_popup(f), item)
+  App.show_popup(App.make_info_popup(f), item)
 }
 
 // Centralized function to show a popup
-Hue.show_popup = (popup, html=``) => {
-  if (!Hue.room_state.notifications_enabled) {
+App.show_popup = (popup, html=``) => {
+  if (!App.room_state.notifications_enabled) {
     return
   }
 
@@ -169,20 +169,20 @@ Hue.show_popup = (popup, html=``) => {
     popup.set(html)
   }
 
-  if (Hue.num_open_info_popups() >= Hue.config.max_info_popups) {
+  if (App.num_open_info_popups() >= App.config.max_info_popups) {
     return
   }
 
   if (popup.hue_date) {
-    popup.set_title(Hue.utilz.timeago(popup.hue_date))
+    popup.set_title(App.utilz.timeago(popup.hue_date))
   }
 
   popup.show()
 }
 
 // Get the number of visible info popups
-Hue.num_open_info_popups = () => {
-  let popups = Hue.get_popup_instances()
+App.num_open_info_popups = () => {
+  let popups = App.get_popup_instances()
   let num = 0
 
   for (let popup of popups) {

@@ -1,7 +1,7 @@
-module.exports = (Hue) => {
+module.exports = (App) => {
   // Tries to check if the data received is valid
   // This is done by checking some limits
-  Hue.handler.check_data = (data) => {
+  App.handler.check_data = (data) => {
     try {
       let m = data.server_method_name
 
@@ -11,7 +11,7 @@ module.exports = (Hue) => {
 
       let keys = Object.keys(data)
 
-      if (keys.length > Hue.sconfig.data_max_items) {
+      if (keys.length > App.sconfig.data_max_items) {
         return false
       }
 
@@ -32,12 +32,12 @@ module.exports = (Hue) => {
         let s = JSON.stringify(d)
 
         if (td === `number`) {
-          if (s.length > Hue.sconfig.data_items_max_number_length) {
+          if (s.length > App.sconfig.data_items_max_number_length) {
             return false
           }
         }
         else {
-          if (s.length > Hue.sconfig.data_items_max_string_length) {
+          if (s.length > App.sconfig.data_items_max_string_length) {
             return false
           }
         }

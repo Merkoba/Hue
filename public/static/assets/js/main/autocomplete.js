@@ -1,9 +1,9 @@
 // Generates an array of autocompletable words on demand
-Hue.generate_words_to_autocomplete = () => {
+App.generate_words_to_autocomplete = () => {
   let usernames = []
   let susernames = []
 
-  for (let item of Hue.userlist) {
+  for (let item of App.userlist) {
     usernames.push(item.username)
   }
 
@@ -14,10 +14,10 @@ Hue.generate_words_to_autocomplete = () => {
   let words = []
 
   words.push(
-    ...Hue.commands_list_with_prefix,
+    ...App.commands_list_with_prefix,
     ...usernames,
     ...susernames,
-    ...Hue.all_usernames
+    ...App.all_usernames
   )
 
   words.sort()
@@ -25,9 +25,9 @@ Hue.generate_words_to_autocomplete = () => {
 }
 
 // Tries to find the closest item to autocomplate after a tab action
-Hue.get_closest_autocomplete = (element, w) => {
-  let info = Hue.tab_info[element.id]
-  let l = Hue.generate_words_to_autocomplete()
+App.get_closest_autocomplete = (element, w) => {
+  let info = App.tab_info[element.id]
+  let l = App.generate_words_to_autocomplete()
   let wl = w.toLowerCase()
   let has = false
 
@@ -60,27 +60,27 @@ Hue.get_closest_autocomplete = (element, w) => {
 
   if (has) {
     info.tabbed_list = []
-    return Hue.get_closest_autocomplete(element, w)
+    return App.get_closest_autocomplete(element, w)
   }
 
   return ``
 }
 
 // Attemps to autocomplete a word after a user presses tab on a textbox
-Hue.tabbed = (element) => {
+App.tabbed = (element) => {
   if (!element.id) {
     return
   }
 
-  let info = Hue.tab_info[element.id]
+  let info = App.tab_info[element.id]
 
   if (info === undefined) {
-    Hue.clear_tabbed(element)
-    info = Hue.tab_info[element.id]
+    App.clear_tabbed(element)
+    info = App.tab_info[element.id]
   }
 
   if (info.tabbed_word !== ``) {
-    Hue.replace_tabbed(element, info.tabbed_word)
+    App.replace_tabbed(element, info.tabbed_word)
     return
   }
 
@@ -95,18 +95,18 @@ Hue.tabbed = (element) => {
 
   if (word !== ``) {
     info.tabbed_word = word
-    Hue.replace_tabbed(element, word)
+    App.replace_tabbed(element, word)
   }
 }
 
 // Replaces current word next to the caret with the selected autocomplete item
-Hue.replace_tabbed = (element, word) => {
-  let info = Hue.tab_info[element.id]
-  let result = Hue.get_closest_autocomplete(element, word)
+App.replace_tabbed = (element, word) => {
+  let info = App.tab_info[element.id]
+  let result = App.get_closest_autocomplete(element, word)
 
   if (result) {
     if (element.value[info.tabbed_end] === ` `) {
-      element.value = Hue.utilz.replace_between(
+      element.value = App.utilz.replace_between(
         element.value,
         info.tabbed_start,
         info.tabbed_end,
@@ -114,7 +114,7 @@ Hue.replace_tabbed = (element, word) => {
       )
     }
     else {
-      element.value = Hue.utilz.replace_between(
+      element.value = App.utilz.replace_between(
         element.value,
         info.tabbed_start,
         info.tabbed_end,
@@ -132,12 +132,12 @@ Hue.replace_tabbed = (element, word) => {
 }
 
 // Resets 'tabbed' state generated after autocompleting words
-Hue.clear_tabbed = (element) => {
+App.clear_tabbed = (element) => {
   if (!element.id) {
     return
   }
 
-  Hue.tab_info[element.id] = {
+  App.tab_info[element.id] = {
     tabbed_list: [],
     tabbed_word: ``,
     tabbed_start: 0,
@@ -147,25 +147,25 @@ Hue.clear_tabbed = (element) => {
 
 // Setups autocomplete functionality
 // This allows to have tab autocomplete on all allowed textboxes
-Hue.setup_autocomplete = () => {
-  Hue.ev(Hue.el(`body`), `keydown`, (e) => {
-    if (Hue.utilz.is_textbox(e.target)) {
+App.setup_autocomplete = () => {
+  App.ev(App.el(`body`), `keydown`, (e) => {
+    if (App.utilz.is_textbox(e.target)) {
       if (e.key === `Tab`) {
         let value = e.target.value
 
         if (value.length > 0) {
-          Hue.tabbed(e.target)
+          App.tabbed(e.target)
           return
         }
       }
 
-      Hue.clear_tabbed(e.target)
+      App.clear_tabbed(e.target)
     }
   })
 
-  Hue.ev(Hue.el(`body`), `click`, (e) => {
-    if (Hue.utilz.is_textbox(e.target)) {
-      Hue.clear_tabbed(e.target)
+  App.ev(App.el(`body`), `click`, (e) => {
+    if (App.utilz.is_textbox(e.target)) {
+      App.clear_tabbed(e.target)
     }
   })
 }

@@ -1,171 +1,171 @@
 // Logs out the user
-Hue.logout = () => {
-  Hue.goto_url(`/logout`, `same`)
+App.logout = () => {
+  App.goto_url(`/logout`, `same`)
 }
 
 // Changes the user's username
-Hue.change_username = (username) => {
-  if (Hue.utilz.clean_username(username) !== username) {
-    Hue.checkmsg(`Username contains invalid characters`)
+App.change_username = (username) => {
+  if (App.utilz.clean_username(username) !== username) {
+    App.checkmsg(`Username contains invalid characters`)
     return false
   }
 
   if (username.length === 0) {
-    Hue.checkmsg(`Username can't be empty`)
+    App.checkmsg(`Username can't be empty`)
     return false
   }
 
-  if (username.length > Hue.config.max_username_length) {
-    Hue.checkmsg(`Username is too long`)
+  if (username.length > App.config.max_username_length) {
+    App.checkmsg(`Username is too long`)
     return false
   }
 
-  if (username === Hue.username) {
-    Hue.checkmsg(`That's already your username`)
+  if (username === App.username) {
+    App.checkmsg(`That's already your username`)
     return false
   }
 
-  Hue.socket_emit(`change_username`, { username: username })
+  App.socket_emit(`change_username`, { username: username })
   return true
 }
 
 // Changes the user's password
-Hue.change_password = (p1, p2) => {
+App.change_password = (p1, p2) => {
   if (!p1 || !p2) {
     return false
   }
 
   if (p1 !== p2) {
-    Hue.checkmsg(`Passwords don't match`)
+    App.checkmsg(`Passwords don't match`)
     return false
   }
 
-  if (p1.length < Hue.config.min_password_length) {
-    Hue.checkmsg(
-      `Password is too short. It must be at least ${Hue.config.min_password_length} characters long`
+  if (p1.length < App.config.min_password_length) {
+    App.checkmsg(
+      `Password is too short. It must be at least ${App.config.min_password_length} characters long`
     )
     return false
   }
 
-  if (p1.length > Hue.config.max_password_length) {
-    Hue.checkmsg(`Password is too long`)
+  if (p1.length > App.config.max_password_length) {
+    App.checkmsg(`Password is too long`)
     return false
   }
 
-  Hue.socket_emit(`change_password`, { password: p1 })
+  App.socket_emit(`change_password`, { password: p1 })
   return true
 }
 
 // Feedback on password change
-Hue.password_changed = () => {
-  Hue.checkmsg(`Password succesfully changed`)
+App.password_changed = () => {
+  App.checkmsg(`Password succesfully changed`)
 }
 
 // Changes the user's bio
-Hue.change_bio = (value) => {
-  if (value !== Hue.utilz.single_linebreak(value)) {
+App.change_bio = (value) => {
+  if (value !== App.utilz.single_linebreak(value)) {
     return false
   }
 
-  if (value === Hue.bio) {
+  if (value === App.bio) {
     return false
   }
 
-  if (value.length > Hue.config.max_bio_length) {
+  if (value.length > App.config.max_bio_length) {
     return false
   }
 
-  if (value.split(`\n`).length > Hue.config.max_bio_lines) {
+  if (value.split(`\n`).length > App.config.max_bio_lines) {
     return false
   }
 
-  Hue.socket_emit(`change_bio`, { bio: value })
+  App.socket_emit(`change_bio`, { bio: value })
   return true
 }
 
 // Shows the change username form
-Hue.show_change_username = () => {
-  Hue.msg_change_username.show(() => {
-    Hue.el(`#change_username_input`).value = Hue.username
-    Hue.el(`#change_username_input`).focus()
+App.show_change_username = () => {
+  App.msg_change_username.show(() => {
+    App.el(`#change_username_input`).value = App.username
+    App.el(`#change_username_input`).focus()
   })
 }
 
 // Submits the change username form
-Hue.submit_change_username = () => {
-  let username = Hue.el(`#change_username_input`).value.trim()
+App.submit_change_username = () => {
+  let username = App.el(`#change_username_input`).value.trim()
 
-  if (username === Hue.username) {
-    Hue.checkmsg(`That's already the username`)
+  if (username === App.username) {
+    App.checkmsg(`That's already the username`)
     return
   }
 
-  if (Hue.change_username(username)) {
-    Hue.msg_change_username.close()
+  if (App.change_username(username)) {
+    App.msg_change_username.close()
   }
 }
 
 // Shows the change password form
-Hue.show_change_password = () => {
-  Hue.msg_change_password.show(() => {
-    Hue.el(`#change_password_input_1`).value = ``
-    Hue.el(`#change_password_input_2`).value = ``
-    Hue.el(`#change_password_input_1`).focus()
+App.show_change_password = () => {
+  App.msg_change_password.show(() => {
+    App.el(`#change_password_input_1`).value = ``
+    App.el(`#change_password_input_2`).value = ``
+    App.el(`#change_password_input_1`).focus()
   })
 }
 
 // Submits the change password form
-Hue.submit_change_password = () => {
-  let p1 = Hue.el(`#change_password_input_1`).value.trim()
-  let p2 = Hue.el(`#change_password_input_2`).value.trim()
+App.submit_change_password = () => {
+  let p1 = App.el(`#change_password_input_1`).value.trim()
+  let p2 = App.el(`#change_password_input_2`).value.trim()
 
-  if (Hue.change_password(p1, p2)) {
-    Hue.msg_change_password.close()
+  if (App.change_password(p1, p2)) {
+    App.msg_change_password.close()
   }
 }
 
 // Username setter
-Hue.set_username = (username) => {
-  Hue.username = username
-  Hue.generate_mentions_regex()
-  Hue.el(`#user_profile_username`).textContent = Hue.username
+App.set_username = (username) => {
+  App.username = username
+  App.generate_mentions_regex()
+  App.el(`#user_profile_username`).textContent = App.username
 }
 
 // Bio setter
-Hue.set_bio = (bio) => {
-  Hue.bio = bio
-  Hue.el(`#user_profile_bio_textarea`).value = Hue.bio
+App.set_bio = (bio) => {
+  App.bio = bio
+  App.el(`#user_profile_bio_textarea`).value = App.bio
 }
 
 // Prepare user profile
-Hue.prepare_user_profile = () => {
-  Hue.el(`#user_profile_reg_date`).textContent = Hue.utilz.nice_date(Hue.user_reg_date)
-  Hue.el(`#user_profile_id`).textContent = `ID: ${Hue.user_id}`
+App.prepare_user_profile = () => {
+  App.el(`#user_profile_reg_date`).textContent = App.utilz.nice_date(App.user_reg_date)
+  App.el(`#user_profile_id`).textContent = `ID: ${App.user_id}`
 
-  if (Hue.get_self_user().profilepic_version === 0) {
-    Hue.show_user_profile()
-    Hue.show_info(`You can select a profile image here`)
+  if (App.get_self_user().profilepic_version === 0) {
+    App.show_user_profile()
+    App.show_info(`You can select a profile image here`)
   }
 }
 
 // Setups the user profile
-Hue.setup_user_profile = () => {
-  let pic = Hue.el(`#user_profile_profilepic`)
+App.setup_user_profile = () => {
+  let pic = App.el(`#user_profile_profilepic`)
 
-  Hue.ev(pic, `error`, () => {
-    Hue.fallback_profilepic(pic)
+  App.ev(pic, `error`, () => {
+    App.fallback_profilepic(pic)
   })
 
-  let textarea = Hue.el(`#user_profile_bio_textarea`)
+  let textarea = App.el(`#user_profile_bio_textarea`)
 
-  Hue.ev(textarea, `blur`, () => {
-    let value = Hue.utilz.single_linebreak(textarea.value)
+  App.ev(textarea, `blur`, () => {
+    let value = App.utilz.single_linebreak(textarea.value)
 
-    if (value !== Hue.bio) {
-      let result = Hue.change_bio(value)
+    if (value !== App.bio) {
+      let result = App.change_bio(value)
 
       if (!result) {
-        textarea.value = Hue.bio
+        textarea.value = App.bio
       }
       else {
         textarea.value = value
@@ -176,151 +176,151 @@ Hue.setup_user_profile = () => {
     }
   })
 
-  Hue.ev(Hue.el(`#user_profile_profilepic`), `click`, () => {
-    Hue.msg_profilepic_select.show()
+  App.ev(App.el(`#user_profile_profilepic`), `click`, () => {
+    App.msg_profilepic_select.show()
   })
 
-  Hue.ev(Hue.el(`#user_profile_audioclip`), `click`, () => {
-    Hue.msg_audioclip_select.show()
+  App.ev(App.el(`#user_profile_audioclip`), `click`, () => {
+    App.msg_audioclip_select.show()
   })
 
-  Hue.ev(Hue.el(`#user_profile_logout`), `click`, () => {
-    Hue.needs_confirm(`logout`)
+  App.ev(App.el(`#user_profile_logout`), `click`, () => {
+    App.needs_confirm(`logout`)
   })
 
-  Hue.ev(Hue.el(`#user_profile_change_username`), `click`, () => {
-    Hue.show_change_username()
+  App.ev(App.el(`#user_profile_change_username`), `click`, () => {
+    App.show_change_username()
   })
 
-  Hue.ev(Hue.el(`#user_profile_change_password`), `click`, () => {
-    Hue.show_change_password()
+  App.ev(App.el(`#user_profile_change_password`), `click`, () => {
+    App.show_change_password()
   })
 
-  Hue.setup_profilepic_select()
-  Hue.setup_audioclip_select()
-  Hue.setup_change_username()
-  Hue.setup_change_password()
+  App.setup_profilepic_select()
+  App.setup_audioclip_select()
+  App.setup_change_username()
+  App.setup_change_password()
 }
 
 // Setup change username
-Hue.setup_change_username = () => {
-  Hue.ev(Hue.el(`#change_username_submit`), `click`, () => {
-    Hue.submit_change_username()
+App.setup_change_username = () => {
+  App.ev(App.el(`#change_username_submit`), `click`, () => {
+    App.submit_change_username()
   })
 }
 
 // Setup change password
-Hue.setup_change_password = () => {
-  Hue.ev(Hue.el(`#change_password_submit`), `click`, () => {
-    Hue.submit_change_password()
+App.setup_change_password = () => {
+  App.ev(App.el(`#change_password_submit`), `click`, () => {
+    App.submit_change_password()
   })
 }
 
 // Updates some user profile elements
-Hue.update_user_profile = () => {
-  let src = Hue.get_profilepic(Hue.user_id)
-  Hue.el(`#user_profile_profilepic`).src = src
-  Hue.el(`#user_profile_bio_textarea`).value = Hue.bio
+App.update_user_profile = () => {
+  let src = App.get_profilepic(App.user_id)
+  App.el(`#user_profile_profilepic`).src = src
+  App.el(`#user_profile_bio_textarea`).value = App.bio
 }
 
 // Shows the user profile
-Hue.show_user_profile = () => {
-  Hue.msg_user_profile.show()
+App.show_user_profile = () => {
+  App.msg_user_profile.show()
 }
 
 // Setups the profile image circular cropper
-Hue.setup_profilepic_cropper = () => {
-  Hue.ev(Hue.el(`#profilepic_cropper_crop`), `click`, () => {
-    Hue.profilepic_cropper.result({
+App.setup_profilepic_cropper = () => {
+  App.ev(App.el(`#profilepic_cropper_crop`), `click`, () => {
+    App.profilepic_cropper.result({
       type: `blob`,
       size: {
-        width: Hue.config.profilepic_diameter,
-        height: Hue.config.profilepic_diameter,
+        width: App.config.profilepic_diameter,
+        height: App.config.profilepic_diameter,
       },
       format: `png`,
       circle: true,
-      quality: Hue.config.image_blob_quality,
+      quality: App.config.image_blob_quality,
     })
     .then((blob) => {
-      Hue.profilepic_preview_blob = blob
-      Hue.el(`#profilepic_preview_image`).src = URL.createObjectURL(blob)
-      Hue.msg_profilepic_preview.show()
+      App.profilepic_preview_blob = blob
+      App.el(`#profilepic_preview_image`).src = URL.createObjectURL(blob)
+      App.msg_profilepic_preview.show()
     })
   })
 
-  Hue.ev(Hue.el(`#profilepic_cropper_change`), `click`, () => {
-    if (Hue.profilepic_cropper_type === `drawing`) {
-      Hue.msg_profilepic_cropper.close()
-      Hue.open_draw_image(`profilepic`)
+  App.ev(App.el(`#profilepic_cropper_change`), `click`, () => {
+    if (App.profilepic_cropper_type === `drawing`) {
+      App.msg_profilepic_cropper.close()
+      App.open_draw_image(`profilepic`)
     }
-    else if (Hue.profilepic_cropper_type === `upload`) {
-      Hue.msg_profilepic_cropper.close()
-      Hue.open_profilepic_picker()
+    else if (App.profilepic_cropper_type === `upload`) {
+      App.msg_profilepic_cropper.close()
+      App.open_profilepic_picker()
     }
-    else if (Hue.profilepic_cropper_type === `random_canvas`) {
-      Hue.make_random_image(`profilepic`)
+    else if (App.profilepic_cropper_type === `random_canvas`) {
+      App.make_random_image(`profilepic`)
     }
   })
 }
 
 // Upload profilepic
-Hue.upload_profilepic = () => {
-  Hue.el(`#user_profile_profilepic`).src = Hue.config.profilepic_loading_url
+App.upload_profilepic = () => {
+  App.el(`#user_profile_profilepic`).src = App.config.profilepic_loading_url
 
-  Hue.upload_file({
-    file: Hue.profilepic_preview_blob,
+  App.upload_file({
+    file: App.profilepic_preview_blob,
     action: `profilepic_upload`,
     name: `profile.png`,
   })
 
-  Hue.msg_profilepic_cropper.close()
+  App.msg_profilepic_cropper.close()
 }
 
 // Setup profilepic select
-Hue.setup_profilepic_select = () => {
-  Hue.ev(Hue.el(`#profilepic_select_draw`), `click`, () => {
-    Hue.msg_profilepic_select.close()
-    Hue.open_draw_image(`profilepic`)
+App.setup_profilepic_select = () => {
+  App.ev(App.el(`#profilepic_select_draw`), `click`, () => {
+    App.msg_profilepic_select.close()
+    App.open_draw_image(`profilepic`)
   })
 
-  Hue.ev(Hue.el(`#profilepic_select_random`), `click`, () => {
-    Hue.msg_profilepic_select.close()
-    Hue.make_random_image(`profilepic`)
+  App.ev(App.el(`#profilepic_select_random`), `click`, () => {
+    App.msg_profilepic_select.close()
+    App.make_random_image(`profilepic`)
   })
 
-  Hue.ev(Hue.el(`#profilepic_select_upload`), `click`, () => {
-    Hue.msg_profilepic_select.close()
-    Hue.open_profilepic_picker()
+  App.ev(App.el(`#profilepic_select_upload`), `click`, () => {
+    App.msg_profilepic_select.close()
+    App.open_profilepic_picker()
   })
 
-  Hue.ev(Hue.el(`#profilepic_preview_choose`), `click`, () => {
-    Hue.msg_profilepic_preview.close()
-    Hue.msg_profilepic_select.show()
+  App.ev(App.el(`#profilepic_preview_choose`), `click`, () => {
+    App.msg_profilepic_preview.close()
+    App.msg_profilepic_select.show()
   })
 
-  Hue.ev(Hue.el(`#profilepic_preview_confirm`), `click`, () => {
-    Hue.msg_profilepic_preview.close()
-    Hue.upload_profilepic()
+  App.ev(App.el(`#profilepic_preview_confirm`), `click`, () => {
+    App.msg_profilepic_preview.close()
+    App.upload_profilepic()
   })
 }
 
 // If upload is chosen as the method to change the profilepic
-Hue.open_profilepic_picker = () => {
-  Hue.upload_media = `profilepic`
-  Hue.trigger_dropzone()
+App.open_profilepic_picker = () => {
+  App.upload_media = `profilepic`
+  App.trigger_dropzone()
 }
 
 // This is executed after a profile image has been selected in the file dialog
-Hue.profilepic_selected = (file, type) => {
+App.profilepic_selected = (file, type) => {
   if (!file) {
     return
   }
 
-  for (let date in Hue.files) {
-    let f = Hue.files[date]
+  for (let date in App.files) {
+    let f = App.files[date]
 
     if (f.hue_data.action === `profilepic_upload`) {
-      Hue.cancel_file_upload(date)
+      App.cancel_file_upload(date)
     }
   }
 
@@ -328,20 +328,20 @@ Hue.profilepic_selected = (file, type) => {
 
   reader.onload = (e) => {
     if (type === `drawing`) {
-      Hue.el(`#profilepic_cropper_change`).textContent = `Re-Draw`
+      App.el(`#profilepic_cropper_change`).textContent = `Re-Draw`
     }
     else if (type === `upload`) {
-      Hue.el(`#profilepic_cropper_change`).textContent = `Re-Choose`
+      App.el(`#profilepic_cropper_change`).textContent = `Re-Choose`
     }
     else if (type === `random_canvas`) {
-      Hue.el(`#profilepic_cropper_change`).textContent = `Re-Generate`
+      App.el(`#profilepic_cropper_change`).textContent = `Re-Generate`
     }
 
-    Hue.profilepic_cropper_type = type
+    App.profilepic_cropper_type = type
 
-    Hue.msg_profilepic_cropper.show(() => {
-      if (!Hue.profilepic_cropper) {
-        Hue.profilepic_cropper = new Croppie(Hue.el(`#profilepic_cropper`), {
+    App.msg_profilepic_cropper.show(() => {
+      if (!App.profilepic_cropper) {
+        App.profilepic_cropper = new Croppie(App.el(`#profilepic_cropper`), {
           viewport: {
             width: 200,
             height: 200,
@@ -351,12 +351,12 @@ Hue.profilepic_selected = (file, type) => {
         })
       }
 
-      Hue.profilepic_cropper.bind({
+      App.profilepic_cropper.bind({
         url: e.target.result,
         points: [],
       })
       .then(() => {
-        Hue.profilepic_cropper.setZoom(0)
+        App.profilepic_cropper.setZoom(0)
       })
     })
   }
@@ -365,25 +365,25 @@ Hue.profilepic_selected = (file, type) => {
 }
 
 // Feedback that the user is not an operator
-Hue.not_an_op = () => {
-  Hue.checkmsg(`You are not a room operator`)
+App.not_an_op = () => {
+  App.checkmsg(`You are not a room operator`)
 }
 
 // Shows a feedback message upon joining the room
-Hue.show_joined = () => {
-  Hue.make_info_popup_item({
+App.show_joined = () => {
+  App.make_info_popup_item({
     message: `You joined the room`,
     increase_counter: false
   })
 }
 
 // Disconnect other clients of the same account
-Hue.disconnect_others = () => {
-  Hue.socket_emit(`disconnect_others`, {})
+App.disconnect_others = () => {
+  App.socket_emit(`disconnect_others`, {})
 }
 
 // Shows how many clients of the same account were disconnected
-Hue.show_others_disconnected = (data) => {
+App.show_others_disconnected = (data) => {
   let s
 
   if (data.amount === 1) {
@@ -393,36 +393,36 @@ Hue.show_others_disconnected = (data) => {
     s = `${data.amount} clients were disconnected`
   }
 
-  Hue.checkmsg(s)
+  App.checkmsg(s)
 }
 
 // Setup change audioclip select
-Hue.setup_audioclip_select = () => {
-  Hue.ev(Hue.el(`#upload_audioclip`), `click`, () => {
-    Hue.select_audioclip()
-    Hue.msg_audioclip_select.close()
+App.setup_audioclip_select = () => {
+  App.ev(App.el(`#upload_audioclip`), `click`, () => {
+    App.select_audioclip()
+    App.msg_audioclip_select.close()
   })
 
-  Hue.ev(Hue.el(`#remove_audioclip`), `click`, () => {
-    Hue.needs_confirm_2(() => {
-      Hue.socket_emit(`remove_audioclip`, {})
-      Hue.msg_audioclip_select.close()
+  App.ev(App.el(`#remove_audioclip`), `click`, () => {
+    App.needs_confirm_2(() => {
+      App.socket_emit(`remove_audioclip`, {})
+      App.msg_audioclip_select.close()
     })
   })
 
-  Hue.ev(Hue.el(`#play_audioclip`), `click`, () => {
-    Hue.play_audioclip(Hue.user_id)
+  App.ev(App.el(`#play_audioclip`), `click`, () => {
+    App.play_audioclip(App.user_id)
   })
 }
 
 // Opens the file picker to choose an audio clip
-Hue.select_audioclip = () => {
-  Hue.upload_media = `audioclip`
-  Hue.trigger_dropzone()
+App.select_audioclip = () => {
+  App.upload_media = `audioclip`
+  App.trigger_dropzone()
 }
 
 // When an audio clip gets selected from the file picker
-Hue.audioclip_selected = (file) => {
+App.audioclip_selected = (file) => {
   if (!file) {
     return
   }
@@ -430,21 +430,21 @@ Hue.audioclip_selected = (file) => {
   let ext = file.name.split(`.`).pop(-1).toLowerCase()
 
   if (ext !== `mp3`) {
-    Hue.checkmsg(`Only mp3 format is allowed`)
+    App.checkmsg(`Only mp3 format is allowed`)
     return
   }
 
   let size = file.size / 1024
 
-  if (size > Hue.config.max_audioclip_size) {
-    Hue.checkmsg(`File is too big`)
+  if (size > App.config.max_audioclip_size) {
+    App.checkmsg(`File is too big`)
     return
   }
 
-  Hue.upload_file({ file: file, action: `audioclip_upload` })
+  App.upload_file({ file: file, action: `audioclip_upload` })
 }
 
 // Get the user profile
-Hue.get_self_user = () => {
-  return Hue.get_user_by_username(Hue.username)
+App.get_self_user = () => {
+  return App.get_user_by_username(App.username)
 }

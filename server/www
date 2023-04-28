@@ -210,18 +210,18 @@ const io = require(`socket.io`)(server, {
 
 server.listen(port)
 
-const Hue = {}
+const App = {}
 
-Hue.io = io
-Hue.db_manager = db_manager
-Hue.config = config
-Hue.sconfig = sconfig
-Hue.utilz = utilz
-Hue.logger = logger
-Hue.banlist = banlist
-Hue.banlist_path = banlist_path
+App.io = io
+App.db_manager = db_manager
+App.config = config
+App.sconfig = sconfig
+App.utilz = utilz
+App.logger = logger
+App.banlist = banlist
+App.banlist_path = banlist_path
 
-require(`./sockets/main`)(Hue)
+require(`./sockets/main`)(App)
 
 function on_error(error) {
 	if (error.syscall !== `listen`) {
@@ -259,7 +259,7 @@ function on_listening() {
 }
 
 function do_shutdown() {
-	Hue.vars.exiting = true
+	App.vars.exiting = true
 
 	io.httpServer.close()
 	io.close()

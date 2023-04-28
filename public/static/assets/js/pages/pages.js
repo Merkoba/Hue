@@ -9,20 +9,20 @@ const msg_info = Msg.factory({
 	enable_titlebar: true
 })
 
-const Hue = {}
+const App = {}
 
 // Select a single element
-Hue.el = function (query) {
+App.el = function (query) {
   return document.querySelector(query)
 }
 
 // Select an array of elements
-Hue.els = function (query) {
+App.els = function (query) {
   return Array.from(document.querySelectorAll(query))
 }
 
 function msg_info_after_close (instance) {
-	Hue.el("form").querySelector("input").focus()
+	App.el("form").querySelector("input").focus()
 }
 
 function show_info (s) {
