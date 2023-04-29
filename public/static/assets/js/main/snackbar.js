@@ -1,9 +1,10 @@
 App.setup_snackbar = () => {
   let c = App.el(`#snackbar_content`)
 
-  App.ev(c, `click`, () => {
+  App.ev(c, `click`, (e) => {
     if (App.snackbar_items.length > 0) {
       App.goto_url(App.snackbar_items[0].url, `tab`)
+      e.stopPropagation()
     }
   })
 
@@ -17,6 +18,14 @@ App.setup_snackbar = () => {
       App.prev_snackbar()
     }
   })
+
+  let main = App.el(`#snackbar`)
+
+  App.ev(main, `click`, () => {
+    App.show_links()
+  })
+
+  main.title = `Show Links`
 }
 
 App.update_snackbar = (url, title = ``) => {

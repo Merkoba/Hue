@@ -1915,3 +1915,14 @@ pre {
 #snackbar {
 	background-color: var(--altcolor_a);
 }
+
+#snackbar_content {
+	max-width: 80%;
+	overflow: hidden;
+	white-space: nowrap;
+	position: relative;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
