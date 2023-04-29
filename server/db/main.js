@@ -10,7 +10,7 @@ module.exports = (config, sconfig, utilz, logger) => {
     logger: logger
   }
 
-  // Fill imports
+  // Fill the imports
   require(`./imports`)(stuff)
 
   // Fill the vars
