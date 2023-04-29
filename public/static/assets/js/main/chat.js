@@ -55,7 +55,7 @@ App.make_chat_message = (args = {}) => {
   }
 
   if (args.link_url) {
-    App.update_linkbar(args.link_url, args.link_title)
+    App.update_linksbar(args.link_url, args.link_title)
   }
 
   let highlighted = false

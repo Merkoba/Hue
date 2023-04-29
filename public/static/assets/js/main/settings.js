@@ -122,12 +122,12 @@ App.user_settings = {
       }
     },
   },
-  show_linkbar: {
+  show_linksbar: {
     widget_type: `checkbox`,
-    description: `Whether to show the LinkBar or not`,
+    description: `Whether to show the Links Bar or not`,
     action: (save = true) => {
-      App.settings.show_linkbar = App.el(`#settings_show_linkbar`).checked
-      App.check_linkbar()
+      App.settings.show_linksbar = App.el(`#settings_show_linksbar`).checked
+      App.check_linksbar()
 
       if (save) {
         App.save_settings()

@@ -1916,11 +1916,11 @@ pre {
   background-color: var(--altbackground_a) !important;
 }
 
-#linkbar {
+#linksbar {
 	background-color: var(--altcolor_a);
 }
 
-#linkbar_links {
+#linksbar_links {
 	flex-grow: 0;
 	flex-shrink: 0;
 	padding-left: 0.5rem;
@@ -1930,7 +1930,7 @@ pre {
 	justify-content: center;
 }
 
-#linkbar_url {
+#linksbar_url {
 	flex-grow: 0;
 	flex-shrink: 1;
 	overflow: hidden;
@@ -1942,7 +1942,7 @@ pre {
 	justify-content: flex-start;
 }
 
-#linkbar_title {
+#linksbar_title {
 	flex-grow: 0;
 	flex-shrink: 1;
 	overflow: hidden;

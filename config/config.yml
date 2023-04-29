@@ -144,7 +144,7 @@ settings_default_show_activity_notifications: true
 settings_default_show_user_join_notifications: true
 settings_default_show_user_leave_notifications: true
 settings_default_show_background: true
-settings_default_show_linkbar: true
+settings_default_show_linksbar: true
 
 # Default room state values
 room_state_default_image_enabled: true
