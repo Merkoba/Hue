@@ -854,6 +854,10 @@ input[type=checkbox] {
 	user-select: none;
 }
 
+.unselectable {
+	user-select: none;
+}
+
 .input1 {
 	font-size: 1rem;
 	width: 18rem;
@@ -1916,18 +1920,22 @@ pre {
 	background-color: var(--altcolor_a);
 }
 
-#snackbar_left {
+#snackbar_separator {
 	flex-grow: 0;
 	flex-shrink: 0;
 	padding-left: 0.8rem;
-	padding-right: 0.8rem;
 	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-#snackbar_center {
+#snackbar_separator {
+	padding-left: 0.8rem;
+	padding-right: 0.8rem;
+}
+
+#snackbar_url {
 	flex-grow: 0;
 	flex-shrink: 1;
 	overflow: hidden;
