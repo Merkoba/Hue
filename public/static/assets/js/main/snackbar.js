@@ -27,6 +27,5 @@ App.update_snackbar = (url, title = ``) => {
     App.snackbar_items.pop()
   }
 
-  App.el(`#snackbar_url`).textContent = item.url
-  App.el(`#snackbar_url`).title = item.title
+  App.el(`#snackbar_url`).textContent = `${item.url} | ${item.title}`
 }
