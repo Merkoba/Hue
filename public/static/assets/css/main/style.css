@@ -1933,6 +1933,7 @@ pre {
 #snackbar_separator {
 	padding-left: 0.8rem;
 	padding-right: 0.8rem;
+	opacity: 0.5;
 }
 
 #snackbar_url {
