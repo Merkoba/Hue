@@ -1920,7 +1920,7 @@ pre {
 	background-color: var(--altcolor_a);
 }
 
-#snackbar_separator {
+#snackbar_links {
 	flex-grow: 0;
 	flex-shrink: 0;
 	padding-left: 0.8rem;
@@ -1945,4 +1945,5 @@ pre {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	padding-right: 0.8rem;
 }
