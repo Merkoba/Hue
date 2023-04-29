@@ -1916,8 +1916,20 @@ pre {
 	background-color: var(--altcolor_a);
 }
 
-#snackbar_content {
-	max-width: 80%;
+#snackbar_left {
+	flex-grow: 0;
+	flex-shrink: 0;
+	padding-left: 0.8rem;
+	padding-right: 0.8rem;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#snackbar_center {
+	flex-grow: 0;
+	flex-shrink: 1;
 	overflow: hidden;
 	white-space: nowrap;
 	position: relative;
