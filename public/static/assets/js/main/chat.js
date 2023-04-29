@@ -54,7 +54,7 @@ App.make_chat_message = (args = {}) => {
     link_preview_text = ans.link_preview_text
   }
 
-  if (args.link_url) {
+  if (args.link_url && args.link_title) {
     App.update_snackbar(args.link_url, args.link_title)
   }
 
