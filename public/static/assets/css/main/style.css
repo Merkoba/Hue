@@ -1037,7 +1037,7 @@ svg.action:hover {
 	padding: 0.25rem;
 }
 
-#chat_area .fresh_message, 
+#chat_area .fresh_message,
 #message_board_container .fresh_message {
 	background: linear-gradient(.25turn, var(--altcolor_a), 50%, transparent);
 	background-clip: content-box;
@@ -1233,7 +1233,7 @@ a.special_link:hover {
 }
 
 .noborder {
-	border: 0 !important; 
+	border: 0 !important;
 }
 
 .upload_comment_preview {
@@ -1293,7 +1293,7 @@ a.special_link:hover {
 	width: 2px;
 	height: 1em;
 	margin-left: 1rem;
-	margin-right: 1rem;	
+	margin-right: 1rem;
 }
 
 .vertical_separator {
@@ -1779,7 +1779,7 @@ pre {
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, -50%); 
+	transform: translate(-50%, -50%);
 	color: var(--text_color);
 	background-color:	var(--altbackground);
 	border: 2px solid var(--altcolor);
@@ -1910,4 +1910,8 @@ pre {
 
 .needcontext-item-selected {
   background-color: var(--altbackground_a) !important;
+}
+
+#snackbar {
+	background-color: var(--altcolor_a);
 }

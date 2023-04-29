@@ -103,6 +103,8 @@ App.hide_radio_delay = 1000
 App.reply_active = false
 App.edit_active = false
 App.highlight_footer_delay = 500
+App.snackbar_items = []
+App.max_snackbar_items = 100
 
 // Initial media-loading variables declarations
 App.youtube_loading = false
@@ -185,6 +187,7 @@ App.init = () => {
   App.setup_user_profile()
   App.setup_rooms()
   App.setup_theme()
+  App.setup_snackbar()
 
   if (App.debug_socket) {
     App.start_socket_stats()
