@@ -21,16 +21,16 @@ module.exports = (App) => {
     }
 
     let file_name = App.handler.generate_media_file_name(data.extension)
-    let container = App.vars.path.join(App.vars.media_root, `room`, socket.hue_room_id, type)
+    let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id, type)
 
-    if (!App.vars.fs.existsSync(container)) {
-      App.vars.fs.mkdirSync(container, { recursive: true })
+    if (!App.i.fs.existsSync(container)) {
+      App.i.fs.mkdirSync(container, { recursive: true })
     }
 
-    let path = App.vars.path.join(container, file_name)
+    let path = App.i.path.join(container, file_name)
 
     try {
-      await App.vars.fsp.writeFile(path, data.file)
+      await App.i.fsp.writeFile(path, data.file)
 
       let obj = {}
 
@@ -70,7 +70,7 @@ module.exports = (App) => {
     let likes = []
 
     if (data.title) {
-      title = App.vars.he.decode(data.title)
+      title = App.i.he.decode(data.title)
     }
 
     if (data.query === undefined) {
@@ -116,21 +116,21 @@ module.exports = (App) => {
 
     // Remove left over files
     if (data.type === `upload`) {
-      let container = App.vars.path.join(App.vars.media_root, `room`, socket.hue_room_id, type)
+      let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id, type)
 
-      if (!App.vars.fs.existsSync(container)) {
+      if (!App.i.fs.existsSync(container)) {
         return
       }
 
       try {
-        let files = await App.vars.fsp.readdir(container)
+        let files = await App.i.fsp.readdir(container)
 
         files.sort().reverse()
 
         for (let file of files.slice(App.sconfig[`max_stored_${type}`])) {
-          let path = App.vars.path.join(container, file)
+          let path = App.i.path.join(container, file)
 
-          App.vars.fs.unlink(path, (err) => {
+          App.i.fs.unlink(path, (err) => {
             if (err) {
               App.logger.log_error(err)
             }
@@ -180,19 +180,19 @@ module.exports = (App) => {
 
   // Delete all media files of a certain type from a room
   App.handler.delete_media_files = async (room_id, type) => {
-    let container = App.vars.path.join(App.vars.media_root, `room`, room_id, type)
+    let container = App.i.path.join(App.vars.media_root, `room`, room_id, type)
 
-    if (!App.vars.fs.existsSync(container)) {
+    if (!App.i.fs.existsSync(container)) {
       return
     }
 
     try {
-      let files = await App.vars.fsp.readdir(container)
+      let files = await App.i.fsp.readdir(container)
 
       for (let file of files) {
-        let path = App.vars.path.join(container, file)
+        let path = App.i.path.join(container, file)
 
-        App.vars.fs.unlink(path, (err) => {
+        App.i.fs.unlink(path, (err) => {
           if (err) {
             App.logger.log_error(err)
           }

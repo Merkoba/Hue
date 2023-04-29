@@ -1,21 +1,18 @@
-module.exports = (vars, manager, config, sconfig, utilz, logger) => {
-  // Initial declarations
-  vars.fs = require(`fs`)
-  vars.fsp = require(`fs`).promises
-  vars.path = require(`path`)
-  vars.bcrypt = require(`bcrypt`)
-  vars.reserved_usernames = [
-    sconfig.system_username
+module.exports = (stuff) => {
+  stuff.vars = {}
+
+  stuff.vars.reserved_usernames = [
+    stuff.sconfig.system_username
   ].map((x) => x.toLowerCase())
 
   // Room and User versions
   // These must be increased by 1 when the schema changes
-  vars.rooms_version = 89
-  vars.users_version = 57
+  stuff.vars.rooms_version = 89
+  stuff.vars.users_version = 57
 
   // Room schema definition
   // This is used to check types and fill defaults
-  vars.rooms_schema = () => {
+  stuff.vars.rooms_schema = () => {
     return {
       id: { type: `string`, default: `` },
       name: { type: `string`, default: `No Name` },
@@ -24,8 +21,8 @@ module.exports = (vars, manager, config, sconfig, utilz, logger) => {
       bans: { type: `object`, default: [] },
       log_messages: { type: `object`, default: [] },
       admin_log_messages: { type: `object`, default: [] },
-      background_color: { type: `string`, default: sconfig.default_room_background_color },
-      text_color: { type: `string`, default: sconfig.default_room_text_color },
+      background_color: { type: `string`, default: stuff.sconfig.default_room_background_color },
+      text_color: { type: `string`, default: stuff.sconfig.default_room_text_color },
       background: { type: `string`, default: `` },
       background_type: { type: `string`, default: `hosted` },
       background_version: { type: `number`, default: 0 },
@@ -37,7 +34,7 @@ module.exports = (vars, manager, config, sconfig, utilz, logger) => {
 
   // User schema definition
   // This is used to check types and fill defaults
-  vars.users_schema = () => {
+  stuff.vars.users_schema = () => {
     return {
       id: { type: `string`, default: `` },
       username: { type: `string`, default: ``, skip: true },

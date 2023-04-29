@@ -34,8 +34,8 @@ module.exports = (App) => {
     }
 
     App.db_manager.delete_room(socket.hue_room_id)
-    let room_files = App.vars.path.join(App.vars.media_root, `room`, socket.hue_room_id)
-    App.vars.fs.rmSync(room_files, {recursive: true, force: true})
+    let room_files = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id)
+    App.i.fs.rmSync(room_files, {recursive: true, force: true})
     App.handler.disconnect_room_sockets(socket)
   }
 

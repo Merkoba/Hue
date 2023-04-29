@@ -75,28 +75,27 @@ module.exports = (App) => {
             return
           }
 
-          App.vars
-            .fetch_2(
-              `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${App.sconfig.youtube_api_key}`
-            )
-            .then((res) => {
-              return res.json()
-            })
-            .then(async (response) => {
-              if (response.items !== undefined && response.items.length > 0) {
-                data.type = `youtube`
-                data.title = response.items[0].snippet.title
-                await App.handler.do_change_media(socket, data, `tv`)
-              }
-              else {
-                App.handler.user_emit(socket, `video_not_found`, {})
-                return
-              }
-            })
-            .catch((err) => {
+          App.vars.fetch(
+            `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${App.sconfig.youtube_api_key}`
+          )
+          .then((res) => {
+            return res.json()
+          })
+          .then(async (response) => {
+            if (response.items !== undefined && response.items.length > 0) {
+              data.type = `youtube`
+              data.title = response.items[0].snippet.title
+              await App.handler.do_change_media(socket, data, `tv`)
+            }
+            else {
               App.handler.user_emit(socket, `video_not_found`, {})
-              App.logger.log_error(err)
-            })
+              return
+            }
+          })
+          .catch((err) => {
+            App.handler.user_emit(socket, `video_not_found`, {})
+            App.logger.log_error(err)
+          })
         }
         else {
           App.handler.user_emit(socket, `video_not_found`, {})
@@ -165,27 +164,26 @@ module.exports = (App) => {
             return
           }
 
-          App.vars
-            .fetch_2(data.src)
-            .then(async (res) => {
-              let xframe_options = res.headers.get(`x-frame-options`) || ``
+          App.vars.fetch(data.src)
+          .then(async (res) => {
+            let xframe_options = res.headers.get(`x-frame-options`) || ``
 
-              xframe_options = xframe_options.toLowerCase()
+            xframe_options = xframe_options.toLowerCase()
 
-              if (
-                xframe_options === `deny` ||
-                xframe_options === `sameorigin`
-              ) {
-                App.handler.user_emit(socket, `cannot_embed_iframe`, {})
-                return
-              }
-              else {
-                await App.handler.do_change_media(socket, data, `tv`)
-              }
-            })
-            .catch((err) => {
+            if (
+              xframe_options === `deny` ||
+              xframe_options === `sameorigin`
+            ) {
               App.handler.user_emit(socket, `cannot_embed_iframe`, {})
-            })
+              return
+            }
+            else {
+              await App.handler.do_change_media(socket, data, `tv`)
+            }
+          })
+          .catch((err) => {
+            App.handler.user_emit(socket, `cannot_embed_iframe`, {})
+          })
         }
         else {
           await App.handler.do_change_media(socket, data, `tv`)
@@ -197,46 +195,45 @@ module.exports = (App) => {
         return
       }
 
-      App.vars
-        .fetch_2(
-          `https://www.googleapis.com/youtube/v3/search?q=${encodeURIComponent(
-            data.src
-          )}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&videoEmbeddable=true&key=${
-            App.sconfig.youtube_api_key
-          }`
-        )
-        .then((res) => {
-          return res.json()
-        })
-        .then(async (response) => {
-          if (response.items !== undefined && response.items.length > 0) {
-            for (let item of response.items) {
-              if (
-                item === undefined ||
-                item.id === undefined ||
-                item.id.videoId === undefined
-              ) {
-                continue
-              }
-
-              data.type = `youtube`
-              data.query = data.src
-              data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
-              data.title = response.items[0].snippet.title
-              await App.handler.do_change_media(socket, data, `tv`)
-              return
+      App.vars.fetch(
+        `https://www.googleapis.com/youtube/v3/search?q=${encodeURIComponent(
+          data.src
+        )}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&videoEmbeddable=true&key=${
+          App.sconfig.youtube_api_key
+        }`
+      )
+      .then((res) => {
+        return res.json()
+      })
+      .then(async (response) => {
+        if (response.items !== undefined && response.items.length > 0) {
+          for (let item of response.items) {
+            if (
+              item === undefined ||
+              item.id === undefined ||
+              item.id.videoId === undefined
+            ) {
+              continue
             }
 
-            App.handler.user_emit(socket, `video_not_found`, {})
+            data.type = `youtube`
+            data.query = data.src
+            data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
+            data.title = response.items[0].snippet.title
+            await App.handler.do_change_media(socket, data, `tv`)
             return
           }
-          else {
-            App.handler.user_emit(socket, `video_not_found`, {})
-          }
-        })
-        .catch((err) => {
-          App.logger.log_error(err)
-        })
+
+          App.handler.user_emit(socket, `video_not_found`, {})
+          return
+        }
+        else {
+          App.handler.user_emit(socket, `video_not_found`, {})
+        }
+      })
+      .catch((err) => {
+        App.logger.log_error(err)
+      })
     }
   }
 

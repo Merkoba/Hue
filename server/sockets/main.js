@@ -3,14 +3,14 @@ module.exports = (App) => {
   App.handler = {}
   App.handler.public = {}
 
-  // Object that holds all shared variables
-  App.vars = {}
+  // Fill the imports
+  require(`./imports`)(App)
 
-  // Fill the vars object
+  // Fill the vars
   require(`./vars`)(App)
 
   // Get the module file names and arguments
-  const modules = App.vars.fs.readdirSync(App.vars.path.join(__dirname, `modules`))
+  const modules = App.i.fs.readdirSync(App.i.path.join(__dirname, `modules`))
 
   // Fill the handler object
   for (let module of modules) {

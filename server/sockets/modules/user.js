@@ -109,7 +109,7 @@ module.exports = (App) => {
       return
     }
 
-    let dimensions = App.vars.image_dimensions(data.image_file)
+    let dimensions = App.i.image_dimensions(data.image_file)
 
     if (
       dimensions.width !== App.config.profilepic_diameter ||
@@ -126,16 +126,16 @@ module.exports = (App) => {
     }
 
     let file_name = `profilepic.png`
-    let container = App.vars.path.join(App.vars.media_root, `user`, socket.hue_user_id)
+    let container = App.i.path.join(App.vars.media_root, `user`, socket.hue_user_id)
 
-    if (!App.vars.fs.existsSync(container)) {
-      App.vars.fs.mkdirSync(container, { recursive: true })
+    if (!App.i.fs.existsSync(container)) {
+      App.i.fs.mkdirSync(container, { recursive: true })
     }
 
-    let path = App.vars.path.join(container, file_name)
+    let path = App.i.path.join(container, file_name)
 
     try {
-      await App.vars.fsp.writeFile(path, data.image_file)
+      await App.i.fsp.writeFile(path, data.image_file)
       await App.handler.do_change_profilepic(socket, file_name)
     }
     catch (err) {
@@ -178,16 +178,16 @@ module.exports = (App) => {
     }
 
     let file_name = `audioclip.mp3`
-    let container = App.vars.path.join(App.vars.media_root, `user`, socket.hue_user_id)
+    let container = App.i.path.join(App.vars.media_root, `user`, socket.hue_user_id)
 
-    if (!App.vars.fs.existsSync(container)) {
-      App.vars.fs.mkdirSync(container, { recursive: true })
+    if (!App.i.fs.existsSync(container)) {
+      App.i.fs.mkdirSync(container, { recursive: true })
     }
 
-    let path = App.vars.path.join(container, file_name)
+    let path = App.i.path.join(container, file_name)
 
     try {
-      await App.vars.fsp.writeFile(path, data.audio_file)
+      await App.i.fsp.writeFile(path, data.audio_file)
       await App.handler.do_change_audioclip(socket, file_name)
     }
     catch (err) {
@@ -199,11 +199,11 @@ module.exports = (App) => {
   // Remove the audio clip
   App.handler.public.remove_audioclip = (socket, data) => {
     let file_name = `audioclip.mp3`
-    let container = App.vars.path.join(App.vars.media_root, `user`, socket.hue_user_id)
-    let path = App.vars.path.join(container, file_name)
+    let container = App.i.path.join(App.vars.media_root, `user`, socket.hue_user_id)
+    let path = App.i.path.join(container, file_name)
 
-    if (App.vars.fs.existsSync(path)) {
-      App.vars.fs.unlink(path, (err) => {
+    if (App.i.fs.existsSync(path)) {
+      App.i.fs.unlink(path, (err) => {
         if (err) {
           App.logger.log_error(err)
         }

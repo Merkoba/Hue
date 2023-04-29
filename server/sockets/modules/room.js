@@ -154,16 +154,16 @@ module.exports = (App) => {
     }
 
     let file_name = `background.${data.extension}`
-    let container = App.vars.path.join(App.vars.media_root, `room`, socket.hue_room_id)
+    let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id)
 
-    if (!App.vars.fs.existsSync(container)) {
-      App.vars.fs.mkdirSync(container, { recursive: true })
+    if (!App.i.fs.existsSync(container)) {
+      App.i.fs.mkdirSync(container, { recursive: true })
     }
 
-    let path = App.vars.path.join(container, file_name)
+    let path = App.i.path.join(container, file_name)
 
     try {
-      await App.vars.fsp.writeFile(path, data.image_file)
+      await App.i.fsp.writeFile(path, data.image_file)
       await App.handler.do_change_background(socket, file_name, `hosted`)
     }
     catch (err) {
@@ -230,17 +230,17 @@ module.exports = (App) => {
 
     // Remove left over files
     if (type === `hosted`) {
-      let container = App.vars.path.join(App.vars.media_root, `room`, socket.hue_room_id)
+      let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id)
 
       try {
-        let files = await App.vars.fsp.readdir(container)
+        let files = await App.i.fsp.readdir(container)
 
         for (let file of files) {
           if (file.startsWith(`background`) && file !== file_name) {
-            let container = App.vars.path.join(App.vars.media_root, `room`, socket.hue_room_id)
-            let path = App.vars.path.join(container, file)
+            let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id)
+            let path = App.i.path.join(container, file)
 
-            App.vars.fs.unlink(path, (err) => {
+            App.i.fs.unlink(path, (err) => {
               if (err) {
                 App.logger.log_error(err)
               }

@@ -2,40 +2,40 @@ const fs = require(`fs`)
 const path = require(`path`)
 const root_path = path.join(__dirname, `../../../`)
 
-module.exports = (manager, vars, config, sconfig, utilz, logger) => {
+module.exports = (manager, stuff) => {
   // Write to a file
   function write_file (path) {
     clearTimeout(manager.cache[path].timeout)
 
-    if (Date.now() - manager.cache[path].last_write > sconfig.db_write_file_timeout_limit) {
+    if (Date.now() - manager.cache[path].last_write > stuff.sconfig.db_write_file_timeout_limit) {
       do_write_file(path)
     }
     else {
       manager.cache[path].timeout = setTimeout(() => {
         do_write_file(path)
-      }, sconfig.db_write_file_timeout)
+      }, stuff.sconfig.db_write_file_timeout)
     }
   }
 
   // Check object schema version
   function check_version (type, path, obj) {
-    if (obj.version !== vars[`${type}_version`]) {
+    if (obj.version !== stuff.vars[`${type}_version`]) {
       manager.fill_defaults(type, obj)
-      obj.version = vars[`${type}_version`]
+      obj.version = stuff.vars[`${type}_version`]
       write_file(path, obj)
     }
   }
 
   // Do the write file operation
   function do_write_file (path) {
-    utilz.loginfo(`Writing: ${path.split(`/`).slice(-2).join(`/`)}`)
+    stuff.utilz.loginfo(`Writing: ${path.split(`/`).slice(-2).join(`/`)}`)
     manager.cache[path].last_write = Date.now()
 
     try {
       fs.writeFileSync(path, JSON.stringify(manager.cache[path].obj), `utf8`)
     }
     catch (err) {
-      logger.log_error(err)
+      stuff.logger.log_error(err)
     }
   }
 
@@ -60,17 +60,17 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
 
   // Get the full dir path
   manager.get_dir_path = (type) => {
-    return path.join(root_path, `${sconfig.db_store_path}/${type}`)
+    return path.join(root_path, `${stuff.sconfig.db_store_path}/${type}`)
   }
 
   // Get the full file path
   manager.get_file_path = (type, file_name) => {
-    return path.join(root_path, `${sconfig.db_store_path}/${type}/${file_name}`)
+    return path.join(root_path, `${stuff.sconfig.db_store_path}/${type}/${file_name}`)
   }
 
   // Make proxy object to handle property updates
   manager.make_proxy_object = (obj, path, type) => {
-    let schema = vars[`${type}_schema`]()
+    let schema = stuff.vars[`${type}_schema`]()
 
     let handler = {
       get (target, property) {
@@ -85,11 +85,11 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
             write_file(path)
           }
           else {
-            logger.log_error(`DB Engine: '${property}' is the wrong type`)
+            stuff.logger.log_error(`DB Engine: '${property}' is the wrong type`)
           }
         }
         else {
-          logger.log_error(`DB Engine: '${property}' is not in the schema`)
+          stuff.logger.log_error(`DB Engine: '${property}' is not in the schema`)
         }
       }
     }
@@ -118,7 +118,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
       else {
         fs.readdir(manager.get_dir_path(type), async (err, file_names) => {
           if (err) {
-            logger.log_error(err)
+            stuff.logger.log_error(err)
             reject(`Nothing found`)
             return
           }
@@ -231,7 +231,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   manager.insert_one = (type, original) => {
     return new Promise((resolve, reject) => {
       if (!original.id) {
-        original.id = `${Math.round(new Date() / 1000)}_${utilz.get_random_string(4)}`
+        original.id = `${Math.round(new Date() / 1000)}_${stuff.utilz.get_random_string(4)}`
       }
 
       let path = manager.get_file_path(type, original.id)
@@ -245,7 +245,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   // Fill unexisting keys with defaults
   // Also remove obsolete keys
   manager.fill_defaults = (type, obj) => {
-    let schema = vars[`${type}_schema`]()
+    let schema = stuff.vars[`${type}_schema`]()
 
     // Fill defaults
     for (let key in schema) {
@@ -275,9 +275,9 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
     if (obj) {
       obj[list_name].push(item)
 
-      if (obj[list_name].length > config[`max_${list_name}`]) {
+      if (obj[list_name].length > stuff.config[`max_${list_name}`]) {
         obj[list_name] = obj[list_name].slice(
-          obj[list_name].length - config[`max_${list_name}`]
+          obj[list_name].length - stuff.config[`max_${list_name}`]
         )
       }
 

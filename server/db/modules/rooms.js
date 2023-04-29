@@ -1,4 +1,4 @@
-module.exports = (manager, vars, config, sconfig, utilz, logger) => {
+module.exports = (manager, stuff) => {
   // Finds a room with the given query
   manager.get_room = (query) => {
     return new Promise((resolve, reject) => {
@@ -33,7 +33,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
       let room = {}
 
       manager.fill_defaults(`rooms`, room)
-      room.version = vars.rooms_version
+      room.version = stuff.vars.rooms_version
 
       if (data.id !== undefined) {
         room.id = data.id
@@ -52,7 +52,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
       })
       .catch(err => {
         reject(err)
-        logger.log_error(err)
+        stuff.logger.log_error(err)
       })
     })
   }
@@ -63,7 +63,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
       try {
         let objs = []
         let path = manager.get_dir_path(`rooms`)
-        let file_names = await vars.fsp.readdir(path)
+        let file_names = await stuff.i.fsp.readdir(path)
 
         for (let name of file_names) {
           if (name.startsWith(`.`)) {
@@ -77,7 +77,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
             obj = manager.cache[fpath].obj
           }
           else {
-            let text = await vars.fsp.readFile(fpath, `utf8`)
+            let text = await stuff.i.fsp.readFile(fpath, `utf8`)
             obj = JSON.parse(text)
           }
 
@@ -88,7 +88,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
       }
       catch (err) {
         reject(err)
-        logger.log_error(err)
+        stuff.logger.log_error(err)
       }
     })
   }
@@ -96,7 +96,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   // Delete a room file and remove object (sync)
   manager.delete_room = (id) => {
     let fpath = manager.get_file_path(`rooms`, id)
-    vars.fs.rmSync(fpath)
+    stuff.i.fs.rmSync(fpath)
     manager.remove_from_cache(fpath)
   }
 }

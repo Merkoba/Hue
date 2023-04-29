@@ -88,7 +88,7 @@ module.exports = (App) => {
       await App.handler.do_join(socket, info, userinfo, data)
     }
     else {
-      App.vars.jwt.verify(data.token, App.sconfig.jwt_secret, async function (
+      App.i.jwt.verify(data.token, App.sconfig.jwt_secret, async function (
         err,
         decoded
       ) {

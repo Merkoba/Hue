@@ -2,18 +2,30 @@ module.exports = (config, sconfig, utilz, logger) => {
   // Main object
   const manager = {}
 
-  // Object that holds all shared variables
-  const vars = {}
+  // Hold some stuff
+  const stuff = {
+    config: config,
+    sconfig: sconfig,
+    utilz: utilz,
+    logger: logger
+  }
+
+  // Imports
+  stuff.i = {}
+  stuff.i.fs = require(`fs`)
+  stuff.i.fsp = require(`fs`).promises
+  stuff.i.path = require(`path`)
+  stuff.i.bcrypt = require(`bcrypt`)
 
   // Fill the vars object
-  require(`./vars`)(vars, manager, config, sconfig, utilz, logger)
+  require(`./vars`)(stuff)
 
   // Get the module file names and arguments
-  const modules = vars.fs.readdirSync(vars.path.join(__dirname, `modules`))
+  const modules = stuff.i.fs.readdirSync(stuff.i.path.join(__dirname, `modules`))
 
   // Fill the handler object
   for (let module of modules) {
-    require(`./modules/${module}`)(manager, vars, config, sconfig, utilz, logger)
+    require(`./modules/${module}`)(manager, stuff)
   }
 
   return manager

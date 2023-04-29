@@ -6,7 +6,7 @@ module.exports = (App) => {
 
   // Write banlist file
   App.handler.write_banlist_file = async () => {
-    await App.vars.fsp.writeFile(App.banlist_path, JSON.stringify(App.banlist))
+    await App.i.fsp.writeFile(App.banlist_path, JSON.stringify(App.banlist))
   }
 
   // Check if user is banned

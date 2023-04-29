@@ -13,8 +13,8 @@ module.exports = (App) => {
       return {}
     }
 
-    if (App.vars.redis_client_ready) {
-      let reply = await App.vars.redis_client.HGETALL(`hue_link_${url}`)
+    if (App.i.redis_client_ready) {
+      let reply = await App.i.redis_client.HGETALL(`hue_link_${url}`)
 
       if (Object.keys(reply).length) {
         if (Date.now() - reply.date > App.sconfig.redis_max_link_age) {
@@ -59,10 +59,10 @@ module.exports = (App) => {
     }
 
     try {
-      let res = await App.vars.fetch_2(url, {timeout: App.sconfig.link_fetch_timeout})
+      let res = await App.vars.fetch(url, {timeout: App.sconfig.link_fetch_timeout})
       let body = await res.text()
 
-      let $ = App.vars.cheerio.load(body)
+      let $ = App.i.cheerio.load(body)
 
       if ($(`title`).length > 0) {
         response.title = App.utilz.single_space($(`title`).eq(0).text()) || ``
@@ -118,7 +118,7 @@ module.exports = (App) => {
         }
       }
 
-      if (App.vars.redis_client_ready) {
+      if (App.i.redis_client_ready) {
         let obj = {
           title: response.title,
           description: response.description,
@@ -127,11 +127,11 @@ module.exports = (App) => {
           date: Date.now()
         }
 
-        App.vars.redis_client.HSET(`hue_link_${url}`, obj)
+        App.i.redis_client.HSET(`hue_link_${url}`, obj)
       }
     }
     catch (err) {
-      if (App.vars.redis_client_ready) {
+      if (App.i.redis_client_ready) {
         let obj = {
           title: response.title,
           description: response.description,
@@ -140,7 +140,7 @@ module.exports = (App) => {
           date: Date.now()
         }
 
-        App.vars.redis_client.HSET(`hue_link_${url}`, obj)
+        App.i.redis_client.HSET(`hue_link_${url}`, obj)
       }
     }
 

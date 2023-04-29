@@ -1,4 +1,4 @@
-module.exports = (manager, vars, config, sconfig, utilz, logger) => {
+module.exports = (manager, stuff) => {
   // Finds a user with the given query
   manager.get_user = (query) => {
     return new Promise((resolve, reject) => {
@@ -37,12 +37,12 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
       })
       .catch(err => {
         reject(err)
-        logger.log_error(err)
+        stuff.logger.log_error(err)
         return
       })
 
-      vars.bcrypt
-        .hash(info.password, sconfig.encryption_cost)
+      stuff.i.bcrypt
+        .hash(info.password, stuff.sconfig.encryption_cost)
         .then(hash => {
           let user = {}
 
@@ -54,7 +54,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
           }
 
           manager.fill_defaults(`users`, user)
-          user.version = vars.users_version
+          user.version = stuff.vars.users_version
           manager.insert_one(`users`, user)
           .then(result => {
             resolve(result)
@@ -62,13 +62,13 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
           })
           .catch(err => {
             reject(err)
-            logger.log_error(err)
+            stuff.logger.log_error(err)
             return
           })
         })
         .catch(err => {
           reject(err)
-          logger.log_error(err)
+          stuff.logger.log_error(err)
         })
     })
   }
@@ -76,7 +76,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   // Changes the username
   manager.change_username = (id, current_username, new_username) => {
     return new Promise((resolve, reject) => {
-      if (vars.reserved_usernames.includes(new_username.toLowerCase())) {
+      if (stuff.vars.reserved_usernames.includes(new_username.toLowerCase())) {
         resolve(false)
         return
       }
@@ -94,7 +94,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
         })
         .catch(err => {
           reject(err)
-          logger.log_error(err)
+          stuff.logger.log_error(err)
         })
       }
 
@@ -121,20 +121,20 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
                   })
                   .catch(err => {
                     reject(err)
-                    logger.log_error(err)
+                    stuff.logger.log_error(err)
                   })
                 }
               })
               .catch(err => {
                 reject(err)
-                logger.log_error(err)
+                stuff.logger.log_error(err)
                 return
               })
           }
         })
         .catch(err => {
           reject(err)
-          logger.log_error(err)
+          stuff.logger.log_error(err)
         })
     })
   }
@@ -142,7 +142,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
   // Dedicated function to change user password
   manager.change_user_password = (id, password) => {
     return new Promise((resolve, reject) => {
-      vars.bcrypt.hash(password, sconfig.encryption_cost)
+      stuff.i.bcrypt.hash(password, stuff.sconfig.encryption_cost)
       .then(hash => {
         manager.get_user([`id`, id])
         .then(user => {
@@ -152,13 +152,13 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
         })
         .catch(err => {
           reject(err)
-          logger.log_error(err)
+          stuff.logger.log_error(err)
           return
         })
       })
       .catch(err => {
         reject(err)
-        logger.log_error(err)
+        stuff.logger.log_error(err)
         return
       })
     })
@@ -175,7 +175,7 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
             resolve({ user: null, valid: false })
           }
           else {
-            vars.bcrypt
+            stuff.i.bcrypt
               .compare(password, user.password)
               .then((valid) => {
                 resolve({ user: user, valid: valid })
@@ -183,14 +183,14 @@ module.exports = (manager, vars, config, sconfig, utilz, logger) => {
               })
               .catch(err => {
                 reject(err)
-                logger.log_error(err)
+                stuff.logger.log_error(err)
                 return
               })
           }
         })
         .catch(err => {
           reject(err)
-          logger.log_error(err)
+          stuff.logger.log_error(err)
         })
     })
   }
