@@ -220,6 +220,17 @@ App.change_radio_volume = (direction, amount = 0.05) => {
   if (App.room_state.radio_volume !== new_volume) {
     App.apply_radio_volume(new_volume)
   }
+  else {
+    App.flash_radio_volume()
+  }
+}
+
+// Flash radio volume
+App.flash_radio_volume = (volume = App.room_state.radio_volume) => {
+  if (App.started && !App.msg_radio.is_open()) {
+    let vstring = Math.round(volume * 100)
+    App.flash_info(`Radio`, `Volume: ${vstring}%`)
+  }
 }
 
 // Apply radio volume to all players
@@ -227,10 +238,7 @@ App.apply_radio_volume = (volume = App.room_state.radio_volume) => {
   let vstring = Math.round(volume * 100)
   let fp = App.utilz.fillpad(vstring.toString(), 3, `0`)
   App.el(`#radio_volume`).textContent = `Volume: ${fp}%`
-
-  if (App.started && !App.msg_radio.is_open()) {
-    App.flash_info(`Radio`, `Volume: ${vstring}%`)
-  }
+  App.flash_radio_volume(volume)
 
   if (volume >= 0.7) {
     App.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-full`
