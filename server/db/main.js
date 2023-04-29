@@ -10,14 +10,10 @@ module.exports = (config, sconfig, utilz, logger) => {
     logger: logger
   }
 
-  // Imports
-  stuff.i = {}
-  stuff.i.fs = require(`fs`)
-  stuff.i.fsp = require(`fs`).promises
-  stuff.i.path = require(`path`)
-  stuff.i.bcrypt = require(`bcrypt`)
+  // Fill imports
+  require(`./imports`)(stuff)
 
-  // Fill the vars object
+  // Fill the vars
   require(`./vars`)(stuff)
 
   // Get the module file names and arguments
