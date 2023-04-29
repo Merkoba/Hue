@@ -100,7 +100,7 @@ module.exports = (App) => {
 
     let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
 
-    for (let i = 0; i < info.message_board_posts.length; i++) {
+    for (let i=0; i<info.message_board_posts.length; i++) {
       let item = info.message_board_posts[i]
 
       if (item.id === data.id) {

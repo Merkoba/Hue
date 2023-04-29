@@ -207,7 +207,7 @@ module.exports = (App) => {
     let message_username
     let deleted = false
 
-    for (let i = 0; i < messages.length; i++) {
+    for (let i=0; i<messages.length; i++) {
       let msg = messages[i]
 
       if (msg.data.id && msg.data.id == data.id) {
@@ -263,7 +263,7 @@ module.exports = (App) => {
           }
         }
 
-        for (let i = 0; i < messages.length; i++) {
+        for (let i=0; i<messages.length; i++) {
           let msg = messages[i]
 
           if (msg.data.id && msg.data.id == data.id) {

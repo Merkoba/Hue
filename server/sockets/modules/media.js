@@ -148,7 +148,7 @@ module.exports = (App) => {
     let edited = false
     let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
 
-    for (let i = 0; i < info.log_messages.length; i++) {
+    for (let i=0; i<info.log_messages.length; i++) {
       let message = info.log_messages[i]
 
       if (message.type !== data.type) {

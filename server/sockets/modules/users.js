@@ -258,7 +258,7 @@ module.exports = (App) => {
       return
     }
 
-    for (let i = 0; i < info.bans.length; i++) {
+    for (let i=0; i<info.bans.length; i++) {
       if (info.bans[i] === id) {
         info.bans.splice(i, 1)
         break

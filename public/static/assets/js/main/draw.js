@@ -30,7 +30,7 @@ App.canvas_redraw = (args = {}) => {
     )
   }
 
-  for (let i = 0; i < args.sector_index; i++) {
+  for (let i=0; i<args.sector_index; i++) {
     args.context.beginPath()
 
     if (args.drag[i] && i) {

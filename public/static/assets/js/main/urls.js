@@ -31,7 +31,7 @@ App.urlize = (el, limit_width = true) => {
       let cls = `generic action`
       let used_urls = []
 
-      for (let i = 0; i < matches.length; i++) {
+      for (let i=0; i<matches.length; i++) {
         let url = matches[i]
 
         if (used_urls.includes(url)) {

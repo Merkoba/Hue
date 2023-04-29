@@ -81,7 +81,7 @@ const Utilz = () => {
 
 	// Shuffle an array
 	utilz.shuffle_array = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
+    for (let i=array.length-1; i>0; i--) {
 			let j = Math.floor(Math.random() * (i + 1))
 			let temp = array[i]
 			array[i] = array[j]
@@ -95,7 +95,7 @@ const Utilz = () => {
 
 		let possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`
 
-		for (let i = 0; i < n; i++) {
+		for (let i=0; i<n; i++) {
 			text += possible[utilz.get_random_int(0, possible.length - 1)]
 		}
 
@@ -106,7 +106,7 @@ const Utilz = () => {
 	utilz.random_sequence = (n) => {
 		let s = ``
 
-		for (let i = 0; i < n; i++) {
+		for (let i=0; i<n; i++) {
 			s += utilz.get_random_int(0, 9)
 		}
 
@@ -314,7 +314,7 @@ const Utilz = () => {
 	utilz.nice_list = (list) => {
 		let s = ``
 
-		for (let i = 0; i < list.length; i++) {
+		for (let i=0; i<list.length; i++) {
 			let item = list[i]
 
 			if (i === 0) {
@@ -558,7 +558,7 @@ const Utilz = () => {
 
 		let costs = new Array()
 
-		for (let i = 0; i <= s1.length; i++) {
+		for (let i=0; i<=s1.length; i++) {
 			let last_value = i
 
 			for (let j = 0; j <= s2.length; j++) {
