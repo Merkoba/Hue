@@ -16,7 +16,7 @@ module.exports = (config, sconfig, utilz, logger) => {
   // Fill the vars
   require(`./vars`)(stuff)
 
-  // Get the module file names and arguments
+  // Get the module file names
   const modules = stuff.i.fs.readdirSync(stuff.i.path.join(__dirname, `modules`))
 
   // Fill the handler object
