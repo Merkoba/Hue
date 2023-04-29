@@ -1916,11 +1916,11 @@ pre {
   background-color: var(--altbackground_a) !important;
 }
 
-#snackbar {
+#linkbar {
 	background-color: var(--altcolor_a);
 }
 
-#snackbar_links {
+#linkbar_links {
 	flex-grow: 0;
 	flex-shrink: 0;
 	padding-left: 0.5rem;
@@ -1930,7 +1930,7 @@ pre {
 	justify-content: center;
 }
 
-#snackbar_url {
+#linkbar_url {
 	flex-grow: 0;
 	flex-shrink: 1;
 	overflow: hidden;
@@ -1942,7 +1942,7 @@ pre {
 	justify-content: flex-start;
 }
 
-#snackbar_title {
+#linkbar_title {
 	flex-grow: 0;
 	flex-shrink: 1;
 	overflow: hidden;

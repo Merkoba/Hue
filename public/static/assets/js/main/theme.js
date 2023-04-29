@@ -196,7 +196,7 @@ App.set_background = (data, apply = true) => {
 App.apply_background = (background = App.background, preview = false) => {
   App.background_preview = preview
 
-  if (App.settings.show_background) {
+  if (App.get_setting(`show_background`)) {
     for (let el of App.els(`.background`)) {
       el.src = background
     }
