@@ -24,7 +24,7 @@ App.snackbar_click = () => {
   }
 }
 
-App.update_snackbar = (url, title = ``) => {
+App.update_snackbar = (url, title) => {
   let item = {
     url: url,
     title: title,
@@ -36,6 +36,25 @@ App.update_snackbar = (url, title = ``) => {
     App.snackbar_items.pop()
   }
 
-  App.el(`#snackbar_url`).textContent = item.url
-  App.el(`#snackbar_title`).textContent = item.title
+  let url_el = App.el(`#snackbar_url`)
+  url_el.textContent = item.url || ``
+
+  if (item.url) {
+    url_el.classList.remove(`nodisplay`)
+  }
+  else {
+    url_el.classList.add(`nodisplay`)
+  }
+
+  let title_el = App.el(`#snackbar_title`)
+  title_el.textContent = item.title || ``
+
+  if (item.title) {
+    title_el.classList.remove(`nodisplay`)
+  }
+  else {
+    title_el.classList.add(`nodisplay`)
+  }
+
+  App.horizontal_separator(App.el(`#snackbar`))
 }
