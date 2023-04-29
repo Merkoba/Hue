@@ -177,11 +177,11 @@ App.modify_setting_widget = (setting_name) => {
     item.value = App.settings[setting_name]
   }
   else if (widget_type === `select`) {
-    App.els(`option`, item).forEach(it => {
-      if (it.value == App.settings[setting_name]) {
-        it.selected = true
+    for (let el of App.els(`option`, item)) {
+      if (el.value == App.settings[setting_name]) {
+        el.selected = true
       }
-    })
+    }
   }
 }
 

@@ -197,14 +197,14 @@ App.apply_background = (background = App.background, preview = false) => {
   App.background_preview = preview
 
   if (App.settings.show_background) {
-    App.els(`.background`).forEach(it => {
-      it.src = background
-    })
+    for (let el of App.els(`.background`)) {
+      el.src = background
+    }
   }
   else {
-    App.els(`.background`).forEach(it => {
-      it.src = ``
-    })
+    for (let el of App.els(`.background`)) {
+      el.src = ``
+    }
   }
 }
 

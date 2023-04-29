@@ -196,9 +196,9 @@ App.show_chat_search = (filter = ``) => {
     else {
       let messages = App.clone_children(`#chat_area`).reverse()
 
-      messages.forEach(it => {
-        it.removeAttribute(`id`)
-      })
+      for (let m of messages) {
+        m.removeAttribute(`id`)
+      }
 
       messages = messages.filter(it => {
         let mode = App.dataset(it, `mode`)

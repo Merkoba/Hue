@@ -1,8 +1,8 @@
 // Remove & add vertical or horizontal separators
 App.apply_separator = (el, cls) => {
-  App.els(`:scope > .separator`, el).forEach(it => {
-    it.remove()
-  })
+  for (let sep of App.els(`:scope > .separator`, el)) {
+    sep.remove()
+  }
 
   let elems = Array.from(el.children).filter(it => {
     return it.style.display !== `none` && !it.classList.contains(`nodisplay`)
@@ -31,13 +31,13 @@ App.vertical_separator = (el) => {
 
 // Applies separation to generic horizontal separator classes
 App.setup_generic_separators = () => {
-  App.els(`.generic_horizontal_separator`).forEach(it => {
-    App.horizontal_separator(it)
-  })
+  for (let el of App.els(`.generic_horizontal_separator`)) {
+    App.horizontal_separator(el)
+  }
 
-  App.els(`.generic_vertical_separator`).forEach(it => {
-    App.vertical_separator(it)
-  })
+  for (let el of App.els(`.generic_vertical_separator`)) {
+    App.vertical_separator(el)
+  }
 }
 
 // This hides the loading animation and makes the main container visible
@@ -109,16 +109,16 @@ App.start_timeago = () => {
 
 // The timeago action
 App.timeago_action = () => {
-  App.els(`.chat_area`).forEach(it => {
-    App.els(`.chat_timeago`, it).forEach(it2 => {
-      let message = it2.closest(`.message`)
-      it2.textContent = App.utilz.timeago(App.dataset(message, `date`))
-    })
-  })
+  for (let el of App.els(`.chat_area`)) {
+    for (let ct of App.els(`.chat_timeago`, el)) {
+      let message = ct.closest(`.message`)
+      ct.textContent = App.utilz.timeago(App.dataset(message, `date`))
+    }
+  }
 
-  App.els(`#media .media_info_container`).forEach(it => {
-    App.el(`.media_info_timeago`, it).textContent = App.utilz.timeago(App.dataset(it, `date`))
-  })
+  for (let el of App.els(`#media .media_info_container`)) {
+    App.el(`.media_info_timeago`, el).textContent = App.utilz.timeago(App.dataset(el, `date`))
+  }
 
   if (App.msg_modal_image.is_open()) {
     App.el(`#modal_image_header_info .modal_image_timeago`)

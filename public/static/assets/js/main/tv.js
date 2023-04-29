@@ -77,22 +77,22 @@ App.play_tv = () => {
 // Destroys all tv players that don't match the item's type
 // Makes the item's type visible
 App.hide_tv = (item = false) => {
-  App.els(`#media_tv .media_container`).forEach(it => {
-    let type = it.id.replace(`media_`, ``).replace(`_tv_container`, ``)
+  for (let el of App.els(`#media_tv .media_container`)) {
+    let type = el.id.replace(`media_`, ``).replace(`_tv_container`, ``)
 
     if (!item || item.type !== type) {
       let el = App.create(`div`, `media_container`)
-      el.id = it.id
+      el.id = el.id
       el.style.display = `none`
-      it.replaceWith(el)
+      el.replaceWith(el)
       App[`${type}_tv_player`] = undefined
       App[`${type}_tv_player_requested`] = false
       App[`${type}_tv_player_request`] = false
     }
     else {
-      it.style.display = `flex`
+      el.style.display = `flex`
     }
-  })
+  }
 }
 
 // Loads a YouTube video
@@ -689,7 +689,9 @@ App.start_screen_capture = async (seconds) => {
   }
 
   App.screen_capture_recorder.onstop = () => {
-    stream.getTracks().forEach(track => track.stop())
+    for (let track of stream.getTracks()) {
+      track.stop()
+    }
 
     const blob = new Blob(recorded_chunks, {
       type: `video/webm`

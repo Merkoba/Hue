@@ -439,11 +439,11 @@ App.update_whispers_unread_count = () => {
 App.get_unread_whispers = () => {
   let num_unread = 0
 
-  App.els(`.whisper_item`).forEach(it => {
-    if (!App.dataset(it, `read`)) {
+  for (let el of App.els(`.whisper_item`)) {
+    if (!App.dataset(el, `read`)) {
       num_unread += 1
     }
-  })
+  }
 
   return num_unread
 }

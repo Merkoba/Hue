@@ -264,12 +264,11 @@ App.clear_draw_image_state = () => {
   App.set_draw_image_mode_input(`pencil`)
   App.draw_image_pencil_size = App.draw_image_default_pencil_size
 
-  App.els(`#draw_image_pencil_size option`)
-  .forEach(it => {
-    if (it.value == App.draw_image_pencil_size) {
-      it.selected = true
+  for (let el of App.els(`#draw_image_pencil_size option`)) {
+    if (el.value == App.draw_image_pencil_size) {
+      el.selected = true
     }
-  })
+  }
 
   App.draw_image_snapshots = {
     level_0: {

@@ -142,49 +142,49 @@ App.show_media_tweaks = () => {
 
 // Refresh media tweaks widgets
 App.refresh_media_tweaks = () => {
-  App.els(`#media_tweaks_tv_size option`).forEach(it => {
-    if (it.value == App.room_state.tv_display_percentage) {
-      it.selected = true
+  for (let el of App.els(`#media_tweaks_tv_size option`)) {
+    if (el.value == App.room_state.tv_display_percentage) {
+      el.selected = true
     }
-  })
+  }
 
-  App.els(`#media_tweaks_chat_size option`).forEach(it => {
-    if (it.value == App.room_state.chat_display_percentage) {
-      it.selected = true
+  for (let el of App.els(`#media_tweaks_chat_size option`)) {
+    if (el.value == App.room_state.chat_display_percentage) {
+      el.selected = true
     }
-  })
+  }
 
-  App.els(`#media_tweaks_chat_font_size option`).forEach(it => {
-    if (it.value == App.room_state.chat_font_size) {
-      it.selected = true
+  for (let el of App.els(`#media_tweaks_chat_font_size option`)) {
+    if (el.value == App.room_state.chat_font_size) {
+      el.selected = true
     }
-  })
+  }
 
-  App.els(`#media_tweaks_media_info_enabled option`).forEach(it => {
+  for (let el of App.els(`#media_tweaks_media_info_enabled option`)) {
     if (App.room_state.media_info_enabled) {
-      if (it.value === `enabled`) {
-        it.selected = true
+      if (el.value === `enabled`) {
+        el.selected = true
       }
     }
     else {
-      if (it.value === `disabled`) {
-        it.selected = true
+      if (el.value === `disabled`) {
+        el.selected = true
       }
     }
-  })
+  }
 
-  App.els(`#media_tweaks_chat_enabled option`).forEach(it => {
+  for (let el of App.els(`#media_tweaks_chat_enabled option`)) {
     if (App.room_state.chat_enabled) {
-      if (it.value === `enabled`) {
-        it.selected = true
+      if (el.value === `enabled`) {
+        el.selected = true
       }
     }
     else {
-      if (it.value === `disabled`) {
-        it.selected = true
+      if (el.value === `disabled`) {
+        el.selected = true
       }
     }
-  })
+  }
 }
 
 // Apply media defaults

@@ -1,8 +1,8 @@
 // Create all the Handlebars templates
 App.setup_templates = () => {
-  App.els(`.template`).forEach(it => {
-    App[it.id] = Handlebars.compile(App.el(`#${it.id}`).innerHTML)
-  })
+  for (let template of App.els(`.template`)) {
+    App[template.id] = Handlebars.compile(App.el(`#${template.id}`).innerHTML)
+  }
 }
 
 let msgvars = {}

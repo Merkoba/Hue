@@ -85,10 +85,9 @@ App.get_activity_bar_item_by_user_id = (id) => {
 
 // Removes all items on the activity bar
 App.clear_activity_bar_items = () => {
-  App.els(`#activity_bar_inner .activity_bar_item`)
-  .forEach(it => {
-    it.remove()
-  })
+  for (let el of App.els(`#activity_bar_inner .activity_bar_item`)) {
+    el.remove()
+  }
 }
 
 // Updates the profile image of an item in the activity bar

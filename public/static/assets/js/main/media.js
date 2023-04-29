@@ -140,11 +140,11 @@ App.remove_item_from_media_changed = (type, id) => {
 App.num_media_elements_visible = () => {
   let num = 0
 
-  App.els(`#media_split .media_main_container`).forEach(it => {
-    if (it.style.display !== `none`) {
+  for (let el of App.els(`#media_split .media_main_container`)) {
+    if (el.style.display !== `none`) {
       num += 1
     }
-  })
+  }
 
   return num
 }
@@ -564,18 +564,18 @@ App.change_media_layout = (mode = false) => {
   if (mode === `column`) {
     App.el(`#media_split`).style.flexDirection = `column`
 
-    App.els(`.media_main_container`).forEach(it => {
-      it.style.width = `100%`
-      it.style.height = `50%`
-    })
+    for (let el of App.els(`.media_main_container`)) {
+      el.style.width = `100%`
+      el.style.height = `50%`
+    }
   }
   else if (mode === `row`) {
     App.el(`#media_split`).style.flexDirection = `row`
 
-    App.els(`.media_main_container`).forEach(it => {
-      it.style.width = `50%`
-      it.style.height = `100%`
-    })
+    for (let el of App.els(`.media_main_container`)) {
+      el.style.width = `50%`
+      el.style.height = `100%`
+    }
   }
 
   App.apply_media_percentages()

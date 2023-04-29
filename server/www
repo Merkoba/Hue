@@ -50,15 +50,15 @@ function build_config() {
 		utilz.loginfo(`No user secret config file found`)
 	}
 
-	Object.keys(config).forEach((key) => {
+	for (let key of Object.keys(config)) {
 		delete config[key]
-	})
+	}
 
 	Object.assign(config, xconfig)
 
-	Object.keys(sconfig).forEach((key) => {
+	for (let key of Object.keys(sconfig)) {
 		delete sconfig[key]
-	})
+	}
 
 	Object.assign(sconfig, xsconfig)
 
@@ -90,9 +90,9 @@ function build_config() {
 		fs.writeFileSync(banlist_path, JSON.stringify(xbanlist), `utf-8`)
 	}
 
-	Object.keys(banlist).forEach((key) => {
+	for (let key of Object.keys(banlist)) {
 		delete banlist[key]
-	})
+	}
 
 	Object.assign(banlist, xbanlist)
 

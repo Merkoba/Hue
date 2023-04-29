@@ -18,9 +18,9 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   start_view_check()
 
   function build_view () {
-    Object.keys(view).forEach((key) => {
+    for (let key of Object.keys(view)) {
       delete view[key]
-    })
+    }
 
     // Hold all public config here
     view.config = config
@@ -103,12 +103,12 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   }
 
   function walkdir (dir, callback) {
-    fs.readdirSync(dir).forEach(f => {
+    for (let f of fs.readdirSync(dir)) {
       let dirPath = path.join(dir, f)
       let isDirectory = fs.statSync(dirPath).isDirectory()
       isDirectory ?
         walkdir(dirPath, callback) : callback(path.join(dir, f))
-    })
+    }
   }
 
   function get_view_mtime () {

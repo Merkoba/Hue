@@ -600,7 +600,10 @@ App.take_screenshot = async () => {
   video.srcObject = stream
 
   App.ev(video, `loadeddata`, async () => {
-    stream.getTracks().forEach(track => track.stop())
+    for (let track of stream.getTracks()) {
+      track.stop()
+    }
+
     let { videoWidth, videoHeight } = video
     canvas.width = videoWidth
     canvas.height = videoHeight

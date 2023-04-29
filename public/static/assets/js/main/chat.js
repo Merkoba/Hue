@@ -883,20 +883,20 @@ App.remove_message_from_context_menu = (menu) => {
 App.process_remove_chat_message = (chat_content_container) => {
   let chat_content_container_id = App.dataset(chat_content_container, `chat_content_container_id`)
 
-  App.els(`.chat_content_container`).forEach(it => {
+  for (let el of App.els(`.chat_content_container`)) {
     if (
-      App.dataset(it, `chat_content_container_id`) === chat_content_container_id
+      App.dataset(el, `chat_content_container_id`) === chat_content_container_id
     ) {
       if (
-        App.els(`.chat_content_container`, it.closest(`.chat_container`)).length === 1
+        App.els(`.chat_content_container`, el.closest(`.chat_container`)).length === 1
       ) {
-        it.closest(`.message`).remove()
+        el.closest(`.message`).remove()
       }
       else {
-        it.remove()
+        el.remove()
       }
     }
-  })
+  }
 }
 
 // Determines how to remove an announcement
@@ -912,9 +912,9 @@ App.process_remove_announcement = (message) => {
     App.remove_item_from_media_changed(type.replace(`_change`, ``), id)
   }
 
-  App.els(`.message_id_${message_id}`).forEach(it => {
-    it.remove()
-  })
+  for (let el of App.els(`.message_id_${message_id}`)) {
+    el.remove()
+  }
 }
 
 // Gets the most recent message by user_id
@@ -1537,9 +1537,9 @@ App.get_last_message_date = () => {
 
 // Clear the chat by adding a spacer
 App.add_chat_spacer = () => {
-  App.els(`.clear_spacer`).forEach(it => {
-    it.remove()
-  })
+  for (let el of App.els(`.clear_spacer`)) {
+    el.remove()
+  }
 
   let spacer = App.create(`div`, `message clear_spacer`)
   App.el(`#chat_area`).append(spacer)

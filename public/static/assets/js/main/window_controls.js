@@ -122,21 +122,21 @@ App.do_modal_filter = (id = false) => {
       }
     }
 
-    items.forEach(it => {
-      if (filtercheck(it)) {
-        it.classList.remove(`nodisplay`)
+    for (let item of items) {
+      if (filtercheck(item)) {
+        item.classList.remove(`nodisplay`)
       }
       else {
-        it.classList.add(`nodisplay`)
+        item.classList.add(`nodisplay`)
       }
-    })
+    }
 
     App[`${id}_filtered`] = true
   }
   else {
-    items.forEach(it => {
-      it.classList.remove(`nodisplay`)
-    })
+    for (let item of items) {
+      item.classList.remove(`nodisplay`)
+    }
 
     App[`${id}_filtered`] = false
   }
