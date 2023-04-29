@@ -2,7 +2,7 @@ module.exports = (config, sconfig, utilz, logger) => {
   // Main object
   const manager = {}
 
-  // Hold some stuff
+  // Hold stuff
   const stuff = {
     config: config,
     sconfig: sconfig,
@@ -19,7 +19,7 @@ module.exports = (config, sconfig, utilz, logger) => {
   // Get the module file names
   const modules = stuff.i.fs.readdirSync(stuff.i.path.join(__dirname, `modules`))
 
-  // Fill the handler object
+  // Fill the manager object
   for (let module of modules) {
     require(`./modules/${module}`)(manager, stuff)
   }
