@@ -791,6 +791,7 @@ const Utilz = () => {
 		arr.splice(to, 0, arr.splice(from, 1)[0])
 	}
 
+	// Rotate an array forwards or backwards
 	utilz.rotate_array = (arr, count) => {
 		let len = arr.length
 		arr.push(...arr.splice(0, (- count % len + len) % len))
