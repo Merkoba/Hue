@@ -6,10 +6,6 @@ App.make_chat_message = (args = {}) => {
   }
 
   args = Object.assign(def_args, args)
-
-  // Temporary fix
-  args.message = args.message || args.content
-
   let num_lines = args.message.split(`\n`).length
 
   if (num_lines === 1) {
@@ -29,7 +25,6 @@ App.make_chat_message = (args = {}) => {
 
   if (App.get_setting(`embed_images`)) {
     let ans = App.make_image_preview(args.message)
-
     image_preview = ans.image_preview
     image_preview_src_original = ans.image_preview_src_original
     image_preview_text = ans.image_preview_text
@@ -55,7 +50,7 @@ App.make_chat_message = (args = {}) => {
   }
 
   if (args.link_url) {
-    App.set_linksbar_item(args.link_url, args.link_title)
+    App.set_linksbar_item(args.link_url, args.link_title, args.username, args.date)
   }
 
   let highlighted = false

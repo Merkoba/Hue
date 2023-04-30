@@ -33,10 +33,12 @@ App.linksbar_click = () => {
   App.goto_url(App.linksbar_item.url, `tab`)
 }
 
-App.set_linksbar_item = (url, title) => {
+App.set_linksbar_item = (url, title, username, date) => {
   let item = {
     url: url,
     title: title,
+    username: username,
+    date: date
   }
 
   App.linksbar_item = item
@@ -73,6 +75,9 @@ App.update_linksbar = () => {
     title_el.classList.add(`nodisplay`)
   }
 
+  let click = App.el(`#linksbar_click`)
+  App.dataset(click, `date`, item.date)
+  App.dataset(click, `otitle`, `Linked by ${item.username}`)
   App.horizontal_separator(App.el(`#linksbar`))
   App.horizontal_separator(App.el(`#linksbar_click`))
 }
