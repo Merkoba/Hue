@@ -1937,19 +1937,19 @@ pre {
 	align-items: center;
 	justify-content: flex-start;
 	height: 100%;
+	position: relative;
 	overflow: hidden;
 	white-space: nowrap;
-	position: relative;
 }
 
 #linksbar_title {
+  flex: 1 1 auto;
 	overflow: hidden;
 	white-space: nowrap;
-	flex: 1 1 0;
 }
 
 #linksbar_url {
+  flex: 1 1 auto;
 	overflow: hidden;
 	white-space: nowrap;
-	flex: 1 1 0;
 }
