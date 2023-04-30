@@ -286,7 +286,13 @@ App.activate_key_detection = () => {
         return
       }
 
-      App.select_message(`up`)
+      if (e.shiftKey) {
+        App.show_input_history()
+      }
+      else {
+        App.select_message(`up`)
+      }
+
       e.preventDefault()
       return
     }
