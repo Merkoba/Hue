@@ -11,6 +11,10 @@ App.setup_linksbar = () => {
     App.linksbar_click()
   })
 
+  App.ev(click, `auxclick`, (e) => {
+    App.show_linksbar_context(e.clientX, e.clientY)
+  })
+
   App.check_linksbar()
 }
 
@@ -26,9 +30,7 @@ App.check_linksbar = () => {
 }
 
 App.linksbar_click = () => {
-  if (App.linksbar_items.length > 0) {
-    App.goto_url(App.linksbar_items[0].url, `tab`)
-  }
+  App.goto_url(App.linksbar_item.url, `tab`)
 }
 
 App.update_linksbar = (url, title) => {
@@ -37,11 +39,7 @@ App.update_linksbar = (url, title) => {
     title: title,
   }
 
-  App.linksbar_items.unshift(item)
-
-  if (App.linksbar_items.length >= App.max_linksbar_items) {
-    App.linksbar_items.pop()
-  }
+  App.linksbar_item = item
 
   let url_el = App.el(`#linksbar_url`)
   url_el.textContent = item.url || ``
@@ -65,4 +63,12 @@ App.update_linksbar = (url, title) => {
 
   App.horizontal_separator(App.el(`#linksbar`))
   App.horizontal_separator(App.el(`#linksbar_click`))
+}
+
+App.linksbar_copy_url = () => {
+  App.copy_string(App.linksbar_item.url, false)
+}
+
+App.linksbar_copy_title = () => {
+  App.copy_string(App.linksbar_item.title, false)
 }

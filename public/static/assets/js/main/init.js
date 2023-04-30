@@ -103,8 +103,6 @@ App.hide_radio_delay = 1000
 App.reply_active = false
 App.edit_active = false
 App.highlight_footer_delay = 500
-App.linksbar_items = []
-App.max_linksbar_items = 100
 
 // Initial media-loading variables declarations
 App.youtube_loading = false

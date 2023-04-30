@@ -1943,13 +1943,11 @@ pre {
 }
 
 #linksbar_title {
-	width: 50%;
 	overflow: hidden;
 	white-space: nowrap;
 }
 
 #linksbar_url {
-	width: 50%;
 	overflow: hidden;
 	white-space: nowrap;
 }

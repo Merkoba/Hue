@@ -1,7 +1,10 @@
 // Copies a string to the clipboard
-App.copy_string = (text) => {
+App.copy_string = (text, feedback = true) => {
   navigator.clipboard.writeText(text)
-  App.msg_info.show(`Copied to clipboard`)
+
+  if (feedback) {
+    App.msg_info.show(`Copied to clipboard`)
+  }
 }
 
 // Feedback that an error occurred

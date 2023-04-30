@@ -180,3 +180,27 @@ App.show_input_menu = () => {
   let el = App.el(`#footer_input_menu`)
   NeedContext.show_on_element(el, items)
 }
+
+App.show_linksbar_context = (x, y) => {
+  let items = []
+
+  if (App.linksbar_item.url) {
+    items.push({
+      text: `Copy URL`,
+      action: () => {
+        App.linksbar_copy_url()
+      }
+    })
+  }
+
+  if (App.linksbar_item.title) {
+    items.push({
+      text: `Copy Title`,
+      action: () => {
+        App.linksbar_copy_title()
+      }
+    })
+  }
+
+  NeedContext.show(x, y, items)
+}
