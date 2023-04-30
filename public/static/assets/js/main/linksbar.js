@@ -5,15 +5,9 @@ App.setup_linksbar = () => {
     App.show_links()
   })
 
-  let url = App.el(`#linksbar_url`)
+  let click = App.el(`#linksbar_click`)
 
-  App.ev(url, `click`, () => {
-    App.linksbar_click()
-  })
-
-  let title = App.el(`#linksbar_title`)
-
-  App.ev(title, `click`, () => {
+  App.ev(click, `click`, () => {
     App.linksbar_click()
   })
 
@@ -70,4 +64,5 @@ App.update_linksbar = (url, title) => {
   }
 
   App.horizontal_separator(App.el(`#linksbar`))
+  App.horizontal_separator(App.el(`#linksbar_click`))
 }
