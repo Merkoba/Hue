@@ -115,15 +115,15 @@ App.push_notification = (args) => {
 
 // Shows information about the recent info popups
 App.show_notifications = (filter = ``) => {
-  App.msg_notifications.show(() => {
-    if (filter.trim()) {
-      App.el(`#notifications_filter`).value = filter
-      App.do_modal_filter()
-    }
+  App.msg_notifications.show()
 
-    App.notifications_count = 0
-    App.el(`#header_notifications_count`).textContent = `(0)`
-  })
+  if (filter.trim()) {
+    App.el(`#notifications_filter`).value = filter
+    App.do_modal_filter()
+  }
+
+  App.notifications_count = 0
+  App.el(`#header_notifications_count`).textContent = `(0)`
 }
 
 // Centralized function for room changes

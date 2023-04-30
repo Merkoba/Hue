@@ -589,9 +589,8 @@ App.show_tv_upload_comment = (file, type) => {
   App.el(`#Msg-titlebar-tv_upload_comment`).title = file.name
   App.el(`#tv_upload_comment_video_preview`).src = URL.createObjectURL(file)
 
-  App.msg_tv_upload_comment.show(() => {
-    App.el(`#tv_upload_comment_input`).focus()
-  })
+  App.msg_tv_upload_comment.show()
+  App.el(`#tv_upload_comment_input`).focus()
 }
 
 // Submits the upload tv comment window

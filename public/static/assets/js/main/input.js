@@ -254,10 +254,10 @@ App.show_input_history = (filter = ``) => {
     container.append(el)
   }
 
-  App.msg_input_history.show(() => {
-    if (filter.trim()) {
-      App.el(`#input_history_filter`).value = filter
-      App.do_modal_filter()
-    }
-  })
+  App.msg_input_history.show()
+
+  if (filter.trim()) {
+    App.el(`#input_history_filter`).value = filter
+    App.do_modal_filter()
+  }
 }

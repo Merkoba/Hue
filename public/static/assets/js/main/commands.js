@@ -868,12 +868,12 @@ App.show_command_book = (filter = ``) => {
     App.command_book_created = true
   }
 
-  App.msg_command_book.show(() => {
-    if (filter.trim()) {
-      App.el(`#command_book_filter`).value = filter
-      App.do_modal_filter()
-    }
-  })
+  App.msg_command_book.show()
+
+  if (filter.trim()) {
+    App.el(`#command_book_filter`).value = filter
+    App.do_modal_filter()
+  }
 }
 
 // Gets the most similar command from a string

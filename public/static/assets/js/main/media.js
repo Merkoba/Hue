@@ -774,9 +774,8 @@ App.load_media_link = (type, source, comment) => {
   App.el(`#link_${type}_comment`).value = comment
   App.el(`#link_${type}_input`).value = source
 
-  App[`msg_link_${type}`].show(() => {
-    App.el(`#link_${type}_comment`).focus()
-  })
+  App[`msg_link_${type}`].show()
+  App.el(`#link_${type}_comment`).focus()
 }
 
 // Generate Image or TV item messages

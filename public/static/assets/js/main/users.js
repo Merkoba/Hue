@@ -385,12 +385,12 @@ App.show_userlist_window = (mode = `normal`, filter = ``) => {
     App.update_userlist_window(App.whisper_users)
   }
 
-  App.msg_userlist.show(() => {
-    if (filter.trim()) {
-      App.el(`#userlist_filter`).value = filter
-      App.do_modal_filter()
-    }
-  })
+  App.msg_userlist.show()
+
+  if (filter.trim()) {
+    App.el(`#userlist_filter`).value = filter
+    App.do_modal_filter()
+  }
 }
 
 // Sorts a user list by activity date

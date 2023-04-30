@@ -109,11 +109,10 @@ App.get_icon = (name, cls=``) => {
 
 // Open view text
 App.open_view_text = (text) => {
-  App.msg_view_text.show(() => {
-    let text_el = App.el(`#view_text_text`)
-    text_el.textContent = text
-    App.urlize(text_el, false)
-  })
+  App.msg_view_text.show()
+  let text_el = App.el(`#view_text_text`)
+  text_el.textContent = text
+  App.urlize(text_el, false)
 }
 
 // Setup view text window

@@ -489,9 +489,8 @@ App.show_image_upload_comment = (file, type) => {
   App.el(`#Msg-titlebar-image_upload_comment`).title = file.name
   App.el(`#image_upload_comment_image_preview`).src = URL.createObjectURL(file)
 
-  App.msg_image_upload_comment.show(() => {
-    App.el(`#image_upload_comment_input`).focus()
-  })
+  App.msg_image_upload_comment.show()
+  App.el(`#image_upload_comment_input`).focus()
 }
 
 // Setups the upload image comment window

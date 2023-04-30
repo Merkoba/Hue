@@ -85,10 +85,9 @@ App.change_bio = (value) => {
 
 // Shows the change username form
 App.show_change_username = () => {
-  App.msg_change_username.show(() => {
-    App.el(`#change_username_input`).value = App.username
-    App.el(`#change_username_input`).focus()
-  })
+  App.msg_change_username.show()
+  App.el(`#change_username_input`).value = App.username
+  App.el(`#change_username_input`).focus()
 }
 
 // Submits the change username form
@@ -107,11 +106,10 @@ App.submit_change_username = () => {
 
 // Shows the change password form
 App.show_change_password = () => {
-  App.msg_change_password.show(() => {
-    App.el(`#change_password_input_1`).value = ``
-    App.el(`#change_password_input_2`).value = ``
-    App.el(`#change_password_input_1`).focus()
-  })
+  App.msg_change_password.show()
+  App.el(`#change_password_input_1`).value = ``
+  App.el(`#change_password_input_2`).value = ``
+  App.el(`#change_password_input_1`).focus()
 }
 
 // Submits the change password form
@@ -338,26 +336,25 @@ App.profilepic_selected = (file, type) => {
     }
 
     App.profilepic_cropper_type = type
+    App.msg_profilepic_cropper.show()
 
-    App.msg_profilepic_cropper.show(() => {
-      if (!App.profilepic_cropper) {
-        App.profilepic_cropper = new Croppie(App.el(`#profilepic_cropper`), {
-          viewport: {
-            width: 200,
-            height: 200,
-            type: `circle`,
-          },
-          boundary: { width: 350, height: 350 }
-        })
-      }
+    if (!App.profilepic_cropper) {
+      App.profilepic_cropper = new Croppie(App.el(`#profilepic_cropper`), {
+        viewport: {
+          width: 200,
+          height: 200,
+          type: `circle`,
+        },
+        boundary: { width: 350, height: 350 }
+      })
+    }
 
-      App.profilepic_cropper.bind({
-        url: e.target.result,
-        points: [],
-      })
-      .then(() => {
-        App.profilepic_cropper.setZoom(0)
-      })
+    App.profilepic_cropper.bind({
+      url: e.target.result,
+      points: [],
+    })
+    .then(() => {
+      App.profilepic_cropper.setZoom(0)
     })
   }
 

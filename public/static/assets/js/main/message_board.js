@@ -268,18 +268,17 @@ App.fresh_unread_message_board_posts = () => {
 
 // Shows the message board
 App.show_message_board = (filter = ``) => {
-  App.msg_message_board.show(() => {
-    App.update_last_message_post_checked()
-    App.check_last_message_board_post()
+  App.msg_message_board.show()
+  App.update_last_message_post_checked()
+  App.check_last_message_board_post()
 
-    if (filter.trim()) {
-      App.el(`#message_board_filter`).value = filter
-      App.do_modal_filter()
-    }
-    else {
-      App.el(`#message_board_textarea`).focus()
-    }
-  })
+  if (filter.trim()) {
+    App.el(`#message_board_filter`).value = filter
+    App.do_modal_filter()
+  }
+  else {
+    App.el(`#message_board_textarea`).focus()
+  }
 }
 
 // Hide message board

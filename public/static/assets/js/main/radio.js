@@ -310,15 +310,15 @@ App.radio_now_playing_string = () => {
 
 // Show the radio
 App.show_radio = (filter = ``) => {
-  App.msg_radio.show(() => {
-    if (filter.trim()) {
-      App.el(`#radio_filter`).value = filter
-      App.do_modal_filter()
-    }
-    else {
-      App.scroll_to_radio_station()
-    }
-  })
+  App.msg_radio.show()
+
+  if (filter.trim()) {
+    App.el(`#radio_filter`).value = filter
+    App.do_modal_filter()
+  }
+  else {
+    App.scroll_to_radio_station()
+  }
 }
 
 // Hide the radio

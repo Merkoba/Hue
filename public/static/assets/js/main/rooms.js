@@ -94,13 +94,12 @@ App.show_roomlist = (filter = ``) => {
 // When roomlist is fetched
 App.on_roomlist_received = (data) => {
   App.update_roomlist(data)
+  App.msg_roomlist.show()
 
-  App.msg_roomlist.show(() => {
-    if (App.roomlist_filter.trim()) {
-      App.el(`#roomlist_filter`).value = App.roomlist_filter
-      App.do_modal_filter()
-    }
-  })
+  if (App.roomlist_filter.trim()) {
+    App.el(`#roomlist_filter`).value = App.roomlist_filter
+    App.do_modal_filter()
+  }
 }
 
 // On roomlist filtered

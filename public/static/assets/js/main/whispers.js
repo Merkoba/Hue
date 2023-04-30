@@ -111,9 +111,8 @@ App.write_whisper = (usernames = [], type = `user`) => {
     App.update_whisper_users(username)
   }
 
-  App.msg_write_whisper.show(() => {
-    App.focus_write_whisper()
-  })
+  App.msg_write_whisper.show()
+  App.focus_write_whisper()
 
   if (usernames.length === 0) {
     if (type !== `system_broadcast`) {
@@ -421,12 +420,12 @@ App.push_whisper = (message, on_click, read, data) => {
 
 // Shows information about the recent whispers
 App.show_whispers = (filter = ``) => {
-  App.msg_whispers.show(() => {
-    if (filter.trim()) {
-      App.el(`#whispers_filter`).value = filter
-      App.do_modal_filter()
-    }
-  })
+  App.msg_whispers.show()
+
+  if (filter.trim()) {
+    App.el(`#whispers_filter`).value = filter
+    App.do_modal_filter()
+  }
 }
 
 // Updates the whispers unread count

@@ -239,14 +239,14 @@ App.show_chat_search = (filter = ``) => {
     App.el(`#chat_search_container`).innerHTML = `<div class='center'>Search recent messages</div>`
   }
 
-  App.msg_chat_search.show(() => {
-    if (highlight_id) {
-      App.jump_to_chat_message(highlight_id, true, `#chat_search_container`)
-    }
-    else {
-      App.scroll_modal_to_top(`chat_search`)
-    }
-  })
+  App.msg_chat_search.show()
+
+  if (highlight_id) {
+    App.jump_to_chat_message(highlight_id, true, `#chat_search_container`)
+  }
+  else {
+    App.scroll_modal_to_top(`chat_search`)
+  }
 }
 
 // Show links in chat search

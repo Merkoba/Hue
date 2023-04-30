@@ -206,31 +206,31 @@ App.open_url_menu = (data) => {
   App.urlize(el)
   App.open_url_data = data
 
-  App.msg_open_url.show(() => {
-    if (data.size) {
-      App.ev(App.el(`#open_url_info_title_size`), `click`, () => {
-        App.open_view_text(App.el(`#open_url_info_text_size`).textContent)
-      })
-    }
+  App.msg_open_url.show()
 
-    if (data.title) {
-      App.ev(App.el(`#open_url_info_title_title`), `click`, () => {
-        App.open_view_text(App.el(`#open_url_info_text_title`).textContent)
-      })
-    }
+  if (data.size) {
+    App.ev(App.el(`#open_url_info_title_size`), `click`, () => {
+      App.open_view_text(App.el(`#open_url_info_text_size`).textContent)
+    })
+  }
 
-    if (data.comment) {
-      App.ev(App.el(`#open_url_info_title_comment`), `click`, () => {
-        App.open_view_text(App.el(`#open_url_info_text_comment`).textContent)
-      })
-    }
+  if (data.title) {
+    App.ev(App.el(`#open_url_info_title_title`), `click`, () => {
+      App.open_view_text(App.el(`#open_url_info_text_title`).textContent)
+    })
+  }
 
-    if (data.source) {
-      App.ev(App.el(`#open_url_info_title_url`), `click`, () => {
-        App.open_view_text(App.el(`#open_url_info_text_url`).textContent)
-      })
-    }
-  })
+  if (data.comment) {
+    App.ev(App.el(`#open_url_info_title_comment`), `click`, () => {
+      App.open_view_text(App.el(`#open_url_info_text_comment`).textContent)
+    })
+  }
+
+  if (data.source) {
+    App.ev(App.el(`#open_url_info_title_url`), `click`, () => {
+      App.open_view_text(App.el(`#open_url_info_text_url`).textContent)
+    })
+  }
 }
 
 // Replace urls with dummy text

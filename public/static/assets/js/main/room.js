@@ -168,27 +168,25 @@ App.setup_admin_activity = () => {
 // Shows the admin activity list
 App.show_admin_activity = (messages) => {
   App.el(`#admin_activity_container`).innerHTML = ``
+  App.msg_admin_activity.show()
 
-  App.msg_admin_activity.show(() => {
-    for (let data of messages) {
-      let nice_date = App.utilz.nice_date(data.date)
+  for (let data of messages) {
+    let nice_date = App.utilz.nice_date(data.date)
+    let s = `<div class='admin_activity_message'></div><div class='admin_activity_date'></div>`
 
-      let s = `<div class='admin_activity_message'></div><div class='admin_activity_date'></div>`
+    let el = App.create(`div`, `modal_item admin_activity_item dynamic_title`)
+    el.title = nice_date
+    el.innerHTML = s
 
-      let el = App.create(`div`, `modal_item admin_activity_item dynamic_title`)
-      el.title = nice_date
-      el.innerHTML = s
+    App.el(`.admin_activity_message`, el).textContent = `${data.username} ${data.content}`
+    App.el(`.admin_activity_date`, el).textContent = nice_date
+    App.dataset(el, `date`, data.date)
+    App.dataset(el, `otitle`, nice_date)
+    App.el(`#admin_activity_container`).prepend(el)
+  }
 
-      App.el(`.admin_activity_message`, el).textContent = `${data.username} ${data.content}`
-      App.el(`.admin_activity_date`, el).textContent = nice_date
-      App.dataset(el, `date`, data.date)
-      App.dataset(el, `otitle`, nice_date)
-      App.el(`#admin_activity_container`).prepend(el)
-    }
-
-    App.el(`#admin_activity_filter`).value = App.admin_activity_filter_string
-    App.do_modal_filter()
-  })
+  App.el(`#admin_activity_filter`).value = App.admin_activity_filter_string
+  App.do_modal_filter()
 }
 
 // Clear admin activity

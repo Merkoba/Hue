@@ -173,7 +173,6 @@ App.setup_link_background = () => {
 // Setup background input
 App.open_link_background = () => {
   App.el(`#link_background_input`).value = ``
-  App.msg_link_background.show(() => {
-    App.el(`#link_background_input`).focus()
-  })
+  App.msg_link_background.show()
+  App.el(`#link_background_input`).focus()
 }
