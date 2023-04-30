@@ -1918,12 +1918,13 @@ pre {
 
 #linksbar {
 	background-color: var(--altcolor);
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 #linksbar_links {
 	flex-grow: 0;
 	flex-shrink: 0;
-	padding-left: 0.5rem;
 	height: 100%;
 	display: flex;
 	align-items: center;
