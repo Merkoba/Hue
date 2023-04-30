@@ -33,13 +33,25 @@ App.linksbar_click = () => {
   App.goto_url(App.linksbar_item.url, `tab`)
 }
 
-App.update_linksbar = (url, title) => {
+App.set_linksbar_item = (url, title) => {
   let item = {
     url: url,
     title: title,
   }
 
   App.linksbar_item = item
+
+  if (App.started) {
+    App.update_linksbar()
+  }
+}
+
+App.update_linksbar = () => {
+  let item = App.linksbar_item
+
+  if (!item) {
+    return
+  }
 
   let url_el = App.el(`#linksbar_url`)
   url_el.textContent = item.url || ``

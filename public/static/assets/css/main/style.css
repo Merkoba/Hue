@@ -1945,9 +1945,11 @@ pre {
 #linksbar_title {
 	overflow: hidden;
 	white-space: nowrap;
+	flex: 1 1 0;
 }
 
 #linksbar_url {
 	overflow: hidden;
 	white-space: nowrap;
+	flex: 1 1 0;
 }

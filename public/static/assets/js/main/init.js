@@ -243,6 +243,7 @@ App.on_join = (data) => {
   App.check_media_info()
   App.update_activity_bar()
   App.prepare_user_profile()
+  App.update_linksbar()
   App.at_startup()
 }
 
