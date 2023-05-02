@@ -81,10 +81,10 @@ App.hide_tv = (item = false) => {
     let type = el.id.replace(`media_`, ``).replace(`_tv_container`, ``)
 
     if (!item || item.type !== type) {
-      let el = App.create(`div`, `media_container`)
-      el.id = el.id
-      el.style.display = `none`
-      el.replaceWith(el)
+      let new_el = App.create(`div`, `media_container`)
+      new_el.id = el.id
+      new_el.style.display = `none`
+      el.replaceWith(new_el)
       App[`${type}_tv_player`] = undefined
       App[`${type}_tv_player_requested`] = false
       App[`${type}_tv_player_request`] = false
@@ -245,7 +245,7 @@ App.after_show_tv = () => {
   App.fix_tv_frame()
   App.focus_input()
 
-  if (App.current_tv().type === `iframe` && App.el(`#media_iframe_tv`).src) {
+  if (App.loaded_tv.type === `iframe` && App.el(`#media_iframe_tv`).src) {
     App.el(`#media_iframe_tv`).classList.add(`noborder`)
     App.el(`#media_iframe_poster`).style.display = `none`
   }
