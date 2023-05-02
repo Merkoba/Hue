@@ -1,7 +1,23 @@
-/* Msg v14.0.0 https://github.com/Merkoba/Msg */
+/* Msg v14.2.1 https://github.com/Merkoba/Msg */
 
 const Msg = {}
 Msg.num_created = 0
+
+Msg.el = (query, root = document) => {
+  return root.querySelector(query)
+}
+
+Msg.els = (query, root = document) => {
+  return Array.from(root.querySelectorAll(query))
+}
+
+Msg.ev = (element, action, callback, extra) => {
+  element.addEventListener(action, callback, extra)
+}
+
+Msg.insert = (element_1, element_2, position = `beforeend`) => {
+  element_1.insertAdjacentHTML(position, element_2)
+}
 
 Msg.factory = (options = {}) => {
   const instance = {}
@@ -194,10 +210,6 @@ Msg.factory = (options = {}) => {
       instance.options.after_destroy = () => {}
     }
 
-    if (instance.options.while_open === undefined) {
-      instance.options.while_open = () => {}
-    }
-
     if (instance.options.on_click === undefined) {
       instance.options.on_click = () => {}
     }
@@ -226,15 +238,6 @@ Msg.factory = (options = {}) => {
       instance.options.on_x_button_click = () => {}
     }
 
-    if (instance.options.while_open_interval === undefined) {
-      instance.options.while_open_interval = 1000
-    }
-    else {
-      instance.options.while_open_interval = parseInt(
-        instance.options.while_open_interval
-      )
-    }
-
     if (instance.options.autoclose === undefined) {
       instance.options.autoclose = false
     }
@@ -243,9 +246,7 @@ Msg.factory = (options = {}) => {
       instance.options.autoclose_delay = 5000
     }
     else {
-      instance.options.autoclose_delay = parseInt(
-        instance.options.autoclose_delay
-      )
+      instance.options.autoclose_delay = parseInt(instance.options.autoclose_delay)
     }
 
     if (instance.options.persistent === undefined) {
@@ -276,18 +277,14 @@ Msg.factory = (options = {}) => {
       instance.options.edge_padding_x = 20
     }
     else {
-      instance.options.edge_padding_x = parseInt(
-        instance.options.edge_padding_x
-      )
+      instance.options.edge_padding_x = parseInt(instance.options.edge_padding_x)
     }
 
     if (instance.options.edge_padding_y === undefined) {
       instance.options.edge_padding_y = 20
     }
     else {
-      instance.options.edge_padding_y = parseInt(
-        instance.options.edge_padding_y
-      )
+      instance.options.edge_padding_y = parseInt(instance.options.edge_padding_y)
     }
 
     if (instance.options.sideStack_padding === undefined) {
@@ -298,9 +295,7 @@ Msg.factory = (options = {}) => {
       instance.options.sideStack_padding = 20
     }
     else {
-      instance.options.sideStack_padding = parseInt(
-        instance.options.sideStack_padding
-      )
+      instance.options.sideStack_padding = parseInt(instance.options.sideStack_padding)
     }
 
     if (instance.options.sideStack === undefined) {
@@ -406,11 +401,6 @@ Msg.factory = (options = {}) => {
       return
     }
 
-    instance.clear_while_open_interval()
-    instance.close_window()
-  }
-
-  instance.close_window = () => {
     instance.container.style.display = `none`
 
     if (instance.overlay !== undefined) {
@@ -579,10 +569,6 @@ Msg.factory = (options = {}) => {
       else if (instance.options.sideStack === `horizontal`) {
         instance.check_hStack()
       }
-
-      if (instance.options.while_open !== undefined) {
-        instance.start_while_open_interval()
-      }
     }
 
     instance.to_top()
@@ -594,10 +580,7 @@ Msg.factory = (options = {}) => {
     if (instance.options.autoclose) {
       instance.autoclose_timer()
 
-      if (
-        instance.options.enable_progressbar &&
-        instance.options.bind_progressbar_to_autoclose
-      ) {
+      if (instance.options.enable_progressbar && instance.options.bind_progressbar_to_autoclose) {
         instance.animate_autoclose_progressbar()
       }
     }
@@ -621,10 +604,8 @@ Msg.factory = (options = {}) => {
       return
     }
 
-    if (
-      document.getElementById(`Msg-container-${instance.options.id}`) !== null
-    ) {
-      throw `Msg Error:The html elements for this id have already been created. Use a different id.`
+    if (Msg.el(`#Msg-container-${instance.options.id}`) !== null) {
+      throw `Msg Error: The html elements for this id have already been created. Use a different id.`
     }
 
     if (instance.options.before_create(instance) === false) {
@@ -634,35 +615,35 @@ Msg.factory = (options = {}) => {
     let styles = {}
 
     styles.container = `
-		display:none;
+		display: none;
 		`
 
     styles.overlay = `
-		position:fixed;
-		opacity:1;
-		top:0;
-		left:0;
-		height:100%;
-		width:100%;
-		z-index:-1000;
+		position: fixed;
+		opacity: 1;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		z-index: -1000;
     user-select: none;
 		`
 
     styles.overlay_x = `
-		cursor:pointer;
-		float:${instance.options.overlay_x};
-		font-size:28px;
-		font-family:sans-serif;
-		-webkit-touch-callout:none;
-		-webkit-user-select:none;
-		-khtml-user-select:none;
-		-moz-user-select:none;
-		-ms-user-select:none;
-		user-select:none;
-		padding-left:0.6em;
-		padding-right:0.6em;
-		padding-top:0.035em;
-		padding-bottom:0.2em;
+		cursor: pointer;
+		float: ${instance.options.overlay_x};
+		font-size: 28px;
+		font-family: sans-serif;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		padding-left: 0.6em;
+		padding-right: 0.6em;
+		padding-top: 0.035em;
+		padding-bottom: 0.2em;
 		`
 
     let p = instance.options.position
@@ -671,81 +652,81 @@ Msg.factory = (options = {}) => {
     let win_x, win_y, win_trans
 
     if (instance.options.disable_transformations) {
-      win_x = `left:0;`
-      win_y = `top:0;`
-      win_trans = `transform:initial;`
+      win_x = `left: 0;`
+      win_y = `top: 0;`
+      win_trans = `transform: initial;`
 
       instance.vStackable = false
       instance.hStackable = false
     }
     else if (p === `top`) {
-      win_x = `left:50%;`
-      win_y = `top:${edge_y}px;`
-      win_trans = `transform:translateX(-50%);`
+      win_x = `left: 50%;`
+      win_y = `top: ${edge_y}px;`
+      win_trans = `transform: translateX(-50%);`
 
       instance.vStackable = true
       instance.hStackable = false
     }
     else if (p === `bottom`) {
-      win_x = `left:50%;`
-      win_y = `bottom:${edge_y}px;`
-      win_trans = `transform:translateX(-50%);`
+      win_x = `left: 50%;`
+      win_y = `bottom: ${edge_y}px;`
+      win_trans = `transform: translateX(-50%);`
 
       instance.vStackable = true
       instance.hStackable = false
     }
     else if (p === `left`) {
-      win_x = `left:${edge_x}px;`
-      win_y = `top:50%;`
-      win_trans = `transform:translateY(-50%);`
+      win_x = `left: ${edge_x}px;`
+      win_y = `top: 50%;`
+      win_trans = `transform: translateY(-50%);`
 
       instance.vStackable = false
       instance.hStackable = true
     }
     else if (p === `right`) {
-      win_x = `right:${edge_x}px;`
-      win_y = `top:50%;`
-      win_trans = `transform:translateY(-50%);`
+      win_x = `right: ${edge_x}px;`
+      win_y = `top: 50%;`
+      win_trans = `transform: translateY(-50%);`
 
       instance.vStackable = false
       instance.hStackable = true
     }
     else if (p === `topleft`) {
-      win_x = `left:${edge_x}px;`
-      win_y = `top:${edge_y}px;`
+      win_x = `left: ${edge_x}px;`
+      win_y = `top: ${edge_y}px;`
       win_trans = ``
 
       instance.vStackable = true
       instance.hStackable = true
     }
     else if (p === `topright`) {
-      win_x = `right:${edge_x}px;`
-      win_y = `top:${edge_y}px;`
+      win_x = `right: ${edge_x}px;`
+      win_y = `top: ${edge_y}px;`
       win_trans = ``
 
       instance.vStackable = true
       instance.hStackable = true
     }
     else if (p === `bottomleft`) {
-      win_x = `left:${edge_x}px;`
-      win_y = `bottom:${edge_y}px;`
+      win_x = `left: ${edge_x}px;`
+      win_y = `bottom: ${edge_y}px;`
       win_trans = ``
 
       instance.vStackable = true
       instance.hStackable = true
     }
     else if (p === `bottomright`) {
-      win_x = `right:${edge_x}px;`
-      win_y = `bottom:${edge_y}px;`
+      win_x = `right: ${edge_x}px;`
+      win_y = `bottom: ${edge_y}px;`
       win_trans = ``
 
       instance.vStackable = true
       instance.hStackable = true
     }
     else {
-      win_x = `left:50%;`
-      win_y = `top:50%;`
-      win_trans = `transform:translate(-50%, -50%);`
+      win_x = `left: 50%;`
+      win_y = `top: 50%;`
+      win_trans = `transform: translate(-50%, -50%);`
 
       instance.vStackable = false
       instance.hStackable = false
@@ -754,76 +735,69 @@ Msg.factory = (options = {}) => {
     let wun
 
     if (instance.options.window_unselectable) {
-      wun =
-        `-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;`
+      wun = `user-select: none;`
     }
     else {
       wun = ``
     }
 
     styles.window = `
-		display:flex;
-		flex-direction:column;
-		opacity:1;
+		display: flex;
+		flex-direction: column;
+		opacity: 1;
 		${win_x}
 		${win_y}
-		position:fixed;
-		width:${instance.options.window_width};
-		height:${instance.options.window_height};
-		min-width:${instance.options.window_min_width};
-		min-height:${instance.options.window_min_height};
-		max-width:${instance.options.window_max_width};
-		max-height:${instance.options.window_max_height};
+		position: fixed;
+		width: ${instance.options.window_width};
+		height: ${instance.options.window_height};
+		min-width: ${instance.options.window_min_width};
+		min-height: ${instance.options.window_min_height};
+		max-width: ${instance.options.window_max_width};
+		max-height: ${instance.options.window_max_height};
 		${win_trans}
-		outline:0;
+		outline: 0;
 		${wun}
-		cursor:${instance.options.window_cursor};
-		z-index:-1000;
+		cursor: ${instance.options.window_cursor};
+		z-index: -1000;
 		`
 
     styles.topbar = `
-		overflow:hidden;
-		flex-shrink:0;
-		display:flex;
-		flex-direction:row;
+		overflow: hidden;
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: row;
 		`
-    let padl = `padding-left:0.4em;`
-    let padr = `padding-right:0.4em;`
+    let padl = `padding-left: 0.4em;`
+    let padr = `padding-right: 0.4em;`
     let justcnt = ``
 
     if (instance.options.center_titlebar) {
-      justcnt = `justify-content:center`
+      justcnt = `justify-content: center`
     }
 
-    if (
-      instance.options.center_titlebar &&
-      instance.options.window_x === `inner_right`
-    ) {
-      padl = `padding-left:50.78px;`
-      padr = `padding-right:10.78px;`
+    if (instance.options.center_titlebar && instance.options.window_x === `inner_right`) {
+      padl = `padding-left: 50.78px;`
+      padr = `padding-right: 10.78px;`
     }
 
-    if (
-      instance.options.center_titlebar &&
-      instance.options.window_x === `inner_left`
-    ) {
-      padl = `padding-left:10.78px;`
-      padr = `padding-right:50.78px;`
+    if (instance.options.center_titlebar && instance.options.window_x === `inner_left`) {
+      padl = `padding-left: 10.78px;`
+      padr = `padding-right: 50.78px;`
     }
 
     styles.titlebar = `
     display: flex;
     align-items: center;
     ${justcnt};
-		overflow:hidden;
-		order:2;
-		flex-grow:1;
+		overflow: hidden;
+		order: 2;
+		flex-grow: 1;
 		${padl}
 		${padr}
-		min-height:27px;
-		font-size:16px;
-		font-family:sans-serif;
-    font-weight:bold;
+		min-height: 27px;
+		font-size: 16px;
+		font-family: sans-serif;
+    font-weight: bold;
     white-space: nowrap;
     cursor:${instance.options.titlebar_cursor};
 		`
@@ -840,64 +814,64 @@ Msg.factory = (options = {}) => {
     }
 
     styles.window_inner_x = `
-		cursor:pointer;
-		margin-left:${ix_margin};
-		font-size:24px;
-		font-family:sans-serif;
-		-webkit-touch-callout:none;
-		-webkit-user-select:none;
-		-khtml-user-select:none;
-		-moz-user-select:none;
-		-ms-user-select:none;
-		user-select:none;
-		overflow:hidden;
-		order:${ix_order};
-		padding-left:0.6em;
-		padding-right:0.6em;
-		padding-top:0.035em;
-		padding-bottom:0.2em;
+		cursor: pointer;
+		margin-left: ${ix_margin};
+		font-size: 24px;
+		font-family: sans-serif;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		overflow: hidden;
+		order: ${ix_order};
+		padding-left: 0.6em;
+		padding-right: 0.6em;
+		padding-top: 0.035em;
+		padding-bottom: 0.2em;
 		`
 
     let fs, fms
 
     if (instance.options.window_x.includes(`left`)) {
-      fs = `left:0px;`
-      fms = `margin-left:-10px;`
+      fs = `left: 0px;`
+      fms = `margin-left: -10px;`
     }
     else {
-      fs = `right:0px;`
-      fms = `margin-right:-10px;`
+      fs = `right: 0px;`
+      fms = `margin-right: -10px;`
     }
 
     styles.window_floating_x = `
-		cursor:pointer;
-		position:absolute;
-		top:0px;
+		cursor: pointer;
+		position: absolute;
+		top: 0px;
 		${fs}
-		margin-top:-10px;
+		margin-top: -10px;
 		${fms}
-		font-size:16px;
-		font-family:sans-serif;
-		height:22px;
-		width:22px;
-		-webkit-touch-callout:none;
-		-webkit-user-select:none;
-		-khtml-user-select:none;
-		-moz-user-select:none;
-		-ms-user-select:none;
-		user-select:none;
-		overflow:hidden;
-		z-index:9999999999999999;
-    display:block;
-    box-sizing:border-box;
-    border-width:3px;
-    border-style:solid;
-    border-color:#2B2D30;
-    border-radius:100%;
-    background:linear-gradient(-45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%);
-    background-color:#2B2D30;
-    box-shadow:0px 0px 5px 2px rgba(0,0,0,0.5);
-    transition:all 0.3s ease;
+		font-size: 16px;
+		font-family: sans-serif;
+		height: 22px;
+		width: 22px;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		overflow: hidden;
+		z-index: 9999999999999999;
+    display: block;
+    box-sizing: border-box;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #2B2D30;
+    border-radius: 100%;
+    background: linear-gradient(-45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%);
+    background-color: #2B2D30;
+    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
 		`
 
     let overflow_y = `auto`
@@ -907,28 +881,28 @@ Msg.factory = (options = {}) => {
     }
 
     styles.content_container = `
-		overflow-y:${overflow_y};
-		overflow-x:hidden;
-		border:none;
-		outline:0;
-		margin:0;
-		flex-grow:1;
+		overflow-y: ${overflow_y};
+		overflow-x: hidden;
+		border: none;
+		outline: 0;
+		margin: 0;
+		flex-grow: 1;
 		`
 
     let pad
 
     if (instance.options.disable_content_padding) {
-      pad = `padding:0;`
+      pad = `padding: 0;`
     }
     else {
-      pad = `padding:1.2rem;`
+      pad = `padding: 1.2rem;`
     }
 
     let cwid, chgt
 
     if (instance.options.full_content) {
-      cwid = `width:100%;`
-      chgt = `height:100%;`
+      cwid = `width: 100%;`
+      chgt = `height: 100%;`
     }
     else {
       cwid = ``
@@ -936,22 +910,22 @@ Msg.factory = (options = {}) => {
     }
 
     styles.content = `
-		font-size:16px;
-		text-align:center;
-		overflow-wrap:break-word;
+		font-size: 16px;
+		text-align: center;
+		overflow-wrap: break-word;
     ${pad}
 		${cwid}
 		${chgt}
 		`
 
     styles.progressbar_container = `
-		height:11px;
-		width:100%;
+		height: 11px;
+		width: 100%;
 		`
 
     styles.progressbar = `
-		height:100%;
-		width:0%;
+		height: 100%;
+		width: 0%;
 		`
 
     let container_class =
@@ -1073,92 +1047,56 @@ Msg.factory = (options = {}) => {
     let progressbar_container_html = `<div class="Msg-progressbar-container ${progressbar_container_class}" style="${styles.progressbar_container}" id="Msg-progressbar-container-${instance.options.id}"></div>`
     let progressbar_html = `<div class="Msg-progressbar ${progressbar_class}" style="${styles.progressbar}" id="Msg-progressbar-${instance.options.id}"></div>`
 
-    document.body.insertAdjacentHTML(`beforeend`, container_html)
-
-    instance.container = document.getElementById(
-      `Msg-container-${instance.options.id}`
-    )
+    Msg.insert(document.body, container_html)
+    instance.container = Msg.el(`#Msg-container-${instance.options.id}`)
 
     if (instance.options.enable_overlay) {
-      instance.container.insertAdjacentHTML(`beforeend`, overlay_html)
-      instance.overlay = document.getElementById(
-        `Msg-overlay-${instance.options.id}`
-      )
+      Msg.insert(instance.container, overlay_html)
+      instance.overlay = Msg.el(`#Msg-overlay-${instance.options.id}`)
 
       if (instance.options.overlay_x !== `none`) {
-        instance.overlay.insertAdjacentHTML(`beforeend`, overlay_x_html)
-        instance.overlay_x = document.getElementById(
-          `Msg-overlay-x-${instance.options.id}`
-        )
+        Msg.insert(instance.overlay, overlay_x_html)
+        instance.overlay_x = Msg.el(`#Msg-overlay-x-${instance.options.id}`)
       }
     }
 
-    instance.container.insertAdjacentHTML(`beforeend`, window_html)
-    instance.window = document.getElementById(
-      `Msg-window-${instance.options.id}`
-    )
+    Msg.insert(instance.container, window_html)
+    instance.window = Msg.el(`#Msg-window-${instance.options.id}`)
 
-    if (
-      instance.options.enable_titlebar ||
-      instance.options.window_x.includes(`inner`)
-    ) {
-      instance.window.insertAdjacentHTML(`beforeend`, topbar_html)
-      instance.topbar = document.getElementById(
-        `Msg-topbar-${instance.options.id}`
-      )
+    if (instance.options.enable_titlebar || instance.options.window_x.includes(`inner`)) {
+      Msg.insert(instance.window, topbar_html)
+      instance.topbar = Msg.el(`#Msg-topbar-${instance.options.id}`)
 
       if (instance.options.enable_titlebar) {
-        instance.topbar.insertAdjacentHTML(`beforeend`, titlebar_html)
-        instance.titlebar = document.getElementById(
-          `Msg-titlebar-${instance.options.id}`
-        )
+        Msg.insert(instance.topbar, titlebar_html)
+        instance.titlebar = Msg.el(`#Msg-titlebar-${instance.options.id}`)
       }
 
       if (instance.options.window_x.includes(`inner`)) {
-        instance.topbar.insertAdjacentHTML(`beforeend`, window_inner_x_html)
-        instance.window_inner_x = document.getElementById(
-          `Msg-window-inner-x-${instance.options.id}`
-        )
+        Msg.insert(instance.topbar, window_inner_x_html)
+        instance.window_inner_x = Msg.el(`#Msg-window-inner-x-${instance.options.id}`)
       }
     }
 
     if (instance.options.window_x.includes(`floating`)) {
-      instance.window.insertAdjacentHTML(`afterbegin`, window_floating_x_html)
-      instance.window_floating_x = document.getElementById(
-        `Msg-window-floating-x-${instance.options.id}`
-      )
+      Msg.insert(instance.window, window_floating_x_html, `afterbegin`)
+      instance.window_floating_x = Msg.el(`#Msg-window-floating-x-${instance.options.id}`)
     }
 
-    instance.window.insertAdjacentHTML(`beforeend`, content_container_html)
-    instance.content_container = document.getElementById(
-      `Msg-content-container-${instance.options.id}`
-    )
-
-    instance.content_container.insertAdjacentHTML(`beforeend`, content_html)
-    instance.content = document.getElementById(
-      `Msg-content-${instance.options.id}`
-    )
+    Msg.insert(instance.window, content_container_html)
+    instance.content_container = Msg.el(`#Msg-content-container-${instance.options.id}`)
+    Msg.insert(instance.content_container, content_html)
+    instance.content = Msg.el(`#Msg-content-${instance.options.id}`)
 
     if (instance.options.enable_progressbar) {
-      instance.window.insertAdjacentHTML(
-        `beforeend`,
-        progressbar_container_html
-      )
-      instance.progressbar_container = document.getElementById(
-        `Msg-progressbar-container-${instance.options.id}`
-      )
-
-      instance.progressbar_container.insertAdjacentHTML(
-        `beforeend`,
-        progressbar_html
-      )
-      instance.progressbar = document.getElementById(
-        `Msg-progressbar-${instance.options.id}`
-      )
+      Msg.insert(instance.window, progressbar_container_html)
+      instance.progressbar_container = Msg.el(`#Msg-progressbar-container-${instance.options.id}`)
+      Msg.insert(instance.progressbar_container, progressbar_html)
+      instance.progressbar = Msg.el(`#Msg-progressbar-${instance.options.id}`)
     }
 
     if (instance.overlay !== undefined) {
-      instance.overlay.addEventListener(`click`, () => {
+      Msg.ev(instance.overlay, `click`, () => {
         if (instance.options.close_on_overlay_click) {
           instance.options.on_overlay_click(instance)
           instance.close()
@@ -1167,7 +1105,7 @@ Msg.factory = (options = {}) => {
     }
 
     if (instance.titlebar !== undefined) {
-      instance.titlebar.addEventListener(`click`, () => {
+      Msg.ev(instance.titlebar, `click`, () => {
         if (instance.options.close_on_titlebar_click) {
           instance.options.on_titlebar_click(instance)
           instance.close()
@@ -1175,11 +1113,11 @@ Msg.factory = (options = {}) => {
       })
     }
 
-    instance.window.addEventListener(`click`, (e) => {
+    Msg.ev(instance.window, `click`, (e) => {
       instance.options.on_click(instance)
     })
 
-    instance.window.addEventListener(`wheel`, (e) => {
+    Msg.ev(instance.window, `wheel`, (e) => {
       let direction = e.deltaY > 0 ? `down` : `up`
 
       if (direction === `down`) {
@@ -1190,14 +1128,14 @@ Msg.factory = (options = {}) => {
       }
     })
 
-    instance.window.addEventListener(`auxclick`, (e) => {
+    Msg.ev(instance.window, `auxclick`, (e) => {
       if (e.which === 2) {
         instance.options.on_middle_click(instance)
       }
     })
 
     if (instance.window_inner_x !== undefined) {
-      instance.window_inner_x.addEventListener(`click`, (e) => {
+      Msg.ev(instance.window_inner_x, `click`, (e) => {
         instance.options.on_x_button_click(instance)
         instance.close()
         e.stopPropagation()
@@ -1206,7 +1144,7 @@ Msg.factory = (options = {}) => {
     }
 
     if (instance.window_floating_x !== undefined) {
-      instance.window_floating_x.addEventListener(`click`, (e) => {
+      Msg.ev(instance.window_floating_x, `click`, (e) => {
         instance.options.on_x_button_click(instance)
         instance.close()
         e.stopPropagation()
@@ -1215,7 +1153,7 @@ Msg.factory = (options = {}) => {
     }
 
     if (instance.overlay_x !== undefined) {
-      instance.overlay_x.addEventListener(`click`, (e) => {
+      Msg.ev(instance.overlay_x, `click`, (e) => {
         instance.options.on_x_button_click(instance)
         instance.close()
         e.stopPropagation()
@@ -1410,7 +1348,7 @@ Msg.factory = (options = {}) => {
 
   instance.highest_zIndex = () => {
     let highest = -2000
-    let windows = Array.from(document.querySelectorAll(`.Msg-window`))
+    let windows = Msg.els(`.Msg-window`)
 
     for (let i = 0; i < windows.length; i++) {
       let zIndex = parseInt(windows[i].style.zIndex)
@@ -1443,7 +1381,7 @@ Msg.factory = (options = {}) => {
 
   instance.highest_common_zIndex = () => {
     let highest = -2000
-    let windows = Array.from(document.querySelectorAll(`.Msg-window`))
+    let windows = Msg.els(`.Msg-window`)
 
     for (let i = 0; i < windows.length; i++) {
       let zIndex = instance.common_zIndex(windows[i].style.zIndex)
@@ -1652,9 +1590,7 @@ Msg.factory = (options = {}) => {
       return
     }
 
-    return Math.round(
-      (instance.progressbar.offsetWidth / instance.window.offsetWidth) * 100
-    )
+    return Math.round((instance.progressbar.offsetWidth / instance.window.offsetWidth) * 100)
   }
 
   instance.reset_props = () => {
@@ -1664,18 +1600,6 @@ Msg.factory = (options = {}) => {
 
     instance.window.style.opacity = 1
     instance.window.style.zoom = 1
-  }
-
-  instance.start_while_open_interval = () => {
-    instance.clear_while_open_interval()
-
-    instance.while_open_interval = setInterval(() => {
-      instance.options.while_open(instance)
-    }, instance.options.while_open_interval)
-  }
-
-  instance.clear_while_open_interval = () => {
-    clearInterval(instance.while_open_interval)
   }
 
   instance.stack_pos_top_sort = (a, b) => {
@@ -1866,10 +1790,7 @@ Msg.factory = (options = {}) => {
             }
 
             if (sp !== undefined) {
-              if (
-                sp > i.options.edge_padding_x + 2 ||
-                sp < i.options.edge_padding_x - 2
-              ) {
+              if ((sp > i.options.edge_padding_x + 2) || (sp < i.options.edge_padding_x - 2)) {
                 continue
               }
             }
@@ -2266,148 +2187,6 @@ Msg.factory = (options = {}) => {
     instance.stack_height = instance.window.offsetHeight
   }
 
-  instance.change_class = (new_class) => {
-    if (
-      instance.container !== undefined &&
-      instance.container.classList.contains(
-        `Msg-container-${instance.options.class}`
-      )
-    ) {
-      instance.container.classList.remove(
-        `Msg-container-${instance.options.class}`
-      )
-      instance.container.classList.add(`Msg-container-${new_class}`)
-    }
-
-    if (
-      instance.overlay !== undefined &&
-      instance.overlay.classList.contains(
-        `Msg-overlay-${instance.options.class}`
-      )
-    ) {
-      instance.overlay.classList.remove(`Msg-overlay-${instance.options.class}`)
-      instance.overlay.classList.add(`Msg-overlay-${new_class}`)
-    }
-
-    if (
-      instance.overlay_x !== undefined &&
-      instance.overlay_x.classList.contains(
-        `Msg-overlay-x-${instance.options.class}`
-      )
-    ) {
-      instance.overlay_x.classList.remove(
-        `Msg-overlay-x-${instance.options.class}`
-      )
-      instance.overlay_x.classList.add(`Msg-overlay-x-${new_class}`)
-    }
-
-    if (
-      instance.window !== undefined &&
-      instance.window.classList.contains(`Msg-window-${instance.options.class}`)
-    ) {
-      instance.window.classList.remove(`Msg-window-${instance.options.class}`)
-      instance.window.classList.add(`Msg-window-${new_class}`)
-    }
-
-    if (
-      instance.topbar !== undefined &&
-      instance.topbar.classList.contains(`Msg-topbar-${instance.options.class}`)
-    ) {
-      instance.topbar.classList.remove(`Msg-topbar-${instance.options.class}`)
-      instance.topbar.classList.add(`Msg-topbar-${new_class}`)
-    }
-
-    if (
-      instance.titlebar !== undefined &&
-      instance.titlebar.classList.contains(
-        `Msg-titlebar-${instance.options.class}`
-      )
-    ) {
-      instance.titlebar.classList.remove(
-        `Msg-titlebar-${instance.options.class}`
-      )
-      instance.titlebar.classList.add(`Msg-titlebar-${new_class}`)
-    }
-
-    if (
-      instance.window_inner_x !== undefined &&
-      instance.window_inner_x.classList.contains(
-        `Msg-window-inner-x-${instance.options.class}`
-      )
-    ) {
-      instance.window_inner_x.classList.remove(
-        `Msg-window-inner-x-${instance.options.class}`
-      )
-      instance.window_inner_x.classList.add(`Msg-window-inner-x-${new_class}`)
-    }
-
-    if (
-      instance.window_floating_x !== undefined &&
-      instance.window_floating_x.classList.contains(
-        `Msg-window-floating-x-${instance.options.class}`
-      )
-    ) {
-      instance.window_floating_x.classList.remove(
-        `Msg-window-floating-x-${instance.options.class}`
-      )
-      instance.window_floating_x.classList.add(
-        `Msg-window-floating-x-${new_class}`
-      )
-    }
-
-    if (
-      instance.content_container !== undefined &&
-      instance.content_container.classList.contains(
-        `Msg-content-container-${instance.options.class}`
-      )
-    ) {
-      instance.content_container.classList.remove(
-        `Msg-content-container-${instance.options.class}`
-      )
-      instance.content_container.classList.add(
-        `Msg-content-container-${new_class}`
-      )
-    }
-
-    if (
-      instance.content !== undefined &&
-      instance.content.classList.contains(
-        `Msg-content-${instance.options.class}`
-      )
-    ) {
-      instance.content.classList.remove(`Msg-content-${instance.options.class}`)
-      instance.content.classList.add(`Msg-content-${new_class}`)
-    }
-
-    if (
-      instance.progressbar_container !== undefined &&
-      instance.progressbar_container.classList.contains(
-        `Msg-progressbar-container-${instance.options.class}`
-      )
-    ) {
-      instance.progressbar_container.classList.remove(
-        `Msg-progressbar-container-${instance.options.class}`
-      )
-      instance.progressbar_container.classList.add(
-        `Msg-progressbar-container-${new_class}`
-      )
-    }
-
-    if (
-      instance.progressbar !== undefined &&
-      instance.progressbar.classList.contains(
-        `Msg-progressbar-${instance.options.class}`
-      )
-    ) {
-      instance.progressbar.classList.remove(
-        `Msg-progressbar-${instance.options.class}`
-      )
-      instance.progressbar.classList.add(`Msg-progressbar-${new_class}`)
-    }
-
-    instance.options.class = new_class
-  }
-
   instance.remove = () => {
     instance.destroy()
 
@@ -2448,64 +2227,60 @@ Msg.factory = (options = {}) => {
     return input_types.includes(type.toLowerCase())
   }
 
-  if (
-    Msg.msg === undefined &&
-    instance.options.id !== `__internal_instance__`
-  ) {
+  if (Msg.msg === undefined && instance.options.id !== `__internal_instance__`) {
     Msg.msg = Msg.factory({ id: `__internal_instance__` })
-
     let style = document.createElement(`style`)
 
     let css = `
-		.Msg-overflow-hidden{overflow:hidden}
+		.Msg-overflow-hidden{overflow: hidden}
 
-		.Msg-overlay{background-color:rgba(0, 0, 0, 0.7)}
-		.Msg-window{background-color:white;color:#222222}
-		.Msg-titlebar{background-color:#c8c8c8;color:#222222}
-		.Msg-progressbar{background-color:#c8c8c8}
-		.Msg-window-inner-x:hover{background-color:#cacaca}
-		.Msg-window-floating-x{background-color:#3a3a3a;color:white}
-		.Msg-window-floating-x:hover{background-color:#2a2a2a}
-		.Msg-overlay-x{color:white}
-		.Msg-overlay-x:hover{background-color:#686868}
+		.Msg-overlay{background-color: rgba(0, 0, 0, 0.7)}
+		.Msg-window{background-color: white;color: #222222}
+		.Msg-titlebar{background-color: #c8c8c8;color: #222222}
+		.Msg-progressbar{background-color: #c8c8c8}
+		.Msg-window-inner-x: hover{background-color: #cacaca}
+		.Msg-window-floating-x{background-color: #3a3a3a;color: white}
+		.Msg-window-floating-x: hover{background-color: #2a2a2a}
+		.Msg-overlay-x{color: white}
+		.Msg-overlay-x: hover{background-color: #686868}
 
-		.Msg-overlay-blue{background-color:rgba(101, 107, 124, 0.7)}
-		.Msg-window-blue{background-color:#4f84b8;color:white}
-		.Msg-titlebar-blue{background-color:#43729f;color:white}
-		.Msg-progressbar-blue{background-color:#43729f}
-		.Msg-window-inner-x-blue:hover{background-color:#476b8f}
-		.Msg-overlay-x-blue{color:white}
-		.Msg-overlay-x-blue:hover{background-color:#747484}
+		.Msg-overlay-blue{background-color: rgba(101, 107, 124, 0.7)}
+		.Msg-window-blue{background-color: #4f84b8;color: white}
+		.Msg-titlebar-blue{background-color: #43729f;color: white}
+		.Msg-progressbar-blue{background-color: #43729f}
+		.Msg-window-inner-x-blue: hover{background-color: #476b8f}
+		.Msg-overlay-x-blue{color: white}
+		.Msg-overlay-x-blue: hover{background-color: #747484}
 
-		.Msg-overlay-red{background-color:rgba(104, 64, 64, 0.7)}
-		.Msg-window-red{background-color:#ca4e4e;color:white}
-		.Msg-titlebar-red{background-color:#af3f3f;color:white}
-		.Msg-progressbar-red{background-color:#af3f3f}
-		.Msg-window-inner-x-red:hover{background-color:#9d4d4d}
-		.Msg-overlay-x-red{color:white}
-		.Msg-overlay-x-red:hover{background-color:#805e5e}
+		.Msg-overlay-red{background-color: rgba(104, 64, 64, 0.7)}
+		.Msg-window-red{background-color: #ca4e4e;color: white}
+		.Msg-titlebar-red{background-color: #af3f3f;color: white}
+		.Msg-progressbar-red{background-color: #af3f3f}
+		.Msg-window-inner-x-red: hover{background-color: #9d4d4d}
+		.Msg-overlay-x-red{color: white}
+		.Msg-overlay-x-red: hover{background-color: #805e5e}
 
-		.Msg-overlay-green{background-color:rgba(121, 159, 133, 0.7)}
-		.Msg-window-green{background-color:#58a564;color:white}
-		.Msg-titlebar-green{background-color:#52935c;color:white}
-		.Msg-progressbar-green{background-color:#52935c}
-		.Msg-window-inner-x-green:hover{background-color:#4e8456}
-		.Msg-overlay-x-green{color:white}
-		.Msg-overlay-x-green:hover{background-color:#7c957c}
+		.Msg-overlay-green{background-color: rgba(121, 159, 133, 0.7)}
+		.Msg-window-green{background-color: #58a564;color: white}
+		.Msg-titlebar-green{background-color: #52935c;color: white}
+		.Msg-progressbar-green{background-color: #52935c}
+		.Msg-window-inner-x-green: hover{background-color: #4e8456}
+		.Msg-overlay-x-green{color: white}
+		.Msg-overlay-x-green: hover{background-color: #7c957c}
 
-		.Msg-overlay-black{background-color:rgba(121, 121, 121, 0.7)}
-		.Msg-window-black{background-color:#1D1F21;color:white}
-		.Msg-titlebar-black{background-color:#3c3c3c;color:white}
-		.Msg-progressbar-black{background-color:#3c3c3c}
-		.Msg-window-inner-x-black:hover{background-color:#424242}
-		.Msg-overlay-x-black{color:white}
-		.Msg-overlay-x-black:hover{background-color:#686868}
+		.Msg-overlay-black{background-color: rgba(121, 121, 121, 0.7)}
+		.Msg-window-black{background-color: #1D1F21;color: white}
+		.Msg-titlebar-black{background-color: #3c3c3c;color: white}
+		.Msg-progressbar-black{background-color: #3c3c3c}
+		.Msg-window-inner-x-black: hover{background-color: #424242}
+		.Msg-overlay-x-black{color: white}
+		.Msg-overlay-x-black: hover{background-color: #686868}
 		`
 
     style.innerHTML = css
     document.head.appendChild(style)
 
-    document.addEventListener(`keydown`, (e) => {
+    Msg.ev(document, `keydown`, (e) => {
       let highest = Msg.msg.highest_instance()
       if (!highest) return
 
