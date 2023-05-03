@@ -2,8 +2,8 @@
 App.setup_radio = () => {
   if (App.config.radios.length === 0) {
     App.radio_disabled = true
-    App.el(`#footer_radio_container`).classList.add(`nodisplay`)
-    App.horizontal_separator(App.el(`#footer_media_items`))
+    DOM.el(`#footer_radio_container`).classList.add(`nodisplay`)
+    App.horizontal_separator(DOM.el(`#footer_media_items`))
     return
   }
 
@@ -24,33 +24,33 @@ App.setup_radio = () => {
     App.change_radio_volume(e.deltaY > 0 ? `down` : `up`)
   }
 
-  App.ev(App.el(`#radio_volume`), `wheel`, wheel_func)
-  App.ev(App.el(`#footer_radio_container`), `wheel`, wheel_func)
+  DOM.ev(DOM.el(`#radio_volume`), `wheel`, wheel_func)
+  DOM.ev(DOM.el(`#footer_radio_container`), `wheel`, wheel_func)
 
-  App.ev(App.el(`#radio_playstop`), `click`, () => {
+  DOM.ev(DOM.el(`#radio_playstop`), `click`, () => {
     App.radio_playstop()
   })
 
-  App.ev(App.el(`#radio_random`), `click`, () => {
+  DOM.ev(DOM.el(`#radio_random`), `click`, () => {
     App.clear_radio_filter()
     App.play_random_radio()
   })
 
-  App.ev(App.el(`#radio_volume`), `click`, () => {
+  DOM.ev(DOM.el(`#radio_volume`), `click`, () => {
     App.pick_radio_volume()
   })
 
-  App.ev(App.el(`#radio_filter`), `keydown`, (e) => {
+  DOM.ev(DOM.el(`#radio_filter`), `keydown`, (e) => {
     if (e.key === `Enter`) {
       App.play_first_radio()
     }
   })
 
-  App.ev(App.el(`#footer_radio_container`), `mouseenter`, (e) => {
+  DOM.ev(DOM.el(`#footer_radio_container`), `mouseenter`, (e) => {
     e.target.title = App.playing_radio.name
   })
 
-  App.ev(App.el(`#radio_auto`), `click`, () => {
+  DOM.ev(DOM.el(`#radio_auto`), `click`, () => {
     App.toggle_radio_auto()
   })
 
@@ -96,19 +96,19 @@ App.setup_radio_player = () => {
   App.radio_player = new Audio()
   App.radio_player.volume = App.room_state.radio_volume
 
-  App.ev(App.radio_player, `play`, (e) => {
+  DOM.ev(App.radio_player, `play`, (e) => {
     App.after_radio_play()
   })
 
-  App.ev(App.radio_player, `pause`, (e) => {
+  DOM.ev(App.radio_player, `pause`, (e) => {
     App.after_radio_stop()
   })
 }
 
 // Apply radio station effects
 App.apply_radio_station_effects = () => {
-  for (let station of App.els(`.radio_station`)) {
-    let radio = App.dataset(station, `radio`)
+  for (let station of DOM.els(`.radio_station`)) {
+    let radio = DOM.dataset(station, `radio`)
 
     if (App.is_playing_radio(radio) && App.radio_is_playing()) {
       station.classList.add(`radio_station_playing`)
@@ -159,10 +159,10 @@ App.radio_is_playing = () => {
 // Check if radio is playing and perform actions
 App.check_radio_playing = () => {
   if (App.radio_is_playing()) {
-    App.el(`#radio_playstop`).textContent = `Stop`
+    DOM.el(`#radio_playstop`).textContent = `Stop`
   }
   else {
-    App.el(`#radio_playstop`).textContent = `Play`
+    DOM.el(`#radio_playstop`).textContent = `Play`
   }
 
   App.update_input_placeholder()
@@ -170,27 +170,27 @@ App.check_radio_playing = () => {
 
 // Create a radio station
 App.create_radio_station = (radio) => {
-  let container = App.create(`div`, `radio_station nice_row modal_item pointer`)
+  let container = DOM.create(`div`, `radio_station nice_row modal_item pointer`)
   container.innerHTML = App.template_radio_station()
 
-  let icon = App.el(`.radio_station_icon`, container)
+  let icon = DOM.el(`.radio_station_icon`, container)
   jdenticon.update(icon, radio.name)
 
-  let name = App.el(`.radio_station_name`, container)
+  let name = DOM.el(`.radio_station_name`, container)
   name.textContent = radio.name
 
-  App.ev(container, `click`, () => {
+  DOM.ev(container, `click`, () => {
     App.check_radio_play(radio)
   })
 
-  App.dataset(container, `radio`, radio)
-  App.el(`#radio_stations`).append(container)
+  DOM.dataset(container, `radio`, radio)
+  DOM.el(`#radio_stations`).append(container)
 }
 
 // Get radio station
 App.get_radio_station = (radio) => {
-  for (let el of App.els(`.radio_station`)) {
-    if (App.dataset(el, `radio`).name === radio.name) {
+  for (let el of DOM.els(`.radio_station`)) {
+    if (DOM.dataset(el, `radio`).name === radio.name) {
       return el
     }
   }
@@ -237,17 +237,17 @@ App.flash_radio_volume = (volume = App.room_state.radio_volume) => {
 App.apply_radio_volume = (volume = App.room_state.radio_volume) => {
   let vstring = Math.round(volume * 100)
   let fp = App.utilz.fillpad(vstring.toString(), 3, `0`)
-  App.el(`#radio_volume`).textContent = `Volume: ${fp}%`
+  DOM.el(`#radio_volume`).textContent = `Volume: ${fp}%`
   App.flash_radio_volume(volume)
 
   if (volume >= 0.7) {
-    App.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-full`
+    DOM.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-full`
   }
   else if (volume > 0) {
-    App.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-mid`
+    DOM.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-mid`
   }
   else {
-    App.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-mute`
+    DOM.el(`#footer_radio_icon use`).href.baseVal = `#icon_volume-mute`
   }
 
   App.radio_player.volume = volume
@@ -313,7 +313,7 @@ App.show_radio = (filter = ``) => {
   App.msg_radio.show()
 
   if (filter.trim()) {
-    App.el(`#radio_filter`).value = filter
+    DOM.el(`#radio_filter`).value = filter
     App.do_modal_filter()
   }
   else {
@@ -328,19 +328,19 @@ App.hide_radio = () => {
 
 // Highlight the radio footer
 App.show_radio_icon = () => {
-  App.el(`#footer_radio_icon`).classList.remove(`nodisplay`)
+  DOM.el(`#footer_radio_icon`).classList.remove(`nodisplay`)
 }
 
 // Unhighlight the radio footer
 App.hide_radio_icon = () => {
-  App.el(`#footer_radio_icon`).classList.add(`nodisplay`)
+  DOM.el(`#footer_radio_icon`).classList.add(`nodisplay`)
 }
 
 // Play first selected radio
 App.play_first_radio = () => {
-  for (let station of App.els(`.radio_station`)) {
+  for (let station of DOM.els(`.radio_station`)) {
     if (!station.classList.contains(`nodisplay`)) {
-      App.play_radio(App.dataset(station, `radio`))
+      App.play_radio(DOM.dataset(station, `radio`))
       return
     }
   }
@@ -348,7 +348,7 @@ App.play_first_radio = () => {
 
 // Clear radio filter
 App.clear_radio_filter = () => {
-  App.el(`#radio_filter`).value = ``
+  DOM.el(`#radio_filter`).value = ``
   App.do_modal_filter()
 }
 
@@ -367,7 +367,7 @@ App.pick_radio_volume = () => {
 
 // Set radio auto text
 App.set_radio_auto_text = () => {
-  let el = App.el(`#radio_auto`)
+  let el = DOM.el(`#radio_auto`)
 
   if (App.room_state.radio_auto) {
     el.textContent = `Auto: On`

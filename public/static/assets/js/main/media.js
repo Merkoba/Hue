@@ -1,18 +1,18 @@
 // Setups media
 App.setup_media = () => {
-  App.ev(App.el(`#media_image_frame`), `click`, () => {
+  DOM.ev(DOM.el(`#media_image_frame`), `click`, () => {
     App.show_modal_image()
   })
 
-  App.ev(App.el(`#media_image_error`), `click`, () => {
+  DOM.ev(DOM.el(`#media_image_error`), `click`, () => {
     App.show_modal_image()
   })
 
-  App.ev(App.el(`.media_picker_content`, App.msg_image_picker.window), `click`, (e) => {
+  DOM.ev(DOM.el(`.media_picker_content`, App.msg_image_picker.window), `click`, (e) => {
     App.media_picker_item_click(e.target)
   })
 
-  App.ev(App.el(`.media_picker_content`, App.msg_tv_picker.window), `click`, (e) => {
+  DOM.ev(DOM.el(`.media_picker_content`, App.msg_tv_picker.window), `click`, (e) => {
     App.media_picker_item_click(e.target)
   })
 }
@@ -34,7 +34,7 @@ App.media_picker_item_click = (el) => {
       return
     }
 
-    App.el(`.announcement_content`, container).click()
+    DOM.el(`.announcement_content`, container).click()
   }
 }
 
@@ -57,34 +57,34 @@ App.apply_media_percentages = () => {
   let p2 = 100 - p1
 
   if (mode === `column`) {
-    App.el(`#media_tv`).style.height = `${p1}%`
-    App.el(`#media_image`).style.height = `${p2}%`
-    App.el(`#media_tv`).style.width = `100%`
-    App.el(`#media_image`).style.width = `100%`
+    DOM.el(`#media_tv`).style.height = `${p1}%`
+    DOM.el(`#media_image`).style.height = `${p2}%`
+    DOM.el(`#media_tv`).style.width = `100%`
+    DOM.el(`#media_image`).style.width = `100%`
   }
   else if (mode === `row`) {
-    App.el(`#media_tv`).style.width = `${p1}%`
-    App.el(`#media_image`).style.width = `${p2}%`
-    App.el(`#media_tv`).style.height = `100%`
-    App.el(`#media_image`).style.height = `100%`
+    DOM.el(`#media_tv`).style.width = `${p1}%`
+    DOM.el(`#media_image`).style.width = `${p2}%`
+    DOM.el(`#media_tv`).style.height = `100%`
+    DOM.el(`#media_image`).style.height = `100%`
   }
 
   let c1 = App.limit_media_percentage(App.room_state.chat_display_percentage)
   let c2 = 100 - c1
 
   if (App.room_state.main_layout === `column`) {
-    App.el(`#main_rows_container`).style.flexDirection = `column-reverse`
-    App.el(`#chat_main`).style.height = `${c1}%`
-    App.el(`#media`).style.height = `${c2}%`
-    App.el(`#chat_main`).style.width = `100%`
-    App.el(`#media`).style.width = `100%`
+    DOM.el(`#main_rows_container`).style.flexDirection = `column-reverse`
+    DOM.el(`#chat_main`).style.height = `${c1}%`
+    DOM.el(`#media`).style.height = `${c2}%`
+    DOM.el(`#chat_main`).style.width = `100%`
+    DOM.el(`#media`).style.width = `100%`
   }
   else {
-    App.el(`#main_rows_container`).style.flexDirection = `row`
-    App.el(`#chat_main`).style.width = `${c1}%`
-    App.el(`#media`).style.width = `${c2}%`
-    App.el(`#chat_main`).style.height = `100%`
-    App.el(`#media`).style.height = `100%`
+    DOM.el(`#main_rows_container`).style.flexDirection = `row`
+    DOM.el(`#chat_main`).style.width = `${c1}%`
+    DOM.el(`#media`).style.width = `${c2}%`
+    DOM.el(`#chat_main`).style.height = `100%`
+    DOM.el(`#media`).style.height = `100%`
   }
 
   App.fix_frames()
@@ -105,8 +105,8 @@ App.apply_media_positions = () => {
     ip = 1
   }
 
-  App.el(`#media_image`).style.order = ip
-  App.el(`#media_tv`).style.order = tvp
+  DOM.el(`#media_image`).style.order = ip
+  DOM.el(`#media_tv`).style.order = tvp
 }
 
 App.swap_display_positions = () => {
@@ -140,7 +140,7 @@ App.remove_item_from_media_changed = (type, id) => {
 App.num_media_elements_visible = () => {
   let num = 0
 
-  for (let el of App.els(`#media_split .media_main_container`)) {
+  for (let el of DOM.els(`#media_split .media_main_container`)) {
     if (el.style.display !== `none`) {
       num += 1
     }
@@ -153,7 +153,7 @@ App.num_media_elements_visible = () => {
 // The proper way is to use '/image url > comment'
 // But if the > is ommitted it will still try to determine what each part is
 App.get_media_change_inline_comment = (type, source) => {
-  let comment = App.el(`#link_${type}_comment`).value
+  let comment = DOM.el(`#link_${type}_comment`).value
 
   if (comment) {
     // OK
@@ -205,7 +205,7 @@ App.get_media_object_from_init_data = (type) => {
 
 // Hides the media area (image and tv)
 App.hide_media = () => {
-  App.el(`#media`).style.display = `none`
+  DOM.el(`#media`).style.display = `none`
 }
 
 // Prepare media modes from initial data
@@ -223,50 +223,50 @@ App.media_visibility_and_locks = () => {
 
 // More media picker configurations
 App.setup_media_pickers = () => {
-  App.ev(App.el(`#image_picker_link`), `click`, () => {
+  DOM.ev(DOM.el(`#image_picker_link`), `click`, () => {
     App.msg_image_picker.close()
     App.show_link_image()
   })
 
-  App.ev(App.el(`#image_picker_upload`), `click`, () => {
+  DOM.ev(DOM.el(`#image_picker_upload`), `click`, () => {
     App.msg_image_picker.close()
   })
 
-  App.ev(App.el(`#image_picker_draw`), `click`, () => {
+  DOM.ev(DOM.el(`#image_picker_draw`), `click`, () => {
     App.msg_image_picker.close()
     App.open_draw_image(`image`)
   })
 
-  App.ev(App.el(`#image_picker_random`), `click`, () => {
+  DOM.ev(DOM.el(`#image_picker_random`), `click`, () => {
     App.msg_image_picker.close()
     App.make_random_image(`image`)
   })
 
-  App.ev(App.el(`#image_picker_screenshot`), `click`, () => {
+  DOM.ev(DOM.el(`#image_picker_screenshot`), `click`, () => {
     App.msg_image_picker.close()
     App.take_screenshot()
   })
 
-  App.ev(App.el(`#tv_picker_link`), `click`, () => {
+  DOM.ev(DOM.el(`#tv_picker_link`), `click`, () => {
     App.msg_tv_picker.close()
     App.show_link_tv()
   })
 
-  App.ev(App.el(`#tv_picker_upload`), `click`, () => {
+  DOM.ev(DOM.el(`#tv_picker_upload`), `click`, () => {
     App.msg_tv_picker.close()
   })
 
-  App.ev(App.el(`#tv_picker_capture`), `click`, () => {
+  DOM.ev(DOM.el(`#tv_picker_capture`), `click`, () => {
     App.msg_tv_picker.close()
     App.screen_capture()
   })
 
-  App.ev(App.el(`#image_picker_upload`), `click`, () => {
+  DOM.ev(DOM.el(`#image_picker_upload`), `click`, () => {
     App.msg_tv_picker.close()
     App.show_upload_image()
   })
 
-  App.ev(App.el(`#tv_picker_upload`), `click`, () => {
+  DOM.ev(DOM.el(`#tv_picker_upload`), `click`, () => {
     App.msg_tv_picker.close()
     App.show_upload_tv()
   })
@@ -274,11 +274,11 @@ App.setup_media_pickers = () => {
 
 // Setup tv link window
 App.setup_media_link = () => {
-  App.ev(App.el(`#link_image_submit`), `click`, () => {
+  DOM.ev(DOM.el(`#link_image_submit`), `click`, () => {
     App.link_image_submit()
   })
 
-  App.ev(App.el(`#link_tv_submit`), `click`, () => {
+  DOM.ev(DOM.el(`#link_tv_submit`), `click`, () => {
     App.link_tv_submit()
   })
 }
@@ -287,7 +287,7 @@ App.setup_media_link = () => {
 // It grows the element as much as it can while maintaining the aspect ratio
 // This is done by making calculations with the element and parent's ratios
 App.fix_frame = (frame_id, test_parent_height = false) => {
-  let frame = App.el(`#${frame_id}`)
+  let frame = DOM.el(`#${frame_id}`)
   let frame_ratio
 
   if (frame_id === `media_image_frame`) {
@@ -299,7 +299,7 @@ App.fix_frame = (frame_id, test_parent_height = false) => {
 
   let parent = frame.parentElement
   let info_height = 0
-  let info = App.els(`.media_info`, frame.parentElement)
+  let info = DOM.els(`.media_info`, frame.parentElement)
 
   if (info.length > 0) {
     info_height = info[0].offsetHeight
@@ -464,28 +464,28 @@ App.apply_media_info = (type) => {
   }
 
   let message = item.message.substring(0, App.config.max_media_info_length).trim()
-  let container = App.el(`#media_${type}_info_container`)
+  let container = DOM.el(`#media_${type}_info_container`)
 
-  App.el(`.media_info`, container).innerHTML = App.template_media_info_inner({
+  DOM.el(`.media_info`, container).innerHTML = App.template_media_info_inner({
     username: item.username,
     message: message,
     profilepic: App.get_profilepic(item.user_id)
   })
 
-  App.el(`.media_info_timeago`, container).textContent = App.utilz.timeago(item.date)
+  DOM.el(`.media_info_timeago`, container).textContent = App.utilz.timeago(item.date)
   container.title = item.info
-  let pic = App.el(`.media_info_profilepic`, container)
+  let pic = DOM.el(`.media_info_profilepic`, container)
 
-  App.ev(pic, `error`, () => {
+  DOM.ev(pic, `error`, () => {
     App.fallback_profilepic(pic)
   })
 
-  App.dataset(container, `otitle`, item.info)
-  App.dataset(container, `date`, item.date)
-  App.dataset(container, `type`, type)
-  App.dataset(container, `id`, item.id)
-  App.dataset(container, `username`, item.username)
-  App.dataset(container, `user_id`, item.user_id)
+  DOM.dataset(container, `otitle`, item.info)
+  DOM.dataset(container, `date`, item.date)
+  DOM.dataset(container, `type`, type)
+  DOM.dataset(container, `id`, item.id)
+  DOM.dataset(container, `username`, item.username)
+  DOM.dataset(container, `user_id`, item.user_id)
 }
 
 // Some fixes on reconneciton
@@ -541,13 +541,13 @@ App.set_media_locked = (args) => {
 // Toggles media locks for any type
 App.change_media_lock_text = (type) => {
   if (App[`${type}_locked`]) {
-    App.el(`#footer_${type}_lock`).textContent = `Unlock`
-    App.el(`#footer_${type}_lock`).textContent = `Unlock`
-    App.el(`#footer_${type}_lock`).classList.add(`underlined`)
+    DOM.el(`#footer_${type}_lock`).textContent = `Unlock`
+    DOM.el(`#footer_${type}_lock`).textContent = `Unlock`
+    DOM.el(`#footer_${type}_lock`).classList.add(`underlined`)
   }
   else {
-    App.el(`#footer_${type}_lock`).textContent = `Lock`
-    App.el(`#footer_${type}_lock`).classList.remove(`underlined`)
+    DOM.el(`#footer_${type}_lock`).textContent = `Lock`
+    DOM.el(`#footer_${type}_lock`).classList.remove(`underlined`)
   }
 }
 
@@ -562,17 +562,17 @@ App.change_media_layout = (mode = false) => {
   }
 
   if (mode === `column`) {
-    App.el(`#media_split`).style.flexDirection = `column`
+    DOM.el(`#media_split`).style.flexDirection = `column`
 
-    for (let el of App.els(`.media_main_container`)) {
+    for (let el of DOM.els(`.media_main_container`)) {
       el.style.width = `100%`
       el.style.height = `50%`
     }
   }
   else if (mode === `row`) {
-    App.el(`#media_split`).style.flexDirection = `row`
+    DOM.el(`#media_split`).style.flexDirection = `row`
 
-    for (let el of App.els(`.media_main_container`)) {
+    for (let el of DOM.els(`.media_main_container`)) {
       el.style.width = `50%`
       el.style.height = `100%`
     }
@@ -615,32 +615,32 @@ App.get_media_info_html = (type) => {
 
 // Append media inf
 App.append_media_info = (container, type) => {
-  let el = App.create(`div`)
+  let el = DOM.create(`div`)
   el.innerHTML = App.get_media_info_html(type)
-  App.el(container).append(el)
+  DOM.el(container).append(el)
 }
 
 // Some initial media info setups
 App.start_media_info = () => {
   App.append_media_info(`#media_image_container`, `image`)
 
-  App.ev(App.el(`#media`), `click`, (e) => {
+  DOM.ev(DOM.el(`#media`), `click`, (e) => {
     let el = e.target.closest(`.media_info_user`)
 
     if (el) {
-      let username = App.dataset(el.closest(`.media_info_container`), `username`)
-      let user_id = App.dataset(el.closest(`.media_info_container`), `user_id`)
+      let username = DOM.dataset(el.closest(`.media_info_container`), `username`)
+      let user_id = DOM.dataset(el.closest(`.media_info_container`), `user_id`)
       App.show_profile(username, user_id)
     }
   })
 
-  App.ev(App.el(`#media`), `click`, (e) => {
+  DOM.ev(DOM.el(`#media`), `click`, (e) => {
     let el = e.target.closest(`.media_info_details`)
 
     if (el) {
       let media_info = el.closest(`.media_info_container`)
-      let type = App.dataset(media_info, `type`)
-      let id = App.dataset(media_info, `id`)
+      let type = DOM.dataset(media_info, `type`)
+      let id = DOM.dataset(media_info, `id`)
       App.open_url_menu_by_media_id(type, id)
     }
   })
@@ -742,15 +742,15 @@ App.edited_media_comment = (data) => {
     }
   }
 
-  let messages = App.els(`.media_announcement`)
+  let messages = DOM.els(`.media_announcement`)
 
   for (let message of messages) {
-    if (App.dataset(message, `id`) === data.id) {
-      if (App.dataset(message, `type`) === `${data.type}_change`) {
-        let content = App.el(`.announcement_content`, message)
+    if (DOM.dataset(message, `id`) === data.id) {
+      if (DOM.dataset(message, `type`) === `${data.type}_change`) {
+        let content = DOM.el(`.announcement_content`, message)
         content.textContent = oitem.message
-        let data_container = App.el_or_self(`.unit_data_container`, message)
-        App.dataset(data_container, `original_message`, data.comment)
+        let data_container = DOM.el_or_self(`.unit_data_container`, message)
+        DOM.dataset(data_container, `original_message`, data.comment)
       }
     }
   }
@@ -771,11 +771,11 @@ App.show_media_picker = (type) => {
 
 // Load media picker
 App.load_media_link = (type, source, comment) => {
-  App.el(`#link_${type}_comment`).value = comment
-  App.el(`#link_${type}_input`).value = source
+  DOM.el(`#link_${type}_comment`).value = comment
+  DOM.el(`#link_${type}_input`).value = source
 
   App[`msg_link_${type}`].show()
-  App.el(`#link_${type}_comment`).focus()
+  DOM.el(`#link_${type}_comment`).focus()
 }
 
 // Generate Image or TV item messages
@@ -936,8 +936,8 @@ App.announce_media = (type, data) => {
 // Changes the media visibility based on current state
 App.change_media_visibility = (type, play = false) => {
   if (App.room_state[`${type}_enabled`]) {
-    App.el(`#media`).style.display = `flex`
-    App.el(`#media_${type}`).style.display = `flex`
+    DOM.el(`#media`).style.display = `flex`
+    DOM.el(`#media_${type}`).style.display = `flex`
 
     if (App.first_media_change && App.started) {
       App.change_media({type: type, force: true, current_source: App[`${type}_locked`], play: play})
@@ -947,7 +947,7 @@ App.change_media_visibility = (type, play = false) => {
     App[`fix_${type}_frame`]()
   }
   else {
-    App.el(`#media_${type}`).style.display = `none`
+    DOM.el(`#media_${type}`).style.display = `none`
 
     if (App.num_media_elements_visible() === 0) {
       App.hide_media()

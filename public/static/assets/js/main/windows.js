@@ -1,7 +1,7 @@
 // Create all the Handlebars templates
 App.setup_templates = () => {
-  for (let template of App.els(`.template`)) {
-    App[template.id] = Handlebars.compile(App.el(`#${template.id}`).innerHTML)
+  for (let template of DOM.els(`.template`)) {
+    App[template.id] = Handlebars.compile(DOM.el(`#${template.id}`).innerHTML)
   }
 }
 
@@ -144,7 +144,7 @@ App.start_msg = () => {
       window_width: `22rem`,
       after_close: (instance) => {
         msgvars.common.after_close(instance)
-        App.el(`#show_profile_profilepic`).src = App.config.profilepic_loading_url
+        DOM.el(`#show_profile_profilepic`).src = App.config.profilepic_loading_url
         App.open_profile_username = false
         App.open_profile_user_id = false
         App.open_profile_user = false
@@ -195,12 +195,12 @@ App.start_msg = () => {
       window_width: `28rem`,
       after_show: (instance) => {
         msgvars.common.after_show(instance)
-        App.el(`#link_image_input`).focus()
+        DOM.el(`#link_image_input`).focus()
       },
       after_close: (instance) => {
         msgvars.common.after_close(instance)
-        App.el(`#link_image_input`).value = ``
-        App.el(`#link_image_comment`).value = ``
+        DOM.el(`#link_image_input`).value = ``
+        DOM.el(`#link_image_comment`).value = ``
       },
     })
   )
@@ -218,12 +218,12 @@ App.start_msg = () => {
       window_width: `28rem`,
       after_show: (instance) => {
         msgvars.common.after_show(instance)
-        App.el(`#link_tv_input`).focus()
+        DOM.el(`#link_tv_input`).focus()
       },
       after_close: (instance) => {
         msgvars.common.after_close(instance)
-        App.el(`#link_tv_input`).value = ``
-        App.el(`#link_tv_comment`).value = ``
+        DOM.el(`#link_tv_input`).value = ``
+        DOM.el(`#link_tv_comment`).value = ``
       },
     })
   )
@@ -335,7 +335,7 @@ App.start_msg = () => {
       scroll_on_show: false,
       after_close: (instance) => {
         msgvars.common.after_close(instance)
-        App.el(`#image_upload_comment_input`).value = ``
+        DOM.el(`#image_upload_comment_input`).value = ``
         App.image_upload_comment_file = undefined
         App.image_upload_comment_type = undefined
         App.upload_media = undefined
@@ -350,9 +350,9 @@ App.start_msg = () => {
       scroll_on_show: false,
       after_close: (instance) => {
         msgvars.common.after_close(instance)
-        App.el(`#tv_upload_comment_input`).value = ``
-        App.el(`#tv_upload_comment_video_preview`).pause()
-        App.el(`#tv_upload_comment_video_preview`).src = ``
+        DOM.el(`#tv_upload_comment_input`).value = ``
+        DOM.el(`#tv_upload_comment_video_preview`).pause()
+        DOM.el(`#tv_upload_comment_video_preview`).src = ``
         App.tv_upload_comment_file = undefined
         App.tv_upload_comment_type = undefined
         App.upload_media = undefined
@@ -967,12 +967,12 @@ App.close_all_popups = (callback = false) => {
 
 // Scrolls a modal window to the top
 App.scroll_modal_to_top = (id) => {
-  App.el(`#Msg-content-container-${id}`).scrollTop = 0
+  DOM.el(`#Msg-content-container-${id}`).scrollTop = 0
 }
 
 // Scrolls a modal window to the bottom
 App.scroll_modal_to_bottom = (id) => {
-  let container = App.el(`#Msg-content-container-${id}`)
+  let container = DOM.el(`#Msg-content-container-${id}`)
   container.scrollTop = container.scrollHeight
 }
 
@@ -1066,7 +1066,7 @@ App.show_action_popup = (args = {}) => {
 
 // Get the first visible item in a filtered container
 App.get_first_visible_modal_item = (id) => {
-  let items = App.els(`#${id} .modal_item`)
+  let items = DOM.els(`#${id} .modal_item`)
 
   for (let item of items) {
     if (!item.classList.contains(`nodisplay`)) {

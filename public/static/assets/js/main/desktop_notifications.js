@@ -33,7 +33,7 @@ App.show_desktop_notification = (s) => {
 
   let n = new Notification(s)
 
-  App.ev(n, `click`, (e) => {
+  DOM.ev(n, `click`, (e) => {
     window.focus()
     e.target.close()
   })

@@ -80,7 +80,7 @@ App.do_process_file_added = (file) => {
 
 // Trigger dropzone click
 App.trigger_dropzone = () => {
-  App.el(`#dropzone_element`).click()
+  DOM.el(`#dropzone_element`).click()
 }
 
 // Handle generic image upload
@@ -135,7 +135,7 @@ App.upload_video = (file) => {
 App.create_file_reader = (file) => {
   let reader = new FileReader()
 
-  App.ev(reader, `loadend`, (e) => {
+  DOM.ev(reader, `loadend`, (e) => {
     App.socket_emit(`slice_upload`, {
       data: reader.result,
       action: file.hue_data.action,
@@ -245,11 +245,11 @@ App.cancel_file_upload = (date) => {
   App.change_upload_status(file, `Cancelled`, true)
 
   if (file.hue_data.action === `background_upload`) {
-    App.el(`#admin_background`).src = App.background
+    DOM.el(`#admin_background`).src = App.background
     App.apply_background()
   }
   else if (file.hue_data.action === `profilepic_upload`) {
-    App.el(`#user_profile_profilepic`).src = App.get_profilepic(App.user_id)
+    DOM.el(`#user_profile_profilepic`).src = App.get_profilepic(App.user_id)
   }
 
   delete App.files[date]
@@ -276,7 +276,7 @@ App.change_upload_status = (file, status, clear = false) => {
     return
   }
 
-  App.el(`.action_popup_message`, file.hue_popup.content).textContent =
+  DOM.el(`.action_popup_message`, file.hue_popup.content).textContent =
     `Uploading ${App.get_file_action_name(file.hue_data.action)}: ${status}`
 
   if (clear) {

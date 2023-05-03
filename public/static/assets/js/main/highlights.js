@@ -43,7 +43,7 @@ App.check_latest_highlight = () => {
 
   if (highlight) {
     App.latest_highlight = highlight
-    let date = App.dataset(highlight, `date`)
+    let date = DOM.dataset(highlight, `date`)
 
     if (date > App.room_state.last_highlight_date) {
       App.room_state.last_highlight_date = date
@@ -58,10 +58,10 @@ App.check_latest_highlight = () => {
 // Either a chat content container or an announcement
 App.get_latest_highlight = () => {
   let latest_highlight = false
-  let items = App.els(`#chat_area .chat_content_container`)
+  let items = DOM.els(`#chat_area .chat_content_container`)
 
   for (let item of items.reverse()) {
-    if (App.dataset(item, `highlighted`)) {
+    if (DOM.dataset(item, `highlighted`)) {
       latest_highlight = item
       break
     }
@@ -71,7 +71,7 @@ App.get_latest_highlight = () => {
     let items = App.get_all_announcements()
 
     for (let item of items.reverse()) {
-      if (App.dataset(item, `highlighted`)) {
+      if (DOM.dataset(item, `highlighted`)) {
         latest_highlight = item
         break
       }

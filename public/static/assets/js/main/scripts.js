@@ -8,7 +8,7 @@ App.load_script = (source) => {
   App.loginfo(`Loading script: ${source}`)
 
   return new Promise((resolve, reject) => {
-    const script = App.create(`script`)
+    const script = DOM.create(`script`)
     document.body.appendChild(script)
     script.onload = resolve
     script.onerror = reject

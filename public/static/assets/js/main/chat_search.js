@@ -1,30 +1,30 @@
 // Setup chat search
 App.setup_chat_search = () => {
-  App.ev(App.el(`#chat_search_highlights`), `click`, () => {
+  DOM.ev(DOM.el(`#chat_search_highlights`), `click`, () => {
     App.show_highlights()
   })
 
-  App.ev(App.el(`#chat_search_links`), `click`, () => {
+  DOM.ev(DOM.el(`#chat_search_links`), `click`, () => {
     App.show_links()
   })
 
-  App.ev(App.el(`#chat_search_user`), `click`, () => {
+  DOM.ev(DOM.el(`#chat_search_user`), `click`, () => {
     App.show_user_messages()
   })
 
-  App.ev(App.el(`#chat_search_image`), `click`, () => {
+  DOM.ev(DOM.el(`#chat_search_image`), `click`, () => {
     App.show_image_list()
   })
 
-  App.ev(App.el(`#chat_search_tv`), `click`, () => {
+  DOM.ev(DOM.el(`#chat_search_tv`), `click`, () => {
     App.show_tv_list()
   })
 }
 
 // Resets chat search filter state
 App.reset_chat_search_filter = () => {
-  App.el(`#chat_search_filter`).value = ``
-  App.el(`#chat_search_container`).innerHTML = ``
+  DOM.el(`#chat_search_filter`).value = ``
+  DOM.el(`#chat_search_container`).innerHTML = ``
 }
 
 // Shows the chat search window
@@ -38,7 +38,7 @@ App.show_chat_search = (filter = ``) => {
     }
 
     if (filter.startsWith(`$user`)) {
-      let username = App.dataset(it, `username`)
+      let username = DOM.dataset(it, `username`)
       let match = username && first_arg === username.toLowerCase()
 
       if (match) {
@@ -50,7 +50,7 @@ App.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$highlights`)) {
-      let match = App.dataset(it, `highlighted`)
+      let match = DOM.dataset(it, `highlighted`)
 
       if (match) {
         if (args) {
@@ -66,7 +66,7 @@ App.show_chat_search = (filter = ``) => {
         return
       }
 
-      let match = App.dataset(it, `highlighted`)
+      let match = DOM.dataset(it, `highlighted`)
 
       if (match) {
         if (args) {
@@ -75,8 +75,8 @@ App.show_chat_search = (filter = ``) => {
       }
 
       if (match) {
-        let id1 = App.dataset(it, `id`)
-        let id2 = App.dataset(App.latest_highlight, `id`)
+        let id1 = DOM.dataset(it, `id`)
+        let id2 = DOM.dataset(App.latest_highlight, `id`)
         if (id1 === id2) {
           finished = true
         }
@@ -97,8 +97,8 @@ App.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$image`)) {
-      let match = (App.dataset(it, `mode`) === `announcement` &&
-                  App.dataset(it, `type`) === `image_change`)
+      let match = (DOM.dataset(it, `mode`) === `announcement` &&
+                  DOM.dataset(it, `type`) === `image_change`)
 
       if (match) {
         if (args) {
@@ -109,8 +109,8 @@ App.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$tv`)) {
-      let match = (App.dataset(it, `mode`) === `announcement` &&
-                  App.dataset(it, `type`) === `tv_change`)
+      let match = (DOM.dataset(it, `mode`) === `announcement` &&
+                  DOM.dataset(it, `type`) === `tv_change`)
 
       if (match) {
         if (args) {
@@ -121,7 +121,7 @@ App.show_chat_search = (filter = ``) => {
       return match
     }
     else {
-      let text = App.el_or_self(`.unit_text`, it)
+      let text = DOM.el_or_self(`.unit_text`, it)
       return text.textContent.toLowerCase().includes(filter)
     }
   }
@@ -129,32 +129,32 @@ App.show_chat_search = (filter = ``) => {
   function on_messages (messages) {
     if (messages.length) {
       for (let message of messages) {
-        let profilepics = App.els(`.profilepic`, message)
+        let profilepics = DOM.els(`.profilepic`, message)
 
         for (let pic of profilepics) {
-          App.ev(pic, `error`, () => {
+          DOM.ev(pic, `error`, () => {
             App.fallback_profilepic(pic)
           })
         }
 
-        let link_img = App.el(`.link_preview_image`, message)
+        let link_img = DOM.el(`.link_preview_image`, message)
 
         if (link_img) {
-          App.ev(link_img, `error`, () => {
+          DOM.ev(link_img, `error`, () => {
             link_img.style.display = `none`
           })
         }
 
-        App.el(`#chat_search_container`).append(message)
+        DOM.el(`#chat_search_container`).append(message)
       }
     }
     else {
-      App.el(`#chat_search_container`).innerHTML = `<div class='center'>Nothing found</div>`
+      DOM.el(`#chat_search_container`).innerHTML = `<div class='center'>Nothing found</div>`
     }
   }
 
-  App.el(`#chat_search_container`).innerHTML = ``
-  App.el(`#chat_search_filter`).value = filter
+  DOM.el(`#chat_search_container`).innerHTML = ``
+  DOM.el(`#chat_search_filter`).value = filter
   let filter0 = App.utilz.single_space(filter).trim()
   filter = filter0.toLowerCase()
   let args, first_arg, tail
@@ -189,23 +189,23 @@ App.show_chat_search = (filter = ``) => {
       let item = App.get_message_container_by_id(first_arg)
 
       if (item) {
-        highlight_id = App.dataset(item, `message_id`)
-        on_messages([App.clone(item)])
+        highlight_id = DOM.dataset(item, `message_id`)
+        on_messages([DOM.clone(item)])
       }
     }
     else {
-      let messages = App.clone_children(`#chat_area`).reverse()
+      let messages = DOM.clone_children(`#chat_area`).reverse()
 
       for (let m of messages) {
         m.removeAttribute(`id`)
       }
 
       messages = messages.filter(it => {
-        let mode = App.dataset(it, `mode`)
+        let mode = DOM.dataset(it, `mode`)
         let message_matched = false
 
         if (mode === `chat`) {
-          let containers = App.els(`.chat_content_container`, it)
+          let containers = DOM.els(`.chat_content_container`, it)
 
           for (let container of containers) {
             if (filtercheck(container)) {
@@ -236,7 +236,7 @@ App.show_chat_search = (filter = ``) => {
 
   }
   else {
-    App.el(`#chat_search_container`).innerHTML = `<div class='center'>Search recent messages</div>`
+    DOM.el(`#chat_search_container`).innerHTML = `<div class='center'>Search recent messages</div>`
   }
 
   App.msg_chat_search.show()

@@ -86,13 +86,13 @@ App.change_bio = (value) => {
 // Shows the change username form
 App.show_change_username = () => {
   App.msg_change_username.show()
-  App.el(`#change_username_input`).value = App.username
-  App.el(`#change_username_input`).focus()
+  DOM.el(`#change_username_input`).value = App.username
+  DOM.el(`#change_username_input`).focus()
 }
 
 // Submits the change username form
 App.submit_change_username = () => {
-  let username = App.el(`#change_username_input`).value.trim()
+  let username = DOM.el(`#change_username_input`).value.trim()
 
   if (username === App.username) {
     App.checkmsg(`That's already the username`)
@@ -107,15 +107,15 @@ App.submit_change_username = () => {
 // Shows the change password form
 App.show_change_password = () => {
   App.msg_change_password.show()
-  App.el(`#change_password_input_1`).value = ``
-  App.el(`#change_password_input_2`).value = ``
-  App.el(`#change_password_input_1`).focus()
+  DOM.el(`#change_password_input_1`).value = ``
+  DOM.el(`#change_password_input_2`).value = ``
+  DOM.el(`#change_password_input_1`).focus()
 }
 
 // Submits the change password form
 App.submit_change_password = () => {
-  let p1 = App.el(`#change_password_input_1`).value.trim()
-  let p2 = App.el(`#change_password_input_2`).value.trim()
+  let p1 = DOM.el(`#change_password_input_1`).value.trim()
+  let p2 = DOM.el(`#change_password_input_2`).value.trim()
 
   if (App.change_password(p1, p2)) {
     App.msg_change_password.close()
@@ -126,19 +126,19 @@ App.submit_change_password = () => {
 App.set_username = (username) => {
   App.username = username
   App.generate_mentions_regex()
-  App.el(`#user_profile_username`).textContent = App.username
+  DOM.el(`#user_profile_username`).textContent = App.username
 }
 
 // Bio setter
 App.set_bio = (bio) => {
   App.bio = bio
-  App.el(`#user_profile_bio_textarea`).value = App.bio
+  DOM.el(`#user_profile_bio_textarea`).value = App.bio
 }
 
 // Prepare user profile
 App.prepare_user_profile = () => {
-  App.el(`#user_profile_reg_date`).textContent = App.utilz.nice_date(App.user_reg_date)
-  App.el(`#user_profile_id`).textContent = `ID: ${App.user_id}`
+  DOM.el(`#user_profile_reg_date`).textContent = App.utilz.nice_date(App.user_reg_date)
+  DOM.el(`#user_profile_id`).textContent = `ID: ${App.user_id}`
 
   if (App.get_self_user().profilepic_version === 0) {
     App.show_user_profile()
@@ -148,15 +148,15 @@ App.prepare_user_profile = () => {
 
 // Setups the user profile
 App.setup_user_profile = () => {
-  let pic = App.el(`#user_profile_profilepic`)
+  let pic = DOM.el(`#user_profile_profilepic`)
 
-  App.ev(pic, `error`, () => {
+  DOM.ev(pic, `error`, () => {
     App.fallback_profilepic(pic)
   })
 
-  let textarea = App.el(`#user_profile_bio_textarea`)
+  let textarea = DOM.el(`#user_profile_bio_textarea`)
 
-  App.ev(textarea, `blur`, () => {
+  DOM.ev(textarea, `blur`, () => {
     let value = App.utilz.single_linebreak(textarea.value)
 
     if (value !== App.bio) {
@@ -174,23 +174,23 @@ App.setup_user_profile = () => {
     }
   })
 
-  App.ev(App.el(`#user_profile_profilepic`), `click`, () => {
+  DOM.ev(DOM.el(`#user_profile_profilepic`), `click`, () => {
     App.msg_profilepic_select.show()
   })
 
-  App.ev(App.el(`#user_profile_audioclip`), `click`, () => {
+  DOM.ev(DOM.el(`#user_profile_audioclip`), `click`, () => {
     App.msg_audioclip_select.show()
   })
 
-  App.ev(App.el(`#user_profile_logout`), `click`, () => {
+  DOM.ev(DOM.el(`#user_profile_logout`), `click`, () => {
     App.needs_confirm(`logout`)
   })
 
-  App.ev(App.el(`#user_profile_change_username`), `click`, () => {
+  DOM.ev(DOM.el(`#user_profile_change_username`), `click`, () => {
     App.show_change_username()
   })
 
-  App.ev(App.el(`#user_profile_change_password`), `click`, () => {
+  DOM.ev(DOM.el(`#user_profile_change_password`), `click`, () => {
     App.show_change_password()
   })
 
@@ -202,14 +202,14 @@ App.setup_user_profile = () => {
 
 // Setup change username
 App.setup_change_username = () => {
-  App.ev(App.el(`#change_username_submit`), `click`, () => {
+  DOM.ev(DOM.el(`#change_username_submit`), `click`, () => {
     App.submit_change_username()
   })
 }
 
 // Setup change password
 App.setup_change_password = () => {
-  App.ev(App.el(`#change_password_submit`), `click`, () => {
+  DOM.ev(DOM.el(`#change_password_submit`), `click`, () => {
     App.submit_change_password()
   })
 }
@@ -217,8 +217,8 @@ App.setup_change_password = () => {
 // Updates some user profile elements
 App.update_user_profile = () => {
   let src = App.get_profilepic(App.user_id)
-  App.el(`#user_profile_profilepic`).src = src
-  App.el(`#user_profile_bio_textarea`).value = App.bio
+  DOM.el(`#user_profile_profilepic`).src = src
+  DOM.el(`#user_profile_bio_textarea`).value = App.bio
 }
 
 // Shows the user profile
@@ -228,7 +228,7 @@ App.show_user_profile = () => {
 
 // Setups the profile image circular cropper
 App.setup_profilepic_cropper = () => {
-  App.ev(App.el(`#profilepic_cropper_crop`), `click`, () => {
+  DOM.ev(DOM.el(`#profilepic_cropper_crop`), `click`, () => {
     App.profilepic_cropper.result({
       type: `blob`,
       size: {
@@ -241,12 +241,12 @@ App.setup_profilepic_cropper = () => {
     })
     .then((blob) => {
       App.profilepic_preview_blob = blob
-      App.el(`#profilepic_preview_image`).src = URL.createObjectURL(blob)
+      DOM.el(`#profilepic_preview_image`).src = URL.createObjectURL(blob)
       App.msg_profilepic_preview.show()
     })
   })
 
-  App.ev(App.el(`#profilepic_cropper_change`), `click`, () => {
+  DOM.ev(DOM.el(`#profilepic_cropper_change`), `click`, () => {
     if (App.profilepic_cropper_type === `drawing`) {
       App.msg_profilepic_cropper.close()
       App.open_draw_image(`profilepic`)
@@ -263,7 +263,7 @@ App.setup_profilepic_cropper = () => {
 
 // Upload profilepic
 App.upload_profilepic = () => {
-  App.el(`#user_profile_profilepic`).src = App.config.profilepic_loading_url
+  DOM.el(`#user_profile_profilepic`).src = App.config.profilepic_loading_url
 
   App.upload_file({
     file: App.profilepic_preview_blob,
@@ -276,27 +276,27 @@ App.upload_profilepic = () => {
 
 // Setup profilepic select
 App.setup_profilepic_select = () => {
-  App.ev(App.el(`#profilepic_select_draw`), `click`, () => {
+  DOM.ev(DOM.el(`#profilepic_select_draw`), `click`, () => {
     App.msg_profilepic_select.close()
     App.open_draw_image(`profilepic`)
   })
 
-  App.ev(App.el(`#profilepic_select_random`), `click`, () => {
+  DOM.ev(DOM.el(`#profilepic_select_random`), `click`, () => {
     App.msg_profilepic_select.close()
     App.make_random_image(`profilepic`)
   })
 
-  App.ev(App.el(`#profilepic_select_upload`), `click`, () => {
+  DOM.ev(DOM.el(`#profilepic_select_upload`), `click`, () => {
     App.msg_profilepic_select.close()
     App.open_profilepic_picker()
   })
 
-  App.ev(App.el(`#profilepic_preview_choose`), `click`, () => {
+  DOM.ev(DOM.el(`#profilepic_preview_choose`), `click`, () => {
     App.msg_profilepic_preview.close()
     App.msg_profilepic_select.show()
   })
 
-  App.ev(App.el(`#profilepic_preview_confirm`), `click`, () => {
+  DOM.ev(DOM.el(`#profilepic_preview_confirm`), `click`, () => {
     App.msg_profilepic_preview.close()
     App.upload_profilepic()
   })
@@ -326,20 +326,20 @@ App.profilepic_selected = (file, type) => {
 
   reader.onload = (e) => {
     if (type === `drawing`) {
-      App.el(`#profilepic_cropper_change`).textContent = `Re-Draw`
+      DOM.el(`#profilepic_cropper_change`).textContent = `Re-Draw`
     }
     else if (type === `upload`) {
-      App.el(`#profilepic_cropper_change`).textContent = `Re-Choose`
+      DOM.el(`#profilepic_cropper_change`).textContent = `Re-Choose`
     }
     else if (type === `random_canvas`) {
-      App.el(`#profilepic_cropper_change`).textContent = `Re-Generate`
+      DOM.el(`#profilepic_cropper_change`).textContent = `Re-Generate`
     }
 
     App.profilepic_cropper_type = type
     App.msg_profilepic_cropper.show()
 
     if (!App.profilepic_cropper) {
-      App.profilepic_cropper = new Croppie(App.el(`#profilepic_cropper`), {
+      App.profilepic_cropper = new Croppie(DOM.el(`#profilepic_cropper`), {
         viewport: {
           width: 200,
           height: 200,
@@ -395,19 +395,19 @@ App.show_others_disconnected = (data) => {
 
 // Setup change audioclip select
 App.setup_audioclip_select = () => {
-  App.ev(App.el(`#upload_audioclip`), `click`, () => {
+  DOM.ev(DOM.el(`#upload_audioclip`), `click`, () => {
     App.select_audioclip()
     App.msg_audioclip_select.close()
   })
 
-  App.ev(App.el(`#remove_audioclip`), `click`, () => {
+  DOM.ev(DOM.el(`#remove_audioclip`), `click`, () => {
     App.needs_confirm_2(() => {
       App.socket_emit(`remove_audioclip`, {})
       App.msg_audioclip_select.close()
     })
   })
 
-  App.ev(App.el(`#play_audioclip`), `click`, () => {
+  DOM.ev(DOM.el(`#play_audioclip`), `click`, () => {
     App.play_audioclip(App.user_id)
   })
 }

@@ -148,7 +148,7 @@ App.clear_tabbed = (element) => {
 // Setups autocomplete functionality
 // This allows to have tab autocomplete on all allowed textboxes
 App.setup_autocomplete = () => {
-  App.ev(App.el(`body`), `keydown`, (e) => {
+  DOM.ev(DOM.el(`body`), `keydown`, (e) => {
     if (App.utilz.is_textbox(e.target)) {
       if (e.key === `Tab`) {
         let value = e.target.value
@@ -163,7 +163,7 @@ App.setup_autocomplete = () => {
     }
   })
 
-  App.ev(App.el(`body`), `click`, (e) => {
+  DOM.ev(DOM.el(`body`), `click`, (e) => {
     if (App.utilz.is_textbox(e.target)) {
       App.clear_tabbed(e.target)
     }

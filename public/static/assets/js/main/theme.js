@@ -7,14 +7,14 @@ App.prepare_theme = (data) => {
 
 // Setups theme and background variables from initial data
 App.setup_theme = () => {
-  App.ev(App.el(`#background`), `load`, () => {
+  DOM.ev(DOM.el(`#background`), `load`, () => {
     if (App.background_preview) {
       App.hide_windows_temporarily()
       App.show_background_peek_confirm()
     }
   })
 
-  App.ev(App.el(`#background`), `error`, () => {
+  DOM.ev(DOM.el(`#background`), `error`, () => {
     if (App.background_preview) {
       App.apply_background()
     }
@@ -56,15 +56,15 @@ App.generate_random_themes = () => {
   let num_col_items = 5
 
   function create_item (theme) {
-    let item = App.create(`div`, `random_theme_item action`)
+    let item = DOM.create(`div`, `random_theme_item action`)
 
     item.style.backgroundColor = theme.bg_color
     item.style.color = theme.text_color
     item.textContent = `This is a random theme`
 
-    App.ev(item, `click`, () => {
-      App.el(`#admin_background_color`).value = theme.bg_color
-      App.el(`#admin_text_color`).value = theme.text_color
+    DOM.ev(item, `click`, () => {
+      DOM.el(`#admin_background_color`).value = theme.bg_color
+      DOM.el(`#admin_text_color`).value = theme.text_color
       App.apply_theme(theme.bg_color, theme.text_color)
     })
 
@@ -86,10 +86,10 @@ App.generate_random_themes = () => {
     }
   }
 
-  let container_1 = App.el(`#random_theme_container_1`)
+  let container_1 = DOM.el(`#random_theme_container_1`)
   container_1.innerHTML = ``
 
-  let container_2 = App.el(`#random_theme_container_2`)
+  let container_2 = DOM.el(`#random_theme_container_2`)
   container_2.innerHTML = ``
 
   fill_column(container_1)
@@ -98,16 +98,16 @@ App.generate_random_themes = () => {
 
 // Show theme picker
 App.show_theme_picker = () => {
-  App.original_background_color = App.el(`#admin_background_color`).value
-  App.original_text_color = App.el(`#admin_text_color`).value
+  App.original_background_color = DOM.el(`#admin_background_color`).value
+  App.original_text_color = DOM.el(`#admin_text_color`).value
   App.generate_random_themes()
   App.msg_theme_picker.show()
 }
 
 // Cancel random theme
 App.cancel_change_theme = () => {
-  App.el(`#admin_background_color`).value = App.original_background_color
-  App.el(`#admin_text_color`).value = App.original_text_color
+  DOM.el(`#admin_background_color`).value = App.original_background_color
+  DOM.el(`#admin_text_color`).value = App.original_text_color
   App.apply_theme()
   App.msg_theme_picker.close()
 }
@@ -138,8 +138,8 @@ App.get_light_theme = () => {
 
 // Apply the selected theme
 App.apply_selected_theme = () => {
-  let bg_color = App.el(`#admin_background_color`).value
-  let text_color = App.el(`#admin_text_color`).value
+  let bg_color = DOM.el(`#admin_background_color`).value
+  let text_color = DOM.el(`#admin_text_color`).value
 
   if (bg_color === App.background_color && text_color === App.text_color) {
     return
@@ -155,18 +155,18 @@ App.apply_selected_theme = () => {
 
 // Setup random theme
 App.setup_theme_picker = () => {
-  App.ev(App.el(`#theme_picker_random`), `click`, () => {
+  DOM.ev(DOM.el(`#theme_picker_random`), `click`, () => {
     App.generate_random_themes()
   })
 
-  App.ev(App.el(`#theme_picker_peek`), `click`, () => {
+  DOM.ev(DOM.el(`#theme_picker_peek`), `click`, () => {
     App.hide_windows_temporarily()
   })
 }
 
 // Apply theme controls
 App.apply_theme_controls = () => {
-  App.apply_theme(App.el(`#admin_background_color`).value, App.el(`#admin_text_color`).value)
+  App.apply_theme(DOM.el(`#admin_background_color`).value, DOM.el(`#admin_text_color`).value)
 }
 
 // Sets an applies background images from data
@@ -197,12 +197,12 @@ App.apply_background = (background = App.background, preview = false) => {
   App.background_preview = preview
 
   if (App.get_setting(`show_background`)) {
-    for (let el of App.els(`.background`)) {
+    for (let el of DOM.els(`.background`)) {
       el.src = background
     }
   }
   else {
-    for (let el of App.els(`.background`)) {
+    for (let el of DOM.els(`.background`)) {
       el.src = ``
     }
   }
@@ -253,7 +253,7 @@ App.open_background_picker = () => {
 
 // On background image source input change
 App.link_background_action = () => {
-  let src = App.el(`#link_background_input`).value.trim()
+  let src = DOM.el(`#link_background_input`).value.trim()
 
   if (!src) {
     return
@@ -301,7 +301,7 @@ App.background_selected = (file) => {
   App.background_peek_url = URL.createObjectURL(file)
 
   App.background_peek_action = () => {
-    App.el(`#admin_background`).src = App.config.background_loading_url
+    DOM.el(`#admin_background`).src = App.config.background_loading_url
     App.upload_file({file: file, action: `background_upload`})
   }
 

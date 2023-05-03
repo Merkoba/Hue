@@ -1,6 +1,6 @@
 // Setups most keyboard events
 App.activate_key_detection = () => {
-  App.ev(document, `keydown`, (e) => {
+  DOM.ev(document, `keydown`, (e) => {
     if (!App.started) {
       return
     }
@@ -112,10 +112,10 @@ App.activate_key_detection = () => {
         if (App.msg_open_room.is_highest()) {
           if (e.key === `Enter`) {
             if (e.shiftKey) {
-              App.el(`#open_room_here`).click()
+              DOM.el(`#open_room_here`).click()
             }
             else {
-              App.el(`#open_room_new_tab`).click()
+              DOM.el(`#open_room_new_tab`).click()
             }
 
             e.preventDefault()
@@ -346,7 +346,7 @@ App.activate_key_detection = () => {
     }
   })
 
-  App.ev(document, `input`, (e) => {
+  DOM.ev(document, `input`, (e) => {
     if (!App.started) {
       return false
     }

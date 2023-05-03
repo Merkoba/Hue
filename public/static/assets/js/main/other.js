@@ -59,7 +59,7 @@ App.generate_favicon = (mode) => {
     return
   }
 
-  let canvas = App.create(`canvas`)
+  let canvas = DOM.create(`canvas`)
 
   canvas.height = 256
   canvas.width = 256
@@ -82,13 +82,13 @@ App.generate_favicon = (mode) => {
   context.fillStyle = color
   context.fillRect(center - (side / 2), center - (side / 2), side, side)
 
-  let link = App.el(`link[rel*='icon']`) || App.create(`link`)
+  let link = DOM.el(`link[rel*='icon']`) || DOM.create(`link`)
 
   link.type = `image/x-icon`
   link.rel = `shortcut icon`
   link.href = canvas.toDataURL()
 
-  App.el(`head`).appendChild(link)
+  DOM.el(`head`).appendChild(link)
   App.favicon_mode = mode
 }
 
@@ -110,15 +110,15 @@ App.get_icon = (name, cls=``) => {
 // Open view text
 App.open_view_text = (text) => {
   App.msg_view_text.show()
-  let text_el = App.el(`#view_text_text`)
+  let text_el = DOM.el(`#view_text_text`)
   text_el.textContent = text
   App.urlize(text_el, false)
 }
 
 // Setup view text window
 App.setup_view_text = () => {
-  App.ev(App.el(`#view_text_copy`), `click`, () => {
-    App.copy_string(App.el(`#view_text_text`).textContent)
+  DOM.ev(DOM.el(`#view_text_copy`), `click`, () => {
+    App.copy_string(DOM.el(`#view_text_text`).textContent)
     App.msg_view_text.close()
   })
 }
@@ -126,11 +126,11 @@ App.setup_view_text = () => {
 // Rotate screen
 App.flip = () => {
   if (App.flipped) {
-    App.el(`#main_container`).classList.remove(`flipped`)
+    DOM.el(`#main_container`).classList.remove(`flipped`)
     App.flash_info(`Secret`, `You discovered the mirror`)
   }
   else {
-    App.el(`#main_container`).classList.add(`flipped`)
+    DOM.el(`#main_container`).classList.add(`flipped`)
   }
 
   App.flipped = !App.flipped
@@ -139,16 +139,16 @@ App.flip = () => {
 // Rotate media
 App.flop = () => {
   if (App.flopped) {
-    App.el(`#main_rows_container`).classList.remove(`flopped_column`)
-    App.el(`#main_rows_container`).classList.remove(`flopped_row`)
+    DOM.el(`#main_rows_container`).classList.remove(`flopped_column`)
+    DOM.el(`#main_rows_container`).classList.remove(`flopped_row`)
     App.flash_info(`Secret`, `You discovered the other side`)
   }
   else {
     if (App.room_state.main_layout === `column`) {
-      App.el(`#main_rows_container`).classList.add(`flopped_column`)
+      DOM.el(`#main_rows_container`).classList.add(`flopped_column`)
     }
     else {
-      App.el(`#main_rows_container`).classList.add(`flopped_row`)
+      DOM.el(`#main_rows_container`).classList.add(`flopped_row`)
     }
   }
 

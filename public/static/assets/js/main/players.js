@@ -27,7 +27,7 @@ App.create_youtube_tv_player = () => {
   App.youtube_tv_player_requested = false
 
   let html = `<div id='media_youtube_tv' class='video_frame'></div>`
-  App.el(`#media_youtube_tv_container`).innerHTML = html
+  DOM.el(`#media_youtube_tv_container`).innerHTML = html
   App.add_media_info(`media_youtube_tv_container`)
 
   App.yt_tv_player = new YT.Player(`media_youtube_tv`, {
@@ -93,7 +93,7 @@ App.create_soundcloud_tv_player = () => {
     let src =
       `https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536`
 
-    App.el(`#media_soundcloud_tv_container`)
+    DOM.el(`#media_soundcloud_tv_container`)
       .innerHTML = `<iframe width="640px" height="360px"
         id='media_soundcloud_tv' class='video_frame' src='${src}'></iframe>`
 
@@ -185,10 +185,10 @@ App.create_twitch_tv_player = () => {
       channel: channel
     })
 
-    App.ev(twch_tv_player, Twitch.Player.READY, () => {
+    DOM.ev(twch_tv_player, Twitch.Player.READY, () => {
       App.twitch_tv_player = twch_tv_player
 
-      let iframe = App.el(`#media_twitch_tv_container iframe`)
+      let iframe = DOM.el(`#media_twitch_tv_container iframe`)
       iframe.id = `media_twitch_tv`
       iframe.classList.add(`video_frame`)
       App.add_media_info(`media_twitch_tv_container`)

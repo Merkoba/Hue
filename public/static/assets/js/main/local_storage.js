@@ -45,7 +45,7 @@ App.do_save_local_storage = () => {
 
 // Setups localStorage events
 App.setup_local_storage = () => {
-  App.ev(window, `storage`, (e) => {
+  DOM.ev(window, `storage`, (e) => {
     if (e.key !== App.ls_settings) {
       return
     }

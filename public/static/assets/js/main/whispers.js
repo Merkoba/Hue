@@ -96,13 +96,13 @@ App.write_whisper = (usernames = [], type = `user`) => {
   }
 
   if (type === `user`) {
-    App.el(`#write_whisper_add_user`).style.display = `block`
+    DOM.el(`#write_whisper_add_user`).style.display = `block`
   }
   else {
-    App.el(`#write_whisper_add_user`).style.display = `none`
+    DOM.el(`#write_whisper_add_user`).style.display = `none`
   }
 
-  App.horizontal_separator(App.el(`#write_whisper_titlebar`))
+  App.horizontal_separator(DOM.el(`#write_whisper_titlebar`))
 
   App.message_type = type
   App.whisper_users = []
@@ -137,7 +137,7 @@ App.update_whisper_users = (username) => {
     }
   }
 
-  let users_el = App.el(`#write_whisper_users`)
+  let users_el = DOM.el(`#write_whisper_users`)
   users_el.innerHTML = ``
 
   for (let username of App.whisper_users) {
@@ -154,7 +154,7 @@ App.update_whisper_users = (username) => {
 // Submits the whisper window form
 // Handles different types of whispers
 App.submit_write_whisper = () => {
-  let message = App.utilz.remove_multiple_empty_lines(App.el(`#write_whisper_area`).value).trim()
+  let message = App.utilz.remove_multiple_empty_lines(DOM.el(`#write_whisper_area`).value).trim()
   let diff = App.config.max_whispers_post_length - message.length
 
   if (diff === App.config.max_whispers_post_length) {
@@ -176,7 +176,7 @@ App.submit_write_whisper = () => {
   let ans = App.send_whisper(message)
 
   if (ans) {
-    App.el(`#write_whisper_area`).value = ``
+    DOM.el(`#write_whisper_area`).value = ``
     App.msg_write_whisper.close()
   }
 }
@@ -221,24 +221,24 @@ App.whisper_sent = (data) => {
 
 // Shows a whisper message
 App.show_whisper = (data, mode) => {
-  let container = App.el(`#show_whisper_container`)
-  let write_button = App.el(`#show_whisper_write`)
+  let container = DOM.el(`#show_whisper_container`)
+  let write_button = DOM.el(`#show_whisper_write`)
   let users
 
   if (mode === `received`) {
     users = [{username: data.username, user_id: data.user_id}]
-    App.dataset(container, `username`, data.username)
-    App.dataset(container, `user_id`, data.user_id)
+    DOM.dataset(container, `username`, data.username)
+    DOM.dataset(container, `user_id`, data.user_id)
     write_button.textContent = `Reply`
   }
   else if (mode === `sent`) {
     users = data.users
-    App.dataset(container, `username`, App.username)
-    App.dataset(container, `user_id`, App.user_id)
+    DOM.dataset(container, `username`, App.username)
+    DOM.dataset(container, `user_id`, App.user_id)
     write_button.textContent = `Write Again`
   }
 
-  let users_el = App.el(`#show_whisper_users`)
+  let users_el = DOM.el(`#show_whisper_users`)
   users_el.innerHTML = ``
 
   for (let user of users) {
@@ -255,15 +255,15 @@ App.show_whisper = (data, mode) => {
     message_html = `<div class="show_whisper_detail">You said:</div>${message_html}`
   }
 
-  let text_el = App.el(`#show_whisper_text`)
+  let text_el = DOM.el(`#show_whisper_text`)
   text_el.innerHTML = message_html
   App.urlize(text_el)
 
-  if (!App.dataset(data.notification, `read`)) {
-    let message_el = App.el(`.whisper_item_message`, data.notification)
+  if (!DOM.dataset(data.notification, `read`)) {
+    let message_el = DOM.el(`.whisper_item_message`, data.notification)
     let text = message_el.textContent.replace(/\s\(unread\)$/, ``)
     message_el.textContent = text
-    App.dataset(data.notification, `read`, true)
+    DOM.dataset(data.notification, `read`, true)
     App.update_whispers_unread_count()
   }
 
@@ -312,11 +312,11 @@ App.do_send_whisper = (data) => {
 
 // Setups whispers
 App.setup_whispers = () => {
-  App.ev(App.el(`#write_whisper_send`), `click`, () => {
+  DOM.ev(DOM.el(`#write_whisper_send`), `click`, () => {
     App.submit_write_whisper()
   })
 
-  App.ev(App.el(`#write_whisper_add_user`), `click`, () => {
+  DOM.ev(DOM.el(`#write_whisper_add_user`), `click`, () => {
     if (App.whisper_users.length >= App.config.max_whisper_users) {
       App.show_info(`Max whisper users reached`)
       return
@@ -325,7 +325,7 @@ App.setup_whispers = () => {
     App.show_userlist_window(`whisper`)
   })
 
-  App.ev(App.el(`#show_whisper_write`), `click`, () => {
+  DOM.ev(DOM.el(`#show_whisper_write`), `click`, () => {
     App.msg_show_whisper.close()
 
     if (App.show_whisper_data.users) {
@@ -337,11 +337,11 @@ App.setup_whispers = () => {
     }
   })
 
-  App.ev(App.el(`#start_write_whisper`), `click`, () => {
+  DOM.ev(DOM.el(`#start_write_whisper`), `click`, () => {
     App.write_whisper([], `user`)
   })
 
-  App.ev(App.el(`#whispers_clear`), `click`, () => {
+  DOM.ev(DOM.el(`#whispers_clear`), `click`, () => {
     App.show_confirm(`Remove all whispers from the window`, () => {
       App.clear_whispers()
     })
@@ -354,7 +354,7 @@ App.setup_whispers = () => {
 App.push_whisper = (message, on_click, read, data) => {
   let date = Date.now()
   let title = App.utilz.nice_date(date)
-  let item = App.create(`div`, `whisper_item modal_item dynamic_title`)
+  let item = DOM.create(`div`, `whisper_item modal_item dynamic_title`)
 
   if (data.mode === `received`) {
     item.innerHTML = App.template_whisper_received({
@@ -364,14 +364,14 @@ App.push_whisper = (message, on_click, read, data) => {
     })
 
     if (data.user_id) {
-      let pic = App.el(`.profilepic`, item)
+      let pic = DOM.el(`.profilepic`, item)
 
-      App.ev(pic, `error`, () => {
+      DOM.ev(pic, `error`, () => {
         App.fallback_profilepic(pic)
       })
     }
     else {
-      App.el(`.profilepic`, item).classList.add(`nodisplay`)
+      DOM.el(`.profilepic`, item).classList.add(`nodisplay`)
     }
   }
   else {
@@ -382,16 +382,16 @@ App.push_whisper = (message, on_click, read, data) => {
   }
 
   item.title = title
-  App.dataset(item, `otitle`, title)
-  App.dataset(item, `date`, date)
-  App.dataset(item, `read`, read)
-  let content = App.el(`.whisper_item_content`, item)
+  DOM.dataset(item, `otitle`, title)
+  DOM.dataset(item, `date`, date)
+  DOM.dataset(item, `read`, read)
+  let content = DOM.el(`.whisper_item_content`, item)
 
-  App.ev(content, `click`, () => {
+  DOM.ev(content, `click`, () => {
     on_click()
   })
 
-  let message_el = App.el(`.whisper_item_message`, item)
+  let message_el = DOM.el(`.whisper_item_message`, item)
 
   if (read) {
     message_el.textContent = message
@@ -400,16 +400,16 @@ App.push_whisper = (message, on_click, read, data) => {
     message_el.textContent = `${message} (unread)`
   }
 
-  App.el(`#whispers_container`).prepend(item)
+  DOM.el(`#whispers_container`).prepend(item)
 
-  let items = App.els(`.whisper_item`)
+  let items = DOM.els(`.whisper_item`)
 
   if (items.length > App.config.whispers_crop_limit) {
-    App.els(`#whispers_container .whisper_item`).slice(-1)[0].remove()
+    DOM.els(`#whispers_container .whisper_item`).slice(-1)[0].remove()
   }
 
   App.update_whispers_unread_count()
-  let empty = App.el(`#whispers_container .empty_window_message`)
+  let empty = DOM.el(`#whispers_container .empty_window_message`)
 
   if (empty) {
     empty.remove()
@@ -423,7 +423,7 @@ App.show_whispers = (filter = ``) => {
   App.msg_whispers.show()
 
   if (filter.trim()) {
-    App.el(`#whispers_filter`).value = filter
+    DOM.el(`#whispers_filter`).value = filter
     App.do_modal_filter()
   }
 }
@@ -431,15 +431,15 @@ App.show_whispers = (filter = ``) => {
 // Updates the whispers unread count
 App.update_whispers_unread_count = () => {
   let num = Math.min(100, App.get_unread_whispers())
-  App.el(`#header_whispers_count`).textContent = `(${num})`
+  DOM.el(`#header_whispers_count`).textContent = `(${num})`
 }
 
 // Get a list of unread whispers
 App.get_unread_whispers = () => {
   let num_unread = 0
 
-  for (let el of App.els(`.whisper_item`)) {
-    if (!App.dataset(el, `read`)) {
+  for (let el of DOM.els(`.whisper_item`)) {
+    if (!DOM.dataset(el, `read`)) {
       num_unread += 1
     }
   }
@@ -449,13 +449,13 @@ App.get_unread_whispers = () => {
 
 // Make whisper user
 App.make_whisper_user = (user, mode, onclick) => {
-  let user_el = App.create(`div`, `user_item`)
+  let user_el = DOM.create(`div`, `user_item`)
   user_el.innerHTML = App.template_whisper_user()
-  let profilepic = App.el(`.show_whisper_profilepic`, user_el)
+  let profilepic = DOM.el(`.show_whisper_profilepic`, user_el)
 
   if (user.user_id) {
     profilepic.src = App.get_profilepic(user.user_id)
-    App.ev(profilepic, `error`, () => {
+    DOM.ev(profilepic, `error`, () => {
       App.fallback_profilepic(profilepic)
     })
   }
@@ -463,14 +463,14 @@ App.make_whisper_user = (user, mode, onclick) => {
     profilepic.classList.add(`nodisplay`)
   }
 
-  let username_el = App.el(`.show_whisper_username`, user_el)
+  let username_el = DOM.el(`.show_whisper_username`, user_el)
   username_el.textContent = user.username
 
   if (mode === `received`) {
     username_el.textContent += ` says:`
   }
 
-  App.ev(user_el, `click`, onclick)
+  DOM.ev(user_el, `click`, onclick)
   return user_el
 }
 
@@ -482,10 +482,10 @@ App.clear_whispers = () => {
 
 // Set whispers info
 App.set_whispers_info = () => {
-  App.el(`#whispers_container`).innerHTML = App.template_whispers_info()
+  DOM.el(`#whispers_container`).innerHTML = App.template_whispers_info()
 }
 
 // Focus write whisper
 App.focus_write_whisper = () => {
-  App.el(`#write_whisper_area`).focus()
+  DOM.el(`#write_whisper_area`).focus()
 }

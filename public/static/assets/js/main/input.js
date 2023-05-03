@@ -1,6 +1,6 @@
 // On input change
 App.on_input_change = () => {
-  let input = App.el(`#input`)
+  let input = DOM.el(`#input`)
 
   if (input.clientHeight < input.scrollHeight) {
     App.enable_footer_expand()
@@ -11,11 +11,11 @@ App.on_input_change = () => {
 
 // Setups events for the main input
 App.setup_input = () => {
-  App.ev(App.el(`#input`), `input`, () => {
+  DOM.ev(DOM.el(`#input`), `input`, () => {
     App.on_input_change()
   })
 
-  App.ev(App.el(`#input`), `paste`, (e) => {
+  DOM.ev(DOM.el(`#input`), `paste`, (e) => {
     let items = (e.clipboardData || e.originalEvent.clipboardData).items
 
     for (let index in items) {
@@ -29,7 +29,7 @@ App.setup_input = () => {
     }
   })
 
-  App.ev(App.el(`#footer_input_menu`), `click`, (e) => {
+  DOM.ev(DOM.el(`#footer_input_menu`), `click`, (e) => {
     App.show_input_menu(e)
   })
 
@@ -55,7 +55,7 @@ App.update_input_placeholder = () => {
 
 // Set input placeholder
 App.set_input_placeholder = (s) => {
-  App.el(`#input`).placeholder = s
+  DOM.el(`#input`).placeholder = s
 }
 
 // Input has value
@@ -84,7 +84,7 @@ App.clear_input = () => {
 // Changes the input
 App.change_input = (s, to_end = true, focus = true) => {
   App.disable_footer_expand()
-  App.el(`#input`).value = s
+  DOM.el(`#input`).value = s
 
   if (to_end) {
     App.input_to_end()
@@ -103,17 +103,17 @@ App.focus_input = () => {
     return
   }
 
-  App.el(`#input`).focus()
+  DOM.el(`#input`).focus()
 }
 
 // Removes focus on the input
 App.blur_input = () => {
-  App.el(`#input`).blur()
+  DOM.el(`#input`).blur()
 }
 
 // Moves the input's caret to the end
 App.input_to_end = () => {
-  App.el(`#input`).scrollLeft = App.el(`#input`).scrollWidth
+  DOM.el(`#input`).scrollLeft = DOM.el(`#input`).scrollWidth
 }
 
 // Does a submit action from the input
@@ -142,7 +142,7 @@ App.submit_input = () => {
 
 // Get the input value
 App.get_input = () => {
-  return App.el(`#input`).value
+  return DOM.el(`#input`).value
 }
 
 // Turns this * into this *
@@ -238,15 +238,15 @@ App.push_to_input_history = (message) => {
 
 // Show input history
 App.show_input_history = (filter = ``) => {
-  let container = App.el(`#input_history_container`)
+  let container = DOM.el(`#input_history_container`)
   container.innerHTML = ``
 
   for (let item of App.input_history) {
-    let el = App.create(`div`, `nice_row modal_item pointer`)
+    let el = DOM.create(`div`, `nice_row modal_item pointer`)
     el.textContent = item.message
     el.title = App.utilz.nice_date(item.date)
 
-    App.ev(el, `click`, () => {
+    DOM.ev(el, `click`, () => {
       App.change_input(item.message)
       App.msg_input_history.close()
     })
@@ -257,7 +257,7 @@ App.show_input_history = (filter = ``) => {
   App.msg_input_history.show()
 
   if (filter.trim()) {
-    App.el(`#input_history_filter`).value = filter
+    DOM.el(`#input_history_filter`).value = filter
     App.do_modal_filter()
   }
 }

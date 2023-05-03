@@ -24,10 +24,10 @@ App.current_image = () => {
 // Loads an image with a specified item
 App.show_image = (force = false) => {
   let item = App.loaded_image
-  App.el(`#media_image_error`).style.display = `none`
+  DOM.el(`#media_image_error`).style.display = `none`
 
-  if (force || App.el(`#media_image_frame`).src !== item.source) {
-    App.el(`#media_image_frame`).src = item.source
+  if (force || DOM.el(`#media_image_frame`).src !== item.source) {
+    DOM.el(`#media_image_frame`).src = item.source
   }
   else {
     App.after_image_load(false)
@@ -127,7 +127,7 @@ App.fix_image_frame = () => {
     return
   }
 
-  if (!App.el(`#media_image_frame`).naturalHeight) {
+  if (!DOM.el(`#media_image_frame`).naturalHeight) {
     return
   }
 
@@ -168,15 +168,15 @@ App.modal_image_next_click = (e) => {
 
 // Setups image modal window events
 App.setup_modal_image = () => {
-  let img = App.el(`#modal_image`)
+  let img = DOM.el(`#modal_image`)
 
-  App.ev(img, `load`, () => {
-    App.el(`#modal_image`).style.display = `block`
+  DOM.ev(img, `load`, () => {
+    DOM.el(`#modal_image`).style.display = `block`
   })
 
-  App.ev(img, `error`, () => {
-    App.el(`#modal_image`).style.display = `none`
-    App.el(`#modal_image_error`).style.display = `block`
+  DOM.ev(img, `error`, () => {
+    DOM.el(`#modal_image`).style.display = `none`
+    DOM.el(`#modal_image_error`).style.display = `block`
   })
 
   let f = (e) => {
@@ -184,7 +184,7 @@ App.setup_modal_image = () => {
       return
     }
 
-    if (App.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
+    if (DOM.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
       return
     }
 
@@ -198,10 +198,10 @@ App.setup_modal_image = () => {
     }
   }
 
-  App.ev(App.el(`#Msg-window-modal_image`), `wheel`, f)
+  DOM.ev(DOM.el(`#Msg-window-modal_image`), `wheel`, f)
 
-  App.ev(App.el(`#modal_image_container`), `click`, () => {
-    if (App.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
+  DOM.ev(DOM.el(`#modal_image_container`), `click`, () => {
+    if (DOM.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
       App.restore_modal_image()
     }
     else {
@@ -209,16 +209,16 @@ App.setup_modal_image = () => {
     }
   })
 
-  App.ev(App.el(`#modal_image_arrow_prev`), `click`, (e) => {
+  DOM.ev(DOM.el(`#modal_image_arrow_prev`), `click`, (e) => {
     App.modal_image_prev_click()
   })
 
-  App.ev(App.el(`#modal_image_arrow_next`), `click`, (e) => {
+  DOM.ev(DOM.el(`#modal_image_arrow_next`), `click`, (e) => {
     App.modal_image_next_click()
   })
 
-  App.ev(App.el(`#modal_image_toolbar_expand`), `click`, (e) => {
-    if (App.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
+  DOM.ev(DOM.el(`#modal_image_toolbar_expand`), `click`, (e) => {
+    if (DOM.el(`#modal_image_container`).classList.contains(`expanded_image`)) {
       App.restore_modal_image()
     }
     else {
@@ -226,26 +226,26 @@ App.setup_modal_image = () => {
     }
   })
 
-  App.ev(App.el(`#modal_image_toolbar_menu`), `click`, (e) => {
+  DOM.ev(DOM.el(`#modal_image_toolbar_menu`), `click`, (e) => {
     App.open_url_menu(App.loaded_modal_image)
   })
 
-  App.ev(App.el(`#modal_image_toolbar_list`), `click`, (e) => {
+  DOM.ev(DOM.el(`#modal_image_toolbar_list`), `click`, (e) => {
     App.show_image_list()
   })
 
-  let subheader = App.el(`#modal_image_subheader`)
+  let subheader = DOM.el(`#modal_image_subheader`)
 
-  App.ev(subheader, `click`, () => {
+  DOM.ev(subheader, `click`, () => {
     App.open_view_text(subheader.textContent)
   })
 
-  App.ev(App.el(`#modal_image_profilepic`), `click`, (e) => {
+  DOM.ev(DOM.el(`#modal_image_profilepic`), `click`, (e) => {
     let data = App.loaded_modal_image
     App.show_profile(data.username, data.user_id)
   })
 
-  App.ev(App.el(`#modal_image_username`), `click`, (e) => {
+  DOM.ev(DOM.el(`#modal_image_username`), `click`, (e) => {
     let data = App.loaded_modal_image
     App.show_profile(data.username, data.user_id)
   })
@@ -253,37 +253,37 @@ App.setup_modal_image = () => {
 
 // Expand modal image to give it full height
 App.expand_modal_image = () => {
-  App.el(`#modal_image_container`).classList.add(`expanded_image`)
-  App.el(`#modal_image_toolbar_expand`).textContent = `Restore`
+  DOM.el(`#modal_image_container`).classList.add(`expanded_image`)
+  DOM.el(`#modal_image_toolbar_expand`).textContent = `Restore`
 }
 
 // Restore expanded modal image
 App.restore_modal_image = () => {
-  App.el(`#modal_image_container`).classList.remove(`expanded_image`)
-  App.el(`#modal_image_toolbar_expand`).textContent = `Expand`
+  DOM.el(`#modal_image_container`).classList.remove(`expanded_image`)
+  DOM.el(`#modal_image_toolbar_expand`).textContent = `Expand`
 }
 
 // Expand view image to give it full height
 App.expand_view_image = () => {
-  App.el(`#view_image_container`).classList.add(`expanded_image`)
-  App.el(`#view_image_toolbar_expand`).textContent = `Restore`
+  DOM.el(`#view_image_container`).classList.add(`expanded_image`)
+  DOM.el(`#view_image_toolbar_expand`).textContent = `Restore`
 }
 
 // Restore expanded view image
 App.restore_view_image = () => {
-  App.el(`#view_image_container`).classList.remove(`expanded_image`)
-  App.el(`#view_image_toolbar_expand`).textContent = `Expand`
+  DOM.el(`#view_image_container`).classList.remove(`expanded_image`)
+  DOM.el(`#view_image_toolbar_expand`).textContent = `Expand`
 }
 
 // Clears image information in the modal image window
 App.clear_modal_image_info = () => {
-  App.el(`#modal_image_header_info`).innerHTML = ``
-  App.el(`#modal_image_subheader`).textContent = ``
+  DOM.el(`#modal_image_header_info`).innerHTML = ``
+  DOM.el(`#modal_image_subheader`).textContent = ``
 }
 
 // Clears information in the view image window
 App.clear_view_image_info = () => {
-  App.el(`#view_image_subheader`).textContent = ``
+  DOM.el(`#view_image_subheader`).textContent = ``
 }
 
 // Shows the modal image window
@@ -302,22 +302,22 @@ App.show_modal_image = (id = 0) => {
   }
 
   App.loaded_modal_image = data
-  let img = App.el(`#modal_image`)
+  let img = DOM.el(`#modal_image`)
   img.style.display = `none`
-  App.el(`#modal_image_error`).style.display = `none`
+  DOM.el(`#modal_image_error`).style.display = `none`
   img.src = data.source
 
-  App.el(`#modal_image_header_info`).innerHTML = data.info_html
-  App.el(`#modal_image_header_info .modal_image_timeago`)
+  DOM.el(`#modal_image_header_info`).innerHTML = data.info_html
+  DOM.el(`#modal_image_header_info .modal_image_timeago`)
     .textContent = App.utilz.timeago(data.date)
 
-  App.horizontal_separator(App.el(`#modal_image_header_info`))
+  App.horizontal_separator(DOM.el(`#modal_image_header_info`))
 
   if (data.comment || data.query || data.hostname) {
-    App.el(`#modal_image_subheader`).textContent = data.comment || data.query || data.hostname
+    DOM.el(`#modal_image_subheader`).textContent = data.comment || data.query || data.hostname
   }
   else {
-    App.el(`#modal_image_subheader`).textContent = ``
+    DOM.el(`#modal_image_subheader`).textContent = ``
   }
 
   let dummy_image = new Image()
@@ -328,16 +328,16 @@ App.show_modal_image = (id = 0) => {
 
   dummy_image.src = data.source
 
-  let profilepic = App.el(`#modal_image_profilepic`)
+  let profilepic = DOM.el(`#modal_image_profilepic`)
   profilepic.src = App.get_profilepic(data.user_id)
 
-  App.ev(profilepic, `error`, () => {
+  DOM.ev(profilepic, `error`, () => {
     App.fallback_profilepic(profilepic)
   })
 
-  App.el(`#modal_image_username`).textContent = data.username
+  DOM.el(`#modal_image_username`).textContent = data.username
 
-  App.horizontal_separator(App.el(`#modal_image_header_info_container`))
+  App.horizontal_separator(DOM.el(`#modal_image_header_info_container`))
   App.msg_modal_image.show()
 }
 
@@ -348,23 +348,23 @@ App.hide_modal_image = () => {
 
 // Starts events for the image
 App.start_image_events = () => {
-  App.ev(App.el(`#media_image_frame`), `load`, (e) => {
+  DOM.ev(DOM.el(`#media_image_frame`), `load`, (e) => {
     App.after_image_load()
   })
 
-  App.ev(App.el(`#media_image_frame`), `error`, () => {
-    App.el(`#media_image_frame`).style.display = `none`
-    App.el(`#media_image_error`).style.display = `initial`
+  DOM.ev(DOM.el(`#media_image_frame`), `error`, () => {
+    DOM.el(`#media_image_frame`).style.display = `none`
+    DOM.el(`#media_image_error`).style.display = `initial`
     App.apply_media_info(`image`)
   })
 
-  App.el(`#media_image_frame`).style.height = 0
-  App.el(`#media_image_frame`).style.width = 0
+  DOM.el(`#media_image_frame`).style.height = 0
+  DOM.el(`#media_image_frame`).style.width = 0
 }
 
 // This runs after an image successfully loads
 App.after_image_load = (ok = true) => {
-  App.el(`#media_image_frame`).style.display = `initial`
+  DOM.el(`#media_image_frame`).style.display = `initial`
   App.apply_media_info(`image`)
 
   if (ok) {
@@ -375,19 +375,19 @@ App.after_image_load = (ok = true) => {
 // Setups image view when clicked
 // When an image in the chat is clicked the image is shown full sized in a window
 App.setup_view_image = () => {
-  let img = App.el(`#view_image`)
+  let img = DOM.el(`#view_image`)
 
-  App.ev(img, `load`, () => {
+  DOM.ev(img, `load`, () => {
     img.style.display = `block`
   })
 
-  App.ev(img, `error`, () => {
-    App.el(`#view_image`).style.display = `none`
-    App.el(`#view_image_error`).style.display = `block`
+  DOM.ev(img, `error`, () => {
+    DOM.el(`#view_image`).style.display = `none`
+    DOM.el(`#view_image_error`).style.display = `block`
   })
 
-  App.ev(App.el(`#view_image_container`), `click`, () => {
-    if (App.el(`#view_image_container`).classList.contains(`expanded_image`)) {
+  DOM.ev(DOM.el(`#view_image_container`), `click`, () => {
+    if (DOM.el(`#view_image_container`).classList.contains(`expanded_image`)) {
       App.restore_view_image()
     }
     else {
@@ -395,8 +395,8 @@ App.setup_view_image = () => {
     }
   })
 
-  App.ev(App.el(`#view_image_toolbar_expand`), `click`, (e) => {
-    if (App.el(`#view_image_container`).classList.contains(`expanded_image`)) {
+  DOM.ev(DOM.el(`#view_image_toolbar_expand`), `click`, (e) => {
+    if (DOM.el(`#view_image_container`).classList.contains(`expanded_image`)) {
       App.restore_view_image()
     }
     else {
@@ -404,26 +404,26 @@ App.setup_view_image = () => {
     }
   })
 
-  App.ev(App.el(`#view_image_toolbar_url`), `click`, () => {
+  DOM.ev(DOM.el(`#view_image_toolbar_url`), `click`, () => {
     App.open_view_text(App.view_image_source)
   })
 
-  App.ev(App.el(`#view_image_toolbar_link`), `click`, () => {
+  DOM.ev(DOM.el(`#view_image_toolbar_link`), `click`, () => {
     App.load_media_link(`image`, App.view_image_source, ``)
     App.msg_open_url.close()
   })
 
-  App.ev(App.el(`#view_image_profilepic`), `click`, (e) => {
+  DOM.ev(DOM.el(`#view_image_profilepic`), `click`, (e) => {
     App.show_profile(App.view_image_username, App.view_image_user_id)
   })
 
-  App.ev(App.el(`#view_image_username`), `click`, (e) => {
+  DOM.ev(DOM.el(`#view_image_username`), `click`, (e) => {
     App.show_profile(App.view_image_username, App.view_image_user_id)
   })
 
-  let subheader = App.el(`#view_image_subheader`)
+  let subheader = DOM.el(`#view_image_subheader`)
 
-  App.ev(subheader, `click`, () => {
+  DOM.ev(subheader, `click`, () => {
     App.open_view_text(subheader.textContent)
   })
 }
@@ -431,12 +431,12 @@ App.setup_view_image = () => {
 // Shows a window with an image at full size
 App.view_image = (src, username, user_id) => {
   src = src.replace(`.gifv`, `.gif`)
-  App.el(`#view_image`).style.display = `none`
-  App.el(`#view_image_error`).style.display = `none`
-  App.el(`#view_image`).src = src
+  DOM.el(`#view_image`).style.display = `none`
+  DOM.el(`#view_image_error`).style.display = `none`
+  DOM.el(`#view_image`).src = src
 
   let hostname = App.utilz.get_hostname(src)
-  App.el(`#view_image_subheader`).textContent = hostname
+  DOM.el(`#view_image_subheader`).textContent = hostname
 
   let dummy_image = new Image()
 
@@ -444,13 +444,13 @@ App.view_image = (src, username, user_id) => {
     App.apply_view_image_resolution(dummy_image, src)
   }
 
-  let profilepic = App.el(`#view_image_profilepic`)
+  let profilepic = DOM.el(`#view_image_profilepic`)
   profilepic.src = App.get_profilepic(user_id)
-  App.ev(profilepic, `error`, () => {
+  DOM.ev(profilepic, `error`, () => {
     App.fallback_profilepic(profilepic)
   })
 
-  App.el(`#view_image_username`).textContent = username
+  DOM.el(`#view_image_username`).textContent = username
 
   dummy_image.src = src
   App.view_image_source = src
@@ -461,23 +461,23 @@ App.view_image = (src, username, user_id) => {
 
 // Shows the window to add a comment to an image upload
 App.show_image_upload_comment = (file, type) => {
-  App.el(`#image_upload_comment_image_feedback`).style.display = `none`
-  App.el(`#image_upload_comment_image_preview`).style.display = `block`
+  DOM.el(`#image_upload_comment_image_feedback`).style.display = `none`
+  DOM.el(`#image_upload_comment_image_preview`).style.display = `block`
 
   App.image_upload_comment_file = file
   App.image_upload_comment_type = type
 
   if (type === `drawing`) {
-    App.el(`#image_upload_comment_change`).textContent = `Re-Draw`
+    DOM.el(`#image_upload_comment_change`).textContent = `Re-Draw`
   }
   else if (type === `upload`) {
-    App.el(`#image_upload_comment_change`).textContent = `Re-Choose`
+    DOM.el(`#image_upload_comment_change`).textContent = `Re-Choose`
   }
   else if (type === `screenshot`) {
-    App.el(`#image_upload_comment_change`).textContent = `Re-Take`
+    DOM.el(`#image_upload_comment_change`).textContent = `Re-Take`
   }
   else if (type === `random_canvas`) {
-    App.el(`#image_upload_comment_change`).textContent = `Re-Generate`
+    DOM.el(`#image_upload_comment_change`).textContent = `Re-Generate`
   }
 
   let name = `${App.utilz.slice_string_end(
@@ -485,28 +485,28 @@ App.show_image_upload_comment = (file, type) => {
       20
     )} (${App.utilz.size_string(file.size, 2)})`
 
-  App.el(`#image_upload_name`).textContent = name
-  App.el(`#Msg-titlebar-image_upload_comment`).title = file.name
-  App.el(`#image_upload_comment_image_preview`).src = URL.createObjectURL(file)
+  DOM.el(`#image_upload_name`).textContent = name
+  DOM.el(`#Msg-titlebar-image_upload_comment`).title = file.name
+  DOM.el(`#image_upload_comment_image_preview`).src = URL.createObjectURL(file)
 
   App.msg_image_upload_comment.show()
-  App.el(`#image_upload_comment_input`).focus()
+  DOM.el(`#image_upload_comment_input`).focus()
 }
 
 // Setups the upload image comment window
 App.setup_image_upload_comment = () => {
-  let image = App.el(`#image_upload_comment_image_preview`)
+  let image = DOM.el(`#image_upload_comment_image_preview`)
 
-  App.ev(image, `error`, () => {
+  DOM.ev(image, `error`, () => {
     image.style.display = `none`
-    App.el(`#image_upload_comment_image_feedback`).style.display = `inline`
+    DOM.el(`#image_upload_comment_image_feedback`).style.display = `inline`
   })
 
-  App.ev(App.el(`#image_upload_comment_submit`), `click`, () => {
+  DOM.ev(DOM.el(`#image_upload_comment_submit`), `click`, () => {
     App.process_image_upload_comment()
   })
 
-  App.ev(App.el(`#image_upload_comment_change`), `click`, () => {
+  DOM.ev(DOM.el(`#image_upload_comment_change`), `click`, () => {
     if (App.image_upload_comment_type === `drawing`) {
       App.msg_image_upload_comment.close()
       App.open_draw_image(`image`)
@@ -533,7 +533,7 @@ App.process_image_upload_comment = () => {
   }
 
   let file = App.image_upload_comment_file
-  let comment = App.utilz.single_space(App.el(`#image_upload_comment_input`).value)
+  let comment = App.utilz.single_space(DOM.el(`#image_upload_comment_input`).value)
 
   if (comment.length > App.config.max_media_comment_length) {
     return
@@ -550,7 +550,7 @@ App.show_link_image = () => {
 
 // Submit link image
 App.link_image_submit = () => {
-  let val = App.el(`#link_image_input`).value.trim()
+  let val = DOM.el(`#link_image_input`).value.trim()
 
   if (val !== ``) {
     App.change_image_source(val)
@@ -570,7 +570,7 @@ App.apply_modal_image_resolution = (image, src) => {
     return
   }
 
-  let subheader = App.el(`#modal_image_subheader`)
+  let subheader = DOM.el(`#modal_image_subheader`)
   let text = subheader.textContent
   subheader.textContent = `${text} (${image.width} x ${image.height})`
 }
@@ -581,7 +581,7 @@ App.apply_view_image_resolution = (image, src) => {
     return
   }
 
-  let subheader = App.el(`#view_image_subheader`)
+  let subheader = DOM.el(`#view_image_subheader`)
   let text = subheader.textContent
   subheader.textContent = `${text} (${image.width} x ${image.height})`
 }
@@ -593,12 +593,12 @@ App.take_screenshot = async () => {
     video: {mediaSource: `screen`}
   })
 
-  let video = App.create(`video`)
-  let canvas = App.create(`canvas`)
+  let video = DOM.create(`video`)
+  let canvas = DOM.create(`canvas`)
   let context = canvas.getContext(`2d`)
   video.srcObject = stream
 
-  App.ev(video, `loadeddata`, async () => {
+  DOM.ev(video, `loadeddata`, async () => {
     for (let track of stream.getTracks()) {
       track.stop()
     }
@@ -622,7 +622,7 @@ App.take_screenshot = async () => {
 
 // Make a random image
 App.make_random_image = (target) => {
-  let canvas = App.create(`canvas`)
+  let canvas = DOM.create(`canvas`)
 
   canvas.width = 1280
   canvas.height = 1280

@@ -69,7 +69,7 @@ App.push_notification = (args) => {
     content_classes = `pointer`
   }
 
-  let item = App.create(`div`, `notification_item modal_item dynamic_title`)
+  let item = DOM.create(`div`, `notification_item modal_item dynamic_title`)
 
   item.innerHTML = App.template_notification({
     content_classes: content_classes,
@@ -80,20 +80,20 @@ App.push_notification = (args) => {
 
   item.title = t
 
-  App.dataset(item, `otitle`, t)
-  App.dataset(item, `date`, d)
+  DOM.dataset(item, `otitle`, t)
+  DOM.dataset(item, `date`, d)
 
-  let content = App.el(`.notification_item_content`, item)
+  let content = DOM.el(`.notification_item_content`, item)
 
   if (args.on_click) {
-    App.ev(content, `click`, () => {
+    DOM.ev(content, `click`, () => {
       args.on_click()
     })
   }
 
-  App.el(`#notifications_container`).prepend(item)
+  DOM.el(`#notifications_container`).prepend(item)
 
-  let items = App.els(`.notification_item`)
+  let items = DOM.els(`.notification_item`)
 
   if (items.length > App.config.notifications_crop_limit) {
     items.slice(-1)[0].remove()
@@ -102,11 +102,11 @@ App.push_notification = (args) => {
   if (args.increase_counter && !App.msg_notifications.is_open() && !App.has_focus) {
     if (App.notifications_count < 100) {
       App.notifications_count += 1
-      App.el(`#header_notifications_count`).textContent = `(${App.notifications_count})`
+      DOM.el(`#header_notifications_count`).textContent = `(${App.notifications_count})`
     }
   }
 
-  let empty = App.el(`#notifications_container .empty_window_message`)
+  let empty = DOM.el(`#notifications_container .empty_window_message`)
 
   if (empty) {
     empty.remove()
@@ -118,12 +118,12 @@ App.show_notifications = (filter = ``) => {
   App.msg_notifications.show()
 
   if (filter.trim()) {
-    App.el(`#notifications_filter`).value = filter
+    DOM.el(`#notifications_filter`).value = filter
     App.do_modal_filter()
   }
 
   App.notifications_count = 0
-  App.el(`#header_notifications_count`).textContent = `(0)`
+  DOM.el(`#header_notifications_count`).textContent = `(0)`
 }
 
 // Centralized function for room changes

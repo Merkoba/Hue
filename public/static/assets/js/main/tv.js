@@ -35,8 +35,8 @@ App.stop_tv = () => {
     App.soundcloud_tv_player.pause()
   }
 
-  if (App.el(`#media_video_tv`)) {
-    App.el(`#media_video_tv`).pause()
+  if (DOM.el(`#media_video_tv`)) {
+    DOM.el(`#media_video_tv`).pause()
   }
 }
 
@@ -62,26 +62,26 @@ App.play_tv = () => {
     }
   }
   else if (App.current_tv().type === `video`) {
-    if (App.el(`#media_video_tv`)) {
-      App.el(`#media_video_tv`).play()
+    if (DOM.el(`#media_video_tv`)) {
+      DOM.el(`#media_video_tv`).play()
     }
   }
   else if (App.current_tv().type === `iframe`) {
-    let iframe = App.el(`#media_iframe_tv`)
+    let iframe = DOM.el(`#media_iframe_tv`)
     iframe.classList.add(`noborder`)
     iframe.src = App.current_tv().source
-    App.el(`#media_iframe_poster`).style.display = `none`
+    DOM.el(`#media_iframe_poster`).style.display = `none`
   }
 }
 
 // Destroys all tv players that don't match the item's type
 // Makes the item's type visible
 App.hide_tv = (item = false) => {
-  for (let el of App.els(`#media_tv .media_container`)) {
+  for (let el of DOM.els(`#media_tv .media_container`)) {
     let type = el.id.replace(`media_`, ``).replace(`_tv_container`, ``)
 
     if (!item || item.type !== type) {
-      let new_el = App.create(`div`, `media_container`)
+      let new_el = DOM.create(`div`, `media_container`)
       new_el.id = el.id
       new_el.style.display = `none`
       el.replaceWith(new_el)
@@ -188,20 +188,20 @@ App.show_soundcloud_tv = (play = true) => {
 App.show_video_tv = (play = true) => {
   let item = App.loaded_tv
 
-  if (!App.el(`#media_video_tv`)) {
+  if (!DOM.el(`#media_video_tv`)) {
     let s = App.template_media_video_tv({
       info: App.get_media_info_html(`tv`),
       poster: App.config.video_poster
     })
 
-    App.el(`#media_video_tv_container`).innerHTML = s
+    DOM.el(`#media_video_tv_container`).innerHTML = s
   }
 
   App.before_show_tv(item)
-  App.el(`#media_video_tv`).src = item.source
+  DOM.el(`#media_video_tv`).src = item.source
 
   if (play) {
-    App.el(`#media_video_tv`).play()
+    DOM.el(`#media_video_tv`).play()
   }
 
   App.after_show_tv()
@@ -211,23 +211,23 @@ App.show_video_tv = (play = true) => {
 App.show_iframe_tv = (play = true) => {
   let item = App.loaded_tv
 
-  if (!App.el(`#media_iframe_tv`)) {
+  if (!DOM.el(`#media_iframe_tv`)) {
     let s = App.template_media_iframe_tv({info: App.get_media_info_html(`tv`)})
-    App.el(`#media_iframe_tv_container`).innerHTML = s
+    DOM.el(`#media_iframe_tv_container`).innerHTML = s
     App.setup_iframe_tv()
   }
 
   App.before_show_tv(item)
-  let iframe = App.el(`#media_iframe_tv`)
+  let iframe = DOM.el(`#media_iframe_tv`)
 
   if (play) {
     iframe.classList.add(`noborder`)
     iframe.src = item.source
-    App.el(`#media_iframe_poster`).style.display = `none`
+    DOM.el(`#media_iframe_poster`).style.display = `none`
   }
   else {
     iframe.classList.remove(`noborder`)
-    App.el(`#media_iframe_poster`).style.display = `block`
+    DOM.el(`#media_iframe_poster`).style.display = `block`
   }
 
   App.after_show_tv()
@@ -245,9 +245,9 @@ App.after_show_tv = () => {
   App.fix_tv_frame()
   App.focus_input()
 
-  if (App.loaded_tv.type === `iframe` && App.el(`#media_iframe_tv`).src) {
-    App.el(`#media_iframe_tv`).classList.add(`noborder`)
-    App.el(`#media_iframe_poster`).style.display = `none`
+  if (App.loaded_tv.type === `iframe` && DOM.el(`#media_iframe_tv`).src) {
+    DOM.el(`#media_iframe_tv`).classList.add(`noborder`)
+    DOM.el(`#media_iframe_poster`).style.display = `none`
   }
 }
 
@@ -416,7 +416,7 @@ App.decrease_tv_percentage = () => {
 App.get_visible_video_frame_id = () => {
   let id = false
 
-  for (let item of App.els(`.video_frame`)) {
+  for (let item of DOM.els(`.video_frame`)) {
     if (item.parentElement.style.display !== `none`) {
       id = item.id
       break
@@ -433,7 +433,7 @@ App.set_default_tv_size = () => {
 
 // Setup for the tv iframe
 App.setup_iframe_tv = () => {
-  App.ev(App.el(`#media_iframe_poster`), `click`, () => {
+  DOM.ev(DOM.el(`#media_iframe_poster`), `click`, () => {
     App.play_tv()
   })
 }
@@ -454,7 +454,7 @@ App.show_link_tv = () => {
 
 // Submit link tv
 App.link_tv_submit = () => {
-  let val = App.el(`#link_tv_input`).value.trim()
+  let val = DOM.el(`#link_tv_input`).value.trim()
 
   if (val !== ``) {
     App.change_tv_source(val)
@@ -474,7 +474,7 @@ App.can_sync_tv = () => {
     }
   }
   else if (App.loaded_tv.type === `video`) {
-    if (!App.el(`#media_video_tv`)) {
+    if (!DOM.el(`#media_video_tv`)) {
       return false
     }
   }
@@ -518,7 +518,7 @@ App.report_tv_progress = (data) => {
     progress = Math.round(App.youtube_tv_player.getCurrentTime())
   }
   else if (ttype === `video`) {
-    progress = Math.round(App.el(`#media_video_tv`).currentTime)
+    progress = Math.round(DOM.el(`#media_video_tv`).currentTime)
   }
 
   if (progress) {
@@ -560,24 +560,24 @@ App.receive_tv_progress = (data) => {
       return
     }
 
-    App.el(`#media_video_tv`).currentTime = data.progress
-    App.el(`#media_video_tv`).play()
+    DOM.el(`#media_video_tv`).currentTime = data.progress
+    DOM.el(`#media_video_tv`).play()
   }
 }
 
 // Shows the window to add a comment to a video upload
 App.show_tv_upload_comment = (file, type) => {
-  App.el(`#tv_upload_comment_video_feedback`).style.display = `none`
-  App.el(`#tv_upload_comment_video_preview`).style.display = `block`
+  DOM.el(`#tv_upload_comment_video_feedback`).style.display = `none`
+  DOM.el(`#tv_upload_comment_video_preview`).style.display = `block`
 
   App.tv_upload_comment_file = file
   App.tv_upload_comment_type = type
 
   if (type === `upload`) {
-    App.el(`#tv_upload_comment_change`).textContent = `Re-Choose`
+    DOM.el(`#tv_upload_comment_change`).textContent = `Re-Choose`
   }
   else if (type === `capture`) {
-    App.el(`#tv_upload_comment_change`).textContent = `Re-Capture`
+    DOM.el(`#tv_upload_comment_change`).textContent = `Re-Capture`
   }
 
   let name = `${App.utilz.slice_string_end(
@@ -585,12 +585,12 @@ App.show_tv_upload_comment = (file, type) => {
       20
     )} (${App.utilz.size_string(file.size, 2)})`
 
-  App.el(`#tv_upload_name`).textContent = name
-  App.el(`#Msg-titlebar-tv_upload_comment`).title = file.name
-  App.el(`#tv_upload_comment_video_preview`).src = URL.createObjectURL(file)
+  DOM.el(`#tv_upload_name`).textContent = name
+  DOM.el(`#Msg-titlebar-tv_upload_comment`).title = file.name
+  DOM.el(`#tv_upload_comment_video_preview`).src = URL.createObjectURL(file)
 
   App.msg_tv_upload_comment.show()
-  App.el(`#tv_upload_comment_input`).focus()
+  DOM.el(`#tv_upload_comment_input`).focus()
 }
 
 // Submits the upload tv comment window
@@ -602,7 +602,7 @@ App.process_tv_upload_comment = () => {
 
   let file = App.tv_upload_comment_file
   let type = App.tv_upload_comment_type
-  let comment = App.utilz.single_space(App.el(`#tv_upload_comment_input`).value)
+  let comment = App.utilz.single_space(DOM.el(`#tv_upload_comment_input`).value)
 
   if (comment.length > App.config.max_media_comment_length) {
     return
@@ -614,20 +614,20 @@ App.process_tv_upload_comment = () => {
 
 // Setups the upload tv comment window
 App.setup_tv_upload_comment = () => {
-  let video = App.el(`#tv_upload_comment_video_preview`)
+  let video = DOM.el(`#tv_upload_comment_video_preview`)
 
-  App.ev(video, `loadedmetadata`, () => {
+  DOM.ev(video, `loadedmetadata`, () => {
     video.currentTime = 0
     video.play()
     video.pause()
   })
 
-  App.ev(video, `error`, () => {
+  DOM.ev(video, `error`, () => {
     video.style.display = `none`
-    App.el(`#tv_upload_comment_video_feedback`).style.display = `inline`
+    DOM.el(`#tv_upload_comment_video_feedback`).style.display = `inline`
   })
 
-  App.ev(App.el(`#tv_upload_comment_change`), `click`, () => {
+  DOM.ev(DOM.el(`#tv_upload_comment_change`), `click`, () => {
     if (App.tv_upload_comment_type === `upload`) {
       App.msg_tv_upload_comment.close()
       App.show_upload_tv()
@@ -638,7 +638,7 @@ App.setup_tv_upload_comment = () => {
     }
   })
 
-  App.ev(App.el(`#tv_upload_comment_submit`), `click`, () => {
+  DOM.ev(DOM.el(`#tv_upload_comment_submit`), `click`, () => {
     App.process_tv_upload_comment()
   })
 }
@@ -651,7 +651,7 @@ App.show_upload_tv = () => {
 
 // Setup screen capture
 App.setup_screen_capture = () => {
-  App.ev(App.el(`#screen_capture_options_container`), `click`, (e) => {
+  DOM.ev(DOM.el(`#screen_capture_options_container`), `click`, (e) => {
     let el = e.target.closest(`.screen_capture_duration`)
 
     if (el) {

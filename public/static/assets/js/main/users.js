@@ -35,7 +35,7 @@ App.user_join = (data) => {
 App.update_usercount = () => {
   let s = `${App.utilz.singular_or_plural(App.userlist.length, `Users`)} Online`
 
-  App.el(`#header_users_count`).textContent = `(${App.userlist.length})`
+  DOM.el(`#header_users_count`).textContent = `(${App.userlist.length})`
 
   if (App.userlist_mode === `normal`) {
     App.msg_userlist.set_title(s)
@@ -238,12 +238,12 @@ App.do_update_userlist = (prop = ``) => {
 
 // Some configurations for the userlist window
 App.setup_userlist_window = () => {
-  App.ev(App.el(`#userlist`), `click`, (e) => {
+  DOM.ev(DOM.el(`#userlist`), `click`, (e) => {
     let el = e.target.closest(`.userlist_item`)
 
     if (el) {
-      let username = App.dataset(el, `username`)
-      let user_id = App.dataset(el, `user_id`)
+      let username = DOM.dataset(el, `username`)
+      let user_id = DOM.dataset(el, `user_id`)
 
       if (App.userlist_mode === `normal`) {
         App.show_profile(username, user_id)
@@ -257,7 +257,7 @@ App.setup_userlist_window = () => {
 
 // Fills the userlist window with user information
 App.update_userlist_window = (filter_out = []) => {
-  let container = App.create(`div`)
+  let container = DOM.create(`div`)
 
   for (let i=0; i<App.userlist.length; i++) {
     let user = App.userlist[i]
@@ -267,27 +267,27 @@ App.update_userlist_window = (filter_out = []) => {
     }
 
     let pi = App.get_profilepic(user.user_id)
-    let el = App.create(`div`, `modal_item userlist_item user_item`)
+    let el = DOM.create(`div`, `modal_item userlist_item user_item`)
     el.innerHTML = App.template_userlist_item({profilepic: pi})
 
-    let image = App.el(`.userlist_item_profilepic`, el)
+    let image = DOM.el(`.userlist_item_profilepic`, el)
 
-    App.ev(image, `error`, (e) => {
+    DOM.ev(image, `error`, (e) => {
       App.fallback_profilepic(image)
     })
 
     let role_tag = App.role_tag(user.role)
-    let role_element = App.el(`.userlist_item_role`, el)
+    let role_element = DOM.el(`.userlist_item_role`, el)
     role_element.textContent = role_tag
-    let username = App.el(`.userlist_item_username`, el)
+    let username = DOM.el(`.userlist_item_username`, el)
     username.textContent = user.username
-    App.dataset(el, `username`, user.username)
-    App.dataset(el, `user_id`, user.user_id)
+    DOM.dataset(el, `username`, user.username)
+    DOM.dataset(el, `user_id`, user.user_id)
     container.append(el)
   }
 
-  App.el(`#userlist`).innerHTML = ``
-  App.el(`#userlist`).append(container)
+  DOM.el(`#userlist`).innerHTML = ``
+  DOM.el(`#userlist`).append(container)
 
   if (App.userlist_filtered) {
     App.do_modal_filter(`userlist`)
@@ -388,7 +388,7 @@ App.show_userlist_window = (mode = `normal`, filter = ``) => {
   App.msg_userlist.show()
 
   if (filter.trim()) {
-    App.el(`#userlist_filter`).value = filter
+    DOM.el(`#userlist_filter`).value = filter
     App.do_modal_filter()
   }
 }
@@ -537,17 +537,17 @@ App.get_matching_usernames = (s) => {
 
 // Setups user profile windows
 App.setup_show_profile = () => {
-  App.ev(App.el(`#show_profile_whisper`), `click`, () => {
+  DOM.ev(DOM.el(`#show_profile_whisper`), `click`, () => {
     App.write_whisper([App.open_profile_username])
     App.msg_profile.close()
   })
 
-  App.ev(App.el(`#show_profile_sync_tv`), `click`, () => {
+  DOM.ev(DOM.el(`#show_profile_sync_tv`), `click`, () => {
     App.sync_tv(App.open_profile_username)
     App.msg_profile.close()
   })
 
-  App.ev(App.el(`#show_profile_profilepic`), `click`, () => {
+  DOM.ev(DOM.el(`#show_profile_profilepic`), `click`, () => {
     if (App.audioclip) {
       App.stop_audioclip()
     }
@@ -556,39 +556,39 @@ App.setup_show_profile = () => {
     }
   })
 
-  let pic = App.el(`#show_profile_profilepic`)
+  let pic = DOM.el(`#show_profile_profilepic`)
 
-  App.ev(pic, `error`, () => {
+  DOM.ev(pic, `error`, () => {
     App.fallback_profilepic(pic)
   })
 
-  App.ev(App.el(`#show_profile_search`), `click`, () => {
+  DOM.ev(DOM.el(`#show_profile_search`), `click`, () => {
     App.show_user_messages(App.open_profile_username)
     App.msg_profile.close()
   })
 
-  App.ev(App.el(`#show_profile_posts`), `click`, () => {
+  DOM.ev(DOM.el(`#show_profile_posts`), `click`, () => {
     App.show_message_board(`$user ${App.open_profile_username} `)
     App.msg_profile.close()
   })
 
-  App.ev(App.el(`#show_profile_edit`), `click`, () => {
+  DOM.ev(DOM.el(`#show_profile_edit`), `click`, () => {
     App.show_user_profile()
     App.msg_profile.close()
   })
 
-  App.ev(App.el(`#show_profile_change_role`), `click`, () => {
+  DOM.ev(DOM.el(`#show_profile_change_role`), `click`, () => {
     App.change_role_username = App.open_profile_username
     App.msg_change_role.show()
   })
 
-  App.ev(App.el(`#show_profile_kick`), `click`, () => {
+  DOM.ev(DOM.el(`#show_profile_kick`), `click`, () => {
     App.show_confirm(`Disconnect the user from the room`, () => {
       App.kick(App.open_profile_username)
     })
   })
 
-  App.ev(App.el(`#show_profile_ban`), `click`, () => {
+  DOM.ev(DOM.el(`#show_profile_ban`), `click`, () => {
     App.show_confirm(`Ban the user from joining the room`, () => {
       App.ban(App.open_profile_username)
     })
@@ -598,13 +598,13 @@ App.setup_show_profile = () => {
 // Stars the profile audio
 App.play_audioclip = (user_id = App.open_profile_user_id) => {
   App.stop_audioclip()
-  App.audioclip = App.create(`audio`)
+  App.audioclip = DOM.create(`audio`)
 
   App.audioclip.onended = () => {
     App.stop_audioclip()
   }
 
-  App.ev(App.audioclip, `error`, (e) => {
+  DOM.ev(App.audioclip, `error`, (e) => {
     if (App.audioclip) {
       App.show_info(`User has no audioclip`)
       App.stop_audioclip()
@@ -652,71 +652,71 @@ App.show_profile = (username, user_id = false) => {
 
   if (user) {
     same_user = user.user_id === App.user_id
-    App.el(`#show_profile_details`).style.display = `block`
+    DOM.el(`#show_profile_details`).style.display = `block`
     role = App.get_pretty_role_name(user.role)
     bio = user.bio
     username = user.username
     App.open_profile_user = user
   }
   else {
-    App.el(`#show_profile_details`).style.display = `none`
+    DOM.el(`#show_profile_details`).style.display = `none`
   }
 
   App.open_profile_user_id = id
   App.open_profile_username = username
   let pi = App.get_profilepic(id)
-  App.el(`#show_profile_role`).textContent = `Role: ${role}`
+  DOM.el(`#show_profile_role`).textContent = `Role: ${role}`
 
-  App.el(`#show_profile_bio`).innerHTML =
+  DOM.el(`#show_profile_bio`).innerHTML =
     App.utilz.make_html_safe(bio).replace(/\n+/g, ` <br> `)
-  App.urlize(App.el(`#show_profile_bio`))
+  App.urlize(DOM.el(`#show_profile_bio`))
 
-  App.el(`#show_profile_profilepic`).src = pi
+  DOM.el(`#show_profile_profilepic`).src = pi
 
   if (username) {
-    App.el(`#show_profile_buttons`).classList.remove(`nodisplay`)
+    DOM.el(`#show_profile_buttons`).classList.remove(`nodisplay`)
   }
   else {
-    App.el(`#show_profile_buttons`).classList.add(`nodisplay`)
+    DOM.el(`#show_profile_buttons`).classList.add(`nodisplay`)
   }
 
   if (user) {
-    App.el(`#show_profile_whisper`).style.display = `block`
-    App.el(`#show_profile_sync_tv`).style.display = `flex`
+    DOM.el(`#show_profile_whisper`).style.display = `block`
+    DOM.el(`#show_profile_sync_tv`).style.display = `flex`
   }
   else {
-    App.el(`#show_profile_whisper`).style.display = `none`
-    App.el(`#show_profile_sync_tv`).style.display = `none`
+    DOM.el(`#show_profile_whisper`).style.display = `none`
+    DOM.el(`#show_profile_sync_tv`).style.display = `none`
   }
 
-  App.dataset(App.el(`#show_profile_change_role`), `username`, username)
+  DOM.dataset(DOM.el(`#show_profile_change_role`), `username`, username)
 
   if (username && App.is_admin_or_op() && !same_user) {
-    App.el(`#show_profile_op_buttons`).classList.remove(`nodisplay`)
+    DOM.el(`#show_profile_op_buttons`).classList.remove(`nodisplay`)
   }
   else {
-    App.el(`#show_profile_op_buttons`).classList.add(`nodisplay`)
+    DOM.el(`#show_profile_op_buttons`).classList.add(`nodisplay`)
   }
 
-  App.el(`#show_profile_info`).innerHTML = ``
-  App.el(`#show_profile_edit`).classList.add(`nodisplay`)
+  DOM.el(`#show_profile_info`).innerHTML = ``
+  DOM.el(`#show_profile_edit`).classList.add(`nodisplay`)
 
   if (user) {
-    let item = App.create(`div`)
+    let item = DOM.create(`div`)
     let nicedate = App.utilz.nice_date(user.date_joined)
     let timeago = App.utilz.timeago(user.date_joined)
     item.textContent = `Got Online: ${timeago}`
     item.title = nicedate
-    App.el(`#show_profile_info`).append(item)
+    DOM.el(`#show_profile_info`).append(item)
 
     if (same_user) {
-      App.el(`#show_profile_edit`).classList.remove(`nodisplay`)
+      DOM.el(`#show_profile_edit`).classList.remove(`nodisplay`)
     }
   }
 
-  let item = App.create(`div`)
+  let item = DOM.create(`div`)
   item.textContent = `ID: ${id}`
-  App.el(`#show_profile_info`).append(item)
+  DOM.el(`#show_profile_info`).append(item)
   App.msg_profile.set_title(username || ``)
   App.msg_profile.show()
 }
@@ -733,7 +733,7 @@ App.profilepic_changed = (data) => {
   let src = App.get_profilepic(data.user_id)
 
   if (data.user_id === App.user_id) {
-    App.el(`#user_profile_profilepic`).src = src
+    DOM.el(`#user_profile_profilepic`).src = src
   }
 
   App.show_room_notification(
@@ -816,7 +816,7 @@ App.set_role = (rol, config = true) => {
     App.config_main_menu()
   }
 
-  App.el(`#user_profile_role`).textContent = `(${App.get_pretty_role_name(rol)})`
+  DOM.el(`#user_profile_role`).textContent = `(${App.get_pretty_role_name(rol)})`
   App.setup_message_board_permissions()
 }
 
@@ -1129,7 +1129,7 @@ App.fallback_profilepic = (el) => {
 
 // Setup change role
 App.setup_change_role = () => {
-  App.ev(App.el(`#change_role_admin`), `click`, () => {
+  DOM.ev(DOM.el(`#change_role_admin`), `click`, () => {
     App.show_confirm(`Operator abilities plus can add/remove operators`, () => {
       App.change_role(App.change_role_username, `admin`)
     })
@@ -1137,7 +1137,7 @@ App.setup_change_role = () => {
     App.msg_change_role.close()
   })
 
-  App.ev(App.el(`#change_role_op`), `click`, () => {
+  DOM.ev(DOM.el(`#change_role_op`), `click`, () => {
     App.show_confirm(`Enable access to operator features and commands`, () => {
       App.change_role(App.change_role_username, `op`)
     })
@@ -1145,7 +1145,7 @@ App.setup_change_role = () => {
     App.msg_change_role.close()
   })
 
-  App.ev(App.el(`#change_role_voice`), `click`, () => {
+  DOM.ev(DOM.el(`#change_role_voice`), `click`, () => {
     App.show_confirm(`Can interact with users and change media but no operator abilities`, () => {
       App.change_role(App.change_role_username, `voice`)
     })

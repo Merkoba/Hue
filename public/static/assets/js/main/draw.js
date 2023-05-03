@@ -73,11 +73,11 @@ App.draw_image_add_sector = () => {
 
 // Setups the draw image window
 App.setup_draw_image = () => {
-  App.draw_image_context = App.el(`#draw_image_area`).getContext(`2d`)
+  App.draw_image_context = DOM.el(`#draw_image_area`).getContext(`2d`)
   App.draw_image_context.scale(2, 2)
-  let area = App.el(`#draw_image_area`)
+  let area = DOM.el(`#draw_image_area`)
 
-  App.ev(area, `mousedown`, (e) => {
+  DOM.ev(area, `mousedown`, (e) => {
     if (e.button === 2) {
       return
     }
@@ -105,7 +105,7 @@ App.setup_draw_image = () => {
     }
   })
 
-  App.ev(area, `mousemove`, (e) => {
+  DOM.ev(area, `mousemove`, (e) => {
     if (App.draw_image_mode === `pencil`) {
       if (App.mouse_is_down) {
         App.draw_image_add_click(
@@ -120,36 +120,36 @@ App.setup_draw_image = () => {
     }
   })
 
-  App.ev(area, `mouseenter`, (e) => {
+  DOM.ev(area, `mouseenter`, (e) => {
     App.draw_image_just_entered = true
   })
 
-  App.ev(App.el(`#draw_image_mode_select_pencil`), `click`, () => {
+  DOM.ev(DOM.el(`#draw_image_mode_select_pencil`), `click`, () => {
     App.set_draw_image_mode_input(`pencil`)
   })
 
-  App.ev(App.el(`#draw_image_mode_select_bucket`), `click`, () => {
+  DOM.ev(DOM.el(`#draw_image_mode_select_bucket`), `click`, () => {
     App.set_draw_image_mode_input(`bucket`)
   })
 
-  App.ev(App.el(`#draw_image_undo`), `click`, () => {
+  DOM.ev(DOM.el(`#draw_image_undo`), `click`, () => {
     App.draw_image_undo()
   })
 
-  App.ev(App.el(`#draw_image_redo`), `click`, () => {
+  DOM.ev(DOM.el(`#draw_image_redo`), `click`, () => {
     App.draw_image_redo()
   })
 
-  App.ev(App.el(`#draw_image_clear`), `click`, () => {
+  DOM.ev(DOM.el(`#draw_image_clear`), `click`, () => {
     App.needs_confirm(`clear_draw_image_func`)
   })
 
-  App.ev(App.el(`#draw_image_upload`), `click`, () => {
+  DOM.ev(DOM.el(`#draw_image_upload`), `click`, () => {
     App.msg_draw_image.close()
     App.upload_draw_image()
   })
 
-  App.ev(App.el(`#draw_image_color_picker`), `click`, () => {
+  DOM.ev(DOM.el(`#draw_image_color_picker`), `click`, () => {
     App.toggle_draw_color_picker()
   })
 
@@ -159,36 +159,36 @@ App.setup_draw_image = () => {
     select += `<option value="${i}">${i}</option>`
   }
 
-  App.el(`#draw_image_pencil_size`).innerHTML = select
+  DOM.el(`#draw_image_pencil_size`).innerHTML = select
   App.draw_image_prepare_settings()
   App.clear_draw_image_state()
 }
 
 // Prepares initial settings for the draw image window
 App.draw_image_prepare_settings = () => {
-  App.ev(App.el(`#draw_image_pencil_color`), `click`, () => {
+  DOM.ev(DOM.el(`#draw_image_pencil_color`), `click`, () => {
     App.set_draw_image_mode_input(`pencil`)
   })
 
-  let pencil_color = App.el(`#draw_image_pencil_color`)
+  let pencil_color = DOM.el(`#draw_image_pencil_color`)
 
-  App.ev(pencil_color, `change`, () => {
+  DOM.ev(pencil_color, `change`, () => {
     App.draw_image_pencil_color = pencil_color.value
   })
 
-  App.ev(App.el(`#draw_image_bucket_color`), `click`, () => {
+  DOM.ev(DOM.el(`#draw_image_bucket_color`), `click`, () => {
     App.set_draw_image_mode_input(`bucket`)
   })
 
-  let bucket_color = App.el(`#draw_image_bucket_color`)
+  let bucket_color = DOM.el(`#draw_image_bucket_color`)
 
-  App.ev(bucket_color, `change`, () => {
+  DOM.ev(bucket_color, `change`, () => {
     App.draw_image_bucket_color = bucket_color.value
   })
 
-  let pencil_size = App.el(`#draw_image_pencil_size`)
+  let pencil_size = DOM.el(`#draw_image_pencil_size`)
 
-  App.ev(pencil_size, `change`, () => {
+  DOM.ev(pencil_size, `change`, () => {
     App.draw_image_pencil_size = pencil_size.value
   })
 }
@@ -197,12 +197,12 @@ App.draw_image_prepare_settings = () => {
 // Changes the appearance of the widgets to reflect this
 App.set_draw_image_mode_input = (m) => {
   if (m === `pencil`) {
-   App.el(`#draw_image_mode_select_pencil`).classList.add(`buttonbox_active`)
-   App.el(`#draw_image_mode_select_bucket`).classList.remove(`buttonbox_active`)
+   DOM.el(`#draw_image_mode_select_pencil`).classList.add(`buttonbox_active`)
+   DOM.el(`#draw_image_mode_select_bucket`).classList.remove(`buttonbox_active`)
   }
   else if (m === `bucket`) {
-   App.el(`#draw_image_mode_select_bucket`).classList.add(`buttonbox_active`)
-   App.el(`#draw_image_mode_select_pencil`).classList.remove(`buttonbox_active`)
+   DOM.el(`#draw_image_mode_select_bucket`).classList.add(`buttonbox_active`)
+   DOM.el(`#draw_image_mode_select_pencil`).classList.remove(`buttonbox_active`)
   }
 
   App.draw_image_mode = m
@@ -258,13 +258,13 @@ App.clear_draw_image_state = () => {
 
   App.draw_image_pencil_color = App.colorlib.get_lighter_or_darker(bg_hex, 0.6)
   App.draw_image_bucket_color = App.colorlib.get_random_hex()
-  App.el(`#draw_image_pencil_color`).value = App.draw_image_pencil_color
-  App.el(`#draw_image_bucket_color`).value = App.draw_image_bucket_color
+  DOM.el(`#draw_image_pencil_color`).value = App.draw_image_pencil_color
+  DOM.el(`#draw_image_bucket_color`).value = App.draw_image_bucket_color
 
   App.set_draw_image_mode_input(`pencil`)
   App.draw_image_pencil_size = App.draw_image_default_pencil_size
 
-  for (let el of App.els(`#draw_image_pencil_size option`)) {
+  for (let el of DOM.els(`#draw_image_pencil_size option`)) {
     if (el.value == App.draw_image_pencil_size) {
       el.selected = true
     }
@@ -413,7 +413,7 @@ App.draw_image_add_click = (x, y, dragging) => {
 
 // Turns the canvas drawing into a Blob and sends it to the server as an image upload
 App.upload_draw_image = (canvas = `#draw_image_area`, type = `drawing`, name = `drawing`) => {
-  App.el(canvas).toBlob(
+  DOM.el(canvas).toBlob(
     (blob) => {
       blob.name = name + `.png`
 
@@ -607,11 +607,11 @@ App.draw_color_picker = (x, y) => {
 
   if (App.draw_image_mode === `pencil`) {
     App.draw_image_pencil_color = hex
-    App.el(`#draw_image_pencil_color`).value = hex
+    DOM.el(`#draw_image_pencil_color`).value = hex
   }
   else if (App.draw_image_mode === `bucket`) {
     App.draw_image_bucket_color = hex
-    App.el(`#draw_image_bucket_color`).value = hex
+    DOM.el(`#draw_image_bucket_color`).value = hex
   }
 }
 
@@ -625,9 +625,9 @@ App.set_draw_color_picker = (what) => {
   App.draw_color_picker_on = what
 
   if (App.draw_color_picker_on) {
-    App.el(`#draw_image_color_picker`).classList.add(`buttonbox_active`)
+    DOM.el(`#draw_image_color_picker`).classList.add(`buttonbox_active`)
   }
   else {
-    App.el(`#draw_image_color_picker`).classList.remove(`buttonbox_active`)
+    DOM.el(`#draw_image_color_picker`).classList.remove(`buttonbox_active`)
   }
 }

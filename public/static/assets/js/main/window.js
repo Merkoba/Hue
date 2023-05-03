@@ -52,7 +52,7 @@ App.update_title = () => {
 // A function is executed on visibility change
 // Blur event is also included to handle some cases
 App.activate_visibility_listener = () => {
-  App.ev(document, `visibilitychange`, () => {
+  DOM.ev(document, `visibilitychange`, () => {
     App.process_visibility()
   }, false)
 }
@@ -91,7 +91,7 @@ App.on_unfocus = () => {
 
 // Starts window resize events
 App.resize_events = () => {
-  App.ev(window, `resize`, () => {
+  DOM.ev(window, `resize`, () => {
     App.resize_timer()
   })
 }

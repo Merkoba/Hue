@@ -79,7 +79,7 @@ App.get_topic = () => {
 // Shows the topic
 App.show_topic = () => {
   App.show_info(App.template_topic({topic: App.get_topic()}))
-  App.urlize(App.el(`#topic_container`))
+  App.urlize(DOM.el(`#topic_container`))
 }
 
 // Announces room name changes
@@ -160,32 +160,32 @@ App.request_admin_activity = (filter = ``) => {
 
 // Setup admin activity
 App.setup_admin_activity = () => {
-  App.ev(App.el(`#admin_activity_clear`), `click`, () => {
+  DOM.ev(DOM.el(`#admin_activity_clear`), `click`, () => {
     App.clear_admin_activity()
   })
 }
 
 // Shows the admin activity list
 App.show_admin_activity = (messages) => {
-  App.el(`#admin_activity_container`).innerHTML = ``
+  DOM.el(`#admin_activity_container`).innerHTML = ``
   App.msg_admin_activity.show()
 
   for (let data of messages) {
     let nice_date = App.utilz.nice_date(data.date)
     let s = `<div class='admin_activity_message'></div><div class='admin_activity_date'></div>`
 
-    let el = App.create(`div`, `modal_item admin_activity_item dynamic_title`)
+    let el = DOM.create(`div`, `modal_item admin_activity_item dynamic_title`)
     el.title = nice_date
     el.innerHTML = s
 
-    App.el(`.admin_activity_message`, el).textContent = `${data.username} ${data.content}`
-    App.el(`.admin_activity_date`, el).textContent = nice_date
-    App.dataset(el, `date`, data.date)
-    App.dataset(el, `otitle`, nice_date)
-    App.el(`#admin_activity_container`).prepend(el)
+    DOM.el(`.admin_activity_message`, el).textContent = `${data.username} ${data.content}`
+    DOM.el(`.admin_activity_date`, el).textContent = nice_date
+    DOM.dataset(el, `date`, data.date)
+    DOM.dataset(el, `otitle`, nice_date)
+    DOM.el(`#admin_activity_container`).prepend(el)
   }
 
-  App.el(`#admin_activity_filter`).value = App.admin_activity_filter_string
+  DOM.el(`#admin_activity_filter`).value = App.admin_activity_filter_string
   App.do_modal_filter()
 }
 
@@ -203,7 +203,7 @@ App.clear_admin_activity = () => {
 
 // On admin activity clear
 App.admin_activity_cleared = () => {
-  App.el(`#admin_activity_container`).innerHTML = ``
+  DOM.el(`#admin_activity_container`).innerHTML = ``
 }
 
 // Requests the admin list
@@ -218,18 +218,18 @@ App.request_admin_list = () => {
 
 // Shows the admin list
 App.show_admin_list = (data) => {
-  let container = App.el(`#admin_list_container`)
+  let container = DOM.el(`#admin_list_container`)
   container.innerHTML = ``
   data.list.sort(App.compare_userlist)
 
   for (let user of data.list) {
-    let el = App.create(`div`, `admin_list_item action`)
+    let el = DOM.create(`div`, `admin_list_item action`)
     el.innerHTML = App.template_admin_list_item()
 
-    App.el(`.admin_list_username`, el).textContent = user.username
-    App.el(`.admin_list_role`, el).textContent = `(${App.get_pretty_role_name(user.role)})`
+    DOM.el(`.admin_list_username`, el).textContent = user.username
+    DOM.el(`.admin_list_role`, el).textContent = `(${App.get_pretty_role_name(user.role)})`
 
-    App.ev(el, `click`, () => {
+    DOM.ev(el, `click`, () => {
       App.show_profile(user.username, user.user_id)
     })
 
@@ -251,23 +251,23 @@ App.request_ban_list = () => {
 
 // Shows the ban list
 App.show_ban_list = (data) => {
-  let container = App.el(`#ban_list_container`)
+  let container = DOM.el(`#ban_list_container`)
   container.innerHTML = ``
 
   for (let user of data.list) {
-    let el = App.create(`div`, `ban_list_item flex_row_center`)
+    let el = DOM.create(`div`, `ban_list_item flex_row_center`)
     el.innerHTML = App.template_ban_list_item()
 
-    let username = App.el(`.ban_list_username`, el)
+    let username = DOM.el(`.ban_list_username`, el)
     username.textContent = user.username
 
-    App.ev(username, `click`, () => {
+    DOM.ev(username, `click`, () => {
       App.show_profile(user.username, user.user_id)
     })
 
-    let unban = App.el(`.ban_list_unban`, el)
+    let unban = DOM.el(`.ban_list_unban`, el)
 
-    App.ev(unban, `click`, () => {
+    DOM.ev(unban, `click`, () => {
       App.show_confirm(`Unban ${user.username}`, () => {
         App.unban(user.username)
       })

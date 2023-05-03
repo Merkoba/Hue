@@ -1,32 +1,32 @@
 // Setups the header
 App.setup_header = () => {
-  App.ev(App.el(`#header_main_menu`), `click`, () => {
+  DOM.ev(DOM.el(`#header_main_menu`), `click`, () => {
     App.show_main_menu()
   })
 
-  App.ev(App.el(`#header_main_menu`), `auxclick`, (e) => {
+  DOM.ev(DOM.el(`#header_main_menu`), `auxclick`, (e) => {
     if (e.which === 2) {
       App.flip()
     }
   })
 
-  App.ev(App.el(`#header_users`), `click`, () => {
+  DOM.ev(DOM.el(`#header_users`), `click`, () => {
     App.show_userlist_window()
   })
 
-  App.ev(App.el(`#header_message_board`), `click`, () => {
+  DOM.ev(DOM.el(`#header_message_board`), `click`, () => {
     App.show_message_board()
   })
 
-  App.ev(App.el(`#header_notifications`), `click`, () => {
+  DOM.ev(DOM.el(`#header_notifications`), `click`, () => {
     App.show_notifications()
   })
 
-  App.ev(App.el(`#header_whispers`), `click`, () => {
+  DOM.ev(DOM.el(`#header_whispers`), `click`, () => {
     App.show_whispers()
   })
 
-  App.ev(App.el(`#header_notifications_enabled`), `click`, () => {
+  DOM.ev(DOM.el(`#header_notifications_enabled`), `click`, () => {
     App.toggle_notifications_enabled()
   })
 
@@ -36,10 +36,10 @@ App.setup_header = () => {
 // Apply notifications enabled icon
 App.set_notifications_enabled_icon = () => {
   if (App.room_state.notifications_enabled) {
-    App.el(`#header_notifications_enabled use`).href.baseVal = `#icon_unlocked`
+    DOM.el(`#header_notifications_enabled use`).href.baseVal = `#icon_unlocked`
   }
   else {
-    App.el(`#header_notifications_enabled use`).href.baseVal = `#icon_locked`
+    DOM.el(`#header_notifications_enabled use`).href.baseVal = `#icon_locked`
   }
 }
 

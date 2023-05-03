@@ -98,7 +98,7 @@ App.make_chat_message = (args = {}) => {
 
   title = `${gets} | ${title}`
 
-  fmessage = App.create(`div`, `message chat_message user_details`)
+  fmessage = DOM.create(`div`, `message chat_message user_details`)
 
   fmessage.innerHTML = App.template_chat_message({
     content_classes: content_classes,
@@ -107,27 +107,27 @@ App.make_chat_message = (args = {}) => {
     date: d
   })
 
-  let content = App.el(`.chat_content`, fmessage)
+  let content = DOM.el(`.chat_content`, fmessage)
 
   if (image_preview) {
     content.innerHTML = image_preview
 
     if (preview_text_class) {
-      App.el(`.image_preview_text`, fmessage).classList.add(preview_text_class)
+      DOM.el(`.image_preview_text`, fmessage).classList.add(preview_text_class)
     }
   }
   else if (link_preview) {
     content.innerHTML = link_preview
 
     if (preview_text_class) {
-      App.el(`.link_preview_text`, fmessage).classList.add(preview_text_class)
+      DOM.el(`.link_preview_text`, fmessage).classList.add(preview_text_class)
     }
   }
   else {
     content.innerHTML = App.parse_text(App.utilz.make_html_safe(args.message))
   }
 
-  let quote = App.el(`.chat_quote`, fmessage)
+  let quote = DOM.el(`.chat_quote`, fmessage)
 
   if (args.quote) {
     quote.innerHTML = App.template_chat_quote({
@@ -136,13 +136,13 @@ App.make_chat_message = (args = {}) => {
       profilepic: App.get_profilepic(args.quote_user_id)
     })
 
-    App.dataset(quote, `quote_username`, args.quote_username)
-    App.dataset(quote, `quote_user_id`, args.quote_user_id)
-    App.dataset(quote, `quote_id`, args.quote_id)
+    DOM.dataset(quote, `quote_username`, args.quote_username)
+    DOM.dataset(quote, `quote_user_id`, args.quote_user_id)
+    DOM.dataset(quote, `quote_id`, args.quote_id)
 
-    let quote_profilepic = App.el(`.chat_quote_profilepic`, quote)
+    let quote_profilepic = DOM.el(`.chat_quote_profilepic`, quote)
 
-    App.ev(quote_profilepic, `error`, () => {
+    DOM.ev(quote_profilepic, `error`, () => {
       App.fallback_profilepic(quote_profilepic)
     })
   }
@@ -150,20 +150,20 @@ App.make_chat_message = (args = {}) => {
     quote.style.display = `none`
   }
 
-  let chat_username = App.el(`.chat_username`, fmessage)
+  let chat_username = DOM.el(`.chat_username`, fmessage)
   chat_username.textContent = args.username
 
-  let htimeago = App.el(`.chat_timeago`, fmessage)
+  let htimeago = DOM.el(`.chat_timeago`, fmessage)
   htimeago.textContent = App.utilz.timeago(d)
-  let pic = App.el(`.profilepic`, fmessage)
+  let pic = DOM.el(`.profilepic`, fmessage)
 
-  App.ev(pic, `error`, () => {
+  DOM.ev(pic, `error`, () => {
     App.fallback_profilepic(pic)
   })
 
-  let rightside = App.el(`.chat_right_side`, fmessage)
-  App.dataset(rightside, `date`, d)
-  App.dataset(rightside, `otitle`, nd)
+  let rightside = DOM.el(`.chat_right_side`, fmessage)
+  DOM.dataset(rightside, `date`, d)
+  DOM.dataset(rightside, `otitle`, nd)
 
   let first_url = false
 
@@ -177,25 +177,25 @@ App.make_chat_message = (args = {}) => {
     first_url = App.utilz.get_first_url(args.message)
   }
 
-  App.dataset(fmessage, `username`, args.username)
-  App.dataset(fmessage, `user_id`, args.user_id)
-  App.dataset(fmessage, `date`, d)
-  App.dataset(fmessage, `highlighted`, highlighted)
-  App.dataset(fmessage, `mode`, `chat`)
+  DOM.dataset(fmessage, `username`, args.username)
+  DOM.dataset(fmessage, `user_id`, args.user_id)
+  DOM.dataset(fmessage, `date`, d)
+  DOM.dataset(fmessage, `highlighted`, highlighted)
+  DOM.dataset(fmessage, `mode`, `chat`)
 
-  let content_container = App.el(`.chat_content_container`, fmessage)
-  App.dataset(content_container, `id`, args.id)
-  App.dataset(content_container, `edited`, args.edited)
-  App.dataset(content_container, `highlighted`, highlighted)
-  App.dataset(content_container, `date`, d)
-  App.dataset(content_container, `first_url`, first_url)
-  App.dataset(content_container, `original_message`, args.message)
-  App.dataset(content_container, `otitle`, title)
-  App.dataset(content_container, `username`, args.username)
-  App.dataset(content_container, `user_id`, args.user_id)
+  let content_container = DOM.el(`.chat_content_container`, fmessage)
+  DOM.dataset(content_container, `id`, args.id)
+  DOM.dataset(content_container, `edited`, args.edited)
+  DOM.dataset(content_container, `highlighted`, highlighted)
+  DOM.dataset(content_container, `date`, d)
+  DOM.dataset(content_container, `first_url`, first_url)
+  DOM.dataset(content_container, `original_message`, args.message)
+  DOM.dataset(content_container, `otitle`, title)
+  DOM.dataset(content_container, `username`, args.username)
+  DOM.dataset(content_container, `user_id`, args.user_id)
 
   args.likes = args.likes || []
-  App.dataset(content_container, `likes`, args.likes)
+  DOM.dataset(content_container, `likes`, args.likes)
   App.update_likes(content_container, args.likes)
 
   if (!image_preview && !link_preview) {
@@ -278,7 +278,7 @@ App.make_announcement_message = (args = {}) => {
     top_clasees += ` nodisplay`
   }
 
-  let fmessage = App.create(`div`, `message announcement message_unit unit_data_container`)
+  let fmessage = DOM.create(`div`, `message announcement message_unit unit_data_container`)
 
   fmessage.innerHTML = App.template_announcement_message({
     content_classes: content_classes,
@@ -295,25 +295,25 @@ App.make_announcement_message = (args = {}) => {
     fmessage.classList.add(`media_announcement`)
   }
 
-  let content_container = App.el(`.announcement_content_container`, fmessage)
-  App.dataset(content_container, `original_message`, args.comment)
-  let content = App.el(`.announcement_content`, fmessage)
+  let content_container = DOM.el(`.announcement_content_container`, fmessage)
+  DOM.dataset(content_container, `original_message`, args.comment)
+  let content = DOM.el(`.announcement_content`, fmessage)
 
   if (is_media) {
-    let username = App.el(`.chat_username`, fmessage)
-    let date = App.el(`.chat_timeago`, fmessage)
+    let username = DOM.el(`.chat_username`, fmessage)
+    let date = DOM.el(`.chat_timeago`, fmessage)
     username.textContent = args.username
     date.textContent = App.utilz.timeago(args.date)
   }
 
-  let right_side = App.el(`.announcement_right_side`, fmessage)
-  App.dataset(right_side, `otitle`, t)
-  App.dataset(right_side, `date`, d)
+  let right_side = DOM.el(`.announcement_right_side`, fmessage)
+  DOM.dataset(right_side, `otitle`, t)
+  DOM.dataset(right_side, `date`, d)
 
   content.textContent = args.message
   App.urlize(content)
 
-  let brk_profilepic = App.el(`.brk_profilepic`, fmessage)
+  let brk_profilepic = DOM.el(`.brk_profilepic`, fmessage)
 
   if (args.user_id) {
     brk_profilepic.src = App.get_profilepic(args.user_id)
@@ -322,24 +322,24 @@ App.make_announcement_message = (args = {}) => {
     brk_profilepic.style.display = `none`
   }
 
-  let pic = App.el(`.profilepic`, fmessage)
+  let pic = DOM.el(`.profilepic`, fmessage)
 
-  App.ev(pic, `error`, () => {
+  DOM.ev(pic, `error`, () => {
     App.fallback_profilepic(pic)
   })
 
-  App.dataset(fmessage, `id`, args.id)
-  App.dataset(fmessage, `date`, d)
-  App.dataset(fmessage, `highlighted`, highlighted)
-  App.dataset(fmessage, `type`, args.type)
-  App.dataset(fmessage, `username`, args.username)
-  App.dataset(fmessage, `mode`, `announcement`)
-  App.dataset(fmessage, `user_id`, args.user_id)
-  App.dataset(fmessage, `media_source`, args.media_source)
-  App.dataset(fmessage, `original_message`, args.message)
+  DOM.dataset(fmessage, `id`, args.id)
+  DOM.dataset(fmessage, `date`, d)
+  DOM.dataset(fmessage, `highlighted`, highlighted)
+  DOM.dataset(fmessage, `type`, args.type)
+  DOM.dataset(fmessage, `username`, args.username)
+  DOM.dataset(fmessage, `mode`, `announcement`)
+  DOM.dataset(fmessage, `user_id`, args.user_id)
+  DOM.dataset(fmessage, `media_source`, args.media_source)
+  DOM.dataset(fmessage, `original_message`, args.message)
 
   args.likes = args.likes || []
-  App.dataset(fmessage, `likes`, args.likes)
+  DOM.dataset(fmessage, `likes`, args.likes)
   App.update_likes(fmessage, args.likes)
 
   let ans = App.insert_message({
@@ -369,28 +369,28 @@ App.insert_message = (args = {}) => {
   let messages = App.get_all_messages()
   let last_message = messages.slice(-1)[0]
   let appended = false
-  let mode = App.dataset(args.message, `mode`)
-  let user_id = App.dataset(args.message, `user_id`)
-  let username = App.dataset(args.message, `username`)
-  let date = App.dataset(args.message, `date`)
-  let highlighted = App.dataset(args.message, `highlighted`)
+  let mode = DOM.dataset(args.message, `mode`)
+  let user_id = DOM.dataset(args.message, `user_id`)
+  let username = DOM.dataset(args.message, `username`)
+  let date = DOM.dataset(args.message, `date`)
+  let highlighted = DOM.dataset(args.message, `highlighted`)
   let content_container, message_id, message_unit
 
   if (mode === `chat`) {
-    content_container = App.el(`.chat_content_container`, args.message)
+    content_container = DOM.el(`.chat_content_container`, args.message)
     App.chat_content_container_id += 1
-    App.dataset(content_container, `chat_content_container_id`, App.chat_content_container_id)
+    DOM.dataset(content_container, `chat_content_container_id`, App.chat_content_container_id)
     content_container.classList.add(`chat_content_container_${App.chat_content_container_id}`)
 
     if (args.just_edited && args.id) {
-      for (let item of App.els(`#chat_area .message_unit`)) {
-        if (args.id === App.dataset(item, `id`)) {
-          let clone = App.clone(content_container)
+      for (let item of DOM.els(`#chat_area .message_unit`)) {
+        if (args.id === DOM.dataset(item, `id`)) {
+          let clone = DOM.clone(content_container)
           item.replaceWith(clone)
-          message_unit = App.el_or_self(`.message_unit`, clone)
+          message_unit = DOM.el_or_self(`.message_unit`, clone)
 
           if (App.last_selected_message) {
-            if (args.id === App.dataset(App.last_selected_message, `id`)) {
+            if (args.id === DOM.dataset(App.last_selected_message, `id`)) {
               App.last_selected_message = message_unit
             }
           }
@@ -400,9 +400,9 @@ App.insert_message = (args = {}) => {
       }
 
       if (App.msg_chat_search.is_open()) {
-        for (let item of App.els(`#chat_search_container .message_unit`)) {
-          if (args.id === App.dataset(item, `id`)) {
-            let clone = App.clone(content_container)
+        for (let item of DOM.els(`#chat_search_container .message_unit`)) {
+          if (args.id === DOM.dataset(item, `id`)) {
+            let clone = DOM.clone(content_container)
             item.replaceWith(clone)
             break
           }
@@ -410,38 +410,38 @@ App.insert_message = (args = {}) => {
       }
 
       return {
-        message_id: App.dataset(last_message, `message_id`),
+        message_id: DOM.dataset(last_message, `message_id`),
         message_unit: message_unit
       }
     }
   }
   else if (mode === `announcement`) {
-    message_unit = App.el_or_self(`.message_unit`, args.message)
+    message_unit = DOM.el_or_self(`.message_unit`, args.message)
   }
 
   if (last_message) {
-    if (mode === `chat` && App.dataset(last_message, `mode`) === `chat`) {
+    if (mode === `chat` && DOM.dataset(last_message, `mode`) === `chat`) {
       if (
-        App.el(`.chat_username`, args.message).textContent ===
-        App.el(`.chat_username`, last_message).textContent
+        DOM.el(`.chat_username`, args.message).textContent ===
+        DOM.el(`.chat_username`, last_message).textContent
       ) {
         if (
-          App.els(`.chat_content`, last_message).length <
+          DOM.els(`.chat_content`, last_message).length <
           App.config.max_same_post_messages
         ) {
-          let c1 = App.els(`.chat_content_container`, args.message).slice(-1)[0]
-          let c2 = App.els(`.chat_content_container`, last_message).slice(-1)[0]
-          let date_diff = App.dataset(c1, `date`) - App.dataset(c2, `date`)
+          let c1 = DOM.els(`.chat_content_container`, args.message).slice(-1)[0]
+          let c2 = DOM.els(`.chat_content_container`, last_message).slice(-1)[0]
+          let date_diff = DOM.dataset(c1, `date`) - DOM.dataset(c2, `date`)
 
           if (date_diff < App.config.max_same_post_diff) {
-            App.dataset(content_container, `date`, date)
-            App.dataset(content_container, `highlighted`, highlighted)
+            DOM.dataset(content_container, `date`, date)
+            DOM.dataset(content_container, `highlighted`, highlighted)
 
-            App.el(`.chat_container`, last_message).append(content_container)
-            message_id = App.dataset(last_message, `message_id`)
+            DOM.el(`.chat_container`, last_message).append(content_container)
+            message_id = DOM.dataset(last_message, `message_id`)
 
-            if (!App.dataset(last_message, `highlighted`)) {
-              App.dataset(last_message, `highlighted`, highlighted)
+            if (!DOM.dataset(last_message, `highlighted`)) {
+              DOM.dataset(last_message, `highlighted`, highlighted)
             }
 
             appended = true
@@ -452,14 +452,14 @@ App.insert_message = (args = {}) => {
   }
 
   if (mode === `chat`) {
-    message_unit = App.el_or_self(`.message_unit`, content_container)
+    message_unit = DOM.el_or_self(`.message_unit`, content_container)
   }
 
   if (!appended) {
-    App.el(`#chat_area`).append(args.message)
+    DOM.el(`#chat_area`).append(args.message)
     App.message_id += 1
     message_id = App.message_id
-    App.dataset(args.message, `message_id`, message_id)
+    DOM.dataset(args.message, `message_id`, message_id)
     args.message.classList.add(`message_id_${message_id}`)
   }
 
@@ -498,7 +498,7 @@ App.insert_message = (args = {}) => {
       App.add_fresh_message(content_container)
     }
     else {
-      let container = App.el(`.announcement_content_container`, args.message)
+      let container = DOM.el(`.announcement_content_container`, args.message)
       App.add_fresh_message(container)
     }
   }
@@ -517,27 +517,27 @@ App.get_reply_text = () => {
     return ``
   }
 
-  let text = App.dataset(App.el_or_self(`.unit_data_container`, ans[0]), `original_message`)
+  let text = DOM.dataset(DOM.el_or_self(`.unit_data_container`, ans[0]), `original_message`)
   return App.remove_urls(App.utilz.single_space(text))
 }
 
 // Setup reply
 App.setup_reply = () => {
-  App.ev(App.el(`#input_reply_cancel`), `click`, () => {
+  DOM.ev(DOM.el(`#input_reply_cancel`), `click`, () => {
     App.hide_reply()
   })
 
-  App.ev(App.el(`#input_reply_container`), `mouseenter`, (e) => {
+  DOM.ev(DOM.el(`#input_reply_container`), `mouseenter`, (e) => {
     e.target.title = `${App.reply_username}: ${App.get_reply_text()}`
   })
 
-  let pf = App.el(`#input_reply_profilepic`)
+  let pf = DOM.el(`#input_reply_profilepic`)
 
-  App.ev(pf, `error`, () => {
+  DOM.ev(pf, `error`, () => {
     App.fallback_profilepic(pf)
   })
 
-  App.ev(pf, `click`, () => {
+  DOM.ev(pf, `click`, () => {
     App.show_profile(App.reply_username, App.reply_user_id)
   })
 }
@@ -554,9 +554,9 @@ App.start_reply = (target) => {
 
   let message = target.closest(`.message`)
   let unit = target.closest(`.message_unit`)
-  let username = App.dataset(message, `username`)
-  let user_id = App.dataset(message, `user_id`)
-  let id = App.dataset(unit, `id`)
+  let username = DOM.dataset(message, `username`)
+  let user_id = DOM.dataset(message, `user_id`)
+  let id = DOM.dataset(unit, `id`)
 
   if (!username) {
     return
@@ -574,8 +574,8 @@ App.start_reply = (target) => {
 // Show the reply info
 App.show_reply = () => {
   App.hide_edit()
-  App.el(`#input_reply_profilepic`).src = App.get_profilepic(App.reply_user_id)
-  App.el(`#input_reply_container`).classList.remove(`nodisplay`)
+  DOM.el(`#input_reply_profilepic`).src = App.get_profilepic(App.reply_user_id)
+  DOM.el(`#input_reply_container`).classList.remove(`nodisplay`)
   App.reply_active = true
   App.focus_input()
 }
@@ -588,7 +588,7 @@ App.cancel_reply = () => {
 
 // Hide the reply info
 App.hide_reply = () => {
-  App.el(`#input_reply_container`).classList.add(`nodisplay`)
+  DOM.el(`#input_reply_container`).classList.add(`nodisplay`)
   App.reply_active = false
   App.check_footer_expand()
   App.update_input_placeholder()
@@ -655,7 +655,7 @@ App.show_fresh_messages = () => {
 
 // Setup edit message
 App.setup_edit = () => {
-  App.ev(App.el(`#input_edit_cancel`), `click`, () => {
+  DOM.ev(DOM.el(`#input_edit_cancel`), `click`, () => {
     App.cancel_edit()
   })
 }
@@ -668,7 +668,7 @@ App.start_edit = (unit) => {
 
   App.edit_container = unit.closest(`.message`)
   App.edit_unit = unit
-  App.edit_original_message = App.dataset(unit.closest(`.unit_data_container`), `original_message`)
+  App.edit_original_message = DOM.dataset(unit.closest(`.unit_data_container`), `original_message`)
   App.change_input(App.edit_original_message)
   App.hide_reply()
   App.show_edit()
@@ -678,34 +678,34 @@ App.start_edit = (unit) => {
 // Show edit
 App.show_edit = () => {
   App.hide_reply()
-  App.el(`#input_edit_container`).classList.remove(`nodisplay`)
+  DOM.el(`#input_edit_container`).classList.remove(`nodisplay`)
   App.edit_active = true
 }
 
 // Hide edit
 App.hide_edit = () => {
-  App.el(`#input_edit_container`).classList.add(`nodisplay`)
+  DOM.el(`#input_edit_container`).classList.add(`nodisplay`)
   App.check_footer_expand()
   App.edit_active = false
 }
 
 // Submit edit
 App.submit_edit = () => {
-  let mode = App.dataset(App.edit_container, `mode`)
+  let mode = DOM.dataset(App.edit_container, `mode`)
   let edit_id
 
   if (mode === `chat`) {
-    edit_id = App.dataset(App.edit_unit.closest(`.chat_content_container`), `id`)
+    edit_id = DOM.dataset(App.edit_unit.closest(`.chat_content_container`), `id`)
   }
   else {
-    edit_id = App.dataset(App.edit_container, `id`)
+    edit_id = DOM.dataset(App.edit_container, `id`)
   }
 
   if (!edit_id) {
     return
   }
 
-  let type = App.dataset(App.edit_container, `type`)
+  let type = DOM.dataset(App.edit_container, `type`)
   let new_message = App.get_input()
 
   App.hide_edit()
@@ -765,8 +765,8 @@ App.delete_message_group = (id) => {
 
   App.show_confirm(`Delete message group (${s})`, () => {
 
-    for (let unit of App.els(`.message_unit`, message)) {
-      let id = App.dataset(unit, `id`)
+    for (let unit of DOM.els(`.message_unit`, message)) {
+      let id = DOM.dataset(unit, `id`)
 
       if (id) {
         App.socket_emit(`delete_message`, {
@@ -818,10 +818,10 @@ App.get_message_by_id = (id, container = `#chat_area`) => {
     return
   }
 
-  let units = App.els(`${container} .message_unit`)
+  let units = DOM.els(`${container} .message_unit`)
 
   for (let i=0; i<units.length; i++) {
-    let uid = App.dataset(units[i], `id`)
+    let uid = DOM.dataset(units[i], `id`)
 
     if (uid && uid === id) {
       return [units[i], i, id]
@@ -831,7 +831,7 @@ App.get_message_by_id = (id, container = `#chat_area`) => {
 
 // Get message
 App.get_message = (message_id, container = `#chat_area`) => {
-  return App.el(`${container} > .message_id_${message_id}`)
+  return DOM.el(`${container} > .message_id_${message_id}`)
 }
 
 // Get message container by id
@@ -855,7 +855,7 @@ App.remove_message_from_chat = (data) => {
   }
 
   let message = ans[0]
-  let mode = App.dataset(message.closest(`.message`), `mode`)
+  let mode = DOM.dataset(message.closest(`.message`), `mode`)
 
   if (mode === `chat`) {
     App.process_remove_chat_message(message)
@@ -868,7 +868,7 @@ App.remove_message_from_chat = (data) => {
 // Removes a chat message from the chat, when triggered through the context menu
 App.remove_message_from_context_menu = (menu) => {
   let message = menu.closest(`.message`)
-  let mode = App.dataset(message, `mode`)
+  let mode = DOM.dataset(message, `mode`)
 
   if (mode === `chat`) {
     App.process_remove_chat_message(menu.closest(`.chat_content_container`))
@@ -880,14 +880,14 @@ App.remove_message_from_context_menu = (menu) => {
 
 // Determines how to remove a chat message
 App.process_remove_chat_message = (chat_content_container) => {
-  let chat_content_container_id = App.dataset(chat_content_container, `chat_content_container_id`)
+  let chat_content_container_id = DOM.dataset(chat_content_container, `chat_content_container_id`)
 
-  for (let el of App.els(`.chat_content_container`)) {
+  for (let el of DOM.els(`.chat_content_container`)) {
     if (
-      App.dataset(el, `chat_content_container_id`) === chat_content_container_id
+      DOM.dataset(el, `chat_content_container_id`) === chat_content_container_id
     ) {
       if (
-        App.els(`.chat_content_container`, el.closest(`.chat_container`)).length === 1
+        DOM.els(`.chat_content_container`, el.closest(`.chat_container`)).length === 1
       ) {
         el.closest(`.message`).remove()
       }
@@ -900,18 +900,18 @@ App.process_remove_chat_message = (chat_content_container) => {
 
 // Determines how to remove an announcement
 App.process_remove_announcement = (message) => {
-  let type = App.dataset(message, `type`)
-  let message_id = App.dataset(message, `message_id`)
+  let type = DOM.dataset(message, `type`)
+  let message_id = DOM.dataset(message, `message_id`)
 
   if (
     type === `image_change` ||
     type === `tv_change`
   ) {
-    let id = App.dataset(message, `id`)
+    let id = DOM.dataset(message, `id`)
     App.remove_item_from_media_changed(type.replace(`_change`, ``), id)
   }
 
-  for (let el of App.els(`.message_id_${message_id}`)) {
+  for (let el of DOM.els(`.message_id_${message_id}`)) {
     el.remove()
   }
 }
@@ -921,7 +921,7 @@ App.get_last_message_by_user_id = (ouser_id) => {
   let items = App.get_all_messages()
 
   for (let item of items.reverse()) {
-    let user_id = App.dataset(item, `user_id`)
+    let user_id = DOM.dataset(item, `user_id`)
 
     if (user_id) {
       if (user_id === ouser_id) {
@@ -976,17 +976,17 @@ App.activity_above = () => {
 
   for (let message of messages.reverse()) {
     let same_username = false
-    let username = App.dataset(message, `username`)
+    let username = DOM.dataset(message, `username`)
 
     if (username && username === App.username) {
       same_username = true
     }
 
-    if (same_username || App.dataset(message, `highlighted`)) {
+    if (same_username || DOM.dataset(message, `highlighted`)) {
       let rect = message.getBoundingClientRect()
 
       if (rect.top <= 0) {
-        App.jump_to_chat_message(App.dataset(message, `message_id`), true)
+        App.jump_to_chat_message(DOM.dataset(message, `message_id`), true)
         return
       }
     }
@@ -1002,22 +1002,22 @@ App.activity_below = () => {
 
   for (let message of messages) {
     let same_username = false
-    let username = App.dataset(message, `username`)
+    let username = DOM.dataset(message, `username`)
 
     if (username && username === App.username) {
       same_username = true
     }
 
-    let area = App.el(`#chat_area`)
+    let area = DOM.el(`#chat_area`)
     let area_height = area.offsetHeight
     let area_rect = area.getBoundingClientRect()
 
-    if (same_username || App.dataset(message, `highlighted`)) {
-      if (same_username || App.dataset(message, `highlighted`)) {
+    if (same_username || DOM.dataset(message, `highlighted`)) {
+      if (same_username || DOM.dataset(message, `highlighted`)) {
         let rect = message.getBoundingClientRect()
 
         if (rect.top >= area_rect.top + area_height) {
-          App.jump_to_chat_message(App.dataset(message, `message_id`), true)
+          App.jump_to_chat_message(DOM.dataset(message, `message_id`), true)
           return
         }
       }
@@ -1029,7 +1029,7 @@ App.activity_below = () => {
 
 // Clears the chat area
 App.clear_chat = () => {
-  App.el(`#chat_area`).innerHTML = ``
+  DOM.el(`#chat_area`).innerHTML = ``
 }
 
 // Changes the chat display size
@@ -1053,27 +1053,27 @@ App.do_chat_size_change = (size) => {
 
 // Scrolls the chat to a certain vertical position
 App.scroll_chat_to = (scrolltop) => {
-  App.el(`#chat_area_parent`).scrollTop = scrolltop
+  DOM.el(`#chat_area_parent`).scrollTop = scrolltop
 }
 
 // Scrolls the chat up
 App.scroll_up = () => {
-  App.el(`#chat_area_parent`).scrollTop -= App.chat_scroll_amount
+  DOM.el(`#chat_area_parent`).scrollTop -= App.chat_scroll_amount
 }
 
 // Scrolls the chat up (more)
 App.scroll_up_2 = () => {
-  App.el(`#chat_area_parent`).scrollTop -= App.chat_scroll_amount_2
+  DOM.el(`#chat_area_parent`).scrollTop -= App.chat_scroll_amount_2
 }
 
 // Scrolls the chat down
 App.scroll_down = () => {
-  App.el(`#chat_area_parent`).scrollTop += App.chat_scroll_amount
+  DOM.el(`#chat_area_parent`).scrollTop += App.chat_scroll_amount
 }
 
 // Scrolls the chat down (more)
 App.scroll_down_2 = () => {
-  App.el(`#chat_area_parent`).scrollTop += App.chat_scroll_amount_2
+  DOM.el(`#chat_area_parent`).scrollTop += App.chat_scroll_amount_2
 }
 
 // Generates the username mention regex using the highlights regex
@@ -1162,16 +1162,16 @@ App.make_link_preview = (args = {}) => {
 
 // Setups link preview elements
 App.setup_link_preview = (fmessage) => {
-  let link_preview_el = App.el(`.link_preview`, fmessage)
-  let link_preview_image = App.el(`.link_preview_image`, link_preview_el)
+  let link_preview_el = DOM.el(`.link_preview`, fmessage)
+  let link_preview_image = DOM.el(`.link_preview_image`, link_preview_el)
 
   if (link_preview_image) {
-    App.ev(link_preview_image, `error`, () => {
+    DOM.ev(link_preview_image, `error`, () => {
       link_preview_image.style.display = `none`
     })
   }
 
-  App.urlize(App.el(`.link_preview_text`, link_preview_el.parentElement))
+  App.urlize(DOM.el(`.link_preview_text`, link_preview_el.parentElement))
 }
 
 // Makes image preview elements
@@ -1213,22 +1213,22 @@ App.make_image_preview = (message) => {
 
 // Setups image preview elements
 App.setup_image_preview = (fmessage, image_preview_src_original) => {
-  let image_preview_el = App.el(`.image_preview`, fmessage)
-  let image_preview_image = App.el(`.image_preview_image`, image_preview_el)
+  let image_preview_el = DOM.el(`.image_preview`, fmessage)
+  let image_preview_image = DOM.el(`.image_preview_image`, image_preview_el)
 
-  App.ev(image_preview_image, `error`, () => {
+  DOM.ev(image_preview_image, `error`, () => {
     image_preview_image.style.display = `none`
   })
 
-  App.urlize(App.el(`.image_preview_text`, image_preview_el.parentElement))
-  App.dataset(image_preview_image, `image_preview_src_original`, image_preview_src_original)
+  App.urlize(DOM.el(`.image_preview_text`, image_preview_el.parentElement))
+  DOM.dataset(image_preview_image, `image_preview_src_original`, image_preview_src_original)
 }
 
 // Starts chat area scroll events
 App.scroll_events = () => {
-  let chat = App.el(`#chat_area_parent`)
+  let chat = DOM.el(`#chat_area_parent`)
 
-  App.ev(chat, `scroll`, (e) => {
+  DOM.ev(chat, `scroll`, (e) => {
     App.scroll_timer()
     App.update_scroll_percentage()
   })
@@ -1236,12 +1236,12 @@ App.scroll_events = () => {
 
 // Update the scroll percentange on the chat scrollers
 App.update_scroll_percentage = () => {
-  let area = App.el(`#chat_area_parent`)
-  let container = App.el(`#chat_main`)
+  let area = DOM.el(`#chat_area_parent`)
+  let container = DOM.el(`#chat_main`)
   let p = (area.scrollTop || container.scrollTop) / ((area.scrollHeight || container.scrollHeight) - area.clientHeight)
   let percentage = Math.round(p * 100)
-  App.el(`#top_percentage_scroller`).textContent = `${percentage}%`
-  App.el(`#bottom_percentage_scroller`).textContent = `${percentage}%`
+  DOM.el(`#top_percentage_scroller`).textContent = `${percentage}%`
+  DOM.el(`#bottom_percentage_scroller`).textContent = `${percentage}%`
 }
 
 // Shows the top scroller
@@ -1252,7 +1252,7 @@ App.show_top_scroller = () => {
     return
   }
 
-  App.el(`#top_scroller_container`).style.visibility = `visible`
+  DOM.el(`#top_scroller_container`).style.visibility = `visible`
   App.top_scroller_visible = true
 }
 
@@ -1262,7 +1262,7 @@ App.hide_top_scroller = () => {
     return
   }
 
-  App.el(`#top_scroller_container`).style.visibility = `hidden`
+  DOM.el(`#top_scroller_container`).style.visibility = `hidden`
   App.top_scroller_visible = false
 }
 
@@ -1274,7 +1274,7 @@ App.show_bottom_scroller = () => {
     return
   }
 
-  App.el(`#bottom_scroller_container`).style.visibility = `visible`
+  DOM.el(`#bottom_scroller_container`).style.visibility = `visible`
   App.chat_scrolled = true
   App.bottom_scroller_visible = true
 }
@@ -1285,7 +1285,7 @@ App.hide_bottom_scroller = () => {
     return
   }
 
-  App.el(`#bottom_scroller_container`).style.visibility = `hidden`
+  DOM.el(`#bottom_scroller_container`).style.visibility = `hidden`
   App.chat_scrolled = false
   App.bottom_scroller_visible = false
 }
@@ -1297,7 +1297,7 @@ App.check_scrollers = () => {
   }
 
   let threshold = 100
-  let area = App.el(`#chat_area_parent`)
+  let area = DOM.el(`#chat_area_parent`)
   let max = area.scrollHeight - area.clientHeight
   let diff = max - area.scrollTop
 
@@ -1329,7 +1329,7 @@ App.goto_bottom = (force = false) => {
     return
   }
 
-  let chat = App.el(`#chat_area_parent`)
+  let chat = DOM.el(`#chat_area_parent`)
   let max = chat.scrollHeight - chat.clientHeight
 
   if (force || !App.chat_scrolled) {
@@ -1444,28 +1444,28 @@ App.public_feedback = (message, data = false) => {
 
 // Setups some chat configs
 App.setup_chat = () => {
-  App.ev(App.el(`#top_scroller`), `click`, () => {
+  DOM.ev(DOM.el(`#top_scroller`), `click`, () => {
     App.goto_top()
   })
 
-  App.ev(App.el(`#activity_up_scroller`), `click`, () => {
+  DOM.ev(DOM.el(`#activity_up_scroller`), `click`, () => {
     App.activity_above()
   })
 
-  App.ev(App.el(`#bottom_scroller`), `click`, () => {
+  DOM.ev(DOM.el(`#bottom_scroller`), `click`, () => {
     App.goto_bottom(true)
     App.unselect_message()
   })
 
-  App.ev(App.el(`#activity_down_scroller`), `click`, () => {
+  DOM.ev(DOM.el(`#activity_down_scroller`), `click`, () => {
     App.activity_below()
   })
 
-  App.ev(App.el(`#top_percentage_scroller`), `click`, () => {
+  DOM.ev(DOM.el(`#top_percentage_scroller`), `click`, () => {
     App.scroll_up_2()
   })
 
-  App.ev(App.el(`#bottom_percentage_scroller`), `click`, () => {
+  DOM.ev(DOM.el(`#bottom_percentage_scroller`), `click`, () => {
     App.scroll_down_2()
   })
 
@@ -1474,21 +1474,21 @@ App.setup_chat = () => {
     App.goto_bottom()
   })
 
-  App.chat_resize_observer.observe(App.el(`#chat_area`))
-  App.chat_resize_observer.observe(App.el(`#chat_area_parent`))
+  App.chat_resize_observer.observe(DOM.el(`#chat_area`))
+  App.chat_resize_observer.observe(DOM.el(`#chat_area_parent`))
 
   App.check_chat_enabled()
   App.do_chat_font_size_change()
 
   let options = {
-    root: App.el(`#chat_area_parent`),
+    root: DOM.el(`#chat_area_parent`),
     rootMargin: `0px`,
     threshold: 1,
   }
 
   App.chat_intersection_observer = new IntersectionObserver((entries) => {
     for (let entry of entries) {
-      App.dataset(entry.target, `visible`, entry.isIntersecting)
+      DOM.dataset(entry.target, `visible`, entry.isIntersecting)
     }
   }, options)
 }
@@ -1529,19 +1529,19 @@ App.activity_notification = (username) => {
 
 // Get last chat message or announcement date
 App.get_last_message_date = () => {
-  let a = App.dataset(App.els(`#chat_area .chat_content_container`).slice(-1)[0], `date`) || 0
-  let b = App.dataset(App.els(`#chat_area .media_announcement`).slice(-1)[0], `date`) || 0
+  let a = DOM.dataset(DOM.els(`#chat_area .chat_content_container`).slice(-1)[0], `date`) || 0
+  let b = DOM.dataset(DOM.els(`#chat_area .media_announcement`).slice(-1)[0], `date`) || 0
   return Math.max(a, b)
 }
 
 // Clear the chat by adding a spacer
 App.add_chat_spacer = () => {
-  for (let el of App.els(`.clear_spacer`)) {
+  for (let el of DOM.els(`.clear_spacer`)) {
     el.remove()
   }
 
-  let spacer = App.create(`div`, `message clear_spacer`)
-  App.el(`#chat_area`).append(spacer)
+  let spacer = DOM.create(`div`, `message clear_spacer`)
+  DOM.el(`#chat_area`).append(spacer)
   App.goto_bottom(true)
 }
 
@@ -1559,7 +1559,7 @@ App.clear_log = () => {
 
 // When chat log is cleared
 App.announce_log_cleared = (data) => {
-  let areas = App.els(`.chat_area`)
+  let areas = DOM.els(`.chat_area`)
 
   for (let area of areas) {
     area.innerHTML = ``
@@ -1575,21 +1575,21 @@ App.announce_log_cleared = (data) => {
 
 // Setup delete messages
 App.setup_delete_messages = () => {
-  App.ev(App.el(`#delete_messages_one`), `click`, () => {
+  DOM.ev(DOM.el(`#delete_messages_one`), `click`, () => {
     App.delete_message_action()
   })
 
-  App.ev(App.el(`#delete_messages_group`), `click`, () => {
+  DOM.ev(DOM.el(`#delete_messages_group`), `click`, () => {
     App.msg_delete_messages.close()
     App.delete_message_group(App.delete_messages_id)
   })
 
-  App.ev(App.el(`#delete_messages_above`), `click`, () => {
+  DOM.ev(DOM.el(`#delete_messages_above`), `click`, () => {
     App.msg_delete_messages.close()
     App.delete_messages_above(App.delete_messages_id)
   })
 
-  App.ev(App.el(`#delete_messages_below`), `click`, () => {
+  DOM.ev(DOM.el(`#delete_messages_below`), `click`, () => {
     App.msg_delete_messages.close()
     App.delete_messages_below(App.delete_messages_id)
   })
@@ -1621,22 +1621,22 @@ App.handle_delete_messages = (id, user_id) => {
   let num_messages = App.get_all_units().length
   let shown = 1
 
-  App.el(`#delete_messages_group`).style.display = `none`
-  App.el(`#delete_messages_above`).style.display = `none`
-  App.el(`#delete_messages_below`).style.display = `none`
+  DOM.el(`#delete_messages_group`).style.display = `none`
+  DOM.el(`#delete_messages_above`).style.display = `none`
+  DOM.el(`#delete_messages_below`).style.display = `none`
 
   if (num > 1) {
-    App.el(`#delete_messages_group`).style.display = `flex`
+    DOM.el(`#delete_messages_group`).style.display = `flex`
     shown += 1
   }
 
   if (App.is_admin() && index !== 0) {
-    App.el(`#delete_messages_above`).style.display = `flex`
+    DOM.el(`#delete_messages_above`).style.display = `flex`
     shown += 1
   }
 
   if (App.is_admin() && index < num_messages - 1) {
-    App.el(`#delete_messages_below`).style.display = `flex`
+    DOM.el(`#delete_messages_below`).style.display = `flex`
     shown += 1
   }
 
@@ -1645,7 +1645,7 @@ App.handle_delete_messages = (id, user_id) => {
     return
   }
 
-  App.horizontal_separator(App.el(`#delete_messages_titlebar`))
+  App.horizontal_separator(DOM.el(`#delete_messages_titlebar`))
   App.msg_delete_messages.show()
 }
 
@@ -1666,7 +1666,7 @@ App.deleted_messages_above = (data) => {
 
   for (let i=0; i<ans[1]; i++) {
     let unit = units[i]
-    let mode = App.dataset(unit.closest(`.message`), `mode`)
+    let mode = DOM.dataset(unit.closest(`.message`), `mode`)
 
     if (mode === `chat`) {
       App.process_remove_chat_message(unit)
@@ -1694,7 +1694,7 @@ App.deleted_messages_below = (data) => {
 
   for (let i=ans[1]+1; i<units.length; i++) {
     let unit = units[i]
-    let mode = App.dataset(unit.closest(`.message`), `mode`)
+    let mode = DOM.dataset(unit.closest(`.message`), `mode`)
 
     if (mode === `chat`) {
       App.process_remove_chat_message(unit)
@@ -1708,10 +1708,10 @@ App.deleted_messages_below = (data) => {
 // Check chat enabled
 App.check_chat_enabled = () => {
   if (App.room_state.chat_enabled) {
-    App.el(`#chat_main`).classList.remove(`nodisplay`)
+    DOM.el(`#chat_main`).classList.remove(`nodisplay`)
   }
   else {
-    App.el(`#chat_main`).classList.add(`nodisplay`)
+    DOM.el(`#chat_main`).classList.add(`nodisplay`)
   }
 }
 
@@ -1800,11 +1800,11 @@ App.check_max_chat_messages = () => {
 App.like_message = (target, type) => {
   let unit = target.closest(`.message_unit`)
 
-  if (type === `like` && App.dataset(unit, `likes`).length >= App.config.max_likes) {
+  if (type === `like` && DOM.dataset(unit, `likes`).length >= App.config.max_likes) {
     return
   }
 
-  let id = App.dataset(unit, `id`)
+  let id = DOM.dataset(unit, `id`)
 
   App.socket_emit(`like_message`, {
     id: id,
@@ -1818,7 +1818,7 @@ App.liked_message = (data) => {
 
   if (ans) {
     let el = ans[0]
-    let likes = App.dataset(el, `likes`)
+    let likes = DOM.dataset(el, `likes`)
 
     if (data.type === `like`) {
       likes.push(data.obj)
@@ -1827,14 +1827,14 @@ App.liked_message = (data) => {
       likes = likes.filter(x => x.user_id !== data.obj.user_id)
     }
 
-    App.dataset(el, `likes`, likes)
+    DOM.dataset(el, `likes`, likes)
     App.update_likes(el, likes)
 
     if (App.msg_chat_search.is_open()) {
-      let id = App.dataset(el, `id`)
+      let id = DOM.dataset(el, `id`)
 
-      for (let item of App.els(`#chat_search_container .message_unit`)) {
-        if (id === App.dataset(item, `id`)) {
+      for (let item of DOM.els(`#chat_search_container .message_unit`)) {
+        if (id === DOM.dataset(item, `id`)) {
           App.update_likes(item, likes)
           break
         }
@@ -1845,30 +1845,30 @@ App.liked_message = (data) => {
 
 // Update likes container
 App.update_likes = (el, likes) => {
-  let c = App.el(`.likes_container`, el)
+  let c = DOM.el(`.likes_container`, el)
 
   if (likes.length > 0) {
     c.innerHTML = `<div class='likes_label'>^ Likes:</div><div class='likes_items'></div>`
     for (let obj of likes) {
       let pi = App.get_profilepic(obj.user_id)
-      let el = App.create(`div`, `like_container dynamic_title`)
+      let el = DOM.create(`div`, `like_container dynamic_title`)
       el.innerHTML = App.template_like({profilepic: pi})
 
       let nd = App.utilz.nice_date(obj.date)
       let title = `${obj.username} | ${nd}`
       el.title = title
 
-      App.dataset(el, `user_id`, obj.user_id)
-      App.dataset(el, `username`, obj.username)
-      App.dataset(el, `date`, obj.date)
-      App.dataset(el, `otitle`, title)
+      DOM.dataset(el, `user_id`, obj.user_id)
+      DOM.dataset(el, `username`, obj.username)
+      DOM.dataset(el, `date`, obj.date)
+      DOM.dataset(el, `otitle`, title)
 
-      let profilepic = App.el(`.like_profilepic`, el)
-      App.ev(profilepic, `error`, () => {
+      let profilepic = DOM.el(`.like_profilepic`, el)
+      DOM.ev(profilepic, `error`, () => {
         App.fallback_profilepic(profilepic)
       })
 
-      App.el(`.likes_items`, c).append(el)
+      DOM.el(`.likes_items`, c).append(el)
     }
     c.style.display = `flex`
   }
@@ -1880,7 +1880,7 @@ App.update_likes = (el, likes) => {
 // Get number of units in a message
 App.get_num_message_units = (unit) => {
   let message = unit.closest(`.message`)
-  return App.els_or_self(`.message_unit`, message).length
+  return DOM.els_or_self(`.message_unit`, message).length
 }
 
 // Select message unit
@@ -1900,16 +1900,16 @@ App.select_middle_message = () => {
 
 // Remove selected classes
 App.remove_selected_classes = () => {
-  for (let unit of App.els(`.selected_message`)) {
+  for (let unit of DOM.els(`.selected_message`)) {
     unit.classList.remove(`selected_message`)
   }
 }
 
 // Check last selected message action
 App.check_last_selected_message = () => {
-  let last_u = App.el_or_self(`.message_unit`, App.last_selected_message)
+  let last_u = DOM.el_or_self(`.message_unit`, App.last_selected_message)
 
-  if (App.dataset(last_u, `visible`)) {
+  if (DOM.dataset(last_u, `visible`)) {
     App.select_unit(App.last_selected_message)
   }
   else {
@@ -1921,9 +1921,9 @@ App.check_last_selected_message = () => {
 App.select_message = (direction = `up`) => {
   if (App.chat_scrolled) {
     if (App.selected_message) {
-      let u = App.el_or_self(`.message_unit`, App.selected_message)
+      let u = DOM.el_or_self(`.message_unit`, App.selected_message)
 
-      if (!App.dataset(u, `visible`)) {
+      if (!DOM.dataset(u, `visible`)) {
         App.remove_selected_classes()
 
         if (App.last_selected_message) {
@@ -1989,7 +1989,7 @@ App.select_message = (direction = `up`) => {
 
 // Unselect message
 App.unselect_message = () => {
-  let units = App.els(`#chat_area .selected_message`)
+  let units = DOM.els(`#chat_area .selected_message`)
 
   for (let unit of units) {
     unit.classList.remove(`selected_message`)
@@ -2000,24 +2000,24 @@ App.unselect_message = () => {
 
 // Selected message action
 App.selected_message_action = () => {
-  let el = App.el_or_self(`.unit_text`, App.selected_message)
+  let el = DOM.el_or_self(`.unit_text`, App.selected_message)
   App.show_chat_context_menu(el)
   App.unselect_message()
 }
 
 // Get all messages
 App.get_all_messages = () => {
-  return App.els(`#chat_area > .message`)
+  return DOM.els(`#chat_area > .message`)
 }
 
 // Get all announcements
 App.get_all_announcements = () => {
-  return App.els(`#chat_area > .message.announcement`)
+  return DOM.els(`#chat_area > .message.announcement`)
 }
 
 // Get all units
 App.get_all_units = () => {
-  return App.els(`#chat_area .message_unit`)
+  return DOM.els(`#chat_area .message_unit`)
 }
 
 // Get visible messages
@@ -2025,7 +2025,7 @@ App.get_visible_units = () => {
   let visible = []
 
   for (let unit of App.get_all_units()) {
-    if (App.dataset(unit, `visible`)) {
+    if (DOM.dataset(unit, `visible`)) {
       visible.push(unit)
     }
   }

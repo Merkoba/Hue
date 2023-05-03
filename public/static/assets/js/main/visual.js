@@ -1,6 +1,6 @@
 // Remove & add vertical or horizontal separators
 App.apply_separator = (el, cls) => {
-  for (let sep of App.els(`:scope > .separator`, el)) {
+  for (let sep of DOM.els(`:scope > .separator`, el)) {
     sep.remove()
   }
 
@@ -13,7 +13,7 @@ App.apply_separator = (el, cls) => {
       break
     }
 
-    let sep = App.create(`div`, `separator`)
+    let sep = DOM.create(`div`, `separator`)
     sep.classList.add(cls)
     elems[i].insertAdjacentElement(`afterend`, sep)
   }
@@ -31,31 +31,31 @@ App.vertical_separator = (el) => {
 
 // Applies separation to generic horizontal separator classes
 App.setup_generic_separators = () => {
-  for (let el of App.els(`.generic_horizontal_separator`)) {
+  for (let el of DOM.els(`.generic_horizontal_separator`)) {
     App.horizontal_separator(el)
   }
 
-  for (let el of App.els(`.generic_vertical_separator`)) {
+  for (let el of DOM.els(`.generic_vertical_separator`)) {
     App.vertical_separator(el)
   }
 }
 
 // This hides the loading animation and makes the main container visible
 App.make_main_container_visible = () => {
-  App.el(`#main_container`).style.opacity = 1
-  App.el(`#main_container`).style.pointerEvents = `initial`
+  DOM.el(`#main_container`).style.opacity = 1
+  DOM.el(`#main_container`).style.pointerEvents = `initial`
 }
 
 // Setups the confirm window
 App.setup_confirm = () => {
-  App.ev(App.el(`#confirm_button_confirm`), `click`, () => {
+  DOM.ev(DOM.el(`#confirm_button_confirm`), `click`, () => {
     App.on_confirm()
   })
 }
 
 // Shows the confirm window
 App.show_confirm = (message, action, action_cancel) => {
-  App.el(`#confirm_message`).textContent = message
+  DOM.el(`#confirm_message`).textContent = message
   App.confirm_action = action
   App.confirm_action_cancel = action_cancel
   App.msg_confirm.show()
@@ -109,31 +109,31 @@ App.start_timeago = () => {
 
 // The timeago action
 App.timeago_action = () => {
-  for (let el of App.els(`.chat_area`)) {
-    for (let ct of App.els(`.chat_timeago`, el)) {
+  for (let el of DOM.els(`.chat_area`)) {
+    for (let ct of DOM.els(`.chat_timeago`, el)) {
       let message = ct.closest(`.message`)
-      ct.textContent = App.utilz.timeago(App.dataset(message, `date`))
+      ct.textContent = App.utilz.timeago(DOM.dataset(message, `date`))
     }
   }
 
-  for (let el of App.els(`#media .media_info_container`)) {
-    App.el(`.media_info_timeago`, el).textContent = App.utilz.timeago(App.dataset(el, `date`))
+  for (let el of DOM.els(`#media .media_info_container`)) {
+    DOM.el(`.media_info_timeago`, el).textContent = App.utilz.timeago(DOM.dataset(el, `date`))
   }
 
   if (App.msg_modal_image.is_open()) {
-    App.el(`#modal_image_header_info .modal_image_timeago`)
+    DOM.el(`#modal_image_header_info .modal_image_timeago`)
       .textContent = App.utilz.timeago(App.loaded_modal_image.date)
   }
 }
 
 // Show a message for a small time and close
 App.flash_info = (title, text) => {
-  let el = App.el(`#flash_info`)
-  let text_el = App.el(`#flash_info_text`)
+  let el = DOM.el(`#flash_info`)
+  let text_el = DOM.el(`#flash_info_text`)
   text_el.textContent = text
-  let title_el = App.el(`#flash_info_title_text`)
+  let title_el = DOM.el(`#flash_info_title_text`)
   title_el.textContent = title
-  let icon_el = App.el(`#flash_info_title_icon`)
+  let icon_el = DOM.el(`#flash_info_title_icon`)
   jdenticon.update(icon_el, title)
   el.style.display = `flex`
   App.flash_info_timer()
@@ -141,24 +141,24 @@ App.flash_info = (title, text) => {
 
 // Hide the flash info window
 App.hide_flash_info = () => {
-  let el = App.el(`#flash_info`)
+  let el = DOM.el(`#flash_info`)
   el.style.display = `none`
 }
 
 // Get some element measurements
 App.get_element_sizes = () => {
-  App.panel_height = App.el(`#footer`).offsetHeight
+  App.panel_height = DOM.el(`#footer`).offsetHeight
 }
 
 // Setup item picker
 App.setup_item_picker = () => {
-  let container = App.el(`#item_picker_container`)
+  let container = DOM.el(`#item_picker_container`)
 
-  App.ev(container, `click`, (e) => {
+  DOM.ev(container, `click`, (e) => {
     let el = e.target.closest(`.item_picker_item`)
 
     if (el) {
-      let item = App.dataset(el, `item`)
+      let item = DOM.dataset(el, `item`)
       App.item_picker_callback(item)
       App.msg_item_picker.close()
     }
@@ -167,13 +167,13 @@ App.setup_item_picker = () => {
 
 // Select an item from a list
 App.show_item_picker = (title, items, callback) => {
-  let container = App.el(`#item_picker_container`)
+  let container = DOM.el(`#item_picker_container`)
   container.innerHTML = ``
 
   for (let item of items) {
-    let el = App.create(`div`, `item_picker_item nice_row pointer justify_center`)
+    let el = DOM.create(`div`, `item_picker_item nice_row pointer justify_center`)
     el.textContent = item
-    App.dataset(el, `item`, item)
+    DOM.dataset(el, `item`, item)
     container.append(el)
   }
 

@@ -1,6 +1,6 @@
 // Focuses the filter widget of a modal
 App.focus_modal_filter = (instance) => {
-  let filter = App.el(`#Msg-content-${instance.options.id} .filter_input`)
+  let filter = DOM.el(`#Msg-content-${instance.options.id} .filter_input`)
 
   if (filter) {
     filter.focus()
@@ -10,7 +10,7 @@ App.focus_modal_filter = (instance) => {
 // Empties the filter of a modal and updates it
 App.reset_modal_filter = (instance) => {
   let id = instance.options.id
-  let filter = App.el(`#Msg-content-${id} .filter_input`)
+  let filter = DOM.el(`#Msg-content-${id} .filter_input`)
 
   if (filter) {
     if (id === `info` || filter.dataset.mode === `manual`) {
@@ -35,7 +35,7 @@ App.do_modal_filter = (id = false) => {
   }
 
   if (id === `chat_search`) {
-    App.show_chat_search(App.el(`#chat_search_filter`).value)
+    App.show_chat_search(DOM.el(`#chat_search_filter`).value)
     return
   }
 
@@ -47,7 +47,7 @@ App.do_modal_filter = (id = false) => {
     }
 
     if (filter.startsWith(`$user`)) {
-      let username = App.dataset(it, `username`)
+      let username = DOM.dataset(it, `username`)
       let match = username && first_arg === username.toLowerCase()
 
       if (match) {
@@ -59,7 +59,7 @@ App.do_modal_filter = (id = false) => {
       return match
     }
     else if (filter.startsWith(`$fresh`)) {
-      let match = App.dataset(it, `fresh`)
+      let match = DOM.dataset(it, `fresh`)
 
       if (match) {
         if (args) {
@@ -89,11 +89,11 @@ App.do_modal_filter = (id = false) => {
     }
   }
 
-  let win = App.el(`#Msg-content-${id}`)
-  let filter_el = App.el(`.filter_input`, win)
+  let win = DOM.el(`#Msg-content-${id}`)
+  let filter_el = DOM.el(`.filter_input`, win)
   let filter0 = App.utilz.single_space(filter_el.value).trim()
   let filter = filter0.toLowerCase()
-  let items = App.els(`.modal_item`, win)
+  let items = DOM.els(`.modal_item`, win)
   let args, first_arg, tail
 
   if (filter && items.length) {

@@ -22,7 +22,7 @@ App.els = function (query) {
 }
 
 function msg_info_after_close (instance) {
-	App.el("form").querySelector("input").focus()
+	DOM.el("form").querySelector("input").focus()
 }
 
 function show_info (s) {

@@ -1,17 +1,17 @@
 App.setup_linksbar = () => {
-  let links = App.el(`#linksbar_links`)
+  let links = DOM.el(`#linksbar_links`)
 
-  App.ev(links, `click`, () => {
+  DOM.ev(links, `click`, () => {
     App.show_links()
   })
 
-  let click = App.el(`#linksbar_click`)
+  let click = DOM.el(`#linksbar_click`)
 
-  App.ev(click, `click`, () => {
+  DOM.ev(click, `click`, () => {
     App.linksbar_click()
   })
 
-  App.ev(click, `auxclick`, (e) => {
+  DOM.ev(click, `auxclick`, (e) => {
     App.show_linksbar_context(e.clientX, e.clientY)
   })
 
@@ -19,7 +19,7 @@ App.setup_linksbar = () => {
 }
 
 App.check_linksbar = () => {
-  let bar = App.el(`#linksbar`)
+  let bar = DOM.el(`#linksbar`)
 
   if (App.get_setting(`show_linksbar`)) {
     bar.classList.remove(`nodisplay`)
@@ -55,7 +55,7 @@ App.update_linksbar = () => {
     return
   }
 
-  let url_el = App.el(`#linksbar_url`)
+  let url_el = DOM.el(`#linksbar_url`)
   url_el.textContent = item.url || ``
 
   if (item.url) {
@@ -65,7 +65,7 @@ App.update_linksbar = () => {
     url_el.classList.add(`nodisplay`)
   }
 
-  let title_el = App.el(`#linksbar_title`)
+  let title_el = DOM.el(`#linksbar_title`)
   title_el.textContent = item.title || ``
 
   if (item.title) {
@@ -75,11 +75,11 @@ App.update_linksbar = () => {
     title_el.classList.add(`nodisplay`)
   }
 
-  let click = App.el(`#linksbar_click`)
-  App.dataset(click, `date`, item.date)
-  App.dataset(click, `otitle`, `Linked by ${item.username}`)
-  App.horizontal_separator(App.el(`#linksbar`))
-  App.horizontal_separator(App.el(`#linksbar_click`))
+  let click = DOM.el(`#linksbar_click`)
+  DOM.dataset(click, `date`, item.date)
+  DOM.dataset(click, `otitle`, `Linked by ${item.username}`)
+  App.horizontal_separator(DOM.el(`#linksbar`))
+  App.horizontal_separator(DOM.el(`#linksbar_click`))
 }
 
 App.linksbar_copy_url = () => {

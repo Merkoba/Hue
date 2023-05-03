@@ -9,17 +9,17 @@ App.show_chat_context_menu = (button, x, y) => {
 
   let items = []
   let message = button.closest(`.message`)
-  let mode = App.dataset(message, `mode`)
-  let type = App.dataset(message, `type`)
-  let user_id = App.dataset(message, `user_id`)
-  let id = App.dataset(unit, `id`)
-  let likes = App.dataset(unit, `likes`)
-  let message_id = App.dataset(message, `message_id`)
+  let mode = DOM.dataset(message, `mode`)
+  let type = DOM.dataset(message, `type`)
+  let user_id = DOM.dataset(message, `user_id`)
+  let id = DOM.dataset(unit, `id`)
+  let likes = DOM.dataset(unit, `likes`)
+  let message_id = DOM.dataset(message, `message_id`)
   let url = ``
 
   if (mode === `chat`) {
     let container = button.closest(`.chat_content_container`)
-    url = App.dataset(container, `first_url`)
+    url = DOM.dataset(container, `first_url`)
   }
 
   let has_reply = false
@@ -29,7 +29,7 @@ App.show_chat_context_menu = (button, x, y) => {
     items.push({
       text: `Reply`,
       action: () => {
-        let el = App.el(`.unit_text`, button.closest(`.message_unit`))
+        let el = DOM.el(`.unit_text`, button.closest(`.message_unit`))
         App.start_reply(el)
       }
     })
@@ -41,7 +41,7 @@ App.show_chat_context_menu = (button, x, y) => {
     items.push({
       text: `Edit`,
       action: () => {
-        let el = App.el(`.unit_text`, button.closest(`.message_unit`))
+        let el = DOM.el(`.unit_text`, button.closest(`.message_unit`))
         App.start_edit(el)
       }
     })
@@ -58,7 +58,7 @@ App.show_chat_context_menu = (button, x, y) => {
   if (mode === `chat` || type === `image_change` || type === `tv_change`) {
     let text = `Like`
     let type = `like`
-    let included = App.dataset(unit, `likes`).some(x => x.user_id === App.user_id)
+    let included = DOM.dataset(unit, `likes`).some(x => x.user_id === App.user_id)
 
     // Check if the user already like the post
     if (included) {
@@ -70,7 +70,7 @@ App.show_chat_context_menu = (button, x, y) => {
       items.push({
         text: text,
         action: () => {
-          let el = App.el(`.unit_text`, button.closest(`.message_unit`))
+          let el = DOM.el(`.unit_text`, button.closest(`.message_unit`))
           App.like_message(el, type)
         }
       })
@@ -177,7 +177,7 @@ App.show_input_menu = () => {
     }
   })
 
-  let el = App.el(`#footer_input_menu`)
+  let el = DOM.el(`#footer_input_menu`)
   NeedContext.show_on_element(el, items)
 }
 

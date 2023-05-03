@@ -382,7 +382,7 @@ App.on_disconnect = () => {
   App.last_message_date = App.get_last_message_date()
   App.generate_favicon(-1)
 
-  if (!App.el(`#reconnecting_feedback`)) {
+  if (!DOM.el(`#reconnecting_feedback`)) {
     App.feedback(`Reconnecting...`, { container_id: `reconnecting_feedback` })
   }
 

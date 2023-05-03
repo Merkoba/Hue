@@ -1,15 +1,20 @@
+// DOM v1.0.0
+const DOM = {}
+DOM.dataset_obj = {}
+DOM.dataset_id = 0
+
 // Select a single element
-App.el = (query, root = document) => {
+DOM.el = (query, root = document) => {
   return root.querySelector(query)
 }
 
 // Select an array of elements
-App.els = (query, root = document) => {
+DOM.els = (query, root = document) => {
   return Array.from(root.querySelectorAll(query))
 }
 
 // Select a single element or self
-App.el_or_self = (query, root = document) => {
+DOM.el_or_self = (query, root = document) => {
   let el = root.querySelector(query)
 
   if (!el) {
@@ -22,7 +27,7 @@ App.el_or_self = (query, root = document) => {
 }
 
 // Select an array of elements or self
-App.els_or_self = (query, root = document) => {
+DOM.els_or_self = (query, root = document) => {
   let els = Array.from(root.querySelectorAll(query))
 
   if (els.length === 0) {
@@ -35,12 +40,12 @@ App.els_or_self = (query, root = document) => {
 }
 
 // Clone element
-App.clone = (el) => {
+DOM.clone = (el) => {
   return el.cloneNode(true)
 }
 
 // Clone element children
-App.clone_children = (query) => {
+DOM.clone_children = (query) => {
   let items = []
   let children = Array.from(DOM.el(query).children)
 
@@ -52,7 +57,7 @@ App.clone_children = (query) => {
 }
 
 // Data set manager
-App.dataset = (el, value, setvalue) => {
+DOM.dataset = (el, value, setvalue) => {
   if (!el) {
     return
   }
@@ -60,22 +65,22 @@ App.dataset = (el, value, setvalue) => {
   let id = el.dataset.dataset_id
 
   if (!id) {
-    id = App.dataset_id
-    App.dataset_id += 1
+    id = DOM.dataset_id
+    DOM.dataset_id += 1
     el.dataset.dataset_id = id
-    App.dataset_obj[id] = {}
+    DOM.dataset_obj[id] = {}
   }
 
   if (setvalue !== undefined) {
-    App.dataset_obj[id][value] = setvalue
+    DOM.dataset_obj[id][value] = setvalue
   }
   else {
-    return App.dataset_obj[id][value]
+    return DOM.dataset_obj[id][value]
   }
 }
 
 // Create an html element
-App.create = (type, classes = ``, id = ``) => {
+DOM.create = (type, classes = ``, id = ``) => {
   let el = document.createElement(type)
 
   if (classes) {
@@ -94,6 +99,20 @@ App.create = (type, classes = ``, id = ``) => {
 }
 
 // Add an event listener
-App.ev = (element, action, callback, extra) => {
+DOM.ev = (element, action, callback, extra) => {
   element.addEventListener(action, callback, extra)
+}
+
+// Like jQuery's nextAll
+DOM.next_all = function* (e, selector) {
+  while (e = e.nextElementSibling) {
+    if (e.matches(selector)) {
+      yield e;
+    }
+  }
+}
+
+// Get item index
+DOM.index = (el) => {
+  return Array.from(el.parentNode.children).indexOf(el)
 }

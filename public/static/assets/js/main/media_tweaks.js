@@ -1,99 +1,99 @@
 // Additional media tweaks configurations
 App.setup_media_tweaks = () => {
-  App.ev(App.el(`#media_tweaks_swap`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_swap`), `click`, () => {
     App.swap_media()
   })
 
-  App.ev(App.el(`#media_tweaks_rotate`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_rotate`), `click`, () => {
     App.swap_media_layout()
   })
 
-  App.ev(App.el(`#media_tweaks_revolve`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_revolve`), `click`, () => {
     App.change_main_layout()
   })
 
-  App.ev(App.el(`#media_tweaks_tv_size`), `change`, () => {
-    let size = App.el(`#media_tweaks_tv_size option:checked`).value
+  DOM.ev(DOM.el(`#media_tweaks_tv_size`), `change`, () => {
+    let size = DOM.el(`#media_tweaks_tv_size option:checked`).value
     App.do_media_tv_size_change(size)
   })
 
-  App.ev(App.el(`#media_tweaks_chat_size`), `change`, () => {
-    let size = App.el(`#media_tweaks_chat_size option:checked`).value
+  DOM.ev(DOM.el(`#media_tweaks_chat_size`), `change`, () => {
+    let size = DOM.el(`#media_tweaks_chat_size option:checked`).value
     App.do_chat_size_change(size)
   })
 
-  App.ev(App.el(`#media_tweaks_chat_font_size`), `change`, () => {
-    let size = App.el(`#media_tweaks_chat_font_size option:checked`).value
+  DOM.ev(DOM.el(`#media_tweaks_chat_font_size`), `change`, () => {
+    let size = DOM.el(`#media_tweaks_chat_font_size option:checked`).value
     App.do_chat_font_size_change(size)
   })
 
-  App.ev(App.el(`#media_tweaks_media_info_enabled`), `change`, () => {
-    let enabled = App.el(`#media_tweaks_media_info_enabled option:checked`).value === `enabled`
+  DOM.ev(DOM.el(`#media_tweaks_media_info_enabled`), `change`, () => {
+    let enabled = DOM.el(`#media_tweaks_media_info_enabled option:checked`).value === `enabled`
     App.set_media_info_enabled(enabled)
   })
 
-  App.ev(App.el(`#media_tweaks_chat_enabled`), `change`, () => {
-    let enabled = App.el(`#media_tweaks_chat_enabled option:checked`).value === `enabled`
+  DOM.ev(DOM.el(`#media_tweaks_chat_enabled`), `change`, () => {
+    let enabled = DOM.el(`#media_tweaks_chat_enabled option:checked`).value === `enabled`
     App.set_chat_enabled(enabled)
   })
 
-  App.ev(App.el(`#media_tweaks_defaults`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_defaults`), `click`, () => {
     App.show_confirm(`Restore media tweak defaults`, () => {
       App.apply_media_tweaks_defaults()
     })
   })
 
-  App.ev(App.el(`#media_tweaks_tv_size_minus`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_tv_size_minus`), `click`, () => {
     App.decrease_tv_percentage()
     App.refresh_media_tweaks()
   })
 
-  App.ev(App.el(`#media_tweaks_tv_size_plus`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_tv_size_plus`), `click`, () => {
     App.increase_tv_percentage()
     App.refresh_media_tweaks()
   })
 
-  App.ev(App.el(`#media_tweaks_chat_size_minus`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_chat_size_minus`), `click`, () => {
     App.decrease_chat_percentage()
     App.refresh_media_tweaks()
   })
 
-  App.ev(App.el(`#media_tweaks_chat_size_plus`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_chat_size_plus`), `click`, () => {
     App.increase_chat_percentage()
     App.refresh_media_tweaks()
   })
 
-  App.ev(App.el(`#media_tweaks_chat_font_size_minus`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_chat_font_size_minus`), `click`, () => {
     App.decrease_chat_font_size()
     App.refresh_media_tweaks()
   })
 
-  App.ev(App.el(`#media_tweaks_chat_font_size_plus`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_chat_font_size_plus`), `click`, () => {
     App.increase_chat_font_size()
     App.refresh_media_tweaks()
   })
 
-  App.ev(App.el(`#media_tweaks_media_info_enabled_minus`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_media_info_enabled_minus`), `click`, () => {
     App.set_media_info_enabled(false)
     App.refresh_media_tweaks()
   })
 
-  App.ev(App.el(`#media_tweaks_media_info_enabled_plus`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_media_info_enabled_plus`), `click`, () => {
     App.set_media_info_enabled(true)
     App.refresh_media_tweaks()
   })
 
-  App.ev(App.el(`#media_tweaks_chat_enabled_minus`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_chat_enabled_minus`), `click`, () => {
     App.set_chat_enabled(false)
     App.refresh_media_tweaks()
   })
 
-  App.ev(App.el(`#media_tweaks_chat_enabled_plus`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_chat_enabled_plus`), `click`, () => {
     App.set_chat_enabled(true)
     App.refresh_media_tweaks()
   })
 
-  App.ev(App.el(`#media_tweaks_vertical_preset`), `click`, () => {
+  DOM.ev(DOM.el(`#media_tweaks_vertical_preset`), `click`, () => {
     App.show_confirm(`Apply vertical preset`, () => {
       App.change_media_layout(`row`)
       App.change_main_layout(`column`)
@@ -142,25 +142,25 @@ App.show_media_tweaks = () => {
 
 // Refresh media tweaks widgets
 App.refresh_media_tweaks = () => {
-  for (let el of App.els(`#media_tweaks_tv_size option`)) {
+  for (let el of DOM.els(`#media_tweaks_tv_size option`)) {
     if (el.value == App.room_state.tv_display_percentage) {
       el.selected = true
     }
   }
 
-  for (let el of App.els(`#media_tweaks_chat_size option`)) {
+  for (let el of DOM.els(`#media_tweaks_chat_size option`)) {
     if (el.value == App.room_state.chat_display_percentage) {
       el.selected = true
     }
   }
 
-  for (let el of App.els(`#media_tweaks_chat_font_size option`)) {
+  for (let el of DOM.els(`#media_tweaks_chat_font_size option`)) {
     if (el.value == App.room_state.chat_font_size) {
       el.selected = true
     }
   }
 
-  for (let el of App.els(`#media_tweaks_media_info_enabled option`)) {
+  for (let el of DOM.els(`#media_tweaks_media_info_enabled option`)) {
     if (App.room_state.media_info_enabled) {
       if (el.value === `enabled`) {
         el.selected = true
@@ -173,7 +173,7 @@ App.refresh_media_tweaks = () => {
     }
   }
 
-  for (let el of App.els(`#media_tweaks_chat_enabled option`)) {
+  for (let el of DOM.els(`#media_tweaks_chat_enabled option`)) {
     if (App.room_state.chat_enabled) {
       if (el.value === `enabled`) {
         el.selected = true

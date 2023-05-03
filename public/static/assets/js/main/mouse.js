@@ -1,6 +1,6 @@
 // Handle mouse events
 App.start_mouse_events = () => {
-  App.ev(document, `click`, (e) => {
+  DOM.ev(document, `click`, (e) => {
     if (!e.target) {
       return
     }
@@ -17,10 +17,10 @@ App.start_mouse_events = () => {
       let message = e.target.closest(`.message`)
 
       if (message) {
-        let id = App.dataset(message, `id`)
-        let username = App.dataset(message, `username`)
-        let user_id = App.dataset(message, `user_id`)
-        let type = App.dataset(message, `type`)
+        let id = DOM.dataset(message, `id`)
+        let username = DOM.dataset(message, `username`)
+        let user_id = DOM.dataset(message, `user_id`)
+        let type = DOM.dataset(message, `type`)
 
         if (e.target.classList.contains(`chat_username`)) {
           App.show_profile(username, user_id)
@@ -30,13 +30,13 @@ App.start_mouse_events = () => {
         }
         else if (e.target.classList.contains(`chat_quote_text`)) {
           let quote = e.target.closest(`.chat_quote`)
-          let id = App.dataset(quote, `quote_id`)
+          let id = DOM.dataset(quote, `quote_id`)
           let ans = App.get_message_by_id(id)
 
           if (ans) {
             let og = ans[0]
-            let type = App.dataset(og, `type`)
-            let id = App.dataset(og, `id`)
+            let type = DOM.dataset(og, `type`)
+            let id = DOM.dataset(og, `id`)
 
             if (type === `image_change`) {
               App.show_modal_image(id)
@@ -55,8 +55,8 @@ App.start_mouse_events = () => {
         else if (e.target.classList.contains(`chat_quote_username`) ||
           e.target.classList.contains(`chat_quote_profilepic`)) {
           let quote = e.target.closest(`.chat_quote`)
-          let username = App.dataset(quote, `quote_username`)
-          let user_id = App.dataset(quote, `quote_user_id`)
+          let username = DOM.dataset(quote, `quote_username`)
+          let user_id = DOM.dataset(quote, `quote_user_id`)
           App.show_profile(username, user_id)
         }
         else if (e.target.classList.contains(`link_preview_image`)) {
@@ -65,7 +65,7 @@ App.start_mouse_events = () => {
         }
         else if (e.target.classList.contains(`image_preview_image`)) {
           e.stopPropagation()
-          let src = App.dataset(e.target, `image_preview_src_original`)
+          let src = DOM.dataset(e.target, `image_preview_src_original`)
           App.view_image(src, username, user_id)
         }
         else if (e.target.classList.contains(`announcement_content`) ||
@@ -82,8 +82,8 @@ App.start_mouse_events = () => {
         }
         else if (e.target.closest(`.like_container`)) {
           let el = e.target.closest(`.like_container`)
-          let user_id = App.dataset(el, `user_id`)
-          let username = App.dataset(el, `username`)
+          let user_id = DOM.dataset(el, `user_id`)
+          let username = DOM.dataset(el, `username`)
           App.show_profile(username, user_id)
         }
         else if (e.target.closest(`.chat_menu_button_container`)) {
@@ -93,7 +93,7 @@ App.start_mouse_events = () => {
     }
     else if (e.target.closest(`.window_controls`)) {
       let el = e.target.closest(`.window_controls`)
-      let filter = App.el(`.filter_input`, el)
+      let filter = DOM.el(`.filter_input`, el)
 
       if (e.target.closest(`.window_filter_clear`)) {
         filter.value = ``
@@ -104,12 +104,12 @@ App.start_mouse_events = () => {
 
     if (e.target.classList.contains(`whisper_link`)) {
       let container = e.target.closest(`.user_details`)
-      let username = App.dataset(container, `username`)
+      let username = DOM.dataset(container, `username`)
       App.process_write_whisper(`${username} > ${e.target.dataset.whisper}`)
     }
   })
 
-  App.ev(document, `auxclick`, (e) => {
+  DOM.ev(document, `auxclick`, (e) => {
     if (e.button !== 1) {
       return
     }
@@ -130,7 +130,7 @@ App.start_mouse_events = () => {
       let container = e.target.closest(`.chat_menu_button_main`)
 
       if (container) {
-        let button = App.el(`.chat_menu_button_container`, container)
+        let button = DOM.el(`.chat_menu_button_container`, container)
         App.show_chat_context_menu(button, e.clientX, e.clientY)
       }
     }

@@ -5,10 +5,10 @@ App.setup_activity_bar = () => {
     App.update_activity_bar(true)
   }, App.config.activity_bar_delay)
 
-  App.ev(App.el(`#activity_bar`), `click`, (e) => {
+  DOM.ev(DOM.el(`#activity_bar`), `click`, (e) => {
     if (e.target.closest(`.activity_bar_item`)) {
       let item = e.target.closest(`.activity_bar_item`)
-      App.show_profile(App.dataset(item, `username`), App.dataset(item, `user_id`))
+      App.show_profile(DOM.dataset(item, `username`), DOM.dataset(item, `user_id`))
     }
   })
 }
@@ -44,29 +44,29 @@ App.update_activity_bar = (check = false) => {
       <img class='activity_bar_profilepic profilepic icon_size actionbox' src='${pi}' loading='lazy'>
       <div class='activity_bar_text action'></div>`
 
-    let el = App.create(`div`, `activity_bar_item flex_row_center`)
+    let el = DOM.create(`div`, `activity_bar_item flex_row_center`)
     el.innerHTML = s
     el.title = user.username
 
-    let text_el = App.el(`.activity_bar_text`, el)
-    let img_el = App.el(`.activity_bar_profilepic`, el)
+    let text_el = DOM.el(`.activity_bar_text`, el)
+    let img_el = DOM.el(`.activity_bar_profilepic`, el)
 
-    App.ev(img_el, `error`, () => {
+    DOM.ev(img_el, `error`, () => {
       App.fallback_profilepic(img_el)
     })
 
-    App.dataset(img_el, `user_id`, user.user_id)
-    App.dataset(el, `user_id`, user.user_id)
-    App.dataset(el, `username`, user.username)
+    DOM.dataset(img_el, `user_id`, user.user_id)
+    DOM.dataset(el, `user_id`, user.user_id)
+    DOM.dataset(el, `username`, user.username)
     text_el.textContent = user.username.slice(0, App.config.max_activity_username_length)
-    App.el(`#activity_bar_inner`).append(el)
+    DOM.el(`#activity_bar_inner`).append(el)
   }
 
   App.resize_activity_bar()
 }
 
 App.resize_activity_bar = () => {
-  let ab_inner = App.el(`#activity_bar_inner`)
+  let ab_inner = DOM.el(`#activity_bar_inner`)
   ab_inner.classList.remove(`no_usernames`)
 
   if (ab_inner.scrollWidth > ab_inner.clientWidth) {
@@ -76,8 +76,8 @@ App.resize_activity_bar = () => {
 
 // Gets an activity bar item by username
 App.get_activity_bar_item_by_user_id = (id) => {
-  for (let item of App.els(`.activity_bar_item`)) {
-    if (App.dataset(item, `user_id`) === id) {
+  for (let item of DOM.els(`.activity_bar_item`)) {
+    if (DOM.dataset(item, `user_id`) === id) {
       return item
     }
   }
@@ -85,16 +85,16 @@ App.get_activity_bar_item_by_user_id = (id) => {
 
 // Removes all items on the activity bar
 App.clear_activity_bar_items = () => {
-  for (let el of App.els(`#activity_bar_inner .activity_bar_item`)) {
+  for (let el of DOM.els(`#activity_bar_inner .activity_bar_item`)) {
     el.remove()
   }
 }
 
 // Updates the profile image of an item in the activity bar
 App.update_activity_bar_profilepic = (id, src) => {
-  for (let item of App.els(`.activity_bar_item`)) {
-    if (App.dataset(item, `user_id`) === id) {
-      App.el(`.activity_bar_profilepic`, item).src = src
+  for (let item of DOM.els(`.activity_bar_item`)) {
+    if (DOM.dataset(item, `user_id`) === id) {
+      DOM.el(`.activity_bar_profilepic`, item).src = src
       return
     }
   }

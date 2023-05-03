@@ -1,12 +1,12 @@
 // Setups the message board
 App.setup_message_board = () => {
-  let textarea = App.el(`#message_board_textarea`)
+  let textarea = DOM.el(`#message_board_textarea`)
 
-  App.ev(textarea, `input blur`, () => {
+  DOM.ev(textarea, `input blur`, () => {
     textarea.value = textarea.value.substring(0, App.config.max_message_board_post_length)
   })
 
-  App.ev(App.el(`#message_board_container`), `click`, (e) => {
+  DOM.ev(DOM.el(`#message_board_container`), `click`, (e) => {
     let post
     let username = ``
     let user_id = ``
@@ -18,8 +18,8 @@ App.setup_message_board = () => {
     }
 
     post = e.target.closest(`.message_board_post`)
-    username = App.dataset(post, `username`)
-    user_id = App.dataset(post, `user_id`)
+    username = DOM.dataset(post, `username`)
+    user_id = DOM.dataset(post, `user_id`)
 
     el = e.target.closest(`.message_board_delete`)
 
@@ -71,15 +71,15 @@ App.setup_message_board = () => {
     }
   })
 
-  App.ev(App.el(`#message_board_post`), `click`, () => {
+  DOM.ev(DOM.el(`#message_board_post`), `click`, () => {
     App.submit_message_board_post()
   })
 
-  App.ev(App.el(`#message_board_user`), `click`, () => {
+  DOM.ev(DOM.el(`#message_board_user`), `click`, () => {
     App.show_message_board(`$user ${App.username} `)
   })
 
-  App.ev(App.el(`#message_board_links`), `click`, () => {
+  DOM.ev(DOM.el(`#message_board_links`), `click`, () => {
     App.show_message_board(`$links `)
   })
 }
@@ -91,12 +91,12 @@ App.do_message_board_edit = (send = true) => {
   }
 
   let post = App.editing_message_board_post
-  let content = App.el(`.message_board_content`, post)
-  let edit_area = App.el(`.message_board_edit_area`, post)
-  let btns = App.el(`.message_board_buttons`, post)
-  let edit_btns = App.el(`.message_board_edit_buttons`, post)
-  let text = App.el(`.message_board_text`, post)
-  let id = App.dataset(post, `id`)
+  let content = DOM.el(`.message_board_content`, post)
+  let edit_area = DOM.el(`.message_board_edit_area`, post)
+  let btns = DOM.el(`.message_board_buttons`, post)
+  let edit_btns = DOM.el(`.message_board_edit_buttons`, post)
+  let text = DOM.el(`.message_board_text`, post)
+  let id = DOM.dataset(post, `id`)
   let message = edit_area.value.trim()
 
   content.style.display = `flex`
@@ -123,8 +123,8 @@ App.add_post_to_message_board = (data, edited) => {
   let post
 
   if (edited) {
-    for (let p of App.els(`.message_board_post`)) {
-      let id = App.dataset(p, `id`)
+    for (let p of DOM.els(`.message_board_post`)) {
+      let id = DOM.dataset(p, `id`)
 
       if (id === data.id) {
         post = p
@@ -137,31 +137,31 @@ App.add_post_to_message_board = (data, edited) => {
     }
   }
   else {
-    post = App.create(`div`, `message_board_post modal_item dynamic_title`)
+    post = DOM.create(`div`, `message_board_post modal_item dynamic_title`)
   }
 
   post.innerHTML = App.template_message_board_post()
-  App.dataset(post, `id`, data.id)
-  App.dataset(post, `date`, data.date)
-  App.dataset(post, `username`, data.username)
-  App.dataset(post, `user_id`, data.user_id)
-  App.dataset(post, `original_message`, data.message)
+  DOM.dataset(post, `id`, data.id)
+  DOM.dataset(post, `date`, data.date)
+  DOM.dataset(post, `username`, data.username)
+  DOM.dataset(post, `user_id`, data.user_id)
+  DOM.dataset(post, `original_message`, data.message)
 
-  let profilepic = App.el(`.message_board_profilepic`, post)
+  let profilepic = DOM.el(`.message_board_profilepic`, post)
 
-  App.ev(profilepic, `error`, () => {
+  DOM.ev(profilepic, `error`, () => {
     App.fallback_profilepic(profilepic)
   })
 
   profilepic.src = App.get_profilepic(data.user_id)
 
-  let username = App.el(`.message_board_username`, post)
+  let username = DOM.el(`.message_board_username`, post)
   username.textContent = data.username
 
-  let date = App.el(`.message_board_date`, post)
+  let date = DOM.el(`.message_board_date`, post)
   date.textContent = App.utilz.nice_date(data.date)
 
-  let text = App.el(`.message_board_text`, post)
+  let text = DOM.el(`.message_board_text`, post)
   text.innerHTML = App.parse_text(App.utilz.make_html_safe(data.message))
   App.urlize(text)
 
@@ -169,32 +169,32 @@ App.add_post_to_message_board = (data, edited) => {
 
   if (App.get_setting(`embed_images`)) {
     if (first_url && App.utilz.is_image(first_url)) {
-      let image = App.el(`.message_board_image`, post)
+      let image = DOM.el(`.message_board_image`, post)
       image.src = first_url
       image.style.display = `block`
-      App.ev(image, `error`, () => {
+      DOM.ev(image, `error`, () => {
         image.remove()
       })
     }
 
     if (data.link_image) {
-      let link_image = App.el(`.message_board_link_image`, post)
+      let link_image = DOM.el(`.message_board_link_image`, post)
       link_image.src = data.link_image
       link_image.style.display = `block`
-      App.ev(link_image, `error`, () => {
+      DOM.ev(link_image, `error`, () => {
         link_image.remove()
       })
     }
   }
 
   if (data.link_title) {
-    let link_title = App.el(`.message_board_link_title`, post)
+    let link_title = DOM.el(`.message_board_link_title`, post)
     link_title.textContent = data.link_title
     link_title.style.display = `block`
   }
 
   if (data.link_description) {
-    let link_description = App.el(`.message_board_link_description`, post)
+    let link_description = DOM.el(`.message_board_link_description`, post)
     link_description.textContent = data.link_description
     link_description.style.display = `block`
   }
@@ -202,27 +202,27 @@ App.add_post_to_message_board = (data, edited) => {
   let gets = App.getcode(data.id)
   let title = `${gets} | ${App.utilz.nice_date(data.date)}`
   post.title = title
-  App.dataset(post, `otitle`, title)
+  DOM.dataset(post, `otitle`, title)
 
-  let content = App.el(`.message_board_content`, post)
+  let content = DOM.el(`.message_board_content`, post)
 
   if (App.utilz.bingo(gets)) {
     content.classList.add(`colortext`)
     content.classList.add(`goldtext`)
   }
 
-  let btns = App.el(`.message_board_btns`, post)
+  let btns = DOM.el(`.message_board_btns`, post)
 
   if (data.user_id === App.user_id) {
     btns.style.display = `flex`
   }
   else {
-    App.el(`.message_board_edit`, btns).style.display = `none`
+    DOM.el(`.message_board_edit`, btns).style.display = `none`
   }
 
   if (!edited) {
-    App.el(`#message_board_container`).prepend(post)
-    let posts = App.els(`#message_board_container .message_board_post`)
+    DOM.el(`#message_board_container`).prepend(post)
+    let posts = DOM.els(`#message_board_container .message_board_post`)
 
     if (posts.length > App.config.max_message_board_posts) {
       posts.slice(-1)[0].remove()
@@ -237,7 +237,7 @@ App.add_post_to_message_board = (data, edited) => {
 // Fills the message board with init data
 App.init_message_board = (data) => {
   if (data.message_board_posts.length > 0) {
-    App.el(`#message_board_container`).innerHTML = ``
+    DOM.el(`#message_board_container`).innerHTML = ``
   }
 
   for (let post of data.message_board_posts) {
@@ -251,14 +251,14 @@ App.init_message_board = (data) => {
     App.show_message_board(`$fresh `)
   }
 
-  App.vertical_separator(App.el(`#message_board_container`))
+  App.vertical_separator(DOM.el(`#message_board_container`))
 }
 
 // Highlight unread message board posts
 App.fresh_unread_message_board_posts = () => {
-  for (let [i, el] of App.els(`.message_board_post`).entries()) {
+  for (let [i, el] of DOM.els(`.message_board_post`).entries()) {
     if (i < App.unread_message_board_count) {
-      App.dataset(el, `fresh`, true)
+      DOM.dataset(el, `fresh`, true)
     }
     else {
       break
@@ -273,11 +273,11 @@ App.show_message_board = (filter = ``) => {
   App.check_last_message_board_post()
 
   if (filter.trim()) {
-    App.el(`#message_board_filter`).value = filter
+    DOM.el(`#message_board_filter`).value = filter
     App.do_modal_filter()
   }
   else {
-    App.el(`#message_board_textarea`).focus()
+    DOM.el(`#message_board_textarea`).focus()
   }
 }
 
@@ -288,16 +288,16 @@ App.hide_message_board = () => {
 
 // Submits a message board post
 App.submit_message_board_post = () => {
-  let message = App.utilz.remove_multiple_empty_lines(App.el(`#message_board_textarea`).value).trim()
+  let message = App.utilz.remove_multiple_empty_lines(DOM.el(`#message_board_textarea`).value).trim()
 
   if (!message || message.length > App.config.max_message_board_post_length) {
     return
   }
 
-  App.el(`#message_board_textarea`).value = ``
+  DOM.el(`#message_board_textarea`).value = ``
   App.last_message_board_message = message
   App.socket_emit(`message_board_post`, { message: message })
-  App.el(`#message_board_filter`).value = ``
+  DOM.el(`#message_board_filter`).value = ``
   App.do_modal_filter()
 }
 
@@ -324,28 +324,28 @@ App.on_message_board_received = (data, edited = false) => {
     App.update_last_message_post_checked()
   }
 
-  App.vertical_separator(App.el(`#message_board_container`))
+  App.vertical_separator(DOM.el(`#message_board_container`))
 }
 
 // Checks if there are new message board posts
 App.check_last_message_board_post = () => {
-  let posts = App.els(`#message_board_container .message_board_post`)
+  let posts = DOM.els(`#message_board_container .message_board_post`)
 
   if (posts.length === 0) {
-    App.el(`#header_message_board_count`).textContent = `(0)`
+    DOM.el(`#header_message_board_count`).textContent = `(0)`
     return
   }
 
   let date = App.room_state.last_message_board_post
 
-  if (App.dataset(posts[0], `date`) > date) {
+  if (DOM.dataset(posts[0], `date`) > date) {
     if (!App.msg_message_board.is_open()) {
       let count = 0
 
-      let posts = App.els(`.message_board_post`)
+      let posts = DOM.els(`.message_board_post`)
 
       for (let post of posts) {
-        if (App.dataset(post, `date`) <= date) {
+        if (DOM.dataset(post, `date`) <= date) {
           break
         }
 
@@ -353,7 +353,7 @@ App.check_last_message_board_post = () => {
       }
 
       App.unread_message_board_count = count
-      App.el(`#header_message_board_count`).textContent = `(${count})`
+      DOM.el(`#header_message_board_count`).textContent = `(${count})`
     }
     else {
       App.update_last_message_post_checked()
@@ -361,14 +361,14 @@ App.check_last_message_board_post = () => {
   }
   else {
     App.unread_message_board_count = 0
-    App.el(`#header_message_board_count`).textContent = `(0)`
+    DOM.el(`#header_message_board_count`).textContent = `(0)`
   }
 }
 
 // Updates the message board date local storage
 App.update_last_message_post_checked = () => {
-  let post = App.el(`#message_board_container .message_board_post`)
-  let date = App.dataset(post, `date`)
+  let post = DOM.el(`#message_board_container .message_board_post`)
+  let date = DOM.dataset(post, `date`)
 
   if (date !== App.room_state.last_message_board_post) {
     App.room_state.last_message_board_post = date
@@ -378,20 +378,20 @@ App.update_last_message_post_checked = () => {
 
 // Remove a post from the message board window
 App.deleted_message_board_post = (data) => {
-  for (let post of App.els(`.message_board_post`)) {
-    if (App.dataset(post, `id`) === data.id) {
+  for (let post of DOM.els(`.message_board_post`)) {
+    if (DOM.dataset(post, `id`) === data.id) {
       post.remove()
       break
     }
   }
 
-  App.vertical_separator(App.el(`#message_board_container`))
+  App.vertical_separator(DOM.el(`#message_board_container`))
   App.check_last_message_board_post()
 }
 
 // After message board filter
 App.after_message_board_filtered = () => {
-  App.vertical_separator(App.el(`#message_board_container`))
+  App.vertical_separator(DOM.el(`#message_board_container`))
 }
 
 // Remove all message board posts
@@ -408,14 +408,14 @@ App.clear_message_board = () => {
 
 // On message board cleared
 App.message_board_cleared = (data) => {
-  App.el(`#message_board_container`).innerHTML = ``
+  DOM.el(`#message_board_container`).innerHTML = ``
   App.show_room_notification(data.username, `${data.username} cleared the message board`)
 }
 
 // Delete a message board post
 App.delete_message_board_post = (post) => {
-  let id = App.dataset(post, `id`)
-  let user_id = App.dataset(post, `user_id`)
+  let id = DOM.dataset(post, `id`)
+  let user_id = DOM.dataset(post, `user_id`)
   let user = App.get_user_by_user_id(user_id)
 
   if (App.user_id !== user_id && !App.superuser) {
@@ -434,11 +434,11 @@ App.delete_message_board_post = (post) => {
 
 // Edit message board post
 App.edit_message_board_post = (post) => {
-  let content = App.el(`.message_board_content`, post)
-  let edit_area = App.el(`.message_board_edit_area`, post)
-  let btns = App.el(`.message_board_buttons`, post)
-  let edit_btns = App.el(`.message_board_edit_buttons`, post)
-  let text = App.dataset(post, `original_message`)
+  let content = DOM.el(`.message_board_content`, post)
+  let edit_area = DOM.el(`.message_board_edit_area`, post)
+  let btns = DOM.el(`.message_board_buttons`, post)
+  let edit_btns = DOM.el(`.message_board_edit_buttons`, post)
+  let text = DOM.dataset(post, `original_message`)
 
   content.style.display = `none`
 
@@ -459,12 +459,12 @@ App.edit_message_board_post = (post) => {
 App.show_message_board_wait_message = (remaining) => {
   let c = App.utilz.time_components(remaining)
   App.checkmsg(`Need to wait ${c.minutes} minutes and ${c.seconds} seconds`)
-  App.el(`#message_board_textarea`).value = App.last_message_board_message
+  DOM.el(`#message_board_textarea`).value = App.last_message_board_message
 }
 
 // Setup message board permissions
 App.setup_message_board_permissions = () => {
-  let container = App.el(`#message_board_container`)
+  let container = DOM.el(`#message_board_container`)
 
   if (App.is_admin_or_op()) {
     container.classList.add(`message_board_admin`)

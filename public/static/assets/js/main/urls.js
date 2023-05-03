@@ -89,7 +89,7 @@ App.handle_url = (url) => {
     App.check_handle_url_options(url)
     App.handled_url = url
 
-    let url_el = App.el(`#handle_url_url`)
+    let url_el = DOM.el(`#handle_url_url`)
     url_el.textContent = url
     App.urlize(url_el)
 
@@ -107,16 +107,16 @@ App.handle_url_chat = () => {
 // This is used to display actions when dropping a URL
 // Like changing the tv when dropping a YouTube URL
 App.setup_drag_events = () => {
-  App.ev(App.el(`#handle_url_chat`), `click`, () => {
+  DOM.ev(DOM.el(`#handle_url_chat`), `click`, () => {
     App.handle_url_chat()
   })
 
-  App.ev(App.el(`#handle_url_image`), `click`, () => {
+  DOM.ev(DOM.el(`#handle_url_image`), `click`, () => {
     App.load_media_link(`image`, App.handled_url, ``)
     App.msg_handle_url.close()
   })
 
-  App.ev(App.el(`#handle_url_tv`), `click`, () => {
+  DOM.ev(DOM.el(`#handle_url_tv`), `click`, () => {
     App.load_media_link(`tv`, App.handled_url, ``)
     App.msg_handle_url.close()
   })
@@ -125,45 +125,45 @@ App.setup_drag_events = () => {
 // Changes button visibility based on url
 App.check_handle_url_options = (text) => {
   if (text && text.length < App.config.max_input_length) {
-    App.el(`#handle_url_chat`).style.display = `inline-block`
+    DOM.el(`#handle_url_chat`).style.display = `inline-block`
   }
   else {
-    App.el(`#handle_url_chat`).style.display = `none`
+    DOM.el(`#handle_url_chat`).style.display = `none`
   }
 
   if (App.change_image_source(text, true)) {
-    App.el(`#handle_url_image`).style.display = `inline-block`
+    DOM.el(`#handle_url_image`).style.display = `inline-block`
   }
   else {
-    App.el(`#handle_url_image`).style.display = `none`
+    DOM.el(`#handle_url_image`).style.display = `none`
   }
 
   if (App.change_tv_source(text, true)) {
-    App.el(`#handle_url_tv`).style.display = `inline-block`
+    DOM.el(`#handle_url_tv`).style.display = `inline-block`
   }
   else {
-    App.el(`#handle_url_tv`).style.display = `none`
+    DOM.el(`#handle_url_tv`).style.display = `none`
   }
 
-  App.horizontal_separator(App.el(`#handle_url_titlebar`))
+  App.horizontal_separator(DOM.el(`#handle_url_titlebar`))
 }
 
 // Setups the Open URL picker window
 App.setup_open_url = () => {
-  App.ev(App.el(`#open_url_menu_copy`), `click`, () => {
+  DOM.ev(DOM.el(`#open_url_menu_copy`), `click`, () => {
     App.copy_string(App.open_url_data.source)
   })
 
-  App.ev(App.el(`#open_url_menu_load`), `click`, () => {
+  DOM.ev(DOM.el(`#open_url_menu_load`), `click`, () => {
     App.load_media(App.open_url_data)
   })
 
-  App.ev(App.el(`#open_url_menu_link`), `click`, () => {
+  DOM.ev(DOM.el(`#open_url_menu_link`), `click`, () => {
     App.load_media_link(App.open_url_data.media_type, App.open_url_data.source, App.open_url_data.comment)
     App.msg_open_url.close()
   })
 
-  App.ev(App.el(`#open_url_menu_context`), `click`, () => {
+  DOM.ev(DOM.el(`#open_url_menu_context`), `click`, () => {
     App.chat_search_by_id(App.open_url_data.id)
     App.msg_open_url.close()
   })
@@ -173,22 +173,22 @@ App.setup_open_url = () => {
 // This is used to show actions for links and media
 App.open_url_menu = (data) => {
   if (data !== App[`loaded_${data.media_type}`] || !App.room_state[`${data.media_type}_enabled`]) {
-    App.el(`#open_url_menu_load`).textContent = `Load`
+    DOM.el(`#open_url_menu_load`).textContent = `Load`
   }
   else {
-    App.el(`#open_url_menu_load`).textContent = `Reload`
+    DOM.el(`#open_url_menu_load`).textContent = `Reload`
   }
 
   if (App[`change_${data.media_type}_source`](data.source, true)) {
-    App.el(`#open_url_menu_link`).style.display = `inline-block`
+    DOM.el(`#open_url_menu_link`).style.display = `inline-block`
   }
   else {
-    App.el(`#open_url_menu_link`).style.display = `none`
+    DOM.el(`#open_url_menu_link`).style.display = `none`
   }
 
-  App.horizontal_separator(App.el(`#open_url_titlebar`))
+  App.horizontal_separator(DOM.el(`#open_url_titlebar`))
 
-  let el = App.el(`#open_url_info`)
+  let el = DOM.el(`#open_url_info`)
 
   let size
 
@@ -209,26 +209,26 @@ App.open_url_menu = (data) => {
   App.msg_open_url.show()
 
   if (data.size) {
-    App.ev(App.el(`#open_url_info_title_size`), `click`, () => {
-      App.open_view_text(App.el(`#open_url_info_text_size`).textContent)
+    DOM.ev(DOM.el(`#open_url_info_title_size`), `click`, () => {
+      App.open_view_text(DOM.el(`#open_url_info_text_size`).textContent)
     })
   }
 
   if (data.title) {
-    App.ev(App.el(`#open_url_info_title_title`), `click`, () => {
-      App.open_view_text(App.el(`#open_url_info_text_title`).textContent)
+    DOM.ev(DOM.el(`#open_url_info_title_title`), `click`, () => {
+      App.open_view_text(DOM.el(`#open_url_info_text_title`).textContent)
     })
   }
 
   if (data.comment) {
-    App.ev(App.el(`#open_url_info_title_comment`), `click`, () => {
-      App.open_view_text(App.el(`#open_url_info_text_comment`).textContent)
+    DOM.ev(DOM.el(`#open_url_info_title_comment`), `click`, () => {
+      App.open_view_text(DOM.el(`#open_url_info_text_comment`).textContent)
     })
   }
 
   if (data.source) {
-    App.ev(App.el(`#open_url_info_title_url`), `click`, () => {
-      App.open_view_text(App.el(`#open_url_info_text_url`).textContent)
+    DOM.ev(DOM.el(`#open_url_info_title_url`), `click`, () => {
+      App.open_view_text(DOM.el(`#open_url_info_text_url`).textContent)
     })
   }
 }

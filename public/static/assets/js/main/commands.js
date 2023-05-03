@@ -854,10 +854,10 @@ App.show_command_book = (filter = ``) => {
       commands[key] = App.commands[key]
     }
 
-    App.el(`#command_book_container`).innerHTML =
+    DOM.el(`#command_book_container`).innerHTML =
       App.template_command_book_commands({commands: commands})
 
-    App.ev(App.el(`#command_book_container`), `click`, (e) => {
+    DOM.ev(DOM.el(`#command_book_container`), `click`, (e) => {
       if (e.target.closest(`.command_book_item`)) {
         let key = e.target.closest(`.command_book_item`).dataset.key
         App.change_input(`${App.config.commands_prefix}${key} `)
@@ -871,7 +871,7 @@ App.show_command_book = (filter = ``) => {
   App.msg_command_book.show()
 
   if (filter.trim()) {
-    App.el(`#command_book_filter`).value = filter
+    DOM.el(`#command_book_filter`).value = filter
     App.do_modal_filter()
   }
 }

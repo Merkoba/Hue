@@ -1,11 +1,11 @@
 // Setup rooms
 App.setup_rooms = () => {
-  App.ev(App.el(`#open_room_here`), `click`, () => {
+  DOM.ev(DOM.el(`#open_room_here`), `click`, () => {
     App.goto_url(App.open_room_id, `same`)
     App.msg_open_room.close()
   })
 
-  App.ev(App.el(`#open_room_new_tab`), `click`, () => {
+  DOM.ev(DOM.el(`#open_room_new_tab`), `click`, () => {
     App.goto_url(App.open_room_id, `tab`)
     App.msg_open_room.close()
   })
@@ -32,7 +32,7 @@ App.show_open_room = (id, name) => {
   }
 
   App.open_room_id = id
-  App.el(`#open_room_name`).textContent = `Go to ${name || id}`
+  DOM.el(`#open_room_name`).textContent = `Go to ${name || id}`
   App.msg_open_room.show()
 }
 
@@ -54,12 +54,12 @@ App.on_room_created = (data) => {
 
 // Fill roomlist with data
 App.update_roomlist = (data) => {
-  let container = App.el(`#roomlist_container`)
+  let container = DOM.el(`#roomlist_container`)
   container.innerHTML = ``
   data.roomlist.sort((a, b) => (a.modified < b.modified) ? 1 : -1)
 
   for (let room of data.roomlist) {
-    let item = App.create(`div`, `roomlist_item modal_item flex_column_center action`)
+    let item = DOM.create(`div`, `roomlist_item modal_item flex_column_center action`)
     let topic = room.topic.substring(0, 200).trim()
 
     item.innerHTML = App.template_roomlist_item({
@@ -69,13 +69,13 @@ App.update_roomlist = (data) => {
     })
 
     if (!topic) {
-      App.el(`.roomlist_topic`, item).style.display = `none`
+      DOM.el(`.roomlist_topic`, item).style.display = `none`
     }
 
-    let icon = App.el(`.roomlist_icon`, item)
+    let icon = DOM.el(`.roomlist_icon`, item)
     jdenticon.update(icon, room.name)
 
-    App.ev(item, `click`, () => {
+    DOM.ev(item, `click`, () => {
       App.show_open_room(room.id, room.name)
     })
 
@@ -97,13 +97,13 @@ App.on_roomlist_received = (data) => {
   App.msg_roomlist.show()
 
   if (App.roomlist_filter.trim()) {
-    App.el(`#roomlist_filter`).value = App.roomlist_filter
+    DOM.el(`#roomlist_filter`).value = App.roomlist_filter
     App.do_modal_filter()
   }
 }
 
 // On roomlist filtered
 App.after_roomlist_filtered = () => {
-  let container = App.el(`#roomlist_container`)
+  let container = DOM.el(`#roomlist_container`)
   App.vertical_separator(container)
 }
