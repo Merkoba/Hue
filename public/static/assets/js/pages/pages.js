@@ -9,18 +9,6 @@ const msg_info = Msg.factory({
 	enable_titlebar: true
 })
 
-const App = {}
-
-// Select a single element
-App.el = function (query) {
-  return document.querySelector(query)
-}
-
-// Select an array of elements
-App.els = function (query) {
-  return Array.from(document.querySelectorAll(query))
-}
-
 function msg_info_after_close (instance) {
 	DOM.el("form").querySelector("input").focus()
 }

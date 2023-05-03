@@ -23,10 +23,10 @@
 					return false
 				}
 
-				App.el("#login_username").value = App.el("#login_username").value.trim()
+				DOM.el("#login_username").value = DOM.el("#login_username").value.trim()
 
-				let username = App.el("#login_username").value
-				let password = App.el("#login_password").value
+				let username = DOM.el("#login_username").value
+				let password = DOM.el("#login_password").value
 
 				if (username.length === 0) {
 					show_info("Username can't be empty")
@@ -48,7 +48,7 @@
 					return false
 				}
 
-				App.el("#btn_login").disabled = true
+				DOM.el("#btn_login").disabled = true
 
 				return true
 			}
@@ -89,10 +89,10 @@
 		</div>
 
 		<script>
-			App.el("#login_username").focus()
+			DOM.el("#login_username").focus()
 
 			if(form_username && form_username !== "undefined") {
-				App.el("#login_username").value = form_username
+				DOM.el("#login_username").value = form_username
 			}
 		</script>
 	</body>

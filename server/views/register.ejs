@@ -48,7 +48,7 @@
 		</div>
 
 		<script>
-			App.el("#register_username").focus()
+			DOM.el("#register_username").focus()
 
 			function validate_form() {
 				if (msg_info.is_open()) {
@@ -59,12 +59,12 @@
 					return false
 				}
 
-				App.el("#register_username").value = App.el("#register_username").value.trim()
+				DOM.el("#register_username").value = DOM.el("#register_username").value.trim()
 
-				let username = App.el("#register_username").value
-				let password = App.el("#register_password").value
-				let password2 = App.el("#register_password2").value
-				let code = App.el("#register_code").value
+				let username = DOM.el("#register_username").value
+				let password = DOM.el("#register_password").value
+				let password2 = DOM.el("#register_password2").value
+				let code = DOM.el("#register_code").value
 
 				if (username.length === 0) {
 					show_info("Username can't be empty")
@@ -111,17 +111,17 @@
 					return false
 				}
 
-				App.el("#btn_register").disabled = true
+				DOM.el("#btn_register").disabled = true
 
 				return true
 			}
 
 			let current_username = ""
 
-			App.el("#register_username").addEventListener("input", on_username_input)
+			DOM.el("#register_username").addEventListener("input", on_username_input)
 
 			function on_username_input() {
-				let username = App.el("#register_username").value.trim()
+				let username = DOM.el("#register_username").value.trim()
 
 				if (username === current_username) {
 					return
@@ -129,7 +129,7 @@
 
 				if (username.length > max_username_length) {
 					username = username.substring(0, max_username_length)
-					App.el("#register_username").value = username
+					DOM.el("#register_username").value = username
 				}
 
 				current_username = username
@@ -140,7 +140,7 @@
 			}
 
 			if (form_username && form_username !== "undefined") {
-				App.el("#register_username").value = form_username
+				DOM.el("#register_username").value = form_username
 				on_username_input()
 			}
 		</script>
