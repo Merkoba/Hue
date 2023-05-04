@@ -219,7 +219,7 @@ commands_prefix: "/"
 quote_max_length: 140
 
 # Max length of urls in chat
-max_displayed_url: 65
+max_displayed_url: 55
 
 # How wide usernames on the activity bar can be
 max_activity_username_length: 8
