@@ -44,11 +44,11 @@ notifications_close_delay: 5000
 max_whispers_post_length: 2000
 
 # Maximum displayed media info
-max_media_info_length: 60
+max_media_info_length: 50
 
 # Maximum amount of text for something typed in the input box
 # If something bigger is inputed it will get cropped to meet this limit
-max_input_length: 2500
+max_input_length: 2000
 
 # The maximum length of a room topic. If a longer topic is tried to be set
 # with /topic it will get cropped to meet this limit. /topicadd and
@@ -87,7 +87,7 @@ max_log_messages: 500
 max_admin_log_messages: 250
 
 # How big the message board is. How many posts it stores
-max_message_board_posts: 250
+max_message_board_posts: 200
 
 # How long message board posts can be
 max_message_board_post_length: 2000
