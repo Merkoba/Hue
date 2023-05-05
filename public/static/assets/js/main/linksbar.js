@@ -22,6 +22,10 @@ App.setup_linksbar = () => {
     App.show_profile(item.username, item.user_id)
   })
 
+  DOM.ev(img, `error`, () => {
+    App.fallback_profilepic(img)
+  })
+
   App.check_linksbar()
 }
 
