@@ -15,6 +15,13 @@ App.setup_linksbar = () => {
     App.show_linksbar_context(e.clientX, e.clientY)
   })
 
+  let img = DOM.el(`#linksbar_image`)
+
+  DOM.ev(img, `click`, () => {
+    let item = App.linksbar_item
+    App.show_profile(item.username, item.user_id)
+  })
+
   App.check_linksbar()
 }
 
@@ -33,12 +40,13 @@ App.linksbar_click = () => {
   App.goto_url(App.linksbar_item.url, `tab`)
 }
 
-App.set_linksbar_item = (url, title, username, date) => {
+App.set_linksbar_item = (args) => {
   let item = {
-    url: url,
-    title: title,
-    username: username,
-    date: date
+    url: args.url,
+    title: args.title,
+    username: args.username,
+    user_id: args.user_id,
+    date: args.date
   }
 
   App.linksbar_item = item
@@ -54,6 +62,9 @@ App.update_linksbar = () => {
   if (!item) {
     return
   }
+
+  let image_el = DOM.el(`#linksbar_image`)
+  image_el.src = App.get_profilepic(item.user_id)
 
   let url_el = DOM.el(`#linksbar_url`)
   url_el.textContent = item.url || ``
@@ -75,9 +86,12 @@ App.update_linksbar = () => {
     title_el.classList.add(`nodisplay`)
   }
 
-  let click = DOM.el(`#linksbar_click`)
-  DOM.dataset(click, `date`, item.date)
-  DOM.dataset(click, `otitle`, `Linked by ${item.username}`)
+  DOM.dataset(image_el, `date`, item.date)
+  DOM.dataset(image_el, `otitle`, `Linked by ${item.username}`)
+
+  url_el.title = item.url
+  title_el.title = item.title
+
   App.horizontal_separator(DOM.el(`#linksbar`))
   App.horizontal_separator(DOM.el(`#linksbar_click`))
 }
