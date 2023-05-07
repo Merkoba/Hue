@@ -991,6 +991,10 @@ App.activity_above = () => {
     }
 
     if (same_username || DOM.dataset(message, `highlighted`)) {
+      if (message.classList.contains(`fresh_message`)) {
+        continue
+      }
+
       let rect = message.getBoundingClientRect()
 
       if (rect.top <= 0) {
@@ -1007,6 +1011,7 @@ App.activity_above = () => {
 // This is a message made by the user or one that is highlighted
 App.activity_below = () => {
   let messages = App.get_all_messages()
+  let area = DOM.el(`#chat_area_parent`)
 
   for (let message of messages) {
     let same_username = false
@@ -1016,18 +1021,14 @@ App.activity_below = () => {
       same_username = true
     }
 
-    let area = DOM.el(`#chat_area`)
-    let area_height = area.offsetHeight
-    let area_rect = area.getBoundingClientRect()
-
     if (same_username || DOM.dataset(message, `highlighted`)) {
-      if (same_username || DOM.dataset(message, `highlighted`)) {
-        let rect = message.getBoundingClientRect()
+      if (message.classList.contains(`fresh_message`)) {
+        continue
+      }
 
-        if (rect.top >= area_rect.top + area_height) {
-          App.jump_to_chat_message(DOM.dataset(message, `message_id`), true)
-          return
-        }
+      if (message.offsetTop >= (area.scrollTop + area.offsetHeight)) {
+        App.jump_to_chat_message(DOM.dataset(message, `message_id`), true)
+        return
       }
     }
   }
