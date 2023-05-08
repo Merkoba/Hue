@@ -124,8 +124,11 @@ html {
 	display: none;
 }
 
+.activity_bar_item {
+	gap: 0.5rem;
+}
+
 .activity_bar_text {
-	margin-left: 0.5rem;
 	transition: text-shadow 500ms;
 	font-size: var(--panel_font_size);
 }
