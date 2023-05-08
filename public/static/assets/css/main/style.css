@@ -125,7 +125,6 @@ html {
 }
 
 .activity_bar_text {
-	white-space: nowrap;
 	margin-left: 0.5rem;
 	transition: text-shadow 500ms;
 	font-size: var(--panel_font_size);
@@ -296,7 +295,6 @@ html {
 #footer_items {
 	display: flex;
 	flex-grow: 1;
-	white-space: nowrap;
 	align-items: center;
 	justify-content: flex-start;
 	height: 100%;
@@ -1939,18 +1937,12 @@ pre {
 	justify-content: flex-start;
 	height: 100%;
 	position: relative;
-	overflow: hidden;
-	white-space: nowrap;
 }
 
 #linksbar_title {
   flex: 1 1 auto;
-	overflow: hidden;
-	white-space: nowrap;
 }
 
 #linksbar_url {
   flex: 1 1 auto;
-	overflow: hidden;
-	white-space: nowrap;
 }
