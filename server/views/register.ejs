@@ -1,7 +1,6 @@
 <%- include('doctype.ejs'); %>
 
 <html>
-
 	<head>
 		<title><%-vars.register_title%></title>
 		<%- include('pages_imports.ejs'); %>
@@ -44,13 +43,13 @@
 
 			<div class="spacer1"></div>
 			<a href="/login">Login</a>
-
+			<div class="spacer1"></div>
 		</div>
 
 		<script>
-			DOM.el("#register_username").focus()
+			DOM.el(`#register_username`).focus()
 
-			function validate_form() {
+			function validate_form () {
 				if (msg_info.is_open()) {
 					return false
 				}
@@ -59,30 +58,30 @@
 					return false
 				}
 
-				DOM.el("#register_username").value = DOM.el("#register_username").value.trim()
+				DOM.el(`#register_username`).value = DOM.el(`#register_username`).value.trim()
 
-				let username = DOM.el("#register_username").value
-				let password = DOM.el("#register_password").value
-				let password2 = DOM.el("#register_password2").value
-				let code = DOM.el("#register_code").value
+				let username = DOM.el(`#register_username`).value
+				let password = DOM.el(`#register_password`).value
+				let password2 = DOM.el(`#register_password2`).value
+				let code = DOM.el(`#register_code`).value
 
 				if (username.length === 0) {
-					show_info("Username can't be empty")
+					show_info(`Username can't be empty`)
 					return false
 				}
 
 				if (password.length === 0) {
-					show_info("Password can't be empty")
+					show_info(`Password can't be empty`)
 					return false
 				}
 
 				if (username.length > max_username_length) {
-					show_info("Username is too Long")
+					show_info(`Username is too Long`)
 					return false
 				}
 
 				if (username !== utilz.clean_username(username)) {
-					show_info("Username contains invalid characters. Only letters and numbers are allowed")
+					show_info(`Username contains invalid characters. Only letters and numbers are allowed`)
 					return false
 				}
 
@@ -92,36 +91,35 @@
 				}
 
 				if (password.length > max_password_length) {
-					show_info("Password is too long")
+					show_info(`Password is too long`)
 					return false
 				}
 
 				if (password !== utilz.single_space(password)) {
-					show_info("Password contains invalid characters. There can't be spaces at the start or end of the password, or consecutive spaces")
+					show_info(`Password contains invalid characters. There can't be spaces at the start or end of the password, or consecutive spaces`)
 					return false
 				}
 
 				if (password !== password2) {
-					show_info("The passwords don't match")
+					show_info(`The passwords don't match`)
 					return false
 				}
 
 				if (code.length > 100) {
-					show_info("Invalid code")
+					show_info(`Invalid code`)
 					return false
 				}
 
-				DOM.el("#btn_register").disabled = true
+				DOM.el(`#btn_register`).disabled = true
 
 				return true
 			}
 
-			let current_username = ""
+			let current_username = ``
+			DOM.el(`#register_username`).addEventListener(`input`, on_username_input)
 
-			DOM.el("#register_username").addEventListener("input", on_username_input)
-
-			function on_username_input() {
-				let username = DOM.el("#register_username").value.trim()
+			function on_username_input () {
+				let username = DOM.el(`#register_username`).value.trim()
 
 				if (username === current_username) {
 					return
@@ -129,21 +127,20 @@
 
 				if (username.length > max_username_length) {
 					username = username.substring(0, max_username_length)
-					DOM.el("#register_username").value = username
+					DOM.el(`#register_username`).value = username
 				}
 
 				current_username = username
 			}
 
-			function recaptcha_callback() {
+			function recaptcha_callback () {
 				recaptcha_checked = true
 			}
 
-			if (form_username && form_username !== "undefined") {
-				DOM.el("#register_username").value = form_username
+			if (form_username && form_username !== `undefined`) {
+				DOM.el(`#register_username`).value = form_username
 				on_username_input()
 			}
 		</script>
 	</body>
-
 </html>

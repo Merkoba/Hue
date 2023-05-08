@@ -10,11 +10,11 @@
 		<script>
 			let recaptcha_checked = false
 
-			function recaptcha_callback() {
+			function recaptcha_callback () {
 				recaptcha_checked = true
 			}
 
-			function validate_form() {
+			function validate_form () {
 				if (msg_info.is_open()) {
 					return false
 				}
@@ -23,32 +23,32 @@
 					return false
 				}
 
-				DOM.el("#login_username").value = DOM.el("#login_username").value.trim()
+				DOM.el(`#login_username`).value = DOM.el(`#login_username`).value.trim()
 
-				let username = DOM.el("#login_username").value
-				let password = DOM.el("#login_password").value
+				let username = DOM.el(`#login_username`).value
+				let password = DOM.el(`#login_password`).value
 
 				if (username.length === 0) {
-					show_info("Username can't be empty")
+					show_info(`Username can't be empty`)
 					return false
 				}
 
 				if (password.length === 0) {
-					show_info("Password can't be empty")
+					show_info(`Password can't be empty`)
 					return false
 				}
 
 				if (username.length > max_max_username_length) {
-					show_info("Username is too long")
+					show_info(`Username is too long`)
 					return false
 				}
 
 				if (password.length > max_max_password_length) {
-					show_info("Password is too long")
+					show_info(`Password is too long`)
 					return false
 				}
 
-				DOM.el("#btn_login").disabled = true
+				DOM.el(`#btn_login`).disabled = true
 
 				return true
 			}
@@ -56,14 +56,14 @@
 	</head>
 
 	<body>
-		<div class='main'>
-			<div class='header_info'>
+		<div class="main">
+			<div class="header_info">
 				<div>Login here</div>
 				<div>Enter username and password</div>
 			</div>
 
 			<form method="post" action="/login" name="login" onsubmit="return validate_form()">
-				<input type='hidden' name='fromurl' value="<%-vars.fromurl%>">
+				<input type="hidden" name="fromurl" value="<%-vars.fromurl%>">
 				<input type="text" placeholder="Username" name="username" id="login_username">
 				<div class="spacer4"></div>
 				<input type="password" placeholder="Password" name="password" id="login_password">
@@ -81,18 +81,15 @@
 			</form>
 
 			<div class="spacer1"></div>
-
 			<a href="/register">Register</a>
-
 			<div class="spacer1"></div>
-
 		</div>
 
 		<script>
-			DOM.el("#login_username").focus()
+			DOM.el(`#login_username`).focus()
 
-			if(form_username && form_username !== "undefined") {
-				DOM.el("#login_username").value = form_username
+			if(form_username && form_username !== `undefined`) {
+				DOM.el(`#login_username`).value = form_username
 			}
 		</script>
 	</body>
