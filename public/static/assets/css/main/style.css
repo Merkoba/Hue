@@ -161,6 +161,8 @@ html {
 	align-items: center;
 	background-color: var(--altbackground);
 	color: var(--text_color);
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .panel_alt {
