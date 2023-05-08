@@ -163,6 +163,10 @@ html {
 	color: var(--text_color);
 }
 
+.panel_alt {
+	background-color: var(--altcolor);
+}
+
 #chat_main {
 	position: relative;
 	display: flex;
@@ -1260,11 +1264,6 @@ a.special_link:hover {
 	margin-top: 1rem;
 }
 
-.modal_subheader {
-	padding: 0.2rem;
-	background-color: var(--altcolor);
-}
-
 .chat_quote {
 	padding: 0.25em;
 	margin-bottom: 0.25em;
@@ -1917,7 +1916,6 @@ pre {
 }
 
 #linksbar {
-	background-color: var(--altcolor);
 	padding-left: 1rem;
 	padding-right: 1rem;
 }
