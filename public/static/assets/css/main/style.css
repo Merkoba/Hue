@@ -171,6 +171,16 @@ html {
 	background-color: var(--altcolor);
 }
 
+.panel_container {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
 #chat_main {
 	position: relative;
 	display: flex;
@@ -280,8 +290,6 @@ html {
 }
 
 #footer {
-	justify-content: flex-start !important;
-	position: relative;
 	transition: filter 0.2s linear, box-shadow 0.2s linear;
 }
 
@@ -1297,6 +1305,7 @@ a.special_link:hover {
 .horizontal_separator {
 	background-color: currentColor;
 	width: 2px;
+	min-width: 2px;
 	height: 1em;
 	margin-left: 1rem;
 	margin-right: 1rem;
@@ -1305,6 +1314,7 @@ a.special_link:hover {
 .vertical_separator {
 	background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
 	height: 2px;
+	min-height: 2px;
 	width: 100%;
 }
 
@@ -1918,11 +1928,6 @@ pre {
   background-color: var(--altbackground_a) !important;
 }
 
-#linksbar {
-	padding-left: 1rem;
-	padding-right: 1rem;
-}
-
 #linksbar_links {
 	flex-grow: 0;
 	flex-shrink: 0;
@@ -1948,4 +1953,8 @@ pre {
 
 #linksbar_url {
   flex: 1 1 auto;
+}
+
+.grow {
+	flex-grow: 1;
 }
