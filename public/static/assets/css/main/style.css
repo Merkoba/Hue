@@ -65,13 +65,6 @@ html {
 	}
 }
 
-#header {
-	display: flex;
-	flex-direction: row;
-	flex-shrink: 0;
-	overflow: hidden;
-}
-
 .header_side {
 	flex-grow: 0;
 	flex-shrink: 0;
