@@ -309,17 +309,9 @@ html {
 	height: var(--icon_size);
 }
 
-.footer_text {
-	margin-right: 0.4rem;
-}
-
 #footer .horizontal_separator {
 	margin-left: 0.5rem !important;
 	margin-right: 0.5rem !important;
-}
-
-#footer_input_menu {
-	margin-left: 0.25rem;
 }
 
 .panel_icon {
