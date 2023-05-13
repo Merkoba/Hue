@@ -41,14 +41,6 @@ App.setup_footer = () => {
     }
   })
 
-  let footer_items = DOM.el(`#footer_items`)
-
-  DOM.ev(footer_items, `click`, (e) => {
-    if (e.target === footer_items) {
-      DOM.el(`#input`).focus()
-    }
-  })
-
   DOM.ev(DOM.el(`#footer_input_menu`), `auxclick`, (e) => {
     if (e.which === 2) {
       App.flop()

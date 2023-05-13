@@ -303,15 +303,6 @@ html {
 	box-sizing: border-box;
 }
 
-#footer_items {
-	display: flex;
-	flex-grow: 1;
-	align-items: center;
-	justify-content: flex-start;
-	height: 100%;
-	padding-right: 0.5rem;
-}
-
 #footer .separator {
 	height: 1em;
 }
