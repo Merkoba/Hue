@@ -81,7 +81,8 @@ App.show_chat_context_menu = (button, x, y) => {
   items.push({
     text: `Copy`,
     action: () => {
-      App.copy_string(text.textContent, false)
+      let str = App.utilz.single_space(text.textContent)
+      App.copy_string(str, false)
     }
   })
 
