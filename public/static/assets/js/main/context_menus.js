@@ -9,6 +9,7 @@ App.show_chat_context_menu = (button, x, y) => {
 
   let items = []
   let message = button.closest(`.message`)
+  let text = DOM.el(`.unit_text`, message)
   let mode = DOM.dataset(message, `mode`)
   let type = DOM.dataset(message, `type`)
   let user_id = DOM.dataset(message, `user_id`)
@@ -76,6 +77,13 @@ App.show_chat_context_menu = (button, x, y) => {
       })
     }
   }
+
+  items.push({
+    text: `Copy`,
+    action: () => {
+      App.copy_string(text.textContent, false)
+    }
+  })
 
   items.push({
     text: `Hide`,
