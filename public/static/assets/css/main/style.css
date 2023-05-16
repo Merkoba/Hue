@@ -168,10 +168,12 @@ html {
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
+	align-items: center;
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
 	overflow: hidden;
 	white-space: nowrap;
+	height: 100%;
 }
 
 #chat_main {
