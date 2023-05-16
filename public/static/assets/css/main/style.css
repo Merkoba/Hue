@@ -156,8 +156,6 @@ html {
 	align-items: center;
 	background-color: var(--altbackground);
 	color: var(--text_color);
-	overflow: hidden;
-	white-space: nowrap;
 }
 
 .panel_alt {
@@ -1930,4 +1928,9 @@ pre {
 
 .grow {
 	flex-grow: 1;
+}
+
+.flash_highlight {
+	filter: brightness(1.5);
+	box-shadow: 0 0 1.4rem var(--altcolor);
 }
