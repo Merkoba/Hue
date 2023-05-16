@@ -527,7 +527,7 @@ App.get_quote_text = () => {
 
   let container = DOM.el_or_self(`.unit_data_container`, ans[0])
   let quote = DOM.dataset(container, `original_message`)
-  quote = App.remove_urls(App.utilz.single_space(quote))
+  quote = App.utilz.single_space(quote)
 
   let link_preview = DOM.el(`.link_preview_title`, container)
   let link_text
@@ -537,7 +537,11 @@ App.get_quote_text = () => {
   }
 
   if (link_text) {
+    quote = App.remove_urls(quote, false)
     quote += ` (${App.utilz.single_space(link_text)})`
+  }
+  else {
+    quote = App.remove_urls(quote)
   }
 
   let length = quote.length

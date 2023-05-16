@@ -234,7 +234,7 @@ App.open_url_menu = (data) => {
 }
 
 // Replace urls with dummy text
-App.remove_urls = (text) => {
+App.remove_urls = (text, show_hostname = true) => {
   let split = text.split(` `)
   let new_words = []
   let hostname = ``
@@ -264,7 +264,7 @@ App.remove_urls = (text) => {
     }
   }
 
-  if (hostname && new_words.length === 1) {
+  if (show_hostname && hostname && new_words.length === 1) {
     new_words.push(`(${hostname})`)
   }
 
