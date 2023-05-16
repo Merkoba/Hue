@@ -518,15 +518,36 @@ App.insert_message = (args = {}) => {
 }
 
 // Get reply text
-App.get_reply_text = () => {
+App.get_quote_text = () => {
   let ans = App.get_message_by_id(App.reply_id)
 
   if (!ans || !ans[0]) {
     return ``
   }
 
-  let text = DOM.dataset(DOM.el_or_self(`.unit_data_container`, ans[0]), `original_message`)
-  return App.remove_urls(App.utilz.single_space(text))
+  let container = DOM.el_or_self(`.unit_data_container`, ans[0])
+  let quote = DOM.dataset(container, `original_message`)
+  quote = App.remove_urls(App.utilz.single_space(quote))
+
+  let link_preview = DOM.el(`.link_preview_title`, container)
+  let link_text
+
+  if (link_preview) {
+    link_text = link_preview.textContent
+  }
+
+  if (link_text) {
+    quote += ` (${App.utilz.single_space(link_text)})`
+  }
+
+  let length = quote.length
+  quote = quote.substring(0, App.config.quote_max_length).trim()
+
+  if (length > quote.length) {
+    quote += `...`
+  }
+
+  return quote
 }
 
 // Setup reply
@@ -536,7 +557,7 @@ App.setup_reply = () => {
   })
 
   DOM.ev(DOM.el(`#input_reply_container`), `mouseenter`, (e) => {
-    e.target.title = `${App.reply_username}: ${App.get_reply_text()}`
+    e.target.title = `${App.reply_username}: ${App.get_quote_text()}`
   })
 
   let pf = DOM.el(`#input_reply_profilepic`)
@@ -612,16 +633,10 @@ App.submit_reply = () => {
     return
   }
 
-  let otext = App.get_reply_text()
+  let quote = App.get_quote_text()
 
-  if (!otext) {
+  if (!quote) {
     return
-  }
-
-  let quote = otext.substring(0, App.config.quote_max_length).trim()
-
-  if (otext.length > quote.length) {
-    quote += `...`
   }
 
   App.process_input({
