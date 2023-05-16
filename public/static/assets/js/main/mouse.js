@@ -109,11 +109,7 @@ App.start_mouse_events = () => {
     }
   })
 
-  DOM.ev(document, `auxclick`, (e) => {
-    if (e.button !== 1) {
-      return
-    }
-
+  DOM.ev(document, `contextmenu`, (e) => {
     if (!e.target) {
       return
     }
@@ -127,11 +123,16 @@ App.start_mouse_events = () => {
     }
 
     if (e.target.closest(`.chat_menu_button_main`)) {
+      if (window.getSelection().toString()) {
+        return
+      }
+
       let container = e.target.closest(`.chat_menu_button_main`)
 
       if (container) {
         let button = DOM.el(`.chat_menu_button_container`, container)
         App.show_chat_context_menu(button, e.clientX, e.clientY)
+        e.preventDefault()
       }
     }
   })
