@@ -538,7 +538,7 @@ App.get_quote_text = () => {
 
   if (link_text) {
     quote = App.remove_urls(quote, false)
-    quote += ` (${App.utilz.single_space(link_text)})`
+    quote += ` ` + App.utilz.single_space(link_text)
   }
   else {
     quote = App.remove_urls(quote)
