@@ -1888,11 +1888,6 @@ pre {
 	outline: 1px solid var(--text_color_a);
 }
 
-.flash_highlight {
-	filter: brightness(1.5);
-	box-shadow: 0 0 1.4rem var(--altcolor);
-}
-
 #needcontext-container {
   background-color: var(--background_color) !important;
   color: var(--text_color) !important;

@@ -85,14 +85,3 @@ App.update_footer_toggle = (type) => {
     DOM.el(`#footer_${type}_toggle use`).href.baseVal = `#icon_toggle-off`
   }
 }
-
-// Highlight the footer
-// Highlight input
-App.highlight_footer = () => {
-  clearTimeout(App.highlight_footer_timeout)
-  DOM.el(`#footer`).classList.add(`flash_highlight`)
-
-  App.highlight_footer_timeout = setTimeout(() => {
-    DOM.el(`#footer`).classList.remove(`flash_highlight`)
-  }, App.highlight_footer_delay)
-}

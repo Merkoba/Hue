@@ -597,7 +597,6 @@ App.start_reply = (target) => {
 
   App.show_reply()
   App.set_input_placeholder(`Replying to: ${username}`)
-  App.highlight_footer()
 }
 
 // Show the reply info
@@ -695,7 +694,6 @@ App.start_edit = (unit) => {
   App.change_input(App.edit_original_message)
   App.hide_reply()
   App.show_edit()
-  App.highlight_footer()
 }
 
 // Show edit
