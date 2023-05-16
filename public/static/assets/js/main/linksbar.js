@@ -62,16 +62,29 @@ App.set_linksbar_item = (args) => {
 
 App.update_linksbar = () => {
   let item = App.linksbar_item
+  let image_el = DOM.el(`#linksbar_image`)
+  let click_el = DOM.el(`#linksbar_click`)
 
   if (!item) {
+    image_el.classList.add(`nodisplay`)
+    click_el.classList.add(`nodisplay`)
     return
   }
 
-  let image_el = DOM.el(`#linksbar_image`)
+  image_el.classList.remove(`nodisplay`)
+  click_el.classList.remove(`nodisplay`)
+
   image_el.src = App.get_profilepic(item.user_id)
 
   let url_el = DOM.el(`#linksbar_url`)
   url_el.textContent = item.url || ``
+
+  if (item.url) {
+    url_el.classList.remove(`nodisplay`)
+  }
+  else {
+    url_el.classList.add(`nodisplay`)
+  }
 
   if (item.url) {
     url_el.classList.remove(`nodisplay`)
