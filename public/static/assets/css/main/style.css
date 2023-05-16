@@ -660,7 +660,7 @@ a.generic:hover {
 	background-color: var(--background_color);
 	margin-top: -1.2rem;
 	padding-top: 1.2rem;
-	padding-bottom: 1.2rem;
+	margin-bottom: 1.2rem;
 	margin-left: -1px;
 	margin-right: -1px;
 }
