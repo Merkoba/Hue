@@ -1,4 +1,2 @@
-# PM2 will likely use the user's home directory as root
-
-su - node -c "pm2 stop all"
-su - node -c "pm2 start hue/server/www --env production"
+#!/bin/bash
+su - node -c "pm2 start pm2_hue.config.js"
