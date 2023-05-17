@@ -149,7 +149,6 @@ html {
 	display: flex;
 	flex-grow: 0;
 	flex-shrink: 0;
-	height: var(--panel_height);
 	min-height: var(--panel_height);
 	flex-direction: row;
 	justify-content: center;
