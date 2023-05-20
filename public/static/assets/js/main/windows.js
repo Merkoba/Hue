@@ -668,7 +668,7 @@ App.start_msg = () => {
 
   App.msg_view_text.set_title(App.template_titlebar({
     items: [
-      {id: `view_text_copy`, text: `Copy To Clipboard`},
+      {id: `view_text_copy`, text: `Copy`},
     ]
   }))
 
@@ -682,13 +682,13 @@ App.start_msg = () => {
 
   App.msg_link_image.set_title(App.template_titlebar({
     items: [
-      {id: `link_image_submit`, text: `Link Image`},
+      {id: `link_image_submit`, text: `Link`},
     ]
   }))
 
   App.msg_link_tv.set_title(App.template_titlebar({
     items: [
-      {id: `link_tv_submit`, text: `Link TV`},
+      {id: `link_tv_submit`, text: `Link`},
     ]
   }))
 
@@ -729,41 +729,41 @@ App.start_msg = () => {
 
   App.msg_whispers.set_title(App.template_titlebar({
     items: [
-      {id: `start_write_whisper`, text: `New Whisper`},
-      {id: `whispers_clear`, text: `Clear Whispers`},
+      {id: `start_write_whisper`, text: `New`},
+      {id: `whispers_clear`, text: `Clear`},
     ]
   }))
 
   App.msg_admin_activity.set_title(App.template_titlebar({
     items: [
-      {id: `admin_activity_clear`, text: `Clear Admin Activity`},
+      {id: `admin_activity_clear`, text: `Clear`},
     ]
   }))
 
   App.msg_profilepic_cropper.set_title(App.template_titlebar({
     items: [
       {id: `profilepic_cropper_change`, text: ``},
-      {id: `profilepic_cropper_crop`, text: `Crop Circle`},
+      {id: `profilepic_cropper_crop`, text: `Crop`},
     ]
   }))
 
   App.msg_image_upload_comment.set_title(App.template_titlebar({
     items: [
       {id: `image_upload_comment_change`, text: ``},
-      {id: `image_upload_comment_submit`, text: `Upload Image`},
+      {id: `image_upload_comment_submit`, text: `Upload`},
     ]
   }))
 
   App.msg_tv_upload_comment.set_title(App.template_titlebar({
     items: [
       {id: `tv_upload_comment_change`, text: ``},
-      {id: `tv_upload_comment_submit`, text: `Upload TV`},
+      {id: `tv_upload_comment_submit`, text: `Upload`},
     ]
   }))
 
   App.msg_link_background.set_title(App.template_titlebar({
     items: [
-      {id: `link_background_submit`, text: `Link Background`},
+      {id: `link_background_submit`, text: `Link`},
     ]
   }))
 

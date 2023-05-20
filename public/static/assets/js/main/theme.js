@@ -41,6 +41,7 @@ App.apply_theme = (background_color = ``, text_color = ``) => {
   let altbackground_a = App.colorlib.rgb_to_rgba(altbackground, 0.7)
   let text_color_a = App.colorlib.rgb_to_rgba(text_color, 0.7)
 
+  document.documentElement.style.setProperty(`--font`, App.settings.font)
   document.documentElement.style.setProperty(`--text_color`, text_color)
   document.documentElement.style.setProperty(`--text_color_a`, text_color_a)
   document.documentElement.style.setProperty(`--altcolor`, altcolor)

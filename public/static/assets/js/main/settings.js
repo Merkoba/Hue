@@ -133,7 +133,19 @@ App.user_settings = {
         App.save_settings()
       }
     },
-  }
+  },
+  font: {
+    widget_type: `select`,
+    description: `Which font to use`,
+    action: (save = true) => {
+      App.settings.font = DOM.el(`#settings_font`).value
+      App.apply_theme()
+
+      if (save) {
+        App.save_settings()
+      }
+    },
+  },
 }
 
 // Gets the settings localStorage object

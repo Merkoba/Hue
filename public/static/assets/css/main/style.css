@@ -1,18 +1,13 @@
 :root {
 	--panel_height: 2.2rem;
 	--panel_font_size: 1rem;
-	--font_family: imported_font, sans-serif;
 	--icon_size: 1.15em;
 	--chat_side_spacing: 0.8em;
 	--profilepic_size: 1.8em;
 	--big_profilepic_size: 16rem;
 	--msg_display: block;
 	--placeholder_opacity: 0.6;
-}
-
-@font-face {
-	font-family: imported_font;
-	src: url(/static/assets/css/fonts/Roboto-Regular.ttf);
+	--font: sans-serif;
 }
 
 body,
@@ -22,7 +17,7 @@ html {
 	margin: 0;
 	padding: 0;
 	font-size: 17px;
-	font-family: var(--font_family);
+	font-family: var(--font);
 	background-color: #262423;
 	overflow: hidden;
 	background-color: rgb(24, 24, 24);
@@ -602,6 +597,8 @@ a.generic:hover {
 	display: flex;
 	flex-direction: column;
 	gap: 1.6rem;
+	margin-top: 1.6rem;
+	margin-bottom: 1.6rem;
 }
 
 .settings_item {
@@ -766,7 +763,7 @@ input[type=password],
 input[type=number],
 textarea,
 select {
-	font-family: var(--font_family) !important;
+	font-family: var(--font) !important;
 	font-size: 1rem;
 }
 
