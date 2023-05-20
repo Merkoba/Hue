@@ -649,6 +649,10 @@ a.generic:hover {
 	background-color: var(--altbackground) !important;
 }
 
+.Msg-titlebar {
+	font-family: var(--font) !important;
+}
+
 .window_controls {
 	top: 0;
 	position: sticky;
@@ -1889,6 +1893,7 @@ pre {
   color: var(--text_color) !important;
   border-color: var(--altcolor) !important;
   font-size: var(--chat_font_size) !important;
+	font-family: var(--font) !important;
 }
 
 .needcontext-item-selected {
