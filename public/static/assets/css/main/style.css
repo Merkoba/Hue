@@ -33,12 +33,15 @@ html {
 }
 
 #main_container {
-	opacity: 0;
 	transition: opacity 1.6s linear;
 	width: 100vw;
 	height: 100vh;
 	position: fixed;
 	top: 0;
+}
+
+.loading {
+	opacity: 0;
 	pointer-events: none;
 }
 

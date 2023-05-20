@@ -42,8 +42,7 @@ App.setup_generic_separators = () => {
 
 // This hides the loading animation and makes the main container visible
 App.make_main_container_visible = () => {
-  DOM.el(`#main_container`).style.opacity = 1
-  DOM.el(`#main_container`).style.pointerEvents = `initial`
+  DOM.el(`#main_container`).classList.remove(`loading`)
 }
 
 // Setups the confirm window
