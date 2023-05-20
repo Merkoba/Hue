@@ -34,6 +34,7 @@ App.apply_theme = (background_color = ``, text_color = ``) => {
   background_color = App.colorlib.hex_to_rgb(background_color)
   text_color = App.colorlib.hex_to_rgb(text_color)
 
+  let font = `${App.settings.font}, sans-serif`
   let altcolor = App.colorlib.get_lighter_or_darker(background_color, 0.2)
   let altcolor_a = App.colorlib.rgb_to_rgba(altcolor, 0.7)
   let background_color_a = App.colorlib.rgb_to_rgba(background_color, 0.95)
@@ -41,7 +42,7 @@ App.apply_theme = (background_color = ``, text_color = ``) => {
   let altbackground_a = App.colorlib.rgb_to_rgba(altbackground, 0.7)
   let text_color_a = App.colorlib.rgb_to_rgba(text_color, 0.7)
 
-  document.documentElement.style.setProperty(`--font`, App.settings.font)
+  document.documentElement.style.setProperty(`--font`, font)
   document.documentElement.style.setProperty(`--text_color`, text_color)
   document.documentElement.style.setProperty(`--text_color_a`, text_color_a)
   document.documentElement.style.setProperty(`--altcolor`, altcolor)
