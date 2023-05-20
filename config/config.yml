@@ -14,9 +14,6 @@ background_loading_url: "/static/assets/img/image_loading.jpg"
 # Image to show to video element when there's no video image loaded
 video_poster: "/static/assets/img/video_poster.jpg"
 
-# Separator used to separate the room name and the topic in the browser tab's title
-title_separator: " - "
-
 # The default tab title of a room.
 # This appears before the room information has been gathered to set the first title
 default_title: "Hue | Chat room with images and tv"

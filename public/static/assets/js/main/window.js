@@ -39,13 +39,7 @@ App.set_title = (s) => {
 // Updates the tab title
 // Taking into account the room name and topic
 App.update_title = () => {
-  let t = App.room_name
-
-  if (App.topic !== ``) {
-    t += ` ${App.config.title_separator} ${App.topic}`
-  }
-
-  App.set_title(t)
+  App.set_title(App.room_name)
 }
 
 // Starts the listener to check when the client is visible or not

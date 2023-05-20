@@ -131,7 +131,6 @@ App.announce_topic_change = (data) => {
     )
 
     App.set_topic_info(data)
-    App.update_title()
   }
 }
 
