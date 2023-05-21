@@ -24,7 +24,8 @@ App.make_info_popup_item = (args = {}) => {
     icon: `info`,
     action: true,
     push: true,
-    increase_counter: true
+    increase_counter: true,
+    on_click: () => {},
   }
 
   args = Object.assign(def_args, args)

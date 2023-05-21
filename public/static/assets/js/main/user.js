@@ -370,7 +370,10 @@ App.not_an_op = () => {
 App.show_joined = () => {
   App.make_info_popup_item({
     message: `You joined the room`,
-    increase_counter: false
+    increase_counter: false,
+    on_click: () => {
+      App.show_profile(App.username, App.user_id)
+    },
   })
 }
 
