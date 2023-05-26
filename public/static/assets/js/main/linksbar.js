@@ -30,7 +30,7 @@ App.setup_linksbar = () => {
 }
 
 App.check_linksbar = () => {
-  let bar = DOM.el(`#linksbar`)
+  let bar = DOM.el(`#linksbar_panel`)
 
   if (App.get_setting(`show_linksbar`)) {
     bar.classList.remove(`nodisplay`)
