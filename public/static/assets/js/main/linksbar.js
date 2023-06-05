@@ -46,11 +46,12 @@ App.linksbar_click = () => {
 
 App.set_linksbar_item = (args) => {
   let item = {
+    id: args.id,
     url: args.url,
     title: args.title,
     username: args.username,
     user_id: args.user_id,
-    date: args.date
+    date: args.date,
   }
 
   App.linksbar_item = item
@@ -119,4 +120,12 @@ App.linksbar_copy_url = () => {
 
 App.linksbar_copy_title = () => {
   App.copy_string(App.linksbar_item.title, false)
+}
+
+App.reply_to_link = () => {
+  let ans = App.get_message_by_id(App.linksbar_item.id)
+
+  if (ans) {
+    App.start_reply(ans[0])
+  }
 }

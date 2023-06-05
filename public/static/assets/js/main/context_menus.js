@@ -186,6 +186,13 @@ App.show_input_menu = () => {
     }
   })
 
+  items.push({
+    text: `@ Link`,
+    action: () => {
+      App.reply_to_link()
+    }
+  })
+
   let el = DOM.el(`#footer_input_menu`)
   NeedContext.show_on_element(el, items)
 }

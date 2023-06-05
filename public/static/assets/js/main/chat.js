@@ -51,6 +51,7 @@ App.make_chat_message = (args = {}) => {
 
   if (args.link_url) {
     let o = {
+      id: args.id,
       url: args.link_url,
       title: args.link_title,
       username: args.username,
