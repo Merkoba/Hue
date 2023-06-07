@@ -59,32 +59,22 @@ App.generate_random_themes = () => {
 
   function create_item (theme) {
     let item = DOM.create(`div`, `random_theme_item action`)
-
-    item.style.backgroundColor = theme.bg_color
-    item.style.color = theme.text_color
+    item.style.backgroundColor = theme.background
+    item.style.color = theme.color
     item.textContent = `This is a random theme`
 
     DOM.ev(item, `click`, () => {
-      DOM.el(`#admin_background_color`).value = theme.bg_color
-      DOM.el(`#admin_text_color`).value = theme.text_color
-      App.apply_theme(theme.bg_color, theme.text_color)
+      DOM.el(`#admin_background_color`).value = theme.background
+      DOM.el(`#admin_text_color`).value = theme.color
+      App.apply_theme(theme.background, theme.color)
     })
 
     return item
   }
 
   function fill_column (col) {
-    let dark = true
-
     for (let i=0; i<num_col_items; i++) {
-      if (dark) {
-        col.append(create_item(App.get_dark_theme()))
-      }
-      else {
-        col.append(create_item(App.get_light_theme()))
-      }
-
-      dark = !dark
+      col.append(create_item(ThemeList.random_theme()))
     }
   }
 
@@ -112,30 +102,6 @@ App.cancel_change_theme = () => {
   DOM.el(`#admin_text_color`).value = App.original_text_color
   App.apply_theme()
   App.msg_theme_picker.close()
-}
-
-// Get a random dark theme
-App.get_dark_theme = () => {
-  let bg_color = App.colorlib.get_dark_color()
-  let text_color = App.colorlib.get_random_hex()
-
-  if (App.colorlib.is_dark(text_color)) {
-    text_color = App.colorlib.get_lighter_or_darker(text_color, 0.74)
-  }
-
-  return {bg_color: bg_color, text_color: text_color}
-}
-
-// Get a random light theme
-App.get_light_theme = () => {
-  let bg_color = App.colorlib.get_light_color()
-  let text_color = App.colorlib.get_random_hex()
-
-  if (App.colorlib.is_light(text_color)) {
-    text_color = App.colorlib.get_lighter_or_darker(text_color, 0.74)
-  }
-
-  return {bg_color: bg_color, text_color: text_color}
 }
 
 // Apply the selected theme
