@@ -13,6 +13,7 @@ App.user_settings = {
 
       App.apply_background()
     },
+    version: 1,
   },
   highlight_current_username: {
     widget_type: `checkbox`,
@@ -23,6 +24,7 @@ App.user_settings = {
         App.save_settings()
       }
     },
+    version: 1,
   },
   case_insensitive_username_highlights: {
     widget_type: `checkbox`,
@@ -35,6 +37,7 @@ App.user_settings = {
 
       App.generate_mentions_regex()
     },
+    version: 1,
   },
   open_whispers_automatically: {
     widget_type: `checkbox`,
@@ -45,6 +48,7 @@ App.user_settings = {
         App.save_settings()
       }
     },
+    version: 1,
   },
   embed_images: {
     widget_type: `checkbox`,
@@ -55,6 +59,7 @@ App.user_settings = {
         App.save_settings()
       }
     },
+    version: 1,
   },
   show_link_previews: {
     widget_type: `checkbox`,
@@ -65,6 +70,7 @@ App.user_settings = {
         App.save_settings()
       }
     },
+    version: 1,
   },
   show_highlight_notifications: {
     widget_type: `checkbox`,
@@ -75,6 +81,7 @@ App.user_settings = {
         App.save_settings()
       }
     },
+    version: 1,
   },
   show_activity_notifications: {
     widget_type: `checkbox`,
@@ -85,6 +92,7 @@ App.user_settings = {
         App.save_settings()
       }
     },
+    version: 1,
   },
   show_user_join_notifications: {
     widget_type: `checkbox`,
@@ -95,6 +103,7 @@ App.user_settings = {
         App.save_settings()
       }
     },
+    version: 1,
   },
   show_user_leave_notifications: {
     widget_type: `checkbox`,
@@ -105,6 +114,7 @@ App.user_settings = {
         App.save_settings()
       }
     },
+    version: 1,
   },
   show_linksbar: {
     widget_type: `checkbox`,
@@ -117,6 +127,7 @@ App.user_settings = {
 
       App.check_linksbar()
     },
+    version: 1,
   },
   font: {
     widget_type: `select`,
@@ -129,6 +140,7 @@ App.user_settings = {
 
       App.apply_theme()
     },
+    version: 1,
   },
 }
 
@@ -142,6 +154,11 @@ App.get_settings = () => {
     changed = true
   }
 
+  function set_default (setting) {
+    App.settings[setting].value = App.default_setting_string
+    App.settings[setting].version = App.user_settings[setting].version
+  }
+
   for (let setting in App.user_settings) {
     // Fill defaults
     if (App.settings[setting] === undefined ||
@@ -149,7 +166,7 @@ App.get_settings = () => {
     {
       App.loginfo(`Stor: Adding setting: ${setting}`)
       App.settings[setting] = {}
-      App.settings[setting].value = App.default_setting_string
+      set_default(setting)
       changed = true
     }
   }
@@ -159,6 +176,12 @@ App.get_settings = () => {
     if (App.user_settings[setting] === undefined) {
       App.loginfo(`Stor: Deleting setting: ${setting}`)
       delete App.settings[setting]
+      changed = true
+    }
+    // Check new version
+    else if (App.settings[setting].version !== App.user_settings[setting].version) {
+      App.loginfo(`Stor: Upgrading setting: ${setting}`)
+      set_default(setting)
       changed = true
     }
   }
