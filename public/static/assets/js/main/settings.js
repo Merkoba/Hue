@@ -208,31 +208,31 @@ App.modify_setting_widget = (setting_name) => {
 
 // Starts listeners for settings windows widgets's change
 App.start_settings_widgets_listeners = () => {
-  for (let key in App.user_settings) {
-    let setting = App.user_settings[key]
-    let item = DOM.el(`#settings_${key}`)
+  for (let setting in App.user_settings) {
+    let user_setting = App.user_settings[setting]
+    let item = DOM.el(`#settings_${setting}`)
 
     if (
-      setting.widget_type === `checkbox` ||
-      setting.widget_type === `select`
+      user_setting.widget_type === `checkbox` ||
+      user_setting.widget_type === `select`
     ) {
-      DOM.ev(item, `change`, () => setting.action())
+      DOM.ev(item, `change`, () => user_setting.action())
     }
     else if (
-      setting.widget_type === `textarea` ||
-      setting.widget_type === `text`
+      user_setting.widget_type === `textarea` ||
+      user_setting.widget_type === `text`
     ) {
-      DOM.ev(item, `blur`, () => setting.action())
+      DOM.ev(item, `blur`, () => user_setting.action())
     }
     else if (
-      setting.widget_type === `number` ||
-      setting.widget_type === `color`
+      user_setting.widget_type === `number` ||
+      user_setting.widget_type === `color`
     ) {
-      DOM.ev(item, `change`, () => setting.action())
+      DOM.ev(item, `change`, () => user_setting.action())
     }
-    else if (setting.widget_type === `range`) {
+    else if (user_setting.widget_type === `range`) {
       DOM.ev(item, `input change`, () => {
-        setting.action()
+        user_setting.action()
       })
     }
   }
@@ -240,9 +240,9 @@ App.start_settings_widgets_listeners = () => {
 
 // Executes all settings action functions
 App.call_setting_actions = (save = false) => {
-  for (let key in App.user_settings) {
-    let setting = App.user_settings[key]
-    setting.action(save)
+  for (let setting in App.user_settings) {
+    let user_setting = App.user_settings[setting]
+    user_setting.action(save)
   }
 }
 
@@ -284,8 +284,8 @@ App.setup_settings_windows = () => {
 }
 
 // Get default setting
-App.get_default_setting = (key) => {
-  return App.config[`settings_default_${key}`]
+App.get_default_setting = (setting) => {
+  return App.config[`settings_default_${setting}`]
 }
 
 // Setting getter
@@ -307,15 +307,15 @@ App.set_setting = (setting, value) => {
 
 // Sets the hover titles for the setttings widgets
 App.set_user_settings_titles = () => {
-  for (let key in App.user_settings) {
-    let setting = App.user_settings[key]
-    let value = App.get_default_setting(key)
+  for (let setting in App.user_settings) {
+    let user_setting = App.user_settings[setting]
+    let value = App.get_default_setting(setting)
 
     if (typeof value === `string`) {
       value = `"${value}"`
     }
 
-    let title = `${setting.description} (${key}) (Default: ${value})`
-    DOM.el(`#settings_${key}`).closest(`.settings_item`).title = title
+    let title = `${user_setting.description} (${setting}) (Default: ${value})`
+    DOM.el(`#settings_${setting}`).closest(`.settings_item`).title = title
   }
 }
