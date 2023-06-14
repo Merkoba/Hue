@@ -6,11 +6,8 @@ App.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show the room's background image`,
     action: (save = true) => {
-      App.settings.show_background = DOM.el(
-        `#settings_show_background`
-      ).checked
-
       if (save) {
+        App.set_setting(`show_background`, DOM.el(`#settings_show_background`).checked)
         App.save_settings()
       }
 
@@ -21,11 +18,8 @@ App.user_settings = {
     widget_type: `checkbox`,
     description: `Whether messages containing the user's username must be highlighted`,
     action: (save = true) => {
-      App.settings.highlight_current_username = DOM.el(
-        `#settings_highlight_current_username`
-      ).checked
-
       if (save) {
+        App.set_setting(`highlight_current_username`, DOM.el(`#settings_highlight_current_username`).checked)
         App.save_settings()
       }
     },
@@ -34,24 +28,20 @@ App.user_settings = {
     widget_type: `checkbox`,
     description: `Whether username highlight checks are case insensitive or not`,
     action: (save = true) => {
-      App.settings.case_insensitive_username_highlights = DOM.el(
-        `#settings_case_insensitive_username_highlights`
-      ).checked
-
-      App.generate_mentions_regex()
-
       if (save) {
+        App.set_setting(`case_insensitive_username_highlights`, DOM.el(`#settings_case_insensitive_username_highlights`).checked)
         App.save_settings()
       }
+
+      App.generate_mentions_regex()
     },
   },
   open_whispers_automatically: {
     widget_type: `checkbox`,
     description: `Whether messages received should open in a window automatically`,
     action: (save = true) => {
-      App.settings.open_whispers_automatically = DOM.el(`#settings_open_whispers_automatically`).checked
-
       if (save) {
+        App.set_setting(`open_whispers_automatically`, DOM.el(`#settings_open_whispers_automatically`).checked)
         App.save_settings()
       }
     },
@@ -60,9 +50,8 @@ App.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to embed other images automatically`,
     action: (save = true) => {
-      App.settings.embed_images = DOM.el(`#settings_embed_images`).checked
-
       if (save) {
+        App.set_setting(`embed_images`, DOM.el(`#settings_embed_images`).checked)
         App.save_settings()
       }
     },
@@ -71,9 +60,8 @@ App.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show related information of chat links when available`,
     action: (save = true) => {
-      App.settings.show_link_previews = DOM.el(`#settings_show_link_previews`).checked
-
       if (save) {
+        App.set_setting(`show_link_previews`, DOM.el(`#settings_show_link_previews`).checked)
         App.save_settings()
       }
     },
@@ -82,9 +70,8 @@ App.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show desktop notifications on highlights`,
     action: (save = true) => {
-      App.settings.show_highlight_notifications = DOM.el(`#settings_show_highlight_notifications`).checked
-
       if (save) {
+        App.set_setting(`show_highlight_notifications`, DOM.el(`#settings_show_highlight_notifications`).checked)
         App.save_settings()
       }
     },
@@ -93,9 +80,8 @@ App.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show desktop notifications on activity after your last message`,
     action: (save = true) => {
-      App.settings.show_activity_notifications = DOM.el(`#settings_show_activity_notifications`).checked
-
       if (save) {
+        App.set_setting(`show_activity_notifications`, DOM.el(`#settings_show_activity_notifications`).checked)
         App.save_settings()
       }
     },
@@ -104,9 +90,8 @@ App.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show notifications when users join`,
     action: (save = true) => {
-      App.settings.show_user_join_notifications = DOM.el(`#settings_show_user_join_notifications`).checked
-
       if (save) {
+        App.set_setting(`show_user_join_notifications`, DOM.el(`#settings_show_user_join_notifications`).checked)
         App.save_settings()
       }
     },
@@ -115,9 +100,8 @@ App.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show notifications when users leave`,
     action: (save = true) => {
-      App.settings.show_user_leave_notifications = DOM.el(`#settings_show_user_leave_notifications`).checked
-
       if (save) {
+        App.set_setting(`show_user_leave_notifications`, DOM.el(`#settings_show_user_leave_notifications`).checked)
         App.save_settings()
       }
     },
@@ -126,42 +110,55 @@ App.user_settings = {
     widget_type: `checkbox`,
     description: `Whether to show the Links Bar or not`,
     action: (save = true) => {
-      App.settings.show_linksbar = DOM.el(`#settings_show_linksbar`).checked
-      App.check_linksbar()
-
       if (save) {
+        App.set_setting(`show_linksbar`, DOM.el(`#settings_show_linksbar`).checked)
         App.save_settings()
       }
+
+      App.check_linksbar()
     },
   },
   font: {
     widget_type: `select`,
     description: `Which font to use`,
     action: (save = true) => {
-      App.settings.font = DOM.el(`#settings_font`).value
-      App.apply_theme()
-
       if (save) {
+        App.set_setting(`font`, DOM.el(`#settings_font`).value)
         App.save_settings()
       }
+
+      App.apply_theme()
     },
   },
 }
 
 // Gets the settings localStorage object
 App.get_settings = () => {
+  let changed = false
   App.settings = App.get_local_storage(App.ls_settings)
 
-  if (App.settings === null) {
+  if (!App.settings) {
     App.settings = {}
+    changed = true
   }
 
-  let changed = false
-
   for (let setting in App.user_settings) {
-    if (App.settings[setting] === undefined) {
-      App.settings[setting] =
-        App.config[`settings_default_${setting}`]
+    // Fill defaults
+    if (App.settings[setting] === undefined ||
+      App.settings[setting].value === undefined)
+    {
+      App.loginfo(`Stor: Adding setting: ${setting}`)
+      App.settings[setting] = {}
+      App.settings[setting].value = App.default_setting_string
+      changed = true
+    }
+  }
+
+  for (let setting in App.settings) {
+    // Remove unused settings
+    if (App.user_settings[setting] === undefined) {
+      App.loginfo(`Stor: Deleting setting: ${setting}`)
+      delete App.settings[setting]
       changed = true
     }
   }
@@ -189,7 +186,7 @@ App.modify_setting_widget = (setting_name) => {
   let item = DOM.el(`#settings_${setting_name}`)
 
   if (widget_type === `checkbox`) {
-    item.checked = App.settings[setting_name]
+    item.checked = App.get_setting(setting_name)
   }
   else if (
     widget_type === `textarea` ||
@@ -198,11 +195,11 @@ App.modify_setting_widget = (setting_name) => {
     widget_type === `range` ||
     widget_type === `color`
   ) {
-    item.value = App.settings[setting_name]
+    item.value = App.get_setting(setting_name)
   }
   else if (widget_type === `select`) {
     for (let el of DOM.els(`option`, item)) {
-      if (el.value == App.settings[setting_name]) {
+      if (el.value == App.get_setting(setting_name)) {
         el.selected = true
       }
     }
@@ -242,7 +239,7 @@ App.start_settings_widgets_listeners = () => {
 }
 
 // Executes all settings action functions
-App.call_setting_actions = (save = true) => {
+App.call_setting_actions = (save = false) => {
   for (let key in App.user_settings) {
     let setting = App.user_settings[key]
     setting.action(save)
@@ -258,8 +255,7 @@ App.reset_settings = (empty = true) => {
 
   App.get_settings()
   App.start_settings_widgets()
-  App.call_setting_actions(false)
-  App.call_setting_actions(false)
+  App.call_setting_actions()
 }
 
 // Show the settings window
@@ -287,16 +283,33 @@ App.setup_settings_windows = () => {
   })
 }
 
+// Get default setting
+App.get_default_setting = (key) => {
+  return App.config[`settings_default_${key}`]
+}
+
 // Setting getter
-App.get_setting = (name) => {
-  return App.settings[name]
+App.get_setting = (setting) => {
+  let value = App.settings[setting].value
+
+  if (value === App.default_setting_string) {
+    value = App.get_default_setting(setting)
+  }
+
+  return value
+}
+
+// Set a setting
+App.set_setting = (setting, value) => {
+  App.settings[setting].value = value
+  App.save_settings()
 }
 
 // Sets the hover titles for the setttings widgets
 App.set_user_settings_titles = () => {
   for (let key in App.user_settings) {
     let setting = App.user_settings[key]
-    let value = App.config[`settings_default_${key}`]
+    let value = App.get_default_setting(key)
 
     if (typeof value === `string`) {
       value = `"${value}"`

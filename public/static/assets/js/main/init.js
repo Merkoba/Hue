@@ -12,10 +12,11 @@ App.load_scripts = true
 
 // Initial variables declarations
 App.config = {}
-App.ls_settings = `settings_v1`
+App.ls_settings = `settings_v2`
 App.ls_room_state = `room_state_v2`
 App.ls_input_history = `input_history_v3`
 App.roles = [`admin`, `op`, `voice`]
+App.default_setting_string = `__default__`
 App.topic = ``
 App.colorlib = ColorLib()
 App.userlist = []
