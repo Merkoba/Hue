@@ -1259,7 +1259,6 @@ App.scroll_events = () => {
 
   DOM.ev(chat, `scroll`, (e) => {
     App.scroll_timer()
-    App.update_scroll_percentage()
   })
 }
 
@@ -1344,6 +1343,8 @@ App.check_scrollers = () => {
 
     App.show_bottom_scroller()
   }
+
+  App.update_scroll_percentage()
 }
 
 // Scrolls the chat to the top
