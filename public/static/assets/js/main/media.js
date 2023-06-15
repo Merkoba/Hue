@@ -440,6 +440,10 @@ App.change_media = (args = {}) => {
       args.play = false
     }
 
+    if (!App.get_setting(`autoplay`)) {
+      args.play = false
+    }
+
     if (item.type !== `video` && item.type !== `iframe`) {
       if (App[`${item.type}_tv_player`] === undefined) {
         App.request_media(`${item.type}_tv_player`, args)

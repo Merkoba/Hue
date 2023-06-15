@@ -129,6 +129,17 @@ App.user_settings = {
     },
     version: 1,
   },
+  autoplay: {
+    widget_type: `checkbox`,
+    description: `Whether to autoplay media after changing it`,
+    action: (save = true) => {
+      if (save) {
+        App.set_setting(`autoplay`, DOM.el(`#settings_autoplay`).checked)
+        App.save_settings()
+      }
+    },
+    version: 1,
+  },
   font: {
     widget_type: `select`,
     description: `Which font to use`,
