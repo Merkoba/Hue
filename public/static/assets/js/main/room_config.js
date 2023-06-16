@@ -57,20 +57,25 @@ App.setup_room_config = () => {
   App.setup_background_select()
   App.setup_link_background()
 
-  function start_color_picker (name) {
-    let el = DOM.el(`#admin_${name}_color`)
+  function apply_color_pickers () {
+    let c1 = App.background_color_picker.color
+    let c2 = App.text_color_picker.color
+    App.apply_theme(c1, c2)
+  }
 
-    App[`${name}_color_picker`] = AColorPicker.createPicker(el, {
+  function start_color_picker (what) {
+    let el = DOM.el(`#admin_${what}_color`)
+
+    App[`${what}_color_picker`] = AColorPicker.createPicker(el, {
       showAlpha: false,
       showHSL: false,
       showHEX: true,
       showRGB: false,
-      color: App[`${name}_color`]
+      color: App[`${what}_color`]
     })
 
-    App[`${name}_color_picker`].on(`change`, (picker, color) => {
-      App[`${name}_color`] = App.colorlib.rgb_to_hex(color)
-      App.apply_theme()
+    App[`${what}_color_picker`].on(`change`, (picker, color) => {
+      apply_color_pickers()
     })
   }
 

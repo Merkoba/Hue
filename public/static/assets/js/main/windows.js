@@ -45,7 +45,11 @@ App.start_msg = () => {
   App.msg_room_config = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `room_config`,
-      window_width: `22rem`
+      window_width: `22rem`,
+      after_close: (instance) => {
+        msgvars.common.after_close(instance)
+        App.check_color_pickers()
+      }
     })
   )
 

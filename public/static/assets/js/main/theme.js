@@ -297,3 +297,16 @@ App.show_background_peek_confirm = () => {
     App.apply_background()
   })
 }
+
+App.check_color_pickers = () => {
+  let c1 = App.background_color_picker.color
+  let c2 = App.text_color_picker.color
+
+  if (c1 !== App.background_color) {
+    App.change_background_color(c1)
+  }
+
+  if (c2 !== App.text_color) {
+    App.change_text_color(c2)
+  }
+}
