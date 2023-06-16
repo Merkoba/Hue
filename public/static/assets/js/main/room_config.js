@@ -95,20 +95,6 @@ App.config_room_config = () => {
   }
 }
 
-// Updates the background image widget in the room config based on current state
-App.config_admin_background = () => {
-  if (!App.is_admin_or_op()) {
-    return
-  }
-
-  if (App.background) {
-    DOM.el(`#admin_background`).src = App.background
-  }
-  else {
-    DOM.el(`#admin_background`).src = App.config.background_loading_url
-  }
-}
-
 // Updates the background color widget in the room config based on current state
 App.config_admin_background_color = () => {
   if (!App.is_admin_or_op()) {
@@ -125,6 +111,20 @@ App.config_admin_text_color = () => {
   }
 
   App.text_color_picker.setColor(App.text_color)
+}
+
+// Updates the background image widget in the room config based on current state
+App.config_admin_background = () => {
+  if (!App.is_admin_or_op()) {
+    return
+  }
+
+  if (App.background) {
+    DOM.el(`#admin_background`).src = App.background
+  }
+  else {
+    DOM.el(`#admin_background`).src = App.config.background_loading_url
+  }
 }
 
 // Updates the room name widget in the room config based on current state
