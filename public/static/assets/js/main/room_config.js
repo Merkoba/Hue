@@ -109,22 +109,22 @@ App.config_admin_background = () => {
   }
 }
 
-// Updates the text color widget in the room config based on current state
-App.config_admin_text_color = () => {
-  if (!App.is_admin_or_op()) {
-    return
-  }
-
-  DOM.el(`#admin_text_color`).value = App.text_color
-}
-
 // Updates the background color widget in the room config based on current state
 App.config_admin_background_color = () => {
   if (!App.is_admin_or_op()) {
     return
   }
 
-  DOM.el(`#admin_background_color`).value = App.background_color
+  App.background_color_picker.setColor(App.background_color)
+}
+
+// Updates the text color widget in the room config based on current state
+App.config_admin_text_color = () => {
+  if (!App.is_admin_or_op()) {
+    return
+  }
+
+  App.text_color_picker.setColor(App.text_color)
 }
 
 // Updates the room name widget in the room config based on current state
