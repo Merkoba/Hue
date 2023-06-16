@@ -232,6 +232,7 @@ App.user_settings = {
       }
 
       App.apply_media_positions()
+      App.fix_frames()
     },
     version: 1,
   },
