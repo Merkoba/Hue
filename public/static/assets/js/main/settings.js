@@ -126,6 +126,7 @@ App.user_settings = {
       }
 
       App.check_linksbar()
+      App.fix_frames()
     },
     version: 1,
   },
