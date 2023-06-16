@@ -157,17 +157,8 @@ settings_default_show_media_info: true
 room_state_default_image_enabled: true
 room_state_default_tv_enabled: true
 room_state_default_last_highlight_date: 0
-room_state_default_chat_display_percentage: 40
-room_state_default_tv_display_percentage: 60
-room_state_default_tv_display_position: "bottom"
-room_state_default_media_layout: "column"
-room_state_default_main_layout: "row"
 room_state_default_last_message_board_post: 0
-room_state_default_chat_enabled: true
 room_state_default_radio_volume: 1
-room_state_default_radio_enabled: true
-room_state_default_chat_font_size: 1
-room_state_default_media_info_enabled: true
 room_state_default_notifications_enabled: true
 room_state_default_last_radio_name: ""
 room_state_default_radio_auto: false
