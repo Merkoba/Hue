@@ -346,20 +346,15 @@ App.modify_setting_widget = (setting_name) => {
   if (widget_type === `checkbox`) {
     item.checked = App.get_setting(setting_name)
   }
-  else if (
-    widget_type === `textarea` ||
-    widget_type === `text` ||
-    widget_type === `number` ||
-    widget_type === `range` ||
-    widget_type === `color`
-  ) {
-    item.value = App.get_setting(setting_name)
-  }
   else if (widget_type === `select`) {
-    for (let el of DOM.els(`option`, item)) {
-      if (el.value == App.get_setting(setting_name)) {
-        el.selected = true
-      }
+    App.set_select(item, App.get_setting(setting_name))
+  }
+}
+
+App.set_select = (select, option) => {
+  for (let el of DOM.els(`option`, select)) {
+    if (el.value == option) {
+      el.selected = true
     }
   }
 }
@@ -439,6 +434,32 @@ App.setup_settings_windows = () => {
       App.reset_settings()
     })
   })
+
+  DOM.ev(DOM.el(`#settings_container`), `contextmenu`, (e) => {
+    let item = e.target.closest(`.settings_item`)
+
+    if (item) {
+      App.reset_single_setting(item)
+    }
+
+    e.preventDefault()
+  })
+}
+
+App.reset_single_setting = (item) => {
+  let setting = item.dataset.setting
+  let user_setting = App.user_settings[setting]
+  let control = DOM.el(`.settings_item_control`, item)
+
+  if (user_setting.widget_type === `select`) {
+    App.set_select(control, App.get_default_setting(setting))
+  }
+  else if (user_setting.widget_type === `checkbox`) {
+    control.checked = App.get_default_setting(setting)
+  }
+
+  App.set_setting(setting, App.default_setting_string)
+  user_setting.action(false)
 }
 
 // Get default setting
