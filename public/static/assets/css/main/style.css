@@ -887,10 +887,6 @@ input[type=checkbox] {
 	margin-bottom: 0.5rem;
 }
 
-.small_padding_bottom {
-	padding-bottom: 0.5rem;
-}
-
 .nowrap {
 	white-space: nowrap;
 }
@@ -1298,10 +1294,6 @@ a.special_link:hover {
 
 .room_config_category {
 	font-size: 1.1rem;
-}
-
-.room_config_label {
-	padding-bottom: 0.5rem;
 }
 
 #room_config_topic_container {

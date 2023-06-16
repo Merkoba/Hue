@@ -2,21 +2,32 @@
   <div id="room_config">
     <div class="flex_column_center rem2_gap">
       <div id="room_config_details_container" class="room_config_section">
-        <div id="room_config_room_name_container">
-          <div class="room_config_label">Name</div>
+        <div id="room_config_room_name_container" class="flex_column_center rem05_gap">
+          <div>Name</div>
           <input type="text" class="setting_input_text shady_text" id="admin_room_name">
         </div>
 
-        <div id="room_config_topic_container">
-          <div class="small_padding_bottom">Topic</div>
+        <div id="room_config_topic_container" class="flex_column_center rem05_gap">
+          <div>Topic</div>
           <textarea class="setting_textarea shady_text" rows=4 id="admin_topic"></textarea>
         </div>
       </div>
 
       <div class="flex_column_center rem2_gap">
-        <div id="admin_background_color"></div>
-        <div id="admin_text_color"></div>
-        <img id="admin_background" class="small_square_image actionbox">
+        <div class="flex_column_center rem1_gap">
+          <div>Background Color</div>
+          <div id="admin_background_color"></div>
+        </div>
+
+        <div class="flex_column_center rem1_gap">
+          <div>Text Color</div>
+          <div id="admin_text_color"></div>
+        </div>
+
+        <div class="flex_column_center rem1_gap">
+          <div>Background Image</div>
+          <img id="admin_background" class="small_square_image actionbox">
+        </div>
       </div>
 
       <div id="room_config_more_container" class="room_config_section flex_row_center rem1_gap underlined">
