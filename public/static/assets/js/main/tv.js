@@ -377,41 +377,6 @@ App.do_tv_change = (src, comment) => {
   })
 }
 
-// Does the change of tv display percentage
-App.do_media_tv_size_change = (size) => {
-  if (size === `max`) {
-    size = App.media_max_percentage
-  }
-  else if (size === `min`) {
-    size = App.media_min_percentage
-  }
-  else if (size === `default`) {
-    size = App.config.room_state_default_tv_display_percentage
-  }
-
-  size = App.limit_media_percentage(App.utilz.round2(size, 5))
-
-  App.room_state.tv_display_percentage = size
-  App.save_room_state()
-  App.apply_media_percentages()
-}
-
-// Increases the tv display percentage
-App.increase_tv_percentage = () => {
-  let size = App.room_state.tv_display_percentage
-  size += 5
-  size = App.utilz.round2(size, 5)
-  App.do_media_tv_size_change(size)
-}
-
-// Decreases the tv display percentage
-App.decrease_tv_percentage = () => {
-  let size = App.room_state.tv_display_percentage
-  size -= 5
-  size = App.utilz.round2(size, 5)
-  App.do_media_tv_size_change(size)
-}
-
 // Gets the id of the visible tv frame
 App.get_visible_video_frame_id = () => {
   let id = false
@@ -424,11 +389,6 @@ App.get_visible_video_frame_id = () => {
   }
 
   return id
-}
-
-// Sets the tv display percentage to default
-App.set_default_tv_size = () => {
-  App.do_media_tv_size_change(`default`)
 }
 
 // Setup for the tv iframe

@@ -506,15 +506,6 @@ App.set_media_enabled = (args) => {
     App.change_media_visibility(args.type)
   }
 
-  let p = App.room_state.tv_display_percentage
-
-  if (p === 0 || p === 100) {
-    App.set_default_tv_size()
-  }
-  else {
-    App.save_room_state()
-  }
-
   App.update_footer_toggle(args.type)
 }
 
