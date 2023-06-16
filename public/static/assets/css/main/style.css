@@ -751,10 +751,7 @@ select {
 	color: var(--text_color);
 	border: 0;
 	outline: 0;
-}
-
-.media_tweaks_select {
-	width: 8rem;
+	min-width: 10rem;
 }
 
 .modal_color {

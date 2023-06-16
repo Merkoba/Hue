@@ -159,7 +159,6 @@ App.init = () => {
   App.setup_media_pickers()
   App.setup_media_link()
   App.setup_generic_separators()
-  App.setup_media_tweaks()
   App.setup_chat()
   App.setup_message_board()
   App.setup_profilepic_cropper()

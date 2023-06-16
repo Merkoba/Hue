@@ -29,11 +29,6 @@ App.setup_main_menu = () => {
     App.msg_main_menu.close()
     App.show_chat_search()
   })
-
-  DOM.ev(DOM.el(`#main_menu_media_tweaks`), `click`, () => {
-    App.msg_main_menu.close()
-    App.show_media_tweaks()
-  })
 }
 
 // Show the main menu

@@ -144,6 +144,14 @@ settings_default_show_background: true
 settings_default_show_linksbar: true
 settings_default_autoplay: true
 settings_default_font: "sans-serif"
+settings_default_chat_font_size: 1
+settings_default_chat_size: 40
+settings_default_main_layout: "row"
+settings_default_media_layout: "column"
+settings_default_tv_size: 60
+settings_default_tv_position: "bottom"
+settings_default_show_chat: true
+settings_default_show_media_info: true
 
 # Default room state values
 room_state_default_image_enabled: true

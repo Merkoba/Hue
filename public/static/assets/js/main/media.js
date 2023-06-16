@@ -15,6 +15,11 @@ App.setup_media = () => {
   DOM.ev(DOM.el(`.media_picker_content`, App.msg_tv_picker.window), `click`, (e) => {
     App.media_picker_item_click(e.target)
   })
+
+  App.change_media_layout()
+  App.apply_media_percentages()
+  App.apply_media_positions()
+  App.fix_frames()
 }
 
 // On media picker item click
@@ -52,8 +57,8 @@ App.limit_media_percentage = (size) => {
 
 // Applies percentages changes to the chat and media elements based on current state
 App.apply_media_percentages = () => {
-  let mode = App.room_state.media_layout
-  let p1 = App.limit_media_percentage(App.room_state.tv_display_percentage)
+  let mode = App.get_setting(`media_layout`)
+  let p1 = App.limit_media_percentage(App.get_setting(`tv_size`))
   let p2 = 100 - p1
 
   if (mode === `column`) {
@@ -69,10 +74,10 @@ App.apply_media_percentages = () => {
     DOM.el(`#media_image`).style.height = `100%`
   }
 
-  let c1 = App.limit_media_percentage(App.room_state.chat_display_percentage)
+  let c1 = App.limit_media_percentage(App.get_setting(`chat_size`))
   let c2 = 100 - c1
 
-  if (App.room_state.main_layout === `column`) {
+  if (App.get_setting(`main_layout`) === `column`) {
     DOM.el(`#main_rows_container`).style.flexDirection = `column-reverse`
     DOM.el(`#chat_main`).style.height = `${c1}%`
     DOM.el(`#media`).style.height = `${c2}%`
@@ -86,13 +91,11 @@ App.apply_media_percentages = () => {
     DOM.el(`#chat_main`).style.height = `100%`
     DOM.el(`#media`).style.height = `100%`
   }
-
-  App.fix_frames()
 }
 
 // Applies the image and tv positions based on current state
 App.apply_media_positions = () => {
-  let p = App.room_state.tv_display_position
+  let p = App.get_setting(`tv_position`)
   let tvp
   let ip
 
@@ -107,13 +110,6 @@ App.apply_media_positions = () => {
 
   DOM.el(`#media_image`).style.order = ip
   DOM.el(`#media_tv`).style.order = tvp
-}
-
-App.swap_display_positions = () => {
-  App.room_state.tv_display_position =
-    App.room_state.tv_display_position === `top` ? `bottom` : `top`
-  App.save_room_state()
-  App.apply_media_positions()
 }
 
 // Initial change for current media
@@ -555,63 +551,6 @@ App.change_media_lock_text = (type) => {
   }
 }
 
-// Changes the media layout between row and column
-App.change_media_layout = (mode = false) => {
-  if (!mode) {
-    mode = App.room_state.media_layout
-  }
-  else {
-    App.room_state.media_layout = mode
-    App.save_room_state()
-  }
-
-  if (mode === `column`) {
-    DOM.el(`#media_split`).style.flexDirection = `column`
-
-    for (let el of DOM.els(`.media_main_container`)) {
-      el.style.width = `100%`
-      el.style.height = `50%`
-    }
-  }
-  else if (mode === `row`) {
-    DOM.el(`#media_split`).style.flexDirection = `row`
-
-    for (let el of DOM.els(`.media_main_container`)) {
-      el.style.width = `50%`
-      el.style.height = `100%`
-    }
-  }
-
-  App.apply_media_percentages()
-  App.fix_frames()
-}
-
-// Apply default media layout
-App.set_default_media_layout = () => {
-  App.change_media_layout(App.config.room_state_default_media_layout)
-}
-
-// Switches between row and column media layout mode
-App.swap_media_layout = () => {
-  App.change_media_layout(App.room_state.media_layout === `row` ? `column` : `row`)
-}
-
-// Swaps media
-App.swap_media = () => {
-  if (App.num_media_elements_visible() < 2) {
-    return
-  }
-
-  App.swap_display_positions()
-}
-
-// Default image and tv position
-App.set_default_tv_position = () => {
-  App.room_state.tv_display_position = App.config.room_state_default_tv_display_position
-  App.save_room_state()
-  App.apply_media_positions()
-}
-
 // Get html for media info items
 App.get_media_info_html = (type) => {
   return App.template_media_info({type: type})
@@ -686,36 +625,6 @@ App.get_media_item = (type, id) => {
   }
 
   return {}
-}
-
-// Change the main layout row|column
-App.change_main_layout = (what = ``) => {
-  if (what) {
-    if (App.room_state.main_layout === what) {
-      return
-    }
-
-    App.room_state.main_layout = what
-  }
-  else {
-    if (App.room_state.main_layout === `row`) {
-      App.room_state.main_layout = `column`
-    }
-    else {
-      App.room_state.main_layout = `row`
-    }
-  }
-
-  App.apply_media_percentages()
-  App.goto_bottom(true)
-  App.save_room_state()
-}
-
-// Set default main layout row|column
-App.set_default_main_layout = () => {
-  App.room_state.main_layout = App.config.room_state_default_main_layout
-  App.save_room_state()
-  App.apply_media_percentages()
 }
 
 // Show the open url menu with data
@@ -976,25 +885,10 @@ App.change_media_visibility = (type, play = false) => {
   }
 }
 
-// Set media info enabled
-App.set_media_info_enabled = (what) => {
-  App.room_state.media_info_enabled = what
-  App.check_media_info()
-  App.save_room_state()
-}
-
-// Set default media info enabled
-App.set_default_media_info_enabled = () => {
-  App.room_state.media_info_enabled = App.config.room_state_default_media_info_enabled
-  App.check_media_info()
-  App.save_room_state()
-}
-
 // Check media info
 App.check_media_info = () => {
-  let display = App.room_state.media_info_enabled ? `flex` : `none`
+  let display = App.get_setting(`show_media_info`) ? `flex` : `none`
   document.documentElement.style.setProperty(`--media_info_display`, display)
-  App.fix_frames()
 }
 
 // Reply to media
@@ -1023,4 +917,26 @@ App.get_current_media = (type) => {
   }
 
   return item
+}
+
+// Changes the media layout between row and column
+App.change_media_layout = () => {
+  let mode = App.get_setting(`media_layout`)
+
+  if (mode === `column`) {
+    DOM.el(`#media_split`).style.flexDirection = `column`
+
+    for (let el of DOM.els(`.media_main_container`)) {
+      el.style.width = `100%`
+      el.style.height = `50%`
+    }
+  }
+  else if (mode === `row`) {
+    DOM.el(`#media_split`).style.flexDirection = `row`
+
+    for (let el of DOM.els(`.media_main_container`)) {
+      el.style.width = `50%`
+      el.style.height = `100%`
+    }
+  }
 }

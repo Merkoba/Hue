@@ -519,36 +519,6 @@ App.commands = {
     },
     description: `Opens the message board. Accepts a filter as an argument`,
   },
-  chatsize: {
-    action: (arg, ans) => {
-      App.do_chat_size_change(arg)
-    },
-    description: `Change the percentage of the Chat area`,
-  },
-  tvsize: {
-    action: (arg, ans) => {
-      App.do_media_tv_size_change(arg)
-    },
-    description: `Change the percentage of the tv area`,
-  },
-  swap: {
-    action: (arg, ans) => {
-      App.swap_display_positions()
-    },
-    description: `Shortcut to change media positions`,
-  },
-  rotate: {
-    action: (arg, ans) => {
-      App.swap_media_layout()
-    },
-    description: `Shortcut to change media layout`,
-  },
-  revolve: {
-    action: (arg, ans) => {
-      App.change_main_layout()
-    },
-    description: `Shortcut to change main layout`,
-  },
   profile: {
     action: (arg, ans) => {
       if (arg) {
@@ -564,12 +534,6 @@ App.commands = {
       }
     },
     description: `Turns this * into this *`,
-  },
-  default: {
-    action: (arg, ans) => {
-      App.apply_media_tweaks_defaults()
-    },
-    description: `Restore media defaults`,
   },
   draw: {
     action: (arg, ans) => {
@@ -641,12 +605,6 @@ App.commands = {
       App.show_room_config()
     },
     description: `Show the room config window`,
-  },
-  mediatweaks: {
-    action: (arg, ans) => {
-      App.show_media_tweaks()
-    },
-    description: `Show the media tweaks window`,
   },
   imagehistory: {
     action: (arg, ans) => {

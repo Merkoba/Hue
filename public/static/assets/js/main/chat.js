@@ -1061,25 +1061,6 @@ App.clear_chat = () => {
   DOM.el(`#chat_area`).innerHTML = ``
 }
 
-// Changes the chat display size
-App.do_chat_size_change = (size) => {
-  if (size === `max`) {
-    size = App.media_max_percentage
-  }
-  else if (size === `min`) {
-    size = App.media_min_percentage
-  }
-  else if (size === `default`) {
-    size = App.config.room_state_default_chat_display_percentage
-  }
-
-  size = App.limit_media_percentage(App.utilz.round2(size, 5))
-
-  App.room_state.chat_display_percentage = size
-  App.save_room_state()
-  App.apply_media_percentages()
-}
-
 // Scrolls the chat to a certain vertical position
 App.scroll_chat_to = (scrolltop) => {
   DOM.el(`#chat_area_parent`).scrollTop = scrolltop
@@ -1507,8 +1488,7 @@ App.setup_chat = () => {
   App.chat_resize_observer.observe(DOM.el(`#chat_area`))
   App.chat_resize_observer.observe(DOM.el(`#chat_area_parent`))
 
-  App.check_chat_enabled()
-  App.do_chat_font_size_change()
+  App.check_show_chat()
 
   let options = {
     root: DOM.el(`#chat_area_parent`),
@@ -1530,16 +1510,6 @@ App.replace_message_vars = (id, message) => {
   }
 
   return message
-}
-
-// Sets the chat display percentage to default
-App.set_default_chat_size = () => {
-  App.do_chat_size_change(`default`)
-}
-
-// Set the default chat font size
-App.set_default_chat_font_size = (size) => {
-  App.do_chat_font_size_change(`default`)
 }
 
 // Shows an alert when a message follows a user's message
@@ -1735,78 +1705,14 @@ App.deleted_messages_below = (data) => {
   }
 }
 
-// Check chat enabled
-App.check_chat_enabled = () => {
-  if (App.room_state.chat_enabled) {
+// Check show chat
+App.check_show_chat = () => {
+  if (App.get_setting(`show_chat`)) {
     DOM.el(`#chat_main`).classList.remove(`nodisplay`)
   }
   else {
     DOM.el(`#chat_main`).classList.add(`nodisplay`)
   }
-}
-
-// Set chat enabled
-App.set_chat_enabled = (what) => {
-  App.room_state.chat_enabled = what
-  App.save_room_state()
-  App.check_chat_enabled()
-  App.fix_frames()
-  App.goto_bottom(true)
-}
-
-// Set default chat enabled
-App.set_default_chat_enabled = () => {
-  App.set_chat_enabled(App.config.room_state_default_chat_enabled)
-}
-
-// Increases the chat display percentage
-App.increase_chat_percentage = () => {
-  let size = App.room_state.chat_display_percentage
-  size += 5
-  size = App.utilz.round2(size, 5)
-  App.do_chat_size_change(size)
-}
-
-// Decreases the chat display percentage
-App.decrease_chat_percentage = () => {
-  let size = App.room_state.chat_display_percentage
-  size -= 5
-  size = App.utilz.round2(size, 5)
-  App.do_chat_size_change(size)
-}
-
-// Increase chat font size
-App.increase_chat_font_size = () => {
-  App.do_chat_font_size_change(App.room_state.chat_font_size + 0.1)
-}
-
-// Decrease chat font size
-App.decrease_chat_font_size = () => {
-  App.do_chat_font_size_change(App.room_state.chat_font_size - 0.1)
-}
-
-// Do chat font size change
-App.do_chat_font_size_change = (size = App.room_state.chat_font_size) => {
-  if (size === `max`) {
-    size = App.max_chat_font_size
-  }
-  else if (size === `min`) {
-    size = App.min_chat_font_size
-  }
-  else if (size === `default`) {
-    size = App.config.room_state_default_chat_font_size
-  }
-
-  size = App.utilz.round(size, 1)
-
-  if (size < App.min_chat_font_size || size > App.max_chat_font_size) {
-    return
-  }
-
-  App.room_state.chat_font_size = size
-  document.documentElement.style.setProperty(`--chat_font_size`, `${size}em`)
-  App.goto_bottom(true)
-  App.save_room_state()
 }
 
 // Check if chat messages need pruning

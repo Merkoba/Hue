@@ -2,14 +2,78 @@
   {{{window_controls}}}
 
   <div id="settings_container">
-    <div class="settings_item modal_item" data-setting="show_background">
-      <div class="setting_title">Show Background</div>
-      <input type="checkbox" class="settings_item_control" id="settings_show_background">
+    <div class="settings_item modal_item" data-setting="font">
+      <div class="setting_title">Font</div>
+      <select class="settings_item_control modal_select" id="settings_font">
+        <option value="sans-serif">Sans</option>
+        <option value="serif">Serif</option>
+        <option value="monospace">Mono</option>
+      </select>
+    </div>
+
+    <div class="settings_item modal_item" data-setting="font">
+      <div class="setting_title">Chat Font Size</div>
+      <select class="settings_item_control modal_select" id="settings_chat_font_size">
+        {{{font_sizes}}}
+      </select>
+    </div>
+
+    <div class="settings_item modal_item" data-setting="font">
+      <div class="setting_title">Chat Size</div>
+      <select class="settings_item_control modal_select" id="settings_chat_size">
+        {{{percentages}}}
+      </select>
+    </div>
+
+    <div class="settings_item modal_item" data-setting="font">
+      <div class="setting_title">Main Layout</div>
+      <select class="settings_item_control modal_select" id="settings_main_layout">
+        <option value="column">Column</option>
+        <option value="row">Row</option>
+      </select>
+    </div>
+
+    <div class="settings_item modal_item" data-setting="font">
+      <div class="setting_title">Media Layout</div>
+      <select class="settings_item_control modal_select" id="settings_media_layout">
+        <option value="column">Column</option>
+        <option value="row">Row</option>
+      </select>
+    </div>
+
+    <div class="settings_item modal_item" data-setting="font">
+      <div class="setting_title">TV Position</div>
+      <select class="settings_item_control modal_select" id="settings_tv_position">
+        <option value="top">Top</option>
+        <option value="bottom">Bottom</option>
+      </select>
+    </div>
+
+    <div class="settings_item modal_item" data-setting="font">
+      <div class="setting_title">TV Size</div>
+      <select class="settings_item_control modal_select" id="settings_tv_size">
+        {{{percentages}}}
+      </select>
+    </div>
+
+    <div class="settings_item modal_item" data-setting="show_linksbar">
+      <div class="setting_title">Show Chat</div>
+      <input type="checkbox" class="settings_item_control" id="settings_show_chat">
+    </div>
+
+    <div class="settings_item modal_item" data-setting="show_linksbar">
+      <div class="setting_title">Show Media Info</div>
+      <input type="checkbox" class="settings_item_control" id="settings_show_media_info">
     </div>
 
     <div class="settings_item modal_item" data-setting="show_linksbar">
       <div class="setting_title">Show Links Bar</div>
       <input type="checkbox" class="settings_item_control" id="settings_show_linksbar">
+    </div>
+
+    <div class="settings_item modal_item" data-setting="show_background">
+      <div class="setting_title">Show Background</div>
+      <input type="checkbox" class="settings_item_control" id="settings_show_background">
     </div>
 
     <div class="settings_item modal_item" data-setting="embed_images">
@@ -66,15 +130,6 @@
     <div class="settings_item modal_item" data-setting="autoplay">
       <div class="setting_title">Autoplay</div>
       <input type="checkbox" class="settings_item_control" id="settings_autoplay">
-    </div>
-
-    <div class="settings_item modal_item" data-setting="font">
-      <div class="setting_title2">Font</div>
-      <select class="settings_item_control modal_select" id="settings_font">
-        <option value="sans-serif">Sans</option>
-        <option value="serif">Serif</option>
-        <option value="monospace">Mono</option>
-      </select>
     </div>
   </div>
 </script>

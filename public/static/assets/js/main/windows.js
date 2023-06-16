@@ -228,12 +228,6 @@ App.start_msg = () => {
     })
   )
 
-  App.msg_media_tweaks = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `media_tweaks`
-    })
-  )
-
   App.msg_screen_capture_options = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `screen_capture_options`
@@ -465,13 +459,6 @@ App.start_msg = () => {
     })
   )
 
-  App.msg_media_tweaks.set(
-    App.template_media_tweaks({
-      percentages: App.create_tweaks_percentages(`tv`),
-      chat_font_sizes: App.create_tweaks_chat_font_sizes()
-    })
-  )
-
   App.msg_chat_search.set(
     App.template_chat_search({
       window_controls: App.template_window_controls({
@@ -544,6 +531,8 @@ App.start_msg = () => {
 
   App.msg_settings.set(
     App.template_settings({
+      percentages: App.create_settings_percentages(),
+      font_sizes: App.create_settings_font_sizes(),
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `settings_filter`,
@@ -850,15 +839,6 @@ App.start_msg = () => {
       {id: `play_audioclip`, text: `Play`},
       {id: `upload_audioclip`, text: `Upload`},
       {id: `remove_audioclip`, text: `Remove`},
-    ]
-  }))
-
-  App.msg_media_tweaks.set_title(App.template_titlebar({
-    items: [
-      {id: `media_tweaks_swap`, text: `Swap`},
-      {id: `media_tweaks_rotate`, text: `Rotate`},
-      {id: `media_tweaks_revolve`, text: `Revolve`},
-      {id: `media_tweaks_defaults`, text: `Defaults`},
     ]
   }))
 

@@ -153,6 +153,116 @@ App.user_settings = {
     },
     version: 1,
   },
+  chat_font_size: {
+    widget_type: `select`,
+    description: `The size of the chat font`,
+    action: (save = true) => {
+      if (save) {
+        App.set_setting(`chat_font_size`, DOM.el(`#settings_chat_font_size`).value)
+        App.save_settings()
+      }
+
+      App.apply_theme()
+    },
+    version: 1,
+  },
+  chat_size: {
+    widget_type: `select`,
+    description: `The size of the chat relative to media`,
+    action: (save = true) => {
+      if (save) {
+        App.set_setting(`chat_size`, DOM.el(`#settings_chat_size`).value)
+        App.save_settings()
+      }
+
+      App.apply_media_percentages()
+      App.fix_frames()
+    },
+    version: 1,
+  },
+  main_layout: {
+    widget_type: `select`,
+    description: `The type of main layout`,
+    action: (save = true) => {
+      if (save) {
+        App.set_setting(`main_layout`, DOM.el(`#settings_main_layout`).value)
+        App.save_settings()
+      }
+
+      App.apply_media_percentages()
+      App.fix_frames()
+    },
+    version: 1,
+  },
+  media_layout: {
+    widget_type: `select`,
+    description: `The type of media layout`,
+    action: (save = true) => {
+      if (save) {
+        App.set_setting(`media_layout`, DOM.el(`#settings_media_layout`).value)
+        App.save_settings()
+      }
+
+      App.change_media_layout()
+      App.fix_frames()
+    },
+    version: 1,
+  },
+  tv_size: {
+    widget_type: `select`,
+    description: `The size of the tv relative to the image`,
+    action: (save = true) => {
+      if (save) {
+        App.set_setting(`tv_size`, DOM.el(`#settings_tv_size`).value)
+        App.save_settings()
+      }
+
+      App.apply_media_percentages()
+      App.fix_frames()
+    },
+    version: 1,
+  },
+  tv_position: {
+    widget_type: `select`,
+    description: `The position of the tv relative to the image`,
+    action: (save = true) => {
+      if (save) {
+        App.set_setting(`tv_position`, DOM.el(`#settings_tv_position`).value)
+        App.save_settings()
+      }
+
+      App.apply_media_positions()
+    },
+    version: 1,
+  },
+  show_chat: {
+    widget_type: `checkbox`,
+    description: `Whether to show the chat at all`,
+    action: (save = true) => {
+      if (save) {
+        App.set_setting(`show_chat`, DOM.el(`#settings_show_chat`).checked)
+        App.save_settings()
+      }
+
+      App.check_show_chat()
+      App.fix_frames()
+    },
+    version: 1,
+  },
+  show_media_info: {
+    widget_type: `checkbox`,
+    description: `Whether to show info under media`,
+    action: (save = true) => {
+      if (save) {
+        App.set_setting(`show_media_info`, DOM.el(`#settings_show_media_info`).checked)
+        App.save_settings()
+      }
+
+      App.check_media_info()
+      App.fix_frames()
+    },
+    version: 1,
+  },
 }
 
 // Gets the settings localStorage object
@@ -352,4 +462,27 @@ App.set_user_settings_titles = () => {
     let title = `${user_setting.description} (${setting}) (Default: ${value})`
     DOM.el(`#settings_${setting}`).closest(`.settings_item`).title = title
   }
+}
+
+App.create_settings_percentages = () => {
+  let html = ``
+
+  for (let p = App.media_max_percentage; p >= App.media_min_percentage; p -= 5) {
+    html += `<option value='${p}'>${p}%</option>`
+  }
+
+  return html
+}
+
+App.create_settings_font_sizes = () => {
+  let html = ``
+  let size = App.max_chat_font_size
+
+  while (size >= App.min_chat_font_size) {
+    let n = App.utilz.round(size, 1)
+    html += `<option value='${n}'>${n}x</option>`
+    size = App.utilz.round(size - 0.1, 1)
+  }
+
+  return html
 }

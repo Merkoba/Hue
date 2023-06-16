@@ -51,6 +51,8 @@ App.apply_theme = (background_color = ``, text_color = ``) => {
   document.documentElement.style.setProperty(`--background_color_a`, background_color_a)
   document.documentElement.style.setProperty(`--altbackground`, altbackground)
   document.documentElement.style.setProperty(`--altbackground_a`, altbackground_a)
+  document.documentElement.style.setProperty(`--chat_font_size`, App.get_setting(`chat_font_size`) + `em`)
+  document.documentElement.style.setProperty(`--chat_size`, App.get_setting(`chat_font_size`) + `em`)
 }
 
 // Show a window to select random themes
