@@ -751,7 +751,7 @@ select {
 	color: var(--text_color);
 	border: 0;
 	outline: 0;
-	min-width: 10rem;
+	min-width: 9rem;
 }
 
 .modal_color {
