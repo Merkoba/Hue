@@ -267,13 +267,19 @@ App.user_settings = {
 
 // Gets the settings localStorage object
 App.get_settings = () => {
-  let changed = false
-  App.settings = App.get_local_storage(App.ls_settings)
+  let settings_all = App.get_local_storage(App.ls_settings)
+
+  if (settings_all === null) {
+    settings_all = {}
+  }
+
+  App.settings = settings_all[App.room_id]
 
   if (!App.settings) {
     App.settings = {}
-    changed = true
   }
+
+  let changed = false
 
   function set_default (setting) {
     App.settings[setting].value = App.default_setting_string
@@ -314,7 +320,14 @@ App.get_settings = () => {
 
 // Saves the settings localStorage object
 App.save_settings = (force = false) => {
-  App.save_local_storage(App.ls_settings, App.settings, force)
+  let settings_all = App.get_local_storage(App.ls_settings)
+
+  if (settings_all === null) {
+    settings_all = {}
+  }
+
+  settings_all[App.room_id] = App.settings
+  App.save_local_storage(App.ls_settings, settings_all, force)
 }
 
 // Starts the settings windows widgets with current state

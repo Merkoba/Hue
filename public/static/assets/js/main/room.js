@@ -30,7 +30,7 @@ App.get_room_state = () => {
 }
 
 // Saves the room state localStorage object
-App.save_room_state = () => {
+App.save_room_state = (force = false) => {
   let room_state_all = App.get_local_storage(App.ls_room_state)
 
   if (room_state_all === null) {
@@ -38,7 +38,7 @@ App.save_room_state = () => {
   }
 
   room_state_all[App.room_id] = App.room_state
-  App.save_local_storage(App.ls_room_state, room_state_all)
+  App.save_local_storage(App.ls_room_state, room_state_all, force)
 }
 
 // Show the room name
