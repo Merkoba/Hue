@@ -1293,7 +1293,6 @@ a.special_link:hover {
 }
 
 #room_config_more_container {
-	margin-top: 1.6rem;
 	gap: 0.8rem;
 }
 
@@ -1303,16 +1302,6 @@ a.special_link:hover {
 
 .room_config_label {
 	padding-bottom: 0.5rem;
-}
-
-#admin_theme_picker {
-	margin-top: 1.6rem;
-	margin-bottom: 1.6rem;
-}
-
-#theme_picker_controls {
-	margin-bottom: 1.6rem;
-	gap: 1.6rem;
 }
 
 #room_config_topic_container {
@@ -1815,16 +1804,6 @@ pre {
 
 .rem2_gap {
 	gap: 2rem;
-}
-
-#random_theme_container {
-	margin-top: 1rem;
-}
-
-.random_theme_item {
-	padding: 0.8rem;
-	white-space: nowrap;
-	border: 1px solid var(--altcolor_a);
 }
 
 #profilepic_preview_image {

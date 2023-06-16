@@ -1,13 +1,5 @@
 // Setups change events for the room config widgets
 App.setup_room_config = () => {
-  DOM.ev(DOM.el(`#admin_background_color`), `change`, () => {
-    App.apply_theme_controls()
-  })
-
-  DOM.ev(DOM.el(`#admin_text_color`), `change`, () => {
-    App.apply_theme_controls()
-  })
-
   let room_name = DOM.el(`#admin_room_name`)
 
   DOM.ev(room_name, `blur`, () => {
@@ -62,13 +54,28 @@ App.setup_room_config = () => {
     App.msg_background_select.show()
   })
 
-  DOM.ev(DOM.el(`#admin_theme_picker`), `click`, () => {
-    App.show_theme_picker()
-  })
-
   App.setup_background_select()
   App.setup_link_background()
-  App.setup_theme_picker()
+
+  function start_color_picker (name) {
+    let el = DOM.el(`#admin_${name}_color`)
+
+    App[`${name}_color_picker`] = AColorPicker.createPicker(el, {
+      showAlpha: false,
+      showHSL: false,
+      showHEX: true,
+      showRGB: false,
+      color: App[`${name}_color`]
+    })
+
+    App[`${name}_color_picker`].on(`change`, (picker, color) => {
+      App[`${name}_color`] = App.colorlib.rgb_to_hex(color)
+      App.apply_theme()
+    })
+  }
+
+  start_color_picker(`background`)
+  start_color_picker(`text`)
 }
 
 // Shows the room config

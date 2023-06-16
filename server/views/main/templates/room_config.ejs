@@ -1,25 +1,29 @@
 <script id="template_room_config" type="text/x-handlebars-template" class="template">
   <div id="room_config">
-    <div id="room_config_details_container" class="room_config_section">
-      <div id="room_config_room_name_container">
-        <div class="room_config_label">Name</div>
-        <input type="text" class="setting_input_text shady_text" id="admin_room_name">
+    <div class="flex_column_center rem2_gap">
+      <div id="room_config_details_container" class="room_config_section">
+        <div id="room_config_room_name_container">
+          <div class="room_config_label">Name</div>
+          <input type="text" class="setting_input_text shady_text" id="admin_room_name">
+        </div>
+
+        <div id="room_config_topic_container">
+          <div class="small_padding_bottom">Topic</div>
+          <textarea class="setting_textarea shady_text" rows=4 id="admin_topic"></textarea>
+        </div>
       </div>
-              
-      <div id="room_config_topic_container">
-        <div class="small_padding_bottom">Topic</div>
-        <textarea class="setting_textarea shady_text" rows=4 id="admin_topic"></textarea>
+
+      <div class="flex_column_center rem2_gap">
+        <div id="admin_background_color"></div>
+        <div id="admin_text_color"></div>
+        <img id="admin_background" class="small_square_image actionbox">
       </div>
-    </div>
 
-    <div id="admin_theme_picker" class="underlined action">Change Color Theme</div>
-
-    <img id="admin_background" class="small_square_image actionbox">
-
-    <div id="room_config_more_container" class="room_config_section flex_row_center rem1_gap underlined">
-      <div id="room_config_more_admin_activity" class="action">Activity</div>
-      <div id="room_config_more_admin_list" class="action">Admins</div>
-      <div id="room_config_more_ban_list" class="action">Bans</div>
+      <div id="room_config_more_container" class="room_config_section flex_row_center rem1_gap underlined">
+        <div id="room_config_more_admin_activity" class="action">Activity</div>
+        <div id="room_config_more_admin_list" class="action">Admins</div>
+        <div id="room_config_more_ban_list" class="action">Bans</div>
+      </div>
     </div>
   </div>
 </script>

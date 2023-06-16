@@ -422,16 +422,6 @@ App.start_msg = () => {
     })
   )
 
-  App.msg_theme_picker = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `theme_picker`,
-      after_close: (instance) => {
-        msgvars.common.after_close(instance)
-        App.apply_selected_theme()
-      }
-    })
-  )
-
   App.msg_profilepic_preview = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `profilepic_preview`
@@ -620,7 +610,6 @@ App.start_msg = () => {
   App.msg_change_username.set(App.template_change_username())
   App.msg_change_password.set(App.template_change_password())
   App.msg_confirm.set(App.template_confirm())
-  App.msg_theme_picker.set(App.template_theme_picker())
   App.msg_profilepic_preview.set(App.template_profilepic_preview())
   App.msg_draw_image.set(App.template_draw_image())
   App.msg_image_picker.set(App.template_image_picker())
@@ -638,13 +627,6 @@ App.start_msg = () => {
       {id: `chat_search_user`, text: `User`},
       {id: `chat_search_image`, text: `Image`},
       {id: `chat_search_tv`, text: `TV`},
-    ]
-  }))
-
-  App.msg_theme_picker.set_title(App.template_titlebar({
-    items: [
-      {id: `theme_picker_random`, text: `Random`},
-      {id: `theme_picker_peek`, text: `Peek`},
     ]
   }))
 
