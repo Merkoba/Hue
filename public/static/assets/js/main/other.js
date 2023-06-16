@@ -144,7 +144,7 @@ App.flop = () => {
     App.flash_info(`Secret`, `You discovered the other side`)
   }
   else {
-    if (App.room_state.main_layout === `column`) {
+    if (App.get_setting(`main_layout`) === `column`) {
       DOM.el(`#main_rows_container`).classList.add(`flopped_column`)
     }
     else {
