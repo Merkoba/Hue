@@ -65,13 +65,11 @@ module.exports = (App) => {
       let $ = App.i.cheerio.load(body)
 
       if ($(`title`).length > 0) {
-        response.title = App.utilz.single_space($(`title`).eq(0).text()) || ``
+        response.title = App.utilz.single_space($(`title`).eq(0).text() || ``)
       }
-      else if ($(`meta[property=\`og:title\`]`).length > 0) {
+      else if ($(`meta[property="og:title"]`).length > 0) {
         response.title =
-        App.utilz.single_space(
-            $(`meta[property=\`og:title\`]`).eq(0).attr(`content`)
-          ) || ``
+        App.utilz.single_space($(`meta[property="og:title"]`).eq(0).attr(`content`) || ``)
       }
 
       let title_add_dots =
@@ -79,14 +77,12 @@ module.exports = (App) => {
 
       if (title_add_dots) {
         response.title =
-          response.title.substring(0, App.sconfig.link_max_title_length).trim() +
-          `...`
+        response.title.substring(0, App.sconfig.link_max_title_length).trim() +
+        `...`
       }
 
       response.description =
-        App.utilz.single_space(
-          $(`meta[property=\`og:description\`]`).eq(0).attr(`content`)
-        ) || ``
+        App.utilz.single_space($(`meta[property="og:description"]`).eq(0).attr(`content`) || ``)
 
       let description_add_dots =
         response.description.length > App.sconfig.link_max_description_length
@@ -98,8 +94,7 @@ module.exports = (App) => {
             .trim() + `...`
       }
 
-      response.image =
-        $(`meta[property=\`og:image\`]`).eq(0).attr(`content`) || ``
+      response.image = $(`meta[property="og:image"]`).eq(0).attr(`content`) || ``
 
       if (response.image.length > App.sconfig.link_max_image_length) {
         response.image = ``
