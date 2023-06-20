@@ -161,14 +161,14 @@ App.make_chat_message = (args = {}) => {
 
   let chat_username = DOM.el(`.chat_username`, fmessage)
   chat_username.textContent = args.username
-
-  let htimeago = DOM.el(`.chat_timeago`, fmessage)
+  let date = DOM.el(`.chat_date`, fmessage)
 
   if (App.get_setting(`relative_time`)) {
-    htimeago.textContent = App.utilz.timeago(d)
+    date.textContent = App.utilz.timeago(d)
+    date.classList.add(`chat_timeago`)
   }
   else {
-    htimeago.textContent = App.utilz.timestamp(d)
+    date.textContent = App.utilz.timestamp(d)
   }
 
   let pic = DOM.el(`.profilepic`, fmessage)
@@ -317,11 +317,12 @@ App.make_announcement_message = (args = {}) => {
 
   if (is_media) {
     let username = DOM.el(`.chat_username`, fmessage)
-    let date = DOM.el(`.chat_timeago`, fmessage)
+    let date = DOM.el(`.chat_date`, fmessage)
     username.textContent = args.username
 
     if (App.get_setting(`relative_time`)) {
       date.textContent = App.utilz.timeago(args.date)
+      date.classList.add(`chat_timeago`)
     }
     else {
       date.textContent = App.utilz.timestamp(args.date)
