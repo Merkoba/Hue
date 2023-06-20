@@ -152,6 +152,7 @@ settings_default_tv_size: 60
 settings_default_tv_position: "bottom"
 settings_default_show_chat: true
 settings_default_show_media_info: true
+settings_default_relative_time: true
 
 # Default room state values
 room_state_default_image_enabled: true

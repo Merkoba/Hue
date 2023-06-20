@@ -412,6 +412,11 @@ const Utilz = () => {
 		return dateFormat(date, `dd/mmm/yy | h:MM:ss tt`)
 	}
 
+	// Get a nice time string
+	utilz.timestamp = (date = Date.now()) => {
+		return dateFormat(date, `h:MM:ss tt`)
+	}
+
 	// Escape special characters
 	utilz.escape_special_characters = (s) => {
 		return s.replace(/[^A-Za-z0-9]/g, `\\$&`)

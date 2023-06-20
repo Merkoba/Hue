@@ -265,6 +265,20 @@ App.user_settings = {
     },
     version: 1,
   },
+  relative_time: {
+    widget_type: `checkbox`,
+    description: `Whether to show relative or absolute timestamps`,
+    action: (save = true) => {
+      if (save) {
+        App.set_setting(`relative_time`, DOM.el(`#settings_relative_time`).checked)
+        App.save_settings()
+      }
+
+      App.check_media_info()
+      App.fix_frames()
+    },
+    version: 1,
+  },
 }
 
 // Gets the settings localStorage object
