@@ -159,8 +159,8 @@ App.make_chat_message = (args = {}) => {
     quote.style.display = `none`
   }
 
-  let chat_username = DOM.el(`.chat_username`, fmessage)
-  chat_username.textContent = args.username
+  let username = DOM.el(`.chat_username`, fmessage)
+  username.textContent = args.username
   let date = DOM.el(`.chat_date`, fmessage)
 
   if (App.get_setting(`relative_time`)) {
@@ -259,7 +259,6 @@ App.make_announcement_message = (args = {}) => {
   }
 
   args = Object.assign(def_args, args)
-
   let is_media = args.type === `image_change` || args.type === `tv_change`
   let content_classes = `announcement_content unit_text`
   let brk_classes = `brk announcement_brk`
@@ -317,8 +316,8 @@ App.make_announcement_message = (args = {}) => {
 
   if (is_media) {
     let username = DOM.el(`.chat_username`, fmessage)
-    let date = DOM.el(`.chat_date`, fmessage)
     username.textContent = args.username
+    let date = DOM.el(`.chat_date`, fmessage)
 
     if (App.get_setting(`relative_time`)) {
       date.textContent = App.utilz.timeago(args.date)
@@ -332,10 +331,8 @@ App.make_announcement_message = (args = {}) => {
   let right_side = DOM.el(`.announcement_right_side`, fmessage)
   DOM.dataset(right_side, `otitle`, t)
   DOM.dataset(right_side, `date`, d)
-
   content.textContent = args.message
   App.urlize(content)
-
   let brk_profilepic = DOM.el(`.brk_profilepic`, fmessage)
 
   if (args.user_id) {
