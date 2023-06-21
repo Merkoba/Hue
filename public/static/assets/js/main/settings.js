@@ -5,14 +5,7 @@ App.user_settings = {
   show_background: {
     widget_type: `checkbox`,
     description: `Whether to show the room's background image`,
-    change: (save = true) => {
-      App.set_setting(`show_background`, DOM.el(`#settings_show_background`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.apply_background()
     },
     version: 1,
@@ -20,27 +13,13 @@ App.user_settings = {
   highlight_current_username: {
     widget_type: `checkbox`,
     description: `Whether messages containing the user's username must be highlighted`,
-    change: (save = true) => {
-      App.set_setting(`highlight_current_username`, DOM.el(`#settings_highlight_current_username`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {},
+    actions: () => {},
     version: 1,
   },
   case_insensitive_username_highlights: {
     widget_type: `checkbox`,
     description: `Whether username highlight checks are case insensitive or not`,
-    change: (save = true) => {
-      App.set_setting(`case_insensitive_username_highlights`, DOM.el(`#settings_case_insensitive_username_highlights`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.generate_mentions_regex()
     },
     version: 1,
@@ -48,105 +27,49 @@ App.user_settings = {
   open_whispers_automatically: {
     widget_type: `checkbox`,
     description: `Whether messages received should open in a window automatically`,
-    change: (save = true) => {
-      App.set_setting(`open_whispers_automatically`, DOM.el(`#settings_open_whispers_automatically`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {},
+    actions: () => {},
     version: 1,
   },
   embed_images: {
     widget_type: `checkbox`,
     description: `Whether to embed other images automatically`,
-    change: (save = true) => {
-      App.set_setting(`embed_images`, DOM.el(`#settings_embed_images`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {},
+    actions: () => {},
     version: 1,
   },
   show_link_previews: {
     widget_type: `checkbox`,
     description: `Whether to show related information of chat links when available`,
-    change: (save = true) => {
-      App.set_setting(`show_link_previews`, DOM.el(`#settings_show_link_previews`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {},
+    actions: () => {},
     version: 1,
   },
   show_highlight_notifications: {
     widget_type: `checkbox`,
     description: `Whether to show desktop notifications on highlights`,
-    change: (save = true) => {
-      App.set_setting(`show_highlight_notifications`, DOM.el(`#settings_show_highlight_notifications`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {},
+    actions: () => {},
     version: 1,
   },
   show_activity_notifications: {
     widget_type: `checkbox`,
     description: `Whether to show desktop notifications on activity after your last message`,
-    change: (save = true) => {
-      App.set_setting(`show_activity_notifications`, DOM.el(`#settings_show_activity_notifications`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {},
+    actions: () => {},
     version: 1,
   },
   show_user_join_notifications: {
     widget_type: `checkbox`,
     description: `Whether to show notifications when users join`,
-    change: (save = true) => {
-      App.set_setting(`show_user_join_notifications`, DOM.el(`#settings_show_user_join_notifications`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {},
+    actions: () => {},
     version: 1,
   },
   show_user_leave_notifications: {
     widget_type: `checkbox`,
     description: `Whether to show notifications when users leave`,
-    change: (save = true) => {
-      App.set_setting(`show_user_leave_notifications`, DOM.el(`#settings_show_user_leave_notifications`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {},
+    actions: () => {},
     version: 1,
   },
   show_linksbar: {
     widget_type: `checkbox`,
     description: `Whether to show the Links Bar or not`,
-    change: (save = true) => {
-      App.set_setting(`show_linksbar`, DOM.el(`#settings_show_linksbar`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.check_linksbar()
       App.fix_frames()
     },
@@ -155,27 +78,13 @@ App.user_settings = {
   autoplay: {
     widget_type: `checkbox`,
     description: `Whether to autoplay media after changing it`,
-    change: (save = true) => {
-      App.set_setting(`autoplay`, DOM.el(`#settings_autoplay`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {},
+    actions: () => {},
     version: 1,
   },
   font: {
     widget_type: `select`,
     description: `Which font to use`,
-    change: (save = true) => {
-      App.set_setting(`font`, DOM.el(`#settings_font`).value)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.apply_theme()
     },
     version: 1,
@@ -183,14 +92,7 @@ App.user_settings = {
   chat_font_size: {
     widget_type: `select`,
     description: `The size of the chat font`,
-    change: (save = true) => {
-      App.set_setting(`chat_font_size`, DOM.el(`#settings_chat_font_size`).value)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.apply_theme()
     },
     version: 1,
@@ -198,14 +100,7 @@ App.user_settings = {
   chat_size: {
     widget_type: `select`,
     description: `The size of the chat relative to media`,
-    change: (save = true) => {
-      App.set_setting(`chat_size`, DOM.el(`#settings_chat_size`).value)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.apply_media_percentages()
       App.fix_frames()
     },
@@ -214,14 +109,7 @@ App.user_settings = {
   main_layout: {
     widget_type: `select`,
     description: `The type of main layout`,
-    change: (save = true) => {
-      App.set_setting(`main_layout`, DOM.el(`#settings_main_layout`).value)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.apply_media_percentages()
       App.fix_frames()
     },
@@ -230,14 +118,7 @@ App.user_settings = {
   media_layout: {
     widget_type: `select`,
     description: `The type of media layout`,
-    change: (save = true) => {
-      App.set_setting(`media_layout`, DOM.el(`#settings_media_layout`).value)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.change_media_layout()
       App.apply_media_percentages()
       App.fix_frames()
@@ -247,14 +128,7 @@ App.user_settings = {
   tv_size: {
     widget_type: `select`,
     description: `The size of the tv relative to the image`,
-    change: (save = true) => {
-      App.set_setting(`tv_size`, DOM.el(`#settings_tv_size`).value)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.apply_media_percentages()
       App.fix_frames()
     },
@@ -263,14 +137,7 @@ App.user_settings = {
   tv_position: {
     widget_type: `select`,
     description: `The position of the tv relative to the image`,
-    change: (save = true) => {
-      App.set_setting(`tv_position`, DOM.el(`#settings_tv_position`).value)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.apply_media_positions()
       App.fix_frames()
     },
@@ -279,14 +146,7 @@ App.user_settings = {
   show_chat: {
     widget_type: `checkbox`,
     description: `Whether to show the chat at all`,
-    change: (save = true) => {
-      App.set_setting(`show_chat`, DOM.el(`#settings_show_chat`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.check_show_chat()
       App.fix_frames()
     },
@@ -295,14 +155,7 @@ App.user_settings = {
   show_media_info: {
     widget_type: `checkbox`,
     description: `Whether to show info under media`,
-    change: (save = true) => {
-      App.set_setting(`show_media_info`, DOM.el(`#settings_show_media_info`).checked)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.check_media_info()
       App.fix_frames()
     },
@@ -311,14 +164,7 @@ App.user_settings = {
   date_format: {
     widget_type: `select`,
     description: `What date format to use in chat messages`,
-    change: (save = true) => {
-      App.set_setting(`date_format`, DOM.el(`#settings_date_format`).value)
-
-      if (save) {
-        App.save_settings()
-      }
-    },
-    action: () => {
+    actions: () => {
       App.timeago_action()
     },
     version: 1,
@@ -429,8 +275,7 @@ App.start_settings_widgets_listeners = () => {
       user_setting.widget_type === `select`
     ) {
       DOM.ev(item, `change`, () => {
-        user_setting.change()
-        user_setting.action()
+        App.on_setting_change(setting)
       })
     }
     else if (
@@ -438,8 +283,7 @@ App.start_settings_widgets_listeners = () => {
       user_setting.widget_type === `text`
     ) {
       DOM.ev(item, `blur`, () => {
-        user_setting.change()
-        user_setting.action()
+        App.on_setting_change(setting)
       })
     }
     else if (
@@ -447,17 +291,29 @@ App.start_settings_widgets_listeners = () => {
       user_setting.widget_type === `color`
     ) {
       DOM.ev(item, `change`, () => {
-        user_setting.change()
-        user_setting.action()
+        App.on_setting_change(setting)
       })
     }
     else if (user_setting.widget_type === `range`) {
       DOM.ev(item, `input change`, () => {
-        user_setting.change()
-        user_setting.action()
+        App.on_setting_change(setting)
       })
     }
   }
+}
+
+App.on_setting_change = (setting) => {
+  let user_setting = App.user_settings[setting]
+
+  if (user_setting.widget_type === `checkbox`) {
+    App.set_setting(setting, DOM.el(`#settings_${setting}`).checked)
+  }
+  else if (user_setting.widget_type === `select`) {
+    App.set_setting(setting, DOM.el(`#settings_${setting}`).value)
+  }
+
+  App.save_settings()
+  user_setting.actions()
 }
 
 // Reset the settings of a certain type
@@ -532,7 +388,7 @@ App.reset_single_setting = (item) => {
   }
 
   App.set_setting(setting, App.default_setting_string)
-  user_setting.action()
+  user_setting.actions()
 }
 
 // Get default setting
