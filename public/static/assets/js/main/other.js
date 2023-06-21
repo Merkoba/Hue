@@ -188,13 +188,15 @@ App.item_removed = () => {
 
 // Format date
 App.format_date = (date) => {
-  if (App.get_setting(`date_format`) === `relative`) {
+  let df = App.get_setting(`date_format`)
+
+  if (df === `relative`) {
     return App.utilz.timeago(date)
   }
-  else if (App.get_setting(`date_format`) === `absolute_12`) {
-    return App.utilz.timestamp(date, "12")
+  else if (df === `absolute_12`) {
+    return App.utilz.timestamp(date, 12)
   }
-  else if (App.get_setting(`date_format`) === `absolute_24`) {
-    return App.utilz.timestamp(date, "24")
+  else if (df === `absolute_24`) {
+    return App.utilz.timestamp(date, 24)
   }
 }

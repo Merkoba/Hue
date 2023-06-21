@@ -413,14 +413,14 @@ const Utilz = () => {
 	}
 
 	// Get a nice time string
-	utilz.timestamp = (date = Date.now(), mode = `12`) => {
+	utilz.timestamp = (date = Date.now(), mode = 12) => {
 		let days = dateFormat(date, `dd/mmm/yy`)
 		let time
 
-		if (mode === `12`) {
+		if (mode === 12) {
 			time = dateFormat(date, `h:MM:ss tt`)
 		}
-		else if (mode === `24`) {
+		else if (mode === 24) {
 			time = dateFormat(date, `H:MM:ss`)
 		}
 
