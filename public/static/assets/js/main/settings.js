@@ -267,7 +267,7 @@ App.user_settings = {
   },
   date_format: {
     widget_type: `select`,
-    description: `Whether to show relative or absolute timestamps`,
+    description: `What date format to use in chat messages`,
     action: (save = true) => {
       if (save) {
         App.set_setting(`date_format`, DOM.el(`#settings_date_format`).value)
