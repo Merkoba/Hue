@@ -414,7 +414,7 @@ const Utilz = () => {
 
 	// Get a nice time string
 	utilz.timestamp = (date = Date.now(), mode = `12`) => {
-		let days = dateFormat(`dd/mmm/yy`)
+		let days = dateFormat(date, `dd/mmm/yy`)
 		let time
 
 		if (mode === `12`) {
