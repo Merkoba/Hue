@@ -185,3 +185,16 @@ App.item_not_included = () => {
 App.item_removed = () => {
   App.checkmsg(`Item removed successfully`)
 }
+
+// Format date
+App.format_date = (date) => {
+  if (App.get_setting(`date_format`) === `relative`) {
+    return App.utilz.timeago(date)
+  }
+  else if (App.get_setting(`date_format`) === `absolute_12`) {
+    return App.utilz.timestamp(date, "12")
+  }
+  else if (App.get_setting(`date_format`) === `absolute_24`) {
+    return App.utilz.timestamp(date, "24")
+  }
+}

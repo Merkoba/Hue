@@ -162,14 +162,7 @@ App.make_chat_message = (args = {}) => {
   let username = DOM.el(`.chat_username`, fmessage)
   username.textContent = args.username
   let date = DOM.el(`.chat_date`, fmessage)
-
-  if (App.get_setting(`relative_time`)) {
-    date.textContent = App.utilz.timeago(d)
-    date.classList.add(`chat_timeago`)
-  }
-  else {
-    date.textContent = App.utilz.timestamp(d)
-  }
+  date.textContent = App.format_date(d)
 
   let pic = DOM.el(`.profilepic`, fmessage)
 
@@ -318,14 +311,7 @@ App.make_announcement_message = (args = {}) => {
     let username = DOM.el(`.chat_username`, fmessage)
     username.textContent = args.username
     let date = DOM.el(`.chat_date`, fmessage)
-
-    if (App.get_setting(`relative_time`)) {
-      date.textContent = App.utilz.timeago(args.date)
-      date.classList.add(`chat_timeago`)
-    }
-    else {
-      date.textContent = App.utilz.timestamp(args.date)
-    }
+    date.textContent = App.format_date(args.date)
   }
 
   let right_side = DOM.el(`.announcement_right_side`, fmessage)

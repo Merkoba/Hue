@@ -265,12 +265,12 @@ App.user_settings = {
     },
     version: 1,
   },
-  relative_time: {
-    widget_type: `checkbox`,
+  date_format: {
+    widget_type: `select`,
     description: `Whether to show relative or absolute timestamps`,
     action: (save = true) => {
       if (save) {
-        App.set_setting(`relative_time`, DOM.el(`#settings_relative_time`).checked)
+        App.set_setting(`date_format`, DOM.el(`#settings_date_format`).value)
         App.save_settings()
       }
 

@@ -112,13 +112,7 @@ App.timeago_action = () => {
     for (let ct of DOM.els(`.chat_date`, el)) {
       let message = ct.closest(`.message`)
       let date = DOM.dataset(message, `date`)
-
-      if (ct.classList.contains(`chat_timeago`)) {
-        ct.textContent = App.utilz.timeago(date)
-      }
-      else {
-        ct.textContent = App.utilz.timestamp(date)
-      }
+      ct.textContent = App.format_date(date)
     }
   }
 

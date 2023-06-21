@@ -413,16 +413,24 @@ const Utilz = () => {
 	}
 
 	// Get a nice time string
-	utilz.timestamp = (date = Date.now()) => {
-		let ts = dateFormat(date, `dd/mmm/yy | h:MM:ss tt`)
-		let split = ts.split(`|`).map(x => x.trim())
-		let days = dateFormat(Date.now(), `dd/mmm/yy`)
+	utilz.timestamp = (date = Date.now(), mode = `12`) => {
+		let days = dateFormat(`dd/mmm/yy`)
+		let time
 
-		if (split[0] === days) {
-			return split[1]
+		if (mode === `12`) {
+			time = dateFormat(date, `h:MM:ss tt`)
+		}
+		else if (mode === `24`) {
+			time = dateFormat(date, `H:MM:ss`)
+		}
+
+		let days_now = dateFormat(Date.now(), `dd/mmm/yy`)
+
+		if (days === days_now) {
+			return time
 		}
 		else {
-			return ts
+			return `${days} | ${time}`
 		}
 	}
 
