@@ -239,6 +239,7 @@ App.user_settings = {
     },
     action: () => {
       App.change_media_layout()
+      App.apply_media_percentages()
       App.fix_frames()
     },
     version: 1,
