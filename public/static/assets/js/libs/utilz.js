@@ -414,15 +414,15 @@ const Utilz = () => {
 
 	// Get a nice time string
 	utilz.timestamp = (date = Date.now()) => {
-		let s = dateFormat(date, `dd/mmm/yy | h:MM:ss tt`)
-		let split = s.split(`|`).map((s) => s.trim())
-		let now = dateFormat(Date.now(), `dd/mmm/yy`)
+		let ts = dateFormat(date, `dd/mmm/yy | h:MM:ss tt`)
+		let split = ts.split(`|`).map(x => x.trim())
+		let days = dateFormat(Date.now(), `dd/mmm/yy`)
 
-		if (split[0] !== now) {
-			return s
+		if (split[0] === days) {
+			return split[1]
 		}
 		else {
-			return split[1]
+			return ts
 		}
 	}
 
