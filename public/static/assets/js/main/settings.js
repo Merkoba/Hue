@@ -304,12 +304,13 @@ App.start_settings_widgets_listeners = () => {
 
 App.on_setting_change = (setting) => {
   let user_setting = App.user_settings[setting]
+  let el = DOM.el(`#settings_${setting}`)
 
   if (user_setting.widget_type === `checkbox`) {
-    value = DOM.el(`#settings_${setting}`).checked
+    value = el.checked
   }
   else if (user_setting.widget_type === `select`) {
-    value = DOM.el(`#settings_${setting}`).value
+    value = el.value
   }
 
   App.set_setting(setting, value)
