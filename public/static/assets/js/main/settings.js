@@ -306,12 +306,13 @@ App.on_setting_change = (setting) => {
   let user_setting = App.user_settings[setting]
 
   if (user_setting.widget_type === `checkbox`) {
-    App.set_setting(setting, DOM.el(`#settings_${setting}`).checked)
+    value = DOM.el(`#settings_${setting}`).checked
   }
   else if (user_setting.widget_type === `select`) {
-    App.set_setting(setting, DOM.el(`#settings_${setting}`).value)
+    value = DOM.el(`#settings_${setting}`).value
   }
 
+  App.set_setting(setting, value)
   App.save_settings()
   user_setting.actions()
 }
