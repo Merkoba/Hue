@@ -396,14 +396,14 @@ App.toggle_radio_auto = () => {
 
 // Stop radio auto timeout
 App.stop_radio_auto_timeout = () => {
-  clearTimeout(App.room_state.radio_auto_timeout)
+  clearTimeout(App.radio_auto_timeout)
 }
 
 // Start radio auto timeout
 App.start_radio_auto_timeout = () => {
   App.stop_radio_auto_timeout()
 
-  App.room_state.radio_auto_timeout = setTimeout(() => {
+  App.radio_auto_timeout = setTimeout(() => {
     if (App.radio_is_playing()) {
       App.play_random_radio()
     }
