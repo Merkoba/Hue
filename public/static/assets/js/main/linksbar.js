@@ -76,7 +76,7 @@ App.update_linksbar = () => {
   click_el.classList.remove(`nodisplay`)
   let nd = App.utilz.nice_date(item.date)
   image_el.src = App.get_profilepic(item.user_id)
-  image_el.title = `Linked by ${item.username} | ${nd}`
+  image_el.title = `${item.username} | ${nd}`
   DOM.dataset(image_el, `date`, item.date)
 
   let url_el = DOM.el(`#linksbar_url`)
