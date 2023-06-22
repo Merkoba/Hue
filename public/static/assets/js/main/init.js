@@ -151,7 +151,6 @@ App.init = () => {
   App.setup_autocomplete()
   App.show_console_message()
   App.setup_view_image()
-  App.setup_local_storage()
   App.setup_image_upload_comment()
   App.setup_tv_upload_comment()
   App.setup_drag_events()

@@ -42,29 +42,3 @@ App.do_save_local_storage = () => {
 
   App.local_storage_to_save = {}
 }
-
-// Setups localStorage events
-App.setup_local_storage = () => {
-  DOM.ev(window, `storage`, (e) => {
-    if (e.key !== App.ls_settings) {
-      return
-    }
-
-    let obj
-
-    try {
-      obj = JSON.parse(e.newValue)
-    }
-    catch (err) {
-      return
-    }
-
-    if (App.utilz.is_empty_object(obj)) {
-      return
-    }
-
-    if (e.key === App.ls_settings) {
-      App.reset_settings(false)
-    }
-  }, false)
-}
