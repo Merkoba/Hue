@@ -116,13 +116,8 @@ App.timeago_action = () => {
     }
   }
 
-  for (let el of DOM.els(`#media .media_info_container`)) {
-    DOM.el(`.media_info_timeago`, el).textContent = App.utilz.timeago(DOM.dataset(el, `date`))
-  }
-
   if (App.msg_modal_image.is_open()) {
-    DOM.el(`#modal_image_header_info .modal_image_timeago`)
-      .textContent = App.utilz.timeago(App.loaded_modal_image.date)
+    DOM.el(`#modal_image_header_info .modal_image_timeago`).textContent = App.utilz.timeago(App.loaded_modal_image.date)
   }
 }
 
