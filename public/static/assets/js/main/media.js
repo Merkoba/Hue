@@ -505,6 +505,7 @@ App.set_media_enabled = (args) => {
   }
 
   App.update_footer_toggle(args.type)
+  App.save_room_state()
 }
 
 // Set the lock of media
