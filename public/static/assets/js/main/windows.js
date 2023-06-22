@@ -842,7 +842,7 @@ App.start_msg = () => {
       {id: `radio_volume`, text: `Volume: 100%`},
       {
         id: `radio_auto`, text: `Auto: Off`,
-        title: `Automatically change the station every ${App.config.radio_auto_minutes} minutes`
+        title: `Automatically change the station after some minutes. This is configurable in Settings`
       },
     ]
   }))

@@ -407,5 +407,5 @@ App.start_radio_auto_timeout = () => {
     if (App.radio_is_playing()) {
       App.play_random_radio()
     }
-  }, App.config.radio_auto_minutes * 60 * 1000)
+  }, App.get_setting(`radio_auto_minutes`) * 60 * 1000)
 }

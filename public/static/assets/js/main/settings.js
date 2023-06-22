@@ -169,6 +169,13 @@ App.user_settings = {
     },
     version: 1,
   },
+  radio_auto_minutes: {
+    widget_type: `select`,
+    force_int: true,
+    description: `Change the radio after these minutes`,
+    actions: () => {},
+    version: 1,
+  },
 }
 
 // Gets the settings localStorage object
@@ -311,6 +318,10 @@ App.on_setting_change = (setting) => {
   }
   else if (user_setting.widget_type === `select`) {
     value = el.value
+  }
+
+  if (user_setting.force_int) {
+    value = parseInt(value)
   }
 
   App.set_setting(setting, value)
