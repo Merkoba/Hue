@@ -199,16 +199,6 @@ App.add_post_to_message_board = (data, edited) => {
     link_description.style.display = `block`
   }
 
-  let gets = App.getcode(data.id)
-  let nd = App.utilz.nice_date(data.date)
-  post.title = `${gets} | ${nd}`
-  let content = DOM.el(`.message_board_content`, post)
-
-  if (App.utilz.bingo(gets)) {
-    content.classList.add(`colortext`)
-    content.classList.add(`goldtext`)
-  }
-
   let btns = DOM.el(`.message_board_btns`, post)
 
   if (data.user_id === App.user_id) {
