@@ -421,7 +421,7 @@ const Utilz = () => {
 			time = dateFormat(date, `h:MM tt`)
 		}
 		else if (mode === 24) {
-			time = dateFormat(date, `H:MM`)
+			time = dateFormat(date, `HH:MM`)
 		}
 
 		let days_now = dateFormat(Date.now(), `dd/mmm/yy`)
