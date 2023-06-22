@@ -202,7 +202,7 @@ App.format_date = (date) => {
 }
 
 // Get nice date
-App.nice_date = (date) => {
+App.nice_date = (date = Date.now()) => {
   let mode
 
   if (App.get_setting(`date_format`) === `absolute_24`) {

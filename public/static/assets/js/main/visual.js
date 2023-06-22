@@ -115,10 +115,6 @@ App.timeago_action = () => {
       ct.textContent = App.format_date(date)
     }
   }
-
-  if (App.msg_modal_image.is_open()) {
-    DOM.el(`#modal_image_header_info .modal_image_timeago`).textContent = App.utilz.timeago(App.loaded_modal_image.date)
-  }
 }
 
 // Show a message for a small time and close

@@ -306,11 +306,7 @@ App.show_modal_image = (id = 0) => {
   img.style.display = `none`
   DOM.el(`#modal_image_error`).style.display = `none`
   img.src = data.source
-
   DOM.el(`#modal_image_header_info`).innerHTML = data.info_html
-  DOM.el(`#modal_image_header_info .modal_image_timeago`)
-    .textContent = App.utilz.timeago(data.date)
-
   App.horizontal_separator(DOM.el(`#modal_image_header_info`))
 
   if (data.comment || data.query || data.hostname) {
