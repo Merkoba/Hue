@@ -170,17 +170,16 @@ App.show_admin_activity = (messages) => {
   App.msg_admin_activity.show()
 
   for (let data of messages) {
-    let nice_date = App.utilz.nice_date(data.date)
+    let nd = App.utilz.nice_date(data.date)
     let s = `<div class='admin_activity_message'></div><div class='admin_activity_date'></div>`
 
-    let el = DOM.create(`div`, `modal_item admin_activity_item dynamic_title`)
-    el.title = nice_date
+    let el = DOM.create(`div`, `modal_item admin_activity_item`)
+    el.title = nd
     el.innerHTML = s
 
     DOM.el(`.admin_activity_message`, el).textContent = `${data.username} ${data.content}`
-    DOM.el(`.admin_activity_date`, el).textContent = nice_date
+    DOM.el(`.admin_activity_date`, el).textContent = nd
     DOM.dataset(el, `date`, data.date)
-    DOM.dataset(el, `otitle`, nice_date)
     DOM.el(`#admin_activity_container`).prepend(el)
   }
 

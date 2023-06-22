@@ -70,7 +70,7 @@ App.push_notification = (args) => {
     content_classes = `pointer`
   }
 
-  let item = DOM.create(`div`, `notification_item modal_item dynamic_title`)
+  let item = DOM.create(`div`, `notification_item modal_item`)
 
   item.innerHTML = App.template_notification({
     content_classes: content_classes,
@@ -79,11 +79,7 @@ App.push_notification = (args) => {
     date: t
   })
 
-  item.title = t
-
-  DOM.dataset(item, `otitle`, t)
   DOM.dataset(item, `date`, d)
-
   let content = DOM.el(`.notification_item_content`, item)
 
   if (args.on_click) {

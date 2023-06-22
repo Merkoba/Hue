@@ -74,8 +74,10 @@ App.update_linksbar = () => {
 
   image_el.classList.remove(`nodisplay`)
   click_el.classList.remove(`nodisplay`)
-
+  let nd = App.utilz.nice_date(item.date)
   image_el.src = App.get_profilepic(item.user_id)
+  image_el.title = `Linked by ${item.username} | ${nd}`
+  DOM.dataset(image_el, `date`, item.date)
 
   let url_el = DOM.el(`#linksbar_url`)
   url_el.textContent = item.url || ``
@@ -103,9 +105,6 @@ App.update_linksbar = () => {
   else {
     title_el.classList.add(`nodisplay`)
   }
-
-  DOM.dataset(image_el, `date`, item.date)
-  DOM.dataset(image_el, `otitle`, `Linked by ${item.username}`)
 
   url_el.title = item.url
   title_el.title = item.title

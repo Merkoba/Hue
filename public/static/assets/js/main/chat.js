@@ -172,7 +172,7 @@ App.make_chat_message = (args = {}) => {
 
   let rightside = DOM.el(`.chat_right_side`, fmessage)
   DOM.dataset(rightside, `date`, d)
-  DOM.dataset(rightside, `otitle`, nd)
+  rightside.title = nd
 
   let first_url = false
 
@@ -199,7 +199,6 @@ App.make_chat_message = (args = {}) => {
   DOM.dataset(content_container, `date`, d)
   DOM.dataset(content_container, `first_url`, first_url)
   DOM.dataset(content_container, `original_message`, args.message)
-  DOM.dataset(content_container, `otitle`, title)
   DOM.dataset(content_container, `username`, args.username)
   DOM.dataset(content_container, `user_id`, args.user_id)
 
@@ -315,8 +314,8 @@ App.make_announcement_message = (args = {}) => {
   }
 
   let right_side = DOM.el(`.announcement_right_side`, fmessage)
-  DOM.dataset(right_side, `otitle`, t)
   DOM.dataset(right_side, `date`, d)
+  right_side.title = t
   content.textContent = args.message
   App.urlize(content)
   let brk_profilepic = DOM.el(`.brk_profilepic`, fmessage)
@@ -1784,19 +1783,15 @@ App.update_likes = (el, likes) => {
     c.innerHTML = `<div class='likes_label'>^ Likes:</div><div class='likes_items'></div>`
     for (let obj of likes) {
       let pi = App.get_profilepic(obj.user_id)
-      let el = DOM.create(`div`, `like_container dynamic_title`)
+      let el = DOM.create(`div`, `like_container`)
       el.innerHTML = App.template_like({profilepic: pi})
-
       let nd = App.utilz.nice_date(obj.date)
-      let title = `${obj.username} | ${nd}`
-      el.title = title
-
+      el.title = `${obj.username} | ${nd}`
       DOM.dataset(el, `user_id`, obj.user_id)
       DOM.dataset(el, `username`, obj.username)
       DOM.dataset(el, `date`, obj.date)
-      DOM.dataset(el, `otitle`, title)
-
       let profilepic = DOM.el(`.like_profilepic`, el)
+
       DOM.ev(profilepic, `error`, () => {
         App.fallback_profilepic(profilepic)
       })

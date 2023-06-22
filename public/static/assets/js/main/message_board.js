@@ -137,7 +137,7 @@ App.add_post_to_message_board = (data, edited) => {
     }
   }
   else {
-    post = DOM.create(`div`, `message_board_post modal_item dynamic_title`)
+    post = DOM.create(`div`, `message_board_post modal_item`)
   }
 
   post.innerHTML = App.template_message_board_post()
@@ -200,10 +200,8 @@ App.add_post_to_message_board = (data, edited) => {
   }
 
   let gets = App.getcode(data.id)
-  let title = `${gets} | ${App.utilz.nice_date(data.date)}`
-  post.title = title
-  DOM.dataset(post, `otitle`, title)
-
+  let nd = App.utilz.nice_date(data.date)
+  post.title = `${gets} | ${nd}`
   let content = DOM.el(`.message_board_content`, post)
 
   if (App.utilz.bingo(gets)) {

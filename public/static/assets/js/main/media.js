@@ -480,7 +480,6 @@ App.apply_media_info = (type) => {
     App.fallback_profilepic(pic)
   })
 
-  DOM.dataset(container, `otitle`, item.info)
   DOM.dataset(container, `date`, item.date)
   DOM.dataset(container, `type`, type)
   DOM.dataset(container, `id`, item.id)

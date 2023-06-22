@@ -354,7 +354,7 @@ App.setup_whispers = () => {
 App.push_whisper = (message, on_click, read, data) => {
   let date = Date.now()
   let title = App.utilz.nice_date(date)
-  let item = DOM.create(`div`, `whisper_item modal_item dynamic_title`)
+  let item = DOM.create(`div`, `whisper_item modal_item`)
 
   if (data.mode === `received`) {
     item.innerHTML = App.template_whisper_received({
@@ -381,8 +381,6 @@ App.push_whisper = (message, on_click, read, data) => {
     })
   }
 
-  item.title = title
-  DOM.dataset(item, `otitle`, title)
   DOM.dataset(item, `date`, date)
   DOM.dataset(item, `read`, read)
   let content = DOM.el(`.whisper_item_content`, item)
@@ -401,7 +399,6 @@ App.push_whisper = (message, on_click, read, data) => {
   }
 
   DOM.el(`#whispers_container`).prepend(item)
-
   let items = DOM.els(`.whisper_item`)
 
   if (items.length > App.config.whispers_crop_limit) {
