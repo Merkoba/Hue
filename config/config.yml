@@ -243,6 +243,3 @@ radios:
 
   - name: Other Radio
     url: https://otheradio.com
-
-# Change radio auto after these minutes
-radio_auto_minutes: 15
