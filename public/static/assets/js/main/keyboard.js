@@ -352,7 +352,7 @@ App.activate_key_detection = () => {
     }
 
     if (e.target.closest(`.filter_input`)) {
-      App.modal_filter()
+      App.modal_filter_debouncer.call()
     }
   })
 }

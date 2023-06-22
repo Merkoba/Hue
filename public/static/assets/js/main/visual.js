@@ -136,7 +136,7 @@ App.flash_info = (title, text) => {
   let icon_el = DOM.el(`#flash_info_title_icon`)
   jdenticon.update(icon_el, title)
   el.style.display = `flex`
-  App.flash_info_timer()
+  App.flash_info_debouncer.call()
 }
 
 // Hide the flash info window

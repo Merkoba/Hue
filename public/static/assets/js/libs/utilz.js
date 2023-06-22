@@ -819,6 +819,39 @@ const Utilz = () => {
 		arr.push(...arr.splice(0, (- count % len + len) % len))
 	}
 
+	// Centralized function to create debouncers
+	utilz.create_debouncer = (func, delay) => {
+		let timer
+		let obj = {}
+
+		function clear () {
+			clearTimeout(timer)
+		}
+
+		function run (...args) {
+			func(...args)
+		}
+
+		obj.call = (...args) => {
+			clear()
+
+			timer = setTimeout(() => {
+				run(...args)
+			}, delay)
+		}
+
+		obj.now = (...args) => {
+			clear()
+			run(...args)
+		}
+
+		obj.cancel = () => {
+			clear()
+		}
+
+		return obj
+	}
+
 	utilz.media_types = [`image`, `tv`]
 	utilz.video_extensions = [`mp4`, `webm`]
 	utilz.video_types = [`video/mp4`, `video/webm`]

@@ -86,7 +86,7 @@ App.on_unfocus = () => {
 // Starts window resize events
 App.resize_events = () => {
   DOM.ev(window, `resize`, () => {
-    App.resize_timer()
+    App.resize_debouncer.call()
   })
 }
 

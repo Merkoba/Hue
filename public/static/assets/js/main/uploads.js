@@ -15,7 +15,7 @@ App.start_dropzone = () => {
   })
 
   App.dropzone.on(`addedfile`, (file) => {
-    App.process_file_added(file)
+    App.process_file_added_debouncer.call(file)
   })
 
   App.dropzone.on(`dragenter`, () => {

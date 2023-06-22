@@ -1235,7 +1235,7 @@ App.scroll_events = () => {
   let chat = DOM.el(`#chat_area_parent`)
 
   DOM.ev(chat, `scroll`, (e) => {
-    App.scroll_timer()
+    App.scroll_debouncer.call()
   })
 }
 

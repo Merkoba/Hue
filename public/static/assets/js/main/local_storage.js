@@ -26,7 +26,7 @@ App.save_local_storage = (ls_name, obj, force = false) => {
     App.do_save_local_storage()
   }
   else {
-    App.save_local_storage_timer()
+    App.save_local_storage_debouncer.call()
   }
 }
 
