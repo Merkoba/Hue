@@ -1153,3 +1153,7 @@ App.setup_change_role = () => {
     App.msg_change_role.close()
   })
 }
+
+App.update_userlist = (prop) => {
+  App.update_userlist_debouncer.call(prop)
+}

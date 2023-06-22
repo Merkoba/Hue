@@ -25,10 +25,6 @@ App.create_debouncers = () => {
     App.do_update_userlist(prop)
   }, App.update_userlist_delay)
 
-  App.update_userlist = (prop) => {
-    App.update_userlist_debouncer.call(prop)
-  }
-
   App.flash_info_debouncer = App.utilz.create_debouncer(() => {
     App.hide_flash_info()
   }, App.flash_info_delay)
