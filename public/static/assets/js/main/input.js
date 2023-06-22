@@ -244,7 +244,7 @@ App.show_input_history = (filter = ``) => {
   for (let item of App.input_history) {
     let el = DOM.create(`div`, `nice_row modal_item pointer`)
     el.textContent = item.message
-    el.title = App.utilz.nice_date(item.date)
+    el.title = App.nice_date(item.date)
 
     DOM.ev(el, `click`, () => {
       App.change_input(item.message)

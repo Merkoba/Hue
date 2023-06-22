@@ -637,10 +637,6 @@ App.show_profile = (username, user_id = false) => {
     user = App.get_user_by_username(username)
   }
 
-  if (!user) {
-
-  }
-
   if (user_id) {
     id = user_id
   }
@@ -703,7 +699,7 @@ App.show_profile = (username, user_id = false) => {
 
   if (user) {
     let item = DOM.create(`div`)
-    let nicedate = App.utilz.nice_date(user.date_joined)
+    let nicedate = App.nice_date(user.date_joined)
     let timeago = App.utilz.timeago(user.date_joined)
     item.textContent = `Got Online: ${timeago}`
     item.title = nicedate

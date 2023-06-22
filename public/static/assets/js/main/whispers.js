@@ -353,7 +353,7 @@ App.setup_whispers = () => {
 // Pushes a new whisper to the whispers window
 App.push_whisper = (message, on_click, read, data) => {
   let date = Date.now()
-  let title = App.utilz.nice_date(date)
+  let title = App.nice_date(date)
   let item = DOM.create(`div`, `whisper_item modal_item`)
 
   if (data.mode === `received`) {

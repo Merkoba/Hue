@@ -137,7 +137,7 @@ App.set_bio = (bio) => {
 
 // Prepare user profile
 App.prepare_user_profile = () => {
-  DOM.el(`#user_profile_reg_date`).textContent = App.utilz.nice_date(App.user_reg_date)
+  DOM.el(`#user_profile_reg_date`).textContent = App.nice_date(App.user_reg_date)
   DOM.el(`#user_profile_id`).textContent = `ID: ${App.user_id}`
 
   if (App.get_self_user().profilepic_version === 0) {

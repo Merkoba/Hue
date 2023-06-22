@@ -159,7 +159,7 @@ App.add_post_to_message_board = (data, edited) => {
   username.textContent = data.username
 
   let date = DOM.el(`.message_board_date`, post)
-  date.textContent = App.utilz.nice_date(data.date)
+  date.textContent = App.nice_date(data.date)
 
   let text = DOM.el(`.message_board_text`, post)
   text.innerHTML = App.parse_text(App.utilz.make_html_safe(data.message))

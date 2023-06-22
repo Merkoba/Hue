@@ -472,7 +472,6 @@ App.apply_media_info = (type) => {
     profilepic: App.get_profilepic(item.user_id)
   })
 
-  DOM.el(`.media_info_timeago`, container).textContent = App.utilz.timeago(item.date)
   container.title = item.info
   let pic = DOM.el(`.media_info_profilepic`, container)
 
@@ -748,9 +747,7 @@ App.setup_media_object = (type, mode, odata = {}) => {
     data.source = `${App.config.public_media_directory}/room/${App.room_id}/${type}/${data.source}`
   }
 
-  data.nice_date = data.date
-    ? App.utilz.nice_date(data.date)
-    : App.utilz.nice_date()
+  data.nice_date = data.date ? App.nice_date(data.date) : App.nice_date()
 
   if (data.source.startsWith(`/`)) {
     data.source = window.location.origin + data.source
@@ -784,7 +781,6 @@ App.setup_media_object = (type, mode, odata = {}) => {
   }
 
   data.info += ` | ${data.nice_date}`
-  data.info_html += `<div title='${data.nice_date}' class='modal_${type}_timeago'></div>`
   data.hostname = App.utilz.get_hostname(data.source)
   data.message = App.get_media_message(data)
 

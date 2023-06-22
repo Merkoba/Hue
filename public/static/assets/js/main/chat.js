@@ -17,7 +17,7 @@ App.make_chat_message = (args = {}) => {
   args.message = App.replace_message_vars(args.id, args.message)
   let content_classes = `chat_content unit_text`
   let d = args.date ? args.date : Date.now()
-  let nd = App.utilz.nice_date(d)
+  let nd = App.nice_date(d)
   let pi = App.get_profilepic(args.user_id)
   let image_preview = false
   let image_preview_src_original = false
@@ -98,7 +98,6 @@ App.make_chat_message = (args = {}) => {
   }
 
   title = title + nd
-
   let gets = App.getcode(args.id)
 
   if (App.utilz.bingo(gets)) {
@@ -262,7 +261,7 @@ App.make_announcement_message = (args = {}) => {
   }
 
   let d = args.date ? args.date : Date.now()
-  let t = args.title ? args.title : App.utilz.nice_date(d)
+  let t = args.title ? args.title : App.nice_date(d)
 
   if (is_media) {
     content_classes += ` action`
@@ -1785,7 +1784,7 @@ App.update_likes = (el, likes) => {
       let pi = App.get_profilepic(obj.user_id)
       let el = DOM.create(`div`, `like_container`)
       el.innerHTML = App.template_like({profilepic: pi})
-      let nd = App.utilz.nice_date(obj.date)
+      let nd = App.nice_date(obj.date)
       el.title = `${obj.username} | ${nd}`
       DOM.dataset(el, `user_id`, obj.user_id)
       DOM.dataset(el, `username`, obj.username)

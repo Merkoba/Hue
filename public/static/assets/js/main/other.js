@@ -94,7 +94,7 @@ App.generate_favicon = (mode) => {
 
 // Centralized console info printer
 App.loginfo = (message, style=``) => {
-  console.info(`🤡 %c(${App.utilz.nice_date(Date.now())}) %c${message}`, `color:blue`, style)
+  console.info(`🤡 %c(${App.nice_date(Date.now())}) %c${message}`, `color:blue`, style)
 }
 
 // Centralized function to return a chat icon svg
@@ -199,4 +199,18 @@ App.format_date = (date) => {
   else if (df === `absolute_24`) {
     return App.utilz.timestamp(date, 24)
   }
+}
+
+// Get nice date
+App.nice_date = (date) => {
+  let mode
+
+  if (App.get_setting(`date_format`) === `absolute_24`) {
+    mode = 24
+  }
+  else {
+    mode = 12
+  }
+
+  return App.utilz.nice_date(date, mode)
 }

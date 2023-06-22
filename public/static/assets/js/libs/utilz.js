@@ -408,8 +408,13 @@ const Utilz = () => {
 	}
 
 	// Get a nice date string
-	utilz.nice_date = (date = Date.now()) => {
-		return dateFormat(date, `dd/mmm/yy | h:MM:ss tt`)
+	utilz.nice_date = (date = Date.now(), mode = 12) => {
+		if (mode === 12) {
+			return dateFormat(date, `dd/mmm/yy | h:MM tt`)
+		}
+		else if (mode === 24) {
+			return dateFormat(date, `dd/mmm/yy | HH:MM`)
+		}
 	}
 
 	// Get a nice time string

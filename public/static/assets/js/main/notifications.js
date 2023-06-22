@@ -62,7 +62,7 @@ App.push_notification = (args) => {
   args = Object.assign(def_args, args)
 
   let d = Date.now()
-  let t = App.utilz.nice_date(d)
+  let t = App.nice_date(d)
 
   let content_classes = ``
 

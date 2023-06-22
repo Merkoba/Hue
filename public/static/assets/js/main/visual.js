@@ -96,7 +96,7 @@ App.checkmsg = (s) => {
 
 // Shows feedback with the current date in the nice date format
 App.show_current_date = () => {
-  App.checkmsg(App.utilz.nice_date())
+  App.checkmsg(App.nice_date())
 }
 
 // Start timeago checks
