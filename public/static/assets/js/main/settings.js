@@ -165,7 +165,7 @@ App.user_settings = {
     widget_type: `select`,
     description: `What date format to use in chat messages`,
     actions: () => {
-      App.timeago_action()
+      App.update_date()
     },
     version: 1,
   },
@@ -348,7 +348,7 @@ App.reset_settings = (empty = true) => {
   App.apply_media_positions()
   App.apply_media_percentages()
   App.check_media_info()
-  App.timeago_action()
+  App.update_date()
   App.fix_frames()
   App.apply_theme()
 }

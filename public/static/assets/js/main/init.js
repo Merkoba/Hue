@@ -168,7 +168,7 @@ App.init = () => {
   App.setup_reply()
   App.start_media_info()
   App.setup_confirm()
-  App.start_timeago()
+  App.start_update_date()
   App.setup_draw_image()
   App.setup_view_text()
   App.setup_radio()

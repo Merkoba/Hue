@@ -472,6 +472,7 @@ App.apply_media_info = (type) => {
     profilepic: App.get_profilepic(item.user_id)
   })
 
+  DOM.el(`.media_info_date`, container).textContent = App.format_date(item.date)
   container.title = item.info
   let pic = DOM.el(`.media_info_profilepic`, container)
 
@@ -787,6 +788,7 @@ App.setup_media_object = (type, mode, odata = {}) => {
   }
 
   data.info += ` | ${data.nice_date}`
+  data.info_html += `<div title='${data.nice_date}' class='modal_${type}_date'></div>`
   data.hostname = App.utilz.get_hostname(data.source)
   data.message = App.get_media_message(data)
 

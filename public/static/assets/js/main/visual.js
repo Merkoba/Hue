@@ -99,21 +99,25 @@ App.show_current_date = () => {
   App.checkmsg(App.nice_date())
 }
 
-// Start timeago checks
-App.start_timeago = () => {
+// Update date periodically
+App.start_update_date = () => {
   setInterval(() => {
-    App.timeago_action()
+    App.update_date()
   }, App.timeago_delay)
 }
 
 // The timeago action
-App.timeago_action = () => {
+App.update_date = () => {
   for (let el of DOM.els(`.chat_area`)) {
     for (let ct of DOM.els(`.chat_date`, el)) {
       let message = ct.closest(`.message`)
       let date = DOM.dataset(message, `date`)
       ct.textContent = App.format_date(date)
     }
+  }
+
+  for (let el of DOM.els(`#media .media_info_container`)) {
+    DOM.el(`.media_info_date`, el).textContent = App.format_date(DOM.dataset(el, `date`))
   }
 }
 
