@@ -94,7 +94,7 @@ App.generate_favicon = (mode) => {
 
 // Centralized console info printer
 App.loginfo = (message, style=``) => {
-  console.info(`🤡 %c(${App.nice_date(Date.now())}) %c${message}`, `color:blue`, style)
+  console.info(`🤡 %c(${App.utilz.nice_date(Date.now())}) %c${message}`, `color:blue`, style)
 }
 
 // Centralized function to return a chat icon svg
