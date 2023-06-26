@@ -30,10 +30,10 @@ module.exports = (App) => {
           }
 
           post.message = data.message
-          post.link_title = linkdata.link_title
-          post.link_description = linkdata.link_description
-          post.link_image = linkdata.link_image
-          post.link_url = linkdata.link_url
+          post.link_title = linkdata.title
+          post.link_description = linkdata.description
+          post.link_image = linkdata.image
+          post.link_url = linkdata.url
           App.handler.room_emit(socket, `edited_message_board_post`, post)
           return
         }
