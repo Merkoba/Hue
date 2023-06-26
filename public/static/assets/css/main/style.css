@@ -1388,7 +1388,7 @@ pre {
 	width: 100%;
 	position: relative;
 	box-sizing: border-box;
-	text-align: left;
+	text-align: center;
 }
 
 .nice_row.pointer:hover {
