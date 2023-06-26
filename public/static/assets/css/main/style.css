@@ -1389,7 +1389,6 @@ pre {
 	position: relative;
 	box-sizing: border-box;
 	text-align: left;
-	border-radius: 25px;
 }
 
 .nice_row.pointer:hover {
