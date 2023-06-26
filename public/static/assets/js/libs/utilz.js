@@ -680,40 +680,40 @@ const Utilz = () => {
 			let n = Math.floor(diff / 60 / 1000)
 
 			if (n === 1) {
-				s = `${n} minute`
+				s = `${n} minute ago`
 			}
 			else {
-				s = `${n} minutes`
+				s = `${n} minutes ago`
 			}
 		}
 		else if (diff >= utilz.HOUR && diff < utilz.DAY) {
 			let n = Math.floor(diff / 60 / 60 / 1000)
 
 			if (n === 1) {
-				s = `${n} hour`
+				s = `${n} hour ago`
 			}
 			else {
-				s = `${n} hours`
+				s = `${n} hours ago`
 			}
 		}
 		else if (diff >= utilz.DAY && diff < utilz.YEAR) {
 			let n = Math.floor(diff / 24 / 60 / 60 / 1000)
 
 			if (n === 1) {
-				s = `${n} day`
+				s = `${n} day ago`
 			}
 			else {
-				s = `${n} days`
+				s = `${n} days ago`
 			}
 		}
 		else if (diff >= utilz.YEAR) {
 			let n = Math.floor(diff / 365 / 24 / 60 / 60 / 1000)
 
 			if (n === 1) {
-				s = `${n} year`
+				s = `${n} year ago`
 			}
 			else {
-				s = `${n} years`
+				s = `${n} years ago`
 			}
 		}
 
