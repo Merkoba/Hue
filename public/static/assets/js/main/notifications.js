@@ -108,12 +108,15 @@ App.push_notification = (args) => {
   if (empty) {
     empty.remove()
   }
+
+  App.notifications_separate()
 }
 
 // Shows information about the recent info popups
 App.show_notifications = (filter = ``) => {
   App.msg_notifications.show()
   App.update_date_notifications()
+  App.notifications_separate()
 
   if (filter.trim()) {
     DOM.el(`#notifications_filter`).value = filter
@@ -190,4 +193,11 @@ App.num_open_info_popups = () => {
   }
 
   return num
+}
+
+// Separate notification items
+App.notifications_separate = () => {
+  if (App.msg_notifications.is_open()) {
+    App.vertical_separator(DOM.el(`#notifications_container`))
+  }
 }

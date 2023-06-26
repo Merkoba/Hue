@@ -412,6 +412,7 @@ App.push_whisper = (message, on_click, read, data) => {
     empty.remove()
   }
 
+  App.whispers_separate()
   return item
 }
 
@@ -419,6 +420,7 @@ App.push_whisper = (message, on_click, read, data) => {
 App.show_whispers = (filter = ``) => {
   App.msg_whispers.show()
   App.update_date_whispers()
+  App.whispers_separate()
 
   if (filter.trim()) {
     DOM.el(`#whispers_filter`).value = filter
@@ -476,6 +478,7 @@ App.make_whisper_user = (user, mode, onclick) => {
 App.clear_whispers = () => {
   App.set_whispers_info()
   App.update_whispers_unread_count()
+  App.whispers_separate()
 }
 
 // Set whispers info
@@ -486,4 +489,11 @@ App.set_whispers_info = () => {
 // Focus write whisper
 App.focus_write_whisper = () => {
   DOM.el(`#write_whisper_area`).focus()
+}
+
+// Separate whisper items
+App.whispers_separate = () => {
+  if (App.msg_whispers.is_open()) {
+    App.vertical_separator(DOM.el(`#whispers_container`))
+  }
 }

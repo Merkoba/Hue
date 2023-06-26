@@ -239,7 +239,7 @@ App.init_message_board = (data) => {
     App.show_message_board(`$fresh `)
   }
 
-  App.vertical_separator(DOM.el(`#message_board_container`))
+  App.message_board_separate()
 }
 
 // Highlight unread message board posts
@@ -260,6 +260,7 @@ App.show_message_board = (filter = ``) => {
   App.update_last_message_post_checked()
   App.check_last_message_board_post()
   App.update_date_message_board()
+  App.message_board_separate()
 
   if (filter.trim()) {
     DOM.el(`#message_board_filter`).value = filter
@@ -313,7 +314,14 @@ App.on_message_board_received = (data, edited = false) => {
     App.update_last_message_post_checked()
   }
 
-  App.vertical_separator(DOM.el(`#message_board_container`))
+  App.message_board_separate()
+}
+
+// Separate message board posts
+App.message_board_separate = () => {
+  if (App.msg_message_board.is_open()) {
+    App.vertical_separator(DOM.el(`#message_board_container`))
+  }
 }
 
 // Checks if there are new message board posts
@@ -374,13 +382,13 @@ App.deleted_message_board_post = (data) => {
     }
   }
 
-  App.vertical_separator(DOM.el(`#message_board_container`))
+  App.message_board_separate()
   App.check_last_message_board_post()
 }
 
 // After message board filter
 App.after_message_board_filtered = () => {
-  App.vertical_separator(DOM.el(`#message_board_container`))
+  App.message_board_separate()
 }
 
 // Remove all message board posts
