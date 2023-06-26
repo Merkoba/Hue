@@ -352,13 +352,13 @@ App.setup_whispers = () => {
 
 // Pushes a new whisper to the whispers window
 App.push_whisper = (message, on_click, read, data) => {
-  let date = Date.now()
-  let title = App.nice_date(date)
+  let d = Date.now()
+  let date = App.format_date(d)
   let item = DOM.create(`div`, `whisper_item modal_item`)
 
   if (data.mode === `received`) {
     item.innerHTML = App.template_whisper_received({
-      date: title,
+      date: date,
       profilepic: App.get_profilepic(data.user_id),
       message: message
     })
@@ -376,12 +376,12 @@ App.push_whisper = (message, on_click, read, data) => {
   }
   else {
     item.innerHTML = App.template_whisper_sent({
-      date: title,
+      date: date,
       message: message
     })
   }
 
-  DOM.dataset(item, `date`, date)
+  DOM.dataset(item, `date`, d)
   DOM.dataset(item, `read`, read)
   let content = DOM.el(`.whisper_item_content`, item)
 

@@ -185,32 +185,3 @@ App.item_not_included = () => {
 App.item_removed = () => {
   App.checkmsg(`Item removed successfully`)
 }
-
-// Format date
-App.format_date = (date) => {
-  let df = App.get_setting(`date_format`)
-
-  if (df === `relative`) {
-    return App.utilz.timeago(date)
-  }
-  else if (df === `absolute_12`) {
-    return App.utilz.timestamp(date, 12)
-  }
-  else if (df === `absolute_24`) {
-    return App.utilz.timestamp(date, 24)
-  }
-}
-
-// Get nice date
-App.nice_date = (date = Date.now()) => {
-  let mode
-
-  if (App.get_setting(`date_format`) === `absolute_24`) {
-    mode = 24
-  }
-  else {
-    mode = 12
-  }
-
-  return App.utilz.nice_date(date, mode)
-}

@@ -62,7 +62,7 @@ App.push_notification = (args) => {
   args = Object.assign(def_args, args)
 
   let d = Date.now()
-  let t = App.nice_date(d)
+  let t = App.format_date(d)
 
   let content_classes = ``
 
@@ -80,7 +80,7 @@ App.push_notification = (args) => {
   })
 
   DOM.dataset(item, `date`, d)
-  let content = DOM.el(`.notification_item_content`, item)
+  let content = DOM.el(`.notification_content`, item)
 
   if (args.on_click) {
     DOM.ev(content, `click`, () => {

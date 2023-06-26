@@ -1402,7 +1402,7 @@ pre {
 	align-items: flex-start;
 }
 
-.notification_item_icon {
+.notification_icon {
 	margin-right: 0.5rem;
 }
 
@@ -1439,21 +1439,14 @@ pre {
 }
 
 .message_board_user_details {
-	margin-bottom: 0.35rem;
-}
-
-.message_board_profilepic {
-	opacity: 1;
-	margin-right: 0.5rem;
+	display: flex;
+	flex-direction: row;
+	gap: 0.5rem;
+	margin-bottom: 1rem;
 }
 
 .message_board_username {
 	cursor: pointer;
-}
-
-.message_board_date {
-	margin-top: 0.7rem;
-	margin-bottom: 0.35rem;
 }
 
 .message_board_link_image {
@@ -1498,7 +1491,7 @@ pre {
 	display: flex;
 	flex-direction: row;
 	gap: 0.8rem;
-	margin-top: 0.3rem;
+	margin-top: 1rem;
 	display: none;
 	align-items: center;
 	justify-content: center;
