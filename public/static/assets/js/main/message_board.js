@@ -259,6 +259,7 @@ App.show_message_board = (filter = ``) => {
   App.msg_message_board.show()
   App.update_last_message_post_checked()
   App.check_last_message_board_post()
+  App.update_date_message_board()
 
   if (filter.trim()) {
     DOM.el(`#message_board_filter`).value = filter

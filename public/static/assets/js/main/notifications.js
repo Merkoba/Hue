@@ -113,6 +113,7 @@ App.push_notification = (args) => {
 // Shows information about the recent info popups
 App.show_notifications = (filter = ``) => {
   App.msg_notifications.show()
+  App.update_date_notifications()
 
   if (filter.trim()) {
     DOM.el(`#notifications_filter`).value = filter

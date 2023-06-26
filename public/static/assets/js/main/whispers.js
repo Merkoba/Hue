@@ -418,6 +418,7 @@ App.push_whisper = (message, on_click, read, data) => {
 // Shows information about the recent whispers
 App.show_whispers = (filter = ``) => {
   App.msg_whispers.show()
+  App.update_date_whispers()
 
   if (filter.trim()) {
     DOM.el(`#whispers_filter`).value = filter
