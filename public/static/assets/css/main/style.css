@@ -667,13 +667,15 @@ a.generic:hover {
 }
 
 .filter_input {
-	width: 15rem;
-	border: 0.06rem solid grey;
+	width: 14rem;
+	border: 0.06rem solid var(--altbackground);
 	font-size: 1rem;
 	text-align: center;
 	outline: none;
 	margin-left: 0.35rem;
 	margin-right: 0.35rem;
+	color: var(--text_color);
+	background-color: var(--altcolor);
 }
 
 .chat_menu_button_main {
@@ -758,6 +760,12 @@ select {
 	min-width: 8rem;
 }
 
+.modal_textarea {
+	color: var(--text_color);
+	background-color: var(--altcolor);
+	border: 0.06rem solid var(--altbackground);
+}
+
 input[type=text],
 input[type=search],
 input[type=password],
@@ -766,6 +774,7 @@ textarea,
 select {
 	font-family: var(--font) !important;
 	font-size: 1rem;
+	outline: none;
 }
 
 input[type=checkbox] {
