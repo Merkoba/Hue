@@ -1,8 +1,3 @@
-// Shows feedback with the current date in the nice date format
-App.show_current_date = () => {
-  App.checkmsg(App.nice_date())
-}
-
 // Update date periodically
 App.start_update_date = () => {
   setInterval(() => {
@@ -13,6 +8,7 @@ App.start_update_date = () => {
 // The update date action
 App.update_date = () => {
   App.update_date_chat()
+  App.update_date_search()
   App.update_date_media()
   App.update_date_message_board()
   App.update_date_notifications()
@@ -20,18 +16,36 @@ App.update_date = () => {
 }
 
 App.update_date_chat = () => {
-  for (let el of DOM.els(`.chat_area`)) {
-    for (let ct of DOM.els(`.chat_date`, el)) {
-      let message = ct.closest(`.message`)
+  if (App.get_setting(`show_chat`)) {
+    let container = DOM.el(`#chat_area`)
+
+    for (let message of DOM.els(`.chat_message`, container)) {
+      let el = DOM.el(`.chat_date`, message)
       let date = DOM.dataset(message, `date`)
-      ct.textContent = App.format_date(date)
+      el.textContent = App.format_date(date)
+    }
+  }
+}
+
+App.update_date_search = () => {
+  if (App.msg_chat_search.is_open()) {
+    let container = DOM.el(`#chat_search_container`)
+
+    for (let message of DOM.els(`.chat_message`, container)) {
+      let el = DOM.el(`.chat_date`, message)
+      let date = DOM.dataset(message, `date`)
+      el.textContent = App.format_date(date)
     }
   }
 }
 
 App.update_date_media = () => {
-  for (let el of DOM.els(`#media .media_info_container`)) {
-    DOM.el(`.media_info_date`, el).textContent = App.format_date(DOM.dataset(el, `date`))
+  let container = DOM.el(`#media`)
+
+  for (let info of DOM.els(`.media_info_container`, container)) {
+    let el = DOM.el(`.media_info_date`, info)
+    let date = DOM.dataset(info, `date`)
+    el.textContent = App.format_date(date)
   }
 }
 
@@ -98,4 +112,9 @@ App.nice_date = (date = Date.now()) => {
   }
 
   return App.utilz.nice_date(date, mode)
+}
+
+// Shows feedback with the current date in the nice date format
+App.show_current_date = () => {
+  App.checkmsg(App.nice_date())
 }
