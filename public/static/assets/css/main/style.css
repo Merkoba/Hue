@@ -1725,6 +1725,10 @@ pre {
 	flex-direction: row-reverse !important;
 }
 
+.radio_station {
+	justify-content: flex-start;
+}
+
 .radio_station_playing {
 	outline: 1px solid var(--text_color);
 	outline-offset: -1px;
