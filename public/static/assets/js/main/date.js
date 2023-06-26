@@ -19,7 +19,7 @@ App.update_date_chat = () => {
   if (App.get_setting(`show_chat`)) {
     let container = DOM.el(`#chat_area`)
 
-    for (let message of DOM.els(`.chat_message`, container)) {
+    for (let message of DOM.els(`.message`, container)) {
       let el = DOM.el(`.chat_date`, message)
       let date = DOM.dataset(message, `date`)
       el.textContent = App.format_date(date)
@@ -31,7 +31,7 @@ App.update_date_search = () => {
   if (App.msg_chat_search.is_open()) {
     let container = DOM.el(`#chat_search_container`)
 
-    for (let message of DOM.els(`.chat_message`, container)) {
+    for (let message of DOM.els(`.message`, container)) {
       let el = DOM.el(`.chat_date`, message)
       let date = DOM.dataset(message, `date`)
       el.textContent = App.format_date(date)
