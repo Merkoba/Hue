@@ -497,3 +497,8 @@ App.whispers_separate = () => {
     App.vertical_separator(DOM.el(`#whispers_container`))
   }
 }
+
+// After whispers filter
+App.after_whispers_filtered = () => {
+  App.whispers_separate()
+}

@@ -201,3 +201,8 @@ App.notifications_separate = () => {
     App.vertical_separator(DOM.el(`#notifications_container`))
   }
 }
+
+// After notifications filter
+App.after_notifications_filtered = () => {
+  App.notifications_separate()
+}
