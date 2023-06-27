@@ -1296,14 +1296,6 @@ a.special_link:hover {
 	width: 100%;
 }
 
-#room_config_more_container {
-	gap: 0.8rem;
-}
-
-.room_config_category {
-	font-size: 1.1rem;
-}
-
 #room_config_topic_container {
 	margin-top: 1.6rem;
 }
