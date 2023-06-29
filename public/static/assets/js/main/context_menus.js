@@ -174,23 +174,17 @@ App.show_input_menu = () => {
 
   items.push({
     text: `@ Img`,
-    action: () => {
-      App.reply_to_media(`image`)
-    }
+    items: App.at_media_items(`image`)
   })
 
   items.push({
     text: `@ TV`,
-    action: () => {
-      App.reply_to_media(`tv`)
-    }
+    items: App.at_media_items(`tv`)
   })
 
   items.push({
     text: `@ Link`,
-    action: () => {
-      App.reply_to_link()
-    }
+    items: App.at_media_items(`link`)
   })
 
   let el = DOM.el(`#footer_input_menu`)
@@ -219,4 +213,38 @@ App.show_linksbar_context = (x, y) => {
   }
 
   NeedContext.show(x, y, items)
+}
+
+App.at_media_items = (type) => {
+  let items = []
+
+  items.push({
+    text: `Reply`,
+    action: () => {
+      App.reply_to_media(type)
+    }
+  })
+
+  items.push({
+    text: `Like`,
+    action: () => {
+      App.like_to_media(type)
+    }
+  })
+
+  items.push({
+    text: `Context`,
+    action: () => {
+      App.context_to_media(type)
+    }
+  })
+
+  items.push({
+    text: `Jump`,
+    action: () => {
+      App.jump_to_media(type)
+    }
+  })
+
+  return items
 }

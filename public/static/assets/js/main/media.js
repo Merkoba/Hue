@@ -898,8 +898,46 @@ App.reply_to_media = (type) => {
   }
 }
 
+App.like_to_media = (type) => {
+  let item = App.get_current_media(type)
+
+  if (item && item.id) {
+    let ans = App.get_message_by_id(item.id)
+
+    if (ans) {
+      App.like_message(ans[0], `like`)
+    }
+  }
+}
+
+App.context_to_media = (type) => {
+  let item = App.get_current_media(type)
+
+  if (item && item.id) {
+    App.chat_search_by_id(item.id)
+  }
+}
+
+App.jump_to_media = (type) => {
+  let item = App.get_current_media(type)
+
+  if (item && item.id) {
+    let ans = App.get_message_by_id(item.id)
+
+    if (ans) {
+      let message = ans[0].closest(`.message`)
+      let id = DOM.dataset(message, `message_id`)
+      App.jump_to_chat_message(id, true)
+    }
+  }
+}
+
 // Get current media
 App.get_current_media = (type) => {
+  if (type === `link`) {
+    return App.linksbar_item
+  }
+
   let item
 
   if (App.room_state[`${type}_enabled`]) {
