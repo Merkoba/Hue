@@ -1727,16 +1727,20 @@ App.check_max_chat_messages = () => {
   }
 }
 
+App.message_is_liked = (unit) => {
+  return DOM.dataset(unit, `likes`).some(x => x.user_id === App.user_id)
+}
+
 // Like a message
 App.like_message = (target, type) => {
   let unit = target.closest(`.message_unit`)
-  let included = DOM.dataset(unit, `likes`).some(x => x.user_id === App.user_id)
+  let liked = App.message_is_liked(unit)
 
-  if (type === `like` && included) {
+  if (type === `like` && liked) {
     return
   }
 
-  if (type === `unlike` && !included) {
+  if (type === `unlike` && !liked) {
     return
   }
 

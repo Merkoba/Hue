@@ -59,10 +59,9 @@ App.show_chat_context_menu = (button, x, y) => {
   if (mode === `chat` || type === `image_change` || type === `tv_change`) {
     let text = `Like`
     let type = `like`
-    let included = DOM.dataset(unit, `likes`).some(x => x.user_id === App.user_id)
 
     // Check if the user already like the post
-    if (included) {
+    if (App.message_is_liked(unit)) {
       text = `Unlike`
       type = `unlike`
     }
@@ -217,6 +216,16 @@ App.show_linksbar_context = (x, y) => {
 
 App.at_media_items = (type) => {
   let items = []
+  let item = App.get_current_media(type)
+  let liked = false
+
+  if (item && item.id) {
+    let ans = App.get_message_by_id(item.id)
+
+    if (ans) {
+      liked = App.message_is_liked(ans[0])
+    }
+  }
 
   items.push({
     text: `Reply`,
@@ -225,12 +234,22 @@ App.at_media_items = (type) => {
     }
   })
 
-  items.push({
-    text: `Like`,
-    action: () => {
-      App.like_to_media(type)
-    }
-  })
+  if (liked) {
+    items.push({
+      text: `Unlike`,
+      action: () => {
+        App.like_to_media(type)
+      }
+    })
+  }
+  else {
+    items.push({
+      text: `Like`,
+      action: () => {
+        App.like_to_media(type)
+      }
+    })
+  }
 
   items.push({
     text: `Context`,

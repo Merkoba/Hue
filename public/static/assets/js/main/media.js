@@ -905,7 +905,9 @@ App.like_to_media = (type) => {
     let ans = App.get_message_by_id(item.id)
 
     if (ans) {
-      App.like_message(ans[0], `like`)
+      let liked = App.message_is_liked(ans[0])
+      let kind = liked ? `unlike` : `like`
+      App.like_message(ans[0], kind)
     }
   }
 }
