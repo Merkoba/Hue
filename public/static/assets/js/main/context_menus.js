@@ -169,6 +169,11 @@ App.show_input_menu = () => {
   })
 
   items.push({
+    text: `@ Link`,
+    items: App.at_media_items(`link`)
+  })
+
+  items.push({
     text: `@ Img`,
     items: App.at_media_items(`image`)
   })
@@ -176,11 +181,6 @@ App.show_input_menu = () => {
   items.push({
     text: `@ TV`,
     items: App.at_media_items(`tv`)
-  })
-
-  items.push({
-    text: `@ Link`,
-    items: App.at_media_items(`link`)
   })
 
   let el = DOM.el(`#footer_input_menu`)
