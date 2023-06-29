@@ -1979,9 +1979,3 @@ App.observe_message = (unit) => {
     App.chat_intersection_observer.observe(unit)
   }
 }
-
-// Lock the chat by showing scrollers
-App.lock_chat = () => {
-  App.show_top_scroller()
-  App.show_bottom_scroller()
-}

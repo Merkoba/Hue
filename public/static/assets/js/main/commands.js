@@ -618,12 +618,6 @@ App.commands = {
     },
     description: `Show the tv history`,
   },
-  lock: {
-    action: (arg, ans) => {
-      App.lock_chat()
-    },
-    description: `Lock the chat in place`,
-  },
   repeat: {
     action: (arg, ans) => {
       App.show_input_history(arg)

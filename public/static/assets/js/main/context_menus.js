@@ -165,10 +165,7 @@ App.show_input_menu = () => {
   }
 
   items.push({
-    text: `Lock`,
-    action: () => {
-      App.lock_chat()
-    }
+    separator: true,
   })
 
   items.push({
