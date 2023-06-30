@@ -176,6 +176,12 @@ App.user_settings = {
     actions: () => {},
     version: 1,
   },
+  color_text: {
+    widget_type: `checkbox`,
+    description: `Whether to show green (or blue or red) text when arrows (>) are used`,
+    actions: () => {},
+    version: 1,
+  },
 }
 
 // Gets the settings localStorage object

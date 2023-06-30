@@ -38,7 +38,9 @@ App.parse_text = (text) => {
     App.textparser_regexes[`anchor_link`].replace_function
   )
 
-  text = App.check_arrows(text)
+  if (App.get_setting(`color_text`)) {
+    text = App.check_arrows(text)
+  }
 
   return text
 }
