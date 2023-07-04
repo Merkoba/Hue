@@ -53,6 +53,13 @@ App.apply_theme = (background_color = ``, text_color = ``) => {
   document.documentElement.style.setProperty(`--altbackground_a`, altbackground_a)
   document.documentElement.style.setProperty(`--chat_font_size`, App.get_setting(`chat_font_size`) + `em`)
   document.documentElement.style.setProperty(`--chat_size`, App.get_setting(`chat_font_size`) + `em`)
+
+  if (App.get_setting(`hide_scrollbars`)) {
+    document.documentElement.classList.add(`no_scrollbars`)
+  }
+  else {
+    document.documentElement.classList.remove(`no_scrollbars`)
+  }
 }
 
 // Sets an applies background images from data

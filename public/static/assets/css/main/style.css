@@ -24,11 +24,11 @@ html {
 	background-position: center;
 }
 
-*:not(textarea):not(input) {
+.no_scrollbars *:not(textarea):not(input) {
 	scrollbar-width: none !important;
 }
 
-*:not(textarea):not(input)::-webkit-scrollbar {
+.no_scrollbars *:not(textarea):not(input)::-webkit-scrollbar {
 	width: 0 !important;
 }
 
@@ -1325,12 +1325,6 @@ a.special_link:hover {
 	width: 100%;
 }
 
-.command_book_name {
-	font-weight: bold;
-	flex-shrink: 0;
-	margin-right: 0.5rem;
-}
-
 #user_profile_bio_textarea {
 	border: 0 solid grey;
 	outline: none;
@@ -1895,4 +1889,15 @@ pre {
 .flash_highlight {
 	filter: brightness(1.5);
 	box-shadow: 0 0 1.4rem var(--altcolor);
+}
+
+.command_book_item {
+	justify-content: flex-start;
+	text-align: left;
+}
+
+.command_book_name {
+	font-weight: bold;
+	flex-shrink: 0;
+	margin-right: 0.5rem;
 }

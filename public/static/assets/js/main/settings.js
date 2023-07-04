@@ -182,6 +182,14 @@ App.user_settings = {
     actions: () => {},
     version: 1,
   },
+  hide_scrollbars: {
+    widget_type: `checkbox`,
+    description: `Whether to make scrollbars invisible`,
+    actions: () => {
+      App.apply_theme()
+    },
+    version: 1,
+  },
 }
 
 // Gets the settings localStorage object
