@@ -40,45 +40,50 @@ App.parse_text = (text) => {
 
   if (App.get_setting(`color_text`)) {
     text = App.check_arrows(text)
+    text = App.check_frame(text)
   }
 
   return text
 }
 
-// Check for arrows at the start of a string
-App.check_arrows = (text) => {
-  if (text.startsWith(`&gt;`)) {
-    if (text.replace(/&gt;/g, ``).trim() === ``) {
-      return text
-    }
-
-    if (text.startsWith(`&gt;&gt;&gt;`)) {
-      text = `<div class="colortext redtext">${App.remove_arrows(text, 3)}</div>`
-    }
-    else if (text.startsWith(`&gt;&gt`)) {
-      text = `<div class="colortext bluetext">${App.remove_arrows(text, 2)}</div>`
-    }
-    else {
-      text = `<div class="colortext greentext">${App.remove_arrows(text, 1)}</div>`
-    }
-  }
-  else if (text.includes(`\n`)) {
+// Check frame
+App.check_frame = (text) => {
+  if (text.includes(`\n`)) {
     text = `<div class="framed">${text}</div>`
   }
 
   return text
 }
 
-// Remove arrows from the start of strings
-App.remove_arrows = (text, num_arrows) => {
-  let regex = new RegExp(`^(&gt;){1,${num_arrows}}`, `gm`)
+// Check frame
+App.check_frame = (text) => {
+  if (text.includes(`\n`)) {
+    text = `<div class="framed">${text}</div>`
+  }
+
+  return text
+}
+
+// Check for arrows at the start of lines
+App.check_arrows = (text) => {
   let lines = text.split(`\n`)
   let new_lines = []
 
   for (let line of lines) {
-    new_lines.push(line.replace(regex, ``))
+    if (line.startsWith(`&gt;`)) {
+      if (line.startsWith(`&gt;&gt;&gt;`)) {
+        line = `<div class="colortext redtext">${line}</div>`
+      }
+      else if (line.startsWith(`&gt;&gt`)) {
+        line = `<div class="colortext bluetext">${line}</div>`
+      }
+      else {
+        line = `<div class="colortext greentext">${line}</div>`
+      }
+    }
+
+    new_lines.push(line)
   }
 
-  let new_text = new_lines.join(`\n`)
-  return App.utilz.untab_string(new_text).trim()
+  return new_lines.join(`\n`)
 }

@@ -1512,31 +1512,28 @@ pre {
 }
 
 .colortext {
-	background-color: rgb(30, 30, 30) !important;
+	background-color: rgba(0, 0, 0, 0.33) !important;
 	padding: 0.25em;
+	display: inline-block;
 }
 
 .greentext {
 	color: rgb(91, 218, 91);
-	border: 1px solid rgb(91, 218, 91);
 	white-space: pre-wrap;
 }
 
 .bluetext {
 	color: rgb(119, 119, 240);
-	border: 1px solid rgb(119, 119, 240);
 	white-space: pre-wrap;
 }
 
 .redtext {
 	color: rgb(223, 76, 76);
-	border: 1px solid rgb(223, 76, 76);
 	white-space: pre-wrap;
 }
 
 .goldtext {
 	color: rgb(229, 255, 0);
-	border: 1px solid rgb(229, 255, 0);
 }
 
 .custom_popup {
