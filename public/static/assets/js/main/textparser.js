@@ -72,7 +72,6 @@ App.check_arrows = (text) => {
 // Remove arrows from the start of strings
 App.remove_arrows = (text, num_arrows) => {
   let regex = new RegExp(`^(&gt;){1,${num_arrows}}`, `gm`)
-
   let lines = text.split(`\n`)
   let new_lines = []
 
