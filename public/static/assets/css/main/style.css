@@ -1508,12 +1508,12 @@ pre {
 	padding: 0.25em;
 	text-align: left;
 	white-space: pre-wrap;
+	border: 1px solid var(--altcolor);
 }
 
 .arrowtext {
 	display: inline-block;
 	font-weight: bold;
-	text-shadow: 0 0 5rem currentColor;
 }
 
 .custom_popup {
