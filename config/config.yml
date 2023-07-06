@@ -154,7 +154,7 @@ settings_default_show_chat: true
 settings_default_show_media_info: true
 settings_default_date_format: "relative"
 settings_default_radio_auto_minutes: 15
-settings_default_color_text: true
+settings_default_arrowtext: true
 settings_default_hide_scrollbars: true
 
 # Default room state values

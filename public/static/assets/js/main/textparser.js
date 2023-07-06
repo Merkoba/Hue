@@ -38,8 +38,8 @@ App.parse_text = (text) => {
     App.textparser_regexes[`anchor_link`].replace_function
   )
 
-  if (App.get_setting(`color_text`)) {
-    text = App.check_arrows(text)
+  if (App.get_setting(`arrowtext`)) {
+    text = App.check_arrowtext(text)
     text = App.check_frame(text)
   }
 
@@ -65,7 +65,7 @@ App.check_frame = (text) => {
 }
 
 // Check for arrows at the start of lines
-App.check_arrows = (text) => {
+App.check_arrowtext = (text) => {
   let lines = text.split(`\n`)
   let new_lines = []
 

@@ -176,9 +176,9 @@ App.user_settings = {
     actions: () => {},
     version: 1,
   },
-  color_text: {
+  arrowtext: {
     widget_type: `checkbox`,
-    description: `Whether to show green (or blue or red) text when arrows (>) are used`,
+    description: `Whether to style arrowtext`,
     actions: () => {},
     version: 1,
   },
