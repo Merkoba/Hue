@@ -71,15 +71,7 @@ App.check_arrows = (text) => {
 
   for (let line of lines) {
     if (line.startsWith(`&gt;`)) {
-      if (line.startsWith(`&gt;&gt;&gt;`)) {
-        line = `<div class="colortext redtext">${line}</div>`
-      }
-      else if (line.startsWith(`&gt;&gt`)) {
-        line = `<div class="colortext bluetext">${line}</div>`
-      }
-      else {
-        line = `<div class="colortext greentext">${line}</div>`
-      }
+      line = `<div class="colortext greentext">${line}</div>`
     }
 
     new_lines.push(line)

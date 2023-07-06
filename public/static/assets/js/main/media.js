@@ -773,7 +773,7 @@ App.setup_media_object = (type, mode, odata = {}) => {
   let dc = data.nice_date.split(`|`)
   let days = dc[0].trim()
   let time = dc[1].trim()
-  data.info = data.id ? `${App.getcode(data.id)}` : ``
+  data.info = ``
   data.info_html = ``
   data.info_html += `<div>${days}</div>`
   data.info_html += `<div>${time}</div>`

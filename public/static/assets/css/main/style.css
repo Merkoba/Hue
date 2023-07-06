@@ -1519,21 +1519,6 @@ pre {
 
 .greentext {
 	color: rgb(91, 218, 91);
-	white-space: pre-wrap;
-}
-
-.bluetext {
-	color: rgb(119, 119, 240);
-	white-space: pre-wrap;
-}
-
-.redtext {
-	color: rgb(223, 76, 76);
-	white-space: pre-wrap;
-}
-
-.goldtext {
-	color: rgb(229, 255, 0);
 }
 
 .custom_popup {

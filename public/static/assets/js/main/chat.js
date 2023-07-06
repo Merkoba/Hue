@@ -98,14 +98,6 @@ App.make_chat_message = (args = {}) => {
   }
 
   title = title + nd
-  let gets = App.getcode(args.id)
-
-  if (App.utilz.bingo(gets)) {
-    content_classes += ` colortext goldtext`
-  }
-
-  title = `${gets} | ${title}`
-
   fmessage = DOM.create(`div`, `message chat_message user_details`)
 
   fmessage.innerHTML = App.template_chat_message({
@@ -270,12 +262,6 @@ App.make_announcement_message = (args = {}) => {
 
   if (args.user_id) {
     brk_classes += ` pos_absolute`
-  }
-
-  if (is_media) {
-    if (App.utilz.bingo(App.getcode(args.id))) {
-      content_classes += ` colortext goldtext`
-    }
   }
 
   let top_clasees = `chat_message_top announcement_top`

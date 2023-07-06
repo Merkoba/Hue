@@ -155,12 +155,6 @@ App.flop = () => {
   App.flopped = !App.flopped
 }
 
-// Get the last 3 digits of a message id
-// Mainly used to turn things goldtext
-App.getcode = (s = ``) => {
-  return s.slice(-3)
-}
-
 // Show that a command is not allowed
 App.not_allowed = () => {
   App.checkmsg(`You don't have permission to run that command`)
