@@ -1466,6 +1466,7 @@ pre {
 	white-space: pre-wrap;
 	padding: 0.8rem;
 	gap: 0.8rem;
+	border-radius: var(--border_radius);
 }
 
 .message_board_image {
