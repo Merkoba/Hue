@@ -29,7 +29,6 @@ App.make_info_popup_item = (args = {}) => {
   }
 
   args = Object.assign(def_args, args)
-
   let classes = ``
 
   if (args.action) {
@@ -39,17 +38,27 @@ App.make_info_popup_item = (args = {}) => {
   if (args.push) {
     App.push_notification({
       icon: args.icon,
+      profilepic: args.profilepic,
       message: args.message,
       on_click: args.on_click,
-      increase_counter: args.increase_counter
+      increase_counter: args.increase_counter,
     })
   }
 
-  return App.template_popup_item({
-    icon: args.icon,
-    message: args.message,
-    classes: classes
-  })
+  if (args.profilepic) {
+    return App.template_popup_item_2({
+      profilepic: args.profilepic,
+      message: args.message,
+      classes: classes,
+    })
+  }
+  else {
+    return App.template_popup_item({
+      icon: args.icon,
+      message: args.message,
+      classes: classes,
+    })
+  }
 }
 
 // Pushes a new notification to the notifications window
@@ -72,12 +81,22 @@ App.push_notification = (args) => {
 
   let item = DOM.create(`div`, `notification_item modal_item`)
 
-  item.innerHTML = App.template_notification({
-    content_classes: content_classes,
-    icon: args.icon,
-    message: args.message,
-    date: t
-  })
+  if (args.profilepic) {
+    item.innerHTML = App.template_notification_2({
+      content_classes: content_classes,
+      profilepic: args.profilepic,
+      message: args.message,
+      date: t
+    })
+  }
+  else {
+    item.innerHTML = App.template_notification({
+      content_classes: content_classes,
+      icon: args.icon,
+      message: args.message,
+      date: t
+    })
+  }
 
   DOM.dataset(item, `date`, d)
   let content = DOM.el(`.notification_content`, item)
@@ -138,10 +157,17 @@ App.show_room_notification = (username, message, icon = `info`) => {
     }
   }
 
+  let profilepic
+
+  if (user) {
+    profilepic = App.get_profilepic(user.user_id)
+  }
+
   let item = App.make_info_popup_item({
     message: message,
     on_click: f,
-    icon: icon
+    icon: icon,
+    profilepic: profilepic,
   })
 
   App.show_popup(App.make_info_popup(f), item)
@@ -152,7 +178,7 @@ App.show_action_notification = (message, icon, f) => {
   let item = App.make_info_popup_item({
     message: message,
     on_click: f,
-    icon: icon
+    icon: icon,
   })
 
   App.show_popup(App.make_info_popup(f), item)
