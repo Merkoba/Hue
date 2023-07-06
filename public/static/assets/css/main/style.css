@@ -1513,8 +1513,7 @@ pre {
 
 .arrowtext {
 	display: inline-block;
-	padding: 0.25em;
-	background-color: var(--altbackground);
+	font-weight: bold;
 }
 
 .custom_popup {
