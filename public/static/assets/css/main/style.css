@@ -1511,13 +1511,10 @@ pre {
 	border: 1px solid var(--altcolor);
 }
 
-.colortext {
-	background-color: rgba(0, 0, 0, 0.33) !important;
+.arrowtext {
 	display: inline-block;
-}
-
-.greentext {
-	color: rgb(91, 218, 91);
+	padding: 0.25em;
+	background-color: var(--altbackground);
 }
 
 .custom_popup {
