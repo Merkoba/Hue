@@ -1368,13 +1368,13 @@ pre {
 	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
+	text-align: left;
 	background-color: var(--altbackground);
 	padding: 0.5rem;
 	width: 100%;
 	position: relative;
 	box-sizing: border-box;
-	text-align: center;
 }
 
 .nice_row.pointer:hover {
@@ -1385,7 +1385,7 @@ pre {
 	margin-bottom: 0.5rem;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
 }
 
 .notification_icon {
@@ -1688,10 +1688,6 @@ pre {
 	flex-direction: row-reverse !important;
 }
 
-.radio_station {
-	justify-content: flex-start;
-}
-
 .radio_station_playing {
 	outline: 1px solid var(--text_color);
 	outline-offset: -1px;
@@ -1866,11 +1862,6 @@ pre {
 .flash_highlight {
 	filter: brightness(1.5);
 	box-shadow: 0 0 1.4rem var(--altcolor);
-}
-
-.command_book_item {
-	justify-content: flex-start;
-	text-align: left;
 }
 
 .command_book_name {
