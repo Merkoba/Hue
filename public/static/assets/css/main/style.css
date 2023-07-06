@@ -7,6 +7,7 @@
 	--big_profilepic_size: 16rem;
 	--msg_display: block;
 	--placeholder_opacity: 0.6;
+	--border_radius: 3px;
 }
 
 body,
@@ -676,6 +677,7 @@ a.generic:hover {
 	margin-right: 0.35rem;
 	color: var(--text_color);
 	background-color: var(--altcolor);
+	border-radius: var(--border_radius);
 }
 
 .chat_menu_button_main {
@@ -1375,7 +1377,7 @@ pre {
 	width: 100%;
 	position: relative;
 	box-sizing: border-box;
-	border-radius: 3px;
+	border-radius: var(--border_radius);
 }
 
 .nice_row.pointer:hover {
