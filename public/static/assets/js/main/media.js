@@ -773,24 +773,31 @@ App.setup_media_object = (type, mode, odata = {}) => {
   let dc = data.nice_date.split(`|`)
   let days = dc[0].trim()
   let time = dc[1].trim()
-  data.info = ``
+  let info = []
   data.info_html = ``
   data.info_html += `<div>${days}</div>`
   data.info_html += `<div>${time}</div>`
 
   if (data.size) {
-    data.info += ` | Size: ${App.utilz.size_string(data.size)}`
+    info.push(`Size: ${App.utilz.size_string(data.size)}`)
     data.info_html += `<div>Size: ${App.utilz.size_string(data.size)}</div>`
   }
 
   if (data.query) {
-    data.info += ` | Search Term: "${data.query}"`
+    info.push(`Search Term: "${data.query}"`)
   }
 
-  data.info += ` | ${data.nice_date}`
+  info.push(data.nice_date)
   data.info_html += `<div title='${data.nice_date}' class='modal_${type}_date'></div>`
   data.hostname = App.utilz.get_hostname(data.source)
   data.message = App.get_media_message(data)
+
+  if (!data.username) {
+    info = []
+    info.push(`Default ${App.utilz.capitalize_words(type)}`)
+  }
+
+  data.info = info.join(` | `)
 
   if (data.message) {
     data.message_id = App.announce_media(type, data).message_id
@@ -800,10 +807,6 @@ App.setup_media_object = (type, mode, odata = {}) => {
     if (data.type === `upload`) {
       data.type = `video`
     }
-  }
-
-  if (!data.username) {
-    data.info = `Default ${App.utilz.capitalize_words(type)}`
   }
 
   if (mode === `change` || mode === `show`) {
