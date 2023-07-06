@@ -34,7 +34,6 @@ App.user_join = (data) => {
 // Updates the user count in the header and user list
 App.update_usercount = () => {
   let s = `${App.utilz.singular_or_plural(App.userlist.length, `Users`)} Online`
-
   DOM.el(`#header_users_count`).textContent = `(${App.userlist.length})`
 
   if (App.userlist_mode === `normal`) {

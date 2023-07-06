@@ -98,6 +98,14 @@ App.push_notification = (args) => {
     })
   }
 
+  let pic = DOM.el(`.profilepic`, item)
+
+  if (pic) {
+    DOM.ev(pic, `error`, () => {
+      App.fallback_profilepic(pic)
+    })
+  }
+
   DOM.dataset(item, `date`, d)
   let content = DOM.el(`.notification_content`, item)
 
@@ -163,14 +171,14 @@ App.show_room_notification = (username, message, icon = `info`) => {
     profilepic = App.get_profilepic(user.user_id)
   }
 
-  let item = App.make_info_popup_item({
+  let html = App.make_info_popup_item({
     message: message,
     on_click: f,
     icon: icon,
     profilepic: profilepic,
   })
 
-  App.show_popup(App.make_info_popup(f), item)
+  App.show_popup(App.make_info_popup(f), html)
 }
 
 // Another centralized function for room changes
@@ -185,7 +193,7 @@ App.show_action_notification = (message, icon, f) => {
 }
 
 // Centralized function to show a popup
-App.show_popup = (popup, html=``) => {
+App.show_popup = (popup, html = ``) => {
   if (!App.room_state.notifications_enabled) {
     return
   }
@@ -200,6 +208,14 @@ App.show_popup = (popup, html=``) => {
 
   if (popup.hue_date) {
     popup.set_title(App.utilz.timeago(popup.hue_date))
+  }
+
+  let pic = DOM.el(`.profilepic`, popup.content)
+
+  if (pic) {
+    DOM.ev(pic, `error`, () => {
+      App.fallback_profilepic(pic)
+    })
   }
 
   popup.show()

@@ -374,6 +374,7 @@ App.show_joined = () => {
     on_click: () => {
       App.show_profile(App.username, App.user_id)
     },
+    profilepic: App.get_profilepic(App.user_id),
   })
 }
 
