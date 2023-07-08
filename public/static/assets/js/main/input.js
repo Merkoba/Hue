@@ -209,7 +209,11 @@ App.check_footer_expand = () => {
 
 // Add a new line at the end of the input
 App.add_input_new_line = () => {
-  App.change_input(App.get_input() + `\n`)
+  let value = App.get_input()
+
+  if (value) {
+    App.change_input(App.get_input() + `\n`)
+  }
 }
 
 // Get input history from local storage
