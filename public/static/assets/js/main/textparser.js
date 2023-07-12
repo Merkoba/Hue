@@ -69,12 +69,27 @@ App.check_arrowtext = (text) => {
   let lines = text.split(`\n`)
   let new_lines = []
 
-  for (let line of lines) {
-    if (line.startsWith(`&gt;`)) {
-      line = `<div class="arrowtext">${line}</div>`
-    }
+  if (text.startsWith(`&gt;&gt;&gt;`)) {
+    let regex = new RegExp(`^(&gt;)+`, `gm`)
 
-    new_lines.push(line)
+    for (let line of lines) {
+      line = line.replace(regex, ``).trim()
+
+      if (line) {
+        line = `<div class="arrowtext">&gt;${line}</div>`
+      }
+
+      new_lines.push(line)
+    }
+  }
+  else {
+    for (let line of lines) {
+      if (line.startsWith(`&gt;`)) {
+        line = `<div class="arrowtext">${line}</div>`
+      }
+
+      new_lines.push(line)
+    }
   }
 
   return new_lines.join(`\n`)
