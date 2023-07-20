@@ -1043,8 +1043,8 @@ svg.action:hover {
 	background-clip: content-box;
 }
 
-.chat_area a {
-	user-select: unset;
+a {
+	user-select: unset !important;
 }
 
 .flex_row_center {
