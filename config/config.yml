@@ -197,10 +197,6 @@ activity_bar_delay: 10000
 # Maximum amount of top activity bar items at the same time
 max_activity_bar_items: 20
 
-# Maximum length for urls to be shown fully in window titles
-# After this they get cropped and "..." is added
-url_title_max_length: 35
-
 # Max number of whisper receivers
 max_whisper_users: 20
 
@@ -221,7 +217,7 @@ commands_prefix: "/"
 quote_max_length: 140
 
 # Max length of urls in chat
-max_displayed_url: 50
+max_displayed_url: 100
 
 # How wide usernames on the activity bar can be
 max_activity_username_length: 8
