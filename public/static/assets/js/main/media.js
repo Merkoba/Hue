@@ -788,7 +788,6 @@ App.setup_media_object = (type, mode, odata = {}) => {
   }
 
   info.push(data.nice_date)
-  data.info_html += `<div title='${data.nice_date}' class='modal_${type}_date'></div>`
   data.hostname = App.utilz.get_hostname(data.source)
   data.message = App.get_media_message(data)
 
