@@ -442,6 +442,7 @@ App.start_msg = () => {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `input_history`,
       window_width: `30rem`,
+      class: `!modal_selectable`
     })
   )
 
@@ -864,6 +865,7 @@ App.start_msg = () => {
 App.after_modal_show = (instance) => {
   App.active_modal = instance
   App.modal_open = true
+  App.modal_selectable = instance.options.class === `!modal_selectable`
   App.hide_context_menu()
   App.blur_input()
   App.focus_modal_filter(instance)

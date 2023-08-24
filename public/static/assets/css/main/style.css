@@ -1878,3 +1878,11 @@ pre {
 	flex-shrink: 0;
 	margin-right: 0.5rem;
 }
+
+.selected {
+	background-color: var(--altcolor);
+}
+
+.selected:hover {
+	background-color: var(--altcolor_a) !important;
+}

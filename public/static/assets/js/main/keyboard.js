@@ -45,27 +45,29 @@ App.activate_key_detection = () => {
         }
       }
 
-      if (e.target.closest(`.filter_input`)) {
-        let c = e.target.closest(`.Msg-content-container`)
+      if (!App.modal_selectable) {
+        if (e.target.closest(`.filter_input`)) {
+          let c = e.target.closest(`.Msg-content-container`)
 
-        if (e.key === `PageUp`) {
-          c.scrollTop = 0
-          e.preventDefault()
-        }
-        else if (e.key === `PageDown`) {
-          c.scrollTop = c.scrollHeight
-          e.preventDefault()
-        }
-        else if (e.key === `ArrowUp`) {
-          c.scrollTop -= App.chat_scroll_amount
-          e.preventDefault()
-        }
-        else if (e.key === `ArrowDown`) {
-          c.scrollTop += App.chat_scroll_amount
-          e.preventDefault()
-        }
+          if (e.key === `PageUp`) {
+            c.scrollTop = 0
+            e.preventDefault()
+          }
+          else if (e.key === `PageDown`) {
+            c.scrollTop = c.scrollHeight
+            e.preventDefault()
+          }
+          else if (e.key === `ArrowUp`) {
+            c.scrollTop -= App.chat_scroll_amount
+            e.preventDefault()
+          }
+          else if (e.key === `ArrowDown`) {
+            c.scrollTop += App.chat_scroll_amount
+            e.preventDefault()
+          }
 
-        return
+          return
+        }
       }
 
       if (App.msg_link_image.is_open()) {
@@ -229,6 +231,25 @@ App.activate_key_detection = () => {
         if (App.msg_delete_messages.is_highest()) {
           if (e.key === `Enter` && !e.shiftKey) {
             App.delete_message_action()
+            e.preventDefault()
+          }
+
+          return
+        }
+      }
+
+      if (App.msg_input_history.is_open()) {
+        if (App.msg_input_history.is_highest()) {
+          if (e.key === `Enter`) {
+            App.input_history_enter()
+            e.preventDefault()
+          }
+          else if (e.key === `ArrowUp`) {
+            App.input_history_next(true)
+            e.preventDefault()
+          }
+          else if (e.key === `ArrowDown`) {
+            App.input_history_next()
             e.preventDefault()
           }
 
