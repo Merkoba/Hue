@@ -771,6 +771,12 @@ const Utilz = () => {
     return extension && utilz.audio_extensions.includes(extension)
 	}
 
+	// Check if all items in an array are equal
+	utilz.bingo = (s) => {
+		let split = s.split(``).filter(x => x !== ``)
+		return new Set(split).size === 1
+	}
+
 	// Get date time components, hours, minutes, seconds
 	utilz.time_components = (ms) => {
 		let date = new Date(ms)

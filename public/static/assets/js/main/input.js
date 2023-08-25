@@ -294,7 +294,7 @@ App.input_history_next = (reverse = false) => {
   App.input_history_selected = new_el
 
   new_el.scrollIntoView({
-    block: `nearest`
+    block: `center`
   })
 }
 

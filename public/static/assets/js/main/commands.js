@@ -622,7 +622,7 @@ App.commands = {
     action: (arg, ans) => {
       App.show_input_history(arg)
     },
-    description: `Show the input history`,
+    description: `Show the input history. Shortcut: Shift + Up`,
   },
 }
 

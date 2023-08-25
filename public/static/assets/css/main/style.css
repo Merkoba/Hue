@@ -1525,6 +1525,16 @@ pre {
 	font-weight: bold;
 }
 
+.colortext {
+	background-color: rgb(30, 30, 30) !important;
+	padding: 0.25em;
+}
+
+.goldtext {
+	color: rgb(229, 255, 0);
+	border: 1px solid rgb(229, 255, 0);
+}
+
 .custom_popup {
 	border: 0.12rem solid var(--altcolor) !important;
 }
