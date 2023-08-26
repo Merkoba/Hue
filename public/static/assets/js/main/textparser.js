@@ -55,15 +55,6 @@ App.check_frame = (text) => {
   return text
 }
 
-// Check frame
-App.check_frame = (text) => {
-  if (text.includes(`\n`)) {
-    text = `<div class="framed">${text}</div>`
-  }
-
-  return text
-}
-
 // Check for arrows at the start of lines
 App.check_arrowtext = (text) => {
   let lines = text.split(`\n`)
