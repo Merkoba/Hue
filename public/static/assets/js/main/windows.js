@@ -249,7 +249,8 @@ App.start_msg = () => {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `radio`,
       window_width: `30rem`,
-      scroll_on_show: false
+      scroll_on_show: false,
+      class: `!modal_selectable`,
     })
   )
 
@@ -442,7 +443,7 @@ App.start_msg = () => {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `input_history`,
       window_width: `30rem`,
-      class: `!modal_selectable`
+      class: `!modal_selectable`,
     })
   )
 

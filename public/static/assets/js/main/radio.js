@@ -145,10 +145,7 @@ App.scroll_to_radio_station = () => {
   }
 
   let station = App.get_radio_station(App.playing_radio)
-
-  station.scrollIntoView({
-    block: `center`
-  })
+  App.select_next(station)
 }
 
 // Check if radio is playing
@@ -311,6 +308,8 @@ App.radio_now_playing_string = () => {
 // Show the radio
 App.show_radio = (filter = ``) => {
   App.msg_radio.show()
+  App.selected_modal_item = undefined
+  App.selected_next()
 
   if (filter.trim()) {
     DOM.el(`#radio_filter`).value = filter

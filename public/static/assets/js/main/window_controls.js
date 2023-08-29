@@ -146,4 +146,73 @@ App.do_modal_filter = (id = false) => {
   if (App[`after_${id}_filtered`]) {
     App[`after_${id}_filtered`]()
   }
+
+  App.selected_modal_item = undefined
+  App.selected_next()
+}
+
+// On selectable next
+App.selected_next = (reverse = false) => {
+  let new_el = App.selected_next_el(reverse)
+
+  if (new_el) {
+    App.select_next(new_el)
+  }
+}
+
+// Get the next selected element
+App.selected_next_el = (reverse = false) => {
+  let id = App.active_modal.options.id
+  let container = DOM.el(`#Msg-content-${id}`)
+  let els = DOM.els(`.modal_item`, container)
+
+  if (!els.length) {
+    return
+  }
+
+  let waypoint = false
+
+  if (reverse) {
+    els.reverse()
+  }
+
+  if (els.length < 2) {
+    return
+  }
+
+  for (let el of els) {
+    if (waypoint || !App.selected_modal_item) {
+      if (!el.classList.contains(`nodisplay`)) {
+        return el
+      }
+    }
+
+    if (el === App.selected_modal_item) {
+      waypoint = true
+    }
+  }
+
+  return els[0]
+}
+
+// Select next
+App.select_next = (new_el) => {
+  let id = App.active_modal.options.id
+  let container = DOM.el(`#Msg-content-${id}`)
+  let els = DOM.els(`.modal_item`, container)
+
+  for (let el of els) {
+    if (el === new_el) {
+      el.classList.add(`selected`)
+    }
+    else {
+      el.classList.remove(`selected`)
+    }
+  }
+
+  App.selected_modal_item = new_el
+
+  new_el.scrollIntoView({
+    block: `center`
+  })
 }

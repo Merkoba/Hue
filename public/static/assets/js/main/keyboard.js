@@ -69,6 +69,18 @@ App.activate_key_detection = () => {
           return
         }
       }
+      else {
+        if (e.key === `ArrowUp`) {
+          App.selected_next(true)
+          e.preventDefault()
+          return
+        }
+        else if (e.key === `ArrowDown`) {
+          App.selected_next()
+          e.preventDefault()
+          return
+        }
+      }
 
       if (App.msg_link_image.is_open()) {
         if (App.msg_link_image.is_highest()) {
@@ -242,14 +254,6 @@ App.activate_key_detection = () => {
         if (App.msg_input_history.is_highest()) {
           if (e.key === `Enter`) {
             App.input_history_enter()
-            e.preventDefault()
-          }
-          else if (e.key === `ArrowUp`) {
-            App.input_history_next(true)
-            e.preventDefault()
-          }
-          else if (e.key === `ArrowDown`) {
-            App.input_history_next()
             e.preventDefault()
           }
 

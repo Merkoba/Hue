@@ -244,7 +244,7 @@ App.push_to_input_history = (message) => {
 App.show_input_history = (filter = ``) => {
   let container = DOM.el(`#input_history_container`)
   container.innerHTML = ``
-  App.input_history_selected = undefined
+  App.selected_modal_item = undefined
 
   for (let item of App.input_history) {
     let el = DOM.create(`div`, `nice_row modal_item pointer input_history_item`)
@@ -255,11 +255,6 @@ App.show_input_history = (filter = ``) => {
       App.input_history_action(el)
     })
 
-    if (!App.input_history_selected) {
-      App.input_history_selected = el
-      el.classList.add(`selected`)
-    }
-
     container.append(el)
   }
 
@@ -269,60 +264,14 @@ App.show_input_history = (filter = ``) => {
     DOM.el(`#input_history_filter`).value = filter
     App.do_modal_filter()
   }
+  else {
+    App.selected_next()
+  }
 }
 
 // On input history Enter
 App.input_history_enter = () => {
   App.input_history_action(App.input_history_selected)
-}
-
-// On input history Up
-App.input_history_next = (reverse = false) => {
-  let new_el = App.input_history_selected_next_el(reverse)
-  let container = DOM.el(`#input_history_container`)
-  let els = DOM.els(`.input_history_item`, container)
-
-  for (let el of els) {
-    if (el === new_el) {
-      el.classList.add(`selected`)
-    }
-    else {
-      el.classList.remove(`selected`)
-    }
-  }
-
-  App.input_history_selected = new_el
-
-  new_el.scrollIntoView({
-    block: `center`
-  })
-}
-
-// Get input history selected element
-App.input_history_selected_next_el = (reverse = false) => {
-  let container = DOM.el(`#input_history_container`)
-  let els = DOM.els(`.input_history_item`, container)
-  let waypoint = false
-
-  if (reverse) {
-    els.reverse()
-  }
-
-  if (els.length < 2) {
-    return
-  }
-
-  for (let el of els) {
-    if (waypoint) {
-      return el
-    }
-
-    if (el == App.input_history_selected) {
-      waypoint = true
-    }
-  }
-
-  return els[0]
 }
 
 // Input history action
