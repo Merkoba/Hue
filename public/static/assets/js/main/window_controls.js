@@ -148,7 +148,10 @@ App.do_modal_filter = (id = false) => {
   }
 
   App.selected_modal_item = undefined
-  App.selected_next()
+
+  if (App.modal_selectable) {
+    App.selected_next()
+  }
 }
 
 // On selectable next
