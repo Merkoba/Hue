@@ -70,7 +70,11 @@ App.activate_key_detection = () => {
         }
       }
       else {
-        if (e.key === `ArrowUp`) {
+        if (e.key === `Enter`) {
+          App.selectable_enter()
+          e.preventDefault()
+        }
+        else if (e.key === `ArrowUp`) {
           App.selected_next(true)
           e.preventDefault()
           return
@@ -243,17 +247,6 @@ App.activate_key_detection = () => {
         if (App.msg_delete_messages.is_highest()) {
           if (e.key === `Enter` && !e.shiftKey) {
             App.delete_message_action()
-            e.preventDefault()
-          }
-
-          return
-        }
-      }
-
-      if (App.msg_input_history.is_open()) {
-        if (App.msg_input_history.is_highest()) {
-          if (e.key === `Enter`) {
-            App.input_history_enter()
             e.preventDefault()
           }
 

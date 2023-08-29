@@ -216,3 +216,9 @@ App.select_next = (new_el) => {
     block: `center`
   })
 }
+
+// On selectable Enter
+App.selectable_enter = () => {
+  let id = App.active_modal.options.id
+  App[`${id}_enter_action`]()
+}

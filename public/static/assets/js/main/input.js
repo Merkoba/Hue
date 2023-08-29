@@ -269,13 +269,9 @@ App.show_input_history = (filter = ``) => {
   }
 }
 
-// On input history Enter
-App.input_history_enter = () => {
-  App.input_history_action(App.input_history_selected)
-}
-
-// Input history action
-App.input_history_action = (el) => {
+// Input history enter action
+App.input_history_enter_action = () => {
+  let el = App.selected_modal_item
   App.change_input(el.textContent)
   App.msg_input_history.close()
 }

@@ -40,12 +40,6 @@ App.setup_radio = () => {
     App.pick_radio_volume()
   })
 
-  DOM.ev(DOM.el(`#radio_filter`), `keydown`, (e) => {
-    if (e.key === `Enter`) {
-      App.play_first_radio()
-    }
-  })
-
   DOM.ev(DOM.el(`#footer_radio_container`), `mouseenter`, (e) => {
     e.target.title = App.playing_radio.name
   })
@@ -189,6 +183,15 @@ App.get_radio_station = (radio) => {
   for (let el of DOM.els(`.radio_station`)) {
     if (DOM.dataset(el, `radio`).name === radio.name) {
       return el
+    }
+  }
+}
+
+// Get radio station 2
+App.get_radio_station_2 = (el) => {
+  for (let radio of App.config.radios) {
+    if (DOM.dataset(el, `radio`).name === radio.name) {
+      return radio
     }
   }
 }
@@ -407,4 +410,11 @@ App.start_radio_auto_timeout = () => {
       App.play_random_radio()
     }
   }, App.get_setting(`radio_auto_minutes`) * 60 * 1000)
+}
+
+// Radio enter action
+App.radio_enter_action = () => {
+  let el = App.selected_modal_item
+  let radio = App.get_radio_station_2(el)
+  App.check_radio_play(radio)
 }
