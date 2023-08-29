@@ -154,10 +154,7 @@ App.do_modal_filter = (id = false) => {
 // On selectable next
 App.selected_next = (reverse = false) => {
   let new_el = App.selected_next_el(reverse)
-
-  if (new_el) {
-    App.select_next(new_el)
-  }
+  App.select_next(new_el)
 }
 
 // Get the next selected element
@@ -197,6 +194,10 @@ App.selected_next_el = (reverse = false) => {
 
 // Select next
 App.select_next = (new_el) => {
+  if (!new_el) {
+    return
+  }
+
   let id = App.active_modal.options.id
   let container = DOM.el(`#Msg-content-${id}`)
   let els = DOM.els(`.modal_item`, container)
