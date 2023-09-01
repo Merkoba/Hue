@@ -252,10 +252,6 @@ App.show_input_history = (filter = ``) => {
     el.title = App.nice_date(item.date)
 
     DOM.ev(el, `click`, () => {
-      App.input_history_action(el)
-    })
-
-    DOM.ev(el, `click`, () => {
       App.input_history_enter_action(el)
     })
 
