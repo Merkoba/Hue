@@ -255,6 +255,10 @@ App.show_input_history = (filter = ``) => {
       App.input_history_action(el)
     })
 
+    DOM.ev(el, `click`, () => {
+      App.input_history_enter_action(el)
+    })
+
     container.append(el)
   }
 
@@ -270,8 +274,11 @@ App.show_input_history = (filter = ``) => {
 }
 
 // Input history enter action
-App.input_history_enter_action = () => {
-  let el = App.selected_modal_item
+App.input_history_enter_action = (el) => {
+  if (!el) {
+    el = App.selected_modal_item
+  }
+
   App.change_input(el.textContent)
   App.msg_input_history.close()
 }
