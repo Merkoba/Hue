@@ -3,8 +3,13 @@ App.setup_footer = () => {
   let media = [`image`, `tv`]
 
   for (let type of media) {
-    DOM.ev(DOM.el(`#footer_${type}_icon`), `click`, () => {
-      App.show_media_picker(type)
+    DOM.ev(DOM.el(`#footer_${type}_icon`), `click`, (e) => {
+      if (e.shiftKey) {
+        App[`show_upload_${type}`]()
+      }
+      else {
+        App.show_media_picker(type)
+      }
     })
 
     DOM.ev(DOM.el(`#footer_${type}_icon`), `auxclick`, (e) => {
