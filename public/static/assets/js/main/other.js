@@ -185,3 +185,18 @@ App.item_not_included = () => {
 App.item_removed = () => {
   App.checkmsg(`Item removed successfully`)
 }
+
+// Get first time
+App.get_first_time = () => {
+  App.first_time = App.get_local_storage(App.ls_first_time)
+
+  if (App.first_time === null) {
+    App.is_first_time = true
+    App.first_time = {}
+    App.first_time.date = Date.now()
+    App.save_local_storage(App.ls_first_time, App.first_time)
+  }
+  else {
+    App.is_first_time = false
+  }
+}

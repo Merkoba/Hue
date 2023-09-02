@@ -244,8 +244,10 @@ App.init_message_board = (data) => {
   App.check_last_message_board_post()
 
   if (App.unread_message_board_count > 0) {
-    App.fresh_unread_message_board_posts()
-    App.show_message_board(`$fresh `)
+    if (!App.is_first_time) {
+      App.fresh_unread_message_board_posts()
+      App.show_message_board(`$fresh `)
+    }
   }
 
   App.message_board_separate()
