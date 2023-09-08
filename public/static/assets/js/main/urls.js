@@ -167,6 +167,15 @@ App.setup_open_url = () => {
     App.chat_search_by_id(App.open_url_data.id)
     App.msg_open_url.close()
   })
+
+  DOM.ev(DOM.el(`#open_url_menu_reply`), `click`, () => {
+    let ans = App.get_message_by_id(App.open_url_data.id)
+
+    if (ans) {
+      App.start_reply(ans[0])
+      App.msg_open_url.close()
+    }
+  })
 }
 
 // Shows the Open URL menu
