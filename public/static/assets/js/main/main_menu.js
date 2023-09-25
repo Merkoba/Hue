@@ -1,32 +1,26 @@
 // Setup main menu
 App.setup_main_menu = () => {
   DOM.ev(DOM.el(`#main_menu_user_profile`), `click`, () => {
-    App.msg_main_menu.close()
     App.show_user_profile()
   })
 
   DOM.ev(DOM.el(`#main_menu_room_config`), `click`, () => {
-    App.msg_main_menu.close()
     App.show_room_config()
   })
 
   DOM.ev(DOM.el(`#main_menu_rooms`), `click`, () => {
-    App.msg_main_menu.close()
     App.show_roomlist()
   })
 
   DOM.ev(DOM.el(`#main_menu_settings`), `click`, () => {
-    App.msg_main_menu.close()
     App.show_settings()
   })
 
   DOM.ev(DOM.el(`#main_menu_commands`), `click`, () => {
-    App.msg_main_menu.close()
     App.show_command_book()
   })
 
   DOM.ev(DOM.el(`#main_menu_chat_search`), `click`, () => {
-    App.msg_main_menu.close()
     App.show_chat_search()
   })
 }
