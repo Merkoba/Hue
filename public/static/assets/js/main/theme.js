@@ -334,6 +334,8 @@ App.random_theme = (type) => {
 
   App.random_theme_background = background
   App.random_theme_text = text
+  App.background_color_picker.setColor(background)
+  App.text_color_picker.setColor(text)
   App.apply_theme(background, text)
 }
 
@@ -341,12 +343,4 @@ App.random_theme = (type) => {
 App.reset_random_theme = () => {
   App.random_theme_background = undefined
   App.random_theme_text = undefined
-}
-
-// Check random theme
-App.check_random_theme = () => {
-  if (App.random_theme_background && App.random_theme_text) {
-    App.change_background_color(App.random_theme_background)
-    App.change_text_color(App.random_theme_text)
-  }
 }

@@ -53,7 +53,6 @@ App.start_msg = () => {
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.check_color_pickers()
-        App.check_random_theme()
       }
     })
   )
