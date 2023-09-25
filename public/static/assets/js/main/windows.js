@@ -46,10 +46,6 @@ App.start_msg = () => {
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `room_config`,
       window_width: `22rem`,
-      after_show: (instance) => {
-        msgvars.common.after_show(instance)
-        App.reset_random_theme()
-      },
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.check_color_pickers()

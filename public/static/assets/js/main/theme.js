@@ -332,15 +332,7 @@ App.random_theme = (type) => {
     text = App.colorlib.get_dark_color()
   }
 
-  App.random_theme_background = background
-  App.random_theme_text = text
   App.background_color_picker.setColor(background)
   App.text_color_picker.setColor(text)
   App.apply_theme(background, text)
-}
-
-// Reset random theme
-App.reset_random_theme = () => {
-  App.random_theme_background = undefined
-  App.random_theme_text = undefined
 }
