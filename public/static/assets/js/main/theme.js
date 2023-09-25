@@ -305,6 +305,7 @@ App.show_background_peek_confirm = () => {
   })
 }
 
+// Check color pickers
 App.check_color_pickers = () => {
   let c1 = App.background_color_picker.color
   let c2 = App.text_color_picker.color
@@ -316,4 +317,21 @@ App.check_color_pickers = () => {
   if (c2 !== App.text_color) {
     App.change_text_color(c2)
   }
+}
+
+// Get and apply a random theme
+App.random_theme = (type) => {
+  let background, text
+
+  if (type === `dark`) {
+    background = App.colorlib.get_dark_color()
+    text = App.colorlib.get_light_color()
+  }
+  else if (type === `light`) {
+    background = App.colorlib.get_light_color()
+    text = App.colorlib.get_dark_color()
+  }
+
+  App.change_background_color(background)
+  App.change_text_color(text)
 }

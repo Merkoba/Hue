@@ -79,6 +79,14 @@ App.setup_room_config = () => {
     })
   }
 
+  DOM.ev(DOM.el(`#admin_random_theme_dark`), `click`, () => {
+    App.random_theme(`dark`)
+  })
+
+  DOM.ev(DOM.el(`#admin_random_theme_light`), `click`, () => {
+    App.random_theme(`light`)
+  })
+
   start_color_picker(`background`)
   start_color_picker(`text`)
 }
