@@ -370,15 +370,15 @@ App.start_settings_widgets = () => {
 }
 
 // Updates a setting widget based on the setting state
-App.modify_setting_widget = (setting_name) => {
-  let widget_type = App.user_settings[setting_name].widget_type
-  let item = DOM.el(`#settings_${setting_name}`)
+App.modify_setting_widget = (setting) => {
+  let widget_type = App.user_settings[setting].widget_type
+  let item = DOM.el(`#settings_${setting}`)
 
   if (widget_type === `checkbox`) {
-    item.checked = App.get_setting(setting_name)
+    item.checked = App.get_setting(setting)
   }
   else if (widget_type === `select`) {
-    App.set_select(item, App.get_setting(setting_name))
+    App.set_select(item, App.get_setting(setting))
   }
 }
 
@@ -545,6 +545,12 @@ App.set_setting = (setting, value) => {
   App.save_settings()
 }
 
+// Set default setting
+App.set_default_setting = (setting) => {
+  App.settings[setting].value = App.config[`settings_default_${setting}`]
+  App.save_settings()
+}
+
 // Sets the hover titles for the setttings widgets
 App.set_user_settings_titles = () => {
   for (let setting in App.user_settings) {
@@ -590,8 +596,20 @@ App.fill_settings = () => {
     let setting = App.user_settings[key]
     let c = DOM.create(`div`, `settings_item modal_item flex_column_center`)
     c.dataset.setting = key
-    let title = DOM.create(`div`, `setting_title`)
+    let title = DOM.create(`div`, `setting_title action`)
     title.textContent = setting.title
+
+    DOM.ev(title, `click`, (e) => {
+      App.show_confirm(`Restore default setting`, () => {
+        App.set_default_setting(key)
+        App.modify_setting_widget(key)
+
+        if (setting.actions) {
+          setting.actions()
+        }
+      })
+    })
+
     c.append(title)
     let el
 
