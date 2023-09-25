@@ -334,5 +334,4 @@ App.random_theme = (type) => {
 
   App.background_color_picker.setColor(background)
   App.text_color_picker.setColor(text)
-  App.apply_theme(background, text)
 }
