@@ -484,8 +484,6 @@ App.show_settings = (filter = ``) => {
 
 // Setup the settings windows
 App.setup_settings_windows = () => {
-  App.set_user_settings_titles()
-
   DOM.ev(DOM.el(`#settings_notifications`), `click`, () => {
     App.request_desktop_notifications_permission()
   })
@@ -551,21 +549,6 @@ App.set_default_setting = (setting) => {
   App.save_settings()
 }
 
-// Sets the hover titles for the setttings widgets
-App.set_user_settings_titles = () => {
-  for (let setting in App.user_settings) {
-    let user_setting = App.user_settings[setting]
-    let value = App.get_default_setting(setting)
-
-    if (typeof value === `string`) {
-      value = `"${value}"`
-    }
-
-    let title = `${user_setting.description} (${setting}) (Default: ${value})`
-    DOM.el(`#settings_${setting}`).closest(`.settings_item`).title = title
-  }
-}
-
 App.create_settings_percentages = () => {
   let opts = []
 
@@ -597,6 +580,7 @@ App.fill_settings = () => {
     let c = DOM.create(`div`, `settings_item modal_item flex_column_center`)
     c.dataset.setting = key
     let title = DOM.create(`div`, `setting_title action`)
+    title.title = setting.description
     title.textContent = setting.title
 
     DOM.ev(title, `click`, (e) => {
