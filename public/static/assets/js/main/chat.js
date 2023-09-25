@@ -1095,6 +1095,9 @@ App.on_activity = (type) => {
   }
 
   if (!App.has_focus) {
+    App.unread_count += 1
+    App.update_title()
+
     if (type === `message` || type === `media_change`) {
       App.alert_title(1)
     }

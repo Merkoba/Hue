@@ -39,7 +39,12 @@ App.set_title = (s) => {
 // Updates the tab title
 // Taking into account the room name and topic
 App.update_title = () => {
-  App.set_title(App.room_name)
+  if (App.unread_count > 0) {
+    App.set_title(`(${App.unread_count}) ${App.room_name}`)
+  }
+  else {
+    App.set_title(App.room_name)
+  }
 }
 
 // Starts the listener to check when the client is visible or not
@@ -72,6 +77,8 @@ App.on_focus = () => {
   App.show_fresh_messages()
   App.focus_input()
   App.check_latest_highlight()
+  App.unread_count = 0
+  App.update_title()
 
   if (!App.chat_scrolled_on_unfocus) {
     App.goto_bottom(true)
