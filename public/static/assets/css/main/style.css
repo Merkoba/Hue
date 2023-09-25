@@ -609,6 +609,7 @@ a.generic:hover {
 
 .setting_title {
 	padding-bottom: 0.8rem;
+	max-width: 12rem;
 }
 
 .setting_title2 {

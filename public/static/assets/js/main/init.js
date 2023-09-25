@@ -125,6 +125,7 @@ App.media_info_tv_data = []
 // This is the first function that gets executed
 App.init = () => {
   App.load_date_1 = Date.now()
+  App.build_user_settings()
   App.create_debouncers()
   App.setup_textparser_regexes()
   App.activate_key_detection()
@@ -133,9 +134,7 @@ App.init = () => {
   App.get_room_state()
   App.get_element_sizes()
   App.start_msg()
-  App.start_settings_widgets()
-  App.start_settings_widgets_listeners()
-  App.setup_settings_windows()
+  App.setup_settings()
   App.start_image_events()
   App.start_dropzone()
   App.activate_visibility_listener()

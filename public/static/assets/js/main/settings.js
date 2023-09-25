@@ -1,195 +1,274 @@
+App.setup_settings = () => {
+  App.fill_settings()
+  App.start_settings_widgets()
+  App.start_settings_widgets_listeners()
+  App.setup_settings_windows()
+}
+
 // User settings object
 // Used to generate settings
-// And to declare what widget is used in the settings windows
-App.user_settings = {
-  show_background: {
-    widget_type: `checkbox`,
-    description: `Whether to show the room's background image`,
-    actions: () => {
-      App.apply_background()
+// And to declare what widget is used in the settings window
+App.build_user_settings = () => {
+  let font_sizes = App.create_settings_font_sizes()
+  let percentages = App.create_settings_percentages()
+
+  App.user_settings = {
+    font: {
+      title: `Font`,
+      widget_type: `select`,
+      description: `Which font to use`,
+      actions: () => {
+        App.apply_theme()
+      },
+      options: [
+        {value: `sans-serif`, text: `Sans`},
+        {value: `serif`, text: `Serif`},
+        {value: `monospace`, text: `Mono`},
+      ],
+      version: 1,
     },
-    version: 1,
-  },
-  highlight_current_username: {
-    widget_type: `checkbox`,
-    description: `Whether messages containing the user's username must be highlighted`,
-    actions: () => {},
-    version: 1,
-  },
-  case_insensitive_username_highlights: {
-    widget_type: `checkbox`,
-    description: `Whether username highlight checks are case insensitive or not`,
-    actions: () => {
-      App.generate_mentions_regex()
+    chat_font_size: {
+      title: `Chat Font Size`,
+      widget_type: `select`,
+      description: `The size of the chat font`,
+      actions: () => {
+        App.apply_theme()
+      },
+      options: font_sizes,
+      version: 1,
     },
-    version: 1,
-  },
-  open_whispers_automatically: {
-    widget_type: `checkbox`,
-    description: `Whether messages received should open in a window automatically`,
-    actions: () => {},
-    version: 1,
-  },
-  embed_images: {
-    widget_type: `checkbox`,
-    description: `Whether to embed other images automatically`,
-    actions: () => {},
-    version: 1,
-  },
-  show_link_previews: {
-    widget_type: `checkbox`,
-    description: `Whether to show related information of chat links when available`,
-    actions: () => {},
-    version: 1,
-  },
-  show_highlight_notifications: {
-    widget_type: `checkbox`,
-    description: `Whether to show desktop notifications on highlights`,
-    actions: () => {},
-    version: 1,
-  },
-  show_activity_notifications: {
-    widget_type: `checkbox`,
-    description: `Whether to show desktop notifications on activity after your last message`,
-    actions: () => {},
-    version: 1,
-  },
-  show_user_join_notifications: {
-    widget_type: `checkbox`,
-    description: `Whether to show notifications when users join`,
-    actions: () => {},
-    version: 1,
-  },
-  show_user_leave_notifications: {
-    widget_type: `checkbox`,
-    description: `Whether to show notifications when users leave`,
-    actions: () => {},
-    version: 1,
-  },
-  show_linksbar: {
-    widget_type: `checkbox`,
-    description: `Whether to show the Links Bar or not`,
-    actions: () => {
-      App.check_linksbar()
-      App.fix_frames()
+    chat_size: {
+      title: `Chat Size`,
+      widget_type: `select`,
+      description: `The size of the chat relative to media`,
+      actions: () => {
+        App.apply_media_percentages()
+        App.fix_frames()
+      },
+      options: percentages,
+      version: 1,
     },
-    version: 1,
-  },
-  autoplay: {
-    widget_type: `checkbox`,
-    description: `Whether to autoplay media after changing it`,
-    actions: () => {},
-    version: 1,
-  },
-  font: {
-    widget_type: `select`,
-    description: `Which font to use`,
-    actions: () => {
-      App.apply_theme()
+    main_layout: {
+      title: `Main Layout`,
+      widget_type: `select`,
+      description: `The type of main layout`,
+      actions: () => {
+        App.apply_media_percentages()
+        App.fix_frames()
+      },
+      options: [
+        {value: `column`, text: `Column`},
+        {value: `row`, text: `Row`},
+      ],
+      version: 1,
     },
-    version: 1,
-  },
-  chat_font_size: {
-    widget_type: `select`,
-    description: `The size of the chat font`,
-    actions: () => {
-      App.apply_theme()
+    media_layout: {
+      title: `Media Layout`,
+      widget_type: `select`,
+      description: `The type of media layout`,
+      actions: () => {
+        App.change_media_layout()
+        App.apply_media_percentages()
+        App.fix_frames()
+      },
+      options: [
+        {value: `column`, text: `Column`},
+        {value: `row`, text: `Row`},
+      ],
+      version: 1,
     },
-    version: 1,
-  },
-  chat_size: {
-    widget_type: `select`,
-    description: `The size of the chat relative to media`,
-    actions: () => {
-      App.apply_media_percentages()
-      App.fix_frames()
+    tv_position: {
+      title: `TV Position`,
+      widget_type: `select`,
+      description: `The position of the tv relative to the image`,
+      actions: () => {
+        App.apply_media_positions()
+        App.fix_frames()
+      },
+      options: [
+        {value: `top`, text: `Top`},
+        {value: `bottom`, text: `Bottom`},
+      ],
+      version: 1,
     },
-    version: 1,
-  },
-  main_layout: {
-    widget_type: `select`,
-    description: `The type of main layout`,
-    actions: () => {
-      App.apply_media_percentages()
-      App.fix_frames()
+    tv_size: {
+      title: `TV Size`,
+      widget_type: `select`,
+      description: `The size of the tv relative to the image`,
+      actions: () => {
+        App.apply_media_percentages()
+        App.fix_frames()
+      },
+      options: percentages,
+      version: 1,
     },
-    version: 1,
-  },
-  media_layout: {
-    widget_type: `select`,
-    description: `The type of media layout`,
-    actions: () => {
-      App.change_media_layout()
-      App.apply_media_percentages()
-      App.fix_frames()
+    date_format: {
+      title: `Date Format`,
+      widget_type: `select`,
+      description: `What date format to use in chat messages`,
+      actions: () => {
+        App.update_date()
+      },
+      options: [
+        {value: `relative`, text: `Relative`},
+        {value: `absolute_12`, text: `Absolute`},
+        {value: `absolute_24`, text: `Absolute`},
+      ],
+      version: 1,
     },
-    version: 1,
-  },
-  tv_size: {
-    widget_type: `select`,
-    description: `The size of the tv relative to the image`,
-    actions: () => {
-      App.apply_media_percentages()
-      App.fix_frames()
+    radio_auto_minutes: {
+      title: `Radio Auto Minutes`,
+      widget_type: `select`,
+      force_int: true,
+      description: `Change the radio after these minutes`,
+      actions: () => {},
+      options: [
+        {value: `5`, text: `5 Mins`},
+        {value: `10`, text: `10 Mins`},
+        {value: `15`, text: `15 Mins`},
+        {value: `20`, text: `20 Mins`},
+        {value: `25`, text: `25 Mins`},
+        {value: `30`, text: `30 Mins`},
+      ],
+      version: 1,
     },
-    version: 1,
-  },
-  tv_position: {
-    widget_type: `select`,
-    description: `The position of the tv relative to the image`,
-    actions: () => {
-      App.apply_media_positions()
-      App.fix_frames()
+    show_chat: {
+      title: `Show Chat`,
+      widget_type: `checkbox`,
+      description: `Whether to show the chat at all`,
+      actions: () => {
+        App.check_show_chat()
+        App.fix_frames()
+      },
+      version: 1,
     },
-    version: 1,
-  },
-  show_chat: {
-    widget_type: `checkbox`,
-    description: `Whether to show the chat at all`,
-    actions: () => {
-      App.check_show_chat()
-      App.fix_frames()
+    show_media_info: {
+      title: `Show Media Info`,
+      widget_type: `checkbox`,
+      description: `Whether to show info under media`,
+      actions: () => {
+        App.check_media_info()
+        App.fix_frames()
+      },
+      version: 1,
     },
-    version: 1,
-  },
-  show_media_info: {
-    widget_type: `checkbox`,
-    description: `Whether to show info under media`,
-    actions: () => {
-      App.check_media_info()
-      App.fix_frames()
+    show_linksbar: {
+      title: `Show Links Bar`,
+      widget_type: `checkbox`,
+      description: `Whether to show the Links Bar or not`,
+      actions: () => {
+        App.check_linksbar()
+        App.fix_frames()
+      },
+      version: 1,
     },
-    version: 1,
-  },
-  date_format: {
-    widget_type: `select`,
-    description: `What date format to use in chat messages`,
-    actions: () => {
-      App.update_date()
+    show_background: {
+      title: `Show Background`,
+      widget_type: `checkbox`,
+      description: `Whether to show the room's background image`,
+      actions: () => {
+        App.apply_background()
+      },
+      version: 1,
     },
-    version: 1,
-  },
-  radio_auto_minutes: {
-    widget_type: `select`,
-    force_int: true,
-    description: `Change the radio after these minutes`,
-    actions: () => {},
-    version: 1,
-  },
-  arrowtext: {
-    widget_type: `checkbox`,
-    description: `Whether to style arrowtext`,
-    actions: () => {},
-    version: 1,
-  },
-  hide_scrollbars: {
-    widget_type: `checkbox`,
-    description: `Whether to make scrollbars invisible`,
-    actions: () => {
-      App.apply_theme()
+    show_highlight_notifications: {
+      title: `Show Highlight Notifications`,
+      widget_type: `checkbox`,
+      description: `Whether to show desktop notifications on highlights`,
+      actions: () => {},
+      version: 1,
     },
-    version: 1,
-  },
+    show_activity_notifications: {
+      title: `Show Activity Notifications`,
+      widget_type: `checkbox`,
+      description: `Whether to show desktop notifications on activity after your last message`,
+      actions: () => {},
+      version: 1,
+    },
+    show_user_join_notifications: {
+      title: `Show User Join Notifications`,
+      widget_type: `checkbox`,
+      description: `Whether to show notifications when users join`,
+      actions: () => {},
+      version: 1,
+    },
+    show_user_leave_notifications: {
+      title: `Show User Leave Notifications`,
+      widget_type: `checkbox`,
+      description: `Whether to show notifications when users leave`,
+      actions: () => {},
+      version: 1,
+    },
+    hide_scrollbars: {
+      title: `Hide Scrollbars`,
+      widget_type: `checkbox`,
+      description: `Whether to make scrollbars invisible`,
+      actions: () => {
+        App.apply_theme()
+      },
+      version: 1,
+    },
+    autoplay: {
+      title: `Autoplay`,
+      widget_type: `checkbox`,
+      description: `Whether to autoplay media after changing it`,
+      actions: () => {},
+      version: 1,
+    },
+    embed_images: {
+      title: `Embed Images`,
+      widget_type: `checkbox`,
+      description: `Whether to embed other images automatically`,
+      actions: () => {},
+      version: 1,
+    },
+    show_link_previews: {
+      title: `Link Previews`,
+      widget_type: `checkbox`,
+      description: `Whether to show related information of chat links when available`,
+      actions: () => {},
+      version: 1,
+    },
+    highlight_current_username: {
+      title: `Username Highlights`,
+      widget_type: `checkbox`,
+      description: `Whether messages containing the user's username must be highlighted`,
+      actions: () => {},
+      version: 1,
+    },
+    case_insensitive_username_highlights: {
+      title: `Case Insensitive Username Highlights`,
+      widget_type: `checkbox`,
+      description: `Whether username highlight checks are case insensitive or not`,
+      actions: () => {
+        App.generate_mentions_regex()
+      },
+      version: 1,
+    },
+    open_whispers_automatically: {
+      title: `Open Whispers Automatically`,
+      widget_type: `checkbox`,
+      description: `Whether messages received should open in a window automatically`,
+      actions: () => {},
+      version: 1,
+    },
+    arrowtext: {
+      title: `Arrow Text`,
+      widget_type: `checkbox`,
+      description: `Whether to style arrowtext`,
+      actions: () => {},
+      version: 1,
+    },
+    unread_count: {
+      title: `Unread Count`,
+      widget_type: `checkbox`,
+      description: `Whether to show the unread count in the title`,
+      actions: () => {
+        App.update_title()
+      },
+      version: 1,
+    },
+  }
 }
 
 // Gets the settings localStorage object
@@ -456,24 +535,56 @@ App.set_user_settings_titles = () => {
 }
 
 App.create_settings_percentages = () => {
-  let html = ``
+  let opts = []
 
   for (let p = App.media_max_percentage; p >= App.media_min_percentage; p -= 5) {
-    html += `<option value='${p}'>${p}%</option>`
+    opts.push({value: p, text: `${p}%`})
   }
 
-  return html
+  return opts
 }
 
 App.create_settings_font_sizes = () => {
-  let html = ``
+  let opts = []
   let size = App.max_chat_font_size
 
   while (size >= App.min_chat_font_size) {
     let n = App.utilz.round(size, 1)
-    html += `<option value='${n}'>${n}x</option>`
+    opts.push({value: n, text: `${n}x`})
     size = App.utilz.round(size - 0.1, 1)
   }
 
-  return html
+  return opts
+}
+
+App.fill_settings = () => {
+  let container = DOM.el(`#settings_container`)
+
+  for (let key in App.user_settings) {
+    let setting = App.user_settings[key]
+    let c = DOM.create(`div`, `settings_item modal_item flex_column_center`)
+    c.dataset.setting = key
+    let title = DOM.create(`div`, `setting_title`)
+    title.textContent = setting.title
+    c.append(title)
+    let el
+
+    if (setting.widget_type === `select`) {
+      el = DOM.create(`select`, `settings_item_control modal_select`, `settings_${key}`)
+
+      for (let option of setting.options) {
+        let o = DOM.create(`option`)
+        o.value = option.value
+        o.textContent = option.text
+        el.append(o)
+      }
+    }
+    else if (setting.widget_type === `checkbox`) {
+      el = DOM.create(`input`, `settings_item_control`, `settings_${key}`)
+      el.type = `checkbox`
+    }
+
+    c.append(el)
+    container.append(c)
+  }
 }

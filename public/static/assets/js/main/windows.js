@@ -527,8 +527,6 @@ App.start_msg = () => {
 
   App.msg_settings.set(
     App.template_settings({
-      percentages: App.create_settings_percentages(),
-      font_sizes: App.create_settings_font_sizes(),
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `settings_filter`,
