@@ -15,7 +15,7 @@ App.build_user_settings = () => {
 
   obj.font = {
     title: `Font`,
-    widget_type: `select`,
+    type: `select`,
     description: `Which font to use`,
     actions: () => {
       App.apply_theme()
@@ -30,7 +30,7 @@ App.build_user_settings = () => {
 
   obj.chat_font_size = {
     title: `Chat Font Size`,
-    widget_type: `select`,
+    type: `select`,
     description: `The size of the chat font`,
     actions: () => {
       App.apply_theme()
@@ -41,7 +41,7 @@ App.build_user_settings = () => {
 
   obj.chat_size = {
     title: `Chat Size`,
-    widget_type: `select`,
+    type: `select`,
     description: `The size of the chat relative to media`,
     actions: () => {
       App.apply_media_percentages()
@@ -53,7 +53,7 @@ App.build_user_settings = () => {
 
   obj.main_layout = {
     title: `Main Layout`,
-    widget_type: `select`,
+    type: `select`,
     description: `The type of main layout`,
     actions: () => {
       App.apply_media_percentages()
@@ -68,7 +68,7 @@ App.build_user_settings = () => {
 
   obj.media_layout = {
     title: `Media Layout`,
-    widget_type: `select`,
+    type: `select`,
     description: `The type of media layout`,
     actions: () => {
       App.change_media_layout()
@@ -84,7 +84,7 @@ App.build_user_settings = () => {
 
   obj.tv_position = {
     title: `TV Position`,
-    widget_type: `select`,
+    type: `select`,
     description: `The position of the tv relative to the image`,
     actions: () => {
       App.apply_media_positions()
@@ -99,7 +99,7 @@ App.build_user_settings = () => {
 
   obj.tv_size = {
     title: `TV Size`,
-    widget_type: `select`,
+    type: `select`,
     description: `The size of the tv relative to the image`,
     actions: () => {
       App.apply_media_percentages()
@@ -111,7 +111,7 @@ App.build_user_settings = () => {
 
   obj.date_format = {
     title: `Date Format`,
-    widget_type: `select`,
+    type: `select`,
     description: `What date format to use in chat messages`,
     actions: () => {
       App.update_date()
@@ -126,7 +126,7 @@ App.build_user_settings = () => {
 
   obj.radio_auto_minutes = {
     title: `Radio Auto Minutes`,
-    widget_type: `select`,
+    type: `select`,
     force_int: true,
     description: `Change the radio after these minutes`,
     actions: () => {},
@@ -143,7 +143,7 @@ App.build_user_settings = () => {
 
   obj.show_chat = {
     title: `Show Chat`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to show the chat at all`,
     actions: () => {
       App.check_show_chat()
@@ -154,7 +154,7 @@ App.build_user_settings = () => {
 
   obj.show_media_info = {
     title: `Show Media Info`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to show info under media`,
     actions: () => {
       App.check_media_info()
@@ -165,7 +165,7 @@ App.build_user_settings = () => {
 
   obj.show_linksbar = {
     title: `Show Links Bar`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to show the Links Bar or not`,
     actions: () => {
       App.check_linksbar()
@@ -176,7 +176,7 @@ App.build_user_settings = () => {
 
   obj.show_background = {
     title: `Show Background`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to show the room's background image`,
     actions: () => {
       App.apply_background()
@@ -186,7 +186,7 @@ App.build_user_settings = () => {
 
   obj.show_highlight_notifications = {
     title: `Show Highlight Notifications`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to show desktop notifications on highlights`,
     actions: () => {},
     version: 1,
@@ -194,7 +194,7 @@ App.build_user_settings = () => {
 
   obj.show_activity_notifications = {
     title: `Show Activity Notifications`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to show desktop notifications on activity after your last message`,
     actions: () => {},
     version: 1,
@@ -202,7 +202,7 @@ App.build_user_settings = () => {
 
   obj.show_user_join_notifications = {
     title: `Show User Join Notifications`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to show notifications when users join`,
     actions: () => {},
     version: 1,
@@ -210,7 +210,7 @@ App.build_user_settings = () => {
 
   obj.show_user_leave_notifications = {
     title: `Show User Leave Notifications`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to show notifications when users leave`,
     actions: () => {},
     version: 1,
@@ -218,7 +218,7 @@ App.build_user_settings = () => {
 
   obj.hide_scrollbars = {
     title: `Hide Scrollbars`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to make scrollbars invisible`,
     actions: () => {
       App.apply_theme()
@@ -228,7 +228,7 @@ App.build_user_settings = () => {
 
   obj.autoplay = {
     title: `Autoplay`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to autoplay media after changing it`,
     actions: () => {},
     version: 1,
@@ -236,7 +236,7 @@ App.build_user_settings = () => {
 
   obj.embed_images = {
     title: `Embed Images`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to embed other images automatically`,
     actions: () => {},
     version: 1,
@@ -244,7 +244,7 @@ App.build_user_settings = () => {
 
   obj.show_link_previews = {
     title: `Link Previews`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to show related information of chat links when available`,
     actions: () => {},
     version: 1,
@@ -252,7 +252,7 @@ App.build_user_settings = () => {
 
   obj.highlight_current_username = {
     title: `Username Highlights`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether messages containing the user's username must be highlighted`,
     actions: () => {},
     version: 1,
@@ -260,7 +260,7 @@ App.build_user_settings = () => {
 
   obj.case_insensitive_username_highlights = {
     title: `Case Insensitive Username Highlights`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether username highlight checks are case insensitive or not`,
     actions: () => {
       App.generate_mentions_regex()
@@ -270,7 +270,7 @@ App.build_user_settings = () => {
 
   obj.open_whispers_automatically = {
     title: `Open Whispers Automatically`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether messages received should open in a window automatically`,
     actions: () => {},
     version: 1,
@@ -278,7 +278,7 @@ App.build_user_settings = () => {
 
   obj.arrowtext = {
     title: `Arrow Text`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to style arrowtext`,
     actions: () => {},
     version: 1,
@@ -286,7 +286,7 @@ App.build_user_settings = () => {
 
   obj.unread_count = {
     title: `Unread Count`,
-    widget_type: `checkbox`,
+    type: `checkbox`,
     description: `Whether to show the unread count in the title`,
     actions: () => {
       App.update_title()
@@ -371,13 +371,13 @@ App.start_settings_widgets = () => {
 
 // Updates a setting widget based on the setting state
 App.modify_setting_widget = (setting) => {
-  let widget_type = App.user_settings[setting].widget_type
+  let type = App.user_settings[setting].type
   let item = DOM.el(`#settings_${setting}`)
 
-  if (widget_type === `checkbox`) {
+  if (type === `checkbox`) {
     item.checked = App.get_setting(setting)
   }
-  else if (widget_type === `select`) {
+  else if (type === `select`) {
     App.set_select(item, App.get_setting(setting))
   }
 }
@@ -397,30 +397,30 @@ App.start_settings_widgets_listeners = () => {
     let item = DOM.el(`#settings_${setting}`)
 
     if (
-      user_setting.widget_type === `checkbox` ||
-      user_setting.widget_type === `select`
+      user_setting.type === `checkbox` ||
+      user_setting.type === `select`
     ) {
       DOM.ev(item, `change`, () => {
         App.on_setting_change(setting)
       })
     }
     else if (
-      user_setting.widget_type === `textarea` ||
-      user_setting.widget_type === `text`
+      user_setting.type === `textarea` ||
+      user_setting.type === `text`
     ) {
       DOM.ev(item, `blur`, () => {
         App.on_setting_change(setting)
       })
     }
     else if (
-      user_setting.widget_type === `number` ||
-      user_setting.widget_type === `color`
+      user_setting.type === `number` ||
+      user_setting.type === `color`
     ) {
       DOM.ev(item, `change`, () => {
         App.on_setting_change(setting)
       })
     }
-    else if (user_setting.widget_type === `range`) {
+    else if (user_setting.type === `range`) {
       DOM.ev(item, `input change`, () => {
         App.on_setting_change(setting)
       })
@@ -432,10 +432,10 @@ App.on_setting_change = (setting) => {
   let user_setting = App.user_settings[setting]
   let el = DOM.el(`#settings_${setting}`)
 
-  if (user_setting.widget_type === `checkbox`) {
+  if (user_setting.type === `checkbox`) {
     value = el.checked
   }
-  else if (user_setting.widget_type === `select`) {
+  else if (user_setting.type === `select`) {
     value = el.value
   }
 
@@ -510,10 +510,10 @@ App.reset_single_setting = (item) => {
   let user_setting = App.user_settings[setting]
   let control = DOM.el(`.settings_item_control`, item)
 
-  if (user_setting.widget_type === `select`) {
+  if (user_setting.type === `select`) {
     App.set_select(control, App.get_default_setting(setting))
   }
-  else if (user_setting.widget_type === `checkbox`) {
+  else if (user_setting.type === `checkbox`) {
     control.checked = App.get_default_setting(setting)
   }
 
@@ -597,7 +597,7 @@ App.fill_settings = () => {
     c.append(title)
     let el
 
-    if (setting.widget_type === `select`) {
+    if (setting.type === `select`) {
       el = DOM.create(`select`, `settings_item_control modal_select`, `settings_${key}`)
 
       for (let option of setting.options) {
@@ -607,7 +607,7 @@ App.fill_settings = () => {
         el.append(o)
       }
     }
-    else if (setting.widget_type === `checkbox`) {
+    else if (setting.type === `checkbox`) {
       el = DOM.create(`input`, `settings_item_control`, `settings_${key}`)
       el.type = `checkbox`
     }
