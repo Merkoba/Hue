@@ -48,7 +48,7 @@ App.update_title = () => {
 }
 
 // Increase unread counter and update title
-App.unread = () => {
+App.increase_unread = () => {
   if (App.started) {
     App.unread_count += 1
     App.update_title()
