@@ -1095,13 +1095,12 @@ App.on_activity = (type) => {
   }
 
   if (!App.has_focus) {
-    App.unread_count += 1
-    App.update_title()
-
     if (type === `message` || type === `media_change`) {
+      App.unread()
       App.alert_title(1)
     }
     else if (type === `highlight` || type === `whisper`) {
+      App.unread()
       App.alert_title(2)
     }
   }

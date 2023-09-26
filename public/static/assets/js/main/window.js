@@ -47,6 +47,14 @@ App.update_title = () => {
   }
 }
 
+// Increase unread counter and update title
+App.unread = () => {
+  if (App.started) {
+    App.unread_count += 1
+    App.update_title()
+  }
+}
+
 // Starts the listener to check when the client is visible or not
 // A function is executed on visibility change
 // Blur event is also included to handle some cases
