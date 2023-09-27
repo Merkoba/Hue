@@ -11,9 +11,9 @@ App.setup_settings = () => {
 App.build_user_settings = () => {
   let font_sizes = App.create_settings_font_sizes()
   let percentages = App.create_settings_percentages()
-  let obj = {}
+  App.user_settings = {}
 
-  obj.font = {
+  App.user_settings.font = {
     title: `Font`,
     type: `select`,
     description: `Which font to use`,
@@ -28,7 +28,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.chat_font_size = {
+  App.user_settings.chat_font_size = {
     title: `Chat Font Size`,
     type: `select`,
     description: `The size of the chat font`,
@@ -39,7 +39,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.chat_size = {
+  App.user_settings.chat_size = {
     title: `Chat Size`,
     type: `select`,
     description: `The size of the chat relative to media`,
@@ -51,7 +51,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.main_layout = {
+  App.user_settings.main_layout = {
     title: `Main Layout`,
     type: `select`,
     description: `The type of main layout`,
@@ -66,7 +66,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.media_layout = {
+  App.user_settings.media_layout = {
     title: `Media Layout`,
     type: `select`,
     description: `The type of media layout`,
@@ -82,7 +82,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.tv_position = {
+  App.user_settings.tv_position = {
     title: `TV Position`,
     type: `select`,
     description: `The position of the tv relative to the image`,
@@ -97,7 +97,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.tv_size = {
+  App.user_settings.tv_size = {
     title: `TV Size`,
     type: `select`,
     description: `The size of the tv relative to the image`,
@@ -109,7 +109,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.date_format = {
+  App.user_settings.date_format = {
     title: `Date Format`,
     type: `select`,
     description: `What date format to use in chat messages`,
@@ -124,7 +124,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.radio_auto_minutes = {
+  App.user_settings.radio_auto_minutes = {
     title: `Radio Auto Minutes`,
     type: `select`,
     force_int: true,
@@ -141,7 +141,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.show_chat = {
+  App.user_settings.show_chat = {
     title: `Show Chat`,
     type: `checkbox`,
     description: `Whether to show the chat at all`,
@@ -152,7 +152,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.show_media_info = {
+  App.user_settings.show_media_info = {
     title: `Show Media Info`,
     type: `checkbox`,
     description: `Whether to show info under media`,
@@ -163,7 +163,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.show_linksbar = {
+  App.user_settings.show_linksbar = {
     title: `Show Links Bar`,
     type: `checkbox`,
     description: `Whether to show the Links Bar or not`,
@@ -174,7 +174,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.show_background = {
+  App.user_settings.show_background = {
     title: `Show Background`,
     type: `checkbox`,
     description: `Whether to show the room's background image`,
@@ -184,7 +184,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.show_highlight_notifications = {
+  App.user_settings.show_highlight_notifications = {
     title: `Show Highlight Notifications`,
     type: `checkbox`,
     description: `Whether to show desktop notifications on highlights`,
@@ -192,7 +192,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.show_activity_notifications = {
+  App.user_settings.show_activity_notifications = {
     title: `Show Activity Notifications`,
     type: `checkbox`,
     description: `Whether to show desktop notifications on activity after your last message`,
@@ -200,7 +200,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.show_user_join_notifications = {
+  App.user_settings.show_user_join_notifications = {
     title: `Show User Join Notifications`,
     type: `checkbox`,
     description: `Whether to show notifications when users join`,
@@ -208,7 +208,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.show_user_leave_notifications = {
+  App.user_settings.show_user_leave_notifications = {
     title: `Show User Leave Notifications`,
     type: `checkbox`,
     description: `Whether to show notifications when users leave`,
@@ -216,7 +216,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.hide_scrollbars = {
+  App.user_settings.hide_scrollbars = {
     title: `Hide Scrollbars`,
     type: `checkbox`,
     description: `Whether to make scrollbars invisible`,
@@ -226,7 +226,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.autoplay = {
+  App.user_settings.autoplay = {
     title: `Autoplay`,
     type: `checkbox`,
     description: `Whether to autoplay media after changing it`,
@@ -234,7 +234,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.embed_images = {
+  App.user_settings.embed_images = {
     title: `Embed Images`,
     type: `checkbox`,
     description: `Whether to embed other images automatically`,
@@ -242,7 +242,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.show_link_previews = {
+  App.user_settings.show_link_previews = {
     title: `Link Previews`,
     type: `checkbox`,
     description: `Whether to show related information of chat links when available`,
@@ -250,7 +250,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.highlight_current_username = {
+  App.user_settings.highlight_current_username = {
     title: `Username Highlights`,
     type: `checkbox`,
     description: `Whether messages containing the user's username must be highlighted`,
@@ -258,7 +258,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.case_insensitive_username_highlights = {
+  App.user_settings.case_insensitive_username_highlights = {
     title: `Case Insensitive Username Highlights`,
     type: `checkbox`,
     description: `Whether username highlight checks are case insensitive or not`,
@@ -268,7 +268,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.open_whispers_automatically = {
+  App.user_settings.open_whispers_automatically = {
     title: `Open Whispers Automatically`,
     type: `checkbox`,
     description: `Whether messages received should open in a window automatically`,
@@ -276,7 +276,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.arrowtext = {
+  App.user_settings.arrowtext = {
     title: `Arrow Text`,
     type: `checkbox`,
     description: `Whether to style arrowtext`,
@@ -284,7 +284,7 @@ App.build_user_settings = () => {
     version: 1,
   }
 
-  obj.unread_count = {
+  App.user_settings.unread_count = {
     title: `Unread Count`,
     type: `checkbox`,
     description: `Whether to show the unread count in the title`,
@@ -293,8 +293,6 @@ App.build_user_settings = () => {
     },
     version: 1,
   }
-
-  App.user_settings = obj
 }
 
 // Gets the settings localStorage object
