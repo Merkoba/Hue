@@ -13,15 +13,30 @@ NeedContext.after_hide = () => {}
 // Minimum menu width and height
 NeedContext.min_width = `25px`
 NeedContext.min_height = `25px`
+NeedContext.back_icon = `⬅️`
+NeedContext.back_text = `Back`
+NeedContext.clear_text = `Clear`
+NeedContext.item_sep = `4px`
+NeedContext.layers = {}
+NeedContext.level = 0
+NeedContext.gap = `0.45rem`
+NeedContext.center_top = `50%`
 
 // Set defaults
 NeedContext.set_defaults = () => {
   NeedContext.open = false
-  NeedContext.keydown = false
   NeedContext.mousedown = false
   NeedContext.first_mousedown = false
   NeedContext.last_x = 0
   NeedContext.last_y = 0
+  NeedContext.layers = {}
+}
+
+// Clear the filter
+NeedContext.clear_filter = () => {
+  NeedContext.filter.value = ``
+  NeedContext.do_filter()
+  NeedContext.filter.focus()
 }
 
 // Filter from keyboard input
@@ -39,8 +54,9 @@ NeedContext.do_filter = () => {
     }
   }
 
-  for (let el of document.querySelectorAll(`.needcontext-item`)) {
-    let text = el.textContent.toLowerCase()
+  for (let text_el of document.querySelectorAll(`.needcontext-text`)) {
+    let el = text_el.closest(`.needcontext-item`)
+    let text = text_el.textContent.toLowerCase()
     text = NeedContext.remove_spaces(text)
 
     if (text.includes(value)) {
@@ -55,6 +71,27 @@ NeedContext.do_filter = () => {
       el.classList.add(`needcontext-hidden`)
     }
   }
+
+  let back = document.querySelector(`#needcontext-back`)
+  let clear = document.querySelector(`#needcontext-clear`)
+  NeedContext.filtered = value !== ``
+
+  if (NeedContext.filtered) {
+    let text = document.querySelector(`#needcontext-clear-text`)
+    text.textContent = value
+    clear.classList.remove(`needcontext-hidden`)
+
+    if (back) {
+      back.classList.add(`needcontext-hidden`)
+    }
+  }
+  else {
+    clear.classList.add(`needcontext-hidden`)
+
+    if (back) {
+      back.classList.remove(`needcontext-hidden`)
+    }
+  }
 }
 
 // Show based on an element
@@ -67,20 +104,60 @@ NeedContext.show_on_element = (el, items, expand = false, margin = 0) => {
   }
 }
 
+// Show on center of window
+NeedContext.show_on_center = (items) => {
+  NeedContext.show(undefined, undefined, items)
+}
+
 // Show the menu
-NeedContext.show = (x, y, items) => {
+NeedContext.show = (x, y, items, root = true) => {
   if (!NeedContext.created) {
     NeedContext.create()
   }
 
-  NeedContext.hide()
+  if (root) {
+    NeedContext.level = 0
+  }
+
+  let center
+
+  if (x === undefined && y === undefined) {
+    center = true
+  }
+  else {
+    center = false
+  }
 
   items = items.slice(0)
-  let selected_index = 0
+  let selected_index
+  let layer = NeedContext.get_layer()
+
+  if (layer) {
+    selected_index = layer.last_index
+  }
+  else {
+    selected_index = 0
+  }
+
+  for (let [i, item] of items.entries()) {
+    if (i === selected_index) {
+      item.selected = true
+    }
+    else {
+      item.selected = false
+    }
+  }
+
   let c = NeedContext.container
   c.innerHTML = ``
   let index = 0
-  NeedContext.items = []
+
+  if (!root) {
+    c.append(NeedContext.back_button())
+  }
+
+  c.append(NeedContext.clear_button())
+  let normal_items = []
 
   for (let item of items) {
     let el = document.createElement(`div`)
@@ -91,16 +168,42 @@ NeedContext.show = (x, y, items) => {
     }
     else {
       el.classList.add(`needcontext-normal`)
-      el.textContent = item.text
+
+      if (item.image) {
+        let image = document.createElement(`img`)
+        image.loading = `lazy`
+
+        image.addEventListener(`error`, (e) => {
+          e.target.classList.add(`needcontext-hidden`)
+        })
+
+        image.classList.add(`needcontext-image`)
+        image.src = item.image
+        el.append(image)
+      }
+
+      if (item.icon) {
+        let icon = document.createElement(`div`)
+        icon.append(item.icon)
+        el.append(icon)
+      }
+
+      if (item.text) {
+        let text = document.createElement(`div`)
+        text.classList.add(`needcontext-text`)
+        text.textContent = item.text
+        el.append(text)
+      }
+
+      if (item.info) {
+        el.title = item.info
+      }
+
       el.dataset.index = index
       item.index = index
 
       if (item.title) {
         el.title = item.title
-      }
-
-      if (item.selected) {
-        selected_index = index
       }
 
       el.addEventListener(`mousemove`, () => {
@@ -112,39 +215,56 @@ NeedContext.show = (x, y, items) => {
       })
 
       index += 1
-      NeedContext.items.push(item)
+      normal_items.push(item)
     }
 
     item.element = el
     c.append(el)
   }
 
+  NeedContext.layers[NeedContext.level] = {
+    root: root,
+    items: items,
+    normal_items: normal_items,
+    last_index: selected_index,
+    x: x,
+    y: y,
+  }
+
   NeedContext.main.classList.remove(`needcontext-hidden`)
 
-  if (y < 5) {
-    y = 5
+  if (center) {
+    c.style.left = `50%`
+    c.style.top = NeedContext.center_top
+    c.style.transform = `translate(-50%, -50%)`
   }
+  else {
+    if (y < 5) {
+      y = 5
+    }
 
-  if (x < 5) {
-    x = 5
+    if (x < 5) {
+      x = 5
+    }
+
+    if ((y + c.offsetHeight) + 5 > window.innerHeight) {
+      y = window.innerHeight - c.offsetHeight - 5
+    }
+
+    if ((x + c.offsetWidth) + 5 > window.innerWidth) {
+      x = window.innerWidth - c.offsetWidth - 5
+    }
+
+    NeedContext.last_x = x
+    NeedContext.last_y = y
+
+    x = Math.max(x, 0)
+    y = Math.max(y, 0)
+
+    c.style.left = `${x}px`
+    c.style.top = `${y}px`
+    c.style.transform = `unset`
   }
-
-  if ((y + c.offsetHeight) + 5 > window.innerHeight) {
-    y = window.innerHeight - c.offsetHeight - 5
-  }
-
-  if ((x + c.offsetWidth) + 5 > window.innerWidth) {
-    x = window.innerWidth - c.offsetWidth - 5
-  }
-
-  NeedContext.last_x = x
-  NeedContext.last_y = y
-
-  x = Math.max(x, 0)
-  y = Math.max(y, 0)
-
-  c.style.left = `${x}px`
-  c.style.top = `${y}px`
 
   NeedContext.filter.value = ``
   NeedContext.filter.focus()
@@ -185,10 +305,9 @@ NeedContext.select_item = (index) => {
 NeedContext.select_up = () => {
   let waypoint = false
   let first_visible
+  let items = NeedContext.get_layer().normal_items.slice(0).reverse()
 
-  for (let i=NeedContext.items.length-1; i>=0; i--) {
-    let item = NeedContext.items[i]
-
+  for (let item of items) {
     if (!NeedContext.is_visible(item.element)) {
       continue
     }
@@ -214,10 +333,9 @@ NeedContext.select_up = () => {
 NeedContext.select_down = () => {
   let waypoint = false
   let first_visible
+  let items = NeedContext.get_layer().normal_items
 
-  for (let i=0; i<NeedContext.items.length; i++) {
-    let item = NeedContext.items[i]
-
+  for (let item of items) {
     if (!NeedContext.is_visible(item.element)) {
       continue
     }
@@ -240,30 +358,68 @@ NeedContext.select_down = () => {
 }
 
 // Do the selected action
-NeedContext.select_action = async (e, index = NeedContext.index) => {
+NeedContext.select_action = async (e, index = NeedContext.index, mode = `mouse`) => {
+  if (mode === `mouse`) {
+    if (!e.target.closest(`.needcontext-normal`)) {
+      return
+    }
+  }
+
   let x = NeedContext.last_x
   let y = NeedContext.last_y
-  let item = NeedContext.items[index]
+  let item = NeedContext.get_layer().normal_items[index]
 
   function show_below (items) {
+    NeedContext.get_layer().last_index = index
+    NeedContext.level += 1
+
     if (e.clientY) {
       y = e.clientY
     }
 
-    NeedContext.show(x, y, items)
+    NeedContext.show(x, y, items, false)
   }
 
-  NeedContext.hide()
+  function do_items (items) {
+    if (items.length === 1 && item.direct) {
+      NeedContext.hide()
+      items[0].action(e)
+    }
+    else {
+      show_below(items)
+    }
 
-  if (item.action) {
-    item.action(e)
+    return
   }
-  else if (item.items) {
-    show_below(item.items)
+
+  async function check_item () {
+    if (item.action) {
+      NeedContext.hide()
+      item.action(e)
+      return
+    }
+    else if (item.items) {
+      do_items(item.items)
+    }
+    else if (item.get_items) {
+      let items = await item.get_items()
+      do_items(items)
+    }
   }
-  else if (item.get_items) {
-    let items = await item.get_items()
-    show_below(items)
+
+  if (mode === `keyboard`) {
+    check_item()
+    return
+  }
+
+  if (e.button === 0) {
+    check_item()
+  }
+  else if (e.button === 1) {
+    if (item.alt_action) {
+      NeedContext.hide()
+      item.alt_action(e)
+    }
   }
 }
 
@@ -292,7 +448,7 @@ NeedContext.init = () => {
     }
 
     .needcontext-hidden {
-      display: none;
+      display: none !important;
     }
 
     #needcontext-container {
@@ -304,11 +460,9 @@ NeedContext.init = () => {
       font-family: sans-serif;
       display: flex;
       flex-direction: column;
-      gap: 3px;
       user-select: none;
       border: 1px solid #2B2F39;
       border-radius: 5px;
-      cursor: pointer;
       padding-top: 6px;
       padding-bottom: 6px;
       max-height: 80vh;
@@ -323,26 +477,53 @@ NeedContext.init = () => {
 
     .needcontext-item {
       white-space: nowrap;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: ${NeedContext.gap};
     }
 
     .needcontext-normal {
       padding-left: 10px;
       padding-right: 10px;
-      padding-top: 3px;
-      padding-bottom: 3px;
+      padding-top: ${NeedContext.item_sep};
+      padding-bottom: ${NeedContext.item_sep};
+      cursor: pointer;
+    }
+
+    .needcontext-button {
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: ${NeedContext.item_sep};
+      padding-bottom: ${NeedContext.item_sep};
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: ${NeedContext.gap};
+      cursor: pointer;
+    }
+
+    .needcontext-button:hover {
+      text-shadow: 0 0 1rem currentColor;
     }
 
     .needcontext-separator {
       border-top: 1px solid currentColor;
       margin-left: 10px;
       margin-right: 10px;
-      margin-top: 3px;
-      margin-bottom: 3px;
+      margin-top: ${NeedContext.item_sep};
+      margin-bottom: ${NeedContext.item_sep};
       opacity: 0.7;
     }
 
     .needcontext-item-selected {
       background-color: rgba(0, 0, 0, 0.18);
+    }
+
+    .needcontext-image {
+      width: 1.25rem;
+      height: 1.25rem;
+      object-fit: contain;
     }
   `
 
@@ -371,6 +552,16 @@ NeedContext.init = () => {
         NeedContext.hide()
       }
     }
+    else if (e.target.closest(`.needcontext-back`)) {
+      if (e.button === 0) {
+        NeedContext.go_back()
+      }
+    }
+    else if (e.target.closest(`.needcontext-clear`)) {
+      if (e.button === 0) {
+        NeedContext.clear_filter()
+      }
+    }
     else if (NeedContext.mousedown) {
       NeedContext.select_action(e)
     }
@@ -383,8 +574,6 @@ NeedContext.init = () => {
       return
     }
 
-    NeedContext.keydown = true
-
     if (e.key === `ArrowUp`) {
       NeedContext.select_up()
       e.preventDefault()
@@ -393,31 +582,18 @@ NeedContext.init = () => {
       NeedContext.select_down()
       e.preventDefault()
     }
-  })
-
-  document.addEventListener(`keyup`, (e) => {
-    if (!NeedContext.open) {
-      return
-    }
-
-    if (!NeedContext.keydown) {
-      return
-    }
-
-    e.stopPropagation()
-    NeedContext.keydown = false
-
-    if (e.key === `Escape`) {
-      NeedContext.hide()
-      e.preventDefault()
-    }
     else if (e.key === `Enter`) {
-      NeedContext.select_action(e)
+      NeedContext.select_action(e, undefined, `keyboard`)
       e.preventDefault()
     }
     else if (e.key === `Backspace`) {
-      NeedContext.filter.value = ``
-      NeedContext.do_filter()
+      if (!NeedContext.filtered) {
+        NeedContext.go_back()
+        e.preventDefault()
+      }
+    }
+    else if (e.key === `Escape`) {
+      NeedContext.hide()
       e.preventDefault()
     }
   })
@@ -451,6 +627,61 @@ NeedContext.create = () => {
   NeedContext.main.append(NeedContext.container)
   document.body.appendChild(NeedContext.main)
   NeedContext.created = true
+}
+
+// Current layer
+NeedContext.get_layer = () => {
+  return NeedContext.layers[NeedContext.level]
+}
+
+// Previous layer
+NeedContext.prev_layer = () => {
+  return NeedContext.layers[NeedContext.level - 1]
+}
+
+// Go back to previous layer
+NeedContext.go_back = () => {
+  if (NeedContext.level === 0) {
+    return
+  }
+
+  let layer = NeedContext.prev_layer()
+  NeedContext.level -= 1
+  NeedContext.show(layer.x, layer.y, layer.items, layer.root)
+}
+
+// Create back button
+NeedContext.back_button = () => {
+  let el = document.createElement(`div`)
+  el.id = `needcontext-back`
+  el.classList.add(`needcontext-back`)
+  el.classList.add(`needcontext-button`)
+  let icon = document.createElement(`div`)
+  icon.append(NeedContext.back_icon)
+  let text = document.createElement(`div`)
+  text.textContent = NeedContext.back_text
+  el.append(icon)
+  el.append(text)
+  el.title = `Shortcut: Backspace`
+  return el
+}
+
+// Create clear button
+NeedContext.clear_button = () => {
+  let el = document.createElement(`div`)
+  el.id = `needcontext-clear`
+  el.classList.add(`needcontext-clear`)
+  el.classList.add(`needcontext-button`)
+  el.classList.add(`needcontext-hidden`)
+  let icon = document.createElement(`div`)
+  icon.append(NeedContext.back_icon)
+  let text = document.createElement(`div`)
+  text.id = `needcontext-clear-text`
+  text.textContent = NeedContext.clear_text
+  el.append(icon)
+  el.append(text)
+  el.title = `Type to filter. Click to clear`
+  return el
 }
 
 // Start
