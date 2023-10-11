@@ -1192,18 +1192,13 @@ App.make_image_preview = (message) => {
   ans.image_preview_text = false
   let link = App.utilz.get_first_url(message)
 
-  if (message.startsWith(`reaction:`)) {
-    let name = message.replace(`reaction:`, ``).trim()
-
-    if (name.split(` `).length > 1) {
+  if (message.startsWith(`:`) && message.endsWith(`:`)) {
+    if (message.split(` `).length > 1) {
       return ans
     }
 
-    if (!App.utilz.is_image(name)) {
-      return ans
-    }
-
-    let url =  App.config.reactions_directory + `/` + name
+    let name = message.replace(/:/g, ``)
+    let url =  App.get_reaction_url(name)
     ans.image_preview_text = ``
     ans.image_preview_src_original = url
     ans.image_preview_src = url

@@ -102,10 +102,18 @@ function build_config() {
 
 function get_config_mtime() {
 	let mtime = ``
-	let files = fs.readdirSync(path.join(__dirname, `../config`))
+	let conf = path.join(__dirname, `../config`)
+	let files = fs.readdirSync(conf)
 
 	for(let file of files) {
-		mtime += fs.statSync(path.join(__dirname, `../config/${file}`)).mtime.toString()
+		mtime += fs.statSync(path.join(conf, file)).mtime.getTime().toString()
+	}
+
+	let reactions = path.join(__dirname, `../public`, config.reactions_directory)
+	files = fs.readdirSync(reactions)
+
+	for(let file of files) {
+		mtime += file
 	}
 
 	return mtime

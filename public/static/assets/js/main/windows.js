@@ -533,10 +533,7 @@ App.start_msg = () => {
   )
 
   App.msg_reactions.set(
-    App.template_reactions({
-      names: App.config.reactions,
-      directory: App.config.reactions_directory,
-    })
+    App.template_reactions()
   )
 
   App.msg_settings.set(
