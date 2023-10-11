@@ -5,6 +5,7 @@ App.setup_reactions = () => {
   for (let reaction of App.config.reactions) {
     let img = DOM.create(`img`, `reaction`)
     let name = App.get_reaction_name(reaction)
+    img.loading = `lazy`
     img.src = App.get_reaction_url(name)
     img.title = `:${name}:`
 
