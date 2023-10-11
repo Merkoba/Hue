@@ -41,7 +41,7 @@ notifications_close_delay: 5000
 max_whispers_post_length: 2000
 
 # Maximum displayed media info
-max_media_info_length: 50
+max_media_info_length: 80
 
 # Maximum amount of text for something typed in the input box
 # If something bigger is inputed it will get cropped to meet this limit
@@ -98,7 +98,7 @@ max_media_source_length: 800
 # Maximum length of comments on media change
 max_media_comment_length: 200
 
-# Maximum length for the tab's title. Title consists of "room_name - topic"
+# Maximum length for the tab's title. Title is the room_name
 # and is set automatically. If title is bigger it gets cropped
 max_title_length: 280
 
