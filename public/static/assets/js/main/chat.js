@@ -1194,6 +1194,15 @@ App.make_image_preview = (message) => {
 
   if (message.startsWith(`reaction:`)) {
     let name = message.replace(`reaction:`, ``).trim()
+
+    if (name.split(` `).length > 1) {
+      return ans
+    }
+
+    if (!App.utilz.is_image(name)) {
+      return ans
+    }
+
     let url =  App.config.reactions_directory + `/` + name
     ans.image_preview_text = ``
     ans.image_preview_src_original = url
