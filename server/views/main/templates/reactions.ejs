@@ -1,0 +1,7 @@
+<script id="template_reactions" type="text/x-handlebars-template" class="template">
+  <div class="flex_column_center rem1_gap" id="reactions_container">
+    {{#each names}}
+    <img src="{{../directory}}/{{this}}" class="reaction actionbox" data-name="{{this}}">
+    {{/each}}
+  </div>
+</script>

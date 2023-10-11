@@ -118,9 +118,13 @@ App.make_chat_message = (args = {}) => {
 
   if (image_preview) {
     content.innerHTML = image_preview
+    let text = DOM.el(`.image_preview_text`, fmessage)
 
-    if (preview_text_class) {
-      DOM.el(`.image_preview_text`, fmessage).classList.add(preview_text_class)
+    if (!image_preview_text) {
+      text.classList.add(`nodisplay`)
+    }
+    else if (preview_text_class) {
+      text.classList.add(preview_text_class)
     }
   }
   else if (link_preview) {
@@ -1186,14 +1190,20 @@ App.make_image_preview = (message) => {
   ans.image_preview_src = false
   ans.image_preview_src_original = false
   ans.image_preview_text = false
-
   let link = App.utilz.get_first_url(message)
 
-  if (!link) {
-    return ans
+  if (message.startsWith(`reaction:`)) {
+    let name = message.replace(`reaction:`, ``).trim()
+    let url =  App.config.reactions_directory + `/` + name
+    ans.image_preview_text = ``
+    ans.image_preview_src_original = url
+    ans.image_preview_src = url
+    ans.image_preview = App.template_image_preview({
+      text: ``,
+      source: ans.image_preview_src
+    })
   }
-
-  if (link.includes(`imgur.com`)) {
+  else if (link && link.includes(`imgur.com`)) {
     let code = App.utilz.get_imgur_image_code(link)
 
     if (code) {

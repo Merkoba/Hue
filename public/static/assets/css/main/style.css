@@ -1897,3 +1897,7 @@ pre {
 .selected:hover {
 	background-color: var(--altcolor_a) !important;
 }
+
+.reaction {
+	max-width: 80%;
+}

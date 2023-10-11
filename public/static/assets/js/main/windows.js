@@ -106,6 +106,13 @@ App.start_msg = () => {
     })
   )
 
+  App.msg_reactions = Msg.factory(
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
+      id: `reactions`,
+      window_width: `22rem`
+    })
+  )
+
   App.msg_user_profile = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `user_profile`,
@@ -525,6 +532,13 @@ App.start_msg = () => {
     })
   )
 
+  App.msg_reactions.set(
+    App.template_reactions({
+      names: App.config.reactions,
+      directory: App.config.reactions_directory,
+    })
+  )
+
   App.msg_settings.set(
     App.template_settings({
       window_controls: App.template_window_controls({
@@ -853,6 +867,7 @@ App.start_msg = () => {
   App.msg_admin_list.set_title(`Admin List`)
   App.msg_ban_list.set_title(`Ban List`)
   App.msg_roomlist.set_title(`Room List`)
+  App.msg_reactions.set_title(`Reactions`)
   App.msg_screen_capture_options.set_title(`Screen Capture`)
   App.msg_notifications.set_title(`Notifications`)
   App.msg_command_book.set_title(`Command Book`)

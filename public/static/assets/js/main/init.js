@@ -184,6 +184,7 @@ App.init = () => {
   App.setup_rooms()
   App.setup_theme()
   App.setup_linksbar()
+  App.setup_reactions()
   App.get_first_time()
 
   if (App.debug_socket) {

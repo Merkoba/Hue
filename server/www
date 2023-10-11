@@ -3,7 +3,6 @@ const fs = require(`fs`)
 const path = require(`path`)
 const tar = require(`tar`)
 const YAML = require(`yaml`)
-
 const utilz = require(`../public/static/assets/js/libs/utilz.js`)()
 
 function normalizePort(val) {
@@ -27,7 +26,6 @@ const sconfig = {}
 const config_check_delay = 5000
 const banlist_path = path.join(__dirname, `../config/banlist.json`)
 const banlist = {}
-
 let config_mtime = ``
 
 function build_config() {
@@ -55,6 +53,8 @@ function build_config() {
 	}
 
 	Object.assign(config, xconfig)
+	let reactions = fs.readdirSync(path.join(__dirname, `../public`, config.reactions_directory))
+	config.reactions = reactions
 
 	for (let key of Object.keys(sconfig)) {
 		delete sconfig[key]
@@ -95,7 +95,6 @@ function build_config() {
 	}
 
 	Object.assign(banlist, xbanlist)
-
 	config.mtime = Date.now()
 	config_mtime = get_config_mtime()
 	utilz.loginfo(`Config built`)

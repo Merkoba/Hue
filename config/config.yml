@@ -5,6 +5,9 @@ main_room_id: "main"
 # Public location to access the media files
 public_media_directory: "/static"
 
+# Public location of reactions
+reactions_directory: "/static/assets/img/reactions"
+
 # The location of the loading image when the profile image is changing
 profilepic_loading_url: "/static/assets/img/profilepic_loading.png"
 

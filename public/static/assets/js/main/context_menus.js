@@ -155,6 +155,13 @@ App.show_input_menu = () => {
     })
   }
 
+  items.push({
+    text: `React`,
+    action: () => {
+      App.show_reactions()
+    }
+  })
+
   if (App.room_state.last_input && !App.get_input(true)) {
     items.push({
       text: `Repeat`,
