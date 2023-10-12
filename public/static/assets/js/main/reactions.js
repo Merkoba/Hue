@@ -1,6 +1,7 @@
-// Setup reactions
-App.setup_reactions = () => {
+// Show reactions
+App.show_reactions = () => {
   let c = DOM.el(`#reactions_container`)
+  c.innerHTML = ``
   let reactions = App.config.reactions.slice(0)
   App.utilz.shuffle_array(reactions)
 
@@ -22,6 +23,8 @@ App.setup_reactions = () => {
     el.append(img)
     c.append(el)
   }
+
+  App.msg_reactions.show()
 }
 
 // Send reaction
@@ -31,11 +34,6 @@ App.send_reaction = (name) => {
   App.process_input({
     message: `:${name}:`,
   })
-}
-
-// Show reactions
-App.show_reactions = () => {
-  App.msg_reactions.show()
 }
 
 // Get reaction url
