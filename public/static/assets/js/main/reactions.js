@@ -8,7 +8,7 @@ App.setup_reactions = () => {
     let cmd = `:${name}:`
     let text = DOM.create(`div`, `reaction_text`)
     text.textContent = cmd
-    let img = DOM.create(`img`, `reaction_image`)
+    let img = DOM.create(`img`, `reaction_image actionbox`)
     img.loading = `lazy`
     img.src = App.get_reaction_url(name)
     img.title = cmd
