@@ -436,7 +436,7 @@ App.view_image = (src, username, user_id) => {
     hostname = App.utilz.get_hostname(src)
   }
   else {
-    hostname = src
+    hostname = src.split(`/`).at(-1)
   }
 
   DOM.el(`#view_image_subheader`).textContent = hostname
@@ -578,10 +578,6 @@ App.apply_modal_image_resolution = (image, src) => {
 
 // Apply modal image resolution to view image
 App.apply_view_image_resolution = (image, src) => {
-  if (image.src !== src) {
-    return
-  }
-
   let subheader = DOM.el(`#view_image_subheader`)
   let text = subheader.textContent
   subheader.textContent = `${text} (${image.width} x ${image.height})`
