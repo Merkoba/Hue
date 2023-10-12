@@ -11,7 +11,6 @@ App.setup_reactions = () => {
     let img = DOM.create(`img`, `reaction_image actionbox`)
     img.loading = `lazy`
     img.src = App.get_reaction_url(name)
-    img.title = cmd
 
     DOM.ev(img, `click`, (e) => {
       App.send_reaction(name)
