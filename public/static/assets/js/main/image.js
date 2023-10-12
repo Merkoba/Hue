@@ -430,10 +430,16 @@ App.view_image = (src, username, user_id) => {
   DOM.el(`#view_image`).style.display = `none`
   DOM.el(`#view_image_error`).style.display = `none`
   DOM.el(`#view_image`).src = src
+  let hostname
 
-  let hostname = App.utilz.get_hostname(src)
+  if (App.utilz.is_url(src)) {
+    hostname = App.utilz.get_hostname(src)
+  }
+  else {
+    hostname = src
+  }
+
   DOM.el(`#view_image_subheader`).textContent = hostname
-
   let dummy_image = new Image()
 
   dummy_image.onload = () => {
@@ -447,7 +453,6 @@ App.view_image = (src, username, user_id) => {
   })
 
   DOM.el(`#view_image_username`).textContent = username
-
   dummy_image.src = src
   App.view_image_source = src
   App.view_image_username = username
