@@ -1,8 +1,10 @@
 // Setup reactions
 App.setup_reactions = () => {
   let c = DOM.el(`#reactions_container`)
+  let reactions = App.config.reactions.slice(0)
+  App.utilz.shuffle_array(reactions)
 
-  for (let reaction of App.config.reactions) {
+  for (let reaction of reactions) {
     let el = DOM.create(`div`)
     let name = App.get_reaction_name(reaction)
     let cmd = `:${name}:`
