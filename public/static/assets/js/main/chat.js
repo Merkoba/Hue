@@ -119,9 +119,11 @@ App.make_chat_message = (args = {}) => {
   if (image_preview) {
     content.innerHTML = image_preview
     let text = DOM.el(`.image_preview_text`, fmessage)
+    let image = DOM.el(`.image_preview_image`, fmessage)
 
     if (!image_preview_text) {
       text.classList.add(`nodisplay`)
+      image.classList.add(`image_preview_margin`)
     }
     else if (preview_text_class) {
       text.classList.add(preview_text_class)

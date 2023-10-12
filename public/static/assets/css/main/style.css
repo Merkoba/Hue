@@ -1905,3 +1905,7 @@ pre {
 .reaction_image {
 	max-width: 77%;
 }
+
+.image_preview_margin {
+	margin-top: 0.45rem;
+}
