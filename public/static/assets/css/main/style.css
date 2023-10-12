@@ -1898,6 +1898,10 @@ pre {
 	background-color: var(--altcolor_a) !important;
 }
 
-.reaction {
+.reaction_text {
+	margin-bottom: 0.5rem;
+}
+
+.reaction_image {
 	max-width: 80%;
 }

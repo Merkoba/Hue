@@ -3,17 +3,23 @@ App.setup_reactions = () => {
   let c = DOM.el(`#reactions_container`)
 
   for (let reaction of App.config.reactions) {
-    let img = DOM.create(`img`, `reaction`)
+    let el = DOM.create(`div`)
     let name = App.get_reaction_name(reaction)
+    let cmd = `:${name}:`
+    let text = DOM.create(`div`, `reaction_text`)
+    text.textContent = cmd
+    let img = DOM.create(`img`, `reaction_image`)
     img.loading = `lazy`
     img.src = App.get_reaction_url(name)
-    img.title = `:${name}:`
+    img.title = cmd
 
     DOM.ev(img, `click`, (e) => {
       App.send_reaction(name)
     })
 
-    c.append(img)
+    el.append(text)
+    el.append(img)
+    c.append(el)
   }
 }
 

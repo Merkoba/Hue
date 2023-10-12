@@ -624,6 +624,12 @@ App.commands = {
     },
     description: `Show the input history. Shortcut: Shift + Up`,
   },
+  react: {
+    action: (arg, ans) => {
+      App.show_reactions()
+    },
+    description: `Show the reactions window`,
+  },
 }
 
 // Commands reserved to superusers
