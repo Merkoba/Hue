@@ -54,6 +54,7 @@ function build_config() {
 
 	Object.assign(config, xconfig)
 	let reactions = fs.readdirSync(path.join(__dirname, `../public`, config.reactions_directory))
+	reactions = reactions.filter(x => !x.startsWith(`.`))
 	config.reactions = reactions
 
 	for (let key of Object.keys(sconfig)) {

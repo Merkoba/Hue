@@ -3,6 +3,12 @@ App.show_reactions = () => {
   let c = DOM.el(`#reactions_container`)
   c.innerHTML = ``
   let reactions = App.config.reactions.slice(0)
+
+  if (!reactions.length) {
+    App.show_info(`No reactions available`)
+    return
+  }
+
   App.utilz.shuffle_array(reactions)
 
   for (let reaction of reactions) {
