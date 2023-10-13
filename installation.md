@@ -4,7 +4,7 @@
 
 Configuration is done in user_config.json and user_config.secret.json files placed in the config directory.
 
-Editing those files overrides settings in the default configuration files. 
+Editing those files overrides settings in the default configuration files.
 
 The point of having separate files is so the default config files can be changed during an update while the user config files remain intact.
 
@@ -34,7 +34,7 @@ Example of how to use user_config.secret.json:
 
 The admin's username must go in superuser_usernames in user_config.secret.json
 
-The main room is created at startup if it doesn't exist. 
+The main room is created at startup if it doesn't exist.
 
 To get admin rights on the room use /annex after joining it.
 
@@ -79,3 +79,11 @@ If other backend files changed then it's necessary to restart the server.
 
 "no_userlist" (boolean)
 >If true, the server will not send the userlist on join, which can save some bandwidth.
+
+## Reactiosn
+
+You can add some reaction images in public/static/assetts/img/reactions
+
+Give each file a simple small name like `smile.jpg`
+
+The file name becomes the name of the reaction `:smile:`
