@@ -80,10 +80,10 @@ If other backend files changed then it's necessary to restart the server.
 "no_userlist" (boolean)
 >If true, the server will not send the userlist on join, which can save some bandwidth.
 
-## Reactiosn
+## Reactions
 
-You can add some reaction images in public/static/assetts/img/reactions
+You can add some reaction images in public/static/assets/img/reactions
 
-Give each file a simple small name like `smile.jpg`
+Give each file a simple name like `smile.jpg`
 
 The file name becomes the name of the reaction `:smile:`
