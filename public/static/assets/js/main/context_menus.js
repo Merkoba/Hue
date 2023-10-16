@@ -126,7 +126,7 @@ App.show_chat_context_menu = (button, x, y) => {
     NeedContext.show({x: x, y: y, items: items})
   }
   else {
-    NeedContext.show_on_element({element: button, items: items})
+    NeedContext.show({element: button, items: items})
   }
 }
 
@@ -191,7 +191,7 @@ App.show_input_menu = () => {
   })
 
   let el = DOM.el(`#footer_input_menu`)
-  NeedContext.show_on_element({element: el, items: items})
+  NeedContext.show({element: el, items: items})
 }
 
 App.show_linksbar_context = (x, y) => {
