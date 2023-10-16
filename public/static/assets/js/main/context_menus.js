@@ -123,10 +123,10 @@ App.show_chat_context_menu = (button, x, y) => {
   }
 
   if (x !== undefined && y !== undefined) {
-    NeedContext.show(x, y, items)
+    NeedContext.show({x: x, y: y, items: items})
   }
   else {
-    NeedContext.show_on_element(button, items)
+    NeedContext.show_on_element({element: button, items: items})
   }
 }
 
@@ -191,7 +191,7 @@ App.show_input_menu = () => {
   })
 
   let el = DOM.el(`#footer_input_menu`)
-  NeedContext.show_on_element(el, items)
+  NeedContext.show_on_element({element: el, items: items})
 }
 
 App.show_linksbar_context = (x, y) => {
@@ -215,7 +215,7 @@ App.show_linksbar_context = (x, y) => {
     })
   }
 
-  NeedContext.show(x, y, items)
+  NeedContext.show({x: x, y: y, items: items})
 }
 
 App.at_media_items = (type) => {
