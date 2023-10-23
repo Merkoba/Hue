@@ -5,7 +5,7 @@ App.make_chat_message = (args = {}) => {
     just_edited: false
   }
 
-  args = Object.assign(def_args, args)
+  App.utilz.def_args(def_args, args)
   let num_lines = args.message.split(`\n`).length
 
   if (num_lines === 1) {
@@ -254,7 +254,7 @@ App.make_announcement_message = (args = {}) => {
     type: `normal`
   }
 
-  args = Object.assign(def_args, args)
+  App.utilz.def_args(def_args, args)
   let is_media = args.type === `image_change` || args.type === `tv_change`
   let content_classes = `announcement_content unit_text`
   let brk_classes = `brk announcement_brk`
@@ -367,7 +367,7 @@ App.insert_message = (args = {}) => {
     just_edited: false
   }
 
-  args = Object.assign(def_args, args)
+  App.utilz.def_args(def_args, args)
 
   let messages = App.get_all_messages()
   let last_message = messages.slice(-1)[0]

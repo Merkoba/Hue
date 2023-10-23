@@ -4,7 +4,7 @@ App.canvas_redraw = (args = {}) => {
     sector_index: args.click_x.length
   }
 
-  args = Object.assign(def_args, args)
+  App.utilz.def_args(def_args, args)
 
   args.context.clearRect(
     0,

@@ -356,8 +356,7 @@ App.change_media = (args = {}) => {
     current_source: false
   }
 
-  args = Object.assign(def_args, args)
-
+  App.utilz.def_args(def_args, args)
   let item
 
   if (args.item) {
@@ -515,7 +514,7 @@ App.set_media_locked = (args) => {
     change: true
   }
 
-  args = Object.assign(def_args, args)
+  App.utilz.def_args(def_args, args)
 
   if (args.what === App[`${args.type}_locked`]) {
     return

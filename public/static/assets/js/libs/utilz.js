@@ -857,6 +857,15 @@ const Utilz = () => {
 		return obj
 	}
 
+	// Fill object with def args
+	utilz.def_args = (def, args) => {
+		for (let key in def) {
+			if ((args[key] === undefined) && (def[key] !== undefined)) {
+				args[key] = def[key]
+			}
+		}
+	}
+
 	utilz.media_types = [`image`, `tv`]
 	utilz.video_extensions = [`mp4`, `webm`]
 	utilz.video_types = [`video/mp4`, `video/webm`]

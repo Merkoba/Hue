@@ -980,7 +980,7 @@ App.create_popup = (args = {}, ptype = `unset`) => {
     remove_after_close: true
   }
 
-  args = Object.assign(def_args, args)
+  App.utilz.def_args(def_args, args)
   let popup = Msg.factory(args)
   popup.hue_type = ptype
   return popup
@@ -992,7 +992,7 @@ App.show_action_popup = (args = {}) => {
     on_x_button_click: () => {}
   }
 
-  args = Object.assign(def_args, args)
+  App.utilz.def_args(def_args, args)
   let on_click = () => {}
 
   if (args.on_click) {

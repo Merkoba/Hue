@@ -28,7 +28,7 @@ App.make_info_popup_item = (args = {}) => {
     on_click: () => {},
   }
 
-  args = Object.assign(def_args, args)
+  App.utilz.def_args(def_args, args)
   let classes = ``
 
   if (args.action) {
@@ -68,8 +68,7 @@ App.push_notification = (args) => {
     increase_counter: true
   }
 
-  args = Object.assign(def_args, args)
-
+  App.utilz.def_args(def_args, args)
   let d = Date.now()
   let t = App.format_date(d)
 

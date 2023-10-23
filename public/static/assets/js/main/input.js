@@ -158,7 +158,7 @@ App.process_input = (args = {}) => {
     clr_input: true
   }
 
-  args = Object.assign(def_args, args)
+  App.utilz.def_args(def_args, args)
 
   if (!args.message.trim()) {
     return
