@@ -110,6 +110,7 @@ NeedContext.show = (args = {}) => {
   let def_args = {
     root: true,
     expand: false,
+    hide_on_action: true,
     margin: 0,
     index: 0,
   }
@@ -410,8 +411,7 @@ NeedContext.select_action = async (e, index = NeedContext.index, mode = `mouse`)
 
   function do_items (items) {
     if (items.length === 1 && items[0].direct) {
-      NeedContext.hide()
-      items[0].action(e)
+      NeedContext.do_action(items[0], e)
     }
     else {
       show_below(items)
@@ -422,8 +422,7 @@ NeedContext.select_action = async (e, index = NeedContext.index, mode = `mouse`)
 
   async function check_item () {
     if (item.action) {
-      NeedContext.hide()
-      item.action(e)
+      NeedContext.do_action(item, e)
       return
     }
     else if (item.items) {
@@ -802,6 +801,17 @@ NeedContext.clear_button = () => {
 // Return true if a mod key is pressed
 NeedContext.modkey = (e) => {
   return e.ctrlKey || e.altKey || e.shiftKey || e.metaKey
+}
+
+// Do an action
+NeedContext.action = (item, e) => {
+  let args = NeedContext.args
+
+  if (args.hide_on_action) {
+    NeedContext.hide()
+  }
+
+  item.action(e)
 }
 
 // Start
