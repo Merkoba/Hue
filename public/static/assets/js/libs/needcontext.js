@@ -411,7 +411,7 @@ NeedContext.select_action = async (e, index = NeedContext.index, mode = `mouse`)
 
   function do_items (items) {
     if (items.length === 1 && items[0].direct) {
-      NeedContext.do_action(items[0], e)
+      NeedContext.action(items[0], e)
     }
     else {
       show_below(items)
@@ -422,7 +422,7 @@ NeedContext.select_action = async (e, index = NeedContext.index, mode = `mouse`)
 
   async function check_item () {
     if (item.action) {
-      NeedContext.do_action(item, e)
+      NeedContext.action(item, e)
       return
     }
     else if (item.items) {
@@ -516,6 +516,11 @@ NeedContext.init = () => {
       padding-top: ${NeedContext.item_sep};
       padding-bottom: ${NeedContext.item_sep};
       cursor: pointer;
+    }
+
+    .needcontext-picked .needcontext-text {
+      text-decoration: line-through;
+      opacity: 0.7;
     }
 
     .needcontext-button {
@@ -809,6 +814,9 @@ NeedContext.action = (item, e) => {
 
   if (args.hide_on_action) {
     NeedContext.hide()
+  }
+  else {
+    item.element.classList.add(`needcontext-picked`)
   }
 
   item.action(e)
