@@ -355,6 +355,7 @@ App.push_whisper = (message, on_click, read, data) => {
   let d = Date.now()
   let date = App.format_date(d)
   let item = DOM.create(`div`, `whisper_item modal_item`)
+  item.title = App.nice_date(d)
 
   if (data.mode === `received`) {
     item.innerHTML = App.template_whisper_received({

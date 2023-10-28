@@ -71,7 +71,6 @@ App.push_notification = (args) => {
   App.utilz.def_args(def_args, args)
   let d = Date.now()
   let t = App.format_date(d)
-
   let content_classes = ``
 
   if (args.on_click) {
@@ -79,6 +78,7 @@ App.push_notification = (args) => {
   }
 
   let item = DOM.create(`div`, `notification_item modal_item`)
+  item.title = App.nice_date(d)
 
   if (args.profilepic) {
     item.innerHTML = App.template_notification_2({
@@ -115,7 +115,6 @@ App.push_notification = (args) => {
   }
 
   DOM.el(`#notifications_container`).prepend(item)
-
   let items = DOM.els(`.notification_item`)
 
   if (items.length > App.config.notifications_crop_limit) {
@@ -134,7 +133,6 @@ App.push_notification = (args) => {
   if (empty) {
     empty.remove()
   }
-
 }
 
 // Shows information about the recent info popups
