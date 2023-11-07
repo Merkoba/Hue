@@ -210,6 +210,10 @@ NeedContext.show = (args = {}) => {
         el.title = item.info.trim()
       }
 
+      if (item.bold) {
+        el.classList.add(`needcontext-bold`)
+      }
+
       el.dataset.index = index
       item.index = index
 
@@ -300,14 +304,14 @@ NeedContext.show = (args = {}) => {
 }
 
 // Hide the menu
-NeedContext.hide = () => {
+NeedContext.hide = (e) => {
   if (NeedContext.open) {
     NeedContext.main.classList.add(`needcontext-hidden`)
     NeedContext.set_defaults()
     NeedContext.after_hide()
 
     if (NeedContext.args.after_hide) {
-      NeedContext.args.after_hide()
+      NeedContext.args.after_hide(e)
     }
   }
 }
@@ -442,8 +446,7 @@ NeedContext.select_action = async (e, index = NeedContext.index, mode = `mouse`)
   }
   else if (e.button === 1) {
     if (item.alt_action) {
-      NeedContext.hide()
-      item.alt_action(e)
+      NeedContext.alt_action(item, e)
     }
   }
 }
@@ -561,6 +564,10 @@ NeedContext.init = () => {
       height: 1.25rem;
       object-fit: contain;
     }
+
+    .needcontext-bold {
+      font-weight: bold;
+    }
   `
 
   style.innerText = css
@@ -585,7 +592,7 @@ NeedContext.init = () => {
 
     if (!e.target.closest(`#needcontext-container`)) {
       if (NeedContext.first_mousedown) {
-        NeedContext.hide()
+        NeedContext.dismiss(e)
       }
     }
     else if (e.target.closest(`.needcontext-back`)) {
@@ -648,7 +655,7 @@ NeedContext.init = () => {
     NeedContext.keydown = false
 
     if (e.key === `Escape`) {
-      NeedContext.hide()
+      NeedContext.dismiss(e)
       e.preventDefault()
     }
     else if (e.key === `Enter`) {
@@ -742,7 +749,7 @@ NeedContext.dragend_action = (e) => {
   let dragged = NeedContext.dragged_item
   let items = Array.from(list.querySelectorAll(`.needcontext-item`))
   let index_end = items.indexOf(dragged)
-  NeedContext.hide()
+  NeedContext.hide(e)
   NeedContext.args.on_drag(NeedContext.dragged_index, index_end)
 }
 
@@ -808,7 +815,14 @@ NeedContext.modkey = (e) => {
 
 // Do an action
 NeedContext.action = (item, e) => {
+  if (item.element) {
+    if (!NeedContext.is_visible(item.element)) {
+      return
+    }
+  }
+
   let args = NeedContext.args
+  let after_action = NeedContext.args.after_action
 
   if (args.picker_mode) {
     item.element.classList.add(`needcontext-picked`)
@@ -824,14 +838,43 @@ NeedContext.action = (item, e) => {
     }
 
     if (all_picked) {
-      NeedContext.hide()
+      NeedContext.hide(e)
     }
   }
   else {
-    NeedContext.hide()
+    NeedContext.hide(e)
   }
 
   item.action(e)
+
+  if (after_action) {
+    after_action(e)
+  }
+}
+
+// Dismissed by clicking the overlay or Escape
+NeedContext.dismiss = (e) => {
+  if (NeedContext.args.after_dismiss) {
+    NeedContext.args.after_dismiss(e)
+  }
+
+  NeedContext.hide(e)
+}
+
+// Alternative action
+NeedContext.alt_action = (item, e) => {
+  if (item.element) {
+    if (!NeedContext.is_visible(item.element)) {
+      return
+    }
+  }
+
+  if (NeedContext.args.after_alt_action) {
+    NeedContext.args.after_alt_action(e)
+  }
+
+  NeedContext.hide(e)
+  item.alt_action(e)
 }
 
 // Start
