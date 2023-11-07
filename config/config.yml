@@ -160,6 +160,7 @@ settings_default_radio_auto_minutes: 15
 settings_default_arrowtext: true
 settings_default_hide_scrollbars: true
 settings_default_unread_count: true
+settings_default_text_glow: false
 
 # Default room state values
 room_state_default_image_enabled: true

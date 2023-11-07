@@ -8,6 +8,7 @@
 	--msg_display: block;
 	--placeholder_opacity: 0.6;
 	--border_radius: 5px;
+	--text_glow: 0 0 0.2rem currentColor;
 }
 
 body,
@@ -1908,4 +1909,8 @@ pre {
 
 .image_preview_margin {
 	margin-top: 0.45rem;
+}
+
+.text_glow {
+  text-shadow: var(--text_glow);
 }

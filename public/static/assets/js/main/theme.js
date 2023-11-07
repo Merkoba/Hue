@@ -60,6 +60,13 @@ App.apply_theme = (background_color = ``, text_color = ``) => {
   else {
     document.documentElement.classList.remove(`no_scrollbars`)
   }
+
+  if (App.get_setting(`text_glow`)) {
+    document.body.classList.add(`text_glow`)
+  }
+  else {
+    document.body.classList.remove(`text_glow`)
+  }
 }
 
 // Sets an applies background images from data

@@ -268,6 +268,15 @@ App.build_user_settings = () => {
       },
       version: 1,
     },
+    text_glow: {
+      title: `Text Glow`,
+      type: `checkbox`,
+      description: `Show a glow effect on all text`,
+      actions: () => {
+        App.apply_theme()
+      },
+      version: 1,
+    },
   }
 }
 
