@@ -44,7 +44,7 @@ notifications_close_delay: 5000
 max_whispers_post_length: 2000
 
 # Maximum displayed media info
-max_media_info_length: 80
+max_media_info_length: 100
 
 # Maximum amount of text for something typed in the input box
 # If something bigger is inputed it will get cropped to meet this limit
