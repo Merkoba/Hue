@@ -22,19 +22,13 @@ const ColorLib = (function () {
       }
 
       let size = 64
-
       const canvas = document.createElement("canvas")
-
       canvas.width = size
       canvas.height = size
-
       const context = canvas.getContext("2d")
       context.imageSmoothingEnabled = false
-
       context.drawImage(image, 0, 0, size, size)
-
       const pixels = context.getImageData(0, 0, size, size).data
-
       const pixelArray = []
       const palette = []
 
@@ -85,7 +79,6 @@ const ColorLib = (function () {
 
       for (let i = 0; i < Math.min(palette_size, pixelArray.length); i++) {
         let arr = [pixelArray[i][0], pixelArray[i][1], pixelArray[i][2]]
-
         palette.push(instance.check_array(arr))
       }
 
@@ -207,14 +200,56 @@ const ColorLib = (function () {
       return array
     }
 
+    instance.rgba_to_array = function (rgba) {
+      let array
+
+      if (Array.isArray(rgba)) {
+        array = []
+
+        for (let i = 0; i < rgba.length; i++) {
+          let split = rgba[i]
+            .replace("rgba(", "")
+            .replace(")", "")
+            .split(",")
+          array[i] = split.map(x => parseInt(x))
+        }
+      } else {
+        let split = rgba
+          .replace("rgba(", "")
+          .replace(")", "")
+          .split(",")
+        array = split.map(x => parseInt(x))
+      }
+
+      return array
+    }
+
+    instance.increase_alpha = function (rgba, amount = 0.2) {
+      let array
+
+      if (rgba.startsWith("rgb(")) {
+        array = instance.rgb_to_array(rgba)
+        array.push(1)
+      }
+      else {
+        array = instance.rgba_to_array(rgba)
+      }
+
+      return `rgba(${array[0]}, ${array[1]}, ${array[2]}, ${array[3] - amount})`
+    }
+
     instance.rgb_to_rgba = function (rgb, alpha) {
+      if (rgba.startsWith("rgba(")) {
+        let array = instance.rgba_to_array(rgba)
+        return `rgba(${array[0]}, ${array[1]}, ${array[2]}, ${alpha})`
+      }
+
       let split = rgb
         .replace("rgb(", "")
         .replace(")", "")
         .split(",")
 
       let rgba = `rgba(${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()}, ${alpha})`
-
       return rgba
     }
 
@@ -225,7 +260,6 @@ const ColorLib = (function () {
         .split(",")
 
       let nrgb = `rgb(${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()})`
-
       return nrgb
     }
 
@@ -265,7 +299,7 @@ const ColorLib = (function () {
 
     instance.hex_to_rgb = function (hex) {
       return instance.array_to_rgb(instance.hex_to_rgb_array(hex))
-    }		
+    }
 
     instance.check_array = function (array) {
       for (let i = 0; i < array.length; i++) {
