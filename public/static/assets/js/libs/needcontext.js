@@ -21,6 +21,7 @@ NeedContext.layers = {}
 NeedContext.level = 0
 NeedContext.gap = `0.45rem`
 NeedContext.center_top = 20
+NeedContext.side_padding = `10px`
 
 // Set defaults
 NeedContext.set_defaults = () => {
@@ -112,7 +113,6 @@ NeedContext.show = (args = {}) => {
     expand: false,
     picker_mode: false,
     margin: 0,
-    index: 0,
   }
 
   NeedContext.def_args(def_args, args)
@@ -137,6 +137,22 @@ NeedContext.show = (args = {}) => {
 
   let center = args.x === undefined || args.y === undefined
   args.items = args.items.slice(0)
+
+  if (args.index === undefined) {
+    let items = args.items.filter(x => !x.separator)
+
+    for (let [i, item] of items.entries()) {
+      if (item.selected) {
+        args.index = i
+        break
+      }
+    }
+  }
+
+  if (args.index === undefined) {
+    args.index = 0
+  }
+
   let selected_index
   let layer = NeedContext.get_layer()
 
@@ -161,6 +177,19 @@ NeedContext.show = (args = {}) => {
   let c = NeedContext.container
   c.innerHTML = ``
   let index = 0
+
+  if (args.title) {
+    let title = document.createElement(`div`)
+    title.id = `needcontext-title`
+    title.textContent = args.title.trim()
+    c.append(title)
+    c.classList.add(`with_title`)
+    c.classList.remove(`without_title`)
+  }
+  else {
+    c.classList.remove(`with_title`)
+    c.classList.add(`without_title`)
+  }
 
   if (!args.root) {
     c.append(NeedContext.back_button())
@@ -449,6 +478,11 @@ NeedContext.select_action = async (e, index = NeedContext.index, mode = `mouse`)
       NeedContext.alt_action(item, e)
     }
   }
+  else if (e.button === 2) {
+    if (item.context_action) {
+      NeedContext.context_action(item, e)
+    }
+  }
 }
 
 // Check if item is hidden
@@ -491,12 +525,25 @@ NeedContext.init = () => {
       user-select: none;
       border: 1px solid #2B2F39;
       border-radius: 5px;
-      padding-top: 6px;
-      padding-bottom: 6px;
+      padding-bottom: 5px;
       max-height: 80vh;
       overflow: auto;
       text-align: left;
       max-width: 98%;
+    }
+
+    #needcontext-container.without_title {
+      padding-top: 5px;
+    }
+
+    #needcontext-title {
+      font-weight: bold;
+      padding-left: ${NeedContext.side_padding};
+      padding-right: ${NeedContext.side_padding};
+      background-color: rgba(67, 220, 255, 0.47);
+      padding-top: 4px;
+      padding-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     #needcontext-filter {
@@ -512,8 +559,8 @@ NeedContext.init = () => {
     }
 
     .needcontext-normal {
-      padding-left: 10px;
-      padding-right: 10px;
+      padding-left: ${NeedContext.side_padding};
+      padding-right: ${NeedContext.side_padding};
       padding-top: ${NeedContext.item_sep};
       padding-bottom: ${NeedContext.item_sep};
       cursor: pointer;
@@ -525,8 +572,8 @@ NeedContext.init = () => {
     }
 
     .needcontext-button {
-      padding-left: 10px;
-      padding-right: 10px;
+      padding-left: ${NeedContext.side_padding};
+      padding-right: ${NeedContext.side_padding};
       padding-top: ${NeedContext.item_sep};
       padding-bottom: ${NeedContext.item_sep};
       display: flex;
@@ -542,8 +589,8 @@ NeedContext.init = () => {
 
     .needcontext-separator {
       border-top: 1px solid currentColor;
-      margin-left: 10px;
-      margin-right: 10px;
+      margin-left: ${NeedContext.side_padding};
+      margin-right: ${NeedContext.side_padding};
       margin-top: ${NeedContext.item_sep};
       margin-bottom: ${NeedContext.item_sep};
       opacity: 0.7;
@@ -560,9 +607,10 @@ NeedContext.init = () => {
     }
 
     .needcontext-image {
-      width: 1.25rem;
-      height: 1.25rem;
+      width: 1.11rem;
+      height: 1.11rem;
       object-fit: contain;
+      margin-right: 0.1rem;
     }
 
     .needcontext-bold {
@@ -875,6 +923,22 @@ NeedContext.alt_action = (item, e) => {
 
   NeedContext.hide(e)
   item.alt_action(e)
+}
+
+// Context (right click) action
+NeedContext.context_action = (item, e) => {
+  if (item.element) {
+    if (!NeedContext.is_visible(item.element)) {
+      return
+    }
+  }
+
+  if (NeedContext.args.after_context_action) {
+    NeedContext.args.after_context_action(e)
+  }
+
+  NeedContext.hide(e)
+  item.context_action(e)
 }
 
 // Start
