@@ -118,7 +118,7 @@ const Utilz = () => {
 		let v_id = false
 		let list_id = false
 
-		let split = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/)
+		let split = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/|\/live\/)/)
 		let id = undefined !== split[2] ? split[2].split(/[^0-9a-z_\-]/i)[0] : split[0]
 
 		v_id = id.length === 11 ? id : false
