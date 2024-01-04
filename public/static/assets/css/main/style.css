@@ -1183,7 +1183,7 @@ a.special_link:hover {
 	flex-direction: row;
 	align-items: flex-start;
 	justify-content: flex-start;
-	background-color: var(--altbackground);
+	background-color: var(--altcolor_a);
 	color: var(--text_color);
 }
 
