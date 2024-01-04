@@ -10,9 +10,7 @@ App.setup_room_config = () => {
       return
     }
 
-    if (name !== App.room_name) {
-      App.change_room_name(name)
-    }
+    App.change_room_name(name)
   })
 
   let topic = DOM.el(`#admin_topic`)
@@ -25,9 +23,13 @@ App.setup_room_config = () => {
       return
     }
 
-    if (t !== App.topic) {
-      App.change_topic(t)
-    }
+    App.change_topic(t)
+  })
+
+  let limited = DOM.el(`#admin_limited`)
+
+  DOM.ev(limited, `change`, () => {
+    App.change_limited(limited.checked)
   })
 
   let background = DOM.el(`#admin_background`)
@@ -105,6 +107,7 @@ App.config_room_config = () => {
     App.config_admin_text_color()
     App.config_admin_room_name()
     App.config_admin_topic()
+    App.config_admin_limited()
   }
 }
 
@@ -156,6 +159,15 @@ App.config_admin_topic = () => {
   }
 
   DOM.el(`#admin_topic`).value = App.topic
+}
+
+// Updates the limited widget in the room config based on current state
+App.config_admin_limited = () => {
+  if (!App.is_admin_or_op()) {
+    return
+  }
+
+  DOM.el(`#admin_limited`).checked = App.limited
 }
 
 // Setup background select

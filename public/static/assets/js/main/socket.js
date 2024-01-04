@@ -30,6 +30,9 @@ App.server_update_events = {
   topic_changed: (data) => {
     App.announce_topic_change(data)
   },
+  limited_changed: (data) => {
+    App.announce_limited_change(data)
+  },
   room_name_changed: (data) => {
     App.announce_room_name_change(data)
   },

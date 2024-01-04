@@ -145,6 +145,12 @@ App.set_topic_info = (data) => {
   App.config_admin_topic()
 }
 
+// Sets limited data with received data
+App.set_limited_info = (data) => {
+  App.limited = data.limited
+  App.config_admin_limited()
+}
+
 // Requests the admin activity list from the server
 App.request_admin_activity = (filter = ``) => {
   if (!App.is_admin_or_op()) {
@@ -273,4 +279,42 @@ App.show_ban_list = (data) => {
   }
 
   App.msg_ban_list.show()
+}
+
+// Changes the limited mode
+App.change_limited = (limited) => {
+  if (!App.is_admin_or_op()) {
+    return
+  }
+
+  if (App.limited !== limited) {
+    App.socket_emit(`change_limited`, { limited: limited })
+  }
+  else {
+    App.checkmsg(`Limited is already set to that`)
+  }
+}
+
+// Announces limited changes
+App.announce_limited_change = (data) => {
+  if (data.topic !== App.topic) {
+    App.show_room_notification(
+      data.username,
+      `${data.username} changed limited`
+    )
+
+    App.set_limited_info(data)
+  }
+}
+
+// Check if limited
+App.check_limited = () => {
+  if (App.limited) {
+    if (!App.is_admin_or_op()) {
+      App.msg_info.show(App.limited_message)
+      return false
+    }
+  }
+
+  return true
 }

@@ -29,6 +29,10 @@ App.start_dropzone = () => {
 
 // Process file upload
 App.do_process_file_added = (file) => {
+  if (!App.check_limited()) {
+    return
+  }
+
   let is_image = App.utilz.is_image(file.name)
   let is_video = App.utilz.is_video(file.name)
   let is_audio = App.utilz.is_audio(file.name)

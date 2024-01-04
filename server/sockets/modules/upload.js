@@ -2,6 +2,11 @@ module.exports = (App) => {
   // Receives sliced files uploads and requests more slices
   // Sends uploaded files to respective functions
   App.handler.public.slice_upload = async (socket, data) => {
+    if (!App.handler.check_limited(socket)) {
+      await App.handler.add_spam(socket, 20)
+      return
+    }
+
     if (!data || !data.data || data.data.length > App.config.upload_slice_size) {
       await App.handler.add_spam(socket)
       return

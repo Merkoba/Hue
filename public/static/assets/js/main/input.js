@@ -179,6 +179,10 @@ App.process_input = (args = {}) => {
     args.clr_input = ans.clr_input
   }
   else {
+    if (!App.check_limited()) {
+      return
+    }
+
     if (args.message.length > App.config.max_input_length) {
       args.message = args.message.substring(0, App.config.max_input_length)
     }

@@ -74,7 +74,8 @@ module.exports = (App) => {
   App.handler.create_room_object = (info) => {
     let obj = {
       id: info.id,
-      userlist: {}
+      limited: info.limited,
+      userlist: {},
     }
 
     return obj
@@ -206,6 +207,34 @@ module.exports = (App) => {
     }
   }
 
+  // Handles limited changes
+  App.handler.public.change_limited = async (socket, data) => {
+    if (!App.handler.is_admin_or_op(socket)) {
+      return
+    }
+
+    if ((data.limited !== true) && (data.limited !== false)) {
+      return
+    }
+
+    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+
+    if (info.limited === data.limited) {
+      return
+    }
+
+    info.limited = data.limited
+    App.vars.rooms[socket.hue_room_id].limited = info.limited
+
+    App.handler.room_emit(socket, `limited_changed`, {
+      limited: data.limited,
+      user_id: socket.hue_user_id,
+      username: socket.hue_username,
+    })
+
+    App.handler.push_admin_log_message(socket, `changed limited to "${data.limited}"`)
+  }
+
   // Completes background image changes
   App.handler.do_change_background = async (socket, file_name, type) => {
     let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
@@ -221,11 +250,11 @@ module.exports = (App) => {
     }
 
     App.handler.room_emit(socket, `background_changed`, {
-      user_id: socket.hue_user_id,
-      username: socket.hue_username,
       background: file_name,
       background_type: type,
-      background_version: new_ver
+      background_version: new_ver,
+      user_id: socket.hue_user_id,
+      username: socket.hue_username,
     })
 
     // Remove left over files
@@ -252,5 +281,17 @@ module.exports = (App) => {
         App.logger.log_error(err)
       }
     }
+  }
+
+  App.handler.check_limited = (socket) => {
+    let room = App.vars.rooms[socket.hue_room_id]
+
+    if (room.limited) {
+      if (!App.handler.is_admin_or_op(socket)) {
+        return false
+      }
+    }
+
+    return true
   }
 }

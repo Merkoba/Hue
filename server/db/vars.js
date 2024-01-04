@@ -7,7 +7,7 @@ module.exports = (stuff) => {
 
   // Room and User versions
   // These must be increased by 1 when the schema changes
-  stuff.vars.rooms_version = 89
+  stuff.vars.rooms_version = 90
   stuff.vars.users_version = 57
 
   // Room schema definition
@@ -28,7 +28,8 @@ module.exports = (stuff) => {
       background_version: { type: `number`, default: 0 },
       message_board_posts: { type: `object`, default: [] },
       modified: { type: `number`, default: Date.now() },
-      version: { type: `number`, default: 0 }
+      version: { type: `number`, default: 0 },
+      limited: { type: `boolean`, default: false },
     }
   }
 
@@ -46,7 +47,7 @@ module.exports = (stuff) => {
       audioclip_version: { type: `number`, default: 0 },
       modified: { type: `number`, default: Date.now() },
       version: { type: `number`, default: 0 },
-      last_message_board_post_date: {type: `number`, default: 0}
+      last_message_board_post_date: {type: `number`, default: 0},
     }
   }
 }

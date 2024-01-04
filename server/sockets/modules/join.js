@@ -208,6 +208,7 @@ module.exports = (App) => {
       background_type: info.background_type,
       background_version: info.background_version,
       text_color: info.text_color,
+      limited: info.limited,
       bio: socket.hue_bio,
       superuser: socket.hue_superuser,
       reg_date: userinfo.registration_date,

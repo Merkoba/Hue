@@ -104,6 +104,7 @@ App.reply_active = false
 App.edit_active = false
 App.highlight_footer_delay = 500
 App.unread_count = 0
+App.limited_message = `You can't do this because the room is limited`
 
 // Initial media-loading variables declarations
 App.youtube_loading = false
@@ -229,6 +230,7 @@ App.on_join = (data) => {
   App.prepare_active_media()
   App.set_role(data.role, false)
   App.set_topic_info(data)
+  App.set_limited_info(data)
   App.update_title()
   App.update_user_profile()
   App.clear_chat()
