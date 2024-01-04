@@ -297,12 +297,17 @@ App.change_limited = (limited) => {
 
 // Announces limited changes
 App.announce_limited_change = (data) => {
-  if (data.topic !== App.topic) {
-    App.show_room_notification(
-      data.username,
-      `${data.username} changed limited`
-    )
+  let s = data.username
 
+  if (data.limited) {
+    s += ` enabled limited mode`
+  }
+  else {
+    s += ` disabled limited mode`
+  }
+
+  if (data.topic !== App.topic) {
+    App.show_room_notification(data.username, s)
     App.set_limited_info(data)
   }
 }
