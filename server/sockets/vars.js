@@ -54,4 +54,5 @@ module.exports = (App) => {
 
   App.vars.tv_link_types = [`youtube`, `twitch`, `soundcloud`, `video`, `iframe`]
   App.vars.exiting = false
+  App.vars.limited_spam = 20
 }

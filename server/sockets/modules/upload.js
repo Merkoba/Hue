@@ -3,7 +3,7 @@ module.exports = (App) => {
   // Sends uploaded files to respective functions
   App.handler.public.slice_upload = async (socket, data) => {
     if (!App.handler.check_limited(socket)) {
-      await App.handler.add_spam(socket, 20)
+      await App.handler.add_spam(socket, App.vars.limited_spam)
       return
     }
 
