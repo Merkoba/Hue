@@ -76,6 +76,12 @@ module.exports = (App) => {
     let id, date, edited, username, linkdata, likes
 
     if (data.edit_id) {
+      let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+
+      if (!info) {
+        return
+      }
+
       for (let i=0; i<info.log_messages.length; i++) {
         if (info.log_messages[i].data.id === data.edit_id) {
           if (info.log_messages[i].data.user_id !== socket.hue_user_id) {
