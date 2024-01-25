@@ -79,6 +79,13 @@ App.after_footer_expand_change = () => {
   App.fix_frames()
 }
 
+// Check input expand
+App.check_footer_expand = () => {
+  if (!App.input_has_value()) {
+    App.disable_footer_expand()
+  }
+}
+
 // Update footer toggle
 App.update_footer_toggle = (type) => {
   let val = App.room_state[`${type}_enabled`]

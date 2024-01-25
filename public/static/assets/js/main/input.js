@@ -1,12 +1,16 @@
 // On input change
 App.on_input_change = () => {
+  App.check_input_height()
+  App.check_footer_expand()
+}
+
+// Check the input height to expand the footer
+App.check_input_height = () => {
   let input = DOM.el(`#input`)
 
   if (input.clientHeight < input.scrollHeight) {
     App.enable_footer_expand()
   }
-
-  App.check_footer_expand()
 }
 
 // Setups events for the main input
@@ -201,13 +205,6 @@ App.process_input = (args = {}) => {
 
   if (args.clr_input) {
     App.clear_input()
-  }
-}
-
-// Check input expand
-App.check_footer_expand = () => {
-  if (!App.input_has_value()) {
-    App.disable_footer_expand()
   }
 }
 
