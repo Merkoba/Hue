@@ -323,3 +323,12 @@ App.check_limited = () => {
 
   return true
 }
+
+// Toggle limited
+App.toggle_limited = () => {
+  if (!App.is_admin_or_op()) {
+    return
+  }
+
+  App.change_limited(!App.limited)
+}

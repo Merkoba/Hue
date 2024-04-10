@@ -630,6 +630,12 @@ App.commands = {
     },
     description: `Show the reactions window`,
   },
+  limited: {
+    action: (arg, ans) => {
+      App.toggle_limited()
+    },
+    description: `Toggle limited`,
+  },
 }
 
 // Commands reserved to superusers
