@@ -536,6 +536,12 @@ App.get_matching_usernames = (s) => {
 
 // Setups user profile windows
 App.setup_show_profile = () => {
+  DOM.ev(DOM.el(`#show_profile_mention`), `click`, () => {
+    let new_input = App.get_input() + ` ${App.open_profile_username}`.trim()
+    App.change_input(new_input)
+    App.msg_profile.close()
+  })
+
   DOM.ev(DOM.el(`#show_profile_whisper`), `click`, () => {
     App.write_whisper([App.open_profile_username])
     App.msg_profile.close()
