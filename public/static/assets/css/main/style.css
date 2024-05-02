@@ -853,7 +853,6 @@ input[type=checkbox] {
 
 .pointer {
 	cursor: pointer;
-	user-select: none;
 }
 
 .unselectable {
@@ -997,7 +996,6 @@ input[type=checkbox] {
 .action, .actionbox, .actionbox_light {
 	transition: text-shadow 250ms, box-shadow 250ms;
 	cursor: pointer;
-	user-select: none;
 }
 
 .action:hover {
