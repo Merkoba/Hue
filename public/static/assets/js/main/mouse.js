@@ -136,4 +136,25 @@ App.start_mouse_events = () => {
       }
     }
   })
+
+  DOM.ev(document, `auxclick`, (e) => {
+    if (!e.target) {
+      return
+    }
+
+    if (e.button === 1) {
+      let message = e.target.closest(`.message`)
+
+      if (message) {
+        let username = DOM.dataset(message, `username`)
+
+        if (e.target.classList.contains(`chat_username`)) {
+          App.mention_user(username)
+        }
+        else if (e.target.classList.contains(`chat_profilepic`)) {
+          App.mention_user(username)
+        }
+      }
+    }
+  })
 }
