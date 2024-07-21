@@ -298,10 +298,6 @@ module.exports = (db_manager, config, sconfig, utilz) => {
       return
     }
 
-    if (username === password) {
-      return
-    }
-
     if (username.length === 0 || username.length > config.max_username_length) {
       return
     }
@@ -315,6 +311,11 @@ module.exports = (db_manager, config, sconfig, utilz) => {
       password.length < config.min_password_length ||
       password.length > config.max_password_length
     ) {
+      return
+    }
+
+    // Avoid cases like admin:admin
+    if (username === password) {
       return
     }
 
