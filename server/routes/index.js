@@ -301,8 +301,8 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
   // Register POST
   router.post(`/register`, (req, res, next) => {
-    let username = req.body.username
-    let password = req.body.password
+    let username = req.body.username.trim()
+    let password = req.body.password.trim()
     let code = req.body.code
 
     if (code !== sconfig.register_code) {
@@ -311,6 +311,10 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
     if (view.reserved_usernames.includes(username.toLowerCase())) {
       already_exists(res, username)
+      return
+    }
+
+    if (username === password) {
       return
     }
 
