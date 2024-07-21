@@ -95,22 +95,6 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     // These can't be used on registration
     view.reserved_usernames = [
       sconfig.system_username,
-      `admin`,
-      `mod`,
-      `moderator`,
-      `administrator`,
-      `root`,
-      `superuser`,
-      `super`,
-      `user`,
-      `test`,
-      `testing`,
-      `guest`,
-      `anon`,
-      `anonymous`,
-      `null`,
-      `undefined`,
-      `void`,
     ].map((x) => x.toLowerCase())
 
     view_mtime = get_view_mtime()
