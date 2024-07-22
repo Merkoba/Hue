@@ -97,6 +97,13 @@ module.exports = (db_manager, config, sconfig, utilz) => {
       sconfig.system_username,
     ].map((x) => x.toLowerCase())
 
+    // Banned passwords
+    // These can't be used on registration
+    view.banned_passwords = [
+      `pass`,
+      `password`,
+    ]
+
     view_mtime = get_view_mtime()
     config_mtime = config.mtime
     utilz.loginfo(`View built`)
@@ -316,6 +323,10 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
     // Avoid cases like admin:admin
     if (username === password) {
+      return
+    }
+
+    if (view.banned_passwords.includes(password)) {
       return
     }
 
