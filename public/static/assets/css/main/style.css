@@ -1590,6 +1590,14 @@ pre {
 	color: var(--text_color);
 }
 
+.media_info {
+	white-space: nowrap;
+	overflow: hidden;
+	cursor: pointer;
+	gap: 0.5rem;
+	padding-top: 0.72rem;
+}
+
 .media_info_separator {
 	margin-left: 0.5rem;
 	margin-right: 0.5rem;
@@ -1599,14 +1607,6 @@ pre {
 	margin-top: 0.1rem;
 	display: var(--media_info_display);
 	gap: 0.6rem;
-}
-
-.media_info {
-	white-space: nowrap;
-	overflow: hidden;
-	cursor: pointer;
-	gap: 0.5rem;
-	padding-top: 0.72rem;
 }
 
 .media_info_user {
@@ -1624,7 +1624,7 @@ pre {
 
 .media_info_title {
 	display: var(--media_info_title);
-	max-width: 45rem;
+	max-width: 42rem;
 	overflow: hidden;
 }
 
