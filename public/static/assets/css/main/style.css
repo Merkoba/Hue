@@ -377,6 +377,7 @@ html {
 	visibility: hidden;
 	color: var(--text_color);
 	background-color: var(--altbackground);
+	user-select: none;
 }
 
 .top_scroller_container {
