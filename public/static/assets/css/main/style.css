@@ -1602,6 +1602,7 @@ pre {
 }
 
 .media_info {
+	white-space: nowrap;
 	cursor: pointer;
 	line-height: 1.8rem;
 	gap: 0.6rem;
@@ -1609,6 +1610,11 @@ pre {
 
 .media_info_username {
 	font-weight: bold;
+}
+
+.media_info_details {
+	max-width: 44rem;
+	overflow: hidden;
 }
 
 .media_info_date {
