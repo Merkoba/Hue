@@ -57,7 +57,8 @@ App.check_frame = (text) => {
 
 // Check for arrows at the start of lines
 App.check_arrowtext = (text) => {
-  let lines = text.split(`\n`)
+  text = text.trim()
+  let lines = text.split(`\n`).map(x => x.trim())
   let new_lines = []
 
   if (text.startsWith(`&gt;&gt;&gt;`)) {
