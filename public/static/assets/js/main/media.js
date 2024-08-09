@@ -568,7 +568,7 @@ App.start_media_info = () => {
   })
 
   DOM.ev(DOM.el(`#media`), `click`, (e) => {
-    let el = e.target.closest(`.media_info_details`)
+    let el = e.target.closest(`.media_info_title`)
 
     if (el) {
       let media_info = el.closest(`.media_info_container`)
@@ -882,8 +882,31 @@ App.change_media_visibility = (type, play = false) => {
 
 // Check media info
 App.check_media_info = () => {
-  let display = App.get_setting(`show_media_info`) ? `flex` : `none`
+  let mode = App.get_setting(`media_info`)
+  let display
+
+  if (mode === `hidden`) {
+    display = `none`
+  }
+  else {
+    display = `flex`
+  }
+
   document.documentElement.style.setProperty(`--media_info_display`, display)
+
+  if (mode === `only_title`) {
+    document.documentElement.style.setProperty(`--media_info_user`, `none`)
+  }
+  else {
+    document.documentElement.style.setProperty(`--media_info_user`, `flex`)
+  }
+
+  if (mode === `only_user`) {
+    document.documentElement.style.setProperty(`--media_info_title`, `none`)
+  }
+  else {
+    document.documentElement.style.setProperty(`--media_info_title`, `flex`)
+  }
 }
 
 // Reply to media

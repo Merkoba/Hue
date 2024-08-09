@@ -77,6 +77,22 @@ App.build_user_settings = () => {
       ],
       version: 1,
     },
+    media_info: {
+      title: `Media Info`,
+      type: `select`,
+      description: `How to show the media info`,
+      actions: () => {
+        App.check_media_info()
+        App.fix_frames()
+      },
+      options: [
+        {value: `normal`, text: `Normal`},
+        {value: `only_user`, text: `Only User`},
+        {value: `only_title`, text: `Only Title`},
+        {value: `hidden`, text: `Hidden`},
+      ],
+      version: 1,
+    },
     tv_position: {
       title: `TV Position`,
       type: `select`,
@@ -138,16 +154,6 @@ App.build_user_settings = () => {
       description: `Whether to show the chat at all`,
       actions: () => {
         App.check_show_chat()
-        App.fix_frames()
-      },
-      version: 1,
-    },
-    show_media_info: {
-      title: `Show Media Info`,
-      type: `checkbox`,
-      description: `Whether to show info under media`,
-      actions: () => {
-        App.check_media_info()
         App.fix_frames()
       },
       version: 1,

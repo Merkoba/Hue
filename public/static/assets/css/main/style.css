@@ -1609,12 +1609,17 @@ pre {
 	padding-top: 0.72rem;
 }
 
+.media_info_user {
+	display: var(--media_info_user);
+}
+
 .media_info_username {
 	font-weight: bold;
 	padding-right: 0.8rem;
 }
 
-.media_info_details {
+.media_info_title {
+	display: var(--media_info_title);
 	max-width: 45rem;
 	overflow: hidden;
 }
