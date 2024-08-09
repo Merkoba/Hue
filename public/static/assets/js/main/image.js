@@ -191,10 +191,10 @@ App.setup_modal_image = () => {
     let direction = e.deltaY > 0 ? `down` : `up`
 
     if (direction === `up`) {
-      App.modal_image_next_wheel_debouncer.call()
+      App.modal_image_prev_wheel_debouncer.call()
     }
     else if (direction === `down`) {
-      App.modal_image_prev_wheel_debouncer.call()
+      App.modal_image_next_wheel_debouncer.call()
     }
   }
 
