@@ -1,9 +1,12 @@
 <script id="template_media_info_inner" type="text/x-handlebars-template" class="template">
   <div class="media_info_user flex_row_center">
-    <img src="{{profilepic}}" class="media_info_profilepic profilepic icon_size actionbox">
-    <div class="media_info_username action">{{username}}</div>
-    <div class="media_info_date"></div>
+    <div class="media_info_profile flex_row_center">
+        <img src="{{profilepic}}" class="media_info_profilepic profilepic icon_size actionbox">
+        <div class="media_info_username action">{{username}}</div>
+    </div>
+
+    <div class="media_info_date media_info_menu action"></div>
   </div>
 
-  <div class="media_info_title action">{{message}}</div>
+  <div class="media_info_title media_info_menu action">{{message}}</div>
 </script>

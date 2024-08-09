@@ -558,7 +558,7 @@ App.start_media_info = () => {
   App.append_media_info(`#media_image_container`, `image`)
 
   DOM.ev(DOM.el(`#media`), `click`, (e) => {
-    let el = e.target.closest(`.media_info_user`)
+    let el = e.target.closest(`.media_info_profile`)
 
     if (el) {
       let username = DOM.dataset(el.closest(`.media_info_container`), `username`)
@@ -568,7 +568,7 @@ App.start_media_info = () => {
   })
 
   DOM.ev(DOM.el(`#media`), `click`, (e) => {
-    let el = e.target.closest(`.media_info_title`)
+    let el = e.target.closest(`.media_info_menu`)
 
     if (el) {
       let media_info = el.closest(`.media_info_container`)
