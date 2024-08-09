@@ -34,6 +34,7 @@ module.exports = (App) => {
           post.link_description = linkdata.description
           post.link_image = linkdata.image
           post.link_url = linkdata.url
+          info.modified = Date.now()
           App.handler.room_emit(socket, `edited_message_board_post`, post)
           return
         }
@@ -92,6 +93,31 @@ module.exports = (App) => {
     return `${Date.now()}_${App.utilz.random_sequence(3)}`
   }
 
+  // Check if a user can modify a message board post
+  App.handler.check_message_board_modify = (socket, item, info) => {
+    let current_role = info.keys[item.user_id] || App.vars.default_role
+
+    if (item.user_id !== socket.hue_user_id) {
+      if (!socket.hue_superuser) {
+        if (current_role === `admin`) {
+          return false
+        }
+        else if (current_role === `op`) {
+          if (socket.hue_role !== `admin`) {
+            return false
+          }
+        }
+        else {
+          if (!App.handler.is_admin_or_op(socket)) {
+            return false
+          }
+        }
+      }
+    }
+
+    return true
+  }
+
   // Deletes a message board post
   App.handler.public.delete_message_board_post = async (socket, data) => {
     if (!data.id) {
@@ -104,37 +130,56 @@ module.exports = (App) => {
       let item = info.message_board_posts[i]
 
       if (item.id === data.id) {
-        let current_role = info.keys[item.user_id] || App.vars.default_role
-
-        if (item.user_id !== socket.hue_user_id) {
-          if (!socket.hue_superuser) {
-            if (current_role === `admin`) {
-              App.handler.user_emit(socket, `forbidden_user`, {})
-              return
-            }
-            else if (current_role === `op`) {
-              if (socket.hue_role !== `admin`) {
-                App.handler.user_emit(socket, `forbidden_user`, {})
-                return
-              }
-            }
-            else {
-              if (!App.handler.is_admin_or_op(socket)) {
-                App.handler.user_emit(socket, `forbidden_user`, {})
-                return
-              }
-            }
-          }
+        if (!App.handler.check_message_board_modify(socket, item, info)) {
+          App.handler.user_emit(socket, `forbidden_user`, {})
+          return
         }
 
         info.message_board_posts.splice(i, 1)
+        info.modified = Date.now()
 
-        App.handler.room_emit(socket, `message_board_post_deleted`, {
+        App.handler.room_emit(socket, `deleted_message_board_post`, {
           id: data.id,
         })
 
         if (item.user_id !== socket.hue_user_id) {
           App.handler.push_admin_log_message(socket, `deleted a message from the message board`)
+        }
+
+        return
+      }
+    }
+  }
+
+  // Bump a message board post
+  App.handler.public.bump_message_board_post = async (socket, data) => {
+    if (!data.id) {
+      return
+    }
+
+    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+
+    for (let i=0; i<info.message_board_posts.length; i++) {
+      let item = info.message_board_posts[i]
+
+      if (item.id === data.id) {
+        if (!App.handler.check_message_board_modify(socket, item, info)) {
+          App.handler.user_emit(socket, `forbidden_user`, {})
+          return
+        }
+
+        let now = Date.now()
+        item.date = now
+        info.message_board_posts.splice(i, 1)
+        info.message_board_posts.push(item)
+        info.modified = now
+
+        App.handler.room_emit(socket, `bumped_message_board_post`, {
+          id: data.id,
+        })
+
+        if (item.user_id !== socket.hue_user_id) {
+          App.handler.push_admin_log_message(socket, `bumped a message from the message board`)
         }
 
         return

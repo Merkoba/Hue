@@ -196,8 +196,11 @@ App.server_update_events = {
   edited_message_board_post: (data) => {
     App.on_message_board_received(data, true)
   },
-  message_board_post_deleted: (data) => {
+  deleted_message_board_post: (data) => {
     App.deleted_message_board_post(data)
+  },
+  bumped_message_board_post: (data) => {
+    App.bumped_message_board_post(data, true)
   },
   message_board_cleared: (data) => {
     App.message_board_cleared(data)

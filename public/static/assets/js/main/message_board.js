@@ -69,6 +69,13 @@ App.setup_message_board = () => {
       App.do_message_board_edit()
       return
     }
+
+    el = e.target.closest(`.message_board_bump`)
+
+    if (el) {
+      App.bump_message_board_post(post)
+      return
+    }
   })
 
   DOM.ev(DOM.el(`#message_board_post`), `click`, () => {
@@ -397,6 +404,31 @@ App.deleted_message_board_post = (data) => {
   App.check_last_message_board_post()
 }
 
+// Put the bumped post at the top
+App.bumped_message_board_post = (data) => {
+  for (let post of DOM.els(`.message_board_post`)) {
+    if (DOM.dataset(post, `id`) === data.id) {
+      post.remove()
+      DOM.el(`#message_board_container`).prepend(post)
+
+      let now = Date.now()
+      let date = DOM.el(`.message_board_date`, post)
+      date.textContent = App.format_date(now)
+      DOM.dataset(post, `date`, now)
+      break
+    }
+  }
+
+  App.message_board_separate()
+  App.check_last_message_board_post()
+  App.message_board_top()
+}
+
+// Scroll to the top of the message board
+App.message_board_top = () => {
+  App.msg_message_board.content_container.scrollTop = 0
+}
+
 // After message board filter
 App.after_message_board_filtered = () => {
   App.message_board_separate()
@@ -426,7 +458,7 @@ App.delete_message_board_post = (post) => {
   let user_id = DOM.dataset(post, `user_id`)
   let user = App.get_user_by_user_id(user_id)
 
-  if (App.user_id !== user_id && !App.superuser) {
+  if ((App.user_id !== user_id) && !App.superuser) {
     if (user && App.is_admin(user)) {
       App.forbidden_user()
       return
@@ -453,6 +485,7 @@ App.edit_message_board_post = (post) => {
   edit_area.style.display = `block`
   edit_area.value = text
   edit_area.focus()
+
   edit_area.scrollIntoView({
     block: `center`
   })
@@ -461,6 +494,24 @@ App.edit_message_board_post = (post) => {
   edit_btns.style.display = `flex`
   App.editing_message_board_post = post
   App.editing_message_board = true
+}
+
+// Bump message board post to make it the first post again
+App.bump_message_board_post = (post) => {
+  let id = DOM.dataset(post, `id`)
+  let user_id = DOM.dataset(post, `user_id`)
+  let user = App.get_user_by_user_id(user_id)
+
+  if ((App.user_id !== user_id) && !App.superuser) {
+    if (user && App.is_admin(user)) {
+      App.forbidden_user()
+      return
+    }
+  }
+
+  if (id) {
+    App.socket_emit(`bump_message_board_post`, { id: id })
+  }
 }
 
 // Show message board wait message
