@@ -1606,12 +1606,12 @@ pre {
 	overflow: hidden;
 	cursor: pointer;
 	gap: 0.5rem;
-	padding-top: 0.8rem;
+	padding-top: 0.72rem;
 }
 
 .media_info_username {
 	font-weight: bold;
-	padding-right: 1rem;
+	padding-right: 0.8rem;
 }
 
 .media_info_details {
@@ -1625,7 +1625,7 @@ pre {
 }
 
 .media_info_profilepic {
-	margin-right: 0.35rem;
+	margin-right: 0.5rem;
 }
 
 .result_container {
