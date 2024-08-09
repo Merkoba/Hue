@@ -146,7 +146,7 @@ settings_default_show_user_leave_notifications: true
 settings_default_show_background: true
 settings_default_show_linksbar: true
 settings_default_autoplay: true
-settings_default_font: "monospace"
+settings_default_font: "sans-serif"
 settings_default_chat_font_size: 1
 settings_default_chat_size: 40
 settings_default_main_layout: "row"
