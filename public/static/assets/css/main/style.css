@@ -397,7 +397,7 @@ html {
 	z-index: 99;
 	padding-left: 1.5rem;
 	padding-right: 1.5rem;
-	border: 0.06rem solid var(--altcolor_a);
+	border: 0.06rem solid var(--text_color_a);
 	flex-grow: 1;
 	flex-basis: 50%;
 }
