@@ -87,9 +87,9 @@ App.build_user_settings = () => {
       },
       options: [
         {value: `normal`, text: `Normal`},
+        {value: `columns`, text: `Columns`},
         {value: `only_user`, text: `Only User`},
         {value: `only_title`, text: `Only Title`},
-        {value: `compact`, text: `Compact`},
         {value: `hidden`, text: `Hidden`},
       ],
       version: 1,

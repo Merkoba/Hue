@@ -908,11 +908,11 @@ App.check_media_info = () => {
     document.documentElement.style.setProperty(`--media_info_title`, `flex`)
   }
 
-  if (mode === `compact`) {
-    document.documentElement.style.setProperty(`--media_info_direction`, `row`)
+  if (mode === `columns`) {
+    document.documentElement.style.setProperty(`--media_info_direction`, `column`)
   }
   else {
-    document.documentElement.style.setProperty(`--media_info_direction`, `column`)
+    document.documentElement.style.setProperty(`--media_info_direction`, `row`)
   }
 }
 
