@@ -831,6 +831,7 @@ input[type=checkbox] {
 	align-items: center;
 	height: 100%;
 	position: relative;
+	user-select: none;
 }
 
 .show_image_container {
