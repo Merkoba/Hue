@@ -907,6 +907,13 @@ App.check_media_info = () => {
   else {
     document.documentElement.style.setProperty(`--media_info_title`, `flex`)
   }
+
+  if (mode === `compact`) {
+    document.documentElement.style.setProperty(`--media_info_direction`, `row`)
+  }
+  else {
+    document.documentElement.style.setProperty(`--media_info_direction`, `column`)
+  }
 }
 
 // Reply to media

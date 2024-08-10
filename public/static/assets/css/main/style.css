@@ -1597,6 +1597,7 @@ pre {
 	cursor: pointer;
 	gap: 0.5rem;
 	padding-top: 0.72rem;
+	flex-direction: var(--media_info_direction);
 }
 
 .media_info_separator {
@@ -1612,7 +1613,7 @@ pre {
 
 .media_info_user {
 	display: var(--media_info_user);
-	gap: 1rem;
+	gap: 0.5rem;
 }
 
 .media_info_profile {
