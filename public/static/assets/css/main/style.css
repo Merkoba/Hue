@@ -1597,7 +1597,7 @@ pre {
 	overflow: hidden;
 	cursor: pointer;
 	gap: 0.5rem;
-	padding-top: 0.72rem;
+	padding-top: 0.6rem;
 	flex-direction: var(--media_info_direction);
 }
 
