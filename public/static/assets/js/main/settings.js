@@ -128,8 +128,8 @@ App.build_user_settings = () => {
       },
       options: [
         {value: `relative`, text: `Relative`},
-        {value: `absolute_12`, text: `Absolute`},
-        {value: `absolute_24`, text: `Absolute`},
+        {value: `absolute_12`, text: `12 Hours`},
+        {value: `absolute_24`, text: `24 Hours`},
       ],
       version: 1,
     },
