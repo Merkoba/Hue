@@ -176,7 +176,7 @@ App.selected_next_el = (reverse = false) => {
     els.reverse()
   }
 
-  if (els.length < 2) {
+  if (!els.length) {
     return
   }
 
