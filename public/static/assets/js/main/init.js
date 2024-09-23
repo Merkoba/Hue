@@ -1,4 +1,4 @@
-// TS: 1
+// TS: 2
 
 // All client variables and functions go here
 const App = {}
