@@ -276,6 +276,14 @@ App.input_history_enter_action = (el) => {
     el = App.selected_modal_item
   }
 
+  if (!el) {
+    el = DOM.el(`.input_history_item`)
+  }
+
+  if (!el) {
+    return
+  }
+
   App.change_input(el.textContent)
   App.msg_input_history.close()
 }
