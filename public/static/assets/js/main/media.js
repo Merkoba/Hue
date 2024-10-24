@@ -584,6 +584,7 @@ App.start_media_info = () => {
       if (e.button === 1) {
         let username = DOM.dataset(el.closest(`.media_info_container`), `username`)
         App.mention_user(username)
+        return
       }
     }
   })
