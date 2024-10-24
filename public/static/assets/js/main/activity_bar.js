@@ -11,6 +11,13 @@ App.setup_activity_bar = () => {
       App.show_profile(DOM.dataset(item, `username`), DOM.dataset(item, `user_id`))
     }
   })
+
+  DOM.ev(DOM.el(`#activity_bar`), `auxclick`, (e) => {
+    if (e.button === 1) {
+      let item = e.target.closest(`.activity_bar_item`)
+      App.mention_user(DOM.dataset(item, `username`))
+    }
+  })
 }
 
 // Updates the activity bar
