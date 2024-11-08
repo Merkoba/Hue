@@ -400,12 +400,18 @@ module.exports = (db_manager, config, sconfig, utilz) => {
       )
 
       if (fs.existsSync(codes_path)) {
-        let codes = JSON.parse(fs.readFileSync(codes_path, `utf8`))
+        try {
+          let codes = JSON.parse(fs.readFileSync(codes_path, `utf8`))
 
-        if (codes.includes(code)) {
-          ok = true
-          codes = codes.filter((x) => x !== code)
-          fs.writeFileSync(codes_path, JSON.stringify(codes), `utf8`)
+          if (codes.includes(code)) {
+            ok = true
+            codes = codes.filter((x) => x !== code)
+            fs.writeFileSync(codes_path, JSON.stringify(codes), `utf8`)
+          }
+        }
+        catch (err) {
+          console.error(err)
+          return
         }
       }
     }
