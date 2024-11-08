@@ -87,3 +87,7 @@ You can add some reaction images in public/static/assets/img/reactions
 Give each file a simple name like `smile.jpg`
 
 The file name becomes the name of the reaction `:smile:`
+
+## Codes
+
+To register the code must be the `register_code` setting or a code inside `config/codes.json` (array).

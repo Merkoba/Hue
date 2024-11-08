@@ -3,6 +3,7 @@
 /config/user_config.secret.json
 /config/user_config.secret.yml
 /config/banlist.json
+/config/codes.json
 
 /node_modules/*
 /.vscode/*

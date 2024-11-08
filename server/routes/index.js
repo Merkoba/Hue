@@ -292,44 +292,6 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
   // Register POST
   router.post(`/register`, (req, res, next) => {
-    let username = req.body.username.trim()
-    let password = req.body.password.trim()
-    let code = req.body.code
-
-    if (code !== sconfig.register_code) {
-      return
-    }
-
-    if (view.reserved_usernames.includes(username.toLowerCase())) {
-      already_exists(res, username)
-      return
-    }
-
-    if (username.length === 0 || username.length > config.max_username_length) {
-      return
-    }
-
-    if (username !== utilz.clean_username(username)) {
-      return
-    }
-
-    if (
-      password.length === 0 ||
-      password.length < config.min_password_length ||
-      password.length > config.max_password_length
-    ) {
-      return
-    }
-
-    // Avoid cases like admin:admin
-    if (username === password) {
-      return
-    }
-
-    if (view.banned_passwords.includes(password)) {
-      return
-    }
-
     if (sconfig.recaptcha_enabled) {
       check_captcha(req, res, () => {
         do_register(req, res, next)
@@ -392,8 +354,65 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
   // Complete registration
   function do_register (req, res, next) {
-    let username = req.body.username
-    let password = req.body.password
+    let username = req.body.username.trim()
+    let password = req.body.password.trim()
+    let code = req.body.code
+    let ok = false
+
+    if (view.reserved_usernames.includes(username.toLowerCase())) {
+      already_exists(res, username)
+      return
+    }
+
+    if ((username.length === 0) || (username.length > config.max_username_length)) {
+      return
+    }
+
+    if (username !== utilz.clean_username(username)) {
+      return
+    }
+
+    if (
+      (password.length === 0) ||
+      (password.length < config.min_password_length) ||
+      (password.length > config.max_password_length)
+    ) {
+      return
+    }
+
+    // Avoid cases like admin:admin
+    if (username === password) {
+      return
+    }
+
+    if (view.banned_passwords.includes(password)) {
+      return
+    }
+
+    if (code === sconfig.register_code) {
+      ok = true
+    }
+
+    if (!ok) {
+      const codes_path = path.join(
+        __dirname,
+        `../../config/codes.json`
+      )
+
+      if (fs.existsSync(codes_path)) {
+        let codes = JSON.parse(fs.readFileSync(codes_path, `utf8`))
+
+        if (codes.includes(code)) {
+          ok = true
+          codes = codes.filter((x) => x !== code)
+          fs.writeFileSync(codes_path, JSON.stringify(codes), `utf8`)
+        }
+      }
+    }
+
+    if (!ok) {
+      return
+    }
 
     db_manager
       .get_user(
