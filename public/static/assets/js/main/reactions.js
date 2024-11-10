@@ -14,10 +14,8 @@ App.show_reactions = () => {
   for (let reaction of reactions) {
     let el = DOM.create(`div`)
     let name = App.get_reaction_name(reaction)
-    let cmd = `:${name}:`
-    let text = DOM.create(`div`, `reaction_text`)
-    text.textContent = cmd
     let img = DOM.create(`img`, `reaction_image actionbox`)
+    img.title = `:${name}:`
     img.loading = `lazy`
     img.src = App.get_reaction_url(name)
 
@@ -25,7 +23,6 @@ App.show_reactions = () => {
       App.send_reaction(name)
     })
 
-    el.append(text)
     el.append(img)
     c.append(el)
   }
