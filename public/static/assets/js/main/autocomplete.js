@@ -123,9 +123,7 @@ App.replace_tabbed = (element, word) => {
     }
 
     let pos = info.tabbed_start + result.length
-
     element.setSelectionRange(pos + 1, pos + 1)
-
     info.tabbed_start = pos - result.length
     info.tabbed_end = pos
   }

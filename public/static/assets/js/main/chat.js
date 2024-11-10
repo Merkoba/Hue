@@ -1814,6 +1814,7 @@ App.update_likes = (el, likes) => {
       DOM.dataset(el, `username`, obj.username)
       DOM.dataset(el, `date`, obj.date)
       let profilepic = DOM.el(`.like_profilepic`, el)
+      App.push_to_all_usernames(obj.username)
 
       DOM.ev(profilepic, `error`, () => {
         App.fallback_profilepic(profilepic)
