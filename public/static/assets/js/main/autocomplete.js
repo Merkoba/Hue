@@ -7,6 +7,10 @@ App.generate_words_to_autocomplete = () => {
     usernames.push(item.username)
   }
 
+  for (let item of App.all_usernames) {
+    usernames.push(item)
+  }
+
   for (let username of usernames) {
     susernames.push(`${username}'s`)
   }
@@ -17,7 +21,6 @@ App.generate_words_to_autocomplete = () => {
     ...App.commands_list_with_prefix,
     ...usernames,
     ...susernames,
-    ...App.all_usernames
   )
 
   words.sort()
