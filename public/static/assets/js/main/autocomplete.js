@@ -11,6 +11,8 @@ App.generate_words_to_autocomplete = () => {
     usernames.push(item)
   }
 
+  usernames = [...new Set(usernames)]
+
   for (let username of usernames) {
     susernames.push(`${username}'s`)
   }
