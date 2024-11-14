@@ -110,6 +110,5 @@ App.resize_events = () => {
 // What to do after a window resize
 App.on_resize = () => {
   App.fix_frames()
-  App.resize_activity_bar()
   App.scroll_to_radio_station()
 }

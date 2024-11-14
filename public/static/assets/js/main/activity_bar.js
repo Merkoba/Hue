@@ -68,17 +68,6 @@ App.update_activity_bar = (check = false) => {
     text_el.textContent = user.username.slice(0, App.config.max_activity_username_length)
     DOM.el(`#activity_bar_inner`).append(el)
   }
-
-  App.resize_activity_bar()
-}
-
-App.resize_activity_bar = () => {
-  let ab_inner = DOM.el(`#activity_bar_inner`)
-  ab_inner.classList.remove(`no_usernames`)
-
-  if (ab_inner.scrollWidth > ab_inner.clientWidth) {
-    ab_inner.classList.add(`no_usernames`)
-  }
 }
 
 // Gets an activity bar item by username

@@ -112,10 +112,6 @@ html {
 	gap: 1.25rem;
 }
 
-#activity_bar_inner.no_usernames .activity_bar_text {
-	display: none;
-}
-
 .activity_bar_item {
 	gap: 0.5rem;
 }
