@@ -216,7 +216,7 @@ max_bio_lines: 4
 max_info_popups: 5
 
 # The character before commands
-commands_prefix: "!"
+commands_prefix: "/"
 
 # How long the reply quote can be
 quote_max_length: 140
