@@ -149,6 +149,20 @@ App.build_user_settings = () => {
       ],
       version: 1,
     },
+    command_prefix: {
+      title: `Command Prefix`,
+      type: `select`,
+      description: `What to use as the command prefix`,
+      actions: () => {},
+      options: [
+        {value: `/`, text: `/`},
+        {value: `!`, text: `!`},
+        {value: `~`, text: `~`},
+        {value: `,`, text: `,`},
+        {value: `.`, text: `.`},
+      ],
+      version: 1,
+    },
     show_chat: {
       title: `Show Chat`,
       type: `checkbox`,
@@ -369,6 +383,9 @@ App.modify_setting_widget = (setting) => {
   }
   else if (type === `select`) {
     App.set_select(item, App.get_setting(setting))
+  }
+  else if (type === `text`) {
+    item.value = App.get_setting(setting)
   }
 }
 
@@ -600,6 +617,10 @@ App.fill_settings = () => {
     else if (setting.type === `checkbox`) {
       el = DOM.create(`input`, `settings_item_control`, `settings_${key}`)
       el.type = `checkbox`
+    }
+    else if (setting.type === `text`) {
+      el = DOM.create(`input`, `settings_item_control`, `settings_${key}`)
+      el.type = `text`
     }
 
     c.append(el)

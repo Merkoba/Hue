@@ -9,7 +9,9 @@ App.make_chat_message = (args = {}) => {
   let num_lines = args.message.split(`\n`).length
 
   if (num_lines === 1) {
-    if (args.message.startsWith(App.config.commands_prefix + App.config.commands_prefix)) {
+    let p = App.cmd_prefix()
+
+    if (args.message.startsWith(p + p)) {
       args.message = args.message.slice(1)
     }
   }

@@ -589,15 +589,11 @@ App.start_msg = () => {
   )
 
   App.msg_link_image.set(
-    App.template_link_image({
-      commands_prefix: App.config.commands_prefix
-    })
+    App.template_link_image()
   )
 
   App.msg_link_tv.set(
-    App.template_link_tv({
-      commands_prefix: App.config.commands_prefix
-    })
+    App.template_link_tv()
   )
 
   App.msg_main_menu.set(App.template_main_menu())

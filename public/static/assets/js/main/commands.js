@@ -683,7 +683,7 @@ App.prepare_commands = () => {
 
     for (let c of cmds) {
       App.commands_list.push(c)
-      App.commands_list_with_prefix.push(App.config.commands_prefix + c)
+      App.commands_list_with_prefix.push(App.cmd_prefix() + c)
     }
   }
 
@@ -713,8 +713,8 @@ App.prepare_commands = () => {
 // Checks whether some string is a command
 App.is_command = (message) => {
   return message.length >= 2 &&
-    message[0] === App.config.commands_prefix &&
-    message[1] !== App.config.commands_prefix &&
+    message[0] === App.cmd_prefix() &&
+    message[1] !== App.cmd_prefix() &&
     message[1] !== ` `
 }
 
@@ -726,7 +726,7 @@ App.execute_command = (message, ans) => {
   let cmd = split[0].toLowerCase()
   let arg = split.slice(1).join(` `)
 
-  if (cmd.startsWith(App.config.commands_prefix)) {
+  if (cmd.startsWith(App.cmd_prefix())) {
     cmd = cmd.substring(1)
   }
 
@@ -787,11 +787,11 @@ App.search_command = (cmd) => {
 
 // Gives feedback on what type of command a command is
 App.inspect_command = (cmd) => {
-  if (cmd.startsWith(App.config.commands_prefix)) {
+  if (cmd.startsWith(App.cmd_prefix())) {
     cmd = cmd.slice(1)
   }
 
-  let s = App.config.commands_prefix + cmd
+  let s = App.cmd_prefix() + cmd
 
   if (App.commands_list.includes(cmd)) {
     s += `: ${App.commands[cmd].description}`
@@ -824,7 +824,7 @@ App.show_command_book = (filter = ``) => {
     DOM.ev(DOM.el(`#command_book_container`), `click`, (e) => {
       if (e.target.closest(`.command_book_item`)) {
         let key = e.target.closest(`.command_book_item`).dataset.key
-        App.change_input(`${App.config.commands_prefix}${key} `)
+        App.change_input(`${App.cmd_prefix()}${key} `)
         App.close_all_modals()
       }
     })
@@ -855,4 +855,9 @@ App.get_closest_command = (cmd) => {
   }
 
   return highest_command
+}
+
+// Get the command prefix
+App.cmd_prefix = () => {
+  return App.get_setting(`command_prefix`)
 }

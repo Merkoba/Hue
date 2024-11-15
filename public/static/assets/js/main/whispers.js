@@ -1,7 +1,7 @@
 // Processes whisper commands to determine how to handle the operation
 App.process_write_whisper = (arg) => {
   if (!arg) {
-    App.checkmsg(`Format: ${App.config.commands_prefix}whisper [username] [message]`)
+    App.checkmsg(`Format: ${App.cmd_prefix()}whisper [username] [message]`)
     return
   }
 
@@ -26,7 +26,7 @@ App.process_write_whisper = (arg) => {
     }
     else if (matches.length > 1) {
       App.checkmsg(
-        `Multiple usernames matched. Use the proper > syntax. For example ${App.config.commands_prefix}whisper bob > hi`
+        `Multiple usernames matched. Use the proper > syntax. For example ${App.cmd_prefix()}whisper bob > hi`
       )
 
       return
