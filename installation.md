@@ -36,7 +36,7 @@ The admin's username must go in superuser_usernames in user_config.secret.json
 
 The main room is created at startup if it doesn't exist.
 
-To get admin rights on the room use /annex after joining it.
+To get admin rights on the room use !annex after joining it.
 
 To have a fully working system, as it is intended, getting all the API keys (YouTube, Imgur) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled": false) A Google Recaptcha key is necessary to enable captcha verification on registration, though captcha support can be disabled ("recaptcha_enabled": false). Set API keys in user_config.secret.json
 
