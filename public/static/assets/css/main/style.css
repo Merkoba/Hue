@@ -714,6 +714,10 @@ a.generic:hover {
 	background-color: var(--altcolor);
 }
 
+.no_chat_menu .chat_menu_button_container {
+	display: none;
+}
+
 .chat_menu_button_main:hover > .chat_menu_button_container {
 	visibility: visible;
 }

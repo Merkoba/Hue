@@ -109,6 +109,26 @@ App.start_mouse_events = () => {
     }
   })
 
+  DOM.ev(document, `selectionchange`, (e) => {
+    let selection = window.getSelection()
+    let target = selection.anchorNode.parentElement
+
+    if (!target) {
+      return
+    }
+
+    let area = DOM.el(`#chat_area`)
+
+    if (selection.toString()) {
+      if (target.closest(`.message`)) {
+        area.classList.add(`no_chat_menu`)
+      }
+    }
+    else {
+      area.classList.remove(`no_chat_menu`)
+    }
+  })
+
   DOM.ev(document, `contextmenu`, (e) => {
     if (!e.target) {
       return
