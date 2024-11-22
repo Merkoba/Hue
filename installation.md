@@ -84,9 +84,11 @@ If other backend files changed then it's necessary to restart the server.
 
 You can add some reaction images in public/static/assets/img/reactions
 
-Give each file a simple name like `smile.jpg`
+Give each file a simple name like `smile.jpg`.
 
 The file name becomes the name of the reaction `:smile:`
+
+There are some you can use in `extra/reactions`
 
 ## Codes
 
