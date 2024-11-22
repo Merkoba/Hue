@@ -1206,9 +1206,11 @@ App.make_image_preview = (message) => {
     ans.image_preview_text = ``
     ans.image_preview_src_original = url
     ans.image_preview_src = url
+
     ans.image_preview = App.template_image_preview({
       text: ``,
-      source: ans.image_preview_src
+      source: ans.image_preview_src,
+      title: message,
     })
   }
   else if (link && link.includes(`imgur.com`)) {
