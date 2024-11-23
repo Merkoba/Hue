@@ -1221,6 +1221,7 @@ App.make_image_preview = (message) => {
       ans.image_preview_text = message
       ans.image_preview_src_original = `https://i.imgur.com/${code}.${extension}`
       ans.image_preview_src = `https://i.imgur.com/${code}l.jpg`
+
       ans.image_preview = App.template_image_preview({
         text: message,
         source: ans.image_preview_src
