@@ -359,7 +359,7 @@ html {
 }
 
 .input_button {
-	border: 1px solid grey;
+	border: 1px solid rgb(163, 163, 163);
 	padding-left: 0.25rem;
 	padding-right: 0.25rem;
 }
