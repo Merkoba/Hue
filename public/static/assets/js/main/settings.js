@@ -156,8 +156,11 @@ App.build_user_settings = () => {
       actions: () => {},
       options: [
         {value: `/`, text: `/`},
+        {value: `\\`, text: `\\`},
         {value: `!`, text: `!`},
+        {value: `?`, text: `?`},
         {value: `~`, text: `~`},
+        {value: `;`, text: `;`},
         {value: `,`, text: `,`},
         {value: `.`, text: `.`},
       ],
