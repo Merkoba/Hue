@@ -153,7 +153,9 @@ App.build_user_settings = () => {
       title: `Command Prefix`,
       type: `select`,
       description: `What to use as the command prefix`,
-      actions: () => {},
+      actions: () => {
+        App.prepare_commands()
+      },
       options: [
         {value: `/`, text: `/`},
         {value: `\\`, text: `\\`},
