@@ -48,7 +48,7 @@ module.exports = (App) => {
   App.vars.fetch = (url, args = {}) => {
     console.info(`Fetching ${url} ...`)
     args.headers = args.headers || {}
-    args.headers[`user-agent`] = `Mozilla/5.0`
+    args.headers[`user-agent`] = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.90 Safari/537.36`
     return App.i.fetch(url, args)
   }
 
