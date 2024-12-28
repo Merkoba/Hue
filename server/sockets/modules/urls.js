@@ -83,7 +83,7 @@ module.exports = (App) => {
           }
 
           let res = await App.vars.fetch(
-            `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title,channelTitle,description,thumbnails))&part=snippet,statistics&key=${App.sconfig.youtube_api_key}`
+            `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title,channelTitle,description,thumbnails))&part=snippet&key=${App.sconfig.youtube_api_key}`
           )
 
           res = await res.json()
