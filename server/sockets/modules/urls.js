@@ -62,7 +62,7 @@ module.exports = (App) => {
       // Check if YouTube URL
       let yt = [`https://www.youtube.com`, `https://youtu.be`]
 
-      if (yt.some((x) => url.startsWith(x))) {
+      if (yt.some((x) => url.includes(x))) {
         let id = App.utilz.get_youtube_id(url)
 
         if (id) {
