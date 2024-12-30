@@ -72,7 +72,7 @@ App.get_topic = () => {
     return App.topic
   }
   
-    return App.config.default_topic
+  return App.config.default_topic
 }
 
 // Shows the topic

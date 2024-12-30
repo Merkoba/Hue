@@ -53,11 +53,11 @@ App.make_info_popup_item = (args = {}) => {
     })
   }
   
-    return App.template_popup_item({
-      icon: args.icon,
-      message: args.message,
-      classes,
-    })
+  return App.template_popup_item({
+    icon: args.icon,
+    message: args.message,
+    classes,
+  })
 }
 
 // Pushes a new notification to the notifications window

@@ -320,24 +320,24 @@ App.compare_userlist = (a, b) => {
       return 1
     }
     
-      return 0
+    return 0
   }
   
-    if (a.role > b.role) {
-      return 1
-    }
-    else if (a.role < b.role) {
-      return -1
-    }
+  if (a.role > b.role) {
+    return 1
+  }
+  else if (a.role < b.role) {
+    return -1
+  }
 
-    if (a.username < b.username) {
-      return -1
-    }
-    else if (a.username > b.username) {
-      return 1
-    }
+  if (a.username < b.username) {
+    return -1
+  }
+  else if (a.username > b.username) {
+    return 1
+  }
     
-      return 0
+  return 0
 }
 
 // Returns true or false depending if the user is online

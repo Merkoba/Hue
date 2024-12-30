@@ -85,7 +85,7 @@ App.do_modal_filter = (id = false) => {
       return match
     }
     
-      return it.textContent.toLowerCase().includes(filter)
+    return it.textContent.toLowerCase().includes(filter)
   }
 
   let win = DOM.el(`#Msg-content-${id}`)

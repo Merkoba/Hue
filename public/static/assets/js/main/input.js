@@ -129,17 +129,17 @@ App.submit_input = () => {
     App.submit_edit()
   }
   else if (App.input_has_value()) {
-      if (!App.input_has_value(true)) {
-        App.clear_input()
-        return
-      }
-
-      App.process_input({
-        message: App.get_input(),
-      })
-
-      App.disable_footer_expand()
+    if (!App.input_has_value(true)) {
+      App.clear_input()
+      return
     }
+
+    App.process_input({
+      message: App.get_input(),
+    })
+
+    App.disable_footer_expand()
+  }
 }
 
 // Get the input value

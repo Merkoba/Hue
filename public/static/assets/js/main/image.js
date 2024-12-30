@@ -17,7 +17,7 @@ App.current_image = () => {
     return App.image_changed[App.image_changed.length - 1]
   }
   
-    return {}
+  return {}
 }
 
 // Loads an image with a specified item
@@ -481,9 +481,9 @@ App.show_image_upload_comment = (file, type) => {
   }
 
   let name = `${App.utilz.slice_string_end(
-      file.name,
-      20,
-    )} (${App.utilz.size_string(file.size, 2)})`
+    file.name,
+    20,
+  )} (${App.utilz.size_string(file.size, 2)})`
 
   DOM.el(`#image_upload_name`).textContent = name
   DOM.el(`#Msg-titlebar-image_upload_comment`).title = file.name

@@ -239,11 +239,11 @@ App.setup_profilepic_cropper = () => {
       circle: true,
       quality: App.config.image_blob_quality,
     })
-    .then((blob) => {
-      App.profilepic_preview_blob = blob
-      DOM.el(`#profilepic_preview_image`).src = URL.createObjectURL(blob)
-      App.msg_profilepic_preview.show()
-    })
+      .then((blob) => {
+        App.profilepic_preview_blob = blob
+        DOM.el(`#profilepic_preview_image`).src = URL.createObjectURL(blob)
+        App.msg_profilepic_preview.show()
+      })
   })
 
   DOM.ev(DOM.el(`#profilepic_cropper_change`), `click`, () => {
@@ -353,9 +353,9 @@ App.profilepic_selected = (file, type) => {
       url: e.target.result,
       points: [],
     })
-    .then(() => {
-      App.profilepic_cropper.setZoom(0)
-    })
+      .then(() => {
+        App.profilepic_cropper.setZoom(0)
+      })
   }
 
   reader.readAsDataURL(file)

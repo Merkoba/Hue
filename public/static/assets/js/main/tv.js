@@ -6,7 +6,7 @@ App.current_tv = () => {
     return App.tv_changed[App.tv_changed.length - 1]
   }
   
-    return {}
+  return {}
 }
 
 // Pushes a changed tv into the tv changed array
@@ -482,9 +482,9 @@ App.show_tv_upload_comment = (file, type) => {
   }
 
   let name = `${App.utilz.slice_string_end(
-      file.name,
-      20,
-    )} (${App.utilz.size_string(file.size, 2)})`
+    file.name,
+    20,
+  )} (${App.utilz.size_string(file.size, 2)})`
 
   DOM.el(`#tv_upload_name`).textContent = name
   DOM.el(`#Msg-titlebar-tv_upload_comment`).title = file.name

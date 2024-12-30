@@ -8,10 +8,10 @@ export default [
 
   {
     rules: {
-      // "no-unused-vars": "off",
-      // "indent": ["error", 2],
-      // "linebreak-style": ["error", "unix"],
-      // "quotes": ["error", "backtick"],
+      "no-unused-vars": "off",
+      "indent": ["error", 2],
+      "linebreak-style": ["error", "unix"],
+      "quotes": ["error", "backtick"],
       "no-console": "error",
       "no-multi-spaces": "error",
       "no-multiple-empty-lines": ["error", {"max": 1}],

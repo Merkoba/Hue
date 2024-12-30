@@ -71,11 +71,11 @@ App.do_process_file_added = (file) => {
     }
   }
   else if (is_image) {
-      App.upload_image(file)
-    }
-    else if (is_video || is_audio) {
-      App.upload_video(file)
-    }
+    App.upload_image(file)
+  }
+  else if (is_video || is_audio) {
+    App.upload_video(file)
+  }
 
   App.dropzone.files = []
 }

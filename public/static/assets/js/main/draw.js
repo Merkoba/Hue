@@ -197,12 +197,12 @@ App.draw_image_prepare_settings = () => {
 // Changes the appearance of the widgets to reflect this
 App.set_draw_image_mode_input = (m) => {
   if (m === `pencil`) {
-   DOM.el(`#draw_image_mode_select_pencil`).classList.add(`buttonbox_active`)
-   DOM.el(`#draw_image_mode_select_bucket`).classList.remove(`buttonbox_active`)
+    DOM.el(`#draw_image_mode_select_pencil`).classList.add(`buttonbox_active`)
+    DOM.el(`#draw_image_mode_select_bucket`).classList.remove(`buttonbox_active`)
   }
   else if (m === `bucket`) {
-   DOM.el(`#draw_image_mode_select_bucket`).classList.add(`buttonbox_active`)
-   DOM.el(`#draw_image_mode_select_pencil`).classList.remove(`buttonbox_active`)
+    DOM.el(`#draw_image_mode_select_bucket`).classList.add(`buttonbox_active`)
+    DOM.el(`#draw_image_mode_select_pencil`).classList.remove(`buttonbox_active`)
   }
 
   App.draw_image_mode = m

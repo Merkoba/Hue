@@ -81,9 +81,9 @@ App.make_chat_message = (args = {}) => {
       }
     }
     else if (App.check_highlights(args.message)) {
-        content_classes += ` highlighted_message`
-        highlighted = true
-      }
+      content_classes += ` highlighted_message`
+      highlighted = true
+    }
   }
 
   if (args.quote_user_id === App.user_id) {
@@ -1930,13 +1930,13 @@ App.select_message = (direction = `up`) => {
     }
   }
   else if (!App.chat_scrolled) {
-      units.reverse()
-      let unit = units[0]
-      App.select_unit(unit)
-    }
-    else {
-      App.select_middle_message()
-    }
+    units.reverse()
+    let unit = units[0]
+    App.select_unit(unit)
+  }
+  else {
+    App.select_middle_message()
+  }
 }
 
 // Unselect message

@@ -304,7 +304,7 @@ App.radio_now_playing_string = () => {
     return `Listening to ${App.playing_radio.name}`
   }
   
-    return ``
+  return ``
 }
 
 // Show the radio

@@ -70,19 +70,19 @@ App.activate_key_detection = () => {
         }
       }
       else if (e.key === `Enter`) {
-          App.selectable_enter()
-          e.preventDefault()
-        }
-        else if (e.key === `ArrowUp`) {
-          App.selected_next(true)
-          e.preventDefault()
-          return
-        }
-        else if (e.key === `ArrowDown`) {
-          App.selected_next()
-          e.preventDefault()
-          return
-        }
+        App.selectable_enter()
+        e.preventDefault()
+      }
+      else if (e.key === `ArrowUp`) {
+        App.selected_next(true)
+        e.preventDefault()
+        return
+      }
+      else if (e.key === `ArrowDown`) {
+        App.selected_next()
+        e.preventDefault()
+        return
+      }
 
       if (App.msg_link_image.is_open()) {
         if (App.msg_link_image.is_highest()) {
