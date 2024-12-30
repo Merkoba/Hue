@@ -284,7 +284,7 @@ App.clear_draw_image_state = () => {
     },
   }
 
-  App.draw_image_current_snapshot = App.draw_image_snapshots[`level_0`]
+  App.draw_image_current_snapshot = App.draw_image_snapshots.level_0
 }
 
 // Redraws the draw image

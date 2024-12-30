@@ -278,7 +278,7 @@ App.remove_urls = (text, show_hostname = true) => {
   }
 
   let new_text = new_words.join(` `).replace(
-    App.textparser_regexes[`anchor_link`].regex, ``,
+    App.textparser_regexes.anchor_link.regex, ``,
   )
 
   return new_text.trim()

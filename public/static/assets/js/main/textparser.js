@@ -1,13 +1,13 @@
 // Makes and prepares the textparser regexes
 App.setup_textparser_regexes = () => {
   App.textparser_regexes = {}
-  App.textparser_regexes[`whisper_link`] = {}
-  App.textparser_regexes[`whisper_link`].regex = new RegExp(
+  App.textparser_regexes.whisper_link = {}
+  App.textparser_regexes.whisper_link.regex = new RegExp(
     `\\[whisper\\s+(.*?)\\](.*?)\\[\/whisper\\]`,
     `gm`,
   )
 
-  App.textparser_regexes[`whisper_link`].replace_function = (
+  App.textparser_regexes.whisper_link.replace_function = (
     g1,
     g2,
     g3,
@@ -15,13 +15,13 @@ App.setup_textparser_regexes = () => {
     return `<span class="whisper_link special_link" data-whisper="${g2}" title="[Whisper] ${g2}">${g3.replace(/\s+/, `&nbsp;`)}</span>`
   }
 
-  App.textparser_regexes[`anchor_link`] = {}
-  App.textparser_regexes[`anchor_link`].regex = new RegExp(
+  App.textparser_regexes.anchor_link = {}
+  App.textparser_regexes.anchor_link.regex = new RegExp(
     `\\[anchor\\s+(.*?)\\](.*?)\\[\/anchor\\]`,
     `gm`,
   )
 
-  App.textparser_regexes["anchor_link"].replace_function = (g1, g2, g3) => {
+  App.textparser_regexes.anchor_link.replace_function = (g1, g2, g3) => {
     return `<a href="${g2}" class="anchor_link special_link" target="_blank">${g3.trim().replace(/\s+/, `&nbsp;`)}</a>`
   }
 }
@@ -29,13 +29,13 @@ App.setup_textparser_regexes = () => {
 // Passes text through all textparser regexes doing the appropiate replacements
 App.parse_text = (text) => {
   text = text.replace(
-    App.textparser_regexes[`whisper_link`].regex,
-    App.textparser_regexes[`whisper_link`].replace_function,
+    App.textparser_regexes.whisper_link.regex,
+    App.textparser_regexes.whisper_link.replace_function,
   )
 
   text = text.replace(
-    App.textparser_regexes[`anchor_link`].regex,
-    App.textparser_regexes[`anchor_link`].replace_function,
+    App.textparser_regexes.anchor_link.regex,
+    App.textparser_regexes.anchor_link.replace_function,
   )
 
   if (App.get_setting(`arrowtext`)) {
