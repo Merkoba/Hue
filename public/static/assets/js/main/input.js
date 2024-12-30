@@ -128,8 +128,7 @@ App.submit_input = () => {
   else if (App.edit_active) {
     App.submit_edit()
   }
-  else {
-    if (App.input_has_value()) {
+  else if (App.input_has_value()) {
       if (!App.input_has_value(true)) {
         App.clear_input()
         return
@@ -141,7 +140,6 @@ App.submit_input = () => {
 
       App.disable_footer_expand()
     }
-  }
 }
 
 // Get the input value

@@ -69,8 +69,7 @@ App.activate_key_detection = () => {
           return
         }
       }
-      else {
-        if (e.key === `Enter`) {
+      else if (e.key === `Enter`) {
           App.selectable_enter()
           e.preventDefault()
         }
@@ -84,7 +83,6 @@ App.activate_key_detection = () => {
           e.preventDefault()
           return
         }
-      }
 
       if (App.msg_link_image.is_open()) {
         if (App.msg_link_image.is_highest()) {

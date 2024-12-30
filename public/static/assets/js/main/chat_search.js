@@ -233,7 +233,6 @@ App.show_chat_search = (filter = ``) => {
 
       on_messages(messages)
     }
-
   }
   else {
     DOM.el(`#chat_search_container`).innerHTML = `<div class='center'>Search recent messages</div>`

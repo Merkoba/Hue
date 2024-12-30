@@ -74,8 +74,7 @@ App.set_background = (data, apply = true) => {
   if (!data.background) {
     App.background = ``
   }
-  else {
-    if (data.background_type === `hosted`) {
+  else if (data.background_type === `hosted`) {
       let ver = `?ver=${data.background_version}`
       let bg = data.background + ver
       App.background = `${App.config.public_media_directory}/room/${App.room_id}/${bg}`
@@ -83,7 +82,6 @@ App.set_background = (data, apply = true) => {
     else {
       App.background = data.background
     }
-  }
 
   App.config_admin_background()
 

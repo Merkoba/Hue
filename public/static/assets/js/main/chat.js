@@ -80,12 +80,10 @@ App.make_chat_message = (args = {}) => {
         highlighted = true
       }
     }
-    else {
-      if (App.check_highlights(args.message)) {
+    else if (App.check_highlights(args.message)) {
         content_classes += ` highlighted_message`
         highlighted = true
       }
-    }
   }
 
   if (args.quote_user_id === App.user_id) {
@@ -788,7 +786,6 @@ App.delete_message_group = (id) => {
   let s = App.utilz.singular_or_plural(num, `messages`)
 
   App.show_confirm(`Delete message group (${s})`, () => {
-
     for (let unit of DOM.els(`.message_unit`, message)) {
       let id = DOM.dataset(unit, `id`)
 
@@ -884,7 +881,7 @@ App.remove_message_from_chat = (data) => {
   if (mode === `chat`) {
     App.process_remove_chat_message(message)
   }
-  else if (mode == `announcement`) {
+  else if (mode === `announcement`) {
     App.process_remove_announcement(message)
   }
 }
@@ -1682,7 +1679,7 @@ App.deleted_messages_above = (data) => {
     if (mode === `chat`) {
       App.process_remove_chat_message(unit)
     }
-    else if (mode == `announcement`) {
+    else if (mode === `announcement`) {
       App.process_remove_announcement(unit)
     }
   }
@@ -1710,7 +1707,7 @@ App.deleted_messages_below = (data) => {
     if (mode === `chat`) {
       App.process_remove_chat_message(unit)
     }
-    else if (mode == `announcement`) {
+    else if (mode === `announcement`) {
       App.process_remove_announcement(unit)
     }
   }
@@ -1932,8 +1929,7 @@ App.select_message = (direction = `up`) => {
       }
     }
   }
-  else {
-    if (!App.chat_scrolled) {
+  else if (!App.chat_scrolled) {
       units.reverse()
       let unit = units[0]
       App.select_unit(unit)
@@ -1941,7 +1937,6 @@ App.select_message = (direction = `up`) => {
     else {
       App.select_middle_message()
     }
-  }
 }
 
 // Unselect message

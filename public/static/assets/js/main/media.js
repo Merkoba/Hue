@@ -880,7 +880,7 @@ App.change_media_visibility = (type, play = false) => {
       App.fix_tv_frame()
     }
   }
-  else if (type == `tv`) {
+  else if (type === `tv`) {
     if (App.image_visible) {
       App.fix_image_frame()
     }

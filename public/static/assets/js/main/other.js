@@ -143,14 +143,12 @@ App.flop = () => {
     DOM.el(`#main_rows_container`).classList.remove(`flopped_row`)
     App.flash_info(`Secret`, `You discovered the other side`)
   }
-  else {
-    if (App.get_setting(`main_layout`) === `column`) {
+  else if (App.get_setting(`main_layout`) === `column`) {
       DOM.el(`#main_rows_container`).classList.add(`flopped_column`)
     }
     else {
       DOM.el(`#main_rows_container`).classList.add(`flopped_row`)
     }
-  }
 
   App.flopped = !App.flopped
 }

@@ -330,8 +330,7 @@ App.get_settings = () => {
   for (let setting in App.user_settings) {
     // Fill defaults
     if (App.settings[setting] === undefined ||
-      App.settings[setting].value === undefined)
-    {
+      App.settings[setting].value === undefined) {
       App.loginfo(`Stor: Adding setting: ${setting}`)
       App.settings[setting] = {}
       set_default(setting)
@@ -396,7 +395,7 @@ App.modify_setting_widget = (setting) => {
 
 App.set_select = (select, option) => {
   for (let el of DOM.els(`option`, select)) {
-    if (el.value == option) {
+    if (el.value === option) {
       el.selected = true
     }
   }
