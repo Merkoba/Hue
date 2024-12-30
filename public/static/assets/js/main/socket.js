@@ -104,12 +104,12 @@ App.server_update_events = {
   },
   image_cooldown_wait: (data) => {
     App.checkmsg(
-      `The image was changed recently. You must wait a while before changing it again`
+      `The image was changed recently. You must wait a while before changing it again`,
     )
   },
   tv_cooldown_wait: (data) => {
     App.checkmsg(
-      `The tv was changed recently. You must wait a while before changing it again`
+      `The tv was changed recently. You must wait a while before changing it again`,
     )
   },
   room_created: (data) => {
@@ -246,7 +246,7 @@ App.server_update_events = {
   },
   admin_activity_cleared: (data) => {
     App.admin_activity_cleared()
-  }
+  },
 }
 
 // Centralized function to initiate a socket emit to the server
@@ -299,8 +299,8 @@ App.do_socket_emit = (obj) => {
     App.loginfo(
       `Emit: ${obj.destination} | Data: ${JSON.stringify(obj.data).substring(
         0,
-        250
-      )}`
+        250,
+      )}`,
     )
   }
 
@@ -321,7 +321,7 @@ App.start_socket = () => {
     App.socket_emit(`join_room`, {
       room_id: App.room_id,
       user_id: App.user_id,
-      token: App.jwt_token
+      token: App.jwt_token,
     }, true)
   })
 
@@ -353,8 +353,8 @@ App.start_socket = () => {
       App.loginfo(
         `Received: ${type} | Data: ${JSON.stringify(data).substring(
           0,
-          250
-        )}`
+          250,
+        )}`,
       )
     }
 

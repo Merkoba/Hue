@@ -282,7 +282,7 @@ App.at_startup = () => {
     App.show_room_notification(
       App.username,
       `Re-connected`,
-      `user`
+      `user`,
     )
   }
 

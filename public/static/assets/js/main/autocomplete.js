@@ -115,7 +115,7 @@ App.replace_tabbed = (element, word) => {
         element.value,
         info.tabbed_start,
         info.tabbed_end,
-        result
+        result,
       )
     }
     else {
@@ -123,7 +123,7 @@ App.replace_tabbed = (element, word) => {
         element.value,
         info.tabbed_start,
         info.tabbed_end,
-        `${result} `
+        `${result} `,
       )
     }
 

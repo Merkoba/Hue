@@ -8,7 +8,7 @@ App.setup_radio = () => {
   }
 
   App.playing_radio = App.config.radios.find(
-    x => x.name === App.room_state.last_radio_name
+    x => x.name === App.room_state.last_radio_name,
   ) || App.config.radios[0]
 
   App.setup_radio_player()

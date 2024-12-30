@@ -116,12 +116,12 @@ App.apply_media_positions = () => {
 App.start_active_media = () => {
   App.change_media({
     type: `image`,
-    play: false
+    play: false,
   })
 
   App.change_media({
     type: `tv`,
-    play: false
+    play: false,
   })
 
   App.first_media_change = true
@@ -181,7 +181,7 @@ App.get_media_change_inline_comment = (type, source) => {
 
   return {
     source: source,
-    comment: comment
+    comment: comment,
   }
 }
 
@@ -353,7 +353,7 @@ App.change_media = (args = {}) => {
   let def_args = {
     force: false,
     play: true,
-    current_source: false
+    current_source: false,
   }
 
   App.utilz.def_args(def_args, args)
@@ -468,7 +468,7 @@ App.apply_media_info = (type) => {
   DOM.el(`.media_info`, container).innerHTML = App.template_media_info_inner({
     username: item.username,
     message: message,
-    profilepic: App.get_profilepic(item.user_id)
+    profilepic: App.get_profilepic(item.user_id),
   })
 
   DOM.el(`.media_info_date`, container).textContent = App.format_date(item.date)
@@ -511,7 +511,7 @@ App.set_media_enabled = (args) => {
 // Set the lock of media
 App.set_media_locked = (args) => {
   let def_args = {
-    change: true
+    change: true,
   }
 
   App.utilz.def_args(def_args, args)
@@ -611,7 +611,7 @@ App.load_media = (data) => {
   App.change_media({
     type: data.media_type,
     item: data,
-    force: true
+    force: true,
   })
 
   App.close_all_modals()
@@ -639,7 +639,7 @@ App.do_edit_media_comment = (type, id, comment) => {
   App.socket_emit(`edit_media_comment`, {
     type: type,
     id: id,
-    comment: comment
+    comment: comment,
   })
 }
 
@@ -827,7 +827,7 @@ App.setup_media_object = (type, mode, odata = {}) => {
       App.set_media_locked({
         type: type,
         what: false,
-        change: false
+        change: false,
       })
     }
 
@@ -848,7 +848,7 @@ App.announce_media = (type, data) => {
     user_id: data.user_id,
     media_source: data.source,
     comment: data.comment,
-    likes: data.likes
+    likes: data.likes,
   })
 }
 

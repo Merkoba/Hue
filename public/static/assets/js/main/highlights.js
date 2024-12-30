@@ -3,7 +3,7 @@
 App.generate_highlights_regex = (
   word,
   case_insensitive = false,
-  escape = true
+  escape = true,
 ) => {
   let flags = `gm`
 
@@ -19,7 +19,7 @@ App.generate_highlights_regex = (
   // (?:^|\s|\`)(?:\@)?(?:mad)(?:\'s)?(?:$|\s|\`|\!|\?|\,|\.|\:)
   let regex = new RegExp(
     `(?:^|\\s|\\"|\\\`|\>|\\()(?:\\@)?(?:${word})(?:\\'s)?(?:$|\\s|\\"|\\!|\\?|\\,|\\.|\\:|\\)|\\\`)`,
-    flags
+    flags,
   )
 
   return regex

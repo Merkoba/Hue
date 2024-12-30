@@ -250,7 +250,7 @@ App.change_background_source = (src) => {
 App.announce_background_change = (data) => {
   App.show_room_notification(
     data.username,
-    `${data.username} changed the background image`
+    `${data.username} changed the background image`,
   )
 
   App.set_background(data)
@@ -284,7 +284,7 @@ App.change_text_color = (color) => {
 App.announce_text_color_change = (data) => {
   App.show_room_notification(
     data.username,
-    `${data.username} changed the text color to ${data.color}`
+    `${data.username} changed the text color to ${data.color}`,
   )
 
   App.set_text_color(data.color)

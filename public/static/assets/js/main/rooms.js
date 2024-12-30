@@ -45,7 +45,7 @@ App.on_room_created = (data) => {
   let item = App.make_info_popup_item({
     message: `Room Created`,
     on_click: f,
-    icon: `key`
+    icon: `key`,
   })
 
   App.show_popup(App.make_info_popup(f), item)
@@ -65,7 +65,7 @@ App.update_roomlist = (data) => {
     item.innerHTML = App.template_roomlist_item({
       name: room.name,
       topic: topic,
-      modified: App.utilz.timeago(room.modified)
+      modified: App.utilz.timeago(room.modified),
     })
 
     if (!topic) {

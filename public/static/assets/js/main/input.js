@@ -136,7 +136,7 @@ App.submit_input = () => {
       }
 
       App.process_input({
-        message: App.get_input()
+        message: App.get_input(),
       })
 
       App.disable_footer_expand()
@@ -159,7 +159,7 @@ App.input_to_thirdperson = (text) => {
 // Or sends a chat message to the server
 App.process_input = (args = {}) => {
   let def_args = {
-    clr_input: true
+    clr_input: true,
   }
 
   App.utilz.def_args(def_args, args)
@@ -197,7 +197,7 @@ App.process_input = (args = {}) => {
       quote: args.quote,
       quote_username: args.quote_username,
       quote_user_id: args.quote_user_id,
-      quote_id: args.quote_id
+      quote_id: args.quote_id,
     })
   }
 

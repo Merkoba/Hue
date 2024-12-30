@@ -42,7 +42,7 @@ App.change_password = (p1, p2) => {
 
   if (p1.length < App.config.min_password_length) {
     App.checkmsg(
-      `Password is too short. It must be at least ${App.config.min_password_length} characters long`
+      `Password is too short. It must be at least ${App.config.min_password_length} characters long`,
     )
     return false
   }
@@ -345,7 +345,7 @@ App.profilepic_selected = (file, type) => {
           height: 200,
           type: `circle`,
         },
-        boundary: { width: 350, height: 350 }
+        boundary: { width: 350, height: 350 },
       })
     }
 

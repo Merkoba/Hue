@@ -16,7 +16,7 @@ App.push_tv_changed = (data) => {
 
   if (App.tv_changed.length > App.config.media_changed_crop_limit) {
     App.tv_changed = App.tv_changed.slice(
-      App.tv_changed.length - App.config.media_changed_crop_limit
+      App.tv_changed.length - App.config.media_changed_crop_limit,
     )
   }
 }
@@ -115,13 +115,13 @@ App.show_youtube_tv = (play = true) => {
     if (play) {
       App.youtube_tv_player.loadPlaylist({
         list: id[1][0],
-        index: id[1][1]
+        index: id[1][1],
       })
     }
     else {
       App.youtube_tv_player.cuePlaylist({
         list: id[1][0],
-        index: id[1][1]
+        index: id[1][1],
       })
     }
   }
@@ -185,7 +185,7 @@ App.show_video_tv = (play = true) => {
   if (!DOM.el(`#media_video_tv`)) {
     let s = App.template_media_video_tv({
       info: App.get_media_info_html(`tv`),
-      poster: App.config.video_poster
+      poster: App.config.video_poster,
     })
 
     DOM.el(`#media_video_tv_container`).innerHTML = s
@@ -322,7 +322,7 @@ App.change_tv_source = (src, just_check = false, comment = ``) => {
 App.do_tv_change = (src, comment) => {
   App.socket_emit(`change_tv_source`, {
     src: src,
-    comment: comment
+    comment: comment,
   })
 }
 
@@ -399,7 +399,7 @@ App.sync_tv = (username) => {
 
   App.socket_emit(`sync_tv`, {
     username: username,
-    tv_source: App.loaded_tv.source
+    tv_source: App.loaded_tv.source,
   })
 }
 
@@ -432,7 +432,7 @@ App.report_tv_progress = (data) => {
 
     App.show_room_notification(
       data.requester_username,
-      `${data.requester_username} synced their tv with yours`
+      `${data.requester_username} synced their tv with yours`,
     )
   }
 }
@@ -484,7 +484,7 @@ App.show_tv_upload_comment = (file, type) => {
 
   let name = `${App.utilz.slice_string_end(
       file.name,
-      20
+      20,
     )} (${App.utilz.size_string(file.size, 2)})`
 
   DOM.el(`#tv_upload_name`).textContent = name
@@ -577,7 +577,7 @@ App.start_screen_capture = async (seconds) => {
 
   let stream = await navigator.mediaDevices.getDisplayMedia({
     audio: true,
-    video: {mediaSource: `screen`}
+    video: {mediaSource: `screen`},
   })
 
   let recorded_chunks = []
@@ -595,7 +595,7 @@ App.start_screen_capture = async (seconds) => {
     }
 
     const blob = new Blob(recorded_chunks, {
-      type: `video/webm`
+      type: `video/webm`,
     })
 
     blob.name = `capture.webm`
@@ -608,7 +608,7 @@ App.start_screen_capture = async (seconds) => {
     title: `Screen Capture`,
     on_x_button_click: () => {
       App.stop_screen_capture()
-    }
+    },
   })
 
   App.screen_capture_recorder.start(200)

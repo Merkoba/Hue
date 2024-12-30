@@ -42,7 +42,7 @@ App.urlize = (el, limit_width = true) => {
 
         let rep = new RegExp(
           App.utilz.escape_special_characters(matches[i]),
-          `g`
+          `g`,
         )
 
         let u = matches[i]
@@ -57,7 +57,7 @@ App.urlize = (el, limit_width = true) => {
 
         html = html.replace(
           rep,
-          `<a class="${cls}" target="_blank" href="${url}">${u}</a>`
+          `<a class="${cls}" target="_blank" href="${url}">${u}</a>`,
         )
       }
 
@@ -209,7 +209,7 @@ App.open_url_menu = (data) => {
     title: data.title,
     comment: data.comment,
     url: data.source,
-    size: size
+    size: size,
   })
 
   App.urlize(el)
@@ -278,7 +278,7 @@ App.remove_urls = (text, show_hostname = true) => {
   }
 
   let new_text = new_words.join(` `).replace(
-    App.textparser_regexes[`anchor_link`].regex, ``
+    App.textparser_regexes[`anchor_link`].regex, ``,
   )
 
   return new_text.trim()

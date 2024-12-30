@@ -217,7 +217,7 @@ App.select_next = (new_el) => {
   App.selected_modal_item = new_el
 
   new_el.scrollIntoView({
-    block: `center`
+    block: `center`,
   })
 }
 

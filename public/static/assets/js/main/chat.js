@@ -2,7 +2,7 @@
 App.make_chat_message = (args = {}) => {
   let def_args = {
     edited: false,
-    just_edited: false
+    just_edited: false,
   }
 
   App.utilz.def_args(def_args, args)
@@ -113,7 +113,7 @@ App.make_chat_message = (args = {}) => {
     content_classes: content_classes,
     profilepic: pi,
     title: title,
-    date: d
+    date: d,
   })
 
   let content = DOM.el(`.chat_content`, fmessage)
@@ -148,7 +148,7 @@ App.make_chat_message = (args = {}) => {
     quote.innerHTML = App.template_chat_quote({
       username: args.quote_username,
       quote: args.quote,
-      profilepic: App.get_profilepic(args.quote_user_id)
+      profilepic: App.get_profilepic(args.quote_user_id),
     })
 
     DOM.dataset(quote, `quote_username`, args.quote_username)
@@ -245,7 +245,7 @@ App.make_chat_message = (args = {}) => {
   App.observe_message(ans.message_unit)
 
   return {
-    message_id: ans.message_id
+    message_id: ans.message_id,
   }
 }
 
@@ -253,7 +253,7 @@ App.make_chat_message = (args = {}) => {
 App.make_announcement_message = (args = {}) => {
   let def_args = {
     highlight: false,
-    type: `normal`
+    type: `normal`,
   }
 
   App.utilz.def_args(def_args, args)
@@ -291,7 +291,7 @@ App.make_announcement_message = (args = {}) => {
     content_classes: content_classes,
     brk_classes: brk_classes,
     top_classes: top_clasees,
-    brk: args.brk
+    brk: args.brk,
   })
 
   if (args.container_id) {
@@ -348,7 +348,7 @@ App.make_announcement_message = (args = {}) => {
   App.update_likes(fmessage, args.likes)
 
   let ans = App.insert_message({
-    message: fmessage
+    message: fmessage,
   })
 
   if (highlighted) {
@@ -359,14 +359,14 @@ App.make_announcement_message = (args = {}) => {
   App.observe_message(ans.message_unit)
 
   return {
-    message_id: ans.message_id
+    message_id: ans.message_id,
   }
 }
 
 // This is a centralized function to insert all chat messages or announcements into the chat
 App.insert_message = (args = {}) => {
   let def_args = {
-    just_edited: false
+    just_edited: false,
   }
 
   App.utilz.def_args(def_args, args)
@@ -416,7 +416,7 @@ App.insert_message = (args = {}) => {
 
       return {
         message_id: DOM.dataset(last_message, `message_id`),
-        message_unit: message_unit
+        message_unit: message_unit,
       }
     }
   }
@@ -510,7 +510,7 @@ App.insert_message = (args = {}) => {
 
   return {
     message_id: message_id,
-    message_unit: message_unit
+    message_unit: message_unit,
   }
 }
 
@@ -645,7 +645,7 @@ App.submit_reply = () => {
     quote: quote,
     quote_username: App.reply_username,
     quote_user_id: App.reply_user_id,
-    quote_id: App.reply_id
+    quote_id: App.reply_id,
   })
 }
 
@@ -770,7 +770,7 @@ App.delete_message = (id) => {
 
   App.show_confirm(`Delete message from the chat log`, () => {
     App.socket_emit(`delete_message`, {
-      id: id
+      id: id,
     })
   })
 }
@@ -794,7 +794,7 @@ App.delete_message_group = (id) => {
 
       if (id) {
         App.socket_emit(`delete_message`, {
-          id: id
+          id: id,
         })
       }
     }
@@ -813,7 +813,7 @@ App.delete_messages_above = (id) => {
 
   App.show_confirm(`Delete messages above (${s})`, () => {
     App.socket_emit(`delete_messages_above`, {
-      id: id
+      id: id,
     })
   })
 }
@@ -831,7 +831,7 @@ App.delete_messages_below = (id) => {
 
   App.show_confirm(`Delete messages below (${s})`, () => {
     App.socket_emit(`delete_messages_below`, {
-      id: id
+      id: id,
     })
   })
 }
@@ -970,7 +970,7 @@ App.jump_to_chat_message = (message_id, highlight, container = `#chat_area`) => 
   }
 
   el.scrollIntoView({
-    block: `center`
+    block: `center`,
   })
 
   App.check_scrollers()
@@ -1091,7 +1091,7 @@ App.generate_mentions_regex = () => {
     App.mentions_regex = App.generate_highlights_regex(
       App.username,
       false,
-      true
+      true,
     )
   }
 }
@@ -1157,7 +1157,7 @@ App.make_link_preview = (args = {}) => {
     description_classes: description_classes,
     description: args.description,
     image_classes: image_classes,
-    image: args.image
+    image: args.image,
   }).trim()
 
   let text = App.parse_text(App.utilz.make_html_safe(args.message))
@@ -1224,7 +1224,7 @@ App.make_image_preview = (message) => {
 
       ans.image_preview = App.template_image_preview({
         text: message,
-        source: ans.image_preview_src
+        source: ans.image_preview_src,
       })
     }
   }
@@ -1385,7 +1385,7 @@ App.show_log_messages = (log_messages) => {
     App.setup_media_object(
       `image`,
       `show`,
-      Object.assign(App.get_media_object_from_init_data(`image`))
+      Object.assign(App.get_media_object_from_init_data(`image`)),
     )
   }
 
@@ -1393,7 +1393,7 @@ App.show_log_messages = (log_messages) => {
     App.setup_media_object(
       `tv`,
       `show`,
-      Object.assign(App.get_media_object_from_init_data(`tv`))
+      Object.assign(App.get_media_object_from_init_data(`tv`)),
     )
   }
 
@@ -1420,7 +1420,7 @@ App.show_log_messages = (log_messages) => {
 // Sends a simple shrug chat message
 App.shrug = () => {
   App.process_input({
-    message: `¯\\_(ツ)_/¯`
+    message: `¯\\_(ツ)_/¯`,
   })
 }
 
@@ -1428,7 +1428,7 @@ App.shrug = () => {
 App.feedback = (message, data = false) => {
   let obj = {
     brk: App.get_chat_icon(`info`),
-    message: message
+    message: message,
   }
 
   if (data) {
@@ -1446,7 +1446,7 @@ App.feedback = (message, data = false) => {
 App.public_feedback = (message, data = false) => {
   let obj = {
     brk: App.get_chat_icon(`info`),
-    message: message
+    message: message,
   }
 
   if (data) {
@@ -1768,7 +1768,7 @@ App.like_message = (target, type) => {
 
   App.socket_emit(`like_message`, {
     id: id,
-    type: type
+    type: type,
   })
 }
 

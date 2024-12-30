@@ -65,7 +65,7 @@ App.make_info_popup_item = (args = {}) => {
 App.push_notification = (args) => {
   let def_args = {
     icon: `info`,
-    increase_counter: true
+    increase_counter: true,
   }
 
   App.utilz.def_args(def_args, args)
@@ -85,7 +85,7 @@ App.push_notification = (args) => {
       content_classes: content_classes,
       profilepic: args.profilepic,
       message: args.message,
-      date: t
+      date: t,
     })
   }
   else {
@@ -93,7 +93,7 @@ App.push_notification = (args) => {
       content_classes: content_classes,
       icon: args.icon,
       message: args.message,
-      date: t
+      date: t,
     })
   }
 

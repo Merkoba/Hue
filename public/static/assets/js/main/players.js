@@ -180,7 +180,7 @@ App.create_twitch_tv_player = () => {
       width: 640,
       height: 360,
       autoplay: false,
-      channel: channel
+      channel: channel,
     })
 
     DOM.ev(twch_tv_player, Twitch.Player.READY, () => {

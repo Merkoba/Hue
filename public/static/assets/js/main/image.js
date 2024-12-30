@@ -4,7 +4,7 @@ App.push_image_changed = (data) => {
 
   if (App.image_changed.length > App.config.media_changed_crop_limit) {
     App.image_changed = App.image_changed.slice(
-      App.image_changed.length - App.config.media_changed_crop_limit
+      App.image_changed.length - App.config.media_changed_crop_limit,
     )
   }
 }
@@ -483,7 +483,7 @@ App.show_image_upload_comment = (file, type) => {
 
   let name = `${App.utilz.slice_string_end(
       file.name,
-      20
+      20,
     )} (${App.utilz.size_string(file.size, 2)})`
 
   DOM.el(`#image_upload_name`).textContent = name
@@ -587,7 +587,7 @@ App.apply_view_image_resolution = (image, src) => {
 App.take_screenshot = async () => {
   let stream = await navigator.mediaDevices.getDisplayMedia({
     audio: false,
-    video: {mediaSource: `screen`}
+    video: {mediaSource: `screen`},
   })
 
   let video = DOM.create(`video`)
@@ -612,7 +612,7 @@ App.take_screenshot = async () => {
         App.show_image_upload_comment(blob, `screenshot`)
       },
       `image/jpeg`,
-      App.config.image_blob_quality
+      App.config.image_blob_quality,
     )
   })
 }
@@ -625,7 +625,7 @@ App.make_random_image = (target) => {
   canvas.height = 1280
 
   jdenticon.update(canvas, App.utilz.random_sequence(9), {
-    backColor: App.colorlib.get_random_hex()
+    backColor: App.colorlib.get_random_hex(),
   })
 
   canvas.toBlob(
@@ -643,6 +643,6 @@ App.make_random_image = (target) => {
       }
     },
     `image/png`,
-    App.config.image_blob_quality
+    App.config.image_blob_quality,
   )
 }

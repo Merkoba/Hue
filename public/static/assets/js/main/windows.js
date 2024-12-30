@@ -28,7 +28,7 @@ msgvars.common = {
 msgvars.titlebar = {
   enable_titlebar: true,
   center_titlebar: true,
-  titlebar_class: `!custom_titlebar`
+  titlebar_class: `!custom_titlebar`,
 }
 
 // Starts and configures all Msg modal instances
@@ -38,8 +38,8 @@ App.start_msg = () => {
   App.msg_main_menu = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `main_menu`,
-      window_width: `22rem`
-    })
+      window_width: `22rem`,
+    }),
   )
 
   App.msg_room_config = Msg.factory(
@@ -49,20 +49,20 @@ App.start_msg = () => {
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.check_color_pickers()
-      }
-    })
+      },
+    }),
   )
 
   App.msg_background_select = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `background_select`
-    })
+      id: `background_select`,
+    }),
   )
 
   App.msg_profilepic_select = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `profilepic_select`
-    })
+      id: `profilepic_select`,
+    }),
   )
 
   App.msg_audioclip_select = Msg.factory(
@@ -71,46 +71,46 @@ App.start_msg = () => {
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.stop_audioclip()
-      }
-    })
+      },
+    }),
   )
 
   App.msg_link_background = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `link_background`
-    })
+      id: `link_background`,
+    }),
   )
 
   App.msg_admin_list = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `admin_list`
-    })
+      id: `admin_list`,
+    }),
   )
 
   App.msg_ban_list = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `ban_list`
-    })
+      id: `ban_list`,
+    }),
   )
 
   App.msg_open_room = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `open_room`
-    })
+      id: `open_room`,
+    }),
   )
 
   App.msg_roomlist = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `roomlist`,
-      window_width: `22rem`
-    })
+      window_width: `22rem`,
+    }),
   )
 
   App.msg_reactions = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `reactions`,
-      window_width: `22rem`
-    })
+      window_width: `22rem`,
+    }),
   )
 
   App.msg_user_profile = Msg.factory(
@@ -123,15 +123,15 @@ App.start_msg = () => {
         if (App.user_profile_audio) {
           App.user_profile_audio.pause()
         }
-      }
-    })
+      },
+    }),
   )
 
   App.msg_userlist = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `userlist`,
-      window_max_width: `40rem`
-    })
+      window_max_width: `40rem`,
+    }),
   )
 
   App.msg_modal_image = Msg.factory(
@@ -146,7 +146,7 @@ App.start_msg = () => {
         msgvars.common.after_close(instance)
         App.clear_modal_image_info()
       },
-    })
+    }),
   )
 
   App.msg_profile = Msg.factory(
@@ -161,25 +161,25 @@ App.start_msg = () => {
         App.open_profile_user = false
         App.stop_audioclip()
       },
-    })
+    }),
   )
 
   App.msg_change_role = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `change_role`
-    })
+      id: `change_role`,
+    }),
   )
 
   App.msg_change_username = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `change_username`
-    })
+      id: `change_username`,
+    }),
   )
 
   App.msg_change_password = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `change_password`
-    })
+      id: `change_password`,
+    }),
   )
 
   App.msg_info = Msg.factory(
@@ -190,14 +190,14 @@ App.start_msg = () => {
         msgvars.common.after_close(instance)
         instance.content.innerHTML = ``
       },
-    })
+    }),
   )
 
   App.msg_image_picker = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `image_picker`,
-      content_class: `!media_picker_content`
-    })
+      content_class: `!media_picker_content`,
+    }),
   )
 
   App.msg_link_image = Msg.factory(
@@ -213,14 +213,14 @@ App.start_msg = () => {
         DOM.el(`#link_image_input`).value = ``
         DOM.el(`#link_image_comment`).value = ``
       },
-    })
+    }),
   )
 
   App.msg_tv_picker = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `tv_picker`,
-      content_class: `!media_picker_content`
-    })
+      content_class: `!media_picker_content`,
+    }),
   )
 
   App.msg_link_tv = Msg.factory(
@@ -236,20 +236,20 @@ App.start_msg = () => {
         DOM.el(`#link_tv_input`).value = ``
         DOM.el(`#link_tv_comment`).value = ``
       },
-    })
+    }),
   )
 
   App.msg_screen_capture_options = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `screen_capture_options`
-    })
+      id: `screen_capture_options`,
+    }),
   )
 
   App.msg_command_book = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `command_book`,
-      window_width: `36rem`
-    })
+      window_width: `36rem`,
+    }),
   )
 
   App.msg_radio = Msg.factory(
@@ -258,29 +258,29 @@ App.start_msg = () => {
       window_width: `30rem`,
       scroll_on_show: false,
       class: `!modal_selectable`,
-    })
+    }),
   )
 
   App.msg_item_picker = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `item_picker`,
       window_min_width: `20rem`,
-      window_max_width: `40rem`
-    })
+      window_max_width: `40rem`,
+    }),
   )
 
   App.msg_write_whisper = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `write_whisper`,
-      window_width: `30rem`
-    })
+      window_width: `30rem`,
+    }),
   )
 
   App.msg_show_whisper = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `show_whisper`,
-      window_width: `30rem`
-    })
+      window_width: `30rem`,
+    }),
   )
 
   App.msg_chat_search = Msg.factory(
@@ -292,7 +292,7 @@ App.start_msg = () => {
         msgvars.common.after_close(instance)
         App.reset_chat_search_filter()
       },
-    })
+    }),
   )
 
   App.msg_locked = Msg.factory(
@@ -303,20 +303,20 @@ App.start_msg = () => {
       close_effect: `none`,
       enable_overlay: true,
       window_class: `!no_effects`,
-    })
+    }),
   )
 
   App.msg_settings = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `settings`,
-      window_width: `24rem`
-    })
+      window_width: `24rem`,
+    }),
   )
 
   App.msg_admin_activity = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `admin_activity`,
-    })
+    }),
   )
 
   App.msg_view_image = Msg.factory(
@@ -331,7 +331,7 @@ App.start_msg = () => {
         msgvars.common.after_close(instance)
         App.clear_view_image_info()
       },
-    })
+    }),
   )
 
   App.msg_image_upload_comment = Msg.factory(
@@ -346,7 +346,7 @@ App.start_msg = () => {
         App.image_upload_comment_type = undefined
         App.upload_media = undefined
       },
-    })
+    }),
   )
 
   App.msg_tv_upload_comment = Msg.factory(
@@ -363,47 +363,47 @@ App.start_msg = () => {
         App.tv_upload_comment_type = undefined
         App.upload_media = undefined
       },
-    })
+    }),
   )
 
   App.msg_handle_url = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `handle_url`
-    })
+      id: `handle_url`,
+    }),
   )
 
   App.msg_delete_messages = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `delete_messages`
-    })
+      id: `delete_messages`,
+    }),
   )
 
   App.msg_open_url = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `open_url`,
-      window_max_width: `40rem`
-    })
+      window_max_width: `40rem`,
+    }),
   )
 
   App.msg_view_text = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `view_text`,
-      window_max_width: `40rem`
-    })
+      window_max_width: `40rem`,
+    }),
   )
 
   App.msg_notifications = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `notifications`,
       window_width: `30rem`,
-    })
+    }),
   )
 
   App.msg_whispers = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `whispers`,
       window_width: `30rem`,
-    })
+    }),
   )
 
   App.msg_message_board = Msg.factory(
@@ -413,15 +413,15 @@ App.start_msg = () => {
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.do_message_board_edit(false)
-      }
-    })
+      },
+    }),
   )
 
   App.msg_profilepic_cropper = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `profilepic_cropper`,
-      scroll_on_show: false
-    })
+      scroll_on_show: false,
+    }),
   )
 
   App.msg_confirm = Msg.factory(
@@ -430,20 +430,20 @@ App.start_msg = () => {
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.on_confirm_cancel()
-      }
-    })
+      },
+    }),
   )
 
   App.msg_profilepic_preview = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `profilepic_preview`
-    })
+      id: `profilepic_preview`,
+    }),
   )
 
   App.msg_draw_image = Msg.factory(
     Object.assign({}, msgvars.common, msgvars.titlebar,{
-      id: `draw_image`
-    })
+      id: `draw_image`,
+    }),
   )
 
   App.msg_input_history = Msg.factory(
@@ -451,15 +451,15 @@ App.start_msg = () => {
       id: `input_history`,
       window_width: `30rem`,
       class: `!modal_selectable`,
-    })
+    }),
   )
 
   // Set the templates
 
   App.msg_profile.set(
     App.template_profile({
-      profilepic: App.config.profilepic_loading_url
-    })
+      profilepic: App.config.profilepic_loading_url,
+    }),
   )
 
   App.msg_chat_search.set(
@@ -467,9 +467,9 @@ App.start_msg = () => {
       window_controls: App.template_window_controls({
         filter_mode: `manual`,
         filter_id: `chat_search_filter`,
-        filter_placeholder: `Chat Search`
-      })
-    })
+        filter_placeholder: `Chat Search`,
+      }),
+    }),
   )
 
   App.msg_message_board.set(
@@ -477,9 +477,9 @@ App.start_msg = () => {
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `message_board_filter`,
-        filter_placeholder: `Filter`
-      })
-    })
+        filter_placeholder: `Filter`,
+      }),
+    }),
   )
 
   App.msg_admin_activity.set(
@@ -487,9 +487,9 @@ App.start_msg = () => {
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `admin_activity_filter`,
-        filter_placeholder: `Filter`
-      })
-    })
+        filter_placeholder: `Filter`,
+      }),
+    }),
   )
 
   App.msg_command_book.set(
@@ -497,9 +497,9 @@ App.start_msg = () => {
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `command_book_filter`,
-        filter_placeholder: `Filter`
-      })
-    })
+        filter_placeholder: `Filter`,
+      }),
+    }),
   )
 
   App.msg_radio.set(
@@ -507,9 +507,9 @@ App.start_msg = () => {
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `radio_filter`,
-        filter_placeholder: `Filter`
-      })
-    })
+        filter_placeholder: `Filter`,
+      }),
+    }),
   )
 
   App.msg_notifications.set(
@@ -517,9 +517,9 @@ App.start_msg = () => {
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `notifications_filter`,
-        filter_placeholder: `Filter`
-      })
-    })
+        filter_placeholder: `Filter`,
+      }),
+    }),
   )
 
   App.msg_roomlist.set(
@@ -527,13 +527,13 @@ App.start_msg = () => {
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `roomlist_filter`,
-        filter_placeholder: `Filter`
-      })
-    })
+        filter_placeholder: `Filter`,
+      }),
+    }),
   )
 
   App.msg_reactions.set(
-    App.template_reactions()
+    App.template_reactions(),
   )
 
   App.msg_settings.set(
@@ -541,9 +541,9 @@ App.start_msg = () => {
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `settings_filter`,
-        filter_placeholder: `Filter`
-      })
-    })
+        filter_placeholder: `Filter`,
+      }),
+    }),
   )
 
   App.msg_userlist.set(
@@ -551,9 +551,9 @@ App.start_msg = () => {
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `userlist_filter`,
-        filter_placeholder: `Filter`
-      })
-    })
+        filter_placeholder: `Filter`,
+      }),
+    }),
   )
 
   App.msg_whispers.set(
@@ -561,15 +561,15 @@ App.start_msg = () => {
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `whispers_filter`,
-        filter_placeholder: `Filter`
-      })
-    })
+        filter_placeholder: `Filter`,
+      }),
+    }),
   )
 
   App.msg_screen_capture_options.set(
     App.template_screen_capture_options({
-      durations: App.config.screen_capture_durations
-    })
+      durations: App.config.screen_capture_durations,
+    }),
   )
 
   App.msg_input_history.set(
@@ -577,23 +577,23 @@ App.start_msg = () => {
       window_controls: App.template_window_controls({
         filter_mode: `auto`,
         filter_id: `input_history_filter`,
-        filter_placeholder: `Filter`
-      })
-    })
+        filter_placeholder: `Filter`,
+      }),
+    }),
   )
 
   App.msg_tv_upload_comment.set(
     App.template_tv_upload_comment({
-      poster: App.config.video_poster
-    })
+      poster: App.config.video_poster,
+    }),
   )
 
   App.msg_link_image.set(
-    App.template_link_image()
+    App.template_link_image(),
   )
 
   App.msg_link_tv.set(
-    App.template_link_tv()
+    App.template_link_tv(),
   )
 
   App.msg_main_menu.set(App.template_main_menu())
@@ -638,20 +638,20 @@ App.start_msg = () => {
       {id: `chat_search_user`, text: `User`},
       {id: `chat_search_image`, text: `Image`},
       {id: `chat_search_tv`, text: `TV`},
-    ]
+    ],
   }))
 
   App.msg_profilepic_preview.set_title(App.template_titlebar({
     items: [
       {id: `profilepic_preview_choose`, text: `Re-Choose`},
       {id: `profilepic_preview_confirm`, text: `Confirm`},
-    ]
+    ],
   }))
 
   App.msg_view_text.set_title(App.template_titlebar({
     items: [
       {id: `view_text_copy`, text: `Copy`},
-    ]
+    ],
   }))
 
   App.msg_message_board.set_title(App.template_titlebar({
@@ -659,19 +659,19 @@ App.start_msg = () => {
       {id: `message_board_post`, text: `Submit Post`},
       {id: `message_board_links`, text: `Show Links`},
       {id: `message_board_user`, text: `Show User`},
-    ]
+    ],
   }))
 
   App.msg_link_image.set_title(App.template_titlebar({
     items: [
       {id: `link_image_submit`, text: `Link`},
-    ]
+    ],
   }))
 
   App.msg_link_tv.set_title(App.template_titlebar({
     items: [
       {id: `link_tv_submit`, text: `Link`},
-    ]
+    ],
   }))
 
   App.msg_draw_image.set_title(App.template_titlebar({
@@ -680,19 +680,19 @@ App.start_msg = () => {
       {id: `draw_image_redo`, text: `Redo`},
       {id: `draw_image_clear`, text: `Clear`},
       {id: `draw_image_upload`, text: `Upload`},
-    ]
+    ],
   }))
 
   App.msg_change_username.set_title(App.template_titlebar({
     items: [
       {id: `change_username_submit`, text: `Change Username`},
-    ]
+    ],
   }))
 
   App.msg_change_password.set_title(App.template_titlebar({
     items: [
       {id: `change_password_submit`, text: `Change Password`},
-    ]
+    ],
   }))
 
   App.msg_write_whisper.set_title(App.template_titlebar({
@@ -700,66 +700,66 @@ App.start_msg = () => {
       {id: `write_whisper_add_user`, text: `Add`},
       {id: `write_whisper_send`, text: `Send`},
     ],
-    container_id: `write_whisper_titlebar`
+    container_id: `write_whisper_titlebar`,
   }))
 
   App.msg_show_whisper.set_title(App.template_titlebar({
     items: [
       {id: `show_whisper_write`, text: ``},
-    ]
+    ],
   }))
 
   App.msg_whispers.set_title(App.template_titlebar({
     items: [
       {id: `start_write_whisper`, text: `New`},
       {id: `whispers_clear`, text: `Clear`},
-    ]
+    ],
   }))
 
   App.msg_admin_activity.set_title(App.template_titlebar({
     items: [
       {id: `admin_activity_clear`, text: `Clear`},
-    ]
+    ],
   }))
 
   App.msg_profilepic_cropper.set_title(App.template_titlebar({
     items: [
       {id: `profilepic_cropper_change`, text: ``},
       {id: `profilepic_cropper_crop`, text: `Crop`},
-    ]
+    ],
   }))
 
   App.msg_image_upload_comment.set_title(App.template_titlebar({
     items: [
       {id: `image_upload_comment_change`, text: ``},
       {id: `image_upload_comment_submit`, text: `Upload`},
-    ]
+    ],
   }))
 
   App.msg_tv_upload_comment.set_title(App.template_titlebar({
     items: [
       {id: `tv_upload_comment_change`, text: ``},
       {id: `tv_upload_comment_submit`, text: `Upload`},
-    ]
+    ],
   }))
 
   App.msg_link_background.set_title(App.template_titlebar({
     items: [
       {id: `link_background_submit`, text: `Link`},
-    ]
+    ],
   }))
 
   App.msg_confirm.set_title(App.template_titlebar({
     items: [
       {id: `confirm_button_confirm`, text: `Confirm`},
-    ]
+    ],
   }))
 
   App.msg_open_room.set_title(App.template_titlebar({
     items: [
       {id: `open_room_here`, text: `Open Here`},
       {id: `open_room_new_tab`, text: `New Tab`},
-    ]
+    ],
   }))
 
   App.msg_open_url.set_title(App.template_titlebar({
@@ -770,7 +770,7 @@ App.start_msg = () => {
       {id: `open_url_menu_context`, text: `Context`},
       {id: `open_url_menu_reply`, text: `Reply`},
     ],
-    container_id: `open_url_titlebar`
+    container_id: `open_url_titlebar`,
   }))
 
   App.msg_handle_url.set_title(App.template_titlebar({
@@ -779,7 +779,7 @@ App.start_msg = () => {
       {id: `handle_url_image`, text: `Change Image`},
       {id: `handle_url_tv`, text: `Change TV`},
     ],
-    container_id: `handle_url_titlebar`
+    container_id: `handle_url_titlebar`,
   }))
 
   App.msg_delete_messages.set_title(App.template_titlebar({
@@ -789,7 +789,7 @@ App.start_msg = () => {
       {id: `delete_messages_above`, text: `Above`},
       {id: `delete_messages_below`, text: `Below`},
     ],
-    container_id: `delete_messages_titlebar`
+    container_id: `delete_messages_titlebar`,
   }))
 
   App.msg_profilepic_select.set_title(App.template_titlebar({
@@ -797,7 +797,7 @@ App.start_msg = () => {
       {id: `profilepic_select_upload`, text: `Upload`},
       {id: `profilepic_select_draw`, text: `Draw`},
       {id: `profilepic_select_random`, text: `Random`},
-    ]
+    ],
   }))
 
   App.msg_image_picker.set_title(App.template_titlebar({
@@ -807,7 +807,7 @@ App.start_msg = () => {
       {id: `image_picker_draw`, text: `Draw`},
       {id: `image_picker_random`, text: `Random`},
       {id: `image_picker_screenshot`, text: `Screenshot`},
-    ]
+    ],
   }))
 
   App.msg_tv_picker.set_title(App.template_titlebar({
@@ -815,7 +815,7 @@ App.start_msg = () => {
       {id: `tv_picker_link`, text: `Link`},
       {id: `tv_picker_upload`, text: `Upload`},
       {id: `tv_picker_capture`, text: `Capture`},
-    ]
+    ],
   }))
 
   App.msg_background_select.set_title(App.template_titlebar({
@@ -825,7 +825,7 @@ App.start_msg = () => {
       {id: `background_select_draw`, text: `Draw`},
       {id: `background_select_random`, text: `Random`},
       {id: `background_select_remove`, text: `Remove`},
-    ]
+    ],
   }))
 
   App.msg_audioclip_select.set_title(App.template_titlebar({
@@ -833,14 +833,14 @@ App.start_msg = () => {
       {id: `play_audioclip`, text: `Play`},
       {id: `upload_audioclip`, text: `Upload`},
       {id: `remove_audioclip`, text: `Remove`},
-    ]
+    ],
   }))
 
   App.msg_settings.set_title(App.template_titlebar({
     items: [
       {id: `settings_notifications`, text: `Notifications`},
       {id: `settings_defaults`, text: `Defaults`},
-    ]
+    ],
   }))
 
   App.msg_radio.set_title(App.template_titlebar({
@@ -850,9 +850,9 @@ App.start_msg = () => {
       {id: `radio_volume`, text: `Volume: 100%`},
       {
         id: `radio_auto`, text: `Auto: Off`,
-        title: `Automatically change the station after some minutes. This is configurable in Settings`
+        title: `Automatically change the station after some minutes. This is configurable in Settings`,
       },
-    ]
+    ],
   }))
 
   App.msg_main_menu.set_title(`Main Menu`)
@@ -973,7 +973,7 @@ App.create_popup = (args = {}, ptype = `unset`) => {
     window_inner_x_class: `!titlebar_inner_x`,
     edge_padding_y: App.panel_height * 1.5,
     edge_padding_x: 12,
-    remove_after_close: true
+    remove_after_close: true,
   }
 
   App.utilz.def_args(def_args, args)
@@ -985,7 +985,7 @@ App.create_popup = (args = {}, ptype = `unset`) => {
 // Makes action popups like for file upload progress
 App.show_action_popup = (args = {}) => {
   let def_args = {
-    on_x_button_click: () => {}
+    on_x_button_click: () => {},
   }
 
   App.utilz.def_args(def_args, args)
@@ -1006,7 +1006,7 @@ App.show_action_popup = (args = {}) => {
     window_width: `auto`,
     on_click: on_click,
     close_on_escape: false,
-    on_x_button_click: args.on_x_button_click
+    on_x_button_click: args.on_x_button_click,
   }
 
   if (!args.title) {
@@ -1033,7 +1033,7 @@ App.show_action_popup = (args = {}) => {
   let html = App.template_action_popup({
     classes: classes,
     icon: icon,
-    message: args.message
+    message: args.message,
   })
 
   popup.show([args.title, html])

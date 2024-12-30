@@ -46,7 +46,7 @@ App.show_highlight_desktop_notification = (username) => {
   }
 
   App.show_desktop_notification(
-    `New highlight in ${App.room_name.substring(0, 40)} (from ${username})`
+    `New highlight in ${App.room_name.substring(0, 40)} (from ${username})`,
   )
 }
 
@@ -57,6 +57,6 @@ App.show_activity_desktop_notification = (username) => {
   }
 
   App.show_desktop_notification(
-    `Activity in ${App.room_name.substring(0, 40)} (from ${username})`
+    `Activity in ${App.room_name.substring(0, 40)} (from ${username})`,
   )
 }

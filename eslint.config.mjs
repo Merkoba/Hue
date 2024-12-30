@@ -35,7 +35,7 @@ export default [
       // "keyword-spacing": "error",
       // "space-infix-ops": "error",
       // "comma-spacing": "error",
-      // "comma-dangle": ["error", "always-multiline"],
+      "comma-dangle": ["error", "always-multiline"],
       // "no-extra-parens": ["error", "all", {
       //   "nestedBinaryExpressions": false,
       //   "enforceForArrowConditionals": false,
@@ -54,7 +54,8 @@ export default [
     },
     languageOptions: {
       globals: {
-        Hue: "writable",
+        App: "writable",
+        DOM: "writable",
         Msg: "writable",
         Utilz: "writable",
         Croppie: "writable",
@@ -69,6 +70,7 @@ export default [
         ColorLib: "writable",
         NeedContext: "writable",
         dateFormat: "writable",
+        browser: "writable",
       }
     }
   }

@@ -657,7 +657,7 @@ App.superuser_commands = [
   `getuserid`,
   `getusername`,
   `getipaddress`,
-  `disconnectuser`
+  `disconnectuser`,
 ]
 
 // Prepares commands based on the commands object

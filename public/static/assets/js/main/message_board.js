@@ -488,7 +488,7 @@ App.edit_message_board_post = (post) => {
   edit_area.focus()
 
   edit_area.scrollIntoView({
-    block: `center`
+    block: `center`,
   })
 
   btns.style.display = `none`

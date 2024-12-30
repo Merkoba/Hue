@@ -11,7 +11,7 @@ App.start_dropzone = () => {
     maxFiles: 1,
     autoProcessQueue: false,
     acceptedFiles: types.join(`,`),
-    clickable: `#dropzone_element`
+    clickable: `#dropzone_element`,
   })
 
   App.dropzone.on(`addedfile`, (file) => {
@@ -219,14 +219,14 @@ App.upload_file = (args = {}) => {
 
   let obj = {
     message: `Uploading ${App.get_file_action_name(
-      args.file.hue_data.action
+      args.file.hue_data.action,
     )}: 0%`,
     icon: icon,
     id: `uploading_${date}`,
     title: `Size: ${App.utilz.size_string(args.file.hue_data.size / 1024)}`,
     on_x_button_click: () => {
       App.cancel_file_upload(date)
-    }
+    },
   }
 
   args.file.hue_popup = App.show_action_popup(obj)
@@ -264,7 +264,7 @@ App.cancel_file_upload = (date) => {
 // Last slice would be 100
 App.get_file_next = (file) => {
   let next = Math.floor(
-    ((App.config.upload_slice_size * 1) / file.hue_data.size) * 100
+    ((App.config.upload_slice_size * 1) / file.hue_data.size) * 100,
   )
 
   if (next > 100) {
@@ -319,7 +319,7 @@ App.request_slice_upload = (data) => {
   let place = data.current_slice * App.config.upload_slice_size
   let slice = file.slice(
     place,
-    place + Math.min(App.config.upload_slice_size, file.hue_data.size - place)
+    place + Math.min(App.config.upload_slice_size, file.hue_data.size - place),
   )
 
   file.hue_data.next = App.get_file_next(file)
@@ -330,7 +330,7 @@ App.request_slice_upload = (data) => {
 
   file.hue_data.percentage = Math.floor(
     ((App.config.upload_slice_size * data.current_slice) / file.hue_data.size) *
-      100
+      100,
   )
 
   file.hue_data.reader.readAsArrayBuffer(slice)

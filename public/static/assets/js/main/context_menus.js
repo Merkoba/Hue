@@ -32,7 +32,7 @@ App.show_chat_context_menu = (button, x, y) => {
       action: () => {
         let el = DOM.el(`.unit_text`, button.closest(`.message_unit`))
         App.start_reply(el)
-      }
+      },
     })
 
     has_reply = true
@@ -44,7 +44,7 @@ App.show_chat_context_menu = (button, x, y) => {
       action: () => {
         let el = DOM.el(`.unit_text`, button.closest(`.message_unit`))
         App.start_edit(el)
-      }
+      },
     })
 
     has_edit = true
@@ -72,7 +72,7 @@ App.show_chat_context_menu = (button, x, y) => {
         action: () => {
           let el = DOM.el(`.unit_text`, button.closest(`.message_unit`))
           App.like_message(el, type)
-        }
+        },
       })
     }
   }
@@ -82,7 +82,7 @@ App.show_chat_context_menu = (button, x, y) => {
     action: () => {
       let str = App.utilz.single_space(text.textContent)
       App.copy_string(str, false)
-    }
+    },
   })
 
   items.push({
@@ -91,7 +91,7 @@ App.show_chat_context_menu = (button, x, y) => {
       App.show_confirm(`Hide message. This won't delete it`, () => {
         App.remove_message_from_context_menu(button)
       })
-    }
+    },
   })
 
   if ((user_id === App.user_id || App.is_admin_or_op()) &&
@@ -100,7 +100,7 @@ App.show_chat_context_menu = (button, x, y) => {
       text: `Delete`,
       action: () => {
         App.handle_delete_messages(id, user_id)
-      }
+      },
     })
   }
 
@@ -109,7 +109,7 @@ App.show_chat_context_menu = (button, x, y) => {
       text: `Handle`,
       action: () => {
         App.handle_url(url)
-      }
+      },
     })
   }
 
@@ -118,7 +118,7 @@ App.show_chat_context_menu = (button, x, y) => {
       text: `Jump`,
       action: () => {
         App.jump_to_chat_message(message_id, true)
-      }
+      },
     })
   }
 
@@ -144,14 +144,14 @@ App.show_input_menu = () => {
       text: `Send`,
       action: () => {
         App.submit_input()
-      }
+      },
     })
 
     items.push({
       text: `Clear`,
       action: () => {
         App.clear_input()
-      }
+      },
     })
   }
 
@@ -159,7 +159,7 @@ App.show_input_menu = () => {
     text: `React`,
     action: () => {
       App.show_reactions()
-    }
+    },
   })
 
   if (App.room_state.last_input && !App.get_input(true)) {
@@ -167,7 +167,7 @@ App.show_input_menu = () => {
       text: `Repeat`,
       action: () => {
         App.show_input_history()
-      }
+      },
     })
   }
 
@@ -177,17 +177,17 @@ App.show_input_menu = () => {
 
   items.push({
     text: `@ Link`,
-    items: App.at_media_items(`link`)
+    items: App.at_media_items(`link`),
   })
 
   items.push({
     text: `@ Img`,
-    items: App.at_media_items(`image`)
+    items: App.at_media_items(`image`),
   })
 
   items.push({
     text: `@ TV`,
-    items: App.at_media_items(`tv`)
+    items: App.at_media_items(`tv`),
   })
 
   let el = DOM.el(`#footer_input_menu`)
@@ -202,7 +202,7 @@ App.show_linksbar_context = (x, y) => {
       text: `Copy URL`,
       action: () => {
         App.linksbar_copy_url()
-      }
+      },
     })
   }
 
@@ -211,7 +211,7 @@ App.show_linksbar_context = (x, y) => {
       text: `Copy Title`,
       action: () => {
         App.linksbar_copy_title()
-      }
+      },
     })
   }
 
@@ -235,7 +235,7 @@ App.at_media_items = (type) => {
     text: `Reply`,
     action: () => {
       App.reply_to_media(type)
-    }
+    },
   })
 
   if (liked) {
@@ -243,7 +243,7 @@ App.at_media_items = (type) => {
       text: `Unlike`,
       action: () => {
         App.like_to_media(type)
-      }
+      },
     })
   }
   else {
@@ -251,7 +251,7 @@ App.at_media_items = (type) => {
       text: `Like`,
       action: () => {
         App.like_to_media(type)
-      }
+      },
     })
   }
 
@@ -259,14 +259,14 @@ App.at_media_items = (type) => {
     text: `Context`,
     action: () => {
       App.context_to_media(type)
-    }
+    },
   })
 
   items.push({
     text: `Jump`,
     action: () => {
       App.jump_to_media(type)
-    }
+    },
   })
 
   return items

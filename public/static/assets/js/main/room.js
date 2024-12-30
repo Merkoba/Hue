@@ -53,7 +53,7 @@ App.change_room_name = (arg) => {
   }
 
   arg = App.utilz.single_space(
-    arg.substring(0, App.config.max_room_name_length)
+    arg.substring(0, App.config.max_room_name_length),
   )
 
   if (arg === App.room_name) {
@@ -87,7 +87,7 @@ App.announce_room_name_change = (data) => {
   if (data.name !== App.room_name) {
     App.show_room_notification(
       data.username,
-      `${data.username} changed the room name`
+      `${data.username} changed the room name`,
     )
 
     App.set_room_name(data.name)
@@ -109,7 +109,7 @@ App.change_topic = (dtopic) => {
   }
 
   dtopic = App.utilz.single_space(
-    dtopic.substring(0, App.config.max_topic_length)
+    dtopic.substring(0, App.config.max_topic_length),
   )
 
   if (dtopic.length > 0) {
@@ -127,7 +127,7 @@ App.announce_topic_change = (data) => {
   if (data.topic !== App.topic) {
     App.show_room_notification(
       data.username,
-      `${data.username} changed the topic`
+      `${data.username} changed the topic`,
     )
 
     App.set_topic_info(data)

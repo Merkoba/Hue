@@ -26,7 +26,7 @@ App.process_write_whisper = (arg) => {
     }
     else if (matches.length > 1) {
       App.checkmsg(
-        `Multiple usernames matched. Use the proper > syntax. For example ${App.cmd_prefix()}whisper bob > hi`
+        `Multiple usernames matched. Use the proper > syntax. For example ${App.cmd_prefix()}whisper bob > hi`,
       )
 
       return
@@ -361,7 +361,7 @@ App.push_whisper = (message, on_click, read, data) => {
     item.innerHTML = App.template_whisper_received({
       date: date,
       profilepic: App.get_profilepic(data.user_id),
-      message: message
+      message: message,
     })
 
     if (data.user_id) {
@@ -378,7 +378,7 @@ App.push_whisper = (message, on_click, read, data) => {
   else {
     item.innerHTML = App.template_whisper_sent({
       date: date,
-      message: message
+      message: message,
     })
   }
 

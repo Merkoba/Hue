@@ -73,7 +73,7 @@ App.setup_room_config = () => {
       showHSL: false,
       showHEX: true,
       showRGB: false,
-      color: App[`${what}_color`]
+      color: App[`${what}_color`],
     })
 
     App[`${what}_color_picker`].on(`change`, (picker, color) => {

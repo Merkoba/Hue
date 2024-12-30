@@ -7,7 +7,7 @@ App.user_join = (data) => {
     profilepic_version: data.profilepic_version,
     date_joined: data.date_joined,
     bio: data.bio,
-    audioclip_version: data.audioclip_version
+    audioclip_version: data.audioclip_version,
   })
 
   if (data.user_id !== App.user_id) {
@@ -26,7 +26,7 @@ App.user_join = (data) => {
     App.show_room_notification(
       data.username,
       `${data.username} joined`,
-      `user`
+      `user`,
     )
   }
 }
@@ -66,7 +66,7 @@ App.add_to_userlist = (args = {}) => {
     date_joined: args.date_joined,
     bio: args.bio,
     audioclip_version: args.audioclip_version,
-    last_activity: args.last_activity
+    last_activity: args.last_activity,
   })
 
   App.update_userlist()
@@ -88,7 +88,7 @@ App.replace_property_in_userlist_by_username = (
   username,
   prop,
   new_value,
-  update = true
+  update = true,
 ) => {
   let item = App.get_userlist_item_by_username(username)
 
@@ -109,7 +109,7 @@ App.replace_property_in_userlist_by_id = (
   user_id,
   prop,
   new_value,
-  update = true
+  update = true,
 ) => {
   let item = App.get_userlist_item_by_user_id(user_id)
 
@@ -436,7 +436,7 @@ App.user_disconnect = (data) => {
     App.show_room_notification(
       data.username,
       `${data.username} left`,
-      `user-disconnect`
+      `user-disconnect`,
     )
   }
 
@@ -468,7 +468,7 @@ App.announce_new_username = (data) => {
   App.replace_property_in_userlist_by_username(
     data.old_username,
     `username`,
-    data.username
+    data.username,
   )
 
   if (App.username === data.old_username) {
@@ -476,7 +476,7 @@ App.announce_new_username = (data) => {
 
     App.show_room_notification(
       data.username,
-      `You are now known as ${data.username}`
+      `You are now known as ${data.username}`,
     )
 
     App.update_input_placeholder()
@@ -484,7 +484,7 @@ App.announce_new_username = (data) => {
   else {
     App.show_room_notification(
       data.username,
-      `${data.old_username} is now known as ${data.username}`
+      `${data.old_username} is now known as ${data.username}`,
     )
   }
 
@@ -738,7 +738,7 @@ App.profilepic_changed = (data) => {
 
   App.show_room_notification(
     user.username,
-    `${user.username} changed their profile image`
+    `${user.username} changed their profile image`,
   )
 
   App.update_activity_bar_profilepic(data.user_id, src)
@@ -755,7 +755,7 @@ App.bio_changed = (data) => {
   if (data.bio) {
     App.show_room_notification(
       data.username,
-      `${data.username} changed their bio`
+      `${data.username} changed their bio`,
     )
   }
 }
@@ -794,12 +794,12 @@ App.announce_role_change = (data) => {
 
   App.show_room_notification(
     data.username1,
-    `${data.username1} gave ${data.role} to ${data.username2}`
+    `${data.username1} gave ${data.role} to ${data.username2}`,
   )
   App.replace_property_in_userlist_by_username(
     data.username2,
     `role`,
-    data.role
+    data.role,
   )
 
   if (App.msg_admin_list.is_open()) {
@@ -897,7 +897,7 @@ App.kick = (username) => {
 App.announce_ban = (data) => {
   App.show_room_notification(
     data.username1,
-    `${data.username1} banned ${data.username2}`
+    `${data.username1} banned ${data.username2}`,
   )
 
   if (App.msg_ban_list.is_open()) {
@@ -909,7 +909,7 @@ App.announce_ban = (data) => {
 App.announce_unban = (data) => {
   App.show_room_notification(
     data.username1,
-    `${data.username1} unbanned ${data.username2}`
+    `${data.username1} unbanned ${data.username2}`,
   )
 
   if (App.msg_ban_list.is_open()) {
@@ -975,14 +975,14 @@ App.audioclip_changed = (data) => {
     data.user_id,
     `audioclip`,
     data.audioclip,
-    false
+    false,
   )
 
   App.replace_property_in_userlist_by_id(
     data.user_id,
     `audioclip_version`,
     data.audioclip_version,
-    false
+    false,
   )
 
   if (data.user_id === App.open_profile_user.user_id) {
@@ -991,7 +991,7 @@ App.audioclip_changed = (data) => {
 
   App.show_room_notification(
     data.username,
-    `${user.username} changed their audio clip`
+    `${user.username} changed their audio clip`,
   )
 }
 
@@ -1056,7 +1056,7 @@ App.modpassword = (arg) => {
 
   if (password.length < App.config.min_password_length) {
     App.checkmsg(
-      `Password is too short. It must be at least ${App.config.min_password_length} characters long`
+      `Password is too short. It must be at least ${App.config.min_password_length} characters long`,
     )
 
     return

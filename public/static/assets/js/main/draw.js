@@ -1,7 +1,7 @@
 // Redraws a drawing canvas
 App.canvas_redraw = (args = {}) => {
   let def_args = {
-    sector_index: args.click_x.length
+    sector_index: args.click_x.length,
   }
 
   App.utilz.def_args(def_args, args)
@@ -10,7 +10,7 @@ App.canvas_redraw = (args = {}) => {
     0,
     0,
     args.context.canvas.width,
-    args.context.canvas.height
+    args.context.canvas.height,
   )
 
   args.context.lineCap = `round`
@@ -26,7 +26,7 @@ App.canvas_redraw = (args = {}) => {
       0,
       0,
       args.context.canvas.width,
-      args.context.canvas.height
+      args.context.canvas.height,
     )
   }
 
@@ -67,7 +67,7 @@ App.open_draw_image = (target) => {
 // Sectors are used to determine actions so undo and redo can be applied
 App.draw_image_add_sector = () => {
   App.draw_image_current_snapshot.sectors.push(
-    App.draw_image_current_snapshot.click_x.length
+    App.draw_image_current_snapshot.click_x.length,
   )
 }
 
@@ -111,7 +111,7 @@ App.setup_draw_image = () => {
         App.draw_image_add_click(
           e.offsetX,
           e.offsetY,
-          !App.draw_image_just_entered
+          !App.draw_image_just_entered,
         )
         App.redraw_draw_image()
       }
@@ -296,7 +296,7 @@ App.redraw_draw_image = () => {
     drag: App.draw_image_current_snapshot.drag,
     colors: App.draw_image_current_snapshot.color_array,
     sizes: App.draw_image_current_snapshot.size_array,
-    sector_index: App.draw_image_current_snapshot.sector_index
+    sector_index: App.draw_image_current_snapshot.sector_index,
   })
 }
 
@@ -305,23 +305,23 @@ App.redraw_draw_image = () => {
 App.draw_image_clean_redo = (i) => {
   App.draw_image_current_snapshot.click_x = App.draw_image_current_snapshot.click_x.slice(
     0,
-    i
+    i,
   )
   App.draw_image_current_snapshot.click_y = App.draw_image_current_snapshot.click_y.slice(
     0,
-    i
+    i,
   )
   App.draw_image_current_snapshot.color_array = App.draw_image_current_snapshot.color_array.slice(
     0,
-    i
+    i,
   )
   App.draw_image_current_snapshot.size_array = App.draw_image_current_snapshot.size_array.slice(
     0,
-    i
+    i,
   )
   App.draw_image_current_snapshot.drag = App.draw_image_current_snapshot.drag.slice(
     0,
-    i
+    i,
   )
 
   let new_sectors = []
@@ -428,7 +428,7 @@ App.upload_draw_image = (canvas = `#draw_image_area`, type = `drawing`, name = `
       }
     },
     `image/png`,
-    App.config.image_blob_quality
+    App.config.image_blob_quality,
   )
 }
 
