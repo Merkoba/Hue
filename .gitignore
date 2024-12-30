@@ -12,3 +12,4 @@ Thumbs.db
 desktop.ini
 package-lock.json
 .directory
+.eslintcache
