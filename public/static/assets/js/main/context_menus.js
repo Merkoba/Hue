@@ -66,7 +66,7 @@ App.show_chat_context_menu = (button, x, y) => {
       type = `unlike`
     }
 
-    if (type === `unlike` || (type === `like` && likes.length < App.config.max_likes)) {
+    if ((type === `unlike`) || ((type === `like`) && (likes.length < App.config.max_likes))) {
       items.push({
         text,
         action: () => {
