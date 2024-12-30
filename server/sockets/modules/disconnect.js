@@ -22,7 +22,7 @@ module.exports = (App) => {
       delete App.vars.rooms[socket.hue_room_id].userlist[socket.hue_user_id]
 
       if (App.vars.user_rooms[socket.hue_user_id] !== undefined) {
-        for (let i=0; i<App.vars.user_rooms[socket.hue_user_id].length; i++) {
+        for (let i = 0; i < App.vars.user_rooms[socket.hue_user_id].length; i++) {
           let room_id = App.vars.user_rooms[socket.hue_user_id][i]
 
           if (socket.hue_room_id === room_id) {
@@ -70,7 +70,7 @@ module.exports = (App) => {
     for (let room_id of App.vars.user_rooms[socket.hue_user_id]) {
       for (let socc of await App.handler.get_user_sockets_per_room(
         room_id,
-        socket.hue_user_id
+        socket.hue_user_id,
       )) {
         if (socc.id !== socket.id) {
           socc.disconnect()
@@ -79,7 +79,7 @@ module.exports = (App) => {
       }
     }
 
-    App.handler.user_emit(socket, `others_disconnected`, { amount: amount })
+    App.handler.user_emit(socket, `others_disconnected`, {amount})
   }
 
   // Disconnect a socket

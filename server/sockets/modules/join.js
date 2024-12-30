@@ -67,7 +67,7 @@ module.exports = (App) => {
     if (data.alternative) {
       let ans = await App.db_manager.check_password(
         data.username,
-        data.password
+        data.password,
       )
 
       if (!ans.valid) {
@@ -88,9 +88,9 @@ module.exports = (App) => {
       await App.handler.do_join(socket, info, userinfo, data)
     }
     else {
-      App.i.jwt.verify(data.token, App.sconfig.jwt_secret, async function (
+      App.i.jwt.verify(data.token, App.sconfig.jwt_secret, async function(
         err,
-        decoded
+        decoded,
       ) {
         if (err) {
           return App.handler.get_out(socket)
@@ -105,23 +105,22 @@ module.exports = (App) => {
         if (decoded.data.id !== data.user_id) {
           return App.handler.get_out(socket)
         }
-        else {
-          socket.hue_user_id = data.user_id
+        
+        socket.hue_user_id = data.user_id
 
-          let info = await App.db_manager.get_room([`id`, data.room_id])
+        let info = await App.db_manager.get_room([`id`, data.room_id])
 
-          if (!info) {
-            return App.handler.get_out(socket)
-          }
-
-          let userinfo = await App.db_manager.get_user([`id`, socket.hue_user_id])
-
-          if (!userinfo) {
-            return App.handler.get_out(socket)
-          }
-
-          await App.handler.do_join(socket, info, userinfo, data)
+        if (!info) {
+          return App.handler.get_out(socket)
         }
+
+        let userinfo = await App.db_manager.get_user([`id`, socket.hue_user_id])
+
+        if (!userinfo) {
+          return App.handler.get_out(socket)
+        }
+
+        await App.handler.do_join(socket, info, userinfo, data)
       })
     }
   }
@@ -245,7 +244,7 @@ module.exports = (App) => {
         profilepic_version: socket.hue_profilepic_version,
         bio: socket.hue_bio,
         audioclip_version: socket.hue_audioclip_version,
-        date_joined: Date.now()
+        date_joined: Date.now(),
       })
     }
   }

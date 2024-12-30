@@ -32,7 +32,7 @@ module.exports = (App) => {
     App.handler.room_emit(socket, `topic_changed`, {
       topic: data.topic,
       user_id: socket.hue_user_id,
-      username: socket.hue_username
+      username: socket.hue_username,
     })
 
     App.handler.push_admin_log_message(socket, `changed the topic to "${data.topic}"`)
@@ -63,7 +63,7 @@ module.exports = (App) => {
       App.handler.room_emit(socket, `room_name_changed`, {
         name: info.name,
         user_id: socket.hue_user_id,
-        username: socket.hue_username
+        username: socket.hue_username,
       })
 
       App.handler.push_admin_log_message(socket, `changed the room name to "${info.name}"`)
@@ -105,7 +105,7 @@ module.exports = (App) => {
     App.handler.room_emit(socket, `background_color_changed`, {
       color: data.color,
       user_id: socket.hue_user_id,
-      username: socket.hue_username
+      username: socket.hue_username,
     })
   }
 
@@ -133,7 +133,7 @@ module.exports = (App) => {
     App.handler.room_emit(socket, `text_color_changed`, {
       color: data.color,
       user_id: socket.hue_user_id,
-      username: socket.hue_username
+      username: socket.hue_username,
     })
   }
 
@@ -158,7 +158,7 @@ module.exports = (App) => {
     let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id)
 
     if (!App.i.fs.existsSync(container)) {
-      App.i.fs.mkdirSync(container, { recursive: true })
+      App.i.fs.mkdirSync(container, {recursive: true})
     }
 
     let path = App.i.path.join(container, file_name)

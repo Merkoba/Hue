@@ -27,7 +27,7 @@ module.exports = (App) => {
 
     if (!ans) {
       App.handler.user_emit(socket, `username_already_exists`, {
-        username: data.username
+        username: data.username,
       })
 
       return
@@ -35,15 +35,15 @@ module.exports = (App) => {
 
     await App.handler.modify_socket_properties(
       socket.hue_user_id,
-      { hue_username: data.username },
+      {hue_username: data.username},
       {
         method: `new_username`,
         data: {
           user_id: socket.hue_user_id,
           username: data.username,
-          old_username: old_username
-        }
-      }
+          old_username,
+        },
+      },
     )
   }
 
@@ -65,12 +65,12 @@ module.exports = (App) => {
     }
 
     App.db_manager.change_user_password(socket.hue_user_id, data.password)
-    .then(ans => {
-      App.handler.user_emit(socket, `password_changed`, {})
-    })
-    .catch(err => {
-      App.logger.log_error(err)
-    })
+      .then(ans => {
+        App.handler.user_emit(socket, `password_changed`, {})
+      })
+      .catch(err => {
+        App.logger.log_error(err)
+      })
   }
 
   // Handles bio changes
@@ -91,7 +91,7 @@ module.exports = (App) => {
       return
     }
 
-    await App.handler.modify_socket_properties(socket.hue_user_id, { hue_bio: data.bio })
+    await App.handler.modify_socket_properties(socket.hue_user_id, {hue_bio: data.bio})
 
     let userinfo = await App.db_manager.get_user([`id`, socket.hue_user_id])
     userinfo.bio = socket.hue_bio
@@ -99,7 +99,7 @@ module.exports = (App) => {
     App.handler.room_emit(socket, `bio_changed`, {
       user_id: socket.hue_user_id,
       username: socket.hue_username,
-      bio: socket.hue_bio
+      bio: socket.hue_bio,
     })
   }
 
@@ -129,7 +129,7 @@ module.exports = (App) => {
     let container = App.i.path.join(App.vars.media_root, `user`, socket.hue_user_id)
 
     if (!App.i.fs.existsSync(container)) {
-      App.i.fs.mkdirSync(container, { recursive: true })
+      App.i.fs.mkdirSync(container, {recursive: true})
     }
 
     let path = App.i.path.join(container, file_name)
@@ -152,15 +152,15 @@ module.exports = (App) => {
 
     await App.handler.modify_socket_properties(
       socket.hue_user_id,
-      { hue_profilepic_version: new_ver },
+      {hue_profilepic_version: new_ver},
       {
         method: `profilepic_changed`,
         data: {
           user_id: socket.hue_user_id,
           username: socket.hue_username,
-          profilepic_version: new_ver
-        }
-      }
+          profilepic_version: new_ver,
+        },
+      },
     )
   }
 
@@ -181,7 +181,7 @@ module.exports = (App) => {
     let container = App.i.path.join(App.vars.media_root, `user`, socket.hue_user_id)
 
     if (!App.i.fs.existsSync(container)) {
-      App.i.fs.mkdirSync(container, { recursive: true })
+      App.i.fs.mkdirSync(container, {recursive: true})
     }
 
     let path = App.i.path.join(container, file_name)
@@ -219,15 +219,15 @@ module.exports = (App) => {
 
     await App.handler.modify_socket_properties(
       socket.hue_user_id,
-      { hue_audioclip_version: new_ver },
+      {hue_audioclip_version: new_ver},
       {
         method: `audioclip_changed`,
         data: {
           user_id: socket.hue_user_id,
           username: socket.hue_username,
-          audioclip_version: new_ver
-        }
-      }
+          audioclip_version: new_ver,
+        },
+      },
     )
   }
 }

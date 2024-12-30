@@ -732,7 +732,14 @@ const Utilz = () => {
   /* eslint-disable no-console */
   utilz.loginfo = (s, style) => {
     try {
-      console.info(`[${utilz.get_time()}] ${s}`, style)
+      let msg = `[${utilz.get_time()}] ${s}`
+
+      if (style) {
+        console.info(msg, style)
+      }
+      else {
+        console.info(msg)
+      }
     }
     catch (err) {
       console.error(err)

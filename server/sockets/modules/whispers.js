@@ -50,13 +50,13 @@ module.exports = (App) => {
       for (let username of usernames) {
         let sockets = await App.handler.get_user_sockets_per_room_by_username(
           socket.hue_room_id,
-          username
+          username,
         )
 
         if (sockets.length > 0) {
           users.push({
             user_id: sockets[0].hue_user_id,
-            username: sockets[0].hue_username
+            username: sockets[0].hue_username,
           })
 
           for (let socc of sockets) {
@@ -65,7 +65,7 @@ module.exports = (App) => {
               user_id: socket.hue_user_id,
               username: socket.hue_username,
               message: data.message,
-              type: data.type
+              type: data.type,
             })
           }
         }
@@ -81,7 +81,7 @@ module.exports = (App) => {
       App.handler.system_emit(socket, `system_broadcast`, {
         username: App.sconfig.system_username,
         message: data.message,
-        type: data.type
+        type: data.type,
       })
     }
   }

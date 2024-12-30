@@ -79,7 +79,7 @@ module.exports = (App) => {
       return
     }
 
-    for (let i=0; i<App.banlist.usernames.length; i++) {
+    for (let i = 0; i < App.banlist.usernames.length; i++) {
       if (App.banlist.usernames[i].toLowerCase() === username) {
         App.banlist.usernames.splice(i, 1)
         break
@@ -135,7 +135,7 @@ module.exports = (App) => {
       return
     }
 
-    for (let i=0; i<App.banlist.user_ids.length; i++) {
+    for (let i = 0; i < App.banlist.user_ids.length; i++) {
       if (App.banlist.user_ids[i] === data.user_id) {
         App.banlist.user_ids.splice(i, 1)
         break
@@ -191,7 +191,7 @@ module.exports = (App) => {
       return
     }
 
-    for (let i=0; i<App.banlist.ip_addresses.length; i++) {
+    for (let i = 0; i < App.banlist.ip_addresses.length; i++) {
       if (App.banlist.ip_addresses[i] === data.ip_address) {
         App.banlist.ip_addresses.splice(i, 1)
         break
@@ -222,7 +222,7 @@ module.exports = (App) => {
     if (userinfo) {
       App.handler.user_emit(socket, `user_id_received`, {
         user_id: userinfo.id,
-        username: userinfo.username
+        username: userinfo.username,
       })
     }
     else {
@@ -250,7 +250,7 @@ module.exports = (App) => {
     if (userinfo) {
       App.handler.user_emit(socket, `username_received`, {
         user_id: userinfo.id,
-        username: userinfo.username
+        username: userinfo.username,
       })
     }
     else {
@@ -286,7 +286,7 @@ module.exports = (App) => {
     if (ip_address) {
       App.handler.user_emit(socket, `ip_address_received`, {
         username: data.username,
-        ip_address: ip_address
+        ip_address,
       })
     }
     else {

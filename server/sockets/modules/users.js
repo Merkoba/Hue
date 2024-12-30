@@ -1,5 +1,4 @@
 module.exports = (App) => {
-
   // Superuser change role
   App.handler.public.annex = (socket, data) => {
     if (!socket.hue_superuser) {
@@ -66,7 +65,7 @@ module.exports = (App) => {
     ) {
       App.handler.user_emit(socket, `is_already`, {
         what: data.role,
-        who: userinfo.username
+        who: userinfo.username,
       })
       return
     }
@@ -124,7 +123,7 @@ module.exports = (App) => {
 
     let sockets = await App.handler.get_user_sockets_per_room_by_username(
       socket.hue_room_id,
-      data.username
+      data.username,
     )
 
     if (sockets.length > 0) {
@@ -258,7 +257,7 @@ module.exports = (App) => {
       return
     }
 
-    for (let i=0; i<info.bans.length; i++) {
+    for (let i = 0; i < info.bans.length; i++) {
       if (info.bans[i] === id) {
         info.bans.splice(i, 1)
         break
@@ -315,9 +314,8 @@ module.exports = (App) => {
       if (App.vars.rooms[room_id].userlist !== undefined) {
         return App.vars.rooms[room_id].userlist
       }
-      else {
-        return {}
-      }
+      
+      return {}
     }
     catch (err) {
       return {}
@@ -336,7 +334,7 @@ module.exports = (App) => {
     }
 
     let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
-    App.handler.user_emit(socket, `receive_admin_activity`, { messages: info.admin_log_messages })
+    App.handler.user_emit(socket, `receive_admin_activity`, {messages: info.admin_log_messages})
   }
 
   // Sends admin list
@@ -360,26 +358,26 @@ module.exports = (App) => {
     }
 
     if (ids.length === 0) {
-      App.handler.user_emit(socket, `receive_admin_list`, { list: [] })
+      App.handler.user_emit(socket, `receive_admin_list`, {list: []})
       return
     }
 
     let users = await App.db_manager.get_users(
-      ids, { username: 1 }
+      ids, {username: 1},
     )
 
     if (users.length === 0) {
-      App.handler.user_emit(socket, `receive_admin_list`, { list: [] })
+      App.handler.user_emit(socket, `receive_admin_list`, {list: []})
       return
     }
 
     let list = []
 
     for (let user of users) {
-      list.push({ user_id: user.id, username: user.username, role: roles[user.id] })
+      list.push({user_id: user.id, username: user.username, role: roles[user.id]})
     }
 
-    App.handler.user_emit(socket, `receive_admin_list`, { list: list })
+    App.handler.user_emit(socket, `receive_admin_list`, {list})
   }
 
   // Clear admin activity
@@ -404,26 +402,26 @@ module.exports = (App) => {
     }
 
     if (ids.length === 0) {
-      App.handler.user_emit(socket, `receive_ban_list`, { list: [] })
+      App.handler.user_emit(socket, `receive_ban_list`, {list: []})
       return
     }
 
     let users = await App.db_manager.get_users(
-      ids, { username: 1 }
+      ids, {username: 1},
     )
 
     if (users.length === 0) {
-      App.handler.user_emit(socket, `receive_ban_list`, { list: [] })
+      App.handler.user_emit(socket, `receive_ban_list`, {list: []})
       return
     }
 
     let list = []
 
     for (let user of users) {
-      list.push({ user_id: user.id, username: user.username })
+      list.push({user_id: user.id, username: user.username})
     }
 
-    App.handler.user_emit(socket, `receive_ban_list`, { list: list })
+    App.handler.user_emit(socket, `receive_ban_list`, {list})
   }
 
   // Updates a user's data in the user list
@@ -481,7 +479,7 @@ module.exports = (App) => {
 
     if (!ans) {
       App.handler.user_emit(socket, `username_already_exists`, {
-        username: data.new
+        username: data.new,
       })
 
       return
@@ -489,15 +487,15 @@ module.exports = (App) => {
 
     await App.handler.modify_socket_properties(
       userinfo.id,
-      { hue_username: data.new },
+      {hue_username: data.new},
       {
         method: `new_username`,
         data: {
           user_id: userinfo.id,
           username: data.new,
-          old_username: data.original
-        }
-      }
+          old_username: data.original,
+        },
+      },
     )
 
     App.handler.user_emit(socket, `done`, {})

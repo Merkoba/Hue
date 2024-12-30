@@ -30,10 +30,8 @@ module.exports = (App) => {
             return
           }
         }
-        else {
-          if (!App.utilz.image_extensions.includes(ext)) {
-            return
-          }
+        else if (!App.utilz.image_extensions.includes(ext)) {
+          return
         }
       }
       else if (data.action === `tv_upload`) {
@@ -58,7 +56,7 @@ module.exports = (App) => {
       }
 
       data.extension = ext
-      App.vars.files[key] = Object.assign({}, App.vars.files_struct, data)
+      App.vars.files[key] = {...App.vars.files_struct, ...data}
       file = App.vars.files[key]
       file.data = []
       file.spam_charge = 0
@@ -113,7 +111,7 @@ module.exports = (App) => {
     file.updated = Date.now()
 
     if (file.slice * App.config.upload_slice_size >= file.size) {
-      App.handler.user_emit(socket, `upload_ended`, { date: data.date })
+      App.handler.user_emit(socket, `upload_ended`, {date: data.date})
 
       let full_file = Buffer.concat(file.data)
 

@@ -19,7 +19,7 @@ module.exports = (App) => {
 
     data.user_id = socket.hue_user_id
     let ans = await App.db_manager.create_room(data)
-    App.handler.user_emit(socket, `room_created`, { id: ans.id })
+    App.handler.user_emit(socket, `room_created`, {id: ans.id})
   }
 
   // Handles room deletion
@@ -42,7 +42,7 @@ module.exports = (App) => {
   // Get rooms data to update in client
   App.handler.public.get_roomlist = (socket, data) => {
     App.handler.user_emit(socket, `receive_roomlist`, {
-      roomlist: App.roomlist
+      roomlist: App.roomlist,
     })
   }
 }

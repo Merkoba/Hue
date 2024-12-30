@@ -95,9 +95,8 @@ module.exports = (App) => {
       if (num > App.sconfig.max_sockets_per_user) {
         return true
       }
-      else {
-        return false
-      }
+      
+      return false
     }
     catch (err) {
       App.logger.log_error(err)
@@ -133,14 +132,14 @@ module.exports = (App) => {
 
   // Sends a pong response
   App.handler.public.ping_server = (socket, data) => {
-    App.handler.user_emit(socket, `pong_received`, { date: data.date })
+    App.handler.user_emit(socket, `pong_received`, {date: data.date})
   }
 
   // Changes socket properties to all sockets of a user
-  App.handler.modify_socket_properties = async function (
+  App.handler.modify_socket_properties = async function(
     user_id,
     properties = {},
-    after_room = false
+    after_room = false,
   ) {
     if (!App.vars.user_rooms[user_id]) {
       return
@@ -151,7 +150,7 @@ module.exports = (App) => {
 
       for (let socc of await App.handler.get_user_sockets_per_room(
         room_id,
-        user_id
+        user_id,
       )) {
         for (let key in properties) {
           socc[key] = properties[key]

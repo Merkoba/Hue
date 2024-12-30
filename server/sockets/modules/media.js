@@ -24,7 +24,7 @@ module.exports = (App) => {
     let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id, type)
 
     if (!App.i.fs.existsSync(container)) {
-      App.i.fs.mkdirSync(container, { recursive: true })
+      App.i.fs.mkdirSync(container, {recursive: true})
     }
 
     let path = App.i.path.join(container, file_name)
@@ -82,34 +82,34 @@ module.exports = (App) => {
     }
 
     App.handler.room_emit(room_id, `${type}_source_changed`, {
-      id: id,
-      user_id: user_id,
+      id,
+      user_id,
       source: data.src,
       username: data.username,
-      title: title,
-      size: size,
-      date: date,
+      title,
+      size,
+      date,
       type: data.type,
       query: data.query,
-      comment: comment,
-      likes: likes
+      comment,
+      likes,
     })
 
     let message = {
-      type: type,
+      type,
       data: {
-        id: id,
-        date: date,
-        user_id: user_id,
+        id,
+        date,
+        user_id,
         source: data.src,
         username: data.username,
-        title: title,
-        size: size,
+        title,
+        size,
         type: data.type,
         query: data.query,
-        comment: comment,
-        likes: likes
-      }
+        comment,
+        likes,
+      },
     }
 
     App.db_manager.push_item(`rooms`, socket.hue_room_id, `log_messages`, message)
@@ -148,7 +148,7 @@ module.exports = (App) => {
     let edited = false
     let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
 
-    for (let i=0; i<info.log_messages.length; i++) {
+    for (let i = 0; i < info.log_messages.length; i++) {
       let message = info.log_messages[i]
 
       if (message.type !== data.type) {
@@ -173,7 +173,7 @@ module.exports = (App) => {
       App.handler.room_emit(socket, `edited_media_comment`, {
         type: data.type,
         id: data.id,
-        comment: data.comment
+        comment: data.comment,
       })
     }
   }

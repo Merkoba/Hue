@@ -39,7 +39,7 @@ App.needs_confirm_2 = (func, s = false) => {
 App.show_console_message = () => {
   let s = `🤔 Want to work with us? It's pretty much 99.99% risks, some negligible fraction AI, a couple bureaucracies to keep people minimally pissed off, and a whole lot of creativity.`
   let style = `font-size:1.4rem`
-  App.utilz.loginfo(`%c${s}`, `info`, style)
+  App.utilz.loginfo(`%c${s}`, style)
 }
 
 // Dynamically generate a favicon

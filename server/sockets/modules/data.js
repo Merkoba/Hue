@@ -36,10 +36,8 @@ module.exports = (App) => {
             return false
           }
         }
-        else {
-          if (s.length > App.sconfig.data_items_max_string_length) {
-            return false
-          }
+        else if (s.length > App.sconfig.data_items_max_string_length) {
+          return false
         }
       }
 

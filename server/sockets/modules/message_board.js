@@ -49,7 +49,7 @@ module.exports = (App) => {
 
       if (diff < wait) {
         let remaining = wait - diff
-        App.handler.user_emit(socket, `message_board_wait`, {remaining: remaining})
+        App.handler.user_emit(socket, `message_board_wait`, {remaining})
         return
       }
     }
@@ -107,10 +107,8 @@ module.exports = (App) => {
             return false
           }
         }
-        else {
-          if (!App.handler.is_admin_or_op(socket)) {
-            return false
-          }
+        else if (!App.handler.is_admin_or_op(socket)) {
+          return false
         }
       }
     }
@@ -126,7 +124,7 @@ module.exports = (App) => {
 
     let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
 
-    for (let i=0; i<info.message_board_posts.length; i++) {
+    for (let i = 0; i < info.message_board_posts.length; i++) {
       let item = info.message_board_posts[i]
 
       if (item.id === data.id) {
@@ -159,7 +157,7 @@ module.exports = (App) => {
 
     let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
 
-    for (let i=0; i<info.message_board_posts.length; i++) {
+    for (let i = 0; i < info.message_board_posts.length; i++) {
       let item = info.message_board_posts[i]
 
       if (item.id === data.id) {
@@ -198,7 +196,7 @@ module.exports = (App) => {
     info.message_board_posts = []
 
     App.handler.room_emit(socket, `message_board_cleared`, {
-      username: socket.hue_username, user_id: socket.hue_user_id
+      username: socket.hue_username, user_id: socket.hue_user_id,
     })
 
     App.handler.push_admin_log_message(socket, `cleared the message board`)

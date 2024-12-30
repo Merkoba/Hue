@@ -20,17 +20,14 @@ module.exports = (App) => {
         if (Date.now() - reply.date > App.sconfig.redis_max_link_age) {
           return await App.handler.get_link_metadata(url)
         }
-        else {
-          return reply
-        }
+        
+        return reply
       }
-      else {
-        return await App.handler.get_link_metadata(url)
-      }
-    }
-    else {
+      
       return await App.handler.get_link_metadata(url)
     }
+    
+    return await App.handler.get_link_metadata(url)
   }
 
   // Tries to fetch a site's metadata
@@ -39,7 +36,7 @@ module.exports = (App) => {
       title: ``,
       description: ``,
       image: ``,
-      url: url,
+      url,
     }
 
     if (!App.utilz.is_url(url)) {
@@ -83,7 +80,7 @@ module.exports = (App) => {
           }
 
           let res = await App.vars.fetch(
-            `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title,channelTitle,description,thumbnails))&part=snippet&key=${App.sconfig.youtube_api_key}`
+            `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title,channelTitle,description,thumbnails))&part=snippet&key=${App.sconfig.youtube_api_key}`,
           )
 
           res = await res.json()
@@ -153,7 +150,7 @@ module.exports = (App) => {
 
     if (title_add_dots) {
       response.title = response.title.substring(0, App.sconfig.link_max_title_length)
-      .trim() + `...`
+        .trim() + `...`
     }
 
     let description_add_dots = response.description.length > App.sconfig.link_max_description_length
@@ -170,7 +167,7 @@ module.exports = (App) => {
         description: response.description,
         image: response.image,
         url: response.url,
-        date: Date.now()
+        date: Date.now(),
       }
 
       App.i.redis_client.HSET(`hue_link_${response.url}`, obj)

@@ -31,7 +31,7 @@ module.exports = (App) => {
 
     data.src = data.src.replace(
       /youtu\.be\/(\w{11})/,
-      `www.youtube.com/watch?v=$1`
+      `www.youtube.com/watch?v=$1`,
     )
 
     data.username = socket.hue_username
@@ -76,26 +76,26 @@ module.exports = (App) => {
           }
 
           App.vars.fetch(
-            `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${App.sconfig.youtube_api_key}`
+            `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${App.sconfig.youtube_api_key}`,
           )
-          .then((res) => {
-            return res.json()
-          })
-          .then(async (response) => {
-            if (response.items !== undefined && response.items.length > 0) {
-              data.type = `youtube`
-              data.title = response.items[0].snippet.title
-              await App.handler.do_change_media(socket, data, `tv`)
-            }
-            else {
+            .then((res) => {
+              return res.json()
+            })
+            .then(async (response) => {
+              if (response.items !== undefined && response.items.length > 0) {
+                data.type = `youtube`
+                data.title = response.items[0].snippet.title
+                await App.handler.do_change_media(socket, data, `tv`)
+              }
+              else {
+                App.handler.user_emit(socket, `video_not_found`, {})
+                return
+              }
+            })
+            .catch((err) => {
               App.handler.user_emit(socket, `video_not_found`, {})
-              return
-            }
-          })
-          .catch((err) => {
-            App.handler.user_emit(socket, `video_not_found`, {})
-            App.logger.log_error(err)
-          })
+              App.logger.log_error(err)
+            })
         }
         else {
           App.handler.user_emit(socket, `video_not_found`, {})
@@ -214,43 +214,42 @@ module.exports = (App) => {
 
       App.vars.fetch(
         `https://www.googleapis.com/youtube/v3/search?q=${encodeURIComponent(
-          data.src
+          data.src,
         )}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&videoEmbeddable=true&key=${
           App.sconfig.youtube_api_key
-        }`
+        }`,
       )
-      .then((res) => {
-        return res.json()
-      })
-      .then(async (response) => {
-        if (response.items !== undefined && response.items.length > 0) {
-          for (let item of response.items) {
-            if (
-              item === undefined ||
+        .then((res) => {
+          return res.json()
+        })
+        .then(async (response) => {
+          if (response.items !== undefined && response.items.length > 0) {
+            for (let item of response.items) {
+              if (
+                item === undefined ||
               item.id === undefined ||
               item.id.videoId === undefined
-            ) {
-              continue
+              ) {
+                continue
+              }
+
+              data.type = `youtube`
+              data.query = data.src
+              data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
+              data.title = response.items[0].snippet.title
+              await App.handler.do_change_media(socket, data, `tv`)
+              return
             }
 
-            data.type = `youtube`
-            data.query = data.src
-            data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
-            data.title = response.items[0].snippet.title
-            await App.handler.do_change_media(socket, data, `tv`)
+            App.handler.user_emit(socket, `video_not_found`, {})
             return
           }
-
+        
           App.handler.user_emit(socket, `video_not_found`, {})
-          return
-        }
-        else {
-          App.handler.user_emit(socket, `video_not_found`, {})
-        }
-      })
-      .catch((err) => {
-        App.logger.log_error(err)
-      })
+        })
+        .catch((err) => {
+          App.logger.log_error(err)
+        })
     }
   }
 
@@ -262,7 +261,7 @@ module.exports = (App) => {
 
     let sockets = await App.handler.get_user_sockets_per_room_by_username(
       socket.hue_room_id,
-      data.username
+      data.username,
     )
 
     let first_socket
@@ -285,7 +284,7 @@ module.exports = (App) => {
     App.handler.user_emit(first_socket, `report_tv_progress`, {
       requester: socket.id,
       requester_username: socket.hue_username,
-      tv_source: data.tv_source
+      tv_source: data.tv_source,
     })
   }
 
@@ -297,7 +296,7 @@ module.exports = (App) => {
 
     let requester_socket = await App.handler.get_room_socket_by_id(
       socket.hue_room_id,
-      data.requester
+      data.requester,
     )
 
     if (!requester_socket) {

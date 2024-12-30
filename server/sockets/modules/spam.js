@@ -22,10 +22,8 @@ module.exports = (App) => {
           user.level = 0
         }
       }
-      else {
-        if (user.level > 0) {
-          user.level -= 1
-        }
+      else if (user.level > 0) {
+        user.level -= 1
       }
     }
 
@@ -39,7 +37,7 @@ module.exports = (App) => {
         App.handler.anti_spam_users[socket.hue_ip_address] = {
           level: 0,
           banned: false,
-          banned_until: 0
+          banned_until: 0,
         }
       }
 
@@ -88,8 +86,7 @@ module.exports = (App) => {
     if (user) {
       return user.level
     }
-    else {
-      return 0
-    }
+    
+    return 0
   }
 }

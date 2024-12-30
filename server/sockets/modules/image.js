@@ -52,45 +52,29 @@ module.exports = (App) => {
 
       App.vars.fetch(
         `https://api.imgur.com/3/gallery/search/?q=${encodeURIComponent(
-          data.src
+          data.src,
         )}`,
         {
           headers: {
             Authorization: `Client-ID ${App.sconfig.imgur_client_id}`,
           },
-        }
+        },
       )
-      .then((res) => {
-        return res.json()
-      })
-      .then(async (response) => {
-        if (!response.data || !Array.isArray(response.data)) {
-          return
-        }
+        .then((res) => {
+          return res.json()
+        })
+        .then(async (response) => {
+          if (!response.data || !Array.isArray(response.data)) {
+            return
+          }
 
-        for (let item of response.data) {
-          if (item) {
-            if (item.type) {
-              if (item.type.startsWith(`image`)) {
-                let obj = {}
-                obj.query = data.src
-                obj.src = item.link
-                obj.username = socket.hue_username
-                obj.size = 0
-                obj.type = `link`
-                obj.comment = data.comment
-
-                await App.handler.do_change_media(socket, obj, `image`)
-
-                return
-              }
-            }
-            else if (item.images) {
-              for (let img of item.images) {
-                if (img.type.startsWith(`image`)) {
+          for (let item of response.data) {
+            if (item) {
+              if (item.type) {
+                if (item.type.startsWith(`image`)) {
                   let obj = {}
                   obj.query = data.src
-                  obj.src = img.link
+                  obj.src = item.link
                   obj.username = socket.hue_username
                   obj.size = 0
                   obj.type = `link`
@@ -101,15 +85,31 @@ module.exports = (App) => {
                   return
                 }
               }
+              else if (item.images) {
+                for (let img of item.images) {
+                  if (img.type.startsWith(`image`)) {
+                    let obj = {}
+                    obj.query = data.src
+                    obj.src = img.link
+                    obj.username = socket.hue_username
+                    obj.size = 0
+                    obj.type = `link`
+                    obj.comment = data.comment
+
+                    await App.handler.do_change_media(socket, obj, `image`)
+
+                    return
+                  }
+                }
+              }
             }
           }
-        }
 
-        App.handler.user_emit(socket, `image_not_found`, {})
-      })
-      .catch((err) => {
-        App.logger.log_error(err)
-      })
+          App.handler.user_emit(socket, `image_not_found`, {})
+        })
+        .catch((err) => {
+          App.logger.log_error(err)
+        })
     }
     else {
       let extension = App.utilz.get_extension(data.src).toLowerCase()
