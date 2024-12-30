@@ -27,7 +27,7 @@ App.urlize = (el, limit_width = true) => {
       on_matches(matches, html)
     }
 
-    function on_matches (matches, html) {
+    function on_matches(matches, html) {
       let cls = `generic action`
       let used_urls = []
 
@@ -74,6 +74,7 @@ App.goto_url = (url, mode, encode = false) => {
   if (encode) {
     url = encodeURI(url)
   }
+
   if (mode === `tab`) {
     window.open(url, url.substring(0, 200))
   }

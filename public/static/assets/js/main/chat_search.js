@@ -32,7 +32,7 @@ App.show_chat_search = (filter = ``) => {
   let finished = false
   let highlight_id
 
-  function filtercheck (it) {
+  function filtercheck(it) {
     if (finished) {
       return
     }
@@ -97,8 +97,8 @@ App.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$image`)) {
-      let match = (DOM.dataset(it, `mode`) === `announcement` &&
-                  DOM.dataset(it, `type`) === `image_change`)
+      let match = DOM.dataset(it, `mode`) === `announcement` &&
+                  DOM.dataset(it, `type`) === `image_change`
 
       if (match) {
         if (args) {
@@ -109,8 +109,8 @@ App.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$tv`)) {
-      let match = (DOM.dataset(it, `mode`) === `announcement` &&
-                  DOM.dataset(it, `type`) === `tv_change`)
+      let match = DOM.dataset(it, `mode`) === `announcement` &&
+                  DOM.dataset(it, `type`) === `tv_change`
 
       if (match) {
         if (args) {
@@ -125,7 +125,7 @@ App.show_chat_search = (filter = ``) => {
     return text.textContent.toLowerCase().includes(filter)
   }
 
-  function on_messages (messages) {
+  function on_messages(messages) {
     if (messages.length) {
       for (let message of messages) {
         let profilepics = DOM.els(`.profilepic`, message)

@@ -41,7 +41,7 @@ App.do_modal_filter = (id = false) => {
 
   let finished = false
 
-  function filtercheck (it) {
+  function filtercheck(it) {
     if (finished) {
       return
     }

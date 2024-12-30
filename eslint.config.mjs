@@ -36,21 +36,21 @@ export default [
       "space-infix-ops": "error",
       "comma-spacing": "error",
       "comma-dangle": ["error", "always-multiline"],
-      // "no-extra-parens": ["error", "all", {
-      //   "nestedBinaryExpressions": false,
-      //   "enforceForArrowConditionals": false,
-      //   "returnAssign": false
-      // }],
-      // "padding-line-between-statements": [
-      //   "error",
-      //   { "blankLine": "always", "prev": "block-like", "next": "*" }
-      // ],
-      // "func-call-spacing": ["error", "never"],
-      // "space-before-function-paren": ["error", {
-      //   "anonymous": "never",
-      //   "named": "never",
-      //   "asyncArrow": "always"
-      // }],
+      "no-extra-parens": ["error", "all", {
+        "nestedBinaryExpressions": false,
+        "enforceForArrowConditionals": false,
+        "returnAssign": false
+      }],
+      "padding-line-between-statements": [
+        "error",
+        { "blankLine": "always", "prev": "block-like", "next": "*" }
+      ],
+      "func-call-spacing": ["error", "never"],
+      "space-before-function-paren": ["error", {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }],
     },
     languageOptions: {
       globals: {

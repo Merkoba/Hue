@@ -1824,6 +1824,7 @@ App.update_likes = (el, likes) => {
 
       DOM.el(`.likes_items`, c).append(el)
     }
+
     c.style.display = `flex`
   }
   else {

@@ -529,7 +529,7 @@ App.draw_image_bucket_fill = (x, y) => {
   data = App.set_canvas_node_color(data, node, replacement_color, w)
   q.push(node)
 
-  function check (node) {
+  function check(node) {
     let color = App.get_canvas_node_color(data, node, w)
     if (App.colorlib.get_rgba_distance(color, target_color) <= App.draw_image_bucket_tolerance) {
       data = App.set_canvas_node_color(data, node, replacement_color, w)

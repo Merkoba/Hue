@@ -56,7 +56,7 @@ App.on_room_created = (data) => {
 App.update_roomlist = (data) => {
   let container = DOM.el(`#roomlist_container`)
   container.innerHTML = ``
-  data.roomlist.sort((a, b) => (a.modified < b.modified) ? 1 : -1)
+  data.roomlist.sort((a, b) => a.modified < b.modified ? 1 : -1)
 
   for (let room of data.roomlist) {
     let item = DOM.create(`div`, `roomlist_item modal_item flex_column_center action`)

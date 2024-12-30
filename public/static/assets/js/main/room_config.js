@@ -59,13 +59,13 @@ App.setup_room_config = () => {
   App.setup_background_select()
   App.setup_link_background()
 
-  function apply_color_pickers () {
+  function apply_color_pickers() {
     let c1 = App.background_color_picker.color
     let c2 = App.text_color_picker.color
     App.apply_theme(c1, c2)
   }
 
-  function start_color_picker (what) {
+  function start_color_picker(what) {
     let el = DOM.el(`#admin_${what}_color`)
 
     App[`${what}_color_picker`] = AColorPicker.createPicker(el, {

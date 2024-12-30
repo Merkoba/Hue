@@ -322,7 +322,7 @@ App.get_settings = () => {
 
   let changed = false
 
-  function set_default (setting) {
+  function set_default(setting) {
     App.settings[setting].value = App.default_setting_string
     App.settings[setting].version = App.user_settings[setting].version
   }
