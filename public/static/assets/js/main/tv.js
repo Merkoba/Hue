@@ -510,7 +510,7 @@ App.process_tv_upload_comment = () => {
     return
   }
 
-  App.upload_file({ file: file, action: `tv_upload`, comment: comment })
+  App.upload_file({file: file, action: `tv_upload`, comment: comment})
   App.close_all_modals()
 }
 

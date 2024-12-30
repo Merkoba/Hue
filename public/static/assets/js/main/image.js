@@ -118,7 +118,7 @@ App.change_image_source = (src, just_check = false, comment = ``) => {
 
 // Sends an emit to change the image source
 App.emit_change_image_source = (url, comment = ``) => {
-  App.socket_emit(`change_image_source`, { src: url, comment: comment })
+  App.socket_emit(`change_image_source`, {src: url, comment: comment})
 }
 
 // Updates dimensions of the image
@@ -540,7 +540,7 @@ App.process_image_upload_comment = () => {
     return
   }
 
-  App.upload_file({ file: file, action: `image_upload`, comment: comment })
+  App.upload_file({file: file, action: `image_upload`, comment: comment})
   App.close_all_modals()
 }
 
@@ -600,7 +600,7 @@ App.take_screenshot = async () => {
       track.stop()
     }
 
-    let { videoWidth, videoHeight } = video
+    let {videoWidth, videoHeight} = video
     canvas.width = videoWidth
     canvas.height = videoHeight
     await video.play()

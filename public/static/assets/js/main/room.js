@@ -62,7 +62,7 @@ App.change_room_name = (arg) => {
   }
 
   if (arg.length > 0) {
-    App.socket_emit(`change_room_name`, { name: arg })
+    App.socket_emit(`change_room_name`, {name: arg})
   }
 }
 
@@ -114,7 +114,7 @@ App.change_topic = (dtopic) => {
 
   if (dtopic.length > 0) {
     if (App.topic !== dtopic) {
-      App.socket_emit(`change_topic`, { topic: dtopic })
+      App.socket_emit(`change_topic`, {topic: dtopic})
     }
     else {
       App.checkmsg(`Topic is already set to that`)
@@ -288,7 +288,7 @@ App.change_limited = (limited) => {
   }
 
   if (App.limited !== limited) {
-    App.socket_emit(`change_limited`, { limited: limited })
+    App.socket_emit(`change_limited`, {limited: limited})
   }
   else {
     App.checkmsg(`Limited is already set to that`)

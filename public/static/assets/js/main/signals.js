@@ -16,7 +16,7 @@ App.refresh_client = () => {
 
 // Simple emit to check server response
 App.ping_server = () => {
-  App.socket_emit(`ping_server`, { date: Date.now() })
+  App.socket_emit(`ping_server`, {date: Date.now()})
 }
 
 // Calculates how much time the pong response took to arrive

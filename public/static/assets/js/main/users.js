@@ -782,7 +782,7 @@ App.change_role = (username, role) => {
       return
     }
 
-    App.socket_emit(`change_role`, { username: username, role: role })
+    App.socket_emit(`change_role`, {username: username, role: role})
   }
 }
 
@@ -832,7 +832,7 @@ App.ban = (username) => {
       return
     }
 
-    App.socket_emit(`ban`, { username: username })
+    App.socket_emit(`ban`, {username: username})
   }
 }
 
@@ -848,7 +848,7 @@ App.unban = (username) => {
       return
     }
 
-    App.socket_emit(`unban`, { username: username })
+    App.socket_emit(`unban`, {username: username})
   }
 }
 
@@ -889,7 +889,7 @@ App.kick = (username) => {
       return
     }
 
-    App.socket_emit(`kick`, { username: username })
+    App.socket_emit(`kick`, {username: username})
   }
 }
 
@@ -943,7 +943,7 @@ App.annex = (rol = `admin`) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`annex`, { username: App.username, role: rol })
+    App.socket_emit(`annex`, {username: App.username, role: rol})
   })
 }
 
@@ -1068,7 +1068,7 @@ App.modpassword = (arg) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`modpassword`, { username: username, password: password })
+    App.socket_emit(`modpassword`, {username: username, password: password})
   })
 }
 

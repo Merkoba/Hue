@@ -136,7 +136,7 @@ App.change_background_color = (color) => {
     return
   }
 
-  App.socket_emit(`change_background_color`, { color: color })
+  App.socket_emit(`change_background_color`, {color: color})
 }
 
 // Announces background color change
@@ -243,7 +243,7 @@ App.change_background_source = (src) => {
     }
   }
 
-  App.socket_emit(`change_background_source`, { src: src })
+  App.socket_emit(`change_background_source`, {src: src})
 }
 
 // Announces background image changes
@@ -277,7 +277,7 @@ App.change_text_color = (color) => {
     return
   }
 
-  App.socket_emit(`change_text_color`, { color: color })
+  App.socket_emit(`change_text_color`, {color: color})
 }
 
 // Announces text color changes

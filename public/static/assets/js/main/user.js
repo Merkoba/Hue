@@ -25,7 +25,7 @@ App.change_username = (username) => {
     return false
   }
 
-  App.socket_emit(`change_username`, { username: username })
+  App.socket_emit(`change_username`, {username: username})
   return true
 }
 
@@ -52,7 +52,7 @@ App.change_password = (p1, p2) => {
     return false
   }
 
-  App.socket_emit(`change_password`, { password: p1 })
+  App.socket_emit(`change_password`, {password: p1})
   return true
 }
 
@@ -79,7 +79,7 @@ App.change_bio = (value) => {
     return false
   }
 
-  App.socket_emit(`change_bio`, { bio: value })
+  App.socket_emit(`change_bio`, {bio: value})
   return true
 }
 
@@ -345,7 +345,7 @@ App.profilepic_selected = (file, type) => {
           height: 200,
           type: `circle`,
         },
-        boundary: { width: 350, height: 350 },
+        boundary: {width: 350, height: 350},
       })
     }
 
@@ -442,7 +442,7 @@ App.audioclip_selected = (file) => {
     return
   }
 
-  App.upload_file({ file: file, action: `audioclip_upload` })
+  App.upload_file({file: file, action: `audioclip_upload`})
 }
 
 // Get the user profile

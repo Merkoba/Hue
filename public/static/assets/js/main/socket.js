@@ -386,7 +386,7 @@ App.on_disconnect = () => {
   App.generate_favicon(-1)
 
   if (!DOM.el(`#reconnecting_feedback`)) {
-    App.feedback(`Reconnecting...`, { container_id: `reconnecting_feedback` })
+    App.feedback(`Reconnecting...`, {container_id: `reconnecting_feedback`})
   }
 
   setTimeout(() => {
