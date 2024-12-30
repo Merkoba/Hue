@@ -562,7 +562,7 @@ App.start_media_info = () => {
 
     if (el) {
       let user_id = DOM.dataset(el.closest(`.media_info_container`), `user_id`)
-      App.show_profile(username, user_id)
+      App.show_profile(undefined, user_id)
       return
     }
 
@@ -842,7 +842,6 @@ App.announce_media = (type, data) => {
     brk: App.get_chat_icon(type),
     title: data.info,
     date: data.date,
-    type: data.type,
     username: data.username,
     type: `${type}_change`,
     user_id: data.user_id,

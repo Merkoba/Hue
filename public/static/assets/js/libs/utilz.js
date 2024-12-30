@@ -880,4 +880,6 @@ const Utilz = () => {
 try {
   module.exports = Utilz
 }
-catch (e) {}
+catch (e) {
+  // Do nothing
+}

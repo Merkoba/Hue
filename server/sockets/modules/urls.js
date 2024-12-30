@@ -20,13 +20,13 @@ module.exports = (App) => {
         if (Date.now() - reply.date > App.sconfig.redis_max_link_age) {
           return await App.handler.get_link_metadata(url)
         }
-        
+
         return reply
       }
-      
+
       return await App.handler.get_link_metadata(url)
     }
-    
+
     return await App.handler.get_link_metadata(url)
   }
 
@@ -43,14 +43,14 @@ module.exports = (App) => {
       return response
     }
 
-    if (url === `http://localhost` || url === `https://localhost`) {
+    if ((url === `http://localhost`) || (url === `https://localhost`)) {
       return response
     }
 
     let extension = App.utilz.get_extension(url).toLowerCase()
 
     if (extension) {
-      if (extension !== `html` && extension !== `php`) {
+      if ((extension !== `html`) && (extension !== `php`)) {
         return response
       }
     }
@@ -75,7 +75,6 @@ module.exports = (App) => {
             pid = id[1][0]
           }
           else {
-            App.handler.user_emit(socket, `video_not_found`, {})
             return
           }
 

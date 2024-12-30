@@ -2,7 +2,7 @@ import globals from "globals";
 import pluginJs from "@eslint/js";
 
 export default [
-  // pluginJs.configs.recommended,
+  pluginJs.configs.recommended,
 
   {languageOptions: {globals: globals.browser}},
 
@@ -51,26 +51,39 @@ export default [
         "named": "never",
         "asyncArrow": "always"
       }],
+      "no-mixed-operators": [
+        "error",
+        {
+          "groups": [
+            ["&&", "||"]
+          ],
+          "allowSamePrecedence": true
+        }
+      ]
     },
     languageOptions: {
       globals: {
-        App: "writable",
-        DOM: "writable",
-        Msg: "writable",
-        Utilz: "writable",
-        Croppie: "writable",
-        Handlebars: "writable",
-        jdenticon: "writable",
-        Dropzone: "writable",
-        io: "writable",
-        Twitch: "writable",
-        SC: "writable",
-        YT: "writable",
+        App: "readonly",
+        DOM: "readonly",
+        Msg: "readonly",
+        Utilz: "readonly",
+        Croppie: "readonly",
+        Handlebars: "readonly",
+        jdenticon: "readonly",
+        Dropzone: "readonly",
+        io: "readonly",
+        Twitch: "readonly",
+        SC: "readonly",
+        YT: "readonly",
         onYouTubeIframeAPIReady: "writable",
-        ColorLib: "writable",
-        NeedContext: "writable",
-        dateFormat: "writable",
-        browser: "writable",
+        ColorLib: "readonly",
+        NeedContext: "readonly",
+        dateFormat: "readonly",
+        browser: "readonly",
+        module: "readonly",
+        __dirname: "readonly",
+        Buffer: "readonly",
+        AColorPicker: "readonly",
       }
     }
   }

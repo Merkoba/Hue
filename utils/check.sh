@@ -10,3 +10,7 @@ if [ -n "$changed_files" ]; then
 else
   echo "No files have changed since the last tag."
 fi
+
+# npx eslint --cache public/static/assets/js/main/*.js
+# npx eslint --cache public/static/assets/js/libs/utilz.js
+# npx eslint --cache server/sockets/modules/*.js

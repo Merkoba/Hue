@@ -1,7 +1,7 @@
 // Reloads the client
 App.reload_client = () => {
   App.user_leaving = true
-  window.location = window.location
+  window.location.reload()
 }
 
 // Reconnect asynchronously

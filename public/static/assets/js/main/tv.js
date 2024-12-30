@@ -5,7 +5,7 @@ App.current_tv = () => {
   if (App.tv_changed.length > 0) {
     return App.tv_changed[App.tv_changed.length - 1]
   }
-  
+
   return {}
 }
 
@@ -274,22 +274,12 @@ App.change_tv_source = (src, just_check = false, comment = ``) => {
       let extension = App.utilz.get_extension(src).toLowerCase()
 
       if (extension) {
-        let is_image = App.utilz.is_image(src)
         let is_video = App.utilz.is_video(src)
 
-        if (is_image || is_video) {
-          // OK
-        }
-        else if (is_image) {
-          if (feedback) {
-            App.checkmsg(`That doesn't seem to be a video`)
-          }
-
+        if (!is_video) {
           return false
         }
       }
-
-      return false
     }
   }
   else {

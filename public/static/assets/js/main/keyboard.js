@@ -11,11 +11,12 @@ App.activate_key_detection = () => {
 
     if (e.key === `Tab`) {
       if (
-        App.modal_open &&
-        App.msg_change_password.is_open() ||
-        App.msg_message_board.is_open() ||
-        App.msg_link_image.is_open() ||
-        App.msg_link_tv.is_open()
+        App.modal_open && (
+          App.msg_change_password.is_open() ||
+          App.msg_message_board.is_open() ||
+          App.msg_link_image.is_open() ||
+          App.msg_link_tv.is_open()
+        )
       ) {
         // Continue
       }
