@@ -844,7 +844,7 @@ App.get_message_by_id = (id, container = `#chat_area`) => {
 
   let units = DOM.els(`${container} .message_unit`)
 
-  for (let i=0; i<units.length; i++) {
+  for (let i = 0; i < units.length; i++) {
     let uid = DOM.dataset(units[i], `id`)
 
     if (uid && uid === id) {
@@ -1675,7 +1675,7 @@ App.deleted_messages_above = (data) => {
 
   let units = App.get_all_units()
 
-  for (let i=0; i<ans[1]; i++) {
+  for (let i = 0; i < ans[1]; i++) {
     let unit = units[i]
     let mode = DOM.dataset(unit.closest(`.message`), `mode`)
 
@@ -1703,7 +1703,7 @@ App.deleted_messages_below = (data) => {
 
   let units = App.get_all_units()
 
-  for (let i=ans[1]+1; i<units.length; i++) {
+  for (let i = ans[1] + 1; i < units.length; i++) {
     let unit = units[i]
     let mode = DOM.dataset(unit.closest(`.message`), `mode`)
 

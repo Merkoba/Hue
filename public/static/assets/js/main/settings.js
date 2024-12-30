@@ -564,7 +564,7 @@ App.set_default_setting = (setting) => {
 App.create_settings_percentages = () => {
   let opts = []
 
-  for (let p=App.media_max_percentage; p>=App.media_min_percentage; p-=5) {
+  for (let p = App.media_max_percentage; p >= App.media_min_percentage; p -= 5) {
     opts.push({value: p, text: `${p}%`})
   }
 

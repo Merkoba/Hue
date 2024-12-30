@@ -127,7 +127,7 @@ App.update_whisper_users = (username) => {
     App.whisper_users.push(username)
   }
   else {
-    for (let i=0; i<App.whisper_users.length; i++) {
+    for (let i = 0; i < App.whisper_users.length; i++) {
       let u = App.whisper_users[i]
 
       if (u === username) {

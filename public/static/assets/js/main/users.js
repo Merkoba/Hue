@@ -43,7 +43,7 @@ App.update_usercount = () => {
 
 // Adds a user to the user list
 App.add_to_userlist = (args = {}) => {
-  for (let i=0; i<App.userlist.length; i++) {
+  for (let i = 0; i < App.userlist.length; i++) {
     if (App.userlist[i].user_id === args.user_id) {
       App.userlist[i].user_id = args.user_id
       App.userlist[i].username = args.username
@@ -74,7 +74,7 @@ App.add_to_userlist = (args = {}) => {
 
 // Removes a user from the user list
 App.remove_from_userlist = (user_id) => {
-  for (let i=0; i<App.userlist.length; i++) {
+  for (let i = 0; i < App.userlist.length; i++) {
     if (App.userlist[i].user_id === user_id) {
       App.userlist.splice(i, 1)
       App.update_userlist()
@@ -127,7 +127,7 @@ App.replace_property_in_userlist_by_id = (
 
 // Gets the role of a user by username
 App.get_role = (username) => {
-  for (let i=0; i<App.userlist.length; i++) {
+  for (let i = 0; i < App.userlist.length; i++) {
     if (App.userlist[i].username === username) {
       return App.userlist[i].role
     }
@@ -258,7 +258,7 @@ App.setup_userlist_window = () => {
 App.update_userlist_window = (filter_out = []) => {
   let container = DOM.create(`div`)
 
-  for (let i=0; i<App.userlist.length; i++) {
+  for (let i = 0; i < App.userlist.length; i++) {
     let user = App.userlist[i]
 
     if (filter_out.includes(user.username)) {
@@ -420,7 +420,7 @@ App.sort_userlist_by_username = (a, b) => {
 
 // Updates the profile image of a user in the userlist
 App.update_user_profilepic = (id, version) => {
-  for (let i=0; i<App.userlist.length; i++) {
+  for (let i = 0; i < App.userlist.length; i++) {
     let user = App.userlist[i]
 
     if (user.user_id === id) {
@@ -519,7 +519,7 @@ App.get_matching_usernames = (s) => {
   let username = split[0]
   let matches = []
 
-  for (let i=0; i<split.length; i++) {
+  for (let i = 0; i < split.length; i++) {
     if (i > 0) {
       username = `${username} ${split[i]}`
     }

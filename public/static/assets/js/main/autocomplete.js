@@ -36,7 +36,7 @@ App.get_closest_autocomplete = (element, w) => {
   let wl = w.toLowerCase()
   let has = false
 
-  for (let i=0; i<l.length; i++) {
+  for (let i = 0; i < l.length; i++) {
     let pw = l[i]
 
     if (pw.startsWith(w)) {
@@ -49,7 +49,7 @@ App.get_closest_autocomplete = (element, w) => {
     }
   }
 
-  for (let i=0; i<l.length; i++) {
+  for (let i = 0; i < l.length; i++) {
     let pw = l[i]
     let pwl = pw.toLowerCase()
 

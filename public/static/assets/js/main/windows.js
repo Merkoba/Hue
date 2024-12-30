@@ -441,7 +441,7 @@ App.start_msg = () => {
   )
 
   App.msg_draw_image = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar,{
+    Object.assign({}, msgvars.common, msgvars.titlebar, {
       id: `draw_image`,
     }),
   )

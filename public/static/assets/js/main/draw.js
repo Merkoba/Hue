@@ -30,7 +30,7 @@ App.canvas_redraw = (args = {}) => {
     )
   }
 
-  for (let i=0; i<args.sector_index; i++) {
+  for (let i = 0; i < args.sector_index; i++) {
     args.context.beginPath()
 
     if (args.drag[i] && i) {
@@ -155,7 +155,7 @@ App.setup_draw_image = () => {
 
   let select = ``
 
-  for (let i=App.draw_image_pencil_size_step; i<=App.draw_image_max_pencil_size; i+=App.draw_image_pencil_size_step) {
+  for (let i = App.draw_image_pencil_size_step; i <= App.draw_image_max_pencil_size; i += App.draw_image_pencil_size_step) {
     select += `<option value="${i}">${i}</option>`
   }
 

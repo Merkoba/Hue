@@ -8,7 +8,7 @@ App.apply_separator = (el, cls) => {
     return it.style.display !== `none` && !it.classList.contains(`nodisplay`)
   })
 
-  for (let i=0; i<elems.length; i++) {
+  for (let i = 0; i < elems.length; i++) {
     if (i === elems.length - 1) {
       break
     }

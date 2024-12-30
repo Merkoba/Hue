@@ -93,7 +93,7 @@ App.generate_favicon = (mode) => {
 }
 
 // Centralized console info printer
-App.loginfo = (message, style=``) => {
+App.loginfo = (message, style = ``) => {
   console.info(`🤡 %c(${App.utilz.nice_date(Date.now())}) %c${message}`, `color:blue`, style)
 }
 
@@ -103,7 +103,7 @@ App.get_chat_icon = (name) => {
 }
 
 // Centralized function to return an icon
-App.get_icon = (name, cls=``) => {
+App.get_icon = (name, cls = ``) => {
   return `<svg class='other_icon ${cls}'><use href='#icon_${name}'></svg>`
 }
 
