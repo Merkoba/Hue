@@ -177,4 +177,44 @@ module.exports = (App) => {
       file.cancelled = true
     }
   }
+
+  // Download media
+  App.handler.download_media = async (socket, args = {}) => {
+    let max_size = 1024 * 1024 * args.max_size
+
+    let head_res = await App.vars.fetch(args.src, {
+      method: `HEAD`,
+      size: max_size,
+    })
+
+    if (!head_res.ok) {
+      App.logger.log_error(`Failed to fetch media headers: ${head_res.statusText}`)
+      return
+    }
+
+    let content_length = head_res.headers.get(`Content-Length`)
+
+    if (content_length && parseInt(content_length) > max_size) {
+      App.logger.log_error(`Media is too large: ${content_length} bytes`)
+      return
+    }
+
+    if (content_length && parseInt(content_length) > max_size) {
+      App.logger.log_error(`Media is too large: ${content_length} bytes`)
+      return
+    }
+
+    let res = await App.vars.fetch(args.src, {
+      method: `GET`,
+      size: max_size,
+    })
+
+    if (!res.ok) {
+      App.logger.log_error(`Failed to fetch media: ${res.statusText}`)
+      return
+    }
+
+    let full_file = Buffer.from(new Uint8Array(await res.arrayBuffer()))
+    return full_file
+  }
 }

@@ -143,8 +143,11 @@ module.exports = (App) => {
           return
         }
 
+        let max_size = 1024 * 1024 * App.config.max_linked_tv_size
+
         let head_res = await App.vars.fetch(data.src, {
           method: `HEAD`,
+          size: max_size,
         })
 
         if (!head_res.ok) {
@@ -153,7 +156,6 @@ module.exports = (App) => {
         }
 
         let content_length = head_res.headers.get(`Content-Length`)
-        let max_size = 1024 * 1024 * App.config.max_linked_tv_size
 
         if (content_length && parseInt(content_length) > max_size) {
           App.logger.log_error(`Video is too large: ${content_length} bytes`)
@@ -184,6 +186,25 @@ module.exports = (App) => {
           comment: data.comment,
           extension,
         }, `tv`)
+
+        try {
+          let full_file = await App.handler.download_media(socket, {
+            src: data.src,
+            max_size: App.config.max_linked_tv_size,
+          })
+
+          let url = new URL(data.src)
+
+          await App.handler.upload_media(socket, {
+            file: full_file,
+            file_name: `${url.hostname}.${extension}`,
+            comment: data.comment,
+            extension,
+          }, `tv`)
+        }
+        catch (err) {
+          App.logger.log_error(err)
+        }
       }
     }
     else {

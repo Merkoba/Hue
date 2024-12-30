@@ -202,44 +202,20 @@ module.exports = (App) => {
         return
       }
 
-      let head_res = await App.vars.fetch(data.src, {
-        method: `HEAD`,
-      })
+      try {
+        let full_file = await App.handler.download_media(socket, {
+          src: data.src,
+          max_size: App.config.max_linked_background_size,
+        })
 
-      if (!head_res.ok) {
-        App.logger.log_error(`Failed to fetch image headers: ${head_res.statusText}`)
-        return
+        await App.handler.upload_background(socket, {
+          image_file: full_file,
+          extension,
+        })
       }
-
-      let content_length = head_res.headers.get(`Content-Length`)
-      let max_size = 1024 * 1024 * App.config.max_linked_background_size
-
-      if (content_length && parseInt(content_length) > max_size) {
-        App.logger.log_error(`Image is too large: ${content_length} bytes`)
-        return
+      catch (err) {
+        App.logger.log_error(err)
       }
-
-      if (content_length && parseInt(content_length) > max_size) {
-        App.logger.log_error(`Image is too large: ${content_length} bytes`)
-        return
-      }
-
-      let res = await App.vars.fetch(data.src, {
-        method: `GET`,
-        size: max_size,
-      })
-
-      if (!res.ok) {
-        App.logger.log_error(`Failed to fetch image: ${res.statusText}`)
-        return
-      }
-
-      let full_file = Buffer.from(new Uint8Array(await res.arrayBuffer()))
-
-      await App.handler.upload_background(socket, {
-        image_file: full_file,
-        extension,
-      })
     }
   }
 
