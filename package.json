@@ -3,7 +3,9 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"start": "node ./server/www"
+		"start": "node ./server/www",
+		"lint":	"eslint --cache -c eslint.config.mjs",
+		"fix": "eslint --fix -c eslint.config.mjs"
 	},
 	"dependencies": {
 		"bcrypt": "~5.0.1",
