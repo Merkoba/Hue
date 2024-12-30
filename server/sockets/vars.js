@@ -11,7 +11,7 @@ module.exports = (App) => {
     App.i.redis_client_ready = true
   })
 
-  App.i.redis_client.connect().catch(console.error)
+  App.i.redis_client.connect().catch(e => App.utilz.loginfo(e))
 
   App.vars.rooms = {}
   App.vars.user_rooms = {}
@@ -42,11 +42,11 @@ module.exports = (App) => {
   // Don't add spam on these functions
   // They add spam manually
   App.vars.dont_add_spam = [
-    `slice_upload`
+    `slice_upload`,
   ]
 
   App.vars.fetch = (url, args = {}) => {
-    console.info(`Fetching ${url} ...`)
+    App.utilz.loginfo(`Fetching ${url} ...`)
     args.headers = args.headers || {}
     args.headers[`user-agent`] = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.90 Safari/537.36`
     return App.i.fetch(url, args)
