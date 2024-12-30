@@ -136,58 +136,54 @@ module.exports = (App) => {
             data.type = `video`
           }
           else {
-            if (!App.config.iframes_enabled) {
-              return
-            }
-
-            data.type = `iframe`
+            return
           }
         }
         else {
-          if (!App.config.iframes_enabled) {
-            return
-          }
-
-          data.type = `iframe`
+          return
         }
 
-        data.title = ``
+        let head_res = await App.vars.fetch(data.src, {
+          method: `HEAD`,
+        })
 
-        if (data.type === `iframe`) {
-          if (App.sconfig.https_enabled && data.src.includes(`http://`)) {
-            App.handler.user_emit(socket, `cannot_embed_iframe`, {})
-            return
-          }
-
-          if ((data.src + `/`).includes(App.sconfig.site_root)) {
-            App.handler.user_emit(socket, `cannot_embed_iframe`, {})
-            return
-          }
-
-          App.vars.fetch(data.src)
-          .then(async (res) => {
-            let xframe_options = res.headers.get(`x-frame-options`) || ``
-
-            xframe_options = xframe_options.toLowerCase()
-
-            if (
-              xframe_options === `deny` ||
-              xframe_options === `sameorigin`
-            ) {
-              App.handler.user_emit(socket, `cannot_embed_iframe`, {})
-              return
-            }
-            else {
-              await App.handler.do_change_media(socket, data, `tv`)
-            }
-          })
-          .catch((err) => {
-            App.handler.user_emit(socket, `cannot_embed_iframe`, {})
-          })
+        if (!head_res.ok) {
+          App.logger.log_error(`Failed to fetch video headers: ${head_res.statusText}`)
+          return
         }
-        else {
-          await App.handler.do_change_media(socket, data, `tv`)
+
+        let content_length = head_res.headers.get(`Content-Length`)
+        let max_size = 1024 * 1024 * App.config.max_linked_video_size
+
+        if (content_length && parseInt(content_length) > max_size) {
+          App.logger.log_error(`Video is too large: ${content_length} bytes`)
+          return
         }
+
+        if (content_length && parseInt(content_length) > max_size) {
+          App.logger.log_error(`Video is too large: ${content_length} bytes`)
+          return
+        }
+
+        let res = await App.vars.fetch(data.src, {
+          method: `GET`,
+          size: max_size,
+        })
+
+        if (!res.ok) {
+          App.logger.log_error(`Failed to fetch video: ${res.statusText}`)
+          return
+        }
+
+        let full_file = Buffer.from(new Uint8Array(await res.arrayBuffer()))
+        let url = new URL(data.src)
+
+        await App.handler.upload_media(socket, {
+          file: full_file,
+          file_name: `${url.hostname}.${extension}`,
+          comment: data.comment,
+          extension,
+        }, `tv`)
       }
     }
     else {

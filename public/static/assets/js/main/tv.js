@@ -66,12 +66,6 @@ App.play_tv = () => {
       DOM.el(`#media_video_tv`).play()
     }
   }
-  else if (App.current_tv().type === `iframe`) {
-    let iframe = DOM.el(`#media_iframe_tv`)
-    iframe.classList.add(`noborder`)
-    iframe.src = App.current_tv().source
-    DOM.el(`#media_iframe_poster`).style.display = `none`
-  }
 }
 
 // Destroys all tv players that don't match the item's type
@@ -207,32 +201,6 @@ App.show_video_tv = (play = true) => {
   App.after_show_tv()
 }
 
-// Loads an iframe as the tv
-App.show_iframe_tv = (play = true) => {
-  let item = App.loaded_tv
-
-  if (!DOM.el(`#media_iframe_tv`)) {
-    let s = App.template_media_iframe_tv({info: App.get_media_info_html(`tv`)})
-    DOM.el(`#media_iframe_tv_container`).innerHTML = s
-    App.setup_iframe_tv()
-  }
-
-  App.before_show_tv(item)
-  let iframe = DOM.el(`#media_iframe_tv`)
-
-  if (play) {
-    iframe.classList.add(`noborder`)
-    iframe.src = item.source
-    DOM.el(`#media_iframe_poster`).style.display = `none`
-  }
-  else {
-    iframe.classList.remove(`noborder`)
-    DOM.el(`#media_iframe_poster`).style.display = `block`
-  }
-
-  App.after_show_tv()
-}
-
 // This gets called before any tv video is loaded
 App.before_show_tv = (item) => {
   App.stop_tv()
@@ -244,11 +212,6 @@ App.after_show_tv = () => {
   App.apply_media_info(`tv`)
   App.fix_tv_frame()
   App.focus_input()
-
-  if (App.loaded_tv.type === `iframe` && DOM.el(`#media_iframe_tv`).src) {
-    DOM.el(`#media_iframe_tv`).classList.add(`noborder`)
-    DOM.el(`#media_iframe_poster`).style.display = `none`
-  }
 }
 
 // Attempts to change the tv source
@@ -325,23 +288,9 @@ App.change_tv_source = (src, just_check = false, comment = ``) => {
 
           return false
         }
-        else if (!App.config.iframes_enabled) {
-          if (feedback) {
-            App.checkmsg(`IFrame support is not enabled`)
-          }
-
-          return false
-        }
       }
-      else {
-        if (!App.config.iframes_enabled) {
-          if (feedback) {
-            App.checkmsg(`IFrame support is not enabled`)
-          }
 
-          return false
-        }
-      }
+      return false
     }
   }
   else {
@@ -389,13 +338,6 @@ App.get_visible_video_frame_id = () => {
   }
 
   return id
-}
-
-// Setup for the tv iframe
-App.setup_iframe_tv = () => {
-  DOM.ev(DOM.el(`#media_iframe_poster`), `click`, () => {
-    App.play_tv()
-  })
 }
 
 // Updates dimensions of the visible tv frame

@@ -160,9 +160,6 @@ App.server_update_events = {
   pong_received: (data) => {
     App.pong_received(data)
   },
-  cannot_embed_iframe: (data) => {
-    App.checkmsg(`That website cannot be embedded`)
-  },
   same_image: (data) => {
     App.checkmsg(`Image is already set to that`)
   },

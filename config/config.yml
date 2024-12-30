@@ -125,9 +125,6 @@ youtube_enabled: true
 # Whether Imgur features are enabled
 imgur_enabled: true
 
-# Whether embedded iframes are enabled
-iframes_enabled: true
-
 # Url lengths beyond this are ignored by the system
 # This is to avoid triggering actions on urls
 # that are likely wrong or meant as an attack

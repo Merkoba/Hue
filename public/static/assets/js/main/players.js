@@ -16,9 +16,7 @@ App.load_youtube = async (what = ``) => {
   }
 
   App.youtube_loading = true
-
   await App.load_script(`https://www.youtube.com/iframe_api`)
-
   App.youtube_loaded = true
 }
 

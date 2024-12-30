@@ -118,15 +118,47 @@ module.exports = (App) => {
         return
       }
 
-      let obj = {}
+      let head_res = await App.vars.fetch(data.src, {
+        method: `HEAD`,
+      })
 
-      obj.src = data.src
-      obj.username = socket.hue_username
-      obj.size = 0
-      obj.type = `link`
-      obj.comment = data.comment
+      if (!head_res.ok) {
+        App.logger.log_error(`Failed to fetch image headers: ${head_res.statusText}`)
+        return
+      }
 
-      await App.handler.do_change_media(socket, obj, `image`)
+      let content_length = head_res.headers.get(`Content-Length`)
+      let max_size = 1024 * 1024 * App.config.max_linked_image_size
+
+      if (content_length && parseInt(content_length) > max_size) {
+        App.logger.log_error(`Image is too large: ${content_length} bytes`)
+        return
+      }
+
+      if (content_length && parseInt(content_length) > max_size) {
+        App.logger.log_error(`Image is too large: ${content_length} bytes`)
+        return
+      }
+
+      let res = await App.vars.fetch(data.src, {
+        method: `GET`,
+        size: max_size,
+      })
+
+      if (!res.ok) {
+        App.logger.log_error(`Failed to fetch image: ${res.statusText}`)
+        return
+      }
+
+      let full_file = Buffer.from(new Uint8Array(await res.arrayBuffer()))
+      let url = new URL(data.src)
+
+      await App.handler.upload_media(socket, {
+        file: full_file,
+        file_name: `${url.hostname}.${extension}`,
+        comment: data.comment,
+        extension,
+      }, `image`)
     }
   }
 }
