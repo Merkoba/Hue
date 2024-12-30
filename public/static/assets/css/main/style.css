@@ -1228,16 +1228,6 @@ a.special_link:hover {
 	margin-bottom: 0 !important;
 }
 
-#media_iframe_poster {
-	position: absolute;
-	display: none;
-	font-size: 1.1rem;
-}
-
-#media_iframe_tv {
-	border: 1px solid var(--text_color);
-}
-
 .noborder {
 	border: 0 !important;
 }
