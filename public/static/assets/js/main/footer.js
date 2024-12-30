@@ -21,11 +21,11 @@ App.setup_footer = () => {
     })
 
     DOM.ev(DOM.el(`#footer_${type}_toggle`), `click`, () => {
-      App.set_media_enabled({type: type, what: !App.room_state[`${type}_enabled`]})
+      App.set_media_enabled({type, what: !App.room_state[`${type}_enabled`]})
     })
 
     DOM.ev(DOM.el(`#footer_${type}_lock`), `click`, () => {
-      App.set_media_locked({type: type, what: !App[`${type}_locked`]})
+      App.set_media_locked({type, what: !App[`${type}_locked`]})
     })
 
     DOM.ev(DOM.el(`#footer_${type}_list`), `click`, () => {

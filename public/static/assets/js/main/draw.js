@@ -217,8 +217,8 @@ App.increase_draw_image_snapshot = (data) => {
   let level = App.draw_image_current_snapshot.level + 1
 
   App.draw_image_snapshots[`level_${level}`] = {
-    level: level,
-    data: data,
+    level,
+    data,
     click_x: [],
     click_y: [],
     drag: [],

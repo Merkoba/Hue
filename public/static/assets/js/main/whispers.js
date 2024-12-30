@@ -77,7 +77,7 @@ App.send_inline_whisper = (arg) => {
     return
   }
 
-  App.do_send_whisper({message: message, usernames: c_usernames, type: `user`})
+  App.do_send_whisper({message, usernames: c_usernames, type: `user`})
 }
 
 // Shows the window to write whispers
@@ -190,7 +190,7 @@ App.whisper_received = (data) => {
     App.show_whisper(data, `received`)
   }
 
-  let item = App.make_info_popup_item({icon: `envelope`, message: message, push: false})
+  let item = App.make_info_popup_item({icon: `envelope`, message, push: false})
   data.notification = App.push_whisper(message, func, false, data)
   App.on_activity(`whisper`)
 
@@ -214,7 +214,7 @@ App.whisper_sent = (data) => {
     App.show_whisper(data, `sent`)
   }
 
-  let item = App.make_info_popup_item({icon: `envelope`, message: message, push: false})
+  let item = App.make_info_popup_item({icon: `envelope`, message, push: false})
   data.notification = App.push_whisper(message, func, true, data)
   App.show_popup(App.make_info_popup(func), item)
 }
@@ -273,7 +273,7 @@ App.show_whisper = (data, mode) => {
 // Sends a whisper to user(s)
 App.send_whisper = (message) => {
   if (App.message_type === `system_broadcast`) {
-    App.do_send_whisper({message: message, usernames: [], type: App.message_type})
+    App.do_send_whisper({message, usernames: [], type: App.message_type})
     return true
   }
 
@@ -301,7 +301,7 @@ App.send_whisper = (message) => {
     return false
   }
 
-  App.do_send_whisper({message: message, usernames: approved, type: App.message_type})
+  App.do_send_whisper({message, usernames: approved, type: App.message_type})
   return true
 }
 
@@ -359,9 +359,9 @@ App.push_whisper = (message, on_click, read, data) => {
 
   if (data.mode === `received`) {
     item.innerHTML = App.template_whisper_received({
-      date: date,
+      date,
       profilepic: App.get_profilepic(data.user_id),
-      message: message,
+      message,
     })
 
     if (data.user_id) {
@@ -377,8 +377,8 @@ App.push_whisper = (message, on_click, read, data) => {
   }
   else {
     item.innerHTML = App.template_whisper_sent({
-      date: date,
-      message: message,
+      date,
+      message,
     })
   }
 

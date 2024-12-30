@@ -319,11 +319,10 @@ App.compare_userlist = (a, b) => {
     else if (a.username < b.username) {
       return 1
     }
-    else {
+    
       return 0
-    }
   }
-  else {
+  
     if (a.role > b.role) {
       return 1
     }
@@ -337,10 +336,8 @@ App.compare_userlist = (a, b) => {
     else if (a.username > b.username) {
       return 1
     }
-    else {
+    
       return 0
-    }
-  }
 }
 
 // Returns true or false depending if the user is online
@@ -782,7 +779,7 @@ App.change_role = (username, role) => {
       return
     }
 
-    App.socket_emit(`change_role`, {username: username, role: role})
+    App.socket_emit(`change_role`, {username, role})
   }
 }
 
@@ -832,7 +829,7 @@ App.ban = (username) => {
       return
     }
 
-    App.socket_emit(`ban`, {username: username})
+    App.socket_emit(`ban`, {username})
   }
 }
 
@@ -848,7 +845,7 @@ App.unban = (username) => {
       return
     }
 
-    App.socket_emit(`unban`, {username: username})
+    App.socket_emit(`unban`, {username})
   }
 }
 
@@ -889,7 +886,7 @@ App.kick = (username) => {
       return
     }
 
-    App.socket_emit(`kick`, {username: username})
+    App.socket_emit(`kick`, {username})
   }
 }
 
@@ -1068,7 +1065,7 @@ App.modpassword = (arg) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`modpassword`, {username: username, password: password})
+    App.socket_emit(`modpassword`, {username, password})
   })
 }
 

@@ -5,9 +5,8 @@ App.current_tv = () => {
   if (App.tv_changed.length > 0) {
     return App.tv_changed[App.tv_changed.length - 1]
   }
-  else {
+  
     return {}
-  }
 }
 
 // Pushes a changed tv into the tv changed array
@@ -321,8 +320,8 @@ App.change_tv_source = (src, just_check = false, comment = ``) => {
 // Do tv change socket emit
 App.do_tv_change = (src, comment) => {
   App.socket_emit(`change_tv_source`, {
-    src: src,
-    comment: comment,
+    src,
+    comment,
   })
 }
 
@@ -398,7 +397,7 @@ App.sync_tv = (username) => {
   }
 
   App.socket_emit(`sync_tv`, {
-    username: username,
+    username,
     tv_source: App.loaded_tv.source,
   })
 }
@@ -426,7 +425,7 @@ App.report_tv_progress = (data) => {
   if (progress) {
     App.socket_emit(`report_tv_progress`, {
       requester: data.requester,
-      progress: progress,
+      progress,
       type: ttype,
     })
 
@@ -510,7 +509,7 @@ App.process_tv_upload_comment = () => {
     return
   }
 
-  App.upload_file({file: file, action: `tv_upload`, comment: comment})
+  App.upload_file({file, action: `tv_upload`, comment})
   App.close_all_modals()
 }
 

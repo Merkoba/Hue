@@ -108,9 +108,9 @@ App.make_chat_message = (args = {}) => {
   fmessage = DOM.create(`div`, `message chat_message user_details`)
 
   fmessage.innerHTML = App.template_chat_message({
-    content_classes: content_classes,
+    content_classes,
     profilepic: pi,
-    title: title,
+    title,
     date: d,
   })
 
@@ -286,8 +286,8 @@ App.make_announcement_message = (args = {}) => {
   let fmessage = DOM.create(`div`, `message announcement message_unit unit_data_container`)
 
   fmessage.innerHTML = App.template_announcement_message({
-    content_classes: content_classes,
-    brk_classes: brk_classes,
+    content_classes,
+    brk_classes,
     top_classes: top_clasees,
     brk: args.brk,
   })
@@ -414,7 +414,7 @@ App.insert_message = (args = {}) => {
 
       return {
         message_id: DOM.dataset(last_message, `message_id`),
-        message_unit: message_unit,
+        message_unit,
       }
     }
   }
@@ -507,8 +507,8 @@ App.insert_message = (args = {}) => {
   }
 
   return {
-    message_id: message_id,
-    message_unit: message_unit,
+    message_id,
+    message_unit,
   }
 }
 
@@ -640,7 +640,7 @@ App.submit_reply = () => {
 
   App.process_input({
     message: reply,
-    quote: quote,
+    quote,
     quote_username: App.reply_username,
     quote_user_id: App.reply_user_id,
     quote_id: App.reply_id,
@@ -745,7 +745,7 @@ App.submit_edit = () => {
 
     App.process_input({
       message: new_message,
-      edit_id: edit_id,
+      edit_id,
     })
   }
   else if (mode === `announcement`) {
@@ -768,7 +768,7 @@ App.delete_message = (id) => {
 
   App.show_confirm(`Delete message from the chat log`, () => {
     App.socket_emit(`delete_message`, {
-      id: id,
+      id,
     })
   })
 }
@@ -791,7 +791,7 @@ App.delete_message_group = (id) => {
 
       if (id) {
         App.socket_emit(`delete_message`, {
-          id: id,
+          id,
         })
       }
     }
@@ -810,7 +810,7 @@ App.delete_messages_above = (id) => {
 
   App.show_confirm(`Delete messages above (${s})`, () => {
     App.socket_emit(`delete_messages_above`, {
-      id: id,
+      id,
     })
   })
 }
@@ -828,7 +828,7 @@ App.delete_messages_below = (id) => {
 
   App.show_confirm(`Delete messages below (${s})`, () => {
     App.socket_emit(`delete_messages_below`, {
-      id: id,
+      id,
     })
   })
 }
@@ -1147,13 +1147,13 @@ App.make_link_preview = (args = {}) => {
   }
 
   ans.link_preview = App.template_link_preview({
-    classes: classes,
-    text_content_classes: text_content_classes,
-    title_classes: title_classes,
+    classes,
+    text_content_classes,
+    title_classes,
     title: args.title,
-    description_classes: description_classes,
+    description_classes,
     description: args.description,
-    image_classes: image_classes,
+    image_classes,
     image: args.image,
   }).trim()
 
@@ -1425,7 +1425,7 @@ App.shrug = () => {
 App.feedback = (message, data = false) => {
   let obj = {
     brk: App.get_chat_icon(`info`),
-    message: message,
+    message,
   }
 
   if (data) {
@@ -1443,7 +1443,7 @@ App.feedback = (message, data = false) => {
 App.public_feedback = (message, data = false) => {
   let obj = {
     brk: App.get_chat_icon(`info`),
-    message: message,
+    message,
   }
 
   if (data) {
@@ -1764,8 +1764,8 @@ App.like_message = (target, type) => {
   let id = DOM.dataset(unit, `id`)
 
   App.socket_emit(`like_message`, {
-    id: id,
-    type: type,
+    id,
+    type,
   })
 }
 

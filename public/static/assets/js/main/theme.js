@@ -134,7 +134,7 @@ App.change_background_color = (color) => {
     return
   }
 
-  App.socket_emit(`change_background_color`, {color: color})
+  App.socket_emit(`change_background_color`, {color})
 }
 
 // Announces background color change
@@ -200,7 +200,7 @@ App.background_selected = (file) => {
 
   App.background_peek_action = () => {
     DOM.el(`#admin_background`).src = App.config.background_loading_url
-    App.upload_file({file: file, action: `background_upload`})
+    App.upload_file({file, action: `background_upload`})
   }
 
   App.do_background_peek()
@@ -241,7 +241,7 @@ App.change_background_source = (src) => {
     }
   }
 
-  App.socket_emit(`change_background_source`, {src: src})
+  App.socket_emit(`change_background_source`, {src})
 }
 
 // Announces background image changes
@@ -275,7 +275,7 @@ App.change_text_color = (color) => {
     return
   }
 
-  App.socket_emit(`change_text_color`, {color: color})
+  App.socket_emit(`change_text_color`, {color})
 }
 
 // Announces text color changes

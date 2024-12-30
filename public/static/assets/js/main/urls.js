@@ -209,7 +209,7 @@ App.open_url_menu = (data) => {
     title: data.title,
     comment: data.comment,
     url: data.source,
-    size: size,
+    size,
   })
 
   App.urlize(el)

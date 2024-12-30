@@ -235,7 +235,7 @@ App.push_to_input_history = (message) => {
     .filter(x => x.message !== message)
     .slice(0, App.config.max_input_history)
 
-  App.input_history.unshift({message: message, date: Date.now()})
+  App.input_history.unshift({message, date: Date.now()})
   App.save_input_history()
 }
 

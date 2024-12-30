@@ -68,7 +68,7 @@ App.show_chat_context_menu = (button, x, y) => {
 
     if (type === `unlike` || (type === `like` && likes.length < App.config.max_likes)) {
       items.push({
-        text: text,
+        text,
         action: () => {
           let el = DOM.el(`.unit_text`, button.closest(`.message_unit`))
           App.like_message(el, type)
@@ -123,10 +123,10 @@ App.show_chat_context_menu = (button, x, y) => {
   }
 
   if (x !== undefined && y !== undefined) {
-    NeedContext.show({x: x, y: y, items: items})
+    NeedContext.show({x, y, items})
   }
   else {
-    NeedContext.show({element: button, items: items})
+    NeedContext.show({element: button, items})
   }
 }
 
@@ -191,7 +191,7 @@ App.show_input_menu = () => {
   })
 
   let el = DOM.el(`#footer_input_menu`)
-  NeedContext.show({element: el, items: items})
+  NeedContext.show({element: el, items})
 }
 
 App.show_linksbar_context = (x, y) => {
@@ -215,7 +215,7 @@ App.show_linksbar_context = (x, y) => {
     })
   }
 
-  NeedContext.show({x: x, y: y, items: items})
+  NeedContext.show({x, y, items})
 }
 
 App.at_media_items = (type) => {

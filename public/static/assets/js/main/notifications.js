@@ -5,12 +5,12 @@ App.make_info_popup = (on_click = () => {}) => {
   let popup = App.create_popup({
     position: `topright`,
     autoclose: true,
-    autoclose_delay: autoclose_delay,
+    autoclose_delay,
     enable_titlebar: false,
     window_x: `none`,
     content_class: `!info_popup`,
     window_width: `auto`,
-    on_click: on_click,
+    on_click,
     close_on_escape: false,
   }, `info`)
 
@@ -49,16 +49,15 @@ App.make_info_popup_item = (args = {}) => {
     return App.template_popup_item_2({
       profilepic: args.profilepic,
       message: args.message,
-      classes: classes,
+      classes,
     })
   }
-  else {
+  
     return App.template_popup_item({
       icon: args.icon,
       message: args.message,
-      classes: classes,
+      classes,
     })
-  }
 }
 
 // Pushes a new notification to the notifications window
@@ -82,7 +81,7 @@ App.push_notification = (args) => {
 
   if (args.profilepic) {
     item.innerHTML = App.template_notification_2({
-      content_classes: content_classes,
+      content_classes,
       profilepic: args.profilepic,
       message: args.message,
       date: t,
@@ -90,7 +89,7 @@ App.push_notification = (args) => {
   }
   else {
     item.innerHTML = App.template_notification({
-      content_classes: content_classes,
+      content_classes,
       icon: args.icon,
       message: args.message,
       date: t,
@@ -169,10 +168,10 @@ App.show_room_notification = (username, message, icon = `info`) => {
   }
 
   let html = App.make_info_popup_item({
-    message: message,
+    message,
     on_click: f,
-    icon: icon,
-    profilepic: profilepic,
+    icon,
+    profilepic,
   })
 
   App.show_popup(App.make_info_popup(f), html)
@@ -181,9 +180,9 @@ App.show_room_notification = (username, message, icon = `info`) => {
 // Another centralized function for room changes
 App.show_action_notification = (message, icon, f) => {
   let item = App.make_info_popup_item({
-    message: message,
+    message,
     on_click: f,
-    icon: icon,
+    icon,
   })
 
   App.show_popup(App.make_info_popup(f), item)

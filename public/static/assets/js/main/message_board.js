@@ -122,7 +122,7 @@ App.do_message_board_edit = (send = true) => {
       return
     }
 
-    App.socket_emit(`message_board_post`, {id: id, message: message})
+    App.socket_emit(`message_board_post`, {id, message})
   }
 }
 
@@ -305,7 +305,7 @@ App.submit_message_board_post = () => {
 
   DOM.el(`#message_board_textarea`).value = ``
   App.last_message_board_message = message
-  App.socket_emit(`message_board_post`, {message: message})
+  App.socket_emit(`message_board_post`, {message})
   DOM.el(`#message_board_filter`).value = ``
   App.do_modal_filter()
 }
@@ -468,7 +468,7 @@ App.delete_message_board_post = (post) => {
 
   if (id) {
     App.show_confirm(`Delete message from the message board`, () => {
-      App.socket_emit(`delete_message_board_post`, {id: id})
+      App.socket_emit(`delete_message_board_post`, {id})
     })
   }
 }
@@ -511,7 +511,7 @@ App.bump_message_board_post = (post) => {
   }
 
   if (id) {
-    App.socket_emit(`bump_message_board_post`, {id: id})
+    App.socket_emit(`bump_message_board_post`, {id})
   }
 }
 

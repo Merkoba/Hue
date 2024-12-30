@@ -120,10 +120,9 @@ App.show_chat_search = (filter = ``) => {
 
       return match
     }
-    else {
+    
       let text = DOM.el_or_self(`.unit_text`, it)
       return text.textContent.toLowerCase().includes(filter)
-    }
   }
 
   function on_messages (messages) {

@@ -25,7 +25,7 @@ App.change_username = (username) => {
     return false
   }
 
-  App.socket_emit(`change_username`, {username: username})
+  App.socket_emit(`change_username`, {username})
   return true
 }
 
@@ -442,7 +442,7 @@ App.audioclip_selected = (file) => {
     return
   }
 
-  App.upload_file({file: file, action: `audioclip_upload`})
+  App.upload_file({file, action: `audioclip_upload`})
 }
 
 // Get the user profile

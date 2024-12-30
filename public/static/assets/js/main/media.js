@@ -180,8 +180,8 @@ App.get_media_change_inline_comment = (type, source) => {
   }
 
   return {
-    source: source,
-    comment: comment,
+    source,
+    comment,
   }
 }
 
@@ -328,10 +328,10 @@ App.fix_frame = (frame_id, test_parent_height = false) => {
   }
   else {
     return {
-      width: width,
-      height: height,
-      parent_width: parent_width,
-      parent_height: parent_height,
+      width,
+      height,
+      parent_width,
+      parent_height,
     }
   }
 }
@@ -467,7 +467,7 @@ App.apply_media_info = (type) => {
 
   DOM.el(`.media_info`, container).innerHTML = App.template_media_info_inner({
     username: item.username,
-    message: message,
+    message,
     profilepic: App.get_profilepic(item.user_id),
   })
 
@@ -543,7 +543,7 @@ App.change_media_lock_text = (type) => {
 
 // Get html for media info items
 App.get_media_info_html = (type) => {
-  return App.template_media_info({type: type})
+  return App.template_media_info({type})
 }
 
 // Append media inf
@@ -637,9 +637,9 @@ App.open_url_menu_by_media_id = (type, id) => {
 // Send a media edit comment emit to the server
 App.do_edit_media_comment = (type, id, comment) => {
   App.socket_emit(`edit_media_comment`, {
-    type: type,
-    id: id,
-    comment: comment,
+    type,
+    id,
+    comment,
   })
 }
 
@@ -825,13 +825,13 @@ App.setup_media_object = (type, mode, odata = {}) => {
   if (mode === `change`) {
     if (data.user_id === App.user_id) {
       App.set_media_locked({
-        type: type,
+        type,
         what: false,
         change: false,
       })
     }
 
-    App.change_media({type: type})
+    App.change_media({type})
   }
 }
 
@@ -859,7 +859,7 @@ App.change_media_visibility = (type, play = false) => {
     DOM.el(`#media_${type}`).style.display = `flex`
 
     if (App.first_media_change && App.started) {
-      App.change_media({type: type, force: true, current_source: App[`${type}_locked`], play: play})
+      App.change_media({type, force: true, current_source: App[`${type}_locked`], play})
     }
 
     App[`${type}_visible`] = true

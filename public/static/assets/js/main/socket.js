@@ -258,8 +258,8 @@ App.socket_emit = (destination, data = {}, force = false) => {
   }
 
   let obj = {
-    destination: destination,
-    data: data,
+    destination,
+    data,
   }
 
   App.emit_queue.push(obj)

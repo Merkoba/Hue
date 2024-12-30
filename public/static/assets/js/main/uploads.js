@@ -219,7 +219,7 @@ App.upload_file = (args = {}) => {
     message: `Uploading ${App.get_file_action_name(
       args.file.hue_data.action,
     )}: 0%`,
-    icon: icon,
+    icon,
     id: `uploading_${date}`,
     title: `Size: ${App.utilz.size_string(args.file.hue_data.size / 1024)}`,
     on_x_button_click: () => {
@@ -255,7 +255,7 @@ App.cancel_file_upload = (date) => {
   }
 
   delete App.files[date]
-  App.socket_emit(`cancel_upload`, {date: date})
+  App.socket_emit(`cancel_upload`, {date})
 }
 
 // Gets the percentage based on the next file slice to be uploaded

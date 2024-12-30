@@ -14,7 +14,7 @@ App.setup_rooms = () => {
 // Superuser command to create a room
 App.create_room = (name) => {
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`create_room`, {name: name})
+    App.socket_emit(`create_room`, {name})
   })
 }
 
@@ -64,7 +64,7 @@ App.update_roomlist = (data) => {
 
     item.innerHTML = App.template_roomlist_item({
       name: room.name,
-      topic: topic,
+      topic,
       modified: App.utilz.timeago(room.modified),
     })
 

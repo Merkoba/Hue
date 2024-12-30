@@ -819,7 +819,7 @@ App.show_command_book = (filter = ``) => {
     }
 
     DOM.el(`#command_book_container`).innerHTML =
-      App.template_command_book_commands({commands: commands})
+      App.template_command_book_commands({commands})
 
     DOM.ev(DOM.el(`#command_book_container`), `click`, (e) => {
       if (e.target.closest(`.command_book_item`)) {

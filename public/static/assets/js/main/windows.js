@@ -908,7 +908,7 @@ App.show_action_popup = (args = {}) => {
     window_x: `inner_right`,
     content_class: `!action_popup`,
     window_width: `auto`,
-    on_click: on_click,
+    on_click,
     close_on_escape: false,
     on_x_button_click: args.on_x_button_click,
   }
@@ -935,8 +935,8 @@ App.show_action_popup = (args = {}) => {
   }
 
   let html = App.template_action_popup({
-    classes: classes,
-    icon: icon,
+    classes,
+    icon,
     message: args.message,
   })
 

@@ -71,9 +71,8 @@ App.get_topic = () => {
   if (App.topic) {
     return App.topic
   }
-  else {
+  
     return App.config.default_topic
-  }
 }
 
 // Shows the topic
@@ -288,7 +287,7 @@ App.change_limited = (limited) => {
   }
 
   if (App.limited !== limited) {
-    App.socket_emit(`change_limited`, {limited: limited})
+    App.socket_emit(`change_limited`, {limited})
   }
   else {
     App.checkmsg(`Limited is already set to that`)

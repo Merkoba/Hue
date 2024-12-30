@@ -5,7 +5,7 @@ App.ban_user_id = (user_id) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`ban_user_id`, {user_id: user_id})
+    App.socket_emit(`ban_user_id`, {user_id})
   })
 }
 
@@ -16,7 +16,7 @@ App.unban_user_id = (user_id) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`unban_user_id`, {user_id: user_id})
+    App.socket_emit(`unban_user_id`, {user_id})
   })
 }
 
@@ -27,7 +27,7 @@ App.ban_username = (username) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`ban_username`, {username: username})
+    App.socket_emit(`ban_username`, {username})
   })
 }
 
@@ -38,7 +38,7 @@ App.unban_username = (username) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`unban_username`, {username: username})
+    App.socket_emit(`unban_username`, {username})
   })
 }
 
@@ -49,7 +49,7 @@ App.ban_ip_address = (ip_address) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`ban_ip_address`, {ip_address: ip_address})
+    App.socket_emit(`ban_ip_address`, {ip_address})
   })
 }
 
@@ -60,7 +60,7 @@ App.unban_ip_address = (ip_address) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`unban_ip_address`, {ip_address: ip_address})
+    App.socket_emit(`unban_ip_address`, {ip_address})
   })
 }
 
@@ -71,7 +71,7 @@ App.get_user_id_by_username = (username) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`get_user_id_by_username`, {username: username})
+    App.socket_emit(`get_user_id_by_username`, {username})
   })
 }
 
@@ -82,7 +82,7 @@ App.get_username_by_user_id = (user_id) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`get_username_by_user_id`, {user_id: user_id})
+    App.socket_emit(`get_username_by_user_id`, {user_id})
   })
 }
 
@@ -93,7 +93,7 @@ App.get_ip_address_by_username = (username) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`get_ip_address_by_username`, {username: username})
+    App.socket_emit(`get_ip_address_by_username`, {username})
   })
 }
 
@@ -119,6 +119,6 @@ App.disconnect_user = (username) => {
   }
 
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`disconnect_user`, {username: username})
+    App.socket_emit(`disconnect_user`, {username})
   })
 }
