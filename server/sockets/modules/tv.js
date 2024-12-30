@@ -153,7 +153,7 @@ module.exports = (App) => {
         }
 
         let content_length = head_res.headers.get(`Content-Length`)
-        let max_size = 1024 * 1024 * App.config.max_linked_video_size
+        let max_size = 1024 * 1024 * App.config.max_linked_tv_size
 
         if (content_length && parseInt(content_length) > max_size) {
           App.logger.log_error(`Video is too large: ${content_length} bytes`)

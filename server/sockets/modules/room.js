@@ -196,14 +196,50 @@ module.exports = (App) => {
       }
 
       data.src = data.src.replace(/\s/g, ``).replace(/\.gifv/g, `.gif`)
-
       let extension = App.utilz.get_extension(data.src).toLowerCase()
 
       if (!extension || !App.utilz.image_extensions.includes(extension)) {
         return
       }
 
-      await App.handler.do_change_background(socket, data.src, `external`)
+      let head_res = await App.vars.fetch(data.src, {
+        method: `HEAD`,
+      })
+
+      if (!head_res.ok) {
+        App.logger.log_error(`Failed to fetch image headers: ${head_res.statusText}`)
+        return
+      }
+
+      let content_length = head_res.headers.get(`Content-Length`)
+      let max_size = 1024 * 1024 * App.config.max_linked_background_size
+
+      if (content_length && parseInt(content_length) > max_size) {
+        App.logger.log_error(`Image is too large: ${content_length} bytes`)
+        return
+      }
+
+      if (content_length && parseInt(content_length) > max_size) {
+        App.logger.log_error(`Image is too large: ${content_length} bytes`)
+        return
+      }
+
+      let res = await App.vars.fetch(data.src, {
+        method: `GET`,
+        size: max_size,
+      })
+
+      if (!res.ok) {
+        App.logger.log_error(`Failed to fetch image: ${res.statusText}`)
+        return
+      }
+
+      let full_file = Buffer.from(new Uint8Array(await res.arrayBuffer()))
+
+      await App.handler.upload_background(socket, {
+        image_file: full_file,
+        extension,
+      })
     }
   }
 
