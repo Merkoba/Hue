@@ -15,10 +15,8 @@ App.generate_highlights_regex = (
     word = App.utilz.escape_special_characters(word)
   }
 
-  // Raw regex if using the word `mad`
-  // (?:^|\s|\`)(?:\@)?(?:mad)(?:\'s)?(?:$|\s|\`|\!|\?|\,|\.|\:)
   let regex = new RegExp(
-    `(?:^|\\s|\\"|\\\`|\>|\\()(?:\\@)?(?:${word})(?:\\'s)?(?:$|\\s|\\"|\\!|\\?|\\,|\\.|\\:|\\)|\\\`)`,
+    `(?:^|\\s|"|\\\`|>|\\()?@?(?:${word})(?:'s)?(?:$|\\s|"|\\!|\\?|\\,|\\.|\\:|\\)|\\\`)`,
     flags,
   )
 

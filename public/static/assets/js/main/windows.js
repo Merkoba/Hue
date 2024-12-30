@@ -36,86 +36,63 @@ App.start_msg = () => {
   // Start the instances
 
   App.msg_main_menu = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `main_menu`,
-      window_width: `22rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `main_menu`,
+      window_width: `22rem`},
   )
 
   App.msg_room_config = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `room_config`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `room_config`,
       window_width: `22rem`,
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.check_color_pickers()
-      },
-    }),
+      }},
   )
 
   App.msg_background_select = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `background_select`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `background_select`},
   )
 
   App.msg_profilepic_select = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `profilepic_select`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `profilepic_select`},
   )
 
   App.msg_audioclip_select = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `audioclip_select`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `audioclip_select`,
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.stop_audioclip()
-      },
-    }),
+      }},
   )
 
   App.msg_link_background = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `link_background`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `link_background`},
   )
 
   App.msg_admin_list = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `admin_list`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `admin_list`},
   )
 
   App.msg_ban_list = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `ban_list`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `ban_list`},
   )
 
   App.msg_open_room = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `open_room`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `open_room`},
   )
 
   App.msg_roomlist = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `roomlist`,
-      window_width: `22rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `roomlist`,
+      window_width: `22rem`},
   )
 
   App.msg_reactions = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `reactions`,
-      window_width: `22rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `reactions`,
+      window_width: `22rem`},
   )
 
   App.msg_user_profile = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `user_profile`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `user_profile`,
       clear_editables: false,
       window_width: `22rem`,
       after_close: (instance) => {
@@ -123,20 +100,16 @@ App.start_msg = () => {
         if (App.user_profile_audio) {
           App.user_profile_audio.pause()
         }
-      },
-    }),
+      }},
   )
 
   App.msg_userlist = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `userlist`,
-      window_max_width: `40rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `userlist`,
+      window_max_width: `40rem`},
   )
 
   App.msg_modal_image = Msg.factory(
-    Object.assign({}, msgvars.common, {
-      id: `modal_image`,
+    { ...msgvars.common, id: `modal_image`,
       preset: `window`,
       after_show: (instance) => {
         msgvars.common.after_show(instance)
@@ -145,13 +118,11 @@ App.start_msg = () => {
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.clear_modal_image_info()
-      },
-    }),
+      }},
   )
 
   App.msg_profile = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `profile`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `profile`,
       window_width: `22rem`,
       after_close: (instance) => {
         msgvars.common.after_close(instance)
@@ -160,49 +131,37 @@ App.start_msg = () => {
         App.open_profile_user_id = false
         App.open_profile_user = false
         App.stop_audioclip()
-      },
-    }),
+      }},
   )
 
   App.msg_change_role = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `change_role`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `change_role`},
   )
 
   App.msg_change_username = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `change_username`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `change_username`},
   )
 
   App.msg_change_password = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `change_password`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `change_password`},
   )
 
   App.msg_info = Msg.factory(
-    Object.assign({}, msgvars.common, {
-      id: `info`,
+    { ...msgvars.common, id: `info`,
       window_height: `auto`,
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         instance.content.innerHTML = ``
-      },
-    }),
+      }},
   )
 
   App.msg_image_picker = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `image_picker`,
-      content_class: `!media_picker_content`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `image_picker`,
+      content_class: `!media_picker_content`},
   )
 
   App.msg_link_image = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `link_image`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `link_image`,
       window_width: `28rem`,
       after_show: (instance) => {
         msgvars.common.after_show(instance)
@@ -212,20 +171,16 @@ App.start_msg = () => {
         msgvars.common.after_close(instance)
         DOM.el(`#link_image_input`).value = ``
         DOM.el(`#link_image_comment`).value = ``
-      },
-    }),
+      }},
   )
 
   App.msg_tv_picker = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `tv_picker`,
-      content_class: `!media_picker_content`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `tv_picker`,
+      content_class: `!media_picker_content`},
   )
 
   App.msg_link_tv = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `link_tv`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `link_tv`,
       window_width: `28rem`,
       after_show: (instance) => {
         msgvars.common.after_show(instance)
@@ -235,93 +190,71 @@ App.start_msg = () => {
         msgvars.common.after_close(instance)
         DOM.el(`#link_tv_input`).value = ``
         DOM.el(`#link_tv_comment`).value = ``
-      },
-    }),
+      }},
   )
 
   App.msg_screen_capture_options = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `screen_capture_options`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `screen_capture_options`},
   )
 
   App.msg_command_book = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `command_book`,
-      window_width: `36rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `command_book`,
+      window_width: `36rem`},
   )
 
   App.msg_radio = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `radio`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `radio`,
       window_width: `30rem`,
       scroll_on_show: false,
-      class: `!modal_selectable`,
-    }),
+      class: `!modal_selectable`},
   )
 
   App.msg_item_picker = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `item_picker`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `item_picker`,
       window_min_width: `20rem`,
-      window_max_width: `40rem`,
-    }),
+      window_max_width: `40rem`},
   )
 
   App.msg_write_whisper = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `write_whisper`,
-      window_width: `30rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `write_whisper`,
+      window_width: `30rem`},
   )
 
   App.msg_show_whisper = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `show_whisper`,
-      window_width: `30rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `show_whisper`,
+      window_width: `30rem`},
   )
 
   App.msg_chat_search = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `chat_search`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `chat_search`,
       window_width: `38rem`,
       scroll_on_show: false,
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.reset_chat_search_filter()
-      },
-    }),
+      }},
   )
 
   App.msg_locked = Msg.factory(
-    Object.assign({}, msgvars.common, {
-      id: `locked`,
+    { ...msgvars.common, id: `locked`,
       closeable: false,
       show_effect: `none`,
       close_effect: `none`,
       enable_overlay: true,
-      window_class: `!no_effects`,
-    }),
+      window_class: `!no_effects`},
   )
 
   App.msg_settings = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `settings`,
-      window_width: `24rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `settings`,
+      window_width: `24rem`},
   )
 
   App.msg_admin_activity = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `admin_activity`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `admin_activity`},
   )
 
   App.msg_view_image = Msg.factory(
-    Object.assign({}, msgvars.common, {
-      id: `view_image`,
+    { ...msgvars.common, id: `view_image`,
       preset: `window`,
       after_show: (instance) => {
         msgvars.common.after_show(instance)
@@ -330,13 +263,11 @@ App.start_msg = () => {
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.clear_view_image_info()
-      },
-    }),
+      }},
   )
 
   App.msg_image_upload_comment = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `image_upload_comment`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `image_upload_comment`,
       window_width: `28rem`,
       scroll_on_show: false,
       after_close: (instance) => {
@@ -345,13 +276,11 @@ App.start_msg = () => {
         App.image_upload_comment_file = undefined
         App.image_upload_comment_type = undefined
         App.upload_media = undefined
-      },
-    }),
+      }},
   )
 
   App.msg_tv_upload_comment = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `tv_upload_comment`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `tv_upload_comment`,
       window_width: `28rem`,
       scroll_on_show: false,
       after_close: (instance) => {
@@ -362,96 +291,71 @@ App.start_msg = () => {
         App.tv_upload_comment_file = undefined
         App.tv_upload_comment_type = undefined
         App.upload_media = undefined
-      },
-    }),
+      }},
   )
 
   App.msg_handle_url = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `handle_url`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `handle_url`},
   )
 
   App.msg_delete_messages = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `delete_messages`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `delete_messages`},
   )
 
   App.msg_open_url = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `open_url`,
-      window_max_width: `40rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `open_url`,
+      window_max_width: `40rem`},
   )
 
   App.msg_view_text = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `view_text`,
-      window_max_width: `40rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `view_text`,
+      window_max_width: `40rem`},
   )
 
   App.msg_notifications = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `notifications`,
-      window_width: `30rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `notifications`,
+      window_width: `30rem`},
   )
 
   App.msg_whispers = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `whispers`,
-      window_width: `30rem`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `whispers`,
+      window_width: `30rem`},
   )
 
   App.msg_message_board = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `message_board`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `message_board`,
       window_width: `38rem`,
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.do_message_board_edit(false)
-      },
-    }),
+      }},
   )
 
   App.msg_profilepic_cropper = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `profilepic_cropper`,
-      scroll_on_show: false,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `profilepic_cropper`,
+      scroll_on_show: false},
   )
 
   App.msg_confirm = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `confirm`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `confirm`,
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         App.on_confirm_cancel()
-      },
-    }),
+      }},
   )
 
   App.msg_profilepic_preview = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `profilepic_preview`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `profilepic_preview`},
   )
 
   App.msg_draw_image = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `draw_image`,
-    }),
+    { ...msgvars.common, ...msgvars.titlebar, id: `draw_image`},
   )
 
   App.msg_input_history = Msg.factory(
-    Object.assign({}, msgvars.common, msgvars.titlebar, {
-      id: `input_history`,
+    { ...msgvars.common, ...msgvars.titlebar, id: `input_history`,
       window_width: `30rem`,
-      class: `!modal_selectable`,
-    }),
+      class: `!modal_selectable`},
   )
 
   // Set the templates

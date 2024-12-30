@@ -3,7 +3,7 @@ App.setup_textparser_regexes = () => {
   App.textparser_regexes = {}
   App.textparser_regexes.whisper_link = {}
   App.textparser_regexes.whisper_link.regex = new RegExp(
-    `\\[whisper\\s+(.*?)\\](.*?)\\[\/whisper\\]`,
+    `\\[whisper\\s+(.*?)\\](.*?)\\[/whisper\\]`,
     `gm`,
   )
 
@@ -17,7 +17,7 @@ App.setup_textparser_regexes = () => {
 
   App.textparser_regexes.anchor_link = {}
   App.textparser_regexes.anchor_link.regex = new RegExp(
-    `\\[anchor\\s+(.*?)\\](.*?)\\[\/anchor\\]`,
+    `\\[anchor\\s+(.*?)\\](.*?)\\[/anchor\\]`,
     `gm`,
   )
 
