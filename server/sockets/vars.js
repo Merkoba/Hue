@@ -52,7 +52,7 @@ module.exports = (App) => {
     return App.i.fetch(url, args)
   }
 
-  App.vars.tv_link_types = [`youtube`, `twitch`, `soundcloud`, `video`, `iframe`]
+  App.vars.tv_link_types = [`youtube`, `twitch`, `soundcloud`, `video`]
   App.vars.exiting = false
   App.vars.limited_spam = 20
 }
