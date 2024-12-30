@@ -109,7 +109,7 @@ App.create_soundcloud_tv_player = () => {
     })
   }
   catch (err) {
-    console.error(`Soundcloud failed to load`)
+    App.utilz.loginfo(`Soundcloud failed to load`)
   }
 }
 
@@ -198,6 +198,6 @@ App.create_twitch_tv_player = () => {
     })
   }
   catch (err) {
-    console.error(`Twitch failed to load`)
+    App.utilz.loginfo(`Twitch failed to load`)
   }
 }

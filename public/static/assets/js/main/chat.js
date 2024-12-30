@@ -1199,7 +1199,7 @@ App.make_image_preview = (message) => {
     }
 
     let name = message.replace(/:/g, ``)
-    let url =  App.get_reaction_url(name)
+    let url = App.get_reaction_url(name)
     ans.image_preview_text = ``
     ans.image_preview_src_original = url
     ans.image_preview_src = url

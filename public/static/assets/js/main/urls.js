@@ -65,7 +65,7 @@ App.urlize = (el, limit_width = true) => {
     }
   }
   catch (err) {
-    console.error(err)
+    App.utilz.loginfo(err)
   }
 }
 

@@ -738,9 +738,10 @@ const Utilz = () => {
 	}
 
 	// Show information with date
-	utilz.loginfo = (s) => {
+	/* eslint-disable no-console */
+	utilz.loginfo = (s, style) => {
 		try {
-			console.info(`[${utilz.get_time()}] ${s}`)
+			console.info(`[${utilz.get_time()}] ${s}`, style)
 		} catch (err) {
 			console.error(err)
 		}

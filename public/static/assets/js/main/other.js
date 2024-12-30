@@ -39,7 +39,7 @@ App.needs_confirm_2 = (func, s = false) => {
 App.show_console_message = () => {
   let s = `🤔 Want to work with us? It's pretty much 99.99% risks, some negligible fraction AI, a couple bureaucracies to keep people minimally pissed off, and a whole lot of creativity.`
   let style = `font-size:1.4rem`
-  console.info(`%c${s}`, style)
+  App.utilz.loginfo(`%c${s}`, `info`, style)
 }
 
 // Dynamically generate a favicon
@@ -94,7 +94,7 @@ App.generate_favicon = (mode) => {
 
 // Centralized console info printer
 App.loginfo = (message, style = ``) => {
-  console.info(`🤡 %c(${App.utilz.nice_date(Date.now())}) %c${message}`, `color:blue`, style)
+  App.utilz.loginfo(`🤡 %c(${App.utilz.nice_date(Date.now())}) %c${message}`, `color:blue`, style)
 }
 
 // Centralized function to return a chat icon svg
