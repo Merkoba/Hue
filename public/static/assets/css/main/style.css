@@ -640,6 +640,7 @@ a.generic:hover {
 .Msg-window {
 	background-color: var(--background_color) !important;
 	color: var(--text_color) !important;
+	border: 1px solid var(--text_color_a) !important;
 }
 
 .Msg-window-inner-x:hover {
@@ -1528,7 +1529,7 @@ pre {
 }
 
 .custom_popup {
-	border: 0.12rem solid var(--altcolor) !important;
+	border: 0.12rem solid var(--text_color_a) !important;
 }
 
 .titlebar_inner_x {
@@ -1733,7 +1734,7 @@ pre {
 	transform: translate(-50%, -50%);
 	color: var(--text_color);
 	background-color:	var(--altbackground);
-	border: 2px solid var(--altcolor);
+	border: 2px solid var(--text_color_a);
 	z-index: 10;
 	min-width: 14rem;
 	overflow: hidden;
