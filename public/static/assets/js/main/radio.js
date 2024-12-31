@@ -41,7 +41,8 @@ App.setup_radio = () => {
   })
 
   DOM.ev(DOM.el(`#footer_radio_container`), `mouseenter`, (e) => {
-    e.target.title = App.playing_radio.name
+    let vstring = App.round_radio_volume(App.room_state.radio_volume)
+    e.target.title = `${App.playing_radio.name}\nVolume: ${vstring}%`
   })
 
   DOM.ev(DOM.el(`#radio_auto`), `click`, () => {
@@ -49,6 +50,11 @@ App.setup_radio = () => {
   })
 
   App.set_radio_auto_text()
+}
+
+// Round radio volume
+App.round_radio_volume = (volume) => {
+  return Math.round(volume * 100)
 }
 
 // Play or pause radio
@@ -228,14 +234,14 @@ App.change_radio_volume = (direction, amount = 0.05) => {
 // Flash radio volume
 App.flash_radio_volume = (volume = App.room_state.radio_volume) => {
   if (App.started && !App.msg_radio.is_open()) {
-    let vstring = Math.round(volume * 100)
+    let vstring = App.round_radio_volume(volume)
     App.flash_info(`Radio`, `Volume: ${vstring}%`)
   }
 }
 
 // Apply radio volume to all players
 App.apply_radio_volume = (volume = App.room_state.radio_volume) => {
-  let vstring = Math.round(volume * 100)
+  let vstring = App.round_radio_volume(volume)
   let fp = App.utilz.fillpad(vstring.toString(), 3, `0`)
   DOM.el(`#radio_volume`).textContent = `Volume: ${fp}%`
   App.flash_radio_volume(volume)
@@ -303,7 +309,7 @@ App.radio_now_playing_string = () => {
   if (App.radio_is_playing()) {
     return `Listening to ${App.playing_radio.name}`
   }
-  
+
   return ``
 }
 
