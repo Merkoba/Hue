@@ -143,50 +143,6 @@ module.exports = (App) => {
           return
         }
 
-        let max_size = 1024 * 1024 * App.config.max_linked_tv_size
-
-        let head_res = await App.vars.fetch(data.src, {
-          method: `HEAD`,
-          size: max_size,
-        })
-
-        if (!head_res.ok) {
-          App.logger.log_error(`Failed to fetch video headers: ${head_res.statusText}`)
-          return
-        }
-
-        let content_length = head_res.headers.get(`Content-Length`)
-
-        if (content_length && parseInt(content_length) > max_size) {
-          App.logger.log_error(`Video is too large: ${content_length} bytes`)
-          return
-        }
-
-        if (content_length && parseInt(content_length) > max_size) {
-          App.logger.log_error(`Video is too large: ${content_length} bytes`)
-          return
-        }
-
-        let res = await App.vars.fetch(data.src, {
-          method: `GET`,
-          size: max_size,
-        })
-
-        if (!res.ok) {
-          App.logger.log_error(`Failed to fetch video: ${res.statusText}`)
-          return
-        }
-
-        let full_file = Buffer.from(new Uint8Array(await res.arrayBuffer()))
-        let url = new URL(data.src)
-
-        await App.handler.upload_media(socket, {
-          file: full_file,
-          file_name: `${url.hostname}.${extension}`,
-          comment: data.comment,
-          extension,
-        }, `tv`)
-
         try {
           let full_file = await App.handler.download_media(socket, {
             src: data.src,
@@ -244,7 +200,7 @@ module.exports = (App) => {
             App.handler.user_emit(socket, `video_not_found`, {})
             return
           }
-        
+
           App.handler.user_emit(socket, `video_not_found`, {})
         })
         .catch((err) => {
