@@ -242,8 +242,7 @@ App.flash_radio_volume = (volume = App.room_state.radio_volume) => {
 // Apply radio volume to all players
 App.apply_radio_volume = (volume = App.room_state.radio_volume) => {
   let vstring = App.round_radio_volume(volume)
-  let fp = App.utilz.fillpad(vstring.toString(), 3, `0`)
-  DOM.el(`#radio_volume`).textContent = `Volume: ${fp}%`
+  DOM.el(`#radio_volume`).textContent = `Volume: ${vstring}%`
   App.flash_radio_volume(volume)
 
   if (volume >= 0.7) {
