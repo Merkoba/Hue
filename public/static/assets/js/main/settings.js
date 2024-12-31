@@ -402,7 +402,8 @@ App.modify_setting_widget = (setting) => {
 
 App.set_select = (select, option) => {
   for (let el of DOM.els(`option`, select)) {
-    if (el.value === option) {
+    // eslint-disable-next-line eqeqeq
+    if (el.value == option) {
       el.selected = true
     }
   }
