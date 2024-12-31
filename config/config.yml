@@ -159,6 +159,7 @@ settings_default_hide_scrollbars: true
 settings_default_unread_count: true
 settings_default_text_glow: false
 settings_default_command_prefix: "/"
+settings_default_open_message_board_automatically: true
 
 # Default room state values
 room_state_default_image_enabled: true

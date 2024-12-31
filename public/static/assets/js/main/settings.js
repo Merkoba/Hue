@@ -278,6 +278,13 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    open_message_board_automatically: {
+      title: `Open Message Board Automatically`,
+      type: `checkbox`,
+      description: `Whether to open the Message Board automatically when joining a room and there are new messages`,
+      actions: () => {},
+      version: 1,
+    },
     arrowtext: {
       title: `Arrow Text`,
       type: `checkbox`,

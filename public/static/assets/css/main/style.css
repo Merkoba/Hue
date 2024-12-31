@@ -26,11 +26,11 @@ html {
 	background-position: center;
 }
 
-.no_scrollbars *:not(textarea):not(input) {
+.no_scrollbars #main_container *:not(textarea):not(input) {
 	scrollbar-width: none !important;
 }
 
-.no_scrollbars *:not(textarea):not(input)::-webkit-scrollbar {
+.no_scrollbars #main_container *:not(textarea):not(input)::-webkit-scrollbar {
 	width: 0 !important;
 }
 

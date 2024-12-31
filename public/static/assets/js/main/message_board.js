@@ -180,6 +180,7 @@ App.add_post_to_message_board = (data, edited) => {
       let image = DOM.el(`.message_board_image`, post)
       image.src = first_url
       image.style.display = `block`
+
       DOM.ev(image, `error`, () => {
         image.remove()
       })
@@ -189,6 +190,7 @@ App.add_post_to_message_board = (data, edited) => {
       let link_image = DOM.el(`.message_board_link_image`, post)
       link_image.src = data.link_image
       link_image.style.display = `block`
+
       DOM.ev(link_image, `error`, () => {
         link_image.remove()
       })
@@ -252,7 +254,9 @@ App.init_message_board = (data) => {
   App.check_last_message_board_post()
 
   if (App.unread_message_board_count > 0) {
-    if (!App.is_first_time) {
+    let auto = App.get_setting(`open_message_board_automatically`)
+
+    if (!App.is_first_time && auto) {
       App.fresh_unread_message_board_posts()
       App.show_message_board(`$fresh `)
     }
