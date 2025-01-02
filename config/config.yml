@@ -237,8 +237,53 @@ max_input_history: 100
 
 # Radio stations available
 radios:
-  - name: Radio Name
-    url: https://radiourl.net
+  - name: Channel 1
+    url: http://stream.tilos.hu/karolyi-chill-eclectic
 
-  - name: Other Radio
-    url: https://otheradio.com
+  - name: Rekt Network
+    url: https://stream.rekt.network/rekt.mp3
+
+  - name: Le Son Parisien
+    url: http://stream.lesonparisien.com/mid
+
+  - name: Anima Dub Techno
+    url: http://amoris.sknt.ru/dubtechno.mp3
+
+  - name: Anima Electronic Styles
+    url: http://amoris.sknt.ru/electronic.mp3
+
+  - name: Anima Goa Psy Trance
+    url: http://amoris.sknt.ru/goa.mp3
+
+  - name: Anima Dub Step
+    url: http://amoris.sknt.ru/dubstep.mp3
+
+  - name: Anima Drum and Bass
+    url: http://amoris.sknt.ru/dnb.mp3
+
+  - name: Anima Minimal Deep Techno
+    url: http://amoris.sknt.ru/minimal.mp3
+
+  - name: Anima Deep Tech House
+    url: http://amoris.sknt.ru/deeptech.mp3
+
+  - name: Anima Ambient
+    url: http://amoris.sknt.ru/ambient.mp3
+
+  - name: Anima IDM
+    url: http://amoris.sknt.ru/idm.mp3
+
+  - name: Anima New Age
+    url: http://amoris.sknt.ru/newage.mp3
+
+  - name: Anima Trip Hop Lounge
+    url: http://amoris.sknt.ru/triphop.mp3
+
+  - name: Anima Techno
+    url: http://amoris.sknt.ru/techno.mp3
+
+  - name: Anima Dub Techno Mix
+    url: http://amoris.sknt.ru/dubtechnomix.mp3
+
+  - name: Anima Electro
+    url: http://amoris.sknt.ru/electro.mp3
