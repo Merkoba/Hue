@@ -237,15 +237,6 @@ max_input_history: 100
 
 # Radio stations available
 radios:
-  - name: Channel 1
-    url: http://stream.tilos.hu/karolyi-chill-eclectic
-
-  - name: Rekt Network
-    url: https://stream.rekt.network/rekt.mp3
-
-  - name: Le Son Parisien
-    url: http://stream.lesonparisien.com/mid
-
   - name: Anima Dub Techno
     url: http://amoris.sknt.ru/dubtechno.mp3
 
@@ -287,3 +278,12 @@ radios:
 
   - name: Anima Electro
     url: http://amoris.sknt.ru/electro.mp3
+
+  - name: Rekt Network
+    url: https://stream.rekt.network/rekt.mp3
+
+  - name: Le Son Parisien
+    url: http://stream.lesonparisien.com/mid
+
+  - name: Channel 1
+    url: http://stream.tilos.hu/karolyi-chill-eclectic
