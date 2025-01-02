@@ -1034,6 +1034,10 @@ svg.action:hover {
 	padding: 0.5rem;
 }
 
+#draw_image_pencil_size {
+  min-width: 4.2rem;
+}
+
 #chat_area .highlighted_message {
 	background-color: var(--altbackground_a);
 	box-shadow: 0 0 0.12rem currentColor;
