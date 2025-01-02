@@ -30,12 +30,12 @@ module.exports = (App) => {
             return
           }
         }
-        else if (!App.utilz.image_extensions.includes(ext)) {
+        else if (!App.utilz.is_image(ext)) {
           return
         }
       }
       else if (data.action === `tv_upload`) {
-        if (!App.utilz.video_extensions.includes(ext) && !App.utilz.audio_extensions.includes(ext)) {
+        if (!App.utilz.is_video(ext) && !App.utilz.is_audio(ext)) {
           return
         }
       }

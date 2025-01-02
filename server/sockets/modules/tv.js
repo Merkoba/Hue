@@ -129,10 +129,7 @@ module.exports = (App) => {
         let extension = App.utilz.get_extension(data.src).toLowerCase()
 
         if (extension) {
-          if (
-            App.utilz.video_extensions.includes(extension) ||
-            App.utilz.audio_extensions.includes(extension)
-          ) {
+          if (App.utilz.is_video(extension) || App.utilz.is_audo(extension)) {
             data.type = `video`
           }
           else {

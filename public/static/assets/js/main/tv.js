@@ -273,12 +273,11 @@ App.change_tv_source = (src, just_check = false, comment = ``) => {
     else {
       let extension = App.utilz.get_extension(src).toLowerCase()
 
-      if (extension) {
-        let is_video = App.utilz.is_video(src)
-
-        if (!is_video) {
-          return false
-        }
+      if (extension && (App.utilz.is_video(src) || App.utilz.is_audio(src))) {
+        // Is a video
+      }
+      else {
+        return false
       }
     }
   }
