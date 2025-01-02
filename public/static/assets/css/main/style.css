@@ -85,6 +85,10 @@ html {
 	justify-content: center;
 }
 
+#header {
+	user-select: none;
+}
+
 #header_right {
 	justify-content: flex-end;
 }
@@ -278,6 +282,10 @@ html {
 
 #footer {
 	transition: filter 0.2s linear, box-shadow 0.2s linear;
+}
+
+#footer_media_items {
+	user-select: none;
 }
 
 .footer_expanded {
@@ -1643,6 +1651,10 @@ pre {
 	justify-content: center;
 }
 
+#main_menu {
+	user-select: none;
+}
+
 #main_menu .vertical_separator {
 	margin-top: 1.5rem !important;
 	margin-bottom: 1.5rem !important;
@@ -1793,6 +1805,7 @@ pre {
 
 .titlebar_action {
 	text-decoration: underline;
+	user-select: none;
 }
 
 .icon_size {
@@ -1861,6 +1874,10 @@ pre {
 
 .needcontext-item-selected {
   background-color: var(--altbackground_a) !important;
+}
+
+#linksbar {
+	user-select: none;
 }
 
 #linksbar_links {
