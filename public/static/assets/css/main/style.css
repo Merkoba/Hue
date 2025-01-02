@@ -394,7 +394,7 @@ html {
 	z-index: 99;
 	padding-left: 1.5rem;
 	padding-right: 1.5rem;
-	border: 0.06rem solid var(--text_color_a);
+	border: 0.06rem solid var(--bordercolor);
 	flex-grow: 1;
 	flex-basis: 50%;
 }
@@ -640,7 +640,7 @@ a.generic:hover {
 .Msg-window {
 	background-color: var(--background_color) !important;
 	color: var(--text_color) !important;
-	border: 1px solid var(--text_color_a) !important;
+	border: 1px solid var(--bordercolor) !important;
 }
 
 .Msg-window-inner-x:hover {
@@ -1529,7 +1529,7 @@ pre {
 }
 
 .custom_popup {
-	border: 0.12rem solid var(--text_color_a) !important;
+	border: 0.12rem solid var(--bordercolor) !important;
 }
 
 .titlebar_inner_x {
@@ -1675,7 +1675,7 @@ pre {
 }
 
 .buttonbox_active {
-	border: 1px solid var(--text_color_a);
+	border: 1px solid var(--bordercolor);
 }
 
 .clear_spacer {
@@ -1734,7 +1734,7 @@ pre {
 	transform: translate(-50%, -50%);
 	color: var(--text_color);
 	background-color:	var(--altbackground);
-	border: 2px solid var(--text_color_a);
+	border: 2px solid var(--bordercolor);
 	z-index: 10;
 	min-width: 14rem;
 	overflow: hidden;
@@ -1844,15 +1844,15 @@ pre {
 }
 
 .selected_message {
-	outline: 1px solid var(--text_color_a);
+	outline: 1px solid var(--bordercolor);
 }
 
 #needcontext-container {
   background-color: var(--background_color) !important;
   color: var(--text_color) !important;
-  border-color: var(--altcolor) !important;
+  border-color: var(--bordercolor) !important;
   font-size: var(--chat_font_size) !important;
-	font-family: var(--font) !important;
+  font-family: var(--font) !important;
 }
 
 .needcontext-item-selected {

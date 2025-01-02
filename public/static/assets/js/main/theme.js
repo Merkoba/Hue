@@ -47,6 +47,7 @@ App.apply_theme = (background_color = ``, text_color = ``) => {
   document.documentElement.style.setProperty(`--text_color_a`, text_color_a)
   document.documentElement.style.setProperty(`--altcolor`, altcolor)
   document.documentElement.style.setProperty(`--altcolor_a`, altcolor_a)
+  document.documentElement.style.setProperty(`--bordercolor`, text_color_a)
   document.documentElement.style.setProperty(`--background_color`, background_color)
   document.documentElement.style.setProperty(`--background_color_a`, background_color_a)
   document.documentElement.style.setProperty(`--altbackground`, altbackground)
