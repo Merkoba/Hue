@@ -198,7 +198,7 @@ module.exports = (App) => {
       data.src = data.src.replace(/\s/g, ``).replace(/\.gifv/g, `.gif`)
       let extension = App.utilz.get_extension(data.src).toLowerCase()
 
-      if (!extension || !App.utilz.is_image(extension)) {
+      if (!extension || !App.utilz.is_image(data.src)) {
         return
       }
 

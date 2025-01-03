@@ -756,19 +756,19 @@ const Utilz = () => {
   // Check if file name is from an image source
   utilz.is_image = (src) => {
     let extension = utilz.get_extension(src).toLowerCase()
-    return extension && utilz.image_extensions.includes(extension)
+    return Boolean(extension) && utilz.image_extensions.includes(extension)
   }
 
   // Check if file name is from a video source
   utilz.is_video = (src) => {
     let extension = utilz.get_extension(src).toLowerCase()
-    return extension && utilz.video_extensions.includes(extension)
+    return Boolean(extension) && utilz.video_extensions.includes(extension)
   }
 
   // Check if file name is from an audio source
   utilz.is_audio = (src) => {
     let extension = utilz.get_extension(src).toLowerCase()
-    return extension && utilz.audio_extensions.includes(extension)
+    return Boolean(extension) && utilz.audio_extensions.includes(extension)
   }
 
   // Check if all items in an array are equal

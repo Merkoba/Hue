@@ -114,7 +114,7 @@ module.exports = (App) => {
     else {
       let extension = App.utilz.get_extension(data.src).toLowerCase()
 
-      if (!extension || !App.utilz.is_image(extension)) {
+      if (!extension || !App.utilz.is_image(data.src)) {
         return
       }
 
