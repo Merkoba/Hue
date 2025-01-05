@@ -617,6 +617,10 @@ App.stop_screen_capture = () => {
 
 // Show tv loaded
 App.show_tv_loaded = () => {
+  if (!App.get_setting(`show_loaded`)) {
+    return
+  }
+
   let ans = App.get_message_by_id(App.loaded_tv.id)
 
   if (ans && ans[0]) {

@@ -301,6 +301,13 @@ App.build_user_settings = () => {
       },
       version: 1,
     },
+    show_loaded: {
+      title: `Show Loaded`,
+      type: `checkbox`,
+      description: `Show the loaded label on loaded media messages`,
+      actions: () => {},
+      version: 1,
+    },
     text_glow: {
       title: `Text Glow`,
       type: `checkbox`,

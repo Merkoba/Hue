@@ -650,6 +650,10 @@ App.make_random_image = (target) => {
 
 // Show image loaded
 App.show_image_loaded = (type = `normal`) => {
+  if (!App.get_setting(`show_loaded`)) {
+    return
+  }
+
   let img
 
   if (type === `normal`) {
