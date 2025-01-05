@@ -271,3 +271,23 @@ App.at_media_items = (type) => {
 
   return items
 }
+
+App.show_radio_context = (radio, x, y) => {
+  let items = []
+
+  items.push({
+    text: `Copy URL`,
+    action: () => {
+      App.copy_string(radio.url, false)
+    },
+  })
+
+  items.push({
+    text: `Copy Name`,
+    action: () => {
+      App.copy_string(radio.name, false)
+    },
+  })
+
+  NeedContext.show({x, y, items})
+}

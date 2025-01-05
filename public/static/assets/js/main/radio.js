@@ -180,6 +180,10 @@ App.create_radio_station = (radio) => {
     App.check_radio_play(radio)
   })
 
+  DOM.ev(container, `auxclick`, (e) => {
+    App.show_radio_context(radio, e.clientX, e.clientY)
+  })
+
   DOM.dataset(container, `radio`, radio)
   DOM.el(`#radio_stations`).append(container)
 }
