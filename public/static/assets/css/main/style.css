@@ -1127,6 +1127,7 @@ a {
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	margin-top: 1.6rem;
+	user-select: none;
 }
 
 #show_profile_op_buttons {
