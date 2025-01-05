@@ -465,6 +465,12 @@ html {
 	margin-left: 0.5em;
 }
 
+.chat_info {
+	opacity: 0.8;
+	white-space: nowrap;
+	margin-left: 0.5em;
+}
+
 .chat_container {
 	width: 100%;
 	position: relative;
@@ -649,6 +655,10 @@ a.generic:hover {
 	background-color: var(--background_color) !important;
 	color: var(--text_color) !important;
 	border: 1px solid var(--bordercolor) !important;
+}
+
+.Msg-window-modal {
+	border: none !important;
 }
 
 .Msg-window-inner-x:hover {

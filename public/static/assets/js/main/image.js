@@ -16,7 +16,7 @@ App.current_image = () => {
   if (App.image_changed.length > 0) {
     return App.image_changed[App.image_changed.length - 1]
   }
-  
+
   return {}
 }
 
@@ -171,6 +171,7 @@ App.setup_modal_image = () => {
 
   DOM.ev(img, `load`, () => {
     DOM.el(`#modal_image`).style.display = `block`
+    App.show_image_loaded(`modal`)
   })
 
   DOM.ev(img, `error`, () => {
@@ -361,6 +362,7 @@ App.start_image_events = () => {
 App.after_image_load = (ok = true) => {
   DOM.el(`#media_image_frame`).style.display = `initial`
   App.apply_media_info(`image`)
+  App.show_image_loaded()
 
   if (ok) {
     App.fix_image_frame()
@@ -644,4 +646,23 @@ App.make_random_image = (target) => {
     `image/png`,
     App.config.image_blob_quality,
   )
+}
+
+// Show image loaded
+App.show_image_loaded = (type = `normal`) => {
+  let img
+
+  if (type === `normal`) {
+    img = App.loaded_image
+  }
+  else {
+    img = App.loaded_modal_image
+  }
+
+  let ans = App.get_message_by_id(img.id)
+
+  if (ans && ans[0]) {
+    let info = DOM.el_or_self(`.chat_info`, ans[0])
+    info.textContent = App.loaded_text
+  }
 }

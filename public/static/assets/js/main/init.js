@@ -105,6 +105,9 @@ App.edit_active = false
 App.highlight_footer_delay = 500
 App.unread_count = 0
 App.limited_message = `You can't do this because the room is limited`
+App.loaded_text = `(Loaded)`
+App.media_info_image_data = []
+App.media_info_tv_data = []
 
 // Initial media-loading variables declarations
 App.youtube_loading = false
@@ -119,8 +122,6 @@ App.soundcloud_loading = false
 App.soundcloud_loaded = false
 App.soundcloud_tv_player_requested = false
 App.soundcloud_tv_player_request = false
-App.media_info_image_data = []
-App.media_info_tv_data = []
 
 // This runs after the application's load event
 // This is the first function that gets executed
