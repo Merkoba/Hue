@@ -614,7 +614,6 @@ App.stop_screen_capture = () => {
   App.screen_capture_recorder.stop()
 }
 
-
 // Show tv loaded
 App.show_tv_loaded = () => {
   if (!App.get_setting(`show_loaded`)) {
