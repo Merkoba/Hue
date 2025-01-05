@@ -853,6 +853,10 @@ input[type=checkbox] {
 	user-select: none;
 }
 
+.modal_image_button {
+	user-select: none;
+}
+
 .show_image_container {
 	overflow: hidden;
 	flex-grow: 1;
