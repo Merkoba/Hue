@@ -211,6 +211,7 @@ App.after_show_tv = () => {
   App.apply_media_info(`tv`)
   App.fix_tv_frame()
   App.focus_input()
+  App.show_tv_loaded()
 }
 
 // Attempts to change the tv source
@@ -611,4 +612,15 @@ App.stop_screen_capture = () => {
   clearTimeout(App.screen_capture_timeout)
   App.screen_capture_popup.close()
   App.screen_capture_recorder.stop()
+}
+
+
+// Show tv loaded
+App.show_tv_loaded = () => {
+  let ans = App.get_message_by_id(App.loaded_tv.id)
+
+  if (ans && ans[0]) {
+    let info = DOM.el_or_self(`.chat_info`, ans[0])
+    info.textContent = App.loaded_text
+  }
 }
