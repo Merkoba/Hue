@@ -106,6 +106,7 @@ App.highlight_footer_delay = 500
 App.unread_count = 0
 App.limited_message = `You can't do this because the room is limited`
 App.loaded_text = `(Loaded)`
+App.clicked_text = `(Clicked)`
 App.media_info_image_data = []
 App.media_info_tv_data = []
 

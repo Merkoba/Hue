@@ -44,6 +44,11 @@ App.update_date_media = () => {
 
   for (let info of DOM.els(`.media_info_container`, container)) {
     let el = DOM.el(`.media_info_date`, info)
+
+    if (!el) {
+      continue
+    }
+
     let date = DOM.dataset(info, `date`)
     el.textContent = App.format_date(date)
   }

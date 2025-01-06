@@ -308,6 +308,13 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    show_clicked: {
+      title: `Show Clicked`,
+      type: `checkbox`,
+      description: `Show the clicked label on clicked link messages`,
+      actions: () => {},
+      version: 1,
+    },
     text_glow: {
       title: `Text Glow`,
       type: `checkbox`,

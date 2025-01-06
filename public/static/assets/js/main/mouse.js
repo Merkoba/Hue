@@ -5,10 +5,6 @@ App.start_mouse_events = () => {
       return
     }
 
-    if (e.target.tagName === `A`) {
-      return
-    }
-
     if (!e.target.closest) {
       return
     }
@@ -22,7 +18,10 @@ App.start_mouse_events = () => {
         let user_id = DOM.dataset(message, `user_id`)
         let type = DOM.dataset(message, `type`)
 
-        if (e.target.classList.contains(`chat_username`)) {
+        if (e.target.tagName === `A`) {
+          App.show_link_clicked(message)
+        }
+        else if (e.target.classList.contains(`chat_username`)) {
           App.show_profile(username, user_id)
         }
         else if (e.target.classList.contains(`chat_profilepic`)) {
@@ -168,7 +167,10 @@ App.start_mouse_events = () => {
       if (message) {
         let username = DOM.dataset(message, `username`)
 
-        if (e.target.classList.contains(`chat_username`)) {
+        if (e.target.tagName === `A`) {
+          App.show_link_clicked(message)
+        }
+        else if (e.target.classList.contains(`chat_username`)) {
           App.mention_user(username)
         }
         else if (e.target.classList.contains(`chat_profilepic`)) {
