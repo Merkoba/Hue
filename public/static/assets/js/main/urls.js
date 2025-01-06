@@ -63,27 +63,8 @@ App.urlize = (el, limit_width = true) => {
 
       el.innerHTML = html
 
-      // Add the clicked label to message
       DOM.evs(el, [`click`, `auxclick`], (e) => {
-        let message = e.target.closest(`.message`)
-
-        if (!message) {
-          return
-        }
-
-        let id = DOM.dataset(message, `message_id`)
-
-        if (!id) {
-          return
-        }
-
-        let msg = App.get_message(id)
-
-        if (!msg) {
-          return
-        }
-
-        App.show_link_clicked(msg)
+        App.show_link_clicked(e.target)
       })
     }
   }
@@ -306,4 +287,35 @@ App.remove_urls = (text, show_hostname = true) => {
   )
 
   return new_text.trim()
+}
+
+// Show link clicked
+App.show_link_clicked = (link) => {
+  if (!App.get_setting(`show_clicked`)) {
+    return
+  }
+
+  let message = link.closest(`.message`)
+
+  if (!message) {
+    return
+  }
+
+  let id = DOM.dataset(message, `message_id`)
+
+  if (!id) {
+    return
+  }
+
+  let msg = App.get_message(id)
+
+  if (!msg) {
+    return
+  }
+
+  let info = DOM.el_or_self(`.chat_info`, message)
+
+  if (info) {
+    info.textContent = App.clicked_text
+  }
 }

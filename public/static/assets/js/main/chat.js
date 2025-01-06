@@ -1992,13 +1992,3 @@ App.observe_message = (unit) => {
     App.chat_intersection_observer.observe(unit)
   }
 }
-
-// Show link clicked
-App.show_link_clicked = (message) => {
-  if (!App.get_setting(`show_clicked`)) {
-    return
-  }
-
-  let info = DOM.el_or_self(`.chat_info`, message)
-  info.textContent = App.clicked_text
-}

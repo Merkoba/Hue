@@ -667,6 +667,9 @@ App.show_image_loaded = (type = `normal`) => {
 
   if (ans && ans[0]) {
     let info = DOM.el_or_self(`.chat_info`, ans[0])
-    info.textContent = App.loaded_text
+
+    if (info) {
+      info.textContent = App.loaded_text
+    }
   }
 }
