@@ -133,25 +133,30 @@ App.start_mouse_events = () => {
       return
     }
 
-    if (e.target.tagName === `A`) {
-      return
-    }
-
     if (!e.target.closest) {
       return
     }
 
-    if (e.target.closest(`.chat_menu_button_main`)) {
-      if (window.getSelection().toString()) {
-        return
-      }
+    let message = e.target.closest(`.message`)
 
-      let container = e.target.closest(`.chat_menu_button_main`)
+    if (message) {
+      if (e.target.closest(`.chat_menu_button_main`)) {
+        if (window.getSelection().toString()) {
+          return
+        }
 
-      if (container) {
-        let button = DOM.el(`.chat_menu_button_container`, container)
-        App.show_chat_context_menu(button, e.clientX, e.clientY)
-        e.preventDefault()
+        if (e.target.tagName === `A`) {
+          App.show_link_clicked(message)
+          return
+        }
+
+        let container = e.target.closest(`.chat_menu_button_main`)
+
+        if (container) {
+          let button = DOM.el(`.chat_menu_button_container`, container)
+          App.show_chat_context_menu(button, e.clientX, e.clientY)
+          e.preventDefault()
+        }
       }
     }
   })
