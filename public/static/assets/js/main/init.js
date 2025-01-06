@@ -119,10 +119,6 @@ App.twitch_loading = false
 App.twitch_loaded = false
 App.twitch_tv_player_requested = false
 App.twitch_tv_player_request = false
-App.soundcloud_loading = false
-App.soundcloud_loaded = false
-App.soundcloud_tv_player_requested = false
-App.soundcloud_tv_player_request = false
 
 // This runs after the application's load event
 // This is the first function that gets executed

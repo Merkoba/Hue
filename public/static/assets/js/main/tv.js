@@ -30,10 +30,6 @@ App.stop_tv = () => {
     App.twitch_tv_player.pause()
   }
 
-  if (App.soundcloud_tv_player) {
-    App.soundcloud_tv_player.pause()
-  }
-
   if (DOM.el(`#media_video_tv`)) {
     DOM.el(`#media_video_tv`).pause()
   }
@@ -53,11 +49,6 @@ App.play_tv = () => {
   else if (App.current_tv().type === `twitch`) {
     if (App.twitch_tv_player) {
       App.twitch_tv_player.play()
-    }
-  }
-  else if (App.current_tv().type === `soundcloud`) {
-    if (App.soundcloud_tv_player) {
-      App.soundcloud_tv_player.play()
     }
   }
   else if (App.current_tv().type === `video`) {
@@ -156,25 +147,6 @@ App.show_twitch_tv = (play = true) => {
   }
 
   App.after_show_tv(play)
-}
-
-// Loads a Soundcloud video
-App.show_soundcloud_tv = (play = true) => {
-  let item = App.loaded_tv
-  App.before_show_tv(item)
-
-  App.soundcloud_tv_player.load(item.source, {
-    auto_play: false,
-    single_active: false,
-    show_artwork: true,
-    callback: () => {
-      if (play) {
-        App.soundcloud_tv_player.play()
-      }
-    },
-  })
-
-  App.after_show_tv()
 }
 
 // Loads a <video> video

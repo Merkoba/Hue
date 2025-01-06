@@ -114,17 +114,6 @@ module.exports = (App) => {
           return
         }
       }
-      else if (data.src.includes(`soundcloud.com`)) {
-        data.src = data.src.split(`#t=`)[0]
-        data.type = `soundcloud`
-        data.title = data.src.replace(/^https?:\/\/soundcloud.com\//, ``)
-
-        if (!data.title) {
-          data.title = data.src
-        }
-
-        await App.handler.do_change_media(socket, data, `tv`)
-      }
       else {
         let extension = App.utilz.get_extension(data.src).toLowerCase()
 

@@ -59,60 +59,6 @@ App.on_youtube_tv_player_ready = () => {
   }
 }
 
-// Loads the Soundcloud script and creates players
-App.start_soundcloud = async () => {
-  if (App.soundcloud_loaded) {
-    if (
-      App.soundcloud_tv_player_requested &&
-      App.soundcloud_tv_player === undefined
-    ) {
-      App.create_soundcloud_tv_player()
-    }
-  }
-
-  if (App.soundcloud_loading) {
-    return
-  }
-
-  App.soundcloud_loading = true
-  await App.load_script(`https://w.soundcloud.com/player/api.js`)
-  App.soundcloud_loaded = true
-
-  if (App.soundcloud_tv_player_requested) {
-    App.create_soundcloud_tv_player()
-  }
-}
-
-// Creates the tv Soundcloud player
-App.create_soundcloud_tv_player = () => {
-  App.soundcloud_tv_player_requested = false
-
-  try {
-    let src =
-      `https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536`
-
-    DOM.el(`#media_soundcloud_tv_container`)
-      .innerHTML = `<iframe width="640px" height="360px"
-        id='media_soundcloud_tv' class='video_frame' src='${src}'></iframe>`
-
-    App.add_media_info(`media_soundcloud_tv_container`)
-
-    let _soundcloud_tv_player = SC.Widget(`media_soundcloud_tv`)
-
-    _soundcloud_tv_player.bind(SC.Widget.Events.READY, () => {
-      App.soundcloud_tv_player = _soundcloud_tv_player
-
-      if (App.soundcloud_tv_player_request) {
-        App.change_media(App.soundcloud_tv_player_request)
-        App.soundcloud_tv_player_request = false
-      }
-    })
-  }
-  catch (err) {
-    App.utilz.loginfo(`Soundcloud failed to load`)
-  }
-}
-
 // Centralized function to request media player creation
 // For instance, if there's a YouTube tv change,
 // if the YouTube player is not created, this function gets triggered
@@ -128,9 +74,6 @@ App.request_media = (player, args) => {
   }
   else if (player === `twitch_tv_player`) {
     App.start_twitch()
-  }
-  else if (player === `soundcloud_tv_player`) {
-    App.start_soundcloud()
   }
 }
 
