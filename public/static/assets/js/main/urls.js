@@ -62,6 +62,29 @@ App.urlize = (el, limit_width = true) => {
       }
 
       el.innerHTML = html
+
+      // Add the clicked label to message
+      DOM.evs(el, [`click`, `auxclick`], (e) => {
+        let message = e.target.closest(`.message`)
+
+        if (!message) {
+          return
+        }
+
+        let id = DOM.dataset(message, `message_id`)
+
+        if (!id) {
+          return
+        }
+
+        let msg = App.get_message(id)
+
+        if (!msg) {
+          return
+        }
+
+        App.show_link_clicked(msg)
+      })
     }
   }
   catch (err) {
