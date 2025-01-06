@@ -62,10 +62,6 @@ App.urlize = (el, limit_width = true) => {
       }
 
       el.innerHTML = html
-
-      DOM.evs(el, [`click`, `auxclick`], (e) => {
-        App.show_link_clicked(e.target)
-      })
     }
   }
   catch (err) {
@@ -290,26 +286,14 @@ App.remove_urls = (text, show_hostname = true) => {
 }
 
 // Show link clicked
-App.show_link_clicked = (link) => {
+App.show_link_clicked = (message_id) => {
   if (!App.get_setting(`show_clicked`)) {
     return
   }
 
-  let message = link.closest(`.message`)
+  let message = App.get_message(message_id)
 
   if (!message) {
-    return
-  }
-
-  let id = DOM.dataset(message, `message_id`)
-
-  if (!id) {
-    return
-  }
-
-  let msg = App.get_message(id)
-
-  if (!msg) {
     return
   }
 
