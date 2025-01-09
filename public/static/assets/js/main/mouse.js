@@ -162,17 +162,50 @@ App.start_mouse_events = () => {
     }
   })
 
+  DOM.ev(document, `mousedown`, (e) => {
+    if (e.button === 1) {
+      if (e.target && (e.target.tagName === `A`)) {
+        return
+      }
+
+      e.preventDefault()
+    }
+  })
+
   DOM.ev(document, `auxclick`, (e) => {
     if (!e.target) {
       return
     }
 
     if (e.button === 1) {
+      if (e.target.tagName !== `A`) {
+        e.preventDefault()
+      }
+
       let message = e.target.closest(`.message`)
 
       if (message) {
         let username = DOM.dataset(message, `username`)
         let message_id = DOM.dataset(message, `message_id`)
+        let mode = DOM.dataset(message, `mode`)
+        let id = DOM.dataset(message, `id`)
+
+        if (mode === `announcement`) {
+          let container = DOM.el(`.announcement_content`, message)
+
+          if (container) {
+            let ans = App.get_message_by_id(id)
+
+            if (ans) {
+              let media_source = DOM.dataset(ans[0], `media_source`)
+
+              if (media_source) {
+                App.goto_url(media_source, `tab`)
+                return
+              }
+            }
+          }
+        }
 
         if (e.target.tagName === `A`) {
           App.show_link_clicked(message_id)

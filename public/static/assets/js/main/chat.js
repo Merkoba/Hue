@@ -255,7 +255,7 @@ App.make_announcement_message = (args = {}) => {
   }
 
   App.utilz.def_args(def_args, args)
-  let is_media = args.type === `image_change` || args.type === `tv_change`
+  let is_media = (args.type === `image_change`) || (args.type === `tv_change`)
   let content_classes = `announcement_content unit_text`
   let brk_classes = `brk announcement_brk`
   let highlighted = false
