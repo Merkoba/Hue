@@ -492,7 +492,15 @@ App.show_image_upload_comment = (file, type) => {
   DOM.el(`#image_upload_comment_image_preview`).src = URL.createObjectURL(file)
 
   App.msg_image_upload_comment.show()
-  DOM.el(`#image_upload_comment_input`).focus()
+  let input = DOM.el(`#image_upload_comment_input`)
+  let current_input = App.get_input().trim()
+
+  if (current_input) {
+    input.value = current_input
+    App.clear_input()
+  }
+
+  input.focus()
 }
 
 // Setups the upload image comment window

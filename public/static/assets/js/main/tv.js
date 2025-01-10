@@ -453,7 +453,15 @@ App.show_tv_upload_comment = (file, type) => {
   DOM.el(`#tv_upload_comment_video_preview`).src = URL.createObjectURL(file)
 
   App.msg_tv_upload_comment.show()
-  DOM.el(`#tv_upload_comment_input`).focus()
+  let input = DOM.el(`#tv_upload_comment_input`)
+  let current_input = App.get_input().trim()
+
+  if (current_input) {
+    input.value = current_input
+    App.clear_input()
+  }
+
+  input.focus()
 }
 
 // Submits the upload tv comment window
