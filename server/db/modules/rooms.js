@@ -44,6 +44,7 @@ module.exports = (manager, stuff) => {
       }
 
       room.name = data.name !== undefined ? data.name : `No Name`
+      room.public = data.public
 
       manager.insert_one(`rooms`, room)
       .then(ans => {
@@ -57,7 +58,7 @@ module.exports = (manager, stuff) => {
     })
   }
 
-  // Get room objects to form a room list (sync)
+  // Get room objects to form a room list
   manager.get_roomlist = () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -81,7 +82,16 @@ module.exports = (manager, stuff) => {
             obj = JSON.parse(text)
           }
 
-          objs.push({id: obj.id, name: obj.name, topic: obj.topic, modified: obj.modified})
+          if (!obj.public) {
+            continue
+          }
+
+          objs.push({
+            id: obj.id,
+            name: obj.name,
+            topic: obj.topic,
+            modified: obj.modified,
+          })
         }
 
         resolve(objs)

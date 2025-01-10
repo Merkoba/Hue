@@ -7,8 +7,8 @@ module.exports = (App) => {
     }
 
     if (
-      data.name.length === 0 ||
-      data.name.length > App.config.max_room_name_length
+      (data.name.length === 0) ||
+      (data.name.length > App.config.max_room_name_length)
     ) {
       return
     }

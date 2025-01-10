@@ -222,6 +222,17 @@ App.commands = {
     },
     description: `(Only for superusers) Used to create rooms`,
   },
+  privateroom: {
+    action: (arg, ans) => {
+      if (arg) {
+        App.create_private_room(arg)
+      }
+      else {
+        App.create_private_room(`New Room`)
+      }
+    },
+    description: `(Only for superusers) Used to create rooms`,
+  },
   deleteroom: {
     action: (arg, ans) => {
       App.delete_room()

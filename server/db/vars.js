@@ -7,7 +7,7 @@ module.exports = (stuff) => {
 
   // Room and User versions
   // These must be increased by 1 when the schema changes
-  stuff.vars.rooms_version = 90
+  stuff.vars.rooms_version = 91
   stuff.vars.users_version = 57
 
   // Room schema definition
@@ -30,6 +30,7 @@ module.exports = (stuff) => {
       modified: { type: `number`, default: Date.now() },
       version: { type: `number`, default: 0 },
       limited: { type: `boolean`, default: false },
+      public: { type: `boolean`, default: true },
     }
   }
 

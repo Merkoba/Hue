@@ -14,7 +14,14 @@ App.setup_rooms = () => {
 // Superuser command to create a room
 App.create_room = (name) => {
   App.show_confirm(`Run superuser command`, () => {
-    App.socket_emit(`create_room`, {name})
+    App.socket_emit(`create_room`, {name, public: true})
+  })
+}
+
+// Superuser command to create a private room
+App.create_private_room = (name) => {
+  App.show_confirm(`Run superuser command`, () => {
+    App.socket_emit(`create_room`, {name, public: false})
   })
 }
 
