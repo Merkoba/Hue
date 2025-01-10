@@ -657,7 +657,7 @@ a.generic:hover {
 	border: 1px solid var(--bordercolor) !important;
 }
 
-.Msg-window-modal {
+.Msg-window-full {
 	border: none !important;
 }
 

@@ -111,6 +111,7 @@ App.start_msg = () => {
   App.msg_modal_image = Msg.factory(
     {...msgvars.common, id: `modal_image`,
       preset: `window`,
+      class: `full`,
       after_show: (instance) => {
         msgvars.common.after_show(instance)
         App.restore_modal_image()
@@ -256,6 +257,7 @@ App.start_msg = () => {
   App.msg_view_image = Msg.factory(
     {...msgvars.common, id: `view_image`,
       preset: `window`,
+      class: `full`,
       after_show: (instance) => {
         msgvars.common.after_show(instance)
         App.restore_view_image()
