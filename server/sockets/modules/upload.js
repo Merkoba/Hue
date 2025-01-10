@@ -7,7 +7,7 @@ module.exports = (App) => {
       return
     }
 
-    if (!data || !data.data || data.data.length > App.config.upload_slice_size) {
+    if (!data || !data.data || (data.data.length > App.config.upload_slice_size)) {
       await App.handler.add_spam(socket)
       return
     }

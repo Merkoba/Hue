@@ -205,8 +205,12 @@ module.exports = (App) => {
       try {
         let full_file = await App.handler.download_media(socket, {
           src: data.src,
-          max_size: App.config.max_linked_background_size,
+          max_size: App.sconfig.max_linked_background_size,
         })
+
+        if (!full_file) {
+          return
+        }
 
         await App.handler.upload_background(socket, {
           image_file: full_file,
