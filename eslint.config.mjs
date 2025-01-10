@@ -84,6 +84,7 @@ export default [
         __dirname: "readonly",
         Buffer: "readonly",
         AColorPicker: "readonly",
+        require: "readonly",
       }
     }
   }

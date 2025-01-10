@@ -4,10 +4,10 @@ module.exports = (config, sconfig, utilz, logger) => {
 
   // Hold stuff
   const stuff = {
-    config: config,
-    sconfig: sconfig,
-    utilz: utilz,
-    logger: logger
+    config,
+    sconfig,
+    utilz,
+    logger,
   }
 
   // Fill the imports

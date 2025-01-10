@@ -3,12 +3,12 @@ module.exports = (manager, stuff) => {
   manager.get_user = (query) => {
     return new Promise((resolve, reject) => {
       manager.find_one(`users`, query)
-      .then(user => {
-        resolve(user)
-      })
-      .catch(err => {
-        resolve(false)
-      })
+        .then(user => {
+          resolve(user)
+        })
+        .catch(err => {
+          resolve(false)
+        })
     })
   }
 
@@ -16,12 +16,12 @@ module.exports = (manager, stuff) => {
   manager.get_users = (ids) => {
     return new Promise((resolve, reject) => {
       manager.find_multiple(`users`, ids)
-      .then(users => {
-        resolve(users)
-      })
-      .catch(err => {
-        resolve([])
-      })
+        .then(users => {
+          resolve(users)
+        })
+        .catch(err => {
+          resolve([])
+        })
     })
   }
 
@@ -29,17 +29,17 @@ module.exports = (manager, stuff) => {
   manager.create_user = (info) => {
     return new Promise((resolve, reject) => {
       manager.get_user([`username`, info.username])
-      .then(euser => {
-        if (euser) {
-          resolve(`error`)
+        .then(euser => {
+          if (euser) {
+            resolve(`error`)
+            return
+          }
+        })
+        .catch(err => {
+          reject(err)
+          stuff.logger.log_error(err)
           return
-        }
-      })
-      .catch(err => {
-        reject(err)
-        stuff.logger.log_error(err)
-        return
-      })
+        })
 
       stuff.i.bcrypt
         .hash(info.password, stuff.sconfig.encryption_cost)
@@ -56,15 +56,15 @@ module.exports = (manager, stuff) => {
           manager.fill_defaults(`users`, user)
           user.version = stuff.vars.users_version
           manager.insert_one(`users`, user)
-          .then(result => {
-            resolve(result)
-            return
-          })
-          .catch(err => {
-            reject(err)
-            stuff.logger.log_error(err)
-            return
-          })
+            .then(result => {
+              resolve(result)
+              return
+            })
+            .catch(err => {
+              reject(err)
+              stuff.logger.log_error(err)
+              return
+            })
         })
         .catch(err => {
           reject(err)
@@ -88,49 +88,47 @@ module.exports = (manager, stuff) => {
 
       if (current_username.toLowerCase() === new_username.toLowerCase()) {
         manager.get_user([`username`, current_username])
-        .then(the_user => {
-          the_user.username = new_username
-          resolve(true)
-        })
-        .catch(err => {
-          reject(err)
-          stuff.logger.log_error(err)
-        })
+          .then(the_user => {
+            the_user.username = new_username
+            resolve(true)
+          })
+          .catch(err => {
+            reject(err)
+            stuff.logger.log_error(err)
+          })
       }
 
       manager
-        .get_user([`id`, id], { username: 1 })
+        .get_user([`id`, id], {username: 1})
         .then((user) => {
           if (!user) {
             resolve(false)
             return
           }
-          else {
-            manager
-              .get_user([`username`, new_username])
-              .then((user2) => {
-                if (user2) {
-                  resolve(false)
-                  return
-                }
-                else {
-                  manager.get_user([`username`, current_username])
-                  .then(the_user => {
-                    the_user.username = new_username
-                    resolve(true)
-                  })
-                  .catch(err => {
-                    reject(err)
-                    stuff.logger.log_error(err)
-                  })
-                }
-              })
-              .catch(err => {
-                reject(err)
-                stuff.logger.log_error(err)
+          
+          manager
+            .get_user([`username`, new_username])
+            .then((user2) => {
+              if (user2) {
+                resolve(false)
                 return
-              })
-          }
+              }
+                
+              manager.get_user([`username`, current_username])
+                .then(the_user => {
+                  the_user.username = new_username
+                  resolve(true)
+                })
+                .catch(err => {
+                  reject(err)
+                  stuff.logger.log_error(err)
+                })
+            })
+            .catch(err => {
+              reject(err)
+              stuff.logger.log_error(err)
+              return
+            })
         })
         .catch(err => {
           reject(err)
@@ -143,24 +141,24 @@ module.exports = (manager, stuff) => {
   manager.change_user_password = (id, password) => {
     return new Promise((resolve, reject) => {
       stuff.i.bcrypt.hash(password, stuff.sconfig.encryption_cost)
-      .then(hash => {
-        manager.get_user([`id`, id])
-        .then(user => {
-          user.password = hash
-          user.password_date = Date.now()
-          resolve(`ok`)
+        .then(hash => {
+          manager.get_user([`id`, id])
+            .then(user => {
+              user.password = hash
+              user.password_date = Date.now()
+              resolve(`ok`)
+            })
+            .catch(err => {
+              reject(err)
+              stuff.logger.log_error(err)
+              return
+            })
         })
         .catch(err => {
           reject(err)
           stuff.logger.log_error(err)
           return
         })
-      })
-      .catch(err => {
-        reject(err)
-        stuff.logger.log_error(err)
-        return
-      })
     })
   }
 
@@ -172,13 +170,13 @@ module.exports = (manager, stuff) => {
         .get_user([`username`, username])
         .then((user) => {
           if (!user) {
-            resolve({ user: null, valid: false })
+            resolve({user: null, valid: false})
           }
           else {
             stuff.i.bcrypt
               .compare(password, user.password)
               .then((valid) => {
-                resolve({ user: user, valid: valid })
+                resolve({user, valid})
                 return
               })
               .catch(err => {

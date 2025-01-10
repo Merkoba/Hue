@@ -4,7 +4,7 @@ const root_path = path.join(__dirname, `../../../`)
 
 module.exports = (manager, stuff) => {
   // Write to a file
-  function write_file (path) {
+  function write_file(path) {
     clearTimeout(manager.cache[path].timeout)
 
     if (Date.now() - manager.cache[path].last_write > stuff.sconfig.db_write_file_timeout_limit) {
@@ -18,7 +18,7 @@ module.exports = (manager, stuff) => {
   }
 
   // Check object schema version
-  function check_version (type, path, obj) {
+  function check_version(type, path, obj) {
     if (obj.version !== stuff.vars[`${type}_version`]) {
       manager.fill_defaults(type, obj)
       obj.version = stuff.vars[`${type}_version`]
@@ -27,7 +27,7 @@ module.exports = (manager, stuff) => {
   }
 
   // Do the write file operation
-  function do_write_file (path) {
+  function do_write_file(path) {
     stuff.utilz.loginfo(`Writing: ${path.split(`/`).slice(-2).join(`/`)}`)
     manager.cache[path].last_write = Date.now()
 
@@ -44,7 +44,7 @@ module.exports = (manager, stuff) => {
   // Add to memory cache
   manager.add_to_cache = (path, obj, proxy) => {
     if (manager.cache[path] === undefined) {
-      manager.cache[path] = {timeout: undefined, last_write: 0, obj: obj, proxy: proxy}
+      manager.cache[path] = {timeout: undefined, last_write: 0, obj, proxy}
     }
   }
 
@@ -73,11 +73,11 @@ module.exports = (manager, stuff) => {
     let schema = stuff.vars[`${type}_schema`]()
 
     let handler = {
-      get (target, property) {
+      get(target, property) {
         return target[property]
       },
 
-      set (target, property, value) {
+      set(target, property, value) {
         if (property in schema) {
           if (typeof value === schema[property].type) {
             target[property] = value
@@ -91,7 +91,7 @@ module.exports = (manager, stuff) => {
         else {
           stuff.logger.log_error(`DB Engine: '${property}' is not in the schema`)
         }
-      }
+      },
     }
 
     return new Proxy(obj, handler)
@@ -103,17 +103,17 @@ module.exports = (manager, stuff) => {
       if (query[0] === `id`) {
         let path = manager.get_file_path(type, query[1])
         check_file(type, path, query)
-        .then(obj => {
-          if (obj) {
-            resolve(obj)
-          }
-          else {
+          .then(obj => {
+            if (obj) {
+              resolve(obj)
+            }
+            else {
+              reject(`Nothing found`)
+            }
+          })
+          .catch(err => {
             reject(`Nothing found`)
-          }
-        })
-        .catch(err => {
-          reject(`Nothing found`)
-        })
+          })
       }
       else {
         fs.readdir(manager.get_dir_path(type), async (err, file_names) => {
@@ -138,7 +138,9 @@ module.exports = (manager, stuff) => {
                 return
               }
             }
-            catch (err) {}
+            catch (err) {
+              // Do nothing
+            }
           }
 
           reject(`Nothing found`)
@@ -149,24 +151,24 @@ module.exports = (manager, stuff) => {
   }
 
   // Find multiple results based on a list of ids
-  manager.find_multiple = (type, ids) => {
-    return new Promise(async (resolve, reject) => {
-      let objs = []
+  manager.find_multiple = async (type, ids) => {
+    let objs = []
 
-      for (let id of ids) {
-        try {
-          let obj = await manager.find_one(type, [`id`, id])
-          objs.push(obj)
-        }
-        catch (err) {}
+    for (let id of ids) {
+      try {
+        let obj = await manager.find_one(type, [`id`, id])
+        objs.push(obj)
       }
+      catch (err) {
+        // Handle error if needed
+      }
+    }
 
-      resolve(objs)
-    })
+    return objs
   }
 
   // Check if the file matches
-  function check_file (type, path, query) {
+  function check_file(type, path, query) {
     return new Promise((resolve, reject) => {
       if (manager.path_in_cache(path)) {
         let proxy = manager.cache[path].proxy
@@ -211,7 +213,7 @@ module.exports = (manager, stuff) => {
   }
 
   // Check file using the query
-  function check_file_query (type, original, query) {
+  function check_file_query(type, original, query) {
     if (!query || query.length !== 2 || !query[0] || query[1] === undefined) {
       return
     }
@@ -277,7 +279,7 @@ module.exports = (manager, stuff) => {
 
       if (obj[list_name].length > stuff.config[`max_${list_name}`]) {
         obj[list_name] = obj[list_name].slice(
-          obj[list_name].length - stuff.config[`max_${list_name}`]
+          obj[list_name].length - stuff.config[`max_${list_name}`],
         )
       }
 
