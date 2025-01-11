@@ -111,7 +111,7 @@ max_image_size: 55555
 
 # Maximum video size allowed in KB. This is checked both in the client and server
 # If the video is bigger it won't be uploaded
-max_tv_size: 55555
+max_tv_size: 122222
 
 # Maximum image size allowed for profile images
 max_profilepic_size: 1111
