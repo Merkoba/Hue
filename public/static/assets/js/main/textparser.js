@@ -2,6 +2,7 @@
 App.setup_textparser_regexes = () => {
   App.textparser_regexes = {}
   App.textparser_regexes.whisper_link = {}
+
   App.textparser_regexes.whisper_link.regex = new RegExp(
     `\\[whisper\\s+(.*?)\\](.*?)\\[/whisper\\]`,
     `gm`,
@@ -16,6 +17,7 @@ App.setup_textparser_regexes = () => {
   }
 
   App.textparser_regexes.anchor_link = {}
+
   App.textparser_regexes.anchor_link.regex = new RegExp(
     `\\[anchor\\s+(.*?)\\](.*?)\\[/anchor\\]`,
     `gm`,
@@ -23,6 +25,20 @@ App.setup_textparser_regexes = () => {
 
   App.textparser_regexes.anchor_link.replace_function = (g1, g2, g3) => {
     return `<a href="${g2}" class="anchor_link special_link" target="_blank">${g3.trim().replace(/\s+/, `&nbsp;`)}</a>`
+  }
+
+  App.textparser_regexes.parens = {}
+
+  App.textparser_regexes.parens.regex = new RegExp(
+    `(\\(\\(\\(.*\\)\\)\\))`,
+    `gm`,
+  )
+
+  App.textparser_regexes.parens.replace_function = (
+    g1,
+    g2,
+  ) => {
+    return `<b>${g2}</b>`
   }
 }
 
@@ -36,6 +52,11 @@ App.parse_text = (text) => {
   text = text.replace(
     App.textparser_regexes.anchor_link.regex,
     App.textparser_regexes.anchor_link.replace_function,
+  )
+
+  text = text.replace(
+    App.textparser_regexes.parens.regex,
+    App.textparser_regexes.parens.replace_function,
   )
 
   if (App.get_setting(`arrowtext`)) {
