@@ -146,15 +146,21 @@ App.start_mouse_events = () => {
       if (e.target.tagName === `A`) {
         App.show_link_clicked(message_id)
       }
-      else if (e.target.closest(`.chat_menu_button_main`)) {
-        if (window.getSelection().toString()) {
-          return
-        }
 
-        let container = e.target.closest(`.chat_menu_button_main`)
+      if (window.getSelection().toString()) {
+        return
+      }
 
-        if (container) {
-          let button = DOM.el(`.chat_menu_button_container`, container)
+      let container = e.target.closest(`.chat_menu_button_main`)
+
+      if (!container) {
+        container = DOM.el(`.chat_menu_button_main`, message)
+      }
+
+      if (container) {
+        let button = DOM.el(`.chat_menu_button_container`, container)
+
+        if (button) {
           App.show_chat_context_menu(button, e.clientX, e.clientY)
           e.preventDefault()
         }

@@ -1892,7 +1892,7 @@ pre {
 }
 
 .needcontext-item-selected {
-  background-color: var(--altbackground_a) !important;
+  background-color: var(--altbackground) !important;
 }
 
 #linksbar {
