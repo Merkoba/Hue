@@ -9,4 +9,5 @@ module.exports = (App) => {
   App.i.cheerio = require(`cheerio`)
   App.i.redis = require(`redis`)
   App.i.he = require(`he`)
+  App.i.exiftool = require(`exiftool-vendored`).exiftool
 }

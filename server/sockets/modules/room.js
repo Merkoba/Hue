@@ -165,6 +165,7 @@ module.exports = (App) => {
 
     try {
       await App.i.fsp.writeFile(path, data.image_file)
+      await App.strip_metadata(path)
       await App.handler.do_change_background(socket, file_name, `hosted`)
     }
     catch (err) {

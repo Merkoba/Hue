@@ -220,4 +220,17 @@ module.exports = (App) => {
     let full_file = Buffer.from(new Uint8Array(await res.arrayBuffer()))
     return full_file
   }
+
+  // Remove all metadata from a file
+  App.strip_metadata = async (path) => {
+    try {
+      return await App.i.exiftool.write(path, {
+        all: null,
+      })
+    }
+    catch (err) {
+      App.logger.log_error(err)
+      return path
+    }
+  }
 }

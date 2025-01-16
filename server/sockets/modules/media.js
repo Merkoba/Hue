@@ -31,6 +31,7 @@ module.exports = (App) => {
 
     try {
       await App.i.fsp.writeFile(path, data.file)
+      await App.strip_metadata(path)
 
       let obj = {}
 

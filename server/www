@@ -244,12 +244,10 @@ function on_error(error) {
 		case `EACCES`:
 			console.error(bind + ` requires elevated privileges`)
 			process.exit(1)
-			break
 
 		case `EADDRINUSE`:
 			console.error(bind + ` is already in use`)
 			process.exit(1)
-			break
 
 		default:
 			throw error
@@ -269,6 +267,7 @@ function on_listening() {
 function do_shutdown() {
 	App.vars.exiting = true
 
+	App.i.exiftool.end()
 	io.httpServer.close()
 	io.close()
 

@@ -26,6 +26,7 @@
 		"tar": "~6.1.11",
 		"yaml": "~2.1.1",
 		"eslint": "~9.17.0",
-		"globals": "~15.9.0"
+		"globals": "~15.9.0",
+		"exiftool-vendored": "~29.0.0"
 	}
 }
