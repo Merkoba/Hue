@@ -183,9 +183,9 @@ App.background_selected = (file) => {
   }
 
   for (let date in App.files) {
-    let f = App.files[date]
+    let obj = App.files[date]
 
-    if (f.hue_data.action === `background_upload`) {
+    if (obj.args.action === `background_upload`) {
       App.cancel_file_upload(date)
     }
   }

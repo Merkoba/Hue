@@ -134,19 +134,13 @@ App.upload_video = (file) => {
 }
 
 // Creates a file reader for files
-App.create_file_reader = (file) => {
+App.create_file_reader = (obj) => {
   let reader = new FileReader()
 
   DOM.ev(reader, `loadend`, (e) => {
-    App.socket_emit(`slice_upload`, {
-      data: reader.result,
-      action: file.hue_data.action,
-      name: file.hue_data.name,
-      type: file.hue_data.type,
-      size: file.hue_data.size,
-      date: file.hue_data.date,
-      comment: file.hue_data.comment,
-    })
+    let args = {...obj.args}
+    args.data = reader.result
+    App.socket_emit(`slice_upload`, args)
   })
 
   return reader
@@ -161,51 +155,49 @@ App.upload_file = (args = {}) => {
     return
   }
 
-  if (args.file.hue_data === undefined) {
-    args.file.hue_data = {}
-  }
+  let now = Date.now()
 
-  args.file.hue_data.action = args.action
+  let obj = {}
+  obj.file = args.file
+  obj.args = {}
+  obj.args.action = args.action
 
   if (args.name) {
-    args.file.hue_data.name = args.name
+    obj.args.name = args.name
   }
   else {
-    args.file.hue_data.name = args.file.name
+    obj.args.name = args.file.name
   }
 
   if (args.comment) {
-    args.file.hue_data.comment = args.comment
+    obj.args.comment = args.comment
   }
 
-  args.file.hue_data.size = args.file.size
-  args.file.hue_data.type = args.file.type
-  let date = Date.now()
-  args.file.hue_data.date = date
+  obj.args.size = args.file.size
+  obj.args.type = args.file.type
+  obj.args.date = now
 
-  if (args.file.hue_data.name !== undefined) {
-    args.file.hue_data.name = App.utilz
-      .no_space(args.file.hue_data.name)
-      .replace(/.gifv/g, `.gif`)
+  if (obj.args.name !== undefined) {
+    obj.args.name = App.utilz.no_space(obj.args.name).replace(/.gifv/g, `.gif`)
   }
   else {
-    args.file.hue_data.name = `no_name`
+    obj.args.name = `no_name`
   }
 
-  args.file.hue_data.reader = App.create_file_reader(args.file)
+  obj.reader = App.create_file_reader(obj)
   let slice = args.file.slice(0, App.config.upload_slice_size)
 
-  App.files[date] = args.file
-  args.file.hue_data.next = App.get_file_next(args.file)
+  App.files[now] = obj
+  obj.next = App.get_file_next(obj)
 
-  if (args.file.hue_data.next >= 100) {
-    args.file.hue_data.sending_last_slice = true
+  if (obj.next >= 100) {
+    obj.sending_last_slice = true
   }
   else {
-    args.file.hue_data.sending_last_slice = false
+    obj.sending_last_slice = false
   }
 
-  args.file.hue_data.percentage = 0
+  obj.percentage = 0
   let icon = ``
 
   if (args.action === `image_upload`) {
@@ -215,42 +207,40 @@ App.upload_file = (args = {}) => {
     icon = `tv`
   }
 
-  let obj = {
-    message: `Uploading ${App.get_file_action_name(
-      args.file.hue_data.action,
-    )}: 0%`,
+  let notif = {
+    message: `Uploading ${App.get_file_action_name(obj.args.action)}: 0%`,
     icon,
-    id: `uploading_${date}`,
-    title: `Size: ${App.utilz.size_string(args.file.hue_data.size / 1024)}`,
+    id: `uploading_${now}`,
+    title: `Size: ${App.utilz.size_string(obj.args.size / 1024)}`,
     on_x_button_click: () => {
-      App.cancel_file_upload(date)
+      App.cancel_file_upload(now)
     },
   }
 
-  args.file.hue_popup = App.show_action_popup(obj)
-  args.file.hue_data.reader.readAsArrayBuffer(slice)
+  obj.popup = App.show_action_popup(notif)
+  obj.reader.readAsArrayBuffer(slice)
 }
 
 // Cancels a file upload
 // Deletes the local file and sends a signal to the server to try to cancel it on time
 App.cancel_file_upload = (date) => {
-  let file = App.files[date]
+  let obj = App.files[date]
 
-  if (!file) {
+  if (!obj) {
     return
   }
 
-  if (file.hue_data.sending_last_slice) {
+  if (obj.sending_last_slice) {
     return
   }
 
-  App.change_upload_status(file, `Cancelled`, true)
+  App.change_upload_status(obj, `Cancelled`, true)
 
-  if (file.hue_data.action === `background_upload`) {
+  if (obj.args.action === `background_upload`) {
     DOM.el(`#admin_background`).src = App.background
     App.apply_background()
   }
-  else if (file.hue_data.action === `profilepic_upload`) {
+  else if (obj.args.action === `profilepic_upload`) {
     DOM.el(`#user_profile_profilepic`).src = App.get_profilepic(App.user_id)
   }
 
@@ -260,9 +250,9 @@ App.cancel_file_upload = (date) => {
 
 // Gets the percentage based on the next file slice to be uploaded
 // Last slice would be 100
-App.get_file_next = (file) => {
+App.get_file_next = (obj) => {
   let next = Math.floor(
-    ((App.config.upload_slice_size * 1) / file.hue_data.size) * 100,
+    ((App.config.upload_slice_size * 1) / obj.args.size) * 100,
   )
 
   if (next > 100) {
@@ -273,16 +263,16 @@ App.get_file_next = (file) => {
 }
 
 // Updates the upload status announcement based on upload progress
-App.change_upload_status = (file, status, clear = false) => {
-  if (!file.hue_popup || !file.hue_popup.content) {
+App.change_upload_status = (obj, status, clear = false) => {
+  if (!obj.popup || !obj.popup.content) {
     return
   }
 
-  DOM.el(`.action_popup_message`, file.hue_popup.content).textContent =
-    `Uploading ${App.get_file_action_name(file.hue_data.action)}: ${status}`
+  DOM.el(`.action_popup_message`, obj.popup.content).textContent =
+    `Uploading ${App.get_file_action_name(obj.args.action)}: ${status}`
 
   if (clear) {
-    file.hue_popup.close()
+    obj.popup.close()
   }
 }
 
@@ -308,39 +298,32 @@ App.get_file_action_name = (action) => {
 
 // This is called whenever the server asks for the next slice of a file upload
 App.request_slice_upload = (data) => {
-  let file = App.files[data.date]
+  let obj = App.files[data.date]
 
-  if (!file) {
+  if (!obj) {
     return
   }
 
-  let place = data.current_slice * App.config.upload_slice_size
-  let slice = file.slice(
-    place,
-    place + Math.min(App.config.upload_slice_size, file.hue_data.size - place),
-  )
+  let slice_size = App.config.upload_slice_size
+  let place = data.current_slice * slice_size
+  let slice = obj.file.slice(place, place + Math.min(slice_size, obj.args.size - place))
+  obj.next = App.get_file_next(obj)
 
-  file.hue_data.next = App.get_file_next(file)
-
-  if (file.hue_data.next >= 100) {
-    file.hue_data.sending_last_slice = true
+  if (obj.next >= 100) {
+    obj.sending_last_slice = true
   }
 
-  file.hue_data.percentage = Math.floor(
-    ((App.config.upload_slice_size * data.current_slice) / file.hue_data.size) *
-      100,
-  )
-
-  file.hue_data.reader.readAsArrayBuffer(slice)
-  App.change_upload_status(file, `${file.hue_data.percentage}%`)
+  obj.percentage = Math.floor(((slice_size * data.current_slice) / obj.args.size) * 100)
+  obj.reader.readAsArrayBuffer(slice)
+  App.change_upload_status(obj, `${obj.percentage}%`)
 }
 
 // What to do when a file upload finishes
 App.upload_ended = (data) => {
-  let file = App.files[data.date]
+  let obj = App.files[data.date]
 
-  if (file) {
-    App.change_upload_status(file, `100%`, true)
+  if (obj) {
+    App.change_upload_status(obj, `100%`, true)
     delete App.files[data.date]
   }
 }

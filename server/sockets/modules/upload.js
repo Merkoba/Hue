@@ -77,7 +77,6 @@ module.exports = (App) => {
     file.slice++
     file.received += data.data.length
     file.spam_charge += data.data.length
-
     let fsize = file.received / 1024
 
     if (
@@ -117,7 +116,6 @@ module.exports = (App) => {
 
     if (file.slice * App.config.upload_slice_size >= file.size) {
       App.handler.user_emit(socket, `upload_ended`, {date: data.date})
-
       let full_file = Buffer.concat(file.data)
 
       try {

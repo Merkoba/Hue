@@ -315,9 +315,9 @@ App.profilepic_selected = (file, type) => {
   }
 
   for (let date in App.files) {
-    let f = App.files[date]
+    let obj = App.files[date]
 
-    if (f.hue_data.action === `profilepic_upload`) {
+    if (obj.args.action === `profilepic_upload`) {
       App.cancel_file_upload(date)
     }
   }
