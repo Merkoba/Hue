@@ -227,7 +227,7 @@ module.exports = (App) => {
       })
     }
     catch (err) {
-      App.logger.log_error(err)
+      App.logger.log_error(`Metadata stripping failed.`)
       return path
     }
   }
