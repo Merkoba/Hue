@@ -265,7 +265,7 @@ App.clear_draw_image_state = () => {
   App.draw_image_pencil_size = App.draw_image_default_pencil_size
 
   for (let el of DOM.els(`#draw_image_pencil_size option`)) {
-    if (el.value === App.draw_image_pencil_size) {
+    if (el.value == App.draw_image_pencil_size) {
       el.selected = true
     }
   }
