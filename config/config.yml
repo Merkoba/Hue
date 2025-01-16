@@ -226,7 +226,7 @@ max_displayed_url: 100
 max_activity_username_length: 8
 
 # How long in seconds tv screen capture videos can be
-screen_capture_durations: [5, 10, 30, 60]
+screen_capture_durations: [5, 10, 20, 30, 60]
 
 # Quality for rendered image blobs
 image_blob_quality: 0.9
