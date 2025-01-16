@@ -12,6 +12,11 @@ module.exports = (App) => {
       return
     }
 
+    if (!data.name || !data.action || !data.date) {
+      await App.handler.add_spam(socket)
+      return
+    }
+
     let key = `${socket.hue_user_id}_${data.date}`
     let file = App.vars.files[key]
 
