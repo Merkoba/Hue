@@ -147,6 +147,7 @@ App.upload_file = (args = {}) => {
     args: {},
   }
 
+  obj.current_slice = 0
   obj.file = new Blob([args.file])
   obj.args.action = args.action
 
@@ -246,7 +247,7 @@ App.cancel_file_upload = (date) => {
 // Last slice would be 100
 App.get_file_next = (obj) => {
   let next = Math.floor(
-    ((App.config.upload_slice_size * 1) / obj.args.size) * 100,
+    ((obj.current_slice * App.config.upload_slice_size) / obj.args.size) * 100,
   )
 
   if (next > 100) {
@@ -298,8 +299,9 @@ App.request_slice_upload = (data) => {
     return
   }
 
+  obj.current_slice = data.current_slice
   let slice_size = App.config.upload_slice_size
-  let place = data.current_slice * slice_size
+  let place = obj.current_slice * slice_size
   let slice_end = place + Math.min(slice_size, obj.args.size - place)
   let slice = App.get_upload_slice(obj, place, slice_end)
   obj.next = App.get_file_next(obj)
