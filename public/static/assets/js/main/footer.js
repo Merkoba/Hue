@@ -4,7 +4,7 @@ App.setup_footer = () => {
 
   for (let type of media) {
     DOM.ev(DOM.el(`#footer_${type}_icon`), `click`, (e) => {
-      if (e.shiftKey) {
+      if (e.shiftKey | e.ctrlKey) {
         App[`show_upload_${type}`]()
       }
       else {
