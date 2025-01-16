@@ -143,16 +143,18 @@ App.upload_file = (args = {}) => {
 
   let now = Date.now()
 
-  let obj = {}
-  obj.file = args.file
-  obj.args = {}
+  let obj = {
+    args: {},
+  }
+
+  obj.file = new Blob([args.file])
   obj.args.action = args.action
 
   if (args.name) {
     obj.args.name = args.name
   }
   else {
-    obj.args.name = obj.file.name
+    obj.args.name = args.file.name
   }
 
   if (args.comment) {
@@ -160,7 +162,7 @@ App.upload_file = (args = {}) => {
   }
 
   obj.args.size = obj.file.size
-  obj.args.type = obj.file.type
+  obj.args.type = args.file.type
   obj.args.date = now
 
   if (obj.args.name !== undefined) {
@@ -170,7 +172,7 @@ App.upload_file = (args = {}) => {
     obj.args.name = `no_name`
   }
 
-  let slice = App.get_upload_slice(obj.file, 0, App.config.upload_slice_size)
+  let slice = App.get_upload_slice(obj, 0, App.config.upload_slice_size)
 
   App.files[now] = obj
   obj.next = App.get_file_next(obj)
@@ -203,10 +205,14 @@ App.upload_file = (args = {}) => {
   }
 
   obj.popup = App.show_action_popup(notif)
+  App.slice_upload_emit(obj, slice)
+}
 
-  let emit_args = {...obj.args}
-  emit_args.data = slice
-  App.socket_emit(`slice_upload`, emit_args)
+// Do a slice upload emit
+App.slice_upload_emit = (obj, slice) => {
+  let args = {...obj.args}
+  args.data = slice
+  App.socket_emit(`slice_upload`, args)
 }
 
 // Cancels a file upload
@@ -295,7 +301,7 @@ App.request_slice_upload = (data) => {
   let slice_size = App.config.upload_slice_size
   let place = data.current_slice * slice_size
   let slice_end = place + Math.min(slice_size, obj.args.size - place)
-  let slice = App.get_upload_slice(obj.file, place, slice_end)
+  let slice = App.get_upload_slice(obj, place, slice_end)
   obj.next = App.get_file_next(obj)
 
   if (obj.next >= 100) {
@@ -304,10 +310,7 @@ App.request_slice_upload = (data) => {
 
   obj.percentage = Math.floor(((slice_size * data.current_slice) / obj.args.size) * 100)
   App.change_upload_status(obj, `${obj.percentage}%`)
-
-  let emit_args = {...obj.args}
-  emit_args.data = slice
-  App.socket_emit(`slice_upload`, emit_args)
+  App.slice_upload_emit(obj, slice)
 }
 
 // What to do when a file upload finishes
@@ -326,7 +329,6 @@ App.show_upload_error = () => {
 }
 
 // Get the next slice of a file upload
-App.get_upload_slice = (file, start, end) => {
-  let slice = file.slice(start, end)
-  return new Blob([slice])
+App.get_upload_slice = (obj, start, end) => {
+  return obj.file.slice(start, end)
 }
