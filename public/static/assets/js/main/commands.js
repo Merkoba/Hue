@@ -857,7 +857,7 @@ App.get_closest_command = (cmd) => {
   let highest_command = false
 
   for (let command of App.commands_list) {
-    let similarity = App.App.utilz.string_similarity(command, cmd)
+    let similarity = App.utilz.string_similarity(command, cmd)
 
     if (similarity >= 0.8 && similarity > highest_num) {
       highest_num = similarity
