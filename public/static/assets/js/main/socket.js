@@ -314,6 +314,8 @@ App.start_socket = () => {
     reconnection: false,
   })
 
+  App.socket.binaryType = `arraybuffer`
+
   App.socket.on(`connect`, () => {
     App.loginfo(`Socket Connected`, `color:green`)
     App.connecting = false

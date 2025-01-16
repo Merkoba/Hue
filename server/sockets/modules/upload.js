@@ -72,11 +72,11 @@ module.exports = (App) => {
       return
     }
 
-    data.data = Buffer.from(new Uint8Array(data.data))
-    file.data.push(data.data)
+    let buffer = Buffer.from(data.data)
+    file.data.push(buffer)
     file.slice++
-    file.received += data.data.length
-    file.spam_charge += data.data.length
+    file.received += buffer.length
+    file.spam_charge += buffer.length
     let fsize = file.received / 1024
 
     if (
