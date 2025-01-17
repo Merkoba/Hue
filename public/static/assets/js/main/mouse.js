@@ -68,9 +68,11 @@ App.start_mouse_events = () => {
           let src = DOM.dataset(e.target, `image_preview_src_original`)
           App.view_image(src, username, user_id)
         }
-        else if (e.target.classList.contains(`announcement_content`) ||
-          e.target.closest(`.brk`)) {
-          if (type === `image_change`) {
+        else if (e.target.classList.contains(`announcement_content`) || e.target.closest(`.brk`)) {
+          if (e.ctrlKey) {
+            App.like_message(e.target, `like`)
+          }
+          else if (type === `image_change`) {
             App.show_modal_image(id)
           }
           else if (type === `tv_change`) {
@@ -200,8 +202,9 @@ App.start_mouse_events = () => {
         let message_id = DOM.dataset(message, `message_id`)
         let mode = DOM.dataset(message, `mode`)
         let id = DOM.dataset(message, `id`)
+        let like = e.target.closest(`.like_container`)
 
-        if (mode === `announcement`) {
+        if ((mode === `announcement`) && !like) {
           let container = DOM.el(`.announcement_content`, message)
 
           if (container) {
@@ -227,13 +230,11 @@ App.start_mouse_events = () => {
         else if (e.target.classList.contains(`chat_profilepic`)) {
           App.mention_user(username)
         }
-        else if (e.target.closest(`.like_container`)) {
-          let el = e.target.closest(`.like_container`)
-          let user_id = DOM.dataset(el, `user_id`)
+        else if (like) {
+          let user_id = DOM.dataset(like, `user_id`)
 
           if (user_id === App.user_id) {
-            let container = e.target.closest(`.chat_content_container`)
-            App.like_message(container, `unlike`)
+            App.like_message(like, `unlike`)
           }
         }
         else if (e.target.closest(`.chat_content_container`)) {
