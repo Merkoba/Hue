@@ -262,7 +262,10 @@ App.activate_key_detection = () => {
       }
     }
 
-    App.focus_input()
+    if (!App.text_selected()) {
+      App.focus_input()
+    }
+
     let has_value = App.input_has_value()
 
     if (e.key === `Enter`) {

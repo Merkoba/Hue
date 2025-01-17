@@ -77,6 +77,11 @@ App.start_mouse_events = () => {
             App.open_url_menu_by_media_id(`tv`, id)
           }
         }
+        else if (e.target.closest(`.chat_content_container`)) {
+          if (e.ctrlKey) {
+            App.like_message(e.target, `like`)
+          }
+        }
         else if (e.target.closest(`.brk_profilepic`)) {
           App.show_profile(username, user_id)
         }
@@ -147,7 +152,7 @@ App.start_mouse_events = () => {
         App.show_link_clicked(message_id)
       }
 
-      if (window.getSelection().toString()) {
+      if (App.text_selected()) {
         return
       }
 
@@ -221,6 +226,15 @@ App.start_mouse_events = () => {
         }
         else if (e.target.classList.contains(`chat_profilepic`)) {
           App.mention_user(username)
+        }
+        else if (e.target.closest(`.like_container`)) {
+          let el = e.target.closest(`.like_container`)
+          let user_id = DOM.dataset(el, `user_id`)
+
+          if (user_id === App.user_id) {
+            let container = e.target.closest(`.chat_content_container`)
+            App.like_message(container, `unlike`)
+          }
         }
       }
     }

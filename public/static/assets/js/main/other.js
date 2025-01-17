@@ -198,3 +198,8 @@ App.get_first_time = () => {
     App.is_first_time = false
   }
 }
+
+// Check if there is text selection
+App.text_selected = () => {
+  return window.getSelection().toString() !== ``
+}

@@ -1745,7 +1745,7 @@ App.message_is_liked = (unit) => {
 }
 
 // Like a message
-App.like_message = (target, type) => {
+App.like_message = (target, type = `like`) => {
   let unit = target.closest(`.message_unit`)
   let liked = App.message_is_liked(unit)
 
