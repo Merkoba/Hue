@@ -77,11 +77,6 @@ App.start_mouse_events = () => {
             App.open_url_menu_by_media_id(`tv`, id)
           }
         }
-        else if (e.target.closest(`.chat_content_container`)) {
-          if (e.ctrlKey) {
-            App.like_message(e.target, `like`)
-          }
-        }
         else if (e.target.closest(`.brk_profilepic`)) {
           App.show_profile(username, user_id)
         }
@@ -93,6 +88,11 @@ App.start_mouse_events = () => {
         }
         else if (e.target.closest(`.chat_menu_button_container`)) {
           App.show_chat_context_menu(e.target.closest(`.chat_menu_button_container`))
+        }
+        else if (e.target.closest(`.chat_content_container`)) {
+          if (e.ctrlKey) {
+            App.like_message(e.target, `like`)
+          }
         }
       }
     }
