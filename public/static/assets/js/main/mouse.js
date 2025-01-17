@@ -236,6 +236,10 @@ App.start_mouse_events = () => {
             App.like_message(container, `unlike`)
           }
         }
+        else if (e.target.closest(`.chat_content_container`)) {
+          let el = DOM.el(`.unit_text`, e.target.closest(`.message_unit`))
+          App.start_reply(el)
+        }
       }
     }
   })
