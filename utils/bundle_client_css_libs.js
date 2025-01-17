@@ -1,7 +1,7 @@
 const fs = require("fs")
 
-let dir_path = "../public/static/assets/css/libs/"
-let dir_path_target = "../public/static/assets/css/build/"
+let dir_path = "public/static/assets/css/libs/"
+let dir_path_target = "public/static/assets/css/build/"
 let files = fs.readdirSync(dir_path)
 let bundle = ""
 

@@ -1,4 +1,0 @@
-#!/bin/bash
-node bundle_client_js_main.js
-node bundle_client_js_libs.js
-node bundle_client_css_libs.js
