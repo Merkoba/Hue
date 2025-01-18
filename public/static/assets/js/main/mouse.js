@@ -235,7 +235,8 @@ App.start_mouse_events = () => {
           App.mention_user(username)
         }
         else if (e.target.classList.contains(`chat_profilepic`)) {
-          App.mention_user(username)
+          let first = DOM.el(`.chat_content_container`, message)
+          App.start_reply(first)
         }
         else if (like) {
           let user_id = DOM.dataset(like, `user_id`)
