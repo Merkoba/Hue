@@ -203,8 +203,15 @@ App.start_mouse_events = () => {
         let mode = DOM.dataset(message, `mode`)
         let id = DOM.dataset(message, `id`)
         let like = e.target.closest(`.like_container`)
+        let brk = e.target.closest(`.brk`)
 
         if ((mode === `announcement`) && !like) {
+          if (brk) {
+            let el = DOM.el(`.unit_text`, message)
+            App.start_reply(el)
+            return
+          }
+
           let container = DOM.el(`.announcement_content`, message)
 
           if (container) {

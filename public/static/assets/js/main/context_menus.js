@@ -26,7 +26,7 @@ App.show_chat_context_menu = (button, x, y) => {
   let has_reply = false
   let has_edit = false
 
-  if (mode === `chat` || type === `image_change` || type === `tv_change`) {
+  if ((mode === `chat`) || (type === `image_change`) || (type === `tv_change`)) {
     items.push({
       text: `Reply`,
       action: () => {
