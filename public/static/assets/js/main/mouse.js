@@ -152,6 +152,7 @@ App.start_mouse_events = () => {
 
       if (e.target.tagName === `A`) {
         App.show_link_clicked(message_id)
+        return
       }
 
       if (App.text_selected()) {
