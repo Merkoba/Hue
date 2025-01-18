@@ -25,6 +25,7 @@ App.commands = {
     description: `Changes the name of the room`,
   },
   search: {
+    aliases: [`find`],
     action: (arg, ans) => {
       if (arg) {
         App.show_chat_search(arg)
