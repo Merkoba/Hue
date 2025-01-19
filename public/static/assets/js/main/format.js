@@ -54,17 +54,17 @@ App.parse_text = (text) => {
     App.textparser_regexes.anchor_link.replace_function,
   )
 
-  text = text.replace(
-    App.textparser_regexes.parens.regex,
-    App.textparser_regexes.parens.replace_function,
-  )
+  if (App.get_setting(`text_effects`)) {
+    text = text.replace(
+      App.textparser_regexes.parens.regex,
+      App.textparser_regexes.parens.replace_function,
+    )
 
-  if (App.get_setting(`arrowtext`)) {
     text = App.check_arrowtext(text)
-    text = App.check_frame(text)
+    text = App.format_chars(text)
   }
 
-  text = App.format_chars(text)
+  text = App.check_frame(text)
   return text
 }
 

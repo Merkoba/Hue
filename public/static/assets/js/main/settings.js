@@ -285,10 +285,10 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
-    arrowtext: {
-      title: `Arrow Text`,
+    text_effects: {
+      title: `Text Effects`,
       type: `checkbox`,
-      description: `Whether to style arrowtext`,
+      description: `Add effects like bold to certain syntax`,
       actions: () => {},
       version: 1,
     },
@@ -305,13 +305,6 @@ App.build_user_settings = () => {
       title: `Show Loaded`,
       type: `checkbox`,
       description: `Show the loaded label on loaded media messages`,
-      actions: () => {},
-      version: 1,
-    },
-    show_clicked: {
-      title: `Show Clicked`,
-      type: `checkbox`,
-      description: `Show the clicked label on clicked link messages`,
       actions: () => {},
       version: 1,
     },
