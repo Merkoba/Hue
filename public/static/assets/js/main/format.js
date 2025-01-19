@@ -109,16 +109,16 @@ App.check_arrowtext = (text) => {
   return new_lines.join(`\n`)
 }
 
-App.char_regex_1 = (char) => {
+App.char_regex_1 = (char, num = 1) => {
   let c = App.utilz.escape_special_characters(char)
-  let exp = `${c}(\\S.*?\\S)${c}`
+  let exp = `${c}{${num}}(\\S.*?\\S)${c}{${num}}`
   let regex = new RegExp(exp)
   return new RegExp(regex, `g`)
 }
 
-App.char_regex_2 = (char) => {
+App.char_regex_2 = (char, num = 1) => {
   let c = App.utilz.escape_special_characters(char)
-  let exp = `(?<!\\w)${c}(?!\\s)(.+?)(?<!\\s)${c}(?!\\w)`
+  let exp = `(?<!\\w)${c}{${num}}(?!\\s)(.+?)(?<!\\s)${c}{${num}}(?!\\w)`
   let regex = new RegExp(exp)
   return new RegExp(regex, `g`)
 }
@@ -142,9 +142,11 @@ App.format_chars = (text) => {
   }
 
   action(App.char_regex_1(`\``), App.to_bold)
-  action(App.char_regex_1(`**`), App.to_bold)
+
+  action(App.char_regex_1(`*`, 2), App.to_bold)
   action(App.char_regex_1(`*`), App.to_bold)
-  action(App.char_regex_1(`__`), App.to_bold)
+
+  action(App.char_regex_1(`_`, 2), App.to_bold)
   action(App.char_regex_1(`_`), App.to_bold)
 
   return text
