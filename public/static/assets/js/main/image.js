@@ -23,7 +23,7 @@ App.current_image = () => {
 // Loads an image with a specified item
 App.show_image = (force = false) => {
   let item = App.loaded_image
-  DOM.el(`#media_image_error`).style.display = `none`
+  DOM.hide(`#media_image_error`)
 
   if (force || DOM.el(`#media_image_frame`).src !== item.source) {
     DOM.el(`#media_image_frame`).src = item.source
@@ -170,13 +170,15 @@ App.setup_modal_image = () => {
   let img = DOM.el(`#modal_image`)
 
   DOM.ev(img, `load`, () => {
-    DOM.el(`#modal_image`).style.display = `block`
+    DOM.show(`#modal_image`)
+    DOM.hide(`#modal_image_loading`)
     App.show_image_loaded(`modal`)
   })
 
   DOM.ev(img, `error`, () => {
-    DOM.el(`#modal_image`).style.display = `none`
-    DOM.el(`#modal_image_error`).style.display = `block`
+    DOM.hide(`#modal_image`)
+    DOM.hide(`#modal_image_loading`)
+    DOM.show(`#modal_image_error`)
   })
 
   let f = (e) => {
@@ -303,8 +305,9 @@ App.show_modal_image = (id = 0) => {
 
   App.loaded_modal_image = data
   let img = DOM.el(`#modal_image`)
-  img.style.display = `none`
-  DOM.el(`#modal_image_error`).style.display = `none`
+  DOM.hide(img)
+  DOM.show(`#modal_image_loading`)
+  DOM.hide(`#modal_image_error`)
   img.src = data.source
   DOM.el(`#modal_image_header_info`).innerHTML = data.info_html
   App.horizontal_separator(DOM.el(`#modal_image_header_info`))
@@ -349,8 +352,8 @@ App.start_image_events = () => {
   })
 
   DOM.ev(DOM.el(`#media_image_frame`), `error`, () => {
-    DOM.el(`#media_image_frame`).style.display = `none`
-    DOM.el(`#media_image_error`).style.display = `initial`
+    DOM.hide(`#media_image_frame`)
+    DOM.show(`#media_image_error`)
     App.apply_media_info(`image`)
   })
 
@@ -360,7 +363,7 @@ App.start_image_events = () => {
 
 // This runs after an image successfully loads
 App.after_image_load = (ok = true) => {
-  DOM.el(`#media_image_frame`).style.display = `initial`
+  DOM.show(`#media_image_frame`)
   App.apply_media_info(`image`)
   App.show_image_loaded()
 
@@ -375,12 +378,14 @@ App.setup_view_image = () => {
   let img = DOM.el(`#view_image`)
 
   DOM.ev(img, `load`, () => {
-    img.style.display = `block`
+    DOM.show(img)
+    DOM.hide(`#view_image_loading`)
   })
 
   DOM.ev(img, `error`, () => {
-    DOM.el(`#view_image`).style.display = `none`
-    DOM.el(`#view_image_error`).style.display = `block`
+    DOM.hide(`#view_image`)
+    DOM.hide(`#view_image_loading`)
+    DOM.show(`#view_image_error`)
   })
 
   DOM.ev(DOM.el(`#view_image_container`), `click`, () => {
@@ -428,8 +433,9 @@ App.setup_view_image = () => {
 // Shows a window with an image at full size
 App.view_image = (src, username, user_id) => {
   src = src.replace(`.gifv`, `.gif`)
-  DOM.el(`#view_image`).style.display = `none`
-  DOM.el(`#view_image_error`).style.display = `none`
+  DOM.hide(`#view_image`)
+  DOM.show(`#view_image_loading`)
+  DOM.hide(`#view_image_error`)
   DOM.el(`#view_image`).src = src
   let hostname
 
@@ -463,8 +469,8 @@ App.view_image = (src, username, user_id) => {
 
 // Shows the window to add a comment to an image upload
 App.show_image_upload_comment = (file, type) => {
-  DOM.el(`#image_upload_comment_image_feedback`).style.display = `none`
-  DOM.el(`#image_upload_comment_image_preview`).style.display = `block`
+  DOM.hide(`#image_upload_comment_image_feedback`)
+  DOM.show(`#image_upload_comment_image_preview`)
 
   App.image_upload_comment_file = file
   App.image_upload_comment_type = type
@@ -508,8 +514,8 @@ App.setup_image_upload_comment = () => {
   let image = DOM.el(`#image_upload_comment_image_preview`)
 
   DOM.ev(image, `error`, () => {
-    image.style.display = `none`
-    DOM.el(`#image_upload_comment_image_feedback`).style.display = `inline`
+    DOM.hide(image)
+    DOM.show(`#image_upload_comment_image_feedback`)
   })
 
   DOM.ev(DOM.el(`#image_upload_comment_submit`), `click`, () => {

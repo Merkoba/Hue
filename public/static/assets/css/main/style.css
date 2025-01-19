@@ -872,7 +872,6 @@ input[type=checkbox] {
 }
 
 .show_image {
-	display: none;
 	object-fit: contain;
 	width: calc(100% - 4rem);
 	height: calc(100% - 4rem);
@@ -1965,4 +1964,12 @@ pre {
 
 .text_glow {
   text-shadow: var(--text_glow);
+}
+
+.hidden {
+	display: none !important;
+}
+
+#image_upload_comment_image_feedback {
+	display: inline;
 }
