@@ -64,6 +64,7 @@ App.parse_text = (text) => {
     text = App.check_frame(text)
   }
 
+  text = App.format_chars(text)
   return text
 }
 
@@ -106,4 +107,55 @@ App.check_arrowtext = (text) => {
   }
 
   return new_lines.join(`\n`)
+}
+
+App.char_regex_1 = (char) => {
+  let c = App.utilz.escape_special_characters(char)
+  let exp = `${c}(.+?)${c}`
+  let regex = new RegExp(exp)
+  return new RegExp(regex, `g`)
+}
+
+App.char_regex_2 = (char) => {
+  let c = App.utilz.escape_special_characters(char)
+  let exp = `(?<!\\w)${c}(?!\\s)(.+?)(?<!\\s)${c}(?!\\w)`
+  let regex = new RegExp(exp)
+  return new RegExp(regex, `g`)
+}
+
+App.format_chars = (text) => {
+  function action(regex, func, full = false) {
+    let matches = [...text.matchAll(regex)]
+
+    for (let match of matches) {
+      if (full) {
+        text = text.replace(match[0], func(match[0]))
+      }
+      else {
+        text = text.replace(match[0], func(match[1]))
+      }
+    }
+  }
+
+  action(App.char_regex_1(`\``), (match) => {
+    return `<b>${match}</b>`
+  })
+
+  action(App.char_regex_1(`**`), (match) => {
+    return `<b>${match}</b>`
+  })
+
+  action(App.char_regex_1(`*`), (match) => {
+    return `<b>${match}</b>`
+  })
+
+  action(App.char_regex_1(`__`), (match) => {
+    return `<b>${match}</b>`
+  })
+
+  action(App.char_regex_1(`_`), (match) => {
+    return `<b>${match}</b>`
+  })
+
+  return text
 }
