@@ -111,7 +111,7 @@ App.check_arrowtext = (text) => {
 
 App.char_regex_1 = (char) => {
   let c = App.utilz.escape_special_characters(char)
-  let exp = `${c}(.+?)${c}`
+  let exp = `${c}(\\S.*?\\S)${c}`
   let regex = new RegExp(exp)
   return new RegExp(regex, `g`)
 }
@@ -133,14 +133,10 @@ App.format_chars = (text) => {
 
     for (let match of matches) {
       if (full) {
-        if (match[0].trim()) {
-          text = text.replace(match[0], func(match[0]))
-        }
+        text = text.replace(match[0], func(match[0]))
       }
       else {
-        if (match[1].trim()) {
-          text = text.replace(match[0], func(match[1]))
-        }
+        text = text.replace(match[0], func(match[1]))
       }
     }
   }
