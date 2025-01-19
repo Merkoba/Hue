@@ -282,6 +282,8 @@ html {
 
 #footer {
 	transition: filter 0.2s linear, box-shadow 0.2s linear;
+	margin-left: 0;
+	padding-left: 0.5rem;
 }
 
 #footer_media_items {
