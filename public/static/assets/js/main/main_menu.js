@@ -33,10 +33,10 @@ App.show_main_menu = () => {
 // Configure main menu based on role
 App.config_main_menu = () => {
   if (App.is_admin_or_op()) {
-    DOM.el(`#main_menu_room_config`).style.display = `block`
+    DOM.hide(`#main_menu_room_config`)
   }
   else {
-    DOM.el(`#main_menu_room_config`).style.display = `none`
+    DOM.hide(`#main_menu_room_config`)
   }
 
   App.vertical_separator(DOM.el(`#main_menu`))

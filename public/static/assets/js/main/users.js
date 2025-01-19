@@ -319,10 +319,10 @@ App.compare_userlist = (a, b) => {
     else if (a.username < b.username) {
       return 1
     }
-    
+
     return 0
   }
-  
+
   if (a.role > b.role) {
     return 1
   }
@@ -336,7 +336,7 @@ App.compare_userlist = (a, b) => {
   else if (a.username > b.username) {
     return 1
   }
-    
+
   return 0
 }
 
@@ -656,7 +656,7 @@ App.show_profile = (username, user_id = false) => {
     App.open_profile_user = user
   }
   else {
-    DOM.el(`#show_profile_details`).style.display = `none`
+    DOM.hide(`#show_profile_details`)
   }
 
   App.open_profile_user_id = id
@@ -682,8 +682,8 @@ App.show_profile = (username, user_id = false) => {
     DOM.el(`#show_profile_sync_tv`).style.display = `flex`
   }
   else {
-    DOM.el(`#show_profile_whisper`).style.display = `none`
-    DOM.el(`#show_profile_sync_tv`).style.display = `none`
+    DOM.hide(`#show_profile_whisper`)
+    DOM.hide(`#show_profile_sync_tv`)
   }
 
   DOM.dataset(DOM.el(`#show_profile_change_role`), `username`, username)

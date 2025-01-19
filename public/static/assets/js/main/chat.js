@@ -160,7 +160,7 @@ App.make_chat_message = (args = {}) => {
     })
   }
   else {
-    quote.style.display = `none`
+    DOM.hide(quote)
   }
 
   let username = DOM.el(`.chat_username`, fmessage)
@@ -322,7 +322,7 @@ App.make_announcement_message = (args = {}) => {
     brk_profilepic.src = App.get_profilepic(args.user_id)
   }
   else {
-    brk_profilepic.style.display = `none`
+    DOM.hide(brk_profilepic)
   }
 
   let pic = DOM.el(`.profilepic`, fmessage)
@@ -1172,7 +1172,7 @@ App.setup_link_preview = (fmessage) => {
 
   if (link_preview_image) {
     DOM.ev(link_preview_image, `error`, () => {
-      link_preview_image.style.display = `none`
+      DOM.hide(link_preview_image)
     })
   }
 
@@ -1235,7 +1235,7 @@ App.setup_image_preview = (fmessage, image_preview_src_original) => {
   let image_preview_image = DOM.el(`.image_preview_image`, image_preview_el)
 
   DOM.ev(image_preview_image, `error`, () => {
-    image_preview_image.style.display = `none`
+    DOM.hide(image_preview_image)
   })
 
   App.urlize(DOM.el(`.image_preview_text`, image_preview_el.parentElement))
@@ -1629,9 +1629,9 @@ App.handle_delete_messages = (id, user_id) => {
   let num_messages = App.get_all_units().length
   let shown = 1
 
-  DOM.el(`#delete_messages_group`).style.display = `none`
-  DOM.el(`#delete_messages_above`).style.display = `none`
-  DOM.el(`#delete_messages_below`).style.display = `none`
+  DOM.hide(`#delete_messages_group`)
+  DOM.hide(`#delete_messages_above`)
+  DOM.hide(`#delete_messages_below`)
 
   if (num > 1) {
     DOM.el(`#delete_messages_group`).style.display = `flex`
@@ -1828,7 +1828,7 @@ App.update_likes = (el, likes) => {
     c.style.display = `flex`
   }
   else {
-    c.style.display = `none`
+    DOM.hide(c)
   }
 }
 

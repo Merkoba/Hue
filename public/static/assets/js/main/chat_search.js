@@ -120,7 +120,7 @@ App.show_chat_search = (filter = ``) => {
 
       return match
     }
-    
+
     let text = DOM.el_or_self(`.unit_text`, it)
     return text.textContent.toLowerCase().includes(filter)
   }
@@ -140,7 +140,7 @@ App.show_chat_search = (filter = ``) => {
 
         if (link_img) {
           DOM.ev(link_img, `error`, () => {
-            link_img.style.display = `none`
+            DOM.hide(link_img)
           })
         }
 

@@ -129,21 +129,21 @@ App.check_handle_url_options = (text) => {
     DOM.el(`#handle_url_chat`).style.display = `inline-block`
   }
   else {
-    DOM.el(`#handle_url_chat`).style.display = `none`
+    DOM.hide(`#handle_url_chat`)
   }
 
   if (App.change_image_source(text, true)) {
     DOM.el(`#handle_url_image`).style.display = `inline-block`
   }
   else {
-    DOM.el(`#handle_url_image`).style.display = `none`
+    DOM.hide(`#handle_url_image`)
   }
 
   if (App.change_tv_source(text, true)) {
     DOM.el(`#handle_url_tv`).style.display = `inline-block`
   }
   else {
-    DOM.el(`#handle_url_tv`).style.display = `none`
+    DOM.hide(`#handle_url_tv`)
   }
 
   App.horizontal_separator(DOM.el(`#handle_url_titlebar`))
@@ -193,7 +193,7 @@ App.open_url_menu = (data) => {
     DOM.el(`#open_url_menu_link`).style.display = `inline-block`
   }
   else {
-    DOM.el(`#open_url_menu_link`).style.display = `none`
+    DOM.hide(`#open_url_menu_link`)
   }
 
   App.horizontal_separator(DOM.el(`#open_url_titlebar`))

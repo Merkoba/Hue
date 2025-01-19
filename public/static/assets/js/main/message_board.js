@@ -108,9 +108,9 @@ App.do_message_board_edit = (send = true) => {
   let message = edit_area.value.trim()
 
   content.style.display = `flex`
-  edit_area.style.display = `none`
+  DOM.hide(edit_area)
   btns.style.display = `flex`
-  edit_btns.style.display = `none`
+  DOM.hide(edit_btns)
   App.editing_message_board = false
 
   if (send) {
@@ -224,7 +224,7 @@ App.add_post_to_message_board = (data, edited) => {
     btns.style.display = `flex`
   }
   else {
-    DOM.el(`.message_board_edit`, btns).style.display = `none`
+    DOM.hide(`.message_board_edit`, btns)
   }
 
   if (!edited) {
@@ -485,7 +485,7 @@ App.edit_message_board_post = (post) => {
   let edit_btns = DOM.el(`.message_board_edit_buttons`, post)
   let text = DOM.dataset(post, `original_message`)
 
-  content.style.display = `none`
+  DOM.hide(content)
 
   edit_area.style.display = `block`
   edit_area.value = text
@@ -495,7 +495,7 @@ App.edit_message_board_post = (post) => {
     block: `center`,
   })
 
-  btns.style.display = `none`
+  DOM.hide(btns)
   edit_btns.style.display = `flex`
   App.editing_message_board_post = post
   App.editing_message_board = true

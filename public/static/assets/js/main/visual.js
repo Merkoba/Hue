@@ -109,8 +109,7 @@ App.flash_info = (title, text) => {
 
 // Hide the flash info window
 App.hide_flash_info = () => {
-  let el = DOM.el(`#flash_info`)
-  el.style.display = `none`
+  DOM.hide(`#flash_info`)
 }
 
 // Get some element measurements

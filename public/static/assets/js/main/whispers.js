@@ -96,10 +96,10 @@ App.write_whisper = (usernames = [], type = `user`) => {
   }
 
   if (type === `user`) {
-    DOM.el(`#write_whisper_add_user`).style.display = `block`
+    DOM.hide(`#write_whisper_add_user`)
   }
   else {
-    DOM.el(`#write_whisper_add_user`).style.display = `none`
+    DOM.hide(`#write_whisper_add_user`)
   }
 
   App.horizontal_separator(DOM.el(`#write_whisper_titlebar`))

@@ -201,7 +201,7 @@ App.get_media_object_from_init_data = (type) => {
 
 // Hides the media area (image and tv)
 App.hide_media = () => {
-  DOM.el(`#media`).style.display = `none`
+  DOM.hide(`#media`)
 }
 
 // Prepare media modes from initial data
@@ -865,7 +865,7 @@ App.change_media_visibility = (type, play = false) => {
     App[`fix_${type}_frame`]()
   }
   else {
-    DOM.el(`#media_${type}`).style.display = `none`
+    DOM.hide(`#media_${type}`)
 
     if (App.num_media_elements_visible() === 0) {
       App.hide_media()
