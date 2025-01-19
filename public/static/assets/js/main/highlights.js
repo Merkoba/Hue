@@ -12,7 +12,7 @@ App.generate_highlights_regex = (
   }
 
   if (escape) {
-    word = App.utilz.escape_special_characters(word)
+    word = App.utilz.escape_regex(word)
   }
 
   let regex = new RegExp(

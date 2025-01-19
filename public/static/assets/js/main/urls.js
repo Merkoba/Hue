@@ -41,7 +41,7 @@ App.urlize = (el, limit_width = true) => {
         used_urls.push(url)
 
         let rep = new RegExp(
-          App.utilz.escape_special_characters(matches[i]),
+          App.utilz.escape_regex(matches[i]),
           `g`,
         )
 

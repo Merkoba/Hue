@@ -434,7 +434,7 @@ const Utilz = () => {
   }
 
   // Escape special characters
-  utilz.escape_special_characters = (s) => {
+  utilz.escape_regex = (s) => {
     return s.replace(/[^A-Za-z0-9]/g, `\\$&`)
   }
 

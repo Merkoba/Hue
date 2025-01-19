@@ -110,14 +110,14 @@ App.check_arrowtext = (text) => {
 }
 
 App.char_regex_1 = (char, num = 1) => {
-  let c = App.utilz.escape_special_characters(char)
+  let c = App.utilz.escape_regex(char)
   let exp = `${c}{${num}}(\\S.*?\\S)${c}{${num}}`
   let regex = new RegExp(exp)
   return new RegExp(regex, `g`)
 }
 
 App.char_regex_2 = (char, num = 1) => {
-  let c = App.utilz.escape_special_characters(char)
+  let c = App.utilz.escape_regex(char)
   let exp = `(?<!\\w)${c}{${num}}(?!\\s)(.+?)(?<!\\s)${c}{${num}}(?!\\w)`
   let regex = new RegExp(exp)
   return new RegExp(regex, `g`)
