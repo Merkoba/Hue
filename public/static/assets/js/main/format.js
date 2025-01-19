@@ -123,6 +123,10 @@ App.char_regex_2 = (char) => {
   return new RegExp(regex, `g`)
 }
 
+App.to_bold = (text) => {
+  return `<b>${text}</b>`
+}
+
 App.format_chars = (text) => {
   function action(regex, func, full = false) {
     let matches = [...text.matchAll(regex)]
@@ -137,25 +141,11 @@ App.format_chars = (text) => {
     }
   }
 
-  action(App.char_regex_1(`\``), (match) => {
-    return `<b>${match}</b>`
-  })
-
-  action(App.char_regex_1(`**`), (match) => {
-    return `<b>${match}</b>`
-  })
-
-  action(App.char_regex_1(`*`), (match) => {
-    return `<b>${match}</b>`
-  })
-
-  action(App.char_regex_1(`__`), (match) => {
-    return `<b>${match}</b>`
-  })
-
-  action(App.char_regex_1(`_`), (match) => {
-    return `<b>${match}</b>`
-  })
+  action(App.char_regex_1(`\``), App.to_bold)
+  action(App.char_regex_1(`**`), App.to_bold)
+  action(App.char_regex_1(`*`), App.to_bold)
+  action(App.char_regex_1(`__`), App.to_bold)
+  action(App.char_regex_1(`_`), App.to_bold)
 
   return text
 }
