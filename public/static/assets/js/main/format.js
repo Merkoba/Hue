@@ -133,10 +133,14 @@ App.format_chars = (text) => {
 
     for (let match of matches) {
       if (full) {
-        text = text.replace(match[0], func(match[0]))
+        if (match[0].trim()) {
+          text = text.replace(match[0], func(match[0]))
+        }
       }
       else {
-        text = text.replace(match[0], func(match[1]))
+        if (match[1].trim()) {
+          text = text.replace(match[0], func(match[1]))
+        }
       }
     }
   }
