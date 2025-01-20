@@ -13,7 +13,7 @@ App.reset_modal_filter = (instance) => {
   let filter = DOM.el(`#Msg-content-${id} .filter_input`)
 
   if (filter) {
-    if (id === `info` || filter.dataset.mode === `manual`) {
+    if ((id === `info`) || (filter.dataset.mode === `manual`)) {
       return
     }
 
@@ -74,7 +74,7 @@ App.do_modal_filter = (id = false) => {
     }
     else if (filter.startsWith(`$links`)) {
       let s = it.textContent.toLowerCase()
-      let match = s.includes(`http://`) || s.includes(`https://`)
+      let match = s.includes(`https://`) || s.includes(`http://`)
 
       if (match) {
         if (args) {
@@ -126,7 +126,7 @@ App.do_modal_filter = (id = false) => {
         DOM.show(item)
       }
       else {
-        DOM.hide(item.classList)
+        DOM.hide(item)
       }
     }
 
