@@ -111,15 +111,25 @@ App.check_arrowtext = (text) => {
 
 App.char_regex_1 = (char, n = 1) => {
   let c = App.utilz.escape_regex(char)
-  let exp = `${c}{${n}}(\\S.*?\\S)${c}{${n}}`
-  let regex = new RegExp(exp)
+  let u = `${c}{${n}}`
+  let t = `[^\\s${u}]`
+  let regex = `${u}(${t}[^${u}]*${t}|${t})${u}`
   return new RegExp(regex, `g`)
 }
 
 App.char_regex_2 = (char, n = 1) => {
   let c = App.utilz.escape_regex(char)
-  let exp = `\\b${c}{${n}}([^${c}]+)${c}{${n}}\\b`
-  let regex = new RegExp(exp)
+  let u = `${c}{${n}}`
+  let t = `[^\\s${u}]`
+  let regex = `(?:^|\\s)${u}(${t}[^${u}]*${t}|${t})${u}(?:$|\\s)`
+  return new RegExp(regex, `g`)
+}
+
+App.char_regex_3 = (char, n = 1) => {
+  let c = App.utilz.escape_regex(char)
+  let u = `${c}{${n}}`
+  let t = `[^${u}]`
+  let regex = `${u}(${t}+)${u}`
   return new RegExp(regex, `g`)
 }
 
@@ -141,7 +151,7 @@ App.format_chars = (text) => {
     }
   }
 
-  action(App.char_regex_1(`\``), App.to_bold)
+  action(App.char_regex_3(`\``), App.to_bold)
 
   action(App.char_regex_1(`*`, 2), App.to_bold)
   action(App.char_regex_1(`*`), App.to_bold)
