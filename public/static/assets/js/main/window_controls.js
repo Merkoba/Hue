@@ -88,7 +88,7 @@ App.do_modal_filter = (id = false) => {
     let texts
     let modal_texts = DOM.els(`.modal_text`, it)
 
-    if (modal_texts) {
+    if (modal_texts && modal_texts.length) {
       texts = modal_texts.map(x => x.textContent)
     }
     else {
