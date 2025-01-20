@@ -85,7 +85,18 @@ App.do_modal_filter = (id = false) => {
       return match
     }
 
-    return it.textContent.toLowerCase().includes(filter)
+    let texts
+    let modal_texts = DOM.els(`.modal_text`, it)
+
+    if (modal_texts) {
+      texts = modal_texts.map(x => x.textContent)
+    }
+    else {
+      texts = [it.textContent]
+    }
+
+    let text = texts.map(x => x.trim()).join(` `).trim().toLowerCase()
+    return text.includes(filter)
   }
 
   let win = DOM.el(`#Msg-content-${id}`)
