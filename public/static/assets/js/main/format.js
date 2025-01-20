@@ -146,8 +146,8 @@ App.format_chars = (text) => {
   action(App.char_regex_1(`*`, 2), App.to_bold)
   action(App.char_regex_1(`*`), App.to_bold)
 
-  action(App.char_regex_1(`_`, 2), App.to_bold)
-  action(App.char_regex_1(`_`), App.to_bold)
+  action(App.char_regex_2(`_`, 2), App.to_bold)
+  action(App.char_regex_2(`_`), App.to_bold)
 
   return text
 }
