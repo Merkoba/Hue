@@ -106,6 +106,48 @@ module.exports = (db_manager, config, sconfig, utilz) => {
       `password`,
     ]
 
+    view.imports = {}
+
+    function import_string(what, manual = []) {
+      let files = [...manual]
+
+      walkdir(path.join(__dirname, `../../public/static/assets/js/${what}`), (file) => {
+        if (!file.endsWith(`.js`)) {
+          return
+        }
+
+        let name = file.split(`/`).pop()
+
+        if (files.includes(name)) {
+          return
+        }
+
+        files.push(name)
+      })
+
+      let js_string = ``
+
+      for (let name of files) {
+        js_string += `<script src="/static/assets/js/${what}/${name}"></script>\n`
+      }
+
+      view.imports[`js_${what}`] = js_string.trim()
+    }
+
+    if (sconfig.bundle_js_libs) {
+      view.imports.js_libs = `<script src="/static/assets/js/build/libs.bundle.js"></script>`
+    }
+    else {
+      import_string(`libs`)
+    }
+
+    if (sconfig.bundle_js_main) {
+      view.imports.js_main = `<script src="/static/assets/js/build/main.bundle.js"></script>`
+    }
+    else {
+      import_string(`main`, [`init.js`])
+    }
+
     view_mtime = get_view_mtime()
     config_mtime = config.mtime
     utilz.loginfo(`View built`)
