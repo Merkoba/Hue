@@ -308,8 +308,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   // Check captcha and run a callback
   function check_captcha(req, res, callback) {
     let recaptcha_response = req.body[`g-recaptcha-response`]
-    let remote_ip =
-      req.headers[`x-forwarded-for`] || req.connection.remoteAddress
+    let remote_ip = req.headers[`x-forwarded-for`] || req.connection.remoteAddress
 
     if (
       recaptcha_response === undefined ||
