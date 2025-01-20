@@ -255,11 +255,6 @@ html {
 	position: relative;
 }
 
-#media_image_error {
-	display: none;
-	font-size: 1.1rem;
-}
-
 .media_main_container {
 	height: 50%;
 	width: 100%;
@@ -813,6 +808,13 @@ input[type=checkbox] {
 	height: 1rem;
 }
 
+#media_image_loading,
+#modal_image_loading,
+#view_image_loading {
+	font-size: 1.1rem;
+}
+
+#media_image_error,
 #modal_image_error,
 #view_image_error {
 	font-size: 1.1rem;
