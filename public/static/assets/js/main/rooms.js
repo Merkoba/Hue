@@ -76,7 +76,8 @@ App.update_roomlist = (data) => {
     })
 
     if (!topic) {
-      DOM.hide(`.roomlist_topic`, item)
+      let topic = DOM.el(`.roomlist_topic`, item)
+      DOM.hide(topic)
     }
 
     let icon = DOM.el(`.roomlist_icon`, item)

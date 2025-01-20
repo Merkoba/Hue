@@ -372,7 +372,8 @@ App.push_whisper = (message, on_click, read, data) => {
       })
     }
     else {
-      DOM.hide(DOM.el(`.profilepic`, item))
+      let pic = DOM.el(`.profilepic`, item)
+      DOM.hide(pic)
     }
   }
   else {
