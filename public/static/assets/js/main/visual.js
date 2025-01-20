@@ -5,7 +5,7 @@ App.apply_separator = (el, cls) => {
   }
 
   let elems = Array.from(el.children).filter(it => {
-    return it.style.display !== `none` && !it.classList.contains(`nodisplay`)
+    return !DOM.is_hidden(it)
   })
 
   for (let i = 0; i < elems.length; i++) {
@@ -103,7 +103,7 @@ App.flash_info = (title, text) => {
   title_el.textContent = title
   let icon_el = DOM.el(`#flash_info_title_icon`)
   jdenticon.update(icon_el, title)
-  el.style.display = `flex`
+  DOM.show(el)
   App.flash_info_debouncer.call()
 }
 

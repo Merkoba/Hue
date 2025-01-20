@@ -1634,17 +1634,17 @@ App.handle_delete_messages = (id, user_id) => {
   DOM.hide(`#delete_messages_below`)
 
   if (num > 1) {
-    DOM.el(`#delete_messages_group`).style.display = `flex`
+    DOM.show(`#delete_messages_group`)
     shown += 1
   }
 
   if (App.is_admin() && index !== 0) {
-    DOM.el(`#delete_messages_above`).style.display = `flex`
+    DOM.show(`#delete_messages_above`)
     shown += 1
   }
 
   if (App.is_admin() && index < num_messages - 1) {
-    DOM.el(`#delete_messages_below`).style.display = `flex`
+    DOM.show(`#delete_messages_below`)
     shown += 1
   }
 
@@ -1805,7 +1805,14 @@ App.update_likes = (el, likes) => {
   let c = DOM.el(`.likes_container`, el)
 
   if (likes.length > 0) {
-    c.innerHTML = `<div class='likes_label'>^ Likes:</div><div class='likes_items'></div>`
+    c.innerHTML = ``
+    let label = DOM.create(`div`, `likes_label`)
+    label.textContent = `^ Likes:`
+    c.append(label)
+
+    let items = DOM.create(`div`, `likes_items`)
+    c.append(items)
+
     for (let obj of likes) {
       let pi = App.get_profilepic(obj.user_id)
       let el = DOM.create(`div`, `like_container`)
@@ -1825,7 +1832,7 @@ App.update_likes = (el, likes) => {
       DOM.el(`.likes_items`, c).append(el)
     }
 
-    c.style.display = `flex`
+    DOM.show(c)
   }
   else {
     DOM.hide(c)

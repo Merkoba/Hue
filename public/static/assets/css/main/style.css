@@ -242,6 +242,10 @@ html {
 	flex-grow: 1;
 }
 
+.media_main_container {
+	display: flex;
+}
+
 #media_split {
 	display: flex;
 	flex-direction: column;
@@ -270,7 +274,7 @@ html {
 .media_container {
 	height: calc(100% - 3rem);
 	width: calc(100% - 3rem);
-	display: none;
+	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
@@ -1762,7 +1766,7 @@ pre {
 }
 
 #flash_info {
-	display: none;
+	display: flex;
 	flex-direction: column;
 	position: fixed;
 	top: 50%;
@@ -1970,6 +1974,14 @@ pre {
 	display: none !important;
 }
 
-#image_upload_comment_image_feedback {
+.upload_comment_feedback {
 	display: inline;
+}
+
+#show_profile_sync_tv {
+	display: flex;
+}
+
+#delete_messages_group {
+	display: flex;
 }

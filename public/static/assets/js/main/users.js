@@ -649,7 +649,7 @@ App.show_profile = (username, user_id = false) => {
 
   if (user) {
     same_user = user.user_id === App.user_id
-    DOM.el(`#show_profile_details`).style.display = `block`
+    DOM.show(`#show_profile_details`)
     role = App.get_pretty_role_name(user.role)
     bio = user.bio
     username = user.username
@@ -678,8 +678,8 @@ App.show_profile = (username, user_id = false) => {
   }
 
   if (user) {
-    DOM.el(`#show_profile_whisper`).style.display = `block`
-    DOM.el(`#show_profile_sync_tv`).style.display = `flex`
+    DOM.show(`#show_profile_whisper`)
+    DOM.show(`#show_profile_sync_tv`)
   }
   else {
     DOM.hide(`#show_profile_whisper`)

@@ -74,7 +74,7 @@ App.hide_tv = (item = false) => {
       App[`${type}_tv_player_request`] = false
     }
     else {
-      el.style.display = `flex`
+      DOM.show(el)
     }
   }
 }
@@ -292,7 +292,7 @@ App.get_visible_video_frame_id = () => {
   let id = false
 
   for (let item of DOM.els(`.video_frame`)) {
-    if (item.parentElement.style.display !== `none`) {
+    if (!DOM.is_hidden(item.parentElement)) {
       id = item.id
       break
     }
@@ -431,7 +431,7 @@ App.receive_tv_progress = (data) => {
 // Shows the window to add a comment to a video upload
 App.show_tv_upload_comment = (file, type) => {
   DOM.hide(`#tv_upload_comment_video_feedback`)
-  DOM.el(`#tv_upload_comment_video_preview`).style.display = `block`
+  DOM.show(`#tv_upload_comment_video_preview`)
 
   App.tv_upload_comment_file = file
   App.tv_upload_comment_type = type
@@ -495,7 +495,7 @@ App.setup_tv_upload_comment = () => {
 
   DOM.ev(video, `error`, () => {
     DOM.hide(video)
-    DOM.el(`#tv_upload_comment_video_feedback`).style.display = `inline`
+    DOM.show(`#tv_upload_comment_video_feedback`)
   })
 
   DOM.ev(DOM.el(`#tv_upload_comment_change`), `click`, () => {

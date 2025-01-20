@@ -137,7 +137,7 @@ App.num_media_elements_visible = () => {
   let num = 0
 
   for (let el of DOM.els(`#media_split .media_main_container`)) {
-    if (el.style.display !== `none`) {
+    if (!DOM.is_hidden(el)) {
       num += 1
     }
   }
@@ -854,8 +854,8 @@ App.announce_media = (type, data) => {
 // Changes the media visibility based on current state
 App.change_media_visibility = (type, play = false) => {
   if (App.room_state[`${type}_enabled`]) {
-    DOM.el(`#media`).style.display = `flex`
-    DOM.el(`#media_${type}`).style.display = `flex`
+    DOM.show(DOM.el(`#media`))
+    DOM.show(DOM.el(`#media_${type}`))
 
     if (App.first_media_change && App.started) {
       App.change_media({type, force: true, current_source: App[`${type}_locked`], play})

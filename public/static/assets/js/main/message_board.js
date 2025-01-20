@@ -107,9 +107,9 @@ App.do_message_board_edit = (send = true) => {
   let id = DOM.dataset(post, `id`)
   let message = edit_area.value.trim()
 
-  content.style.display = `flex`
+  DOM.show(content)
   DOM.hide(edit_area)
-  btns.style.display = `flex`
+  DOM.show(btns)
   DOM.hide(edit_btns)
   App.editing_message_board = false
 
@@ -179,7 +179,7 @@ App.add_post_to_message_board = (data, edited) => {
     if (first_url && App.utilz.is_image(first_url)) {
       let image = DOM.el(`.message_board_image`, post)
       image.src = first_url
-      image.style.display = `block`
+      DOM.show(image)
 
       DOM.ev(image, `error`, () => {
         image.remove()
@@ -189,7 +189,7 @@ App.add_post_to_message_board = (data, edited) => {
     if (data.link_image) {
       let link_image = DOM.el(`.message_board_link_image`, post)
       link_image.src = data.link_image
-      link_image.style.display = `block`
+      DOM.show(link_image)
 
       DOM.ev(link_image, `error`, () => {
         link_image.remove()
@@ -200,13 +200,13 @@ App.add_post_to_message_board = (data, edited) => {
   if (data.link_title) {
     let link_title = DOM.el(`.message_board_link_title`, post)
     link_title.textContent = data.link_title
-    link_title.style.display = `block`
+    DOM.show(link_title)
   }
 
   if (data.link_description) {
     let link_description = DOM.el(`.message_board_link_description`, post)
     link_description.textContent = data.link_description
-    link_description.style.display = `block`
+    DOM.show(link_description)
   }
 
   let gets = App.getcode(data.id)
@@ -221,7 +221,7 @@ App.add_post_to_message_board = (data, edited) => {
   let btns = DOM.el(`.message_board_btns`, post)
 
   if (data.user_id === App.user_id) {
-    btns.style.display = `flex`
+    DOM.show(btns)
   }
   else {
     DOM.hide(`.message_board_edit`, btns)
@@ -486,8 +486,7 @@ App.edit_message_board_post = (post) => {
   let text = DOM.dataset(post, `original_message`)
 
   DOM.hide(content)
-
-  edit_area.style.display = `block`
+  DOM.show(edit_area)
   edit_area.value = text
   edit_area.focus()
 
@@ -496,7 +495,7 @@ App.edit_message_board_post = (post) => {
   })
 
   DOM.hide(btns)
-  edit_btns.style.display = `flex`
+  DOM.show(edit_btns)
   App.editing_message_board_post = post
   App.editing_message_board = true
 }

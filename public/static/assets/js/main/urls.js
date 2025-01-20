@@ -126,21 +126,21 @@ App.setup_drag_events = () => {
 // Changes button visibility based on url
 App.check_handle_url_options = (text) => {
   if (text && text.length < App.config.max_input_length) {
-    DOM.el(`#handle_url_chat`).style.display = `inline-block`
+    DOM.show(`#handle_url_chat`)
   }
   else {
     DOM.hide(`#handle_url_chat`)
   }
 
   if (App.change_image_source(text, true)) {
-    DOM.el(`#handle_url_image`).style.display = `inline-block`
+    DOM.show(`#handle_url_image`)
   }
   else {
     DOM.hide(`#handle_url_image`)
   }
 
   if (App.change_tv_source(text, true)) {
-    DOM.el(`#handle_url_tv`).style.display = `inline-block`
+    DOM.show(`#handle_url_tv`)
   }
   else {
     DOM.hide(`#handle_url_tv`)
@@ -182,7 +182,7 @@ App.setup_open_url = () => {
 // Shows the Open URL menu
 // This is used to show actions for links and media
 App.open_url_menu = (data) => {
-  if (data !== App[`loaded_${data.media_type}`] || !App.room_state[`${data.media_type}_enabled`]) {
+  if ((data !== App[`loaded_${data.media_type}`]) || !App.room_state[`${data.media_type}_enabled`]) {
     DOM.el(`#open_url_menu_load`).textContent = `Load`
   }
   else {
@@ -190,7 +190,7 @@ App.open_url_menu = (data) => {
   }
 
   if (App[`change_${data.media_type}_source`](data.source, true)) {
-    DOM.el(`#open_url_menu_link`).style.display = `inline-block`
+    DOM.show(`#open_url_menu_link`)
   }
   else {
     DOM.hide(`#open_url_menu_link`)
