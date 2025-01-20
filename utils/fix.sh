@@ -6,3 +6,4 @@ npm run --silent fix server/sockets/modules/*.js
 npm run --silent fix server/db/*.js
 npm run --silent fix server/db/modules/*.js
 npm run --silent fix utils/*.js
+npm run --silent fix server/routes/*.js

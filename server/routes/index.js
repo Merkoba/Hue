@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 module.exports = (db_manager, config, sconfig, utilz) => {
   // Initial declarations
   const fs = require(`fs`)
@@ -17,7 +19,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   build_view()
   start_view_check()
 
-  function build_view () {
+  function build_view() {
     for (let key of Object.keys(view)) {
       delete view[key]
     }
@@ -39,7 +41,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
     // Get the template file names
     const template_files = fs.readdirSync(
-      path.join(__dirname, `../views/main/templates`)
+      path.join(__dirname, `../views/main/templates`),
     )
 
     // Get all the templates html
@@ -50,7 +52,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
       const template_path = path.join(
         __dirname,
-        `../views/main/templates/${file}`
+        `../views/main/templates/${file}`,
       )
 
       templates_html += ejs.compile(fs.readFileSync(template_path, `utf8`), {
@@ -83,12 +85,12 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     const compiled_body_html_template = ejs.compile(
       fs.readFileSync(body_html_path, `utf8`), {
         filename: body_html_path,
-      }
+      },
     )
 
     view.body_html = compiled_body_html_template({
       templates: templates_html,
-      svg: svg_templates
+      svg: svg_templates,
     })
 
     // Reserved usernames
@@ -109,7 +111,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     utilz.loginfo(`View built`)
   }
 
-  function walkdir (dir, callback) {
+  function walkdir(dir, callback) {
     for (let f of fs.readdirSync(dir)) {
       let dirPath = path.join(dir, f)
       let isDirectory = fs.statSync(dirPath).isDirectory()
@@ -118,7 +120,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     }
   }
 
-  function get_view_mtime () {
+  function get_view_mtime() {
     let mtime = ``
 
     walkdir(path.join(__dirname, `../views/main`), (file) => {
@@ -128,7 +130,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     return mtime
   }
 
-  function start_view_check () {
+  function start_view_check() {
     setInterval(() => {
       if (get_view_mtime() !== view_mtime || config.mtime !== config_mtime) {
         build_view()
@@ -137,7 +139,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   }
 
   // Checks if a URL length exceeds the limits
-  function check_url (req, res, next) {
+  function check_url(req, res, next) {
     if (req.originalUrl.length > config.max_url_length) {
       return
     }
@@ -157,7 +159,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   // Checks if the user is logged in
   // If they're logged in they receive a jwt token
   // If not, they're redirected to the login page
-  function require_login (req, res, next) {
+  function require_login(req, res, next) {
     let fromurl = encodeURIComponent(req.originalUrl)
 
     if (req.session.user_id === undefined) {
@@ -165,7 +167,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     }
     else {
       db_manager
-        .get_user([`id`, req.session.user_id], { password_date: 1 })
+        .get_user([`id`, req.session.user_id], {password_date: 1})
         .then((user) => {
           if (!user || req.session.password_date !== user.password_date) {
             req.session.destroy(() => {})
@@ -175,7 +177,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
             jwt.sign(
               {
                 exp: Math.floor(Date.now() + sconfig.jwt_expiration),
-                data: { id: req.session.user_id },
+                data: {id: req.session.user_id},
               },
               sconfig.jwt_secret,
               (err, token) => {
@@ -183,7 +185,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
                   req.jwt_token = token
                   next()
                 }
-              }
+              },
             )
           }
         })
@@ -240,33 +242,34 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   })
 
   // Do the login check
-  function do_login (req, res, next) {
+  function do_login(req, res, next) {
     let username = req.body.username
     let password = req.body.password
     let fromurl = decodeURIComponent(req.body.fromurl)
 
-    db_manager.check_password(username, password, { password_date: true })
-    .then((ans) => {
-      if (ans.valid) {
-        req.session.user_id = ans.user.id
-        req.session.password_date = ans.user.password_date
+    db_manager.check_password(username, password, {password_date: true})
+      .then((ans) => {
+        if (ans.valid) {
+          req.session.user_id = ans.user.id
+          req.session.password_date = ans.user.password_date
 
-        if (fromurl === undefined || fromurl === `` || fromurl === `/login`) {
-          res.redirect(`/`)
+          if (fromurl === undefined || fromurl === `` || fromurl === `/login`) {
+            res.redirect(`/`)
+          }
+          else {
+            res.redirect(fromurl)
+          }
         }
         else {
-          res.redirect(fromurl)
+          req.session.destroy(() => {})
+          let m = encodeURIComponent(`Wrong username or password`)
+          let form_username = encodeURIComponent(username)
+          res.redirect(`/login?message=${m}&form_username=${form_username}`)
         }
-      } else {
-        req.session.destroy(() => {})
-        let m = encodeURIComponent(`Wrong username or password`)
-        let form_username = encodeURIComponent(username)
-        res.redirect(`/login?message=${m}&form_username=${form_username}`)
-      }
-    })
-    .catch((err) => {
-      console.error(err)
-    })
+      })
+      .catch((err) => {
+        console.error(err)
+      })
   }
 
   // Register GET
@@ -303,7 +306,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   })
 
   // Check captcha and run a callback
-  function check_captcha (req, res, callback) {
+  function check_captcha(req, res, callback) {
     let recaptcha_response = req.body[`g-recaptcha-response`]
     let remote_ip =
       req.headers[`x-forwarded-for`] || req.connection.remoteAddress
@@ -325,35 +328,35 @@ module.exports = (db_manager, config, sconfig, utilz) => {
         "Content-Type": `application/x-www-form-urlencoded; charset=utf-8`,
       },
     })
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.success) {
-        callback()
-      }
-      else {
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          callback()
+        }
+        else {
+          let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
+          res.redirect(`/message?message=${m}`)
+        }
+      })
+      .catch((err) => {
         let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
         res.redirect(`/message?message=${m}`)
-      }
-    })
-    .catch((err) => {
-      let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
-      res.redirect(`/message?message=${m}`)
-      console.error(err)
-    })
+        console.error(err)
+      })
   }
 
   // Helper function
-  function already_exists (res, username) {
+  function already_exists(res, username) {
     let m = encodeURIComponent(`Username already exists`)
     let form_username = encodeURIComponent(username)
 
     res.redirect(
-      `/register?message=${m}&form_username=${form_username}`
+      `/register?message=${m}&form_username=${form_username}`,
     )
   }
 
   // Complete registration
-  function do_register (req, res, next) {
+  function do_register(req, res, next) {
     let username = req.body.username.trim()
     let password = req.body.password.trim()
     let code = req.body.code
@@ -396,7 +399,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     if (!ok) {
       const codes_path = path.join(
         __dirname,
-        `../../config/codes.json`
+        `../../config/codes.json`,
       )
 
       if (fs.existsSync(codes_path)) {
@@ -422,14 +425,14 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
     db_manager
       .get_user(
-        [`username`, username], { username: 1 }
+        [`username`, username], {username: 1},
       )
       .then((user) => {
         if (!user) {
           db_manager
             .create_user({
-              username: username,
-              password: password
+              username,
+              password,
             })
             .then((ans) => {
               res.redirect(`/login`)
@@ -457,9 +460,9 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   })
 
   // Logs out the user
-  router.get("/logout", (req, res, next) => {
+  router.get(`/logout`, (req, res, next) => {
     req.session.destroy(() => {})
-    res.redirect("/login")
+    res.redirect(`/login`)
   })
 
   // Enter root
@@ -474,7 +477,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   router.get(`/:id(\\w+)`, [check_url, require_login], (
     req,
     res,
-    next
+    next,
   ) => {
     view.vars.room_id = req.params.id.substr(0, sconfig.max_room_id_length)
     view.vars.user_id = req.session.user_id
