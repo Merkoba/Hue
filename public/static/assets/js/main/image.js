@@ -23,6 +23,7 @@ App.current_image = () => {
 // Loads an image with a specified item
 App.show_image = (force = false) => {
   let item = App.loaded_image
+  DOM.show(`#media_image_loading`)
   DOM.hide(`#media_image_error`)
 
   if (force || DOM.el(`#media_image_frame`).src !== item.source) {
@@ -353,6 +354,7 @@ App.start_image_events = () => {
 
   DOM.ev(DOM.el(`#media_image_frame`), `error`, () => {
     DOM.hide(`#media_image_frame`)
+    DOM.hide(`#media_image_loading`)
     DOM.show(`#media_image_error`)
     App.apply_media_info(`image`)
   })
@@ -364,6 +366,7 @@ App.start_image_events = () => {
 // This runs after an image successfully loads
 App.after_image_load = (ok = true) => {
   DOM.show(`#media_image_frame`)
+  DOM.hide(`#media_image_loading`)
   App.apply_media_info(`image`)
   App.show_image_loaded()
 
