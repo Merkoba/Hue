@@ -1515,13 +1515,13 @@ pre {
 }
 
 .message_board_edit_area {
-	display: none;
+	display: flex;
 	width: 100%;
 	text-align: center;
 }
 
 .message_board_edit_buttons {
-	display: none;
+	display: flex;
 }
 
 .expanded_image {
