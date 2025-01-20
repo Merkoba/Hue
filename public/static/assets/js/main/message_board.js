@@ -224,7 +224,8 @@ App.add_post_to_message_board = (data, edited) => {
     DOM.show(btns)
   }
   else {
-    DOM.hide(`.message_board_edit`, btns)
+    let edit = DOM.el(`.message_board_edit`, btns)
+    DOM.hide(edit)
   }
 
   if (!edited) {
