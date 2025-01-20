@@ -33,7 +33,7 @@ App.show_main_menu = () => {
 // Configure main menu based on role
 App.config_main_menu = () => {
   if (App.is_admin_or_op()) {
-    DOM.hide(`#main_menu_room_config`)
+    DOM.show(`#main_menu_room_config`)
   }
   else {
     DOM.hide(`#main_menu_room_config`)
