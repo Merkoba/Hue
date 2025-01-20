@@ -65,7 +65,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
     // Get all the svg html
 
-    let svg_templates = `<div id='svg_templates' class='nodisplay'>`
+    let svg_templates = `<div id='svg_templates' class='hidden'>`
 
     for (let file of svg_files) {
       let h = fs.readFileSync(path.join(svg_path, file), `utf8`).trim()

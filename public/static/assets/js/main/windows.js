@@ -951,7 +951,7 @@ App.get_first_visible_modal_item = (id) => {
   let items = DOM.els(`#${id} .modal_item`)
 
   for (let item of items) {
-    if (!item.classList.contains(`nodisplay`)) {
+    if (!DOM.is_hidden(item)) {
       return item
     }
   }

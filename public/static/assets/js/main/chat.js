@@ -122,7 +122,7 @@ App.make_chat_message = (args = {}) => {
     let image = DOM.el(`.image_preview_image`, fmessage)
 
     if (!image_preview_text) {
-      text.classList.add(`nodisplay`)
+      DOM.hide(text)
       image.classList.add(`image_preview_margin`)
     }
     else if (preview_text_class) {
@@ -280,7 +280,7 @@ App.make_announcement_message = (args = {}) => {
   let top_clasees = `chat_message_top announcement_top`
 
   if (!is_media) {
-    top_clasees += ` nodisplay`
+    top_clasees += ` hidden`
   }
 
   let fmessage = DOM.create(`div`, `message announcement message_unit unit_data_container`)
@@ -603,7 +603,7 @@ App.start_reply = (target) => {
 App.show_reply = () => {
   App.hide_edit()
   DOM.el(`#input_reply_profilepic`).src = App.get_profilepic(App.reply_user_id)
-  DOM.el(`#input_reply_container`).classList.remove(`nodisplay`)
+  DOM.show(`#input_reply_container`)
   App.reply_active = true
   App.focus_input()
 }
@@ -616,7 +616,7 @@ App.cancel_reply = () => {
 
 // Hide the reply info
 App.hide_reply = () => {
-  DOM.el(`#input_reply_container`).classList.add(`nodisplay`)
+  DOM.hide(`#input_reply_container`)
   App.reply_active = false
   App.check_footer_expand()
   App.update_input_placeholder()
@@ -700,13 +700,13 @@ App.start_edit = (unit) => {
 // Show edit
 App.show_edit = () => {
   App.hide_reply()
-  DOM.el(`#input_edit_container`).classList.remove(`nodisplay`)
+  DOM.show(`#input_edit_container`)
   App.edit_active = true
 }
 
 // Hide edit
 App.hide_edit = () => {
-  DOM.el(`#input_edit_container`).classList.add(`nodisplay`)
+  DOM.hide(`#input_edit_container`)
   App.check_footer_expand()
   App.edit_active = false
 }
@@ -1128,13 +1128,13 @@ App.make_link_preview = (args = {}) => {
   let classes = `link_preview`
   let image_classes = args.image ?
     `link_preview_image` :
-    `nodisplay`
+    `hidden`
   let title_classes = args.title ?
     `link_preview_title` :
-    `nodisplay`
+    `hidden`
   let description_classes = args.description ?
     `link_preview_description` :
-    `nodisplay`
+    `hidden`
 
   let text_content_classes = `link_preview_text_content`
 
@@ -1143,7 +1143,7 @@ App.make_link_preview = (args = {}) => {
   }
 
   if (!args.title && !args.description) {
-    text_content_classes = `nodisplay`
+    text_content_classes = `hidden`
   }
 
   ans.link_preview = App.template_link_preview({
@@ -1716,10 +1716,10 @@ App.deleted_messages_below = (data) => {
 // Check show chat
 App.check_show_chat = () => {
   if (App.get_setting(`show_chat`)) {
-    DOM.el(`#chat_main`).classList.remove(`nodisplay`)
+    DOM.show(`#chat_main`)
   }
   else {
-    DOM.el(`#chat_main`).classList.add(`nodisplay`)
+    DOM.hide(`#chat_main`)
   }
 }
 

@@ -2,7 +2,7 @@
 App.setup_radio = () => {
   if (App.config.radios.length === 0) {
     App.radio_disabled = true
-    DOM.el(`#footer_radio_container`).classList.add(`nodisplay`)
+    DOM.hide(`#footer_radio_container`)
     App.horizontal_separator(DOM.el(`#footer_media_items`))
     return
   }
@@ -338,18 +338,18 @@ App.hide_radio = () => {
 
 // Highlight the radio footer
 App.show_radio_icon = () => {
-  DOM.el(`#footer_radio_icon`).classList.remove(`nodisplay`)
+  DOM.show(`#footer_radio_icon`)
 }
 
 // Unhighlight the radio footer
 App.hide_radio_icon = () => {
-  DOM.el(`#footer_radio_icon`).classList.add(`nodisplay`)
+  DOM.hide(`#footer_radio_icon`)
 }
 
 // Play first selected radio
 App.play_first_radio = () => {
   for (let station of DOM.els(`.radio_station`)) {
-    if (!station.classList.contains(`nodisplay`)) {
+    if (!DOM.is_hidden(station)) {
       App.play_radio(DOM.dataset(station, `radio`))
       return
     }

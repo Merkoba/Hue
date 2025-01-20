@@ -940,10 +940,6 @@ input[type=checkbox] {
 	min-width: 5.88rem;
 }
 
-.nodisplay {
-	display: none !important;
-}
-
 .invisible {
 	visibility: hidden;
 }

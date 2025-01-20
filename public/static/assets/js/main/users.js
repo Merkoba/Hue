@@ -649,7 +649,7 @@ App.show_profile = (username, user_id = false) => {
 
   if (user) {
     same_user = user.user_id === App.user_id
-    DOM.show(`#show_profile_details`)
+    DOM.el(`#show_profile_details`).style.display = `block`
     role = App.get_pretty_role_name(user.role)
     bio = user.bio
     username = user.username
@@ -671,10 +671,10 @@ App.show_profile = (username, user_id = false) => {
   DOM.el(`#show_profile_profilepic`).src = pi
 
   if (username) {
-    DOM.el(`#show_profile_buttons`).classList.remove(`nodisplay`)
+    DOM.show(`#show_profile_buttons`)
   }
   else {
-    DOM.el(`#show_profile_buttons`).classList.add(`nodisplay`)
+    DOM.hide(`#show_profile_buttons`)
   }
 
   if (user) {
@@ -689,14 +689,14 @@ App.show_profile = (username, user_id = false) => {
   DOM.dataset(DOM.el(`#show_profile_change_role`), `username`, username)
 
   if (username && App.is_admin_or_op() && !same_user) {
-    DOM.el(`#show_profile_op_buttons`).classList.remove(`nodisplay`)
+    DOM.show(`#show_profile_op_buttons`)
   }
   else {
-    DOM.el(`#show_profile_op_buttons`).classList.add(`nodisplay`)
+    DOM.hide(`#show_profile_op_buttons`)
   }
 
   DOM.el(`#show_profile_info`).innerHTML = ``
-  DOM.el(`#show_profile_edit`).classList.add(`nodisplay`)
+  DOM.hide(`#show_profile_edit`)
 
   if (user) {
     let item = DOM.create(`div`)
@@ -707,7 +707,7 @@ App.show_profile = (username, user_id = false) => {
     DOM.el(`#show_profile_info`).append(item)
 
     if (same_user) {
-      DOM.el(`#show_profile_edit`).classList.remove(`nodisplay`)
+      DOM.show(`#show_profile_edit`)
     }
   }
 

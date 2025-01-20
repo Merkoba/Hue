@@ -84,7 +84,7 @@ App.do_modal_filter = (id = false) => {
 
       return match
     }
-    
+
     return it.textContent.toLowerCase().includes(filter)
   }
 
@@ -123,10 +123,10 @@ App.do_modal_filter = (id = false) => {
 
     for (let item of items) {
       if (filtercheck(item)) {
-        item.classList.remove(`nodisplay`)
+        DOM.show(item)
       }
       else {
-        item.classList.add(`nodisplay`)
+        DOM.hide(item.classList)
       }
     }
 
@@ -134,7 +134,7 @@ App.do_modal_filter = (id = false) => {
   }
   else {
     for (let item of items) {
-      item.classList.remove(`nodisplay`)
+      DOM.show(item)
     }
 
     App[`${id}_filtered`] = false
@@ -181,7 +181,7 @@ App.selected_next_el = (reverse = false) => {
 
   for (let el of els) {
     if (waypoint || !App.selected_modal_item) {
-      if (!el.classList.contains(`nodisplay`)) {
+      if (!DOM.is_hidden(el)) {
         return el
       }
     }

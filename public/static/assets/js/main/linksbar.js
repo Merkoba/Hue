@@ -33,10 +33,10 @@ App.check_linksbar = () => {
   let bar = DOM.el(`#linksbar_panel`)
 
   if (App.get_setting(`show_linksbar`)) {
-    bar.classList.remove(`nodisplay`)
+    DOM.show(bar)
   }
   else {
-    bar.classList.add(`nodisplay`)
+    DOM.hide(bar)
   }
 }
 
@@ -67,13 +67,13 @@ App.update_linksbar = () => {
   let click_el = DOM.el(`#linksbar_click`)
 
   if (!item) {
-    image_el.classList.add(`nodisplay`)
-    click_el.classList.add(`nodisplay`)
+    DOM.hide(image_el)
+    DOM.hide(click_el)
     return
   }
 
-  image_el.classList.remove(`nodisplay`)
-  click_el.classList.remove(`nodisplay`)
+  DOM.show(image_el)
+  DOM.show(click_el)
   let nd = App.nice_date(item.date)
   image_el.src = App.get_profilepic(item.user_id)
   image_el.title = `${item.username} | ${nd}`
@@ -83,27 +83,27 @@ App.update_linksbar = () => {
   url_el.textContent = item.url || ``
 
   if (item.url) {
-    url_el.classList.remove(`nodisplay`)
+    DOM.show(url_el)
   }
   else {
-    url_el.classList.add(`nodisplay`)
+    DOM.hide(url_el)
   }
 
   if (item.url) {
-    url_el.classList.remove(`nodisplay`)
+    DOM.show(url_el)
   }
   else {
-    url_el.classList.add(`nodisplay`)
+    DOM.hide(url_el)
   }
 
   let title_el = DOM.el(`#linksbar_title`)
   title_el.textContent = item.title || ``
 
   if (item.title) {
-    title_el.classList.remove(`nodisplay`)
+    DOM.show(title_el)
   }
   else {
-    title_el.classList.add(`nodisplay`)
+    DOM.hide(title_el)
   }
 
   url_el.title = item.url

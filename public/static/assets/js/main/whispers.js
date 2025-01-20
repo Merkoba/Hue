@@ -372,7 +372,7 @@ App.push_whisper = (message, on_click, read, data) => {
       })
     }
     else {
-      DOM.el(`.profilepic`, item).classList.add(`nodisplay`)
+      DOM.hide(DOM.el(`.profilepic`, item))
     }
   }
   else {
@@ -454,12 +454,13 @@ App.make_whisper_user = (user, mode, onclick) => {
 
   if (user.user_id) {
     profilepic.src = App.get_profilepic(user.user_id)
+
     DOM.ev(profilepic, `error`, () => {
       App.fallback_profilepic(profilepic)
     })
   }
   else {
-    profilepic.classList.add(`nodisplay`)
+    DOM.hide(profilepic)
   }
 
   let username_el = DOM.el(`.show_whisper_username`, user_el)
