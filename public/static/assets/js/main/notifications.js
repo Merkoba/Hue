@@ -52,7 +52,7 @@ App.make_info_popup_item = (args = {}) => {
       classes,
     })
   }
-  
+
   return App.template_popup_item({
     icon: args.icon,
     message: args.message,
@@ -229,4 +229,18 @@ App.num_open_info_popups = () => {
   }
 
   return num
+}
+
+// Send a notification to all users
+App.send_notification = (message) => {
+  let max_length = App.config.max_notification_length
+  message = message.slice(0, max_length).trim()
+  App.socket_emit(`send_notification`, {message})
+}
+
+// Show a notification made by an OP
+App.notification_received = (data) => {
+  App.show_room_notification(
+    data.username, data.message,
+  )
 }

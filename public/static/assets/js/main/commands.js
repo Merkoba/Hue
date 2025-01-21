@@ -648,6 +648,13 @@ App.commands = {
     },
     description: `Toggle limited`,
   },
+  notify: {
+    aliases: [`notification`],
+    action: (arg, ans) => {
+      App.send_notification(arg)
+    },
+    description: `Toggle limited`,
+  },
 }
 
 // Commands reserved to superusers

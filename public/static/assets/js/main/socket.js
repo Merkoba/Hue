@@ -247,6 +247,9 @@ App.server_update_events = {
   admin_activity_cleared: (data) => {
     App.admin_activity_cleared()
   },
+  notification: (data) => {
+    App.notification_received(data)
+  },
 }
 
 // Centralized function to initiate a socket emit to the server
