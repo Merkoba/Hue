@@ -262,13 +262,13 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     let username = req.body.username
     let password = req.body.password
 
-    if (username.length === 0 || username.length > config.max_max_username_length) {
+    if ((username.length === 0) || (username.length > config.max_max_username_length)) {
       return
     }
 
     if (
-      password.length === 0 ||
-      password.length > config.max_max_password_length
+      (password.length === 0) ||
+      (password.length > config.max_max_password_length)
     ) {
       return
     }
