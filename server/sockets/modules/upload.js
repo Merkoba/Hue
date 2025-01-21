@@ -3,17 +3,17 @@ module.exports = (App) => {
   // Sends uploaded files to respective functions
   App.handler.public.slice_upload = async (socket, data) => {
     if (!App.handler.check_limited(socket)) {
-      await App.handler.add_spam(socket, App.vars.limited_spam)
+      App.handler.add_spam(socket, App.vars.limited_spam)
       return
     }
 
     if (!data || !data.data || (data.data.length > App.config.upload_slice_size)) {
-      await App.handler.add_spam(socket)
+      App.handler.add_spam(socket)
       return
     }
 
     if (!data.name || !data.action || !data.date) {
-      await App.handler.add_spam(socket)
+      App.handler.add_spam(socket)
       return
     }
 
@@ -21,7 +21,7 @@ module.exports = (App) => {
     let file = App.vars.files[key]
 
     if (!file) {
-      let spam_ans = await App.handler.add_spam(socket)
+      let spam_ans = App.handler.add_spam(socket)
 
       if (!spam_ans) {
         return
@@ -103,7 +103,7 @@ module.exports = (App) => {
 
     if (file.spam_charge > App.sconfig.upload_spam_charge) {
       let rounds = parseInt(file.spam_charge / App.sconfig.upload_spam_charge)
-      let spam_ans = await App.handler.add_spam(socket, rounds)
+      let spam_ans = App.handler.add_spam(socket, rounds)
 
       if (!spam_ans) {
         return

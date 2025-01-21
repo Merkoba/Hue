@@ -25,7 +25,7 @@ module.exports = (App) => {
   App.vars.anti_spam = App.handler.start_anti_spam()
 
   // Start socker handler
-  App.io.on(`connection`, async (socket) => {
+  App.io.on(`connection`, (socket) => {
     if (!socket) {
       return
     }
@@ -36,7 +36,7 @@ module.exports = (App) => {
 
     try {
       socket.hue_ip_address = App.handler.get_ip_address(socket)
-      let spam_ans = await App.handler.add_spam(socket)
+      let spam_ans = App.handler.add_spam(socket)
 
       if (!spam_ans) {
         return
@@ -63,7 +63,7 @@ module.exports = (App) => {
         let m = data.server_method_name
 
         if (!App.vars.dont_add_spam.includes(m)) {
-          let spam_ans = await App.handler.add_spam(socket)
+          let spam_ans = App.handler.add_spam(socket)
 
           if (!spam_ans) {
             return

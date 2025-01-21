@@ -2,7 +2,7 @@ module.exports = (App) => {
   // Handles chat messages
   App.handler.public.sendchat = async (socket, data) => {
     if (!App.handler.check_limited(socket)) {
-      await App.handler.add_spam(socket, App.vars.limited_spam)
+      App.handler.add_spam(socket, App.vars.limited_spam)
       return
     }
 

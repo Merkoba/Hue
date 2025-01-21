@@ -31,31 +31,29 @@ module.exports = (App) => {
   }
 
   // Add spam points and check if user is banned
-  App.handler.add_spam = async (socket, amount = 1) => {
-    return new Promise((resolve, reject) => {
-      if (!App.handler.anti_spam_users[socket.hue_ip_address]) {
-        App.handler.anti_spam_users[socket.hue_ip_address] = {
-          level: 0,
-          banned: false,
-          banned_until: 0,
-        }
+  App.handler.add_spam = (socket, amount = 1) => {
+    if (!App.handler.anti_spam_users[socket.hue_ip_address]) {
+      App.handler.anti_spam_users[socket.hue_ip_address] = {
+        level: 0,
+        banned: false,
+        banned_until: 0,
       }
+    }
 
-      let user = App.handler.anti_spam_users[socket.hue_ip_address]
+    let user = App.handler.anti_spam_users[socket.hue_ip_address]
 
-      if (user.banned) {
-        App.handler.anti_spam_kick(socket)
-        return resolve(`already_banned`)
-      }
+    if (user.banned) {
+      App.handler.anti_spam_kick(socket)
+      return `already_banned`
+    }
 
-      user.level += amount
+    user.level += amount
 
-      if (user.level >= App.sconfig.anti_spam_max_limit) {
-        App.handler.anti_spam_ban(socket)
-      }
+    if (user.level >= App.sconfig.anti_spam_max_limit) {
+      App.handler.anti_spam_ban(socket)
+    }
 
-      return resolve(`ok`)
-    })
+    return `ok`
   }
 
   // Kick a user
@@ -86,7 +84,7 @@ module.exports = (App) => {
     if (user) {
       return user.level
     }
-    
+
     return 0
   }
 }

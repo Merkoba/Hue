@@ -201,39 +201,39 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   // Checks if the user is logged in
   // If they're logged in they receive a jwt token
   // If not, they're redirected to the login page
-  function require_login(req, res, next) {
+  async function require_login(req, res, next) {
     let fromurl = encodeURIComponent(req.originalUrl)
 
     if (req.session.user_id === undefined) {
       res.redirect(`/login?fromurl=${fromurl}`)
     }
     else {
-      db_manager
-        .get_user([`id`, req.session.user_id], {password_date: 1})
-        .then((user) => {
-          if (!user || req.session.password_date !== user.password_date) {
-            req.session.destroy(() => {})
-            res.redirect(`/login?fromurl=${fromurl}`)
-          }
-          else {
-            jwt.sign(
-              {
-                exp: Math.floor(Date.now() + sconfig.jwt_expiration),
-                data: {id: req.session.user_id},
-              },
-              sconfig.jwt_secret,
-              (err, token) => {
-                if (!err) {
-                  req.jwt_token = token
-                  next()
-                }
-              },
-            )
-          }
-        })
-        .catch((err) => {
-          console.error(err)
-        })
+      try {
+        let user = await db_manager.get_user([`id`, req.session.user_id], {password_date: 1})
+
+        if (!user || req.session.password_date !== user.password_date) {
+          req.session.destroy(() => {})
+          res.redirect(`/login?fromurl=${fromurl}`)
+        }
+        else {
+          jwt.sign(
+            {
+              exp: Math.floor(Date.now() + sconfig.jwt_expiration),
+              data: {id: req.session.user_id},
+            },
+            sconfig.jwt_secret,
+            (err, token) => {
+              if (!err) {
+                req.jwt_token = token
+                next()
+              }
+            },
+          )
+        }
+      }
+      catch (err) {
+        console.error(err)
+      }
     }
   }
 
@@ -284,34 +284,35 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   })
 
   // Do the login check
-  function do_login(req, res, next) {
+  async function do_login(req, res, next) {
     let username = req.body.username
     let password = req.body.password
     let fromurl = decodeURIComponent(req.body.fromurl)
 
-    db_manager.check_password(username, password, {password_date: true})
-      .then((ans) => {
-        if (ans.valid) {
-          req.session.user_id = ans.user.id
-          req.session.password_date = ans.user.password_date
+    try {
+      let ans = await db_manager.check_password(username, password, {password_date: true})
 
-          if (fromurl === undefined || fromurl === `` || fromurl === `/login`) {
-            res.redirect(`/`)
-          }
-          else {
-            res.redirect(fromurl)
-          }
+      if (ans.valid) {
+        req.session.user_id = ans.user.id
+        req.session.password_date = ans.user.password_date
+
+        if ((fromurl === undefined) || (fromurl === ``) || (fromurl === `/login`)) {
+          res.redirect(`/`)
         }
         else {
-          req.session.destroy(() => {})
-          let m = encodeURIComponent(`Wrong username or password`)
-          let form_username = encodeURIComponent(username)
-          res.redirect(`/login?message=${m}&form_username=${form_username}`)
+          res.redirect(fromurl)
         }
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+      }
+      else {
+        req.session.destroy(() => {})
+        let m = encodeURIComponent(`Wrong username or password`)
+        let form_username = encodeURIComponent(username)
+        res.redirect(`/login?message=${m}&form_username=${form_username}`)
+      }
+    }
+    catch (err) {
+      console.error(err)
+    }
   }
 
   // Register GET
@@ -348,42 +349,44 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   })
 
   // Check captcha and run a callback
-  function check_captcha(req, res, callback) {
+  async function check_captcha(req, res, callback) {
     let recaptcha_response = req.body[`g-recaptcha-response`]
     let remote_ip = req.headers[`x-forwarded-for`] || req.connection.remoteAddress
 
     if (
-      recaptcha_response === undefined ||
-      recaptcha_response === `` ||
-      recaptcha_response === null
+      (recaptcha_response === undefined) ||
+      (recaptcha_response === ``) ||
+      (recaptcha_response === null)
     ) {
       return
     }
 
     console.info(`Fetching Recaptcha...`)
 
-    fetch(`https://www.google.com/recaptcha/api/siteverify`, {
-      method: `POST`,
-      body: `secret=${sconfig.recaptcha_secret_key}&response=${recaptcha_response}&remoteip=${remote_ip}`,
-      headers: {
-        "Content-Type": `application/x-www-form-urlencoded; charset=utf-8`,
-      },
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.success) {
-          callback()
-        }
-        else {
-          let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
-          res.redirect(`/message?message=${m}`)
-        }
+    try {
+      let res = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+        method: `POST`,
+        body: `secret=${sconfig.recaptcha_secret_key}&response=${recaptcha_response}&remoteip=${remote_ip}`,
+        headers: {
+          "Content-Type": `application/x-www-form-urlencoded; charset=utf-8`,
+        },
       })
-      .catch((err) => {
+
+      let json = await res.json()
+
+      if (json.success) {
+        callback()
+      }
+      else {
         let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
         res.redirect(`/message?message=${m}`)
-        console.error(err)
-      })
+      }
+    }
+    catch (err) {
+      let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
+      res.redirect(`/message?message=${m}`)
+      console.error(err)
+    }
   }
 
   // Helper function
@@ -397,7 +400,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   }
 
   // Complete registration
-  function do_register(req, res, next) {
+  async function do_register(req, res, next) {
     let username = req.body.username.trim()
     let password = req.body.password.trim()
     let code = req.body.code
@@ -464,32 +467,20 @@ module.exports = (db_manager, config, sconfig, utilz) => {
       return
     }
 
-    db_manager
-      .get_user(
-        [`username`, username], {username: 1},
-      )
-      .then((user) => {
-        if (!user) {
-          db_manager
-            .create_user({
-              username,
-              password,
-            })
-            .then((ans) => {
-              res.redirect(`/login`)
-              return
-            })
-            .catch((err) => {
-              console.error(err)
-            })
-        }
-        else {
-          already_exists(res, username)
-        }
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+    try {
+      let user = await db_manager.get_user([`username`, username], {username: 1})
+
+      if (!user) {
+        await db_manager.create_user({username, password})
+        res.redirect(`/login`)
+      }
+      else {
+        already_exists(res, username)
+      }
+    }
+    catch (err) {
+      console.error(err)
+    }
   }
 
   // Shows a page with a message
