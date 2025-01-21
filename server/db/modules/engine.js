@@ -39,6 +39,18 @@ module.exports = (manager, stuff) => {
     }
   }
 
+  // Get a new id
+  function get_id(type) {
+    let ms = Date.now()
+    let sec = parseInt(ms / 1000)
+    let id = stuff.sconfig[`id_format_${type}`]
+
+    id = id.replace(`[ms]`, ms)
+    id = id.replace(`[sec]`, sec)
+    id = id.replace(/\[n\]/g, () => stuff.utilz.get_random_int(0, 9))
+    return id.replace(/\[c\]/g, () => stuff.utilz.get_random_string(1, false, true))
+  }
+
   manager.cache = {}
 
   // Add to memory cache
@@ -99,31 +111,43 @@ module.exports = (manager, stuff) => {
 
   // Find one result
   manager.find_one = async (type, query) => {
-    if (query[0] === `id`) {
-      let path = manager.get_file_path(type, query[1])
-      let obj = await check_file(type, path, query)
-
-      if (obj) {
-        return obj
-      }
-
-      throw new Error(`Nothing found`)
-    }
-    else {
-      let file_names = await stuff.i.fsp.readdir(manager.get_dir_path(type))
-
-      for (let file_name of file_names) {
-        if (file_name.startsWith(`.`)) {
-          continue
-        }
-
-        let path = manager.get_file_path(type, file_name)
+    try {
+      if (query[0] === `id`) {
+        let path = manager.get_file_path(type, query[1])
         let obj = await check_file(type, path, query)
 
         if (obj) {
           return obj
         }
+
+        throw new Error(`Nothing found`)
       }
+      else {
+        let files = await stuff.i.fsp.readdir(manager.get_dir_path(type))
+
+        for (let file of files) {
+          if (file.startsWith(`.`)) {
+            continue
+          }
+
+          let path = manager.get_file_path(type, file)
+
+          try {
+            let obj = await check_file(type, path, query)
+
+            if (obj) {
+              return obj
+            }
+          }
+          catch (err) {
+            // Don't do anything
+          }
+        }
+      }
+    }
+    catch (err) {
+      stuff.logger.log_error(err)
+      throw err
     }
   }
 
@@ -190,7 +214,7 @@ module.exports = (manager, stuff) => {
   // Insert a new file in the proper directory
   manager.insert_one = (type, original) => {
     if (!original.id) {
-      original.id = `${Math.round(new Date() / 1000)}_${stuff.utilz.get_random_string(4)}`
+      original.id = get_id(type)
     }
 
     let path = manager.get_file_path(type, original.id)

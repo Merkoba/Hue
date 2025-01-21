@@ -89,13 +89,20 @@ const Utilz = () => {
   }
 
   // Get a random string of n length
-  utilz.get_random_string = (n) => {
+  utilz.get_random_string = (n, numbers = true, lower = false) => {
     let text = ``
+    let possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`
 
-    let possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`
+    if (numbers) {
+      possible += `0123456789`
+    }
 
     for (let i = 0; i < n; i++) {
       text += possible[utilz.get_random_int(0, possible.length - 1)]
+    }
+
+    if (lower) {
+      text = text.toLowerCase()
     }
 
     return text
