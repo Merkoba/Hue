@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
+files=$(git ls-files -- "*.js")
+files=$(echo $files | tr " " "\n" | grep -v ".bundle." | tr "\n" " ")
+files=$(echo $files | tr " " "\n" | grep -v "/libs/" | tr "\n" " ")
 
-npm run --silent fix public/static/assets/js/main/*.js
-npm run --silent fix public/static/assets/js/libs/utilz.js
-npm run --silent fix server/sockets/modules/*.js
-npm run --silent fix server/db/*.js
-npm run --silent fix server/db/modules/*.js
-npm run --silent fix utils/*.js
-npm run --silent fix server/routes/*.js
+if [ -n "$files" ]; then
+  npm run --silent fix $files
+fi

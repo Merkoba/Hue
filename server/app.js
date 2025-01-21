@@ -6,7 +6,9 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   const rateLimit = require(`express-rate-limit`)
   const RedisStore = require(`connect-redis`)(session)
   const redis = require(`redis`)
-  let redisClient = redis.createClient({ legacyMode: true })
+  let redisClient = redis.createClient({legacyMode: true})
+
+  // eslint-disable-next-line no-console
   redisClient.connect().catch(console.error)
 
   let app = express()
@@ -16,7 +18,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   // Limit to x reqs per y mins
   const limiter = rateLimit({
     windowMs: 10 * 60 * 1000,
-    max: 50
+    max: 50,
   })
 
   // Apply the limiter to these routes
@@ -30,7 +32,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   app.set(`view engine`, `ejs`)
 
   app.use(express.json())
-  app.use(express.urlencoded({ extended: false }))
+  app.use(express.urlencoded({extended: false}))
   app.use(express.static(path.join(__dirname, `../public`)))
 
   utilz.loginfo(`ENV: ${app.get(`env`)}`)
@@ -41,12 +43,12 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
   app.use(
     session({
-      store: new RedisStore({ client: redisClient }),
+      store: new RedisStore({client: redisClient}),
       saveUninitialized: false,
       secret: sconfig.session_secret,
       resave: false,
-      cookie: { maxAge: sconfig.session_cookie_max_age }
-    })
+      cookie: {maxAge: sconfig.session_cookie_max_age},
+    }),
   )
 
   // app.use(session(sess))
