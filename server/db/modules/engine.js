@@ -101,48 +101,28 @@ module.exports = (manager, stuff) => {
   manager.find_one = async (type, query) => {
     if (query[0] === `id`) {
       let path = manager.get_file_path(type, query[1])
+      let obj = await check_file(type, path, query)
 
-      try {
+      if (obj) {
+        return obj
+      }
+
+      throw new Error(`Nothing found`)
+    }
+    else {
+      let file_names = await stuff.i.fsp.readdir(manager.get_dir_path(type))
+
+      for (let file_name of file_names) {
+        if (file_name.startsWith(`.`)) {
+          continue
+        }
+
+        let path = manager.get_file_path(type, file_name)
         let obj = await check_file(type, path, query)
 
         if (obj) {
           return obj
         }
-        else {
-          throw new Error(`Nothing found`)
-        }
-      }
-      catch (err) {
-        throw err
-      }
-    }
-    else {
-      try {
-        let file_names = await stuff.i.fsp.readdir(manager.get_dir_path(type))
-
-        for (let file_name of file_names) {
-          if (file_name.startsWith(`.`)) {
-            continue
-          }
-
-          let path = manager.get_file_path(type, file_name)
-
-          try {
-            let obj = await check_file(type, path, query)
-
-            if (obj) {
-              return obj
-            }
-          }
-          catch (err) {
-            // Do nothing
-          }
-        }
-
-        throw new Error(`Nothing found`)
-      }
-      catch (err) {
-        throw err
       }
     }
   }
@@ -170,38 +150,23 @@ module.exports = (manager, stuff) => {
       let proxy = manager.cache[path].proxy
 
       if (check_file_query(type, proxy, query)) {
-        return(proxy)
+        return proxy
       }
-      else {
-        throw new Error(`Nothing found`)
-      }
+
+      throw new Error(`Nothing found`)
     }
     else {
-      try {
-        let text = await stuff.i.fsp.readFile(path, `utf8`)
-        let original = {}
+      let text = await stuff.i.fsp.readFile(path, `utf8`)
+      let original = JSON.parse(text)
+      let proxy = manager.make_proxy_object(original, path, type)
+      manager.add_to_cache(path, original, proxy)
+      check_version(type, path, proxy)
 
-        try {
-          original = JSON.parse(text)
-        }
-        catch (err) {
-          throw err
-        }
-
-        let proxy = manager.make_proxy_object(original, path, type)
-        manager.add_to_cache(path, original, proxy)
-        check_version(type, path, proxy)
-
-        if (check_file_query(type, proxy, query)) {
-          return proxy
-        }
-        else {
-          throw new Error(`Nothing found`)
-        }
+      if (check_file_query(type, proxy, query)) {
+        return proxy
       }
-      catch (err) {
-        throw err
-      }
+
+      throw new Error(`Nothing found`)
     }
   }
 
