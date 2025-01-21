@@ -141,7 +141,9 @@ App.setup_draw_image = () => {
   })
 
   DOM.ev(DOM.el(`#draw_image_clear`), `click`, () => {
-    App.needs_confirm(`clear_draw_image_func`)
+    App.show_confirm(`Clear drawing?`, () => {
+      App.clear_draw_image_state()
+    })
   })
 
   DOM.ev(DOM.el(`#draw_image_upload`), `click`, () => {
@@ -430,11 +432,6 @@ App.upload_draw_image = (canvas = `#draw_image_area`, type = `drawing`, name = `
     `image/png`,
     App.config.image_blob_quality,
   )
-}
-
-// Function wrapped in a confirm to be called from the GUI
-App.clear_draw_image_func = () => {
-  App.clear_draw_image_state()
 }
 
 // Performs an undo in the draw image
