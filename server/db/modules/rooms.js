@@ -38,7 +38,7 @@ module.exports = (manager, stuff) => {
     room.public = data.public
 
     try {
-      await manager.insert_one(`rooms`, room)
+      manager.insert_one(`rooms`, room)
       return room
     }
     catch (err) {

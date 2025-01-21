@@ -98,56 +98,53 @@ module.exports = (manager, stuff) => {
   }
 
   // Find one result
-  manager.find_one = (type, query) => {
-    return new Promise((resolve, reject) => {
-      if (query[0] === `id`) {
-        let path = manager.get_file_path(type, query[1])
-        check_file(type, path, query)
-          .then(obj => {
+  manager.find_one = async (type, query) => {
+    if (query[0] === `id`) {
+      let path = manager.get_file_path(type, query[1])
+
+      try {
+        let obj = await check_file(type, path, query)
+
+        if (obj) {
+          return obj
+        }
+        else {
+          throw new Error(`Nothing found`)
+        }
+      }
+      catch (err) {
+        throw err
+      }
+    }
+    else {
+      try {
+        let file_names = await stuff.i.fsp.readdir(manager.get_dir_path(type))
+
+        for (let file_name of file_names) {
+          if (file_name.startsWith(`.`)) {
+            continue
+          }
+
+          let path = manager.get_file_path(type, file_name)
+
+          try {
+            let obj = await check_file(type, path, query)
+
             if (obj) {
-              resolve(obj)
-            }
-            else {
-              reject(`Nothing found`)
-            }
-          })
-          .catch(err => {
-            reject(`Nothing found`)
-          })
-      }
-      else {
-        fs.readdir(manager.get_dir_path(type), async (err, file_names) => {
-          if (err) {
-            stuff.logger.log_error(err)
-            reject(`Nothing found`)
-            return
-          }
-
-          for (let file_name of file_names) {
-            if (file_name.startsWith(`.`)) {
-              continue
-            }
-
-            let path = manager.get_file_path(type, file_name)
-
-            try {
-              let obj = await check_file(type, path, query)
-
-              if (obj) {
-                resolve(obj)
-                return
-              }
-            }
-            catch (err) {
-              // Do nothing
+              return obj
             }
           }
+          catch (err) {
+            // Do nothing
+          }
+        }
 
-          reject(`Nothing found`)
-          return
-        })
+        throw new Error(`Nothing found`)
       }
-    })
+      catch (err) {
+        throw err
+      }
+    }
   }
 
   // Find multiple results based on a list of ids
@@ -168,60 +165,56 @@ module.exports = (manager, stuff) => {
   }
 
   // Check if the file matches
-  function check_file(type, path, query) {
-    return new Promise((resolve, reject) => {
-      if (manager.path_in_cache(path)) {
-        let proxy = manager.cache[path].proxy
+  async function check_file(type, path, query) {
+    if (manager.path_in_cache(path)) {
+      let proxy = manager.cache[path].proxy
 
-        if (check_file_query(type, proxy, query)) {
-          resolve(proxy)
-        }
-        else {
-          reject(`Nothing found`)
-        }
+      if (check_file_query(type, proxy, query)) {
+        return(proxy)
       }
       else {
-        fs.readFile(path, `utf8`, (err, text) => {
-          if (err) {
-            reject(`Nothing found`)
-            return
-          }
-
-          let original = {}
-
-          try {
-            original = JSON.parse(text)
-          }
-          catch (err) {
-            reject(`Nothing found`)
-            return
-          }
-
-          let proxy = manager.make_proxy_object(original, path, type)
-          manager.add_to_cache(path, original, proxy)
-          check_version(type, path, proxy)
-
-          if (check_file_query(type, proxy, query)) {
-            resolve(proxy)
-          }
-          else {
-            reject(`Nothing found`)
-          }
-        })
+        throw new Error(`Nothing found`)
       }
-    })
+    }
+    else {
+      try {
+        let text = await stuff.i.fsp.readFile(path, `utf8`)
+        let original = {}
+
+        try {
+          original = JSON.parse(text)
+        }
+        catch (err) {
+          throw err
+        }
+
+        let proxy = manager.make_proxy_object(original, path, type)
+        manager.add_to_cache(path, original, proxy)
+        check_version(type, path, proxy)
+
+        if (check_file_query(type, proxy, query)) {
+          return proxy
+        }
+        else {
+          throw new Error(`Nothing found`)
+        }
+      }
+      catch (err) {
+        throw err
+      }
+    }
   }
 
   // Check file using the query
   function check_file_query(type, original, query) {
-    if (!query || query.length !== 2 || !query[0] || query[1] === undefined) {
+    if (!query || (query.length !== 2) || !query[0] || (query[1] === undefined)) {
       return
     }
 
     let prop_1 = original[query[0]]
     let prop_2 = query[1]
 
-    if (type === `users` && query[0] === `username`) {
+    if ((type === `users`) && (query[0] === `username`)) {
       prop_1 = prop_1.toLowerCase()
       prop_2 = prop_2.toLowerCase()
     }
@@ -231,17 +224,15 @@ module.exports = (manager, stuff) => {
 
   // Insert a new file in the proper directory
   manager.insert_one = (type, original) => {
-    return new Promise((resolve, reject) => {
-      if (!original.id) {
-        original.id = `${Math.round(new Date() / 1000)}_${stuff.utilz.get_random_string(4)}`
-      }
+    if (!original.id) {
+      original.id = `${Math.round(new Date() / 1000)}_${stuff.utilz.get_random_string(4)}`
+    }
 
-      let path = manager.get_file_path(type, original.id)
-      let proxy = manager.make_proxy_object(original, path, type)
-      manager.add_to_cache(path, original, proxy)
-      write_file(path)
-      resolve(proxy)
-    })
+    let path = manager.get_file_path(type, original.id)
+    let proxy = manager.make_proxy_object(original, path, type)
+    manager.add_to_cache(path, original, proxy)
+    write_file(path)
+    return proxy
   }
 
   // Fill unexisting keys with defaults

@@ -37,7 +37,7 @@ module.exports = (manager, stuff) => {
 
       manager.fill_defaults(`users`, user)
       user.version = stuff.vars.users_version
-      return await manager.insert_one(`users`, user)
+      return manager.insert_one(`users`, user)
     }
     catch (err) {
       stuff.logger.log_error(err)
