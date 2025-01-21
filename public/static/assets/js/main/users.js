@@ -923,7 +923,7 @@ App.is_already = (who, what) => {
 // Without arguments it checks the user's role
 App.is_admin_or_op = (user) => {
   let r = user ? user.role : App.role
-  return r === `admin` || r === `op`
+  return (r === `admin`) || (r === `op`)
 }
 
 // Checks if a role is that of an admin

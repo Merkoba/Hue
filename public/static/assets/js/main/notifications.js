@@ -233,6 +233,10 @@ App.num_open_info_popups = () => {
 
 // Send a notification to all users
 App.send_notification = (message) => {
+  if (!App.is_admin_or_op()) {
+    return
+  }
+
   let max_length = App.config.max_notification_length
   message = message.slice(0, max_length).trim()
   App.socket_emit(`send_notification`, {message})
