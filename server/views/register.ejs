@@ -14,8 +14,9 @@
 	<body>
 		<div class='main'>
 			<div class='header_info'>
-				<div>Register an account here</div>
+				<div>You can register here</div>
 				<div>Choose a username and password</div>
+				<div>Or you can <a href="/login" class="underline">login</a> instead</div>
 			</div>
 
 			<form method="post" action="/register" name="register" onsubmit="return validate_form()">
@@ -25,10 +26,14 @@
 				<input type="password" placeholder="Password" name="password" id="register_password">
 				<div class="spacer4"></div>
 				<input type="password" placeholder="Password Again" id="register_password2">
-
 				<div class="spacer4"></div>
+
+				<% if(vars.use_register_code) {%>
+
 				<input type="text" placeholder="Code" name="code" id="register_code">
 				<div class="spacer4"></div>
+
+				<%}%>
 
 				<% if(vars.recaptcha_enabled) {%>
 
@@ -41,8 +46,6 @@
 
 			</form>
 
-			<div class="spacer1"></div>
-			<a href="/login">Login</a>
 			<div class="spacer1"></div>
 		</div>
 
@@ -63,7 +66,15 @@
 				let username = DOM.el(`#register_username`).value
 				let password = DOM.el(`#register_password`).value
 				let password2 = DOM.el(`#register_password2`).value
-				let code = DOM.el(`#register_code`).value
+				let code_el = DOM.el(`#register_code`)
+				let code
+
+				if (code_el) {
+					code = DOM.el(`#register_code`).value
+				}
+				else {
+					code = ``
+				}
 
 				if (username.length === 0) {
 					show_info(`Username can't be empty`)
@@ -111,7 +122,6 @@
 				}
 
 				DOM.el(`#btn_register`).disabled = true
-
 				return true
 			}
 

@@ -328,6 +328,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     c.vars.register_title = sconfig.register_title
     c.vars.recaptcha_enabled = sconfig.recaptcha_enabled
     c.vars.form_username = decodeURIComponent(req.query.form_username)
+    c.vars.use_register_code = sconfig.use_register_code
 
     if (sconfig.recaptcha_enabled) {
       c.vars.recaptcha_key = sconfig.recaptcha_key
@@ -436,7 +437,12 @@ module.exports = (db_manager, config, sconfig, utilz) => {
       return
     }
 
-    if (code === sconfig.register_code) {
+    if (sconfig.use_register_code) {
+      if (code === sconfig.register_code) {
+        ok = true
+      }
+    }
+    else {
       ok = true
     }
 

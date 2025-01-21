@@ -49,7 +49,6 @@
 				}
 
 				DOM.el(`#btn_login`).disabled = true
-
 				return true
 			}
 		</script>
@@ -58,8 +57,9 @@
 	<body>
 		<div class="main">
 			<div class="header_info">
-				<div>Login here</div>
+				<div>You can login here</div>
 				<div>Enter username and password</div>
+				<div>Or you can <a href="/register" class="underline">register</a> instead</div>
 			</div>
 
 			<form method="post" action="/login" name="login" onsubmit="return validate_form()">
@@ -81,14 +81,12 @@
 			</form>
 
 			<div class="spacer1"></div>
-			<a href="/register">Register</a>
-			<div class="spacer1"></div>
 		</div>
 
 		<script>
 			DOM.el(`#login_username`).focus()
 
-			if(form_username && form_username !== `undefined`) {
+			if(form_username && (form_username !== `undefined`)) {
 				DOM.el(`#login_username`).value = form_username
 			}
 		</script>
