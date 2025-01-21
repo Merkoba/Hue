@@ -1,4 +1,5 @@
 module.exports = (App) => {
+  // Emit a notification sent by an OP
   App.handler.public.send_notification = async (socket, data) => {
     if (!App.handler.is_admin_or_op(socket)) {
       return
