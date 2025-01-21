@@ -22,9 +22,7 @@ module.exports = (manager, stuff) => {
   // Creates a user
   manager.create_user = async (info) => {
     try {
-      let euser = await manager.get_user([`username`, info.username])
-
-      if (euser) {
+      if (await manager.get_user([`username`, info.username])) {
         throw new Error(`Username already exists`)
       }
 

@@ -1,61 +1,50 @@
 module.exports = (manager, stuff) => {
   // Finds a room with the given query
-  manager.get_room = (query) => {
-    return new Promise((resolve, reject) => {
-      manager.find_one(`rooms`, query)
-        .then(room => {
-          resolve(room)
-          return
-        })
-        .catch(err => {
-          resolve(false)
-        })
-    })
+  manager.get_room = async (query) => {
+    try {
+      return await manager.find_one(`rooms`, query)
+    }
+    catch (err) {
+      return false
+    }
   }
 
   // Finds rooms with the given ids
-  manager.get_rooms = (ids) => {
-    return new Promise((resolve, reject) => {
-      manager.find_multiple(`rooms`, ids)
-        .then(rooms => {
-          resolve(rooms)
-          return
-        })
-        .catch(err => {
-          resolve([])
-        })
-    })
+  manager.get_rooms = async (ids) => {
+    try {
+      return await manager.find_multiple(`rooms`, ids)
+    }
+    catch (err) {
+      return []
+    }
   }
 
   // Creates a room
-  manager.create_room = (data) => {
-    return new Promise((resolve, reject) => {
-      let room = {}
+  manager.create_room = async (data) => {
+    let room = {}
 
-      manager.fill_defaults(`rooms`, room)
-      room.version = stuff.vars.rooms_version
+    manager.fill_defaults(`rooms`, room)
+    room.version = stuff.vars.rooms_version
 
-      if (data.id !== undefined) {
-        room.id = data.id
-      }
+    if (data.id !== undefined) {
+      room.id = data.id
+    }
 
-      if (data.user_id !== undefined) {
-        room.keys[data.user_id] = `admin`
-      }
+    if (data.user_id !== undefined) {
+      room.keys[data.user_id] = `admin`
+    }
 
-      room.name = data.name !== undefined ? data.name : `No Name`
-      room.public = data.public
+    room.name = data.name !== undefined ? data.name : `No Name`
+    room.public = data.public
 
-      manager.insert_one(`rooms`, room)
-        .then(ans => {
-          resolve(room)
-          return
-        })
-        .catch(err => {
-          reject(err)
-          stuff.logger.log_error(err)
-        })
-    })
+    try {
+      await manager.insert_one(`rooms`, room)
+      return room
+    }
+    catch (err) {
+      stuff.logger.log_error(err)
+      throw err
+    }
   }
 
   // Get room objects to form a room list
