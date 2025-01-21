@@ -649,7 +649,7 @@ App.show_profile = (username, user_id = false) => {
 
   if (user) {
     same_user = user.user_id === App.user_id
-    DOM.el(`#show_profile_details`).style.display = `block`
+    DOM.show(`#show_profile_details`)
     role = App.get_pretty_role_name(user.role)
     bio = user.bio
     username = user.username
@@ -666,8 +666,8 @@ App.show_profile = (username, user_id = false) => {
 
   DOM.el(`#show_profile_bio`).innerHTML =
     App.utilz.make_html_safe(bio).replace(/\n+/g, ` <br> `)
-  App.urlize(DOM.el(`#show_profile_bio`))
 
+  App.urlize(DOM.el(`#show_profile_bio`))
   DOM.el(`#show_profile_profilepic`).src = pi
 
   if (username) {
