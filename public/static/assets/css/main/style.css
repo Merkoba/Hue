@@ -1987,3 +1987,7 @@ textarea.settings_item_control {
 #admin_topic {
 	width: 14rem;
 }
+
+.a-color-picker-dot {
+	z-index: 10 !important;
+}
