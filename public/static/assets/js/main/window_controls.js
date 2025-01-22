@@ -26,11 +26,7 @@ App.reset_modal_filter = (instance) => {
 
 // Get modal id if not provided
 App.fill_modal_id = (id) => {
-  if (!id) {
-    if (!App.active_modal) {
-      return
-    }
-
+  if (!id && App.active_modal) {
     id = App.active_modal.options.id
   }
 
