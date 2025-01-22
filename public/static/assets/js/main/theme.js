@@ -35,7 +35,16 @@ App.apply_theme = (background_color = ``, text_color = ``) => {
   text_color = App.colorlib.hex_to_rgb(text_color)
 
   let font = `${App.get_setting(`font`)}, sans-serif`
-  let bg_opacity = App.config.background_opacity
+  let bgo = App.get_setting(`background_opacity`)
+  let bg_opacity
+
+  if (bgo > 0) {
+    bg_opacity = bgo
+  }
+  else {
+    bg_opacity = App.config.background_opacity
+  }
+
   let altcolor = App.colorlib.get_lighter_or_darker(background_color, 0.2)
   let altcolor_a = App.colorlib.rgb_to_rgba(altcolor, 0.7)
   let background_color_a = App.colorlib.rgb_to_rgba(background_color, bg_opacity)

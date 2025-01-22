@@ -170,6 +170,26 @@ App.build_user_settings = () => {
       ],
       version: 1,
     },
+    background_opacity: {
+      title: `Background Opacity`,
+      type: `select`,
+      description: `The opacity for the background`,
+      actions: () => {
+        App.apply_theme()
+      },
+      options: [
+        {value: 0, text: `Auto`},
+        {value: 0.95, text: `95%`},
+        {value: 0.9, text: `90%`},
+        {value: 0.85, text: `85%`},
+        {value: 0.8, text: `80%`},
+        {value: 0.75, text: `75%`},
+        {value: 0.7, text: `70%`},
+        {value: 0.65, text: `65%`},
+        {value: 0.6, text: `60%`},
+      ],
+      version: 1,
+    },
     show_chat: {
       title: `Show Chat`,
       type: `checkbox`,
@@ -614,9 +634,9 @@ App.fill_settings = () => {
   for (let key in App.user_settings) {
     let setting = App.user_settings[key]
     let c = DOM.create(`div`, `settings_item modal_item flex_column_center`)
-    c.dataset.setting = key
     let title = DOM.create(`div`, `setting_title action`)
-    title.title = setting.description
+    c.dataset.setting = key
+    c.title = setting.description
     title.textContent = setting.title
 
     DOM.ev(title, `click`, (e) => {
