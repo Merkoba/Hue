@@ -249,6 +249,9 @@ max_autocomplete: 1000
 # Show loginfo messages on the console
 loginfo: false
 
+# Opacity for the background image
+background_opacity: 0.9
+
 # Radio stations available
 radios:
   - name: Anima Dub Techno

@@ -687,7 +687,7 @@ a.generic:hover {
 }
 
 .filter_input {
-	width: 14rem;
+	width: 12rem;
 	border: 0.06rem solid var(--altbackground);
 	font-size: 1rem;
 	text-align: center;

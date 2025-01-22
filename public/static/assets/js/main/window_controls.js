@@ -100,7 +100,17 @@ App.do_modal_filter = (id = false) => {
   }
 
   let win = DOM.el(`#Msg-content-${id}`)
+
+  if (!win) {
+    return
+  }
+
   let filter_el = DOM.el(`.filter_input`, win)
+
+  if (!filter_el) {
+    return
+  }
+
   let filter0 = App.utilz.single_space(filter_el.value).trim()
   let filter = filter0.toLowerCase()
   let items = DOM.els(`.modal_item`, win)
