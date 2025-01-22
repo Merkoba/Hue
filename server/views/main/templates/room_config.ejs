@@ -1,46 +1,44 @@
 <script id="template_room_config" type="text/x-handlebars-template" class="template">
+  {{{window_controls}}}
+
   <div id="room_config">
     <div class="flex_column_center rem2_gap">
-      <div id="room_config_details_container">
-        <div id="room_config_room_name_container" class="flex_column_center rem1_gap">
-          <div>Name</div>
-          <input type="text" class="setting_input_text shady_text" id="admin_room_name">
-        </div>
-
-        <div id="room_config_topic_container" class="flex_column_center rem1_gap">
-          <div>Topic</div>
-          <textarea class="setting_textarea shady_text" rows=4 id="admin_topic"></textarea>
-        </div>
+      <div id="room_config_room_name_container" class="flex_column_center modal_item">
+        <div class="setting_title">Name</div>
+        <input type="text" class="setting_input_text shady_text" id="admin_room_name">
       </div>
 
-      <div class="flex_column_center rem2_gap">
-        <div class="flex_column_center rem1_gap">
-          <div id="admin_random_theme_dark" class="underlined action">Random Dark Theme</div>
-          <div id="admin_random_theme_light" class="underlined action">Random Light Theme</div>
-        </div>
-
-        <div class="flex_column_center rem1_gap">
-          <div>Background Color</div>
-          <div id="admin_background_color"></div>
-        </div>
-
-        <div class="flex_column_center rem1_gap">
-          <div>Text Color</div>
-          <div id="admin_text_color"></div>
-        </div>
-
-        <div class="flex_column_center rem1_gap">
-          <div>Background Image</div>
-          <img id="admin_background" class="small_square_image actionbox">
-        </div>
+      <div id="room_config_topic_container" class="flex_column_center modal_item">
+        <div class="setting_title">Topic</div>
+        <textarea class="setting_textarea shady_text" rows=4 id="admin_topic"></textarea>
       </div>
 
-      <div class="flex_column_center rem1_gap" title="Only OP and up can perform actions like chat and media change">
-        <div>Limited</div>
+      <div class="flex_column_center rem1_gap modal_item">
+        <div id="admin_random_theme_dark" class="underlined action">Random Dark Theme</div>
+        <div id="admin_random_theme_light" class="underlined action">Random Light Theme</div>
+      </div>
+
+      <div class="flex_column_center modal_item">
+        <div class="setting_title">Background Color</div>
+        <div id="admin_background_color"></div>
+      </div>
+
+      <div class="flex_column_center modal_item">
+        <div class="setting_title">Text Color</div>
+        <div id="admin_text_color"></div>
+      </div>
+
+      <div class="flex_column_center modal_item">
+        <div class="setting_title">Background Image</div>
+        <img id="admin_background" class="small_square_image actionbox">
+      </div>
+
+      <div class="flex_column_center modal_item" title="Only OP and up can perform actions like chat and media change">
+        <div class="setting_title">Limited</div>
         <input type="checkbox" id="admin_limited">
       </div>
 
-      <div class="flex_row_center generic_horizontal_separator underlined">
+      <div class="flex_row_center generic_horizontal_separator underlined modal_item">
         <div id="room_config_more_admin_activity" class="action">Activity</div>
         <div id="room_config_more_admin_list" class="action">Admins</div>
         <div id="room_config_more_ban_list" class="action">Bans</div>

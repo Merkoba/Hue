@@ -71,7 +71,7 @@ App.get_topic = () => {
   if (App.topic) {
     return App.topic
   }
-  
+
   return App.config.default_topic
 }
 
@@ -142,6 +142,7 @@ App.set_topic_info = (data) => {
 
   App.topic = data.topic
   App.config_admin_topic()
+  App.update_input_placeholder()
 }
 
 // Sets limited data with received data

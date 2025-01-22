@@ -388,6 +388,16 @@ App.start_msg = () => {
     }),
   )
 
+  App.msg_room_config.set(
+    App.template_room_config({
+      window_controls: App.template_window_controls({
+        filter_mode: `auto`,
+        filter_id: `room_config_filter`,
+        filter_placeholder: `Filter`,
+      }),
+    }),
+  )
+
   App.msg_admin_activity.set(
     App.template_admin_activity({
       window_controls: App.template_window_controls({
@@ -503,7 +513,6 @@ App.start_msg = () => {
   )
 
   App.msg_main_menu.set(App.template_main_menu())
-  App.msg_room_config.set(App.template_room_config())
   App.msg_background_select.set(App.template_background_select())
   App.msg_profilepic_select.set(App.template_profilepic_select())
   App.msg_audioclip_select.set(App.template_audioclip_select())
@@ -565,13 +574,6 @@ App.start_msg = () => {
       {id: `message_board_post`, text: `Submit Post`},
       {id: `message_board_links`, text: `Show Links`},
       {id: `message_board_user`, text: `Show User`},
-    ],
-  }))
-
-  App.msg_room_config.set_title(App.template_titlebar({
-    items: [
-      {id: `room_config_bottom`, text: `Bottom`},
-      {id: `room_config_top`, text: `Top`},
     ],
   }))
 
@@ -769,6 +771,7 @@ App.start_msg = () => {
   }))
 
   App.msg_main_menu.set_title(`Main Menu`)
+  App.msg_room_config.set_title(`Room Config`)
   App.msg_admin_list.set_title(`Admin List`)
   App.msg_ban_list.set_title(`Ban List`)
   App.msg_roomlist.set_title(`Room List`)

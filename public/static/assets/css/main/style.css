@@ -1326,10 +1326,6 @@ a.special_link:hover {
 	width: 100%;
 }
 
-#room_config_topic_container {
-	margin-top: 1.6rem;
-}
-
 #user_profile_change_buttons {
 	margin-bottom: 1rem;
 	gap: 0.8rem;
@@ -1986,4 +1982,8 @@ textarea.settings_item_control {
 	text-align: center;
 	overflow-x: hidden;
 	box-sizing: border-box;
+}
+
+#admin_topic {
+	width: 14rem;
 }

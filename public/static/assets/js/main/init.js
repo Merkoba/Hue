@@ -245,7 +245,6 @@ App.on_join = (data) => {
   App.config_main_menu()
   App.init_message_board(data)
   App.start_active_media()
-  App.update_input_placeholder()
   App.fix_media_info()
   App.check_media_info()
   App.update_activity_bar()
