@@ -8,7 +8,7 @@
 	--msg_display: block;
 	--placeholder_opacity: 0.6;
 	--border_radius: 5px;
-	--text_glow: 0 0 0.18rem currentColor;
+	--text_glow: 0 0 0.18rem currentcolor;
 }
 
 body,
@@ -1027,23 +1027,23 @@ input[type=checkbox] {
 }
 
 .action:hover {
-	text-shadow: 0 0 1rem currentColor;
+	text-shadow: 0 0 1rem currentcolor;
 }
 
 svg.action:hover {
-	filter: drop-shadow(0 0 0.29rem currentColor);
+	filter: drop-shadow(0 0 0.29rem currentcolor);
 }
 
 .action:hover svg {
-	filter: drop-shadow(0 0 0.29rem currentColor);
+	filter: drop-shadow(0 0 0.29rem currentcolor);
 }
 
 .actionbox_light:hover {
-	box-shadow: 0 0 0.1rem currentColor, inset 0 0 0.1rem currentColor;
+	box-shadow: 0 0 0.1rem currentcolor, inset 0 0 0.1rem currentcolor;
 }
 
 .actionbox:hover {
-	box-shadow: 0 0 1.18rem currentColor;
+	box-shadow: 0 0 1.18rem currentcolor;
 }
 
 .header_container {
@@ -1065,7 +1065,7 @@ svg.action:hover {
 
 #chat_area .highlighted_message {
 	background-color: var(--altbackground_a);
-	box-shadow: 0 0 0.12rem currentColor;
+	box-shadow: 0 0 0.12rem currentcolor;
 	padding: 0.25rem;
 }
 
@@ -1167,7 +1167,7 @@ a {
 
 .special_link {
 	cursor: pointer;
-	text-shadow: 0 0 1rem currentColor;
+	text-shadow: 0 0 1rem currentcolor;
 }
 
 .special_link:hover {
@@ -1311,7 +1311,7 @@ a.special_link:hover {
 }
 
 .horizontal_separator {
-	background-color: currentColor;
+	background-color: currentcolor;
 	width: 2px;
 	min-width: 2px;
 	height: 1em;
@@ -1320,7 +1320,7 @@ a.special_link:hover {
 }
 
 .vertical_separator {
-	background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
+	background: linear-gradient(to right, transparent, currentcolor 20%, currentcolor 80%, transparent);
 	height: 2px;
 	min-height: 2px;
 	width: 100%;
