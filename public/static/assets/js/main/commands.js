@@ -635,7 +635,7 @@ App.commands = {
   roomconfig: {
     aliases: [`config`],
     action: (arg, ans) => {
-      App.show_room_config()
+      App.show_room_config(arg)
     },
     description: `Show the room config window`,
   },
