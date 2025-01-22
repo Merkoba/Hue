@@ -873,9 +873,9 @@ App.get_first_visible_modal_item = (id) => {
 
 // Make windows invisible temporarily
 App.hide_windows_temporarily = (delay = 2000) => {
-  document.documentElement.style.setProperty(`--msg_display`, `none`)
+  App.set_style_prop(`--msg_display`, `none`)
 
   setTimeout(() => {
-    document.documentElement.style.setProperty(`--msg_display`, `block`)
+    App.set_style_prop(`--msg_display`, `block`)
   }, delay)
 }

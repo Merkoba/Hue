@@ -52,18 +52,18 @@ App.apply_theme = (background_color = ``, text_color = ``) => {
   let altbackground_a = App.colorlib.rgb_to_rgba(altbackground, 0.7)
   let text_color_a = App.colorlib.rgb_to_rgba(text_color, 0.7)
 
-  document.documentElement.style.setProperty(`--font`, font)
-  document.documentElement.style.setProperty(`--text_color`, text_color)
-  document.documentElement.style.setProperty(`--text_color_a`, text_color_a)
-  document.documentElement.style.setProperty(`--altcolor`, altcolor)
-  document.documentElement.style.setProperty(`--altcolor_a`, altcolor_a)
-  document.documentElement.style.setProperty(`--bordercolor`, text_color_a)
-  document.documentElement.style.setProperty(`--background_color`, background_color)
-  document.documentElement.style.setProperty(`--background_color_a`, background_color_a)
-  document.documentElement.style.setProperty(`--altbackground`, altbackground)
-  document.documentElement.style.setProperty(`--altbackground_a`, altbackground_a)
-  document.documentElement.style.setProperty(`--chat_font_size`, App.get_setting(`chat_font_size`) + `em`)
-  document.documentElement.style.setProperty(`--chat_size`, App.get_setting(`chat_font_size`) + `em`)
+  App.set_style_prop(`--font`, font)
+  App.set_style_prop(`--text_color`, text_color)
+  App.set_style_prop(`--text_color_a`, text_color_a)
+  App.set_style_prop(`--altcolor`, altcolor)
+  App.set_style_prop(`--altcolor_a`, altcolor_a)
+  App.set_style_prop(`--bordercolor`, text_color_a)
+  App.set_style_prop(`--background_color`, background_color)
+  App.set_style_prop(`--background_color_a`, background_color_a)
+  App.set_style_prop(`--altbackground`, altbackground)
+  App.set_style_prop(`--altbackground_a`, altbackground_a)
+  App.set_style_prop(`--chat_font_size`, App.get_setting(`chat_font_size`) + `em`)
+  App.set_style_prop(`--chat_size`, App.get_setting(`chat_font_size`) + `em`)
 
   if (App.get_setting(`hide_scrollbars`)) {
     document.documentElement.classList.add(`no_scrollbars`)
@@ -367,4 +367,9 @@ App.insert_css = (name, css) => {
 App.insert_custom_css = () => {
   let css = App.get_setting(`custom_css`).trim()
   App.insert_css(`custom_css`, css)
+}
+
+// Set style propery
+App.set_style_prop = (name, value) => {
+  document.documentElement.style.setProperty(name, value)
 }

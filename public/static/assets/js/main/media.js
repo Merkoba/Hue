@@ -902,27 +902,27 @@ App.check_media_info = () => {
     display = `flex`
   }
 
-  document.documentElement.style.setProperty(`--media_info_display`, display)
+  App.set_style_prop(`--media_info_display`, display)
 
   if (mode === `only_title`) {
-    document.documentElement.style.setProperty(`--media_info_user`, `none`)
+    App.set_style_prop(`--media_info_user`, `none`)
   }
   else {
-    document.documentElement.style.setProperty(`--media_info_user`, `flex`)
+    App.set_style_prop(`--media_info_user`, `flex`)
   }
 
   if (mode === `only_user`) {
-    document.documentElement.style.setProperty(`--media_info_title`, `none`)
+    App.set_style_prop(`--media_info_title`, `none`)
   }
   else {
-    document.documentElement.style.setProperty(`--media_info_title`, `flex`)
+    App.set_style_prop(`--media_info_title`, `flex`)
   }
 
   if (mode === `columns`) {
-    document.documentElement.style.setProperty(`--media_info_direction`, `column`)
+    App.set_style_prop(`--media_info_direction`, `column`)
   }
   else {
-    document.documentElement.style.setProperty(`--media_info_direction`, `row`)
+    App.set_style_prop(`--media_info_direction`, `row`)
   }
 }
 
