@@ -358,7 +358,13 @@ App.play_first_radio = () => {
 
 // Clear radio filter
 App.clear_radio_filter = () => {
-  DOM.el(`#radio_filter`).value = ``
+  let filter = DOM.el(`#radio_filter`)
+
+  if (!filter.value) {
+    return
+  }
+
+  filter.value = ``
   App.do_modal_filter()
 }
 
