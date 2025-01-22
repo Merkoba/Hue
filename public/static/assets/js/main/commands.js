@@ -430,14 +430,12 @@ App.commands = {
     description: `Pings the server and shows the delay from the moment it was sent to the moment it was received`,
   },
   top: {
-    aliases: [`up`],
     action: (arg, ans) => {
       App.goto_top()
     },
     description: `Scrolls the chat to the top`,
   },
   bottom: {
-    aliases: [`down`],
     action: (arg, ans) => {
       App.goto_bottom(true)
     },
