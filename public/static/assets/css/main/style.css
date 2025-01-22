@@ -19,18 +19,17 @@ html {
 	padding: 0;
 	font-size: 18px;
 	font-family: var(--font);
-	background-color: #262423;
 	overflow: hidden;
-	background-color: rgb(24, 24, 24);
+	background-color: rgb(24 24 24);
 	background-repeat: no-repeat;
 	background-position: center;
 }
 
-.no_scrollbars #main_container *:not(textarea):not(input) {
+.no_scrollbars #main_container *:not(textarea, input) {
 	scrollbar-width: none !important;
 }
 
-.no_scrollbars #main_container *:not(textarea):not(input)::-webkit-scrollbar {
+.no_scrollbars #main_container *:not(textarea, input)::-webkit-scrollbar {
 	width: 0 !important;
 }
 
@@ -368,7 +367,7 @@ html {
 }
 
 .input_button {
-	border: 1px solid rgb(163, 163, 163);
+	border: 1px solid rgb(163 163 163);
 	padding-left: 0.25rem;
 	padding-right: 0.25rem;
 }
@@ -644,7 +643,7 @@ a.generic:hover {
 }
 
 #Msg-overlay-locked {
-	background-color: rgb(186, 93, 93) !important;
+	background-color: rgb(186 93 93) !important;
 }
 
 .Msg-overlay {
@@ -792,10 +791,10 @@ select {
 	border-radius: var(--border_radius);
 }
 
-input[type=text],
-input[type=search],
-input[type=password],
-input[type=number],
+input[type="text"],
+input[type="search"],
+input[type="password"],
+input[type="number"],
 textarea,
 select {
 	font-family: var(--font) !important;
@@ -803,7 +802,7 @@ select {
 	outline: none;
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
 	width: 1rem;
 	height: 1rem;
 }
@@ -1537,13 +1536,13 @@ pre {
 }
 
 .colortext {
-	background-color: rgb(30, 30, 30) !important;
+	background-color: rgb(30 30 30) !important;
 	padding: 0.25em;
 }
 
 .goldtext {
-	color: rgb(229, 255, 0);
-	border: 1px solid rgb(229, 255, 0);
+	color: rgb(229 255 0);
+	border: 1px solid rgb(229 255 0);
 }
 
 .custom_popup {
