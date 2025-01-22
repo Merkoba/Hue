@@ -1975,3 +1975,7 @@ pre {
 #delete_messages_group {
 	display: flex;
 }
+
+.auto_blur {
+	filter: blur(0.35rem);
+}

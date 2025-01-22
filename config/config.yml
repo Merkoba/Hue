@@ -162,6 +162,7 @@ settings_default_open_message_board_automatically: true
 settings_default_show_loaded: true
 settings_default_show_clicked: true
 settings_default_text_effects: true
+settings_default_auto_blur: false
 
 # Default room state values
 room_state_default_image_enabled: true

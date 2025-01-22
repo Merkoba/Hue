@@ -203,3 +203,15 @@ App.get_first_time = () => {
 App.text_selected = () => {
   return window.getSelection().toString() !== ``
 }
+
+// Auto blur on
+App.auto_blur_on = () => {
+  if (App.get_setting(`auto_blur`)) {
+    DOM.el(`#main_container`).classList.add(`auto_blur`)
+  }
+}
+
+// Auto blur off
+App.auto_blur_off = () => {
+  DOM.el(`#main_container`).classList.remove(`auto_blur`)
+}

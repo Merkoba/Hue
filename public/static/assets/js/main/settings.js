@@ -319,6 +319,13 @@ App.build_user_settings = () => {
       },
       version: 1,
     },
+    auto_blur: {
+      title: `Auto Blur`,
+      type: `checkbox`,
+      description: `Auto-blur the chat when not focused`,
+      actions: () => {},
+      version: 1,
+    },
   }
 }
 

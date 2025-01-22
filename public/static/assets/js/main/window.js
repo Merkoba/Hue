@@ -64,6 +64,14 @@ App.activate_visibility_listener = () => {
   DOM.ev(document, `visibilitychange`, () => {
     App.process_visibility()
   }, false)
+
+  DOM.ev(window, `blur`, () => {
+    App.auto_blur_on()
+  }, false)
+
+  DOM.ev(window, `focus`, () => {
+    App.auto_blur_off()
+  })
 }
 
 // This runs after a visibility change
