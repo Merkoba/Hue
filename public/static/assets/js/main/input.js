@@ -247,10 +247,17 @@ App.show_input_history = (filter = ``) => {
 
   for (let item of App.input_history) {
     let el = DOM.create(`div`, `nice_row modal_item pointer input_history_item`)
-    el.textContent = item.message
     el.title = App.nice_date(item.date)
+    let text = DOM.create(`div`)
+    text.textContent = item.message
+    App.urlize(text)
+    el.append(text)
 
-    DOM.ev(el, `click`, () => {
+    DOM.ev(el, `click`, (e) => {
+      if (e.target.tagName === `A`) {
+        return
+      }
+
       App.input_history_enter_action(el)
     })
 
