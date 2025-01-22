@@ -53,7 +53,7 @@ App.setup_room_config = () => {
   })
 
   DOM.ev(DOM.el(`#admin_background`), `click`, () => {
-    App.msg_background_select.show()
+    App.background_admin()
   })
 
   App.setup_background_select()
@@ -207,4 +207,9 @@ App.open_link_background = () => {
   DOM.el(`#link_background_input`).value = ``
   App.msg_link_background.show()
   DOM.el(`#link_background_input`).focus()
+}
+
+// Show background admin
+App.background_admin = () => {
+  App.msg_background_select.show()
 }

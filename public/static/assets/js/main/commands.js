@@ -434,7 +434,12 @@ App.commands = {
   },
   background: {
     action: (arg, ans) => {
-      App.change_background_source(arg)
+      if (arg) {
+        App.change_background_source(arg)
+      }
+      else {
+        App.background_admin()
+      }
     },
     description: `Changes the background to a specified URL`,
   },
