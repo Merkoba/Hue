@@ -98,7 +98,11 @@ App.loginfo = (message, style = ``) => {
     return
   }
 
-  App.utilz.loginfo(`🤡 %c(${App.utilz.nice_date(Date.now())}) %c${message}`, `color:blue`, style)
+  if (!style) {
+    style = `color:cyan`
+  }
+
+  App.utilz.loginfo(`🤡 %c(${App.utilz.nice_date(Date.now())}) %c${message}`, style)
 }
 
 // Centralized function to return a chat icon svg

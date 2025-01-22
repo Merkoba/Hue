@@ -14,6 +14,7 @@ App.commands = {
     description: `Shows the user list. Accepts a filter as an argument`,
   },
   roomname: {
+    aliases: [`name`],
     action: (arg, ans) => {
       if (arg) {
         App.change_room_name(arg)
@@ -115,6 +116,7 @@ App.commands = {
     description: `Changes the image using a search term or URL`,
   },
   linkimage: {
+    aliases: [`link`],
     action: (arg, ans) => {
       App.show_link_image()
     },
@@ -127,6 +129,7 @@ App.commands = {
     description: `Take a screenshot`,
   },
   uploadimage: {
+    aliases: [`upload`, `imgupload`],
     action: (arg, ans) => {
       App.show_upload_image()
     },
@@ -144,6 +147,7 @@ App.commands = {
     description: `Changes the topic of the room`,
   },
   commandbook: {
+    aliases: [`commands`],
     action: (arg, ans) => {
       App.show_command_book(arg)
     },
@@ -313,6 +317,7 @@ App.commands = {
     description: `Shows chat messages that contain links`,
   },
   mainmenu: {
+    aliases: [`menu`],
     action: (arg, ans) => {
       App.show_main_menu()
     },
@@ -367,12 +372,14 @@ App.commands = {
     description: `Makes the tv invisible and inactive`,
   },
   starttv: {
+    aliases: [`start`],
     action: (arg, ans) => {
       App.play_tv()
     },
     description: `Starts the tv`,
   },
   stoptv: {
+    aliases: [`stop`],
     action: (arg, ans) => {
       App.stop_tv()
     },
@@ -391,12 +398,14 @@ App.commands = {
     description: `Shows current date`,
   },
   activityabove: {
+    aliases: [`above`],
     action: (arg, ans) => {
       App.activity_above()
     },
     description: `Scrolls chat to activity pertaining you above`,
   },
   activitybelow: {
+    aliases: [`below`],
     action: (arg, ans) => {
       App.activity_below()
     },
@@ -421,18 +430,21 @@ App.commands = {
     description: `Pings the server and shows the delay from the moment it was sent to the moment it was received`,
   },
   top: {
+    aliases: [`up`],
     action: (arg, ans) => {
       App.goto_top()
     },
     description: `Scrolls the chat to the top`,
   },
   bottom: {
+    aliases: [`down`],
     action: (arg, ans) => {
       App.goto_bottom(true)
     },
     description: `Scrolls the chat to the bottom`,
   },
   background: {
+    aliases: [`bg`],
     action: (arg, ans) => {
       if (arg) {
         App.change_background_source(arg)
@@ -468,6 +480,7 @@ App.commands = {
     description: `Displays a simple feedback information message for the user`,
   },
   backgroundcolor: {
+    aliases: [`bgcolor`],
     action: (arg, ans) => {
       App.change_background_color(arg)
     },
@@ -491,12 +504,14 @@ App.commands = {
     description: `Shows recent activity by ops and admins. Accepts a filter as an argument`,
   },
   adminlist: {
+    aliases: [`admins`],
     action: (arg, ans) => {
       App.request_admin_list()
     },
     description: `Shows the list of ops and admins of the room`,
   },
   banlist: {
+    aliases: [`bans`],
     action: (arg, ans) => {
       App.request_ban_list()
     },
@@ -523,6 +538,7 @@ App.commands = {
     description: `Opens the whispers window. Accepts a filter as an argument`,
   },
   synctv: {
+    aliases: [`sync`],
     action: (arg, ans) => {
       if (arg) {
         App.sync_tv(arg)
@@ -531,6 +547,7 @@ App.commands = {
     description: `Syncs a tv video with another user's video progress`,
   },
   messageboard: {
+    aliases: [`board`],
     action: (arg, ans) => {
       App.show_message_board(arg)
     },
@@ -540,6 +557,9 @@ App.commands = {
     action: (arg, ans) => {
       if (arg) {
         App.show_profile(arg)
+      }
+      else {
+        App.show_user_profile()
       }
     },
     description: `Show a user profile`,
@@ -588,12 +608,14 @@ App.commands = {
     description: `Clear the log`,
   },
   randomradio: {
+    aliases: [`random`],
     action: (arg, ans) => {
       App.play_random_radio()
     },
     description: `Select a random radio station`,
   },
   radioplay: {
+    aliases: [`play`],
     action: (arg, ans) => {
       App.radio_playstop()
     },
@@ -606,30 +628,28 @@ App.commands = {
     description: `Open and filter the radio window`,
   },
   roomlist: {
+    aliases: [`list`],
     action: (arg, ans) => {
       App.show_roomlist(arg)
     },
     description: `Show the room list`,
   },
-  userprofile: {
-    action: (arg, ans) => {
-      App.show_user_profile()
-    },
-    description: `Show the user profile window`,
-  },
   roomconfig: {
+    aliases: [`config`],
     action: (arg, ans) => {
       App.show_room_config()
     },
     description: `Show the room config window`,
   },
   imagehistory: {
+    aliases: [`images`, `imgs`],
     action: (arg, ans) => {
       App.show_image_list()
     },
     description: `Show the image history`,
   },
   tvhistory: {
+    aliases: [`tvs`],
     action: (arg, ans) => {
       App.show_tv_list()
     },
@@ -642,6 +662,7 @@ App.commands = {
     description: `Show the input history. Shortcut: Shift + Up`,
   },
   react: {
+    aliases: [`reactions`],
     action: (arg, ans) => {
       App.show_reactions()
     },
@@ -684,10 +705,38 @@ App.superuser_commands = [
   `disconnectuser`,
 ]
 
+// Check for command collisions on commands and aliases
+App.check_commands = () => {
+  let style = `color:red; font-size:1.4rem`
+
+  for (let key in App.commands) {
+    let aliases = App.commands[key].aliases
+
+    if (aliases) {
+      for (let a of aliases) {
+        if (App.commands[a]) {
+          App.utilz.loginfo(`%cCommand alias collision detected. ${key} and ${a}`, style)
+        }
+
+        for (let key2 in App.commands) {
+          if (key === key2) {
+            continue
+          }
+
+          if (App.commands[key2].aliases && App.commands[key2].aliases.includes(a)) {
+            App.utilz.loginfo(`%cAlias collision detected between commands ${key} and ${key2} for alias ${a}`, style)
+          }
+        }
+      }
+    }
+  }
+}
+
 // Prepares commands based on the commands object
 // Makes sorted variations
 // Checks if anagrams collide
 App.prepare_commands = () => {
+  App.check_commands()
   App.commands_list = []
   App.commands_list_with_prefix = []
 
@@ -719,6 +768,13 @@ App.prepare_commands = () => {
     App.commands_list_sorted_2[sorted] = command
   }
 
+  App.check_command_anagrams()
+}
+
+// Check command anagrams
+App.check_command_anagrams = () => {
+  let style = `color:red; font-size:1.4rem`
+
   for (let key in App.commands_list_sorted) {
     let scmd1 = App.commands_list_sorted[key]
 
@@ -727,7 +783,7 @@ App.prepare_commands = () => {
 
       if (key !== key2) {
         if (scmd1 === scmd2) {
-          App.utilz.loginfo(`Command anagrams detected. ${key} and ${key2}`)
+          App.utilz.loginfo(`%cCommand anagrams detected. ${key} and ${key2}`, style)
         }
       }
     }
