@@ -1,14 +1,17 @@
 <body>
   <div id="main_container" class="bg0 loading">
     <img id="background" class="background">
+
     <div class="columns_container bg1">
       <%- include("flash_info.ejs"); %>
       <%- include("header.ejs"); %>
       <%- include("linksbar.ejs"); %>
+
       <div class="rows_container" id="main_rows_container">
         <%- include("chat.ejs"); %>
         <%- include("media.ejs"); %>
       </div>
+
       <%- include("footer.ejs"); %>
     </div>
   </div>
