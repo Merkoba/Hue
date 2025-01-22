@@ -187,10 +187,15 @@ App.get_autocomplete = () => {
 
 // Push to autocomplete
 // This is meant for bot commands like .image
+// It avoids normal commands
 App.push_to_autocomplete = (text) => {
   let word = text.trim().split(` `)[0].trim()
 
   if (!word.match(/^[^\w]/)) {
+    return
+  }
+
+  if (word.startsWith(App.cmd_prefix())) {
     return
   }
 
