@@ -1,4 +1,9 @@
-// TS: 7
+// ########################################################
+// Please don't ruin the code with terrible formatting
+// There's an eslint config that should clean up things
+// It should be ran periodically to find and fix flaws
+// But apart from that, all the code is structured manually
+// ########################################################
 
 // All client variables and functions go here
 const App = {}
