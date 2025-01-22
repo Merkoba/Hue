@@ -138,7 +138,9 @@ App.build_user_settings = () => {
       type: `select`,
       force_int: true,
       description: `Change the radio after these minutes`,
-      actions: () => {},
+      actions: () => {
+        App.start_radio_auto_timeout()
+      },
       options: [
         {value: `5`, text: `5 Mins`},
         {value: `10`, text: `10 Mins`},
