@@ -174,7 +174,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
   function start_view_check() {
     setInterval(() => {
-      if (get_view_mtime() !== view_mtime || config.mtime !== config_mtime) {
+      if ((get_view_mtime() !== view_mtime) || (config.mtime !== config_mtime)) {
         build_view()
       }
     }, view_check_delay)
@@ -211,7 +211,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
       try {
         let user = await db_manager.get_user([`id`, req.session.user_id], {password_date: 1})
 
-        if (!user || req.session.password_date !== user.password_date) {
+        if (!user || (req.session.password_date !== user.password_date)) {
           req.session.destroy(() => {})
           res.redirect(`/login?fromurl=${fromurl}`)
         }

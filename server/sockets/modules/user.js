@@ -54,8 +54,8 @@ module.exports = (App) => {
     }
 
     if (
-      data.password.length === 0 ||
-      data.password.length < App.config.min_password_length
+      (data.password.length === 0) ||
+      (data.password.length < App.config.min_password_length)
     ) {
       return
     }
@@ -112,15 +112,15 @@ module.exports = (App) => {
     let dimensions = App.i.image_dimensions(data.image_file)
 
     if (
-      dimensions.width !== App.config.profilepic_diameter ||
-      dimensions.height !== App.config.profilepic_diameter
+      (dimensions.width !== App.config.profilepic_diameter) ||
+      (dimensions.height !== App.config.profilepic_diameter)
     ) {
       return
     }
 
     let size = data.image_file.byteLength / 1024
 
-    if (size === 0 || size > App.config.max_profilepic_size) {
+    if ((size === 0) || (size > App.config.max_profilepic_size)) {
       App.handler.user_emit(socket, `upload_error`, {})
       return
     }
@@ -173,7 +173,7 @@ module.exports = (App) => {
 
     let size = data.audio_file.byteLength / 1024
 
-    if (size === 0 || size > App.config.max_audioclip_size) {
+    if ((size === 0) || (size > App.config.max_audioclip_size)) {
       App.handler.user_emit(socket, `upload_error`, {})
       return
     }

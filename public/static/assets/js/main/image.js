@@ -26,7 +26,7 @@ App.show_image = (force = false) => {
   DOM.show(`#media_image_loading`)
   DOM.hide(`#media_image_error`)
 
-  if (force || DOM.el(`#media_image_frame`).src !== item.source) {
+  if (force || (DOM.el(`#media_image_frame`).src !== item.source)) {
     DOM.el(`#media_image_frame`).src = item.source
   }
   else {
@@ -73,7 +73,7 @@ App.change_image_source = (src, just_check = false, comment = ``) => {
     return false
   }
 
-  if (src === App.current_image().source || src === App.current_image().query) {
+  if ((src === App.current_image().source) || (src === App.current_image().query)) {
     if (feedback) {
       App.checkmsg(`Image is already set to that`)
     }

@@ -3,7 +3,7 @@ App.load_youtube = async (what = ``) => {
   if (App.youtube_loaded) {
     if (
       App.youtube_tv_player_requested &&
-      App.youtube_tv_player === undefined
+      (App.youtube_tv_player === undefined)
     ) {
       App.create_youtube_tv_player()
     }
@@ -85,7 +85,7 @@ App.add_media_info = (container_id) => {
 // Loads Twitch script and creates player
 App.start_twitch = async () => {
   if (App.twitch_loaded) {
-    if (App.twitch_tv_player_requested && App.twitch_tv_player === undefined) {
+    if (App.twitch_tv_player_requested && (App.twitch_tv_player === undefined)) {
       App.create_twitch_tv_player()
     }
 

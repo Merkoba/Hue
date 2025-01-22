@@ -178,7 +178,7 @@ App.activate_key_detection = () => {
 
       if (App.msg_change_username.is_open()) {
         if (App.msg_change_username.is_highest()) {
-          if (e.key === `Enter` && !e.shiftKey) {
+          if ((e.key === `Enter`) && !e.shiftKey) {
             App.submit_change_username()
             e.preventDefault()
           }
@@ -189,7 +189,7 @@ App.activate_key_detection = () => {
 
       if (App.msg_change_password.is_open()) {
         if (App.msg_change_password.is_highest()) {
-          if (e.key === `Enter` && !e.shiftKey) {
+          if ((e.key === `Enter`) && !e.shiftKey) {
             App.submit_change_password()
             e.preventDefault()
           }
@@ -211,7 +211,7 @@ App.activate_key_detection = () => {
 
       if (App.msg_confirm.is_open()) {
         if (App.msg_confirm.is_highest()) {
-          if (e.key === `Enter` && !e.shiftKey) {
+          if ((e.key === `Enter`) && !e.shiftKey) {
             App.on_confirm()
             e.preventDefault()
           }
@@ -222,7 +222,7 @@ App.activate_key_detection = () => {
 
       if (App.msg_message_board.is_open()) {
         if (App.msg_message_board.is_highest()) {
-          if (e.key === `Enter` && !e.shiftKey) {
+          if ((e.key === `Enter`) && !e.shiftKey) {
             App.submit_message_board_post()
             e.preventDefault()
           }
@@ -233,7 +233,7 @@ App.activate_key_detection = () => {
 
       if (App.msg_write_whisper.is_open()) {
         if (App.msg_write_whisper.is_highest()) {
-          if (e.key === `Enter` && !e.shiftKey) {
+          if ((e.key === `Enter`) && !e.shiftKey) {
             App.submit_write_whisper()
             e.preventDefault()
           }
@@ -244,7 +244,7 @@ App.activate_key_detection = () => {
 
       if (App.msg_delete_messages.is_open()) {
         if (App.msg_delete_messages.is_highest()) {
-          if (e.key === `Enter` && !e.shiftKey) {
+          if ((e.key === `Enter`) && !e.shiftKey) {
             App.delete_message_action()
             e.preventDefault()
           }
@@ -256,7 +256,7 @@ App.activate_key_detection = () => {
       return
     }
 
-    if (e.key === `Control` || e.ctrlKey) {
+    if ((e.key === `Control`) || e.ctrlKey) {
       if (e.key !== `v`) {
         return
       }

@@ -84,7 +84,7 @@ module.exports = (App) => {
 
           res = await res.json()
 
-          if (res.items !== undefined && res.items.length > 0) {
+          if ((res.items !== undefined) && (res.items.length > 0)) {
             let title = res.items[0].snippet.title
             let description = res.items[0].snippet.description
             let uploader = res.items[0].snippet.channelTitle

@@ -364,8 +364,8 @@ App.draw_image_has_levels_above = () => {
 // Checks if the current state has redo levels above
 App.draw_image_check_redo = () => {
   if (
-    App.draw_image_current_snapshot.click_x.length !==
-      App.draw_image_current_snapshot.sector_index ||
+    (App.draw_image_current_snapshot.click_x.length !==
+      App.draw_image_current_snapshot.sector_index) ||
     App.draw_image_has_levels_above()
   ) {
     App.draw_image_clean_redo(App.draw_image_current_snapshot.sector_index)
@@ -385,8 +385,8 @@ App.draw_image_get_image_data = () => {
 // Checks if a new snapshot should be created
 App.draw_image_check_increase_snapshot = () => {
   if (
-    App.draw_image_current_snapshot.click_x.length ===
-      App.draw_image_current_snapshot.sector_index &&
+    (App.draw_image_current_snapshot.click_x.length ===
+      App.draw_image_current_snapshot.sector_index) &&
     !App.draw_image_has_levels_above()
   ) {
     if (

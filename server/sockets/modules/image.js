@@ -32,7 +32,7 @@ module.exports = (App) => {
     let media_info = await App.handler.get_last_media(socket.hue_room_id, `image`)
 
     if (media_info) {
-      if (media_info.source === data.src || media_info.query === data.src) {
+      if ((media_info.source === data.src) || (media_info.query === data.src)) {
         App.handler.user_emit(socket, `same_image`, {})
         return
       }

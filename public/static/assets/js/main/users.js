@@ -222,7 +222,7 @@ App.do_update_userlist = (prop = ``) => {
     if (prop) {
       uchange = false
 
-      if (prop === `username` || prop === `profilepic` || prop === `role`) {
+      if ((prop === `username`) || (prop === `profilepic`) || (prop === `role`)) {
         uchange = true
       }
     }
@@ -305,7 +305,7 @@ App.compare_userlist = (a, b) => {
     b.role = `voice`
   }
 
-  if (a.role === `voice` && b.role === `voice`) {
+  if ((a.role === `voice`) && (b.role === `voice`)) {
     if (a.role < b.role) {
       return 1
     }
@@ -359,8 +359,8 @@ App.user_is_controllable = (user) => {
   }
 
   if (
-    (user.role === `admin` || user.role === `op`) &&
-    App.role !== `admin`
+    ((user.role === `admin`) || (user.role === `op`)) &&
+    (App.role !== `admin`)
   ) {
     return false
   }
@@ -763,13 +763,13 @@ App.change_role = (username, role) => {
     return
   }
 
-  if (username.length > 0 && username.length <= App.config.max_max_username_length) {
+  if ((username.length > 0) && (username.length <= App.config.max_max_username_length)) {
     if (username === App.username) {
       App.checkmsg(`You can't assign a role to yourself`)
       return
     }
 
-    if ((role === `admin` || role === `op`) && App.role !== `admin`) {
+    if (((role === `admin`) || (role === `op`)) && (App.role !== `admin`)) {
       App.forbidden_user()
       return
     }
@@ -823,7 +823,7 @@ App.ban = (username) => {
     return
   }
 
-  if (username.length > 0 && username.length <= App.config.max_max_username_length) {
+  if ((username.length > 0) && (username.length <= App.config.max_max_username_length)) {
     if (username === App.username) {
       App.checkmsg(`You can't ban yourself`)
       return
@@ -839,7 +839,7 @@ App.unban = (username) => {
     return
   }
 
-  if (username.length > 0 && username.length <= App.config.max_max_username_length) {
+  if ((username.length > 0) && (username.length <= App.config.max_max_username_length)) {
     if (username === App.username) {
       App.checkmsg(`You can't unban yourself`)
       return
@@ -869,7 +869,7 @@ App.kick = (username) => {
     return
   }
 
-  if (username.length > 0 && username.length <= App.config.max_max_username_length) {
+  if ((username.length > 0) && (username.length <= App.config.max_max_username_length)) {
     if (username === App.username) {
       App.checkmsg(`You can't kick yourself`)
       return
@@ -881,7 +881,7 @@ App.kick = (username) => {
 
     let rol = App.get_role(username)
 
-    if ((rol === `admin` || rol === `op`) && App.role !== `admin`) {
+    if (((rol === `admin`) || (rol === `op`)) && (App.role !== `admin`)) {
       App.forbidden_user()
       return
     }

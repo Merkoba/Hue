@@ -64,7 +64,7 @@ App.hide_tv = (item = false) => {
   for (let el of DOM.els(`#media_tv .media_container`)) {
     let type = el.id.replace(`media_`, ``).replace(`_tv_container`, ``)
 
-    if (!item || item.type !== type) {
+    if (!item || (item.type !== type)) {
       let new_el = DOM.create(`div`, `media_container`)
       new_el.id = el.id
       DOM.hide(new_el)
@@ -225,7 +225,7 @@ App.change_tv_source = (src, just_check = false, comment = ``) => {
     return false
   }
 
-  if (src === App.current_tv().source || src === App.current_tv().query) {
+  if ((src === App.current_tv().source) || (src === App.current_tv().query)) {
     if (feedback) {
       App.checkmsg(`TV is already set to that`)
     }

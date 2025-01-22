@@ -173,7 +173,7 @@ App.process_input = (args = {}) => {
   let message_split = args.message.split(`\n`)
   let num_lines = message_split.length
 
-  if (num_lines === 1 && App.is_command(args.message) && !args.edit_id) {
+  if ((num_lines === 1) && App.is_command(args.message) && !args.edit_id) {
     let ans = App.execute_command(args.message, {
       clr_input: args.clr_input,
     })

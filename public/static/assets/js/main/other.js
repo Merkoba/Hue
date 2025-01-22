@@ -49,7 +49,7 @@ App.generate_favicon = (mode) => {
   if (mode === -1) {
     color = `#808080`
   }
-  else if (mode === 0 || mode === 1) {
+  else if ((mode === 0) || (mode === 1)) {
     color = `#C06DCF`
   }
   else if (mode === 2) {
@@ -68,7 +68,7 @@ App.generate_favicon = (mode) => {
   let center = canvas.height / 2
   let side, side2
 
-  if (mode === -1 || mode === 0) {
+  if ((mode === -1) || (mode === 0)) {
     side = 112
     side2 = 114
   }

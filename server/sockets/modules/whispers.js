@@ -9,7 +9,7 @@ module.exports = (App) => {
     }
 
     if (data.type === `user`) {
-      if (!data.usernames || data.usernames.length === 0) {
+      if (!data.usernames || (data.usernames.length === 0)) {
         return
       }
 
@@ -20,7 +20,7 @@ module.exports = (App) => {
       for (let username of data.usernames) {
         if (
           !username.length ||
-          username.length > App.config.max_max_username_length
+          (username.length > App.config.max_max_username_length)
         ) {
           return
         }

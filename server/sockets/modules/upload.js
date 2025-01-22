@@ -80,8 +80,8 @@ module.exports = (App) => {
     let fsize = file.received / 1024
 
     if (
-      file.action === `image_upload` ||
-      file.action === `background_upload`
+      (file.action === `image_upload`) ||
+      (file.action === `background_upload`)
     ) {
       if (fsize > App.config.max_image_size) {
         delete App.vars.files[key]
@@ -195,12 +195,12 @@ module.exports = (App) => {
 
     let content_length = head_res.headers.get(`Content-Length`)
 
-    if (content_length && parseInt(content_length) > max_size) {
+    if (content_length && (parseInt(content_length) > max_size)) {
       App.logger.log_error(`Media is too large: ${content_length} bytes`)
       return
     }
 
-    if (content_length && parseInt(content_length) > max_size) {
+    if (content_length && (parseInt(content_length) > max_size)) {
       App.logger.log_error(`Media is too large: ${content_length} bytes`)
       return
     }

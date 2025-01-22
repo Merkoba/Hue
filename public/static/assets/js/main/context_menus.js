@@ -38,7 +38,7 @@ App.show_chat_context_menu = (button, x, y) => {
     has_reply = true
   }
 
-  if (user_id === App.user_id && (mode === `chat` || type === `image_change` || type === `tv_change`)) {
+  if ((user_id === App.user_id) && ((mode === `chat`) || (type === `image_change`) || (type === `tv_change`))) {
     items.push({
       text: `Edit`,
       action: () => {
@@ -56,7 +56,7 @@ App.show_chat_context_menu = (button, x, y) => {
     }
   }
 
-  if (mode === `chat` || type === `image_change` || type === `tv_change`) {
+  if ((mode === `chat`) || (type === `image_change`) || (type === `tv_change`)) {
     let text = `Like`
     let type = `like`
 
@@ -94,8 +94,8 @@ App.show_chat_context_menu = (button, x, y) => {
     },
   })
 
-  if ((user_id === App.user_id || App.is_admin_or_op()) &&
-    (mode === `chat` || type === `image_change` || type === `tv_change`)) {
+  if (((user_id === App.user_id) || App.is_admin_or_op()) &&
+    ((mode === `chat`) || (type === `image_change`) || (type === `tv_change`))) {
     items.push({
       text: `Delete`,
       action: () => {
@@ -122,7 +122,7 @@ App.show_chat_context_menu = (button, x, y) => {
     })
   }
 
-  if (x !== undefined && y !== undefined) {
+  if ((x !== undefined) && (y !== undefined)) {
     NeedContext.show({x, y, items})
   }
   else {

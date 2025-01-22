@@ -304,7 +304,7 @@ App.hide_message_board = () => {
 App.submit_message_board_post = () => {
   let message = App.utilz.remove_multiple_empty_lines(DOM.el(`#message_board_textarea`).value).trim()
 
-  if (!message || message.length > App.config.max_message_board_post_length) {
+  if (!message || (message.length > App.config.max_message_board_post_length)) {
     return
   }
 
@@ -325,7 +325,7 @@ App.on_message_board_received = (data, edited = false) => {
 
   App.check_last_message_board_post()
 
-  if (data.user_id !== App.user_id && !App.msg_message_board.is_open()) {
+  if ((data.user_id !== App.user_id) && !App.msg_message_board.is_open()) {
     let func = () => {
       App.show_message_board()
     }

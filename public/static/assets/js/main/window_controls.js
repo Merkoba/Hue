@@ -48,7 +48,7 @@ App.do_modal_filter = (id = false) => {
 
     if (filter.startsWith(`$user`)) {
       let username = DOM.dataset(it, `username`)
-      let match = username && first_arg === username.toLowerCase()
+      let match = username && (first_arg === username.toLowerCase())
 
       if (match) {
         if (tail) {

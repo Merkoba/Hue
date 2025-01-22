@@ -343,8 +343,8 @@ App.get_settings = () => {
 
   for (let setting in App.user_settings) {
     // Fill defaults
-    if (App.settings[setting] === undefined ||
-      App.settings[setting].value === undefined) {
+    if ((App.settings[setting] === undefined) ||
+      (App.settings[setting].value === undefined)) {
       App.loginfo(`Stor: Adding setting: ${setting}`)
       App.settings[setting] = {}
       set_default(setting)
@@ -423,24 +423,24 @@ App.start_settings_widgets_listeners = () => {
     let item = DOM.el(`#settings_${setting}`)
 
     if (
-      user_setting.type === `checkbox` ||
-      user_setting.type === `select`
+      (user_setting.type === `checkbox`) ||
+      (user_setting.type === `select`)
     ) {
       DOM.ev(item, `change`, () => {
         App.on_setting_change(setting)
       })
     }
     else if (
-      user_setting.type === `textarea` ||
-      user_setting.type === `text`
+      (user_setting.type === `textarea`) ||
+      (user_setting.type === `text`)
     ) {
       DOM.ev(item, `blur`, () => {
         App.on_setting_change(setting)
       })
     }
     else if (
-      user_setting.type === `number` ||
-      user_setting.type === `color`
+      (user_setting.type === `number`) ||
+      (user_setting.type === `color`)
     ) {
       DOM.ev(item, `change`, () => {
         App.on_setting_change(setting)

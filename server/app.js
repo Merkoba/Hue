@@ -37,7 +37,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
   utilz.loginfo(`ENV: ${app.get(`env`)}`)
 
-  if (app.get(`env`) === `production` && sconfig.https_enabled) {
+  if ((app.get(`env`) === `production`) && sconfig.https_enabled) {
     app.set(`trust proxy`, 1)
   }
 

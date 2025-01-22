@@ -82,7 +82,7 @@ module.exports = (App) => {
           return
         }
 
-        if (!data || typeof data !== `object`) {
+        if (!data || (typeof data !== `object`)) {
           return
         }
 

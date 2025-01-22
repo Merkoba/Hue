@@ -223,7 +223,7 @@ App.num_open_info_popups = () => {
   let num = 0
 
   for (let popup of popups) {
-    if (popup.hue_type === `info` && popup.is_open()) {
+    if ((popup.hue_type === `info`) && popup.is_open()) {
       num += 1
     }
   }

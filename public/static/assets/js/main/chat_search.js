@@ -39,7 +39,7 @@ App.show_chat_search = (filter = ``) => {
 
     if (filter.startsWith(`$user`)) {
       let username = DOM.dataset(it, `username`)
-      let match = username && first_arg === username.toLowerCase()
+      let match = username && (first_arg === username.toLowerCase())
 
       if (match) {
         if (tail) {
@@ -97,8 +97,8 @@ App.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$image`)) {
-      let match = DOM.dataset(it, `mode`) === `announcement` &&
-                  DOM.dataset(it, `type`) === `image_change`
+      let match = (DOM.dataset(it, `mode`) === `announcement`) &&
+                  (DOM.dataset(it, `type`) === `image_change`)
 
       if (match) {
         if (args) {
@@ -109,8 +109,8 @@ App.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$tv`)) {
-      let match = DOM.dataset(it, `mode`) === `announcement` &&
-                  DOM.dataset(it, `type`) === `tv_change`
+      let match = (DOM.dataset(it, `mode`) === `announcement`) &&
+                  (DOM.dataset(it, `type`) === `tv_change`)
 
       if (match) {
         if (args) {

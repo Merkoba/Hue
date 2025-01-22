@@ -731,10 +731,10 @@ App.prepare_commands = () => {
 
 // Checks whether some string is a command
 App.is_command = (message) => {
-  return message.length >= 2 &&
-    message[0] === App.cmd_prefix() &&
-    message[1] !== App.cmd_prefix() &&
-    message[1] !== ` `
+  return (message.length >= 2) &&
+    (message[0] === App.cmd_prefix()) &&
+    (message[1] !== App.cmd_prefix()) &&
+    (message[1] !== ` `)
 }
 
 // Responsible of executing a command
@@ -867,7 +867,7 @@ App.get_closest_command = (cmd) => {
   for (let command of App.commands_list) {
     let similarity = App.utilz.string_similarity(command, cmd)
 
-    if (similarity >= 0.8 && similarity > highest_num) {
+    if ((similarity >= 0.8) && (similarity > highest_num)) {
       highest_num = similarity
       highest_command = command
     }

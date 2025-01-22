@@ -173,7 +173,7 @@ App.get_media_change_inline_comment = (type, source) => {
       }
     }
 
-    if (url && cm.length > 0) {
+    if (url && (cm.length > 0)) {
       source = url
       comment = cm.join(` `)
     }
@@ -378,13 +378,13 @@ App.change_media = (args = {}) => {
   }
 
   if (args.type === `image`) {
-    if (!args.force && App.loaded_image.source === App.current_image().source) {
+    if (!args.force && (App.loaded_image.source === App.current_image().source)) {
       App.loaded_image = item
       return
     }
   }
   else if (args.type === `tv`) {
-    if (!args.force && App.loaded_tv.source === App.current_tv().source) {
+    if (!args.force && (App.loaded_tv.source === App.current_tv().source)) {
       App.loaded_tv = item
       return
     }
@@ -818,7 +818,7 @@ App.setup_media_object = (type, mode, odata = {}) => {
     }
   }
 
-  if (mode === `change` || mode === `show`) {
+  if ((mode === `change`) || (mode === `show`)) {
     App[`push_${type}_changed`](data)
   }
 

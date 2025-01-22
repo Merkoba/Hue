@@ -125,7 +125,7 @@ App.setup_drag_events = () => {
 
 // Changes button visibility based on url
 App.check_handle_url_options = (text) => {
-  if (text && text.length < App.config.max_input_length) {
+  if (text && (text.length < App.config.max_input_length)) {
     DOM.show(`#handle_url_chat`)
   }
   else {
@@ -274,7 +274,7 @@ App.remove_urls = (text, show_hostname = true) => {
     }
   }
 
-  if (show_hostname && hostname && new_words.length === 1) {
+  if (show_hostname && (hostname && (new_words.length === 1))) {
     new_words.push(`(${hostname})`)
   }
 

@@ -45,8 +45,8 @@ module.exports = (App) => {
     }
 
     if (
-      data.name.length === 0 ||
-      data.name.length > App.config.max_room_name_length
+      (data.name.length === 0) ||
+      (data.name.length > App.config.max_room_name_length)
     ) {
       return
     }
@@ -149,7 +149,7 @@ module.exports = (App) => {
 
     let size = data.image_file.byteLength / 1024
 
-    if (size === 0 || size > App.config.max_image_size) {
+    if ((size === 0) || (size > App.config.max_image_size)) {
       App.handler.user_emit(socket, `upload_error`, {})
       return
     }
@@ -282,7 +282,7 @@ module.exports = (App) => {
         let files = await App.i.fsp.readdir(container)
 
         for (let file of files) {
-          if (file.startsWith(`background`) && file !== file_name) {
+          if (file.startsWith(`background`) && (file !== file_name)) {
             let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id)
             let path = App.i.path.join(container, file)
 

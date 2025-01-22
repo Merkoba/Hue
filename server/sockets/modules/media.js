@@ -16,7 +16,7 @@ module.exports = (App) => {
 
     let size = data.file.byteLength / 1024
 
-    if (size === 0 || size > App.config[`max_${type}_size`]) {
+    if ((size === 0) || (size > App.config[`max_${type}_size`])) {
       return
     }
 

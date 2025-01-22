@@ -33,7 +33,7 @@ module.exports = (App) => {
       return
     }
 
-    if (!socket.hue_superuser && socket.hue_username === data.username) {
+    if (!socket.hue_superuser && (socket.hue_username === data.username)) {
       return
     }
 
@@ -51,8 +51,8 @@ module.exports = (App) => {
 
     if (!socket.hue_superuser) {
       if (
-        (current_role === `admin` || current_role === `op`) &&
-        socket.hue_role !== `admin`
+        ((current_role === `admin`) || (current_role === `op`)) &&
+        (socket.hue_role !== `admin`)
       ) {
         App.handler.user_emit(socket, `forbidden_user`, {})
         return
@@ -60,8 +60,8 @@ module.exports = (App) => {
     }
 
     if (
-      current_role === data.role ||
-      (current_role === undefined && data.role === `voice`)
+      (current_role === data.role) ||
+      ((current_role === undefined) && (data.role === `voice`))
     ) {
       App.handler.user_emit(socket, `is_already`, {
         what: data.role,
@@ -76,8 +76,8 @@ module.exports = (App) => {
     for (let socc of sockets) {
       if (socc.hue_superuser) {
         if (
-          socket.hue_username !== socc.hue_username &&
-          socc.hue_role === `admin`
+          (socket.hue_username !== socc.hue_username) &&
+          (socc.hue_role === `admin`)
         ) {
           App.handler.user_emit(socket, `forbidden_user`, {})
           return
@@ -128,9 +128,9 @@ module.exports = (App) => {
 
     if (sockets.length > 0) {
       if (
-        ((sockets[0].hue_role === `admin` ||
-          sockets[0].hue_role === `op`) &&
-          socket.hue_role !== `admin`) ||
+        (((sockets[0].hue_role === `admin`) ||
+          (sockets[0].hue_role === `op`)) &&
+          (socket.hue_role !== `admin`)) ||
         sockets[0].hue_superuser
       ) {
         App.handler.user_emit(socket, `forbidden_user`, {})
@@ -183,8 +183,8 @@ module.exports = (App) => {
     let current_role = info.keys[id] || App.vars.default_role
 
     if (
-      (current_role === `admin` || current_role === `op`) &&
-      socket.hue_role !== `admin`
+      ((current_role === `admin`) || (current_role === `op`)) &&
+      (socket.hue_role !== `admin`)
     ) {
       App.handler.user_emit(socket, `forbidden_user`, {})
       return
@@ -274,7 +274,7 @@ module.exports = (App) => {
 
   // Checks if socket is admin or op
   App.handler.is_admin_or_op = (socket) => {
-    return socket.hue_role === `admin` || socket.hue_role === `op`
+    return (socket.hue_role === `admin`) || (socket.hue_role === `op`)
   }
 
   // Checks if socket is admin
@@ -314,7 +314,7 @@ module.exports = (App) => {
       if (App.vars.rooms[room_id].userlist !== undefined) {
         return App.vars.rooms[room_id].userlist
       }
-      
+
       return {}
     }
     catch (err) {
@@ -351,7 +351,7 @@ module.exports = (App) => {
     for (let id in info.keys) {
       let role = info.keys[id] || App.vars.default_role
 
-      if (role === `op` || role === `admin`) {
+      if ((role === `op`) || (role === `admin`)) {
         roles[id] = role
         ids.push(id)
       }

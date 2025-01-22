@@ -290,7 +290,7 @@ module.exports = (App) => {
           id: message_id,
         })
 
-        if (message_user_id !== socket.hue_user_id && message_username) {
+        if ((message_user_id !== socket.hue_user_id) && message_username) {
           App.handler.push_admin_log_message(socket, `deleted a message from "${message_username}"`)
         }
       }
@@ -399,7 +399,7 @@ module.exports = (App) => {
       return
     }
 
-    if (data.type !== `like` && data.type !== `unlike`) {
+    if ((data.type !== `like`) && (data.type !== `unlike`)) {
       return
     }
 

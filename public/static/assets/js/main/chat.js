@@ -423,7 +423,7 @@ App.insert_message = (args = {}) => {
   }
 
   if (last_message) {
-    if (mode === `chat` && DOM.dataset(last_message, `mode`) === `chat`) {
+    if ((mode === `chat`) && (DOM.dataset(last_message, `mode`) === `chat`)) {
       if (
         DOM.el(`.chat_username`, args.message).textContent ===
         DOM.el(`.chat_username`, last_message).textContent
@@ -844,7 +844,7 @@ App.get_message_by_id = (id, container = `#chat_area`) => {
   for (let i = 0; i < units.length; i++) {
     let uid = DOM.dataset(units[i], `id`)
 
-    if (uid && uid === id) {
+    if (uid && (uid === id)) {
       return [units[i], i, id]
     }
   }
@@ -925,8 +925,8 @@ App.process_remove_announcement = (message) => {
   let message_id = DOM.dataset(message, `message_id`)
 
   if (
-    type === `image_change` ||
-    type === `tv_change`
+    (type === `image_change`) ||
+    (type === `tv_change`)
   ) {
     let id = DOM.dataset(message, `id`)
     App.remove_item_from_media_changed(type.replace(`_change`, ``), id)
@@ -999,7 +999,7 @@ App.activity_above = () => {
     let same_username = false
     let username = DOM.dataset(message, `username`)
 
-    if (username && username === App.username) {
+    if (username && (username === App.username)) {
       same_username = true
     }
 
@@ -1030,7 +1030,7 @@ App.activity_below = () => {
     let same_username = false
     let username = DOM.dataset(message, `username`)
 
-    if (username && username === App.username) {
+    if (username && (username === App.username)) {
       same_username = true
     }
 
@@ -1100,11 +1100,11 @@ App.on_activity = (type) => {
   }
 
   if (!App.has_focus) {
-    if (type === `message` || type === `media_change`) {
+    if ((type === `message`) || (type === `media_change`)) {
       App.increase_unread()
       App.alert_title(1)
     }
-    else if (type === `highlight` || type === `whisper`) {
+    else if ((type === `highlight`) || (type === `whisper`)) {
       App.increase_unread()
       App.alert_title(2)
     }
@@ -1363,7 +1363,7 @@ App.show_log_messages = (log_messages) => {
   let num_image = 0
   let num_tv = 0
 
-  if (log_messages && log_messages.length > 0) {
+  if (log_messages && (log_messages.length > 0)) {
     for (let message of log_messages) {
       let type = message.type
 
@@ -1394,7 +1394,7 @@ App.show_log_messages = (log_messages) => {
     )
   }
 
-  if (log_messages && log_messages.length > 0) {
+  if (log_messages && (log_messages.length > 0)) {
     for (let message of log_messages) {
       let type = message.type
       let data = message.data
@@ -1613,7 +1613,7 @@ App.delete_message_action = () => {
 App.handle_delete_messages = (id, user_id) => {
   let user = App.get_user_by_user_id(user_id)
 
-  if (App.user_id !== user_id && !App.superuser) {
+  if ((App.user_id !== user_id) && !App.superuser) {
     if (user && App.is_admin(user)) {
       App.forbidden_user()
       return
@@ -1638,12 +1638,12 @@ App.handle_delete_messages = (id, user_id) => {
     shown += 1
   }
 
-  if (App.is_admin() && index !== 0) {
+  if (App.is_admin() && (index !== 0)) {
     DOM.show(`#delete_messages_above`)
     shown += 1
   }
 
-  if (App.is_admin() && index < num_messages - 1) {
+  if (App.is_admin() && (index < (num_messages - 1))) {
     DOM.show(`#delete_messages_below`)
     shown += 1
   }
@@ -1749,15 +1749,15 @@ App.like_message = (target, type = `like`) => {
   let unit = target.closest(`.message_unit`)
   let liked = App.message_is_liked(unit)
 
-  if (type === `like` && liked) {
+  if ((type === `like`) && liked) {
     return
   }
 
-  if (type === `unlike` && !liked) {
+  if ((type === `unlike`) && !liked) {
     return
   }
 
-  if (type === `like` && DOM.dataset(unit, `likes`).length >= App.config.max_likes) {
+  if ((type === `like`) && (DOM.dataset(unit, `likes`).length >= App.config.max_likes)) {
     return
   }
 

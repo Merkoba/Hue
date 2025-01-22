@@ -39,7 +39,7 @@ module.exports = (App) => {
     let media_info = await App.handler.get_last_media(socket.hue_room_id, `tv`)
 
     if (media_info) {
-      if (media_info.source === data.src || media_info.query === data.src) {
+      if ((media_info.source === data.src) || (media_info.query === data.src)) {
         App.handler.user_emit(socket, `same_tv`, {})
         return
       }
@@ -82,7 +82,7 @@ module.exports = (App) => {
               return res.json()
             })
             .then(async (response) => {
-              if (response.items !== undefined && response.items.length > 0) {
+              if ((response.items !== undefined) && (response.items.length > 0)) {
                 data.type = `youtube`
                 data.title = response.items[0].snippet.title
                 await App.handler.do_change_media(socket, data, `tv`)
@@ -104,7 +104,7 @@ module.exports = (App) => {
       else if (data.src.includes(`twitch.tv`)) {
         let info = App.utilz.get_twitch_id(data.src)
 
-        if (info && info[0] === `channel`) {
+        if (info && (info[0] === `channel`)) {
           data.type = `twitch`
           data.title = info[1]
           await App.handler.do_change_media(socket, data, `tv`)
@@ -169,12 +169,12 @@ module.exports = (App) => {
           return res.json()
         })
         .then(async (response) => {
-          if (response.items !== undefined && response.items.length > 0) {
+          if ((response.items !== undefined) && (response.items.length > 0)) {
             for (let item of response.items) {
               if (
-                item === undefined ||
-              item.id === undefined ||
-              item.id.videoId === undefined
+                (item === undefined) ||
+                (item.id === undefined) ||
+                (item.id.videoId === undefined)
               ) {
                 continue
               }

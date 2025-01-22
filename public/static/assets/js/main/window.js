@@ -8,11 +8,11 @@ App.alert_title = (mode) => {
     return
   }
 
-  if (mode === 1 && App.alert_mode !== 0) {
+  if ((mode === 1) && (App.alert_mode !== 0)) {
     return
   }
 
-  if (mode === 2 && App.alert_mode === 2) {
+  if ((mode === 2) && (App.alert_mode === 2)) {
     return
   }
 
@@ -39,7 +39,7 @@ App.set_title = (s) => {
 // Updates the tab title
 // Taking into account the room name and topic
 App.update_title = () => {
-  if (App.get_setting(`unread_count`) && App.unread_count > 0) {
+  if (App.get_setting(`unread_count`) && (App.unread_count > 0)) {
     App.set_title(`(${App.unread_count}) ${App.room_name}`)
   }
   else {

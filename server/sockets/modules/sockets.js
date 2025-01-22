@@ -5,7 +5,7 @@ module.exports = (App) => {
       let sockets = await App.handler.get_room_sockets(socket.hue_room_id)
 
       for (let socc of sockets) {
-        if (socc.id !== socket.id && socc.hue_user_id === socket.hue_user_id) {
+        if ((socc.id !== socket.id) && (socc.hue_user_id === socket.hue_user_id)) {
           return true
         }
       }
@@ -95,7 +95,7 @@ module.exports = (App) => {
       if (num > App.sconfig.max_sockets_per_user) {
         return true
       }
-      
+
       return false
     }
     catch (err) {
@@ -112,8 +112,8 @@ module.exports = (App) => {
       for (let socc of sockets) {
         if (socc.hue_user_id !== undefined) {
           if (
-            socc.id !== socket.id &&
-            socc.hue_user_id === socket.hue_user_id
+            (socc.id !== socket.id) &&
+            (socc.hue_user_id === socket.hue_user_id)
           ) {
             if (socc.hue_joining === true) {
               return true

@@ -35,7 +35,7 @@ module.exports = (App) => {
       data.username = data.username.trim()
       data.password = data.password.trim()
 
-      if (data.username === undefined || data.password === undefined) {
+      if ((data.username === undefined) || (data.password === undefined)) {
         return App.handler.get_out(socket)
       }
 
@@ -51,7 +51,7 @@ module.exports = (App) => {
       socket.hue_login_method = `normal`
       data.user_id = data.user_id.trim()
 
-      if (data.user_id === undefined || data.token === undefined) {
+      if ((data.user_id === undefined) || (data.token === undefined)) {
         return App.handler.get_out(socket)
       }
 
@@ -96,8 +96,8 @@ module.exports = (App) => {
           return App.handler.get_out(socket)
         }
         else if (
-          decoded.data === undefined ||
-          decoded.data.id === undefined
+          (decoded.data === undefined) ||
+          (decoded.data.id === undefined)
         ) {
           return App.handler.get_out(socket)
         }
@@ -105,7 +105,7 @@ module.exports = (App) => {
         if (decoded.data.id !== data.user_id) {
           return App.handler.get_out(socket)
         }
-        
+
         socket.hue_user_id = data.user_id
 
         let info = await App.db_manager.get_room([`id`, data.room_id])
