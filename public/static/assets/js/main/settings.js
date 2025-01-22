@@ -177,17 +177,7 @@ App.build_user_settings = () => {
       actions: () => {
         App.apply_theme()
       },
-      options: [
-        {value: 0, text: `Auto`},
-        {value: 0.95, text: `95%`},
-        {value: 0.9, text: `90%`},
-        {value: 0.85, text: `85%`},
-        {value: 0.8, text: `80%`},
-        {value: 0.75, text: `75%`},
-        {value: 0.7, text: `70%`},
-        {value: 0.65, text: `65%`},
-        {value: 0.6, text: `60%`},
-      ],
+      options: App.opacity_options(),
       version: 1,
     },
     show_chat: {
@@ -675,4 +665,22 @@ App.fill_settings = () => {
     c.append(el)
     container.append(c)
   }
+}
+
+// Make background opacity options
+App.opacity_options = () => {
+  let opts = [
+    {value: 0, text: `Auto`},
+  ]
+
+  let max = 95
+  let min = 60
+  let steps = 5
+
+  for (let p = max; p >= min; p -= steps) {
+    let o = App.utilz.round(p / 100, 1)
+    opts.push({value: o, text: `${p}%`})
+  }
+
+  return opts
 }

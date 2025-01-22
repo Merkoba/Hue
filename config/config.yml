@@ -251,7 +251,7 @@ max_autocomplete: 1000
 loginfo: false
 
 # Opacity for the background image
-background_opacity: 0.85
+background_opacity: 0.88
 
 # Radio stations available
 radios:
