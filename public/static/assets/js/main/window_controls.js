@@ -24,8 +24,8 @@ App.reset_modal_filter = (instance) => {
   }
 }
 
-// Filter action for normal filter windows
-App.do_modal_filter = (id = false) => {
+// Get modal id if not provided
+App.fill_modal_id = (id) => {
   if (!id) {
     if (!App.active_modal) {
       return
@@ -33,6 +33,13 @@ App.do_modal_filter = (id = false) => {
 
     id = App.active_modal.options.id
   }
+
+  return id
+}
+
+// Filter action for normal filter windows
+App.do_modal_filter = (id = false) => {
+  id = App.fill_modal_id(id)
 
   if (id === `chat_search`) {
     App.show_chat_search(DOM.el(`#chat_search_filter`).value)

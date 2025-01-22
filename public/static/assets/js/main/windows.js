@@ -842,14 +842,7 @@ App.scroll_modal_to_top = (id) => {
 
 // Scrolls a modal window to the bottom
 App.scroll_modal_to_bottom = (id = false) => {
-  if (!id) {
-    if (!App.active_modal) {
-      return
-    }
-
-    id = App.active_modal.options.id
-  }
-
+  id = App.fill_modal_id(id)
   let container = DOM.el(`#Msg-content-container-${id}`)
   container.scrollTop = container.scrollHeight
 }
