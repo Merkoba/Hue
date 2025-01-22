@@ -419,7 +419,7 @@ html {
 
 .chat_message {
 	overflow-wrap: break-word;
-	word-break: break-word;
+	word-break: break-all;
 	display: flex;
 }
 
@@ -496,7 +496,7 @@ html {
 
 .announcement {
 	overflow-wrap: break-word;
-	word-break: break-word;
+	word-break: break-all;
 	display: flex;
 	flex-direction: row;
 }
@@ -561,7 +561,7 @@ a.generic:hover {
 
 .user_item {
 	overflow-wrap: break-word;
-	word-break: break-word;
+	word-break: break-all;
 	display: inline-block;
 	margin: 0.8rem;
 }
@@ -1197,7 +1197,7 @@ a.special_link:hover {
 .link_preview_text {
 	margin-bottom: 0.35rem;
 	overflow-wrap: break-word;
-	word-break: break-word;
+	word-break: break-all;
 	display: inline-block;
 }
 
@@ -1236,7 +1236,7 @@ a.special_link:hover {
 
 .link_preview_title {
 	overflow-wrap: break-word;
-	word-break: break-word;
+	word-break: break-all;
 }
 
 .link_preview_image {
