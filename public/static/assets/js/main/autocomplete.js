@@ -23,6 +23,7 @@ App.generate_words_to_autocomplete = () => {
     ...App.commands_list_with_prefix,
     ...usernames,
     ...susernames,
+    ...App.autocomplete,
   )
 
   words.sort()
@@ -171,4 +172,31 @@ App.setup_autocomplete = () => {
       App.clear_tabbed(e.target)
     }
   })
+}
+
+// Gets the autocomplete localStorage object
+App.get_autocomplete = () => {
+  let words = App.get_local_storage(App.ls_autocomplete)
+
+  if (words === null) {
+    words = []
+  }
+
+  App.autocomplete = words
+}
+
+// Push to autocomplete
+// This is meant for bot commands like .image
+App.push_to_autocomplete = (text) => {
+  let word = text.trim().split(` `)[0].trim()
+
+  if (!word.match(/^[^\w]/)) {
+    return
+  }
+
+  if (!App.autocomplete.includes(word)) {
+    App.autocomplete.push(word)
+    App.autocomplete = App.autocomplete.slice(0 - App.config.max_autocomplete)
+    App.save_local_storage(App.ls_autocomplete, App.autocomplete)
+  }
 }

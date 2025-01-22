@@ -241,6 +241,14 @@ max_input_history: 100
 # Max message length when making custom notifications
 max_notification_length: 500
 
+# Max autocomplete words to save
+# It saves words that start with a symbol like .this or !that
+# The aim is to store bot commands for easy access
+max_autocomplete: 1000
+
+# Show loginfo messages on the console
+loginfo: false
+
 # Radio stations available
 radios:
   - name: Anima Dub Techno

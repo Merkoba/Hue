@@ -16,6 +16,7 @@ App.ls_settings = `settings_v4`
 App.ls_room_state = `room_state_v2`
 App.ls_input_history = `input_history_v3`
 App.ls_first_time = `first_time_v1`
+App.ls_autocomplete = `autocomplete_v1`
 App.roles = [`admin`, `op`, `voice`]
 App.default_setting_string = `__default__`
 App.topic = ``
@@ -183,6 +184,7 @@ App.init = () => {
   App.setup_rooms()
   App.setup_theme()
   App.setup_linksbar()
+  App.get_autocomplete()
   App.get_first_time()
 
   if (App.debug_socket) {

@@ -189,6 +189,8 @@ App.process_input = (args = {}) => {
       args.message = args.message.substring(0, App.config.max_input_length)
     }
 
+    App.push_to_autocomplete(args.message)
+
     App.socket_emit(`sendchat`, {
       message: args.message,
       edit_id: args.edit_id,

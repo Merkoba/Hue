@@ -94,6 +94,10 @@ App.generate_favicon = (mode) => {
 
 // Centralized console info printer
 App.loginfo = (message, style = ``) => {
+  if (!App.config.loginfo) {
+    return
+  }
+
   App.utilz.loginfo(`🤡 %c(${App.utilz.nice_date(Date.now())}) %c${message}`, `color:blue`, style)
 }
 
