@@ -109,7 +109,7 @@ App.start_mouse_events = () => {
       }
 
       if (e.target.closest(`.window_filter_bottom`)) {
-        App.scroll_modal_to_bottom()
+        App.scroll_modal_toggle()
       }
     }
 

@@ -847,6 +847,19 @@ App.scroll_modal_to_bottom = (id = false) => {
   container.scrollTop = container.scrollHeight
 }
 
+// Scroll to the bottom or to the top
+App.scroll_modal_toggle = (id = false) => {
+  id = App.fill_modal_id(id)
+  let c = DOM.el(`#Msg-content-container-${id}`)
+
+  if (Math.abs(c.scrollTop - (c.scrollHeight - c.clientHeight)) > 10) {
+    App.scroll_modal_to_bottom(id)
+  }
+  else {
+    c.scrollTop = 0
+  }
+}
+
 // Get the first visible item in a filtered container
 App.get_first_visible_modal_item = (id) => {
   let items = DOM.els(`#${id} .modal_item`)
