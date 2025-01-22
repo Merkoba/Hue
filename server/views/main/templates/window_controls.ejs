@@ -1,7 +1,7 @@
 <script id="template_window_controls" type="text/x-handlebars-template" class="template">
   <div class="window_controls flex_row_center" data-parent-id="{{parent_id}}">
-    <div class="window_filter_toggle_auto action flex_column_center invisible" title="Filter History">
-      <svg class="panel_icon"><use href="#icon_x-circle"></use></svg>
+    <div class="window_filter_bottom action flex_column_center" title="Go To Bottom">
+      <svg class="panel_icon"><use href="#icon_arrow-down"></use></svg>
     </div>
 
     <input type="text" id="{{filter_id}}" class="filter_input" placeholder="{{filter_placeholder}}" data-mode="{{filter_mode}}">
@@ -9,6 +9,5 @@
     <div class="window_filter_clear action flex_column_center" title="Clear Filter">
       <svg class="panel_icon"><use href="#icon_x-circle"></use></svg>
     </div>
-  </div>
   </div>
 </script>

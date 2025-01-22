@@ -107,6 +107,10 @@ App.start_mouse_events = () => {
         App.do_modal_filter()
         filter.focus()
       }
+
+      if (e.target.closest(`.window_filter_bottom`)) {
+        App.scroll_modal_to_bottom()
+      }
     }
 
     if (e.target.classList.contains(`whisper_link`)) {
