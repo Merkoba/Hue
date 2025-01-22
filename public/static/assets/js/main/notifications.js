@@ -114,8 +114,8 @@ App.push_notification = (args) => {
   let content = DOM.el(`.notification_content`, item)
 
   if (args.on_click) {
-    DOM.ev(content, `click`, () => {
-      args.on_click()
+    DOM.ev(content, `click`, (e) => {
+      args.on_click(e)
     })
   }
 
@@ -158,7 +158,24 @@ App.show_notifications = (filter = ``) => {
 App.show_room_notification = (username, message, icon = `info`) => {
   let user = App.get_user_by_username(username)
 
-  let f = () => {
+  let f_popup = (win, e) => {
+    if (e.target.tagName === `A`) {
+      return
+    }
+
+    if (user) {
+      App.show_profile(user.username, user.user_id)
+    }
+    else {
+      App.show_profile(username)
+    }
+  }
+
+  let f_item = (e) => {
+    if (e.target.tagName === `A`) {
+      return
+    }
+
     if (user) {
       App.show_profile(user.username, user.user_id)
     }
@@ -175,12 +192,12 @@ App.show_room_notification = (username, message, icon = `info`) => {
 
   let html = App.make_info_popup_item({
     message,
-    on_click: f,
+    on_click: f_item,
     icon,
     profilepic,
   })
 
-  App.show_popup(App.make_info_popup(f), html)
+  App.show_popup(App.make_info_popup(f_popup), html)
 }
 
 // Another centralized function for room changes

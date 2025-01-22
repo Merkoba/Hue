@@ -1,4 +1,4 @@
-/* Msg v14.2.2 https://github.com/Merkoba/Msg */
+/* Msg v14.3.0 https://github.com/Merkoba/Msg */
 
 const Msg = {}
 Msg.num_created = 0
@@ -1096,47 +1096,47 @@ Msg.factory = (options = {}) => {
     }
 
     if (instance.overlay !== undefined) {
-      Msg.ev(instance.overlay, `click`, () => {
+      Msg.ev(instance.overlay, `click`, (e) => {
         if (instance.options.close_on_overlay_click) {
-          instance.options.on_overlay_click(instance)
+          instance.options.on_overlay_click(instance, e)
           instance.close()
         }
       })
     }
 
     if (instance.titlebar !== undefined) {
-      Msg.ev(instance.titlebar, `click`, () => {
+      Msg.ev(instance.titlebar, `click`, (e) => {
         if (instance.options.close_on_titlebar_click) {
-          instance.options.on_titlebar_click(instance)
+          instance.options.on_titlebar_click(instance, e)
           instance.close()
         }
       })
     }
 
     Msg.ev(instance.window, `click`, (e) => {
-      instance.options.on_click(instance)
+      instance.options.on_click(instance, e)
     })
 
     Msg.ev(instance.window, `wheel`, (e) => {
       let direction = e.deltaY > 0 ? `down` : `up`
 
       if (direction === `down`) {
-        instance.options.on_wheel_down(instance)
+        instance.options.on_wheel_down(instance, e)
       }
       else if (direction === `up`) {
-        instance.options.on_wheel_up(instance)
+        instance.options.on_wheel_up(instance, e)
       }
     })
 
     Msg.ev(instance.window, `auxclick`, (e) => {
       if (e.which === 2) {
-        instance.options.on_middle_click(instance)
+        instance.options.on_middle_click(instance, e)
       }
     })
 
     if (instance.window_inner_x !== undefined) {
       Msg.ev(instance.window_inner_x, `click`, (e) => {
-        instance.options.on_x_button_click(instance)
+        instance.options.on_x_button_click(instance, e)
         instance.close()
         e.stopPropagation()
       })
@@ -1145,7 +1145,7 @@ Msg.factory = (options = {}) => {
 
     if (instance.window_floating_x !== undefined) {
       Msg.ev(instance.window_floating_x, `click`, (e) => {
-        instance.options.on_x_button_click(instance)
+        instance.options.on_x_button_click(instance, e)
         instance.close()
         e.stopPropagation()
       })
@@ -1154,7 +1154,7 @@ Msg.factory = (options = {}) => {
 
     if (instance.overlay_x !== undefined) {
       Msg.ev(instance.overlay_x, `click`, (e) => {
-        instance.options.on_x_button_click(instance)
+        instance.options.on_x_button_click(instance, e)
         instance.close()
         e.stopPropagation()
       })
