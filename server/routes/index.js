@@ -261,6 +261,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     c.vars.login_title = sconfig.login_title
     c.vars.recaptcha_enabled = sconfig.recaptcha_enabled
     c.vars.form_username = decodeURIComponent(req.query.form_username)
+    c.vars.default_title = config.default_title
 
     if (sconfig.recaptcha_enabled) {
       c.vars.recaptcha_key = sconfig.recaptcha_key
@@ -341,6 +342,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     c.vars.recaptcha_enabled = sconfig.recaptcha_enabled
     c.vars.form_username = decodeURIComponent(req.query.form_username)
     c.vars.use_register_code = sconfig.use_register_code
+    c.vars.default_title = config.default_title
 
     if (sconfig.recaptcha_enabled) {
       c.vars.recaptcha_key = sconfig.recaptcha_key
@@ -520,6 +522,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     view.vars.room_id = config.main_room_id
     view.vars.user_id = req.session.user_id
     view.vars.jwt_token = req.jwt_token
+    view.vars.default_title = config.default_title
     res.render(`main/main`, view)
   })
 
@@ -532,6 +535,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     view.vars.room_id = req.params.id.substr(0, sconfig.max_room_id_length)
     view.vars.user_id = req.session.user_id
     view.vars.jwt_token = req.jwt_token
+    view.vars.default_title = config.default_title
     res.render(`main/main`, view)
   })
 

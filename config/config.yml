@@ -19,7 +19,7 @@ video_poster: "/static/assets/img/video_poster.jpg"
 
 # The default tab title of a room.
 # This appears before the room information has been gathered to set the first title
-default_title: "Hue | Chat room with images and tv"
+default_title: "Multimedia chat room"
 
 # The shown topic when the room is created
 default_topic: "No topic"
