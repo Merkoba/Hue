@@ -118,6 +118,11 @@ App.start_mouse_events = () => {
 
   DOM.ev(document, `selectionchange`, (e) => {
     let selection = window.getSelection()
+
+    if (!selection || !selection.anchorNode) {
+      return
+    }
+
     let target = selection.anchorNode.parentElement
 
     if (!target) {
