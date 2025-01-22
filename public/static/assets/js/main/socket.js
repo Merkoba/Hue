@@ -320,7 +320,7 @@ App.start_socket = () => {
   App.socket.binaryType = `arraybuffer`
 
   App.socket.on(`connect`, () => {
-    App.loginfo(`Socket Connected`, `color:green`)
+    App.loginfo(`Socket Connected`, `color:lightgreen`)
     App.connecting = false
 
     App.socket_emit(`join_room`, {
