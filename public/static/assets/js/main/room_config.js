@@ -89,6 +89,14 @@ App.setup_room_config = () => {
     App.random_theme(`light`)
   })
 
+  DOM.ev(DOM.el(`#room_config_bottom`), `click`, () => {
+    App.scroll_modal_to_bottom(`room_config`)
+  })
+
+  DOM.ev(DOM.el(`#room_config_top`), `click`, () => {
+    App.scroll_modal_to_top(`room_config`)
+  })
+
   start_color_picker(`background`)
   start_color_picker(`text`)
 }

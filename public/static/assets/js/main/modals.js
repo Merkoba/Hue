@@ -568,6 +568,13 @@ App.start_msg = () => {
     ],
   }))
 
+  App.msg_room_config.set_title(App.template_titlebar({
+    items: [
+      {id: `room_config_bottom`, text: `Bottom`},
+      {id: `room_config_top`, text: `Top`},
+    ],
+  }))
+
   App.msg_link_image.set_title(App.template_titlebar({
     items: [
       {id: `link_image_submit`, text: `Link`},
@@ -762,7 +769,6 @@ App.start_msg = () => {
   }))
 
   App.msg_main_menu.set_title(`Main Menu`)
-  App.msg_room_config.set_title(`Room Config`)
   App.msg_admin_list.set_title(`Admin List`)
   App.msg_ban_list.set_title(`Ban List`)
   App.msg_roomlist.set_title(`Room List`)
