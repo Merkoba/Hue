@@ -80,20 +80,26 @@ App.push_notification = (args) => {
   item.title = App.nice_date(d)
 
   if (args.profilepic) {
-    item.innerHTML = App.template_notification_2({
+    let html = App.template_notification_2({
       content_classes,
       profilepic: args.profilepic,
       message: args.message,
       date: t,
     })
+
+    html = App.urlize_html(html)
+    item.innerHTML = html
   }
   else {
-    item.innerHTML = App.template_notification({
+    let html = App.template_notification({
       content_classes,
       icon: args.icon,
       message: args.message,
       date: t,
     })
+
+    html = App.urlize_html(html)
+    item.innerHTML = html
   }
 
   let pic = DOM.el(`.profilepic`, item)
