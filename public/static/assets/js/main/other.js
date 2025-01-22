@@ -107,12 +107,12 @@ App.loginfo = (message, style = ``) => {
 
 // Centralized function to return a chat icon svg
 App.get_chat_icon = (name) => {
-  return `<svg class='chat_icon'><use xlink:href='#icon_${name}'></use></svg>`
+  return `<svg class='chat_icon'><use href='#icon_${name}'></use></svg>`
 }
 
 // Centralized function to return an icon
 App.get_icon = (name, cls = ``) => {
-  return `<svg class='other_icon ${cls}'><use xlink:href='#icon_${name}'></use></svg>`
+  return `<svg class='other_icon ${cls}'><use href='#icon_${name}'></use></svg>`
 }
 
 // Open view text
