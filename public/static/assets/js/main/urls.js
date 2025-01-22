@@ -1,14 +1,8 @@
-// Function to turn url text into actual links
-App.urlize = (el, limit_width = true) => {
-  if (!el) {
-    return
-  }
-
+// Get urlize html
+App.urlize_html = (html, limit_width = true) => {
   try {
-    let html = el.innerHTML
-
     if (!html) {
-      return
+      return ``
     }
 
     let split = html.split(/\s+/)
@@ -23,11 +17,7 @@ App.urlize = (el, limit_width = true) => {
       }
     }
 
-    if (matches.length > 0) {
-      on_matches(matches, html)
-    }
-
-    function on_matches(matches, html) {
+    function on_matches(matches) {
       let cls = `generic action`
       let used_urls = []
 
@@ -60,13 +50,33 @@ App.urlize = (el, limit_width = true) => {
           `<a class="${cls}" target="_blank" href="${url}">${u}</a>`,
         )
       }
-
-      el.innerHTML = html
     }
+
+    if (matches.length > 0) {
+      on_matches(matches)
+    }
+
+    return html
   }
   catch (err) {
     App.utilz.loginfo(err)
+    return ``
   }
+}
+
+// Function to turn url text into actual links
+App.urlize = (el, limit_width = true) => {
+  if (!el) {
+    return
+  }
+
+  let html = el.innerHTML
+
+  if (!html) {
+    return
+  }
+
+  el.innerHTML = App.urlize_html(html, limit_width)
 }
 
 // Goes to a url

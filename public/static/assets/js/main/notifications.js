@@ -195,6 +195,7 @@ App.show_popup = (popup, html = ``) => {
   }
 
   if (html) {
+    html = App.urlize_html(html)
     popup.set(html)
   }
 
