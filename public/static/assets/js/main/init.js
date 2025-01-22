@@ -190,6 +190,7 @@ App.init = () => {
   App.setup_theme()
   App.setup_linksbar()
   App.get_autocomplete()
+  App.insert_custom_css()
   App.get_first_time()
 
   if (App.debug_socket) {

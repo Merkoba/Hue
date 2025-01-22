@@ -336,6 +336,16 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    custom_css: {
+      title: `Custom CSS`,
+      type: `textarea`,
+      description: `Custom changes to the default CSS styling`,
+      placeholder: `Paste code here`,
+      actions: () => {
+        App.insert_custom_css()
+      },
+      version: 1,
+    },
   }
 }
 
@@ -421,7 +431,7 @@ App.modify_setting_widget = (setting) => {
   else if (type === `select`) {
     App.set_select(item, App.get_setting(setting))
   }
-  else if (type === `text`) {
+  else if ([`text`, `textarea`].includes(type)) {
     item.value = App.get_setting(setting)
   }
 }
@@ -441,26 +451,17 @@ App.start_settings_widgets_listeners = () => {
     let user_setting = App.user_settings[setting]
     let item = DOM.el(`#settings_${setting}`)
 
-    if (
-      (user_setting.type === `checkbox`) ||
-      (user_setting.type === `select`)
-    ) {
+    if ([`checkbox`, `select`].includes(user_setting.type)) {
       DOM.ev(item, `change`, () => {
         App.on_setting_change(setting)
       })
     }
-    else if (
-      (user_setting.type === `textarea`) ||
-      (user_setting.type === `text`)
-    ) {
+    else if ([`text`, `textarea`].includes(user_setting.type)) {
       DOM.ev(item, `blur`, () => {
         App.on_setting_change(setting)
       })
     }
-    else if (
-      (user_setting.type === `number`) ||
-      (user_setting.type === `color`)
-    ) {
+    else if ([`number`, `color`].includes(user_setting.type)) {
       DOM.ev(item, `change`, () => {
         App.on_setting_change(setting)
       })
@@ -483,6 +484,9 @@ App.on_setting_change = (setting) => {
   }
   else if (user_setting.type === `select`) {
     value = el.value
+  }
+  else if ([`text`, `textarea`].includes(user_setting.type)) {
+    value = el.value.trim()
   }
 
   if (user_setting.force_int) {
@@ -659,7 +663,13 @@ App.fill_settings = () => {
     }
     else if (setting.type === `text`) {
       el = DOM.create(`input`, `settings_item_control`, `settings_${key}`)
+      el.placeholder = setting.placeholder
       el.type = `text`
+    }
+    else if (setting.type === `textarea`) {
+      el = DOM.create(`textarea`, `settings_item_control`, `settings_${key}`)
+      el.rows = 4
+      el.placeholder = setting.placeholder
     }
 
     c.append(el)

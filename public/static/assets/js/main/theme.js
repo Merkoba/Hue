@@ -351,3 +351,20 @@ App.random_theme = (type) => {
   App.background_color_picker.setColor(background)
   App.text_color_picker.setColor(text)
 }
+
+// Insert CSS into the document
+App.insert_css = (name, css) => {
+  for (let style of DOM.els(`.${name}`)) {
+    style.remove()
+  }
+
+  let style = DOM.create(`style`, name)
+  style.textContent = css
+  document.head.appendChild(style)
+}
+
+// Insert custom css
+App.insert_custom_css = () => {
+  let css = App.get_setting(`custom_css`).trim()
+  App.insert_css(`custom_css`, css)
+}

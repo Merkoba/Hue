@@ -1979,3 +1979,11 @@ pre {
 .auto_blur {
 	filter: blur(0.35rem);
 }
+
+textarea.settings_item_control {
+	width: 80%;
+	resize: none;
+	text-align: center;
+	overflow-x: hidden;
+	box-sizing: border-box;
+}
