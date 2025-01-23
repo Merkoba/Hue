@@ -413,8 +413,7 @@ html {
 }
 
 .chat_message {
-	overflow-wrap: break-word;
-	word-break: break-all;
+	overflow-wrap: anywhere;
 	display: flex;
 }
 
@@ -490,8 +489,7 @@ html {
 }
 
 .announcement {
-	overflow-wrap: break-word;
-	word-break: break-all;
+	overflow-wrap: anywhere;
 	display: flex;
 	flex-direction: row;
 }
@@ -555,8 +553,7 @@ a.generic:hover {
 }
 
 .user_item {
-	overflow-wrap: break-word;
-	word-break: break-all;
+	overflow-wrap: anywhere;
 	display: inline-block;
 	margin: 0.8rem;
 }
@@ -630,8 +627,7 @@ a.generic:hover {
 
 .Msg-content {
 	font-size: 1rem !important;
-	overflow-wrap: break-word !important;
-	word-break: break-all !important;
+	overflow-wrap: anywhere !important;
 }
 
 .Msg-window.whisper_width {
@@ -1187,8 +1183,7 @@ a.special_link:hover {
 .image_preview_text,
 .link_preview_text {
 	margin-bottom: 0.35rem;
-	overflow-wrap: break-word;
-	word-break: break-all;
+	overflow-wrap: anywhere;
 	display: inline-block;
 }
 
@@ -1223,8 +1218,7 @@ a.special_link:hover {
 }
 
 .link_preview_title {
-	overflow-wrap: break-word;
-	word-break: break-all;
+	overflow-wrap: anywhere;
 }
 
 .link_preview_image {
