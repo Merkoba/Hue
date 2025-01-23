@@ -3,7 +3,11 @@ App.setup_footer = () => {
   let media = [`image`, `tv`]
 
   for (let type of media) {
-    DOM.ev(DOM.el(`#footer_${type}_icon`), `click`, (e) => {
+    let mstring = App.media_string(type)
+    let icon = DOM.el(`#footer_${type}_icon`)
+    icon.title = `Change ${mstring}. Shift+Click to show dialog directly`
+
+    DOM.ev(icon, `click`, (e) => {
       if (e.shiftKey | e.ctrlKey) {
         App[`show_upload_${type}`]()
       }
@@ -12,7 +16,7 @@ App.setup_footer = () => {
       }
     })
 
-    DOM.ev(DOM.el(`#footer_${type}_icon`), `auxclick`, (e) => {
+    DOM.ev(icon, `auxclick`, (e) => {
       if (e.button === 1) {
         if (type === `image`) {
           App.show_modal_image()
@@ -20,15 +24,24 @@ App.setup_footer = () => {
       }
     })
 
-    DOM.ev(DOM.el(`#footer_${type}_toggle`), `click`, () => {
+    let toggle = DOM.el(`#footer_${type}_toggle`)
+    toggle.title = `Show/Hide ${mstring}`
+
+    DOM.ev(toggle, `click`, () => {
       App.set_media_enabled({type, what: !App.room_state[`${type}_enabled`]})
     })
 
-    DOM.ev(DOM.el(`#footer_${type}_lock`), `click`, () => {
+    let lock = DOM.el(`#footer_${type}_lock`)
+    lock.title = `${mstring} won't change if locked`
+
+    DOM.ev(lock, `click`, () => {
       App.set_media_locked({type, what: !App[`${type}_locked`]})
     })
 
-    DOM.ev(DOM.el(`#footer_${type}_list`), `click`, () => {
+    let list = DOM.el(`#footer_${type}_list`)
+    list.title = `List of recent ${mstring} changes`
+
+    DOM.ev(list, `click`, () => {
       App[`msg_${type}_picker`].close()
       App[`show_${type}_list`]()
     })
