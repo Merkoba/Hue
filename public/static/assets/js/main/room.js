@@ -47,7 +47,7 @@ App.show_room_name = () => {
 }
 
 // Change the name of the room
-App.change_room_name = (arg) => {
+App.change_room_name = (arg, feedback = true) => {
   if (!App.is_admin_or_op()) {
     return
   }
@@ -57,7 +57,10 @@ App.change_room_name = (arg) => {
   )
 
   if (arg === App.room_name) {
-    App.checkmsg(`That's already the room name`)
+    if (feedback) {
+      App.checkmsg(`That's already the room name`)
+    }
+
     return
   }
 
@@ -102,7 +105,7 @@ App.set_room_name = (name) => {
 }
 
 // Changes the topic
-App.change_topic = (dtopic) => {
+App.change_topic = (dtopic, feedback = true) => {
   if (!App.is_admin_or_op()) {
     return
   }
@@ -116,7 +119,9 @@ App.change_topic = (dtopic) => {
       App.socket_emit(`change_topic`, {topic: dtopic})
     }
     else {
-      App.checkmsg(`Topic is already set to that`)
+      if (feedback) {
+        App.checkmsg(`That's already the topic`)
+      }
     }
   }
 }
@@ -282,7 +287,7 @@ App.show_ban_list = (data) => {
 }
 
 // Changes the limited mode
-App.change_limited = (limited) => {
+App.change_limited = (limited, feedback = true) => {
   if (!App.is_admin_or_op()) {
     return
   }
@@ -291,7 +296,9 @@ App.change_limited = (limited) => {
     App.socket_emit(`change_limited`, {limited})
   }
   else {
-    App.checkmsg(`Limited is already set to that`)
+    if (feedback) {
+      App.checkmsg(`Limited is already set to that`)
+    }
   }
 }
 

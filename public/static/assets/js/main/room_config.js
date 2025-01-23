@@ -10,7 +10,7 @@ App.setup_room_config = () => {
       return
     }
 
-    App.change_room_name(name)
+    App.change_room_name(name, false)
   })
 
   let topic = DOM.el(`#admin_topic`)
@@ -23,13 +23,13 @@ App.setup_room_config = () => {
       return
     }
 
-    App.change_topic(t)
+    App.change_topic(t, false)
   })
 
   let limited = DOM.el(`#admin_limited`)
 
   DOM.ev(limited, `change`, () => {
-    App.change_limited(limited.checked)
+    App.change_limited(limited.checked, false)
   })
 
   let background = DOM.el(`#admin_background`)
