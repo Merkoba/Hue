@@ -47,7 +47,7 @@ App.urlize_html = (html, limit_width = true) => {
 
         html = html.replace(
           rep,
-          `<a class="${cls}" target="_blank" href="${url}">${u}</a>`,
+          `<a class="${cls}" target="_blank" href="${url}" rel="noreferrer">${u}</a>`,
         )
       }
     }
@@ -86,11 +86,11 @@ App.goto_url = (url, mode, encode = false) => {
   }
 
   if (mode === `tab`) {
-    window.open(url, url.substring(0, 200))
+    window.open(url, `_blank`, `noreferrer`)
   }
   else {
     App.user_leaving = true
-    window.location = url
+    window.location.replace(url)
   }
 }
 
