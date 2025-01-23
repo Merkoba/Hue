@@ -24,7 +24,7 @@ App.setup_textparser_regexes = () => {
   )
 
   App.textparser_regexes.anchor_link.replace_function = (g1, g2, g3) => {
-    return `<a href="${g2}" class="anchor_link special_link" target="_blank">${g3.trim().replace(/\s+/, `&nbsp;`)}</a>`
+    return `<a href="${g2}" class="anchor_link special_link" target="_blank" rel="noreferrer">${g3.trim().replace(/\s+/, `&nbsp;`)}</a>`
   }
 
   App.textparser_regexes.parens = {}
