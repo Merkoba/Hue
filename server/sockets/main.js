@@ -10,7 +10,7 @@ module.exports = (App) => {
   require(`./vars`)(App)
 
   // Get the module file names and arguments
-  const modules = App.i.fs.readdirSync(App.i.path.join(__dirname, `modules`))
+  let modules = App.i.fs.readdirSync(App.i.path.join(__dirname, `modules`))
 
   // Fill the handler object
   for (let module of modules) {

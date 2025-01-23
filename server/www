@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 const fs = require(`fs`)
 const path = require(`path`)
 const tar = require(`tar`)
@@ -17,15 +18,15 @@ function normalizePort(val) {
 	}
 }
 
-const config_path = path.join(__dirname, `../config/config.yml`)
-const user_config_path = path.join(__dirname, `../config/user_config.yml`)
-const sconfig_path = path.join(__dirname, `../config/config.secret.yml`)
-const user_sconfig_path = path.join(__dirname, `../config/user_config.secret.yml`)
-const config = {}
-const sconfig = {}
-const config_check_delay = 5000
-const banlist_path = path.join(__dirname, `../config/banlist.json`)
-const banlist = {}
+let config_path = path.join(__dirname, `../config/config.yml`)
+let user_config_path = path.join(__dirname, `../config/user_config.yml`)
+let sconfig_path = path.join(__dirname, `../config/config.secret.yml`)
+let user_sconfig_path = path.join(__dirname, `../config/user_config.secret.yml`)
+let config = {}
+let sconfig = {}
+let config_check_delay = 5000
+let banlist_path = path.join(__dirname, `../config/banlist.json`)
+let banlist = {}
 let config_mtime = ``
 
 function build_config() {
@@ -145,14 +146,14 @@ function create_db_backup() {
 	})
 }
 
-const port = normalizePort(process.env.PORT || `3210`)
+let port = normalizePort(process.env.PORT || `3210`)
 
 build_config()
 start_config_check()
 
 const winston = require(`winston`)
 
-const logger = winston.createLogger({
+let logger = winston.createLogger({
 	format: winston.format.simple(),
 	transports: [
 		new winston.transports.File({
@@ -207,7 +208,7 @@ const http = require(`http`)
 
 app.set(`port`, port)
 
-const server = http.createServer(app)
+let server = http.createServer(app)
 
 server.on(`error`, on_error)
 server.on(`listening`, on_listening)

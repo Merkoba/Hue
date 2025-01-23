@@ -17,7 +17,7 @@ module.exports = (config, sconfig, utilz, logger) => {
   require(`./vars`)(stuff)
 
   // Get the module file names
-  const modules = stuff.i.fs.readdirSync(stuff.i.path.join(__dirname, `modules`))
+  let modules = stuff.i.fs.readdirSync(stuff.i.path.join(__dirname, `modules`))
 
   // Fill the manager object
   for (let module of modules) {

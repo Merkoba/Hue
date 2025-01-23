@@ -7,14 +7,15 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   const jwt = require(`jsonwebtoken`)
   const express = require(`express`)
   const fetch = require(`node-fetch`)
-  const router = express.Router()
-  const view_check_delay = 5000
+
+  let router = express.Router()
+  let view_check_delay = 5000
+  let config_mtime = 0
+  let view_mtime = ``
 
   // Object used to pass arguments
   const view = {}
 
-  let config_mtime = 0
-  let view_mtime = ``
   build_view()
   start_view_check()
 

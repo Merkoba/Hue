@@ -6,17 +6,17 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   const rateLimit = require(`express-rate-limit`)
   const RedisStore = require(`connect-redis`)(session)
   const redis = require(`redis`)
+
   let redisClient = redis.createClient({legacyMode: true})
 
   // eslint-disable-next-line no-console
   redisClient.connect().catch(console.error)
 
   let app = express()
-
   app.set(`trust proxy`, 1)
 
   // Limit to x reqs per y mins
-  const limiter = rateLimit({
+  let limiter = rateLimit({
     windowMs: 10 * 60 * 1000,
     max: 50,
   })
