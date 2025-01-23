@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 
 module.exports = (db_manager, config, sconfig, utilz) => {
-  // Initial declarations
   const fs = require(`fs`)
   const path = require(`path`)
   const ejs = require(`ejs`)
@@ -10,12 +9,12 @@ module.exports = (db_manager, config, sconfig, utilz) => {
   const fetch = require(`node-fetch`)
   const router = express.Router()
   const view_check_delay = 5000
-  let config_mtime = 0
-  let view_mtime = ``
 
   // Object used to pass arguments
   const view = {}
 
+  let config_mtime = 0
+  let view_mtime = ``
   build_view()
   start_view_check()
 
@@ -30,17 +29,11 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     // Other variables used to init session
     view.vars = {}
 
-    // Compile all templates
-
-    // Main handler object
-    const handler = {}
-    handler.public = {}
-
     // This holds the templates html to pass to the body compilation
     let templates_html = ``
 
     // Get the template file names
-    const template_files = fs.readdirSync(
+    let template_files = fs.readdirSync(
       path.join(__dirname, `../views/main/templates`),
     )
 
@@ -50,7 +43,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
         continue
       }
 
-      const template_path = path.join(
+      let template_path = path.join(
         __dirname,
         `../views/main/templates/${file}`,
       )
@@ -62,8 +55,8 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
     // Compile svg files
 
-    const svg_path = path.join(__dirname, `../views/main/svg`)
-    const svg_files = fs.readdirSync(svg_path)
+    let svg_path = path.join(__dirname, `../views/main/svg`)
+    let svg_files = fs.readdirSync(svg_path)
 
     // Get all the svg html
 
@@ -80,9 +73,9 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
     // Create the main body template
 
-    const body_html_path = path.join(__dirname, `../views/main/body.ejs`)
+    let body_html_path = path.join(__dirname, `../views/main/body.ejs`)
 
-    const compiled_body_html_template = ejs.compile(
+    let compiled_body_html_template = ejs.compile(
       fs.readFileSync(body_html_path, `utf8`), {
         filename: body_html_path,
       },
@@ -461,7 +454,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     }
 
     if (!ok) {
-      const codes_path = path.join(
+      let codes_path = path.join(
         __dirname,
         `../../config/codes.json`,
       )

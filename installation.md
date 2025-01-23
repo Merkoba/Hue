@@ -92,4 +92,6 @@ There are some you can use in `extra/reactions`
 
 ## Codes
 
-To register the code must be the `register_code` setting or a code inside `config/codes.json` (array).
+Registration can be configured to require a code if `use_register_code` is set to true.
+
+To register the code must be the `register_code` setting, or a code inside `config/codes.json` (array).
