@@ -95,6 +95,10 @@ App.setup_room_config = () => {
 
 // Shows the room config
 App.show_room_config = (filter = ``) => {
+  if (!App.is_admin_or_op()) {
+    return
+  }
+
   App.msg_room_config.show()
 
   if (filter.trim()) {
