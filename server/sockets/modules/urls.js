@@ -39,6 +39,10 @@ module.exports = (App) => {
       url,
     }
 
+    if (!App.sconfig.fetch_links) {
+      return response
+    }
+
     if (!App.utilz.is_url(url)) {
       return response
     }
