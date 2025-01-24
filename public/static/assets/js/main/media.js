@@ -1044,7 +1044,7 @@ App.show_upload_comment = (what, file, type) => {
       DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Generate`
     }
   }
-  else {
+  else if (what === `tv`) {
     if (type === `upload`) {
       DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Choose`
     }

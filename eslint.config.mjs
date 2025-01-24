@@ -85,6 +85,7 @@ export default [
         DOM: "readonly",
         Msg: "readonly",
         Utilz: "readonly",
+        Words: "readonly",
         Croppie: "readonly",
         Handlebars: "readonly",
         jdenticon: "readonly",

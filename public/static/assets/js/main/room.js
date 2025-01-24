@@ -118,10 +118,8 @@ App.change_topic = (dtopic, feedback = true) => {
     if (App.topic !== dtopic) {
       App.socket_emit(`change_topic`, {topic: dtopic})
     }
-    else {
-      if (feedback) {
-        App.checkmsg(`That's already the topic`)
-      }
+    else if (feedback) {
+      App.checkmsg(`That's already the topic`)
     }
   }
 }
@@ -295,10 +293,8 @@ App.change_limited = (limited, feedback = true) => {
   if (App.limited !== limited) {
     App.socket_emit(`change_limited`, {limited})
   }
-  else {
-    if (feedback) {
-      App.checkmsg(`Limited is already set to that`)
-    }
+  else if (feedback) {
+    App.checkmsg(`Limited is already set to that`)
   }
 }
 
