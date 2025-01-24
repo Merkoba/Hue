@@ -429,17 +429,30 @@ App.update_user_profilepic = (id, version) => {
 
 // What to do when a user disconnects
 App.user_disconnect = (data) => {
+  let type = data.disconnection_type
+  let info = data.info1
+
   if (App.get_setting(`show_user_leave_notifications`)) {
+    let message
+
+    if (type === `pinged`) {
+      message = `${data.username} left (timeout)`
+    }
+    else if (type === `kicked`) {
+      message = `${data.username} was kicked by ${info}`
+    }
+    else {
+      message = `${data.username} left`
+    }
+
     App.show_room_notification(
       data.username,
-      `${data.username} left`,
+      message,
       `user-disconnect`,
     )
   }
 
   App.remove_from_userlist(data.user_id)
-
-  let type = data.disconnection_type
 
   if (type === `banned`) {
     if (App.msg_ban_list.is_open()) {
