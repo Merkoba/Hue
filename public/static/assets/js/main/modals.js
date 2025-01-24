@@ -697,8 +697,8 @@ App.start_msg = () => {
 
   App.msg_automedia.set_title(App.template_titlebar({
     items: [
-      {id: `automedia_change`, text: `Change Media`},
       {id: `automedia_chat`, text: `Send To Chat`},
+      {id: `automedia_change`, text: `Change Media`},
     ],
     container_id: `open_url_titlebar`,
   }))
