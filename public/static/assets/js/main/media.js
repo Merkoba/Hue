@@ -1179,3 +1179,61 @@ App.change_media_source = (what, src, just_check = false, comment = ``) => {
 
   App.socket_emit(`change_${what}_source`, {src, comment})
 }
+
+// Returns the current room media
+// The last media in the media changed array
+// This is not necesarily the user's loaded media
+App.get_current_media = (what) => {
+  let items = App[`${what}_changed`]
+
+  if (items.length > 0) {
+    return items[items.length - 1]
+  }
+
+  return {}
+}
+
+// Submits the upload media comment window
+// Uploads the file and the optional comment
+App.process_media_upload_comment = (what) => {
+  if (!App[`msg_${what}_upload_comment`].is_open()) {
+    return
+  }
+
+  let file = App[`${what}_upload_comment_file`]
+  let comment = App.utilz.single_space(DOM.el(`#${what}_upload_comment_input`).value)
+
+  if (comment.length > App.config.max_media_comment_length) {
+    return
+  }
+
+  App.upload_file({file, action: `${what}_upload`, comment})
+  App.close_all_modals()
+}
+
+// Submit linked media
+App.link_media_submit = (what) => {
+  let val = DOM.el(`#link_${what}_input`).value.trim()
+
+  if (val !== ``) {
+    App[`change_${what}_source`](val)
+    App.close_all_modals()
+  }
+}
+
+// Show media loaded
+App.show_media_loaded = (id) => {
+  if (!App.get_setting(`show_loaded`)) {
+    return
+  }
+
+  let ans = App.get_message_by_id(id)
+
+  if (ans && ans[0]) {
+    let info = DOM.el_or_self(`.chat_info`, ans[0])
+
+    if (info) {
+      info.textContent = App.loaded_text
+    }
+  }
+}

@@ -9,15 +9,9 @@ App.push_image_changed = (data) => {
   }
 }
 
-// Returns the current room image
-// The last image in the image changed array
-// This is not necesarily the user's loaded image
+// Get current image
 App.current_image = () => {
-  if (App.image_changed.length > 0) {
-    return App.image_changed[App.image_changed.length - 1]
-  }
-
-  return {}
+  return App.get_current_media(`image`)
 }
 
 // Loads an image with a specified item
@@ -425,22 +419,9 @@ App.setup_image_upload_comment = () => {
   })
 }
 
-// Submits the upload image comment window
-// Uploads the file and the optional comment
+// Process image upload comment
 App.process_image_upload_comment = () => {
-  if (!App.msg_image_upload_comment.is_open()) {
-    return
-  }
-
-  let file = App.image_upload_comment_file
-  let comment = App.utilz.single_space(DOM.el(`#image_upload_comment_input`).value)
-
-  if (comment.length > App.config.max_media_comment_length) {
-    return
-  }
-
-  App.upload_file({file, action: `image_upload`, comment})
-  App.close_all_modals()
+  App.process_media_upload_comment(`image`)
 }
 
 // Show link image
@@ -450,12 +431,7 @@ App.show_link_image = () => {
 
 // Submit link image
 App.link_image_submit = () => {
-  let val = DOM.el(`#link_image_input`).value.trim()
-
-  if (val !== ``) {
-    App.change_image_source(val)
-    App.close_all_modals()
-  }
+  App.link_media_submit(`image`)
 }
 
 // Trigger upload image picker
@@ -548,10 +524,6 @@ App.make_random_image = (target) => {
 
 // Show image loaded
 App.show_image_loaded = (type = `normal`) => {
-  if (!App.get_setting(`show_loaded`)) {
-    return
-  }
-
   let img
 
   if (type === `normal`) {
@@ -561,13 +533,5 @@ App.show_image_loaded = (type = `normal`) => {
     img = App.loaded_modal_image
   }
 
-  let ans = App.get_message_by_id(img.id)
-
-  if (ans && ans[0]) {
-    let info = DOM.el_or_self(`.chat_info`, ans[0])
-
-    if (info) {
-      info.textContent = App.loaded_text
-    }
-  }
+  App.show_media_loaded(img.id)
 }

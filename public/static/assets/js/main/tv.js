@@ -1,12 +1,6 @@
-// Returns the current room tv
-// The last tv in the tv changed array
-// This is not necesarily the user's loaded tv
+// Get current tv
 App.current_tv = () => {
-  if (App.tv_changed.length > 0) {
-    return App.tv_changed[App.tv_changed.length - 1]
-  }
-
-  return {}
+  return App.get_current_media(`tv`)
 }
 
 // Pushes a changed tv into the tv changed array
@@ -229,12 +223,7 @@ App.show_link_tv = () => {
 
 // Submit link tv
 App.link_tv_submit = () => {
-  let val = DOM.el(`#link_tv_input`).value.trim()
-
-  if (val !== ``) {
-    App.change_tv_source(val)
-    App.close_all_modals()
-  }
+  App.link_media_submit(`tv`)
 }
 
 // Checks if tv is abled to be synced with another user
@@ -345,23 +334,9 @@ App.show_tv_upload_comment = (file, type) => {
   App.show_upload_comment(`tv`, file, type)
 }
 
-// Submits the upload tv comment window
-// Uploads the file and the optional comment
+// Processes tv upload comment
 App.process_tv_upload_comment = () => {
-  if (!App.msg_tv_upload_comment.is_open()) {
-    return
-  }
-
-  let file = App.tv_upload_comment_file
-  let type = App.tv_upload_comment_type
-  let comment = App.utilz.single_space(DOM.el(`#tv_upload_comment_input`).value)
-
-  if (comment.length > App.config.max_media_comment_length) {
-    return
-  }
-
-  App.upload_file({file, action: `tv_upload`, comment})
-  App.close_all_modals()
+  App.process_media_upload_comment(`tv`)
 }
 
 // Setups the upload tv comment window
@@ -477,17 +452,5 @@ App.stop_screen_capture = () => {
 
 // Show tv loaded
 App.show_tv_loaded = () => {
-  if (!App.get_setting(`show_loaded`)) {
-    return
-  }
-
-  let ans = App.get_message_by_id(App.loaded_tv.id)
-
-  if (ans && ans[0]) {
-    let info = DOM.el_or_self(`.chat_info`, ans[0])
-
-    if (info) {
-      info.textContent = App.loaded_text
-    }
-  }
+  App.show_media_loaded(App.loaded_tv.id)
 }
