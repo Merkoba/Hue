@@ -8,7 +8,7 @@ module.exports = (stuff) => {
   // Room and User versions
   // These must be increased by 1 when the schema changes
   stuff.vars.rooms_version = 91
-  stuff.vars.users_version = 57
+  stuff.vars.users_version = 58
 
   // Room schema definition
   // This is used to check types and fill defaults
@@ -47,6 +47,7 @@ module.exports = (stuff) => {
       bio: {type: `string`, default: ``},
       audioclip_version: {type: `number`, default: 0},
       modified: {type: `number`, default: Date.now()},
+      kicked: {type: `number`, default: 0},
       version: {type: `number`, default: 0},
       last_message_board_post_date: {type: `number`, default: 0},
     }

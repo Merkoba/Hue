@@ -1,6 +1,7 @@
 module.exports = (App) => {
-  // Sets initial hue_* variables on connection
+  // Set initial hue_* variables on connection
   App.handler.connection = (socket) => {
+    socket.hue = {}
     socket.hue_pinged = false
     socket.hue_kicked = false
     socket.hue_banned = false
@@ -11,7 +12,7 @@ module.exports = (App) => {
     socket.hue_info1 = ``
   }
 
-  // Attempts to join a room
+  // Attempt to join a room
   App.handler.public.join_room = async (socket, data) => {
     if (socket.hue_joining || socket.hue_joined) {
       return
@@ -128,6 +129,13 @@ module.exports = (App) => {
   // Does a room join after successful authentication
   App.handler.do_join = async (socket, info, userinfo, data) => {
     socket.hue_username = userinfo.username
+
+    // If the user was kicked recently disallow join
+    let kd = parseInt((Date.now() - userinfo.kicked) / 1000)
+
+    if (kd <= App.sconfig.kick_penalty) {
+      return App.handler.get_out(socket)
+    }
 
     if (App.handler.user_is_banned(socket)) {
       return App.handler.get_out(socket)

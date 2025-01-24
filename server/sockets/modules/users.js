@@ -137,6 +137,12 @@ module.exports = (App) => {
         return
       }
 
+      let userinfo = await App.db_manager.get_user([`username`, data.username])
+
+      if (userinfo) {
+        userinfo.kicked = Date.now()
+      }
+
       for (let socc of sockets) {
         socc.hue_role = ``
         socc.hue_kicked = true
@@ -171,7 +177,6 @@ module.exports = (App) => {
     }
 
     let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
-
     let userinfo = await App.db_manager.get_user([`username`, data.username])
 
     if (!userinfo) {
@@ -241,7 +246,6 @@ module.exports = (App) => {
     }
 
     let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
-
     let userinfo = await App.db_manager.get_user([`username`, data.username])
 
     if (!userinfo) {
