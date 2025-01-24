@@ -370,7 +370,7 @@ App.insert_message = (args = {}) => {
   App.utilz.def_args(def_args, args)
 
   let messages = App.get_all_messages()
-  let last_message = messages.slice(-1)[0]
+  let last_message = messages.at(-1)
   let appended = false
   let mode = DOM.dataset(args.message, `mode`)
   let user_id = DOM.dataset(args.message, `user_id`)
@@ -432,8 +432,8 @@ App.insert_message = (args = {}) => {
           DOM.els(`.chat_content`, last_message).length <
           App.config.max_same_post_messages
         ) {
-          let c1 = DOM.els(`.chat_content_container`, args.message).slice(-1)[0]
-          let c2 = DOM.els(`.chat_content_container`, last_message).slice(-1)[0]
+          let c1 = DOM.els(`.chat_content_container`, args.message).at(-1)
+          let c2 = DOM.els(`.chat_content_container`, last_message).at(-1)
           let date_diff = DOM.dataset(c1, `date`) - DOM.dataset(c2, `date`)
 
           if (date_diff < App.config.max_same_post_diff) {
@@ -1537,8 +1537,8 @@ App.activity_notification = (username) => {
 
 // Get last chat message or announcement date
 App.get_last_message_date = () => {
-  let a = DOM.dataset(DOM.els(`#chat_area .chat_content_container`).slice(-1)[0], `date`) || 0
-  let b = DOM.dataset(DOM.els(`#chat_area .media_announcement`).slice(-1)[0], `date`) || 0
+  let a = DOM.dataset(DOM.els(`#chat_area .chat_content_container`).at(-1), `date`) || 0
+  let b = DOM.dataset(DOM.els(`#chat_area .media_announcement`).at(-1), `date`) || 0
   return Math.max(a, b)
 }
 

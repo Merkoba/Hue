@@ -48,7 +48,7 @@ App.send_inline_whisper = (arg) => {
 
   let username = split[0].trim()
   let usplit = username.split(`&&`).map(x => x.trim())
-  let message = App.utilz.single_space(split.slice(1).join(`>`))
+  let message = App.utilz.single_space(split.at(-1).join(`>`))
 
   if (!message) {
     return
@@ -404,7 +404,7 @@ App.push_whisper = (message, on_click, read, data) => {
   let items = DOM.els(`.whisper_item`)
 
   if (items.length > App.config.whispers_crop_limit) {
-    DOM.els(`#whispers_container .whisper_item`).slice(-1)[0].remove()
+    DOM.els(`#whispers_container .whisper_item`).at(-1).remove()
   }
 
   App.update_whispers_unread_count()

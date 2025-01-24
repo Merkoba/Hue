@@ -233,7 +233,7 @@ App.add_post_to_message_board = (data, edited) => {
     let posts = DOM.els(`#message_board_container .message_board_post`)
 
     if (posts.length > App.config.max_message_board_posts) {
-      posts.slice(-1)[0].remove()
+      posts.at(-1).remove()
     }
   }
 

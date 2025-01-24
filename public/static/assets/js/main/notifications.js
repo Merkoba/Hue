@@ -123,7 +123,7 @@ App.push_notification = (args) => {
   let items = DOM.els(`.notification_item`)
 
   if (items.length > App.config.notifications_crop_limit) {
-    items.slice(-1)[0].remove()
+    items.at(-1).remove()
   }
 
   if (args.increase_counter && !App.msg_notifications.is_open() && !App.has_focus) {
