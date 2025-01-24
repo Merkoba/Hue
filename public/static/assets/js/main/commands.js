@@ -156,7 +156,7 @@ App.commands = {
     description: `Changes the topic of the room`,
   },
   commandbook: {
-    aliases: [`commands`],
+    aliases: [`commands`, `help`],
     action: (arg, ans) => {
       App.show_command_book(arg)
     },

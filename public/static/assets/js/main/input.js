@@ -187,7 +187,6 @@ App.process_input = (args = {}) => {
     })
 
     args.clr_input = ans.clr_input
-    finish()
   }
   else {
     if (!App.check_limited()) {
@@ -209,8 +208,6 @@ App.process_input = (args = {}) => {
         quote_user_id: args.quote_user_id,
         quote_id: args.quote_id,
       })
-
-      finish()
     }
 
     if (App.get_setting(`automedia`)) {
@@ -221,6 +218,8 @@ App.process_input = (args = {}) => {
 
     action()
   }
+
+  finish()
 }
 
 // Add a new line at the end of the input
