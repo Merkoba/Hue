@@ -327,6 +327,13 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    show_clicked: {
+      title: `Show Clicked`,
+      type: `checkbox`,
+      description: `Show the clicked label on clicked links`,
+      actions: () => {},
+      version: 1,
+    },
     short_urls: {
       title: `Short URLs`,
       type: `checkbox`,
