@@ -1,6 +1,6 @@
 // Get current tv
 App.current_tv = () => {
-  return App.get_current_media(`tv`)
+  return App.get_current_media_change(`tv`)
 }
 
 // Pushes a changed tv into the tv changed array

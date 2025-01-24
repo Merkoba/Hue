@@ -158,6 +158,7 @@ App.input_to_thirdperson = (text) => {
 App.process_input = (args = {}) => {
   let def_args = {
     clr_input: true,
+    automedia: true,
   }
 
   App.utilz.def_args(def_args, args)
@@ -172,14 +173,6 @@ App.process_input = (args = {}) => {
 
   let message_split = args.message.split(`\n`)
   let num_lines = message_split.length
-
-  function finish() {
-    App.push_to_input_history(args.message)
-
-    if (args.clr_input) {
-      App.clear_input()
-    }
-  }
 
   if ((num_lines === 1) && App.is_command(args.message) && !args.edit_id) {
     let ans = App.execute_command(args.message, {
@@ -197,29 +190,31 @@ App.process_input = (args = {}) => {
       args.message = args.message.substring(0, App.config.max_input_length)
     }
 
-    function action() {
-      App.push_to_autocomplete(args.message)
-
-      App.socket_emit(`sendchat`, {
-        message: args.message,
-        edit_id: args.edit_id,
-        quote: args.quote,
-        quote_username: args.quote_username,
-        quote_user_id: args.quote_user_id,
-        quote_id: args.quote_id,
-      })
+    if (args.automedia) {
+      if (App.get_setting(`automedia`)) {
+        if (App.automedia(args)) {
+          return
+        }
+      }
     }
 
-    if (App.get_setting(`automedia`)) {
-      App.automedia(args.message, action)
-      finish()
-      return
-    }
+    App.push_to_autocomplete(args.message)
 
-    action()
+    App.socket_emit(`sendchat`, {
+      message: args.message,
+      edit_id: args.edit_id,
+      quote: args.quote,
+      quote_username: args.quote_username,
+      quote_user_id: args.quote_user_id,
+      quote_id: args.quote_id,
+    })
   }
 
-  finish()
+  App.push_to_input_history(args.message)
+
+  if (args.clr_input) {
+    App.clear_input()
+  }
 }
 
 // Add a new line at the end of the input
@@ -266,7 +261,7 @@ App.show_input_history = (filter = ``) => {
     el.title = App.nice_date(item.date)
     let text = DOM.create(`div`)
     text.textContent = item.message
-    App.urlize(text)
+    App.urlize(text, true, true)
     el.append(text)
 
     DOM.ev(el, `click`, (e) => {

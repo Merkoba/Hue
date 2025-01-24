@@ -1071,6 +1071,7 @@ App.change_media_source = (args = {}) => {
   let def_args = {
     check: false,
     allow_query: true,
+    allow_current: false,
     comment: ``,
   }
 
@@ -1111,12 +1112,14 @@ App.change_media_source = (args = {}) => {
 
   let current = App[`current_${args.what}`]()
 
-  if ((args.src === current.source) || (args.src === current.query)) {
-    if (feedback) {
-      App.checkmsg(`Already set to that`)
-    }
+  if (!args.allow_current) {
+    if ((args.src === current.source) || (args.src === current.query)) {
+      if (feedback) {
+        App.checkmsg(`Already set to that`)
+      }
 
-    return false
+      return false
+    }
   }
 
   if (App.utilz.is_url(args.src)) {
@@ -1200,7 +1203,7 @@ App.change_media_source = (args = {}) => {
 // Returns the current room media
 // The last media in the media changed array
 // This is not necesarily the user's loaded media
-App.get_current_media = (what) => {
+App.get_current_media_change = (what) => {
   let items = App[`${what}_changed`]
 
   if (items.length > 0) {
@@ -1288,27 +1291,63 @@ App.media_command = (arg) => {
   }
 }
 
+// Setup automedia
+App.setup_automedia = () => {
+  DOM.ev(DOM.el(`#automedia_change`), `click`, () => {
+    App.automedia_change()
+  })
+
+  DOM.ev(DOM.el(`#automedia_chat`), `click`, () => {
+    App.automedia_chat()
+  })
+}
+
 // Check if the message is a media change
 // Then ask if the user wants to use it
 // Else the message is sent to the chat
-App.automedia = (message, fallback) => {
-  let what = App.resolve_media_source(message)
+App.automedia = (args) => {
+  let what = App.resolve_media_source(args.message)
+
+  if (what === `none`) {
+    return false
+  }
 
   function msg(name) {
     return `Change the ${name} using this URL`
   }
 
+  let msg_el = DOM.el(`#automedia_message`)
+  App.automedia_args = args
+  App.automedia_what = what
+
   if (what === `image`) {
-    App.show_confirm(msg(`Image`), () => {
-      App.change_image_source(message)
-    }, fallback)
+    msg_el.textContent = msg(`Image`)
+    App.msg_automedia.show()
   }
   else if (what === `tv`) {
-    App.show_confirm(msg(`TV`), () => {
-      App.change_tv_source(message)
-    }, fallback)
+    msg_el.textContent = msg(`TV`)
+    App.msg_automedia.show()
   }
-  else {
-    fallback()
-  }
+
+  return true
+}
+
+// Automedia change the media
+App.automedia_change = () => {
+  App.change_media_source({
+    what: App.automedia_what,
+    src: App.automedia_args.message,
+  })
+
+  App.msg_automedia.close()
+  App.clear_input()
+}
+
+// Automedia send to chat
+App.automedia_chat = () => {
+  let args = App.automedia_args
+  args.automedia = false
+  App.process_input(args)
+  App.msg_automedia.close()
+  App.clear_input()
 }

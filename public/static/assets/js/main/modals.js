@@ -194,6 +194,11 @@ App.start_msg = () => {
       }},
   )
 
+  App.msg_automedia = Msg.factory(
+    {...msgvars.common, ...msgvars.titlebar, id: `automedia`,
+      window_max_width: `40rem`},
+  )
+
   App.msg_screen_capture_options = Msg.factory(
     {...msgvars.common, ...msgvars.titlebar, id: `screen_capture_options`},
   )
@@ -530,6 +535,7 @@ App.start_msg = () => {
   App.msg_handle_url.set(App.template_handle_url())
   App.msg_delete_messages.set(App.template_delete_messages())
   App.msg_open_url.set(App.template_open_url())
+  App.msg_automedia.set(App.template_automedia())
   App.msg_view_text.set(App.template_view_text())
   App.msg_profilepic_cropper.set(App.template_profilepic_cropper())
   App.msg_change_role.set(App.template_change_role())
@@ -685,6 +691,14 @@ App.start_msg = () => {
       {id: `open_url_menu_link`, text: `Link`},
       {id: `open_url_menu_context`, text: `Context`},
       {id: `open_url_menu_reply`, text: `Reply`},
+    ],
+    container_id: `open_url_titlebar`,
+  }))
+
+  App.msg_automedia.set_title(App.template_titlebar({
+    items: [
+      {id: `automedia_change`, text: `Change Media`},
+      {id: `automedia_chat`, text: `Send To Chat`},
     ],
     container_id: `open_url_titlebar`,
   }))

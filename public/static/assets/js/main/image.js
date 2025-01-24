@@ -11,7 +11,7 @@ App.push_image_changed = (data) => {
 
 // Get current image
 App.current_image = () => {
-  return App.get_current_media(`image`)
+  return App.get_current_media_change(`image`)
 }
 
 // Loads an image with a specified item

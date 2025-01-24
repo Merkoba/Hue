@@ -193,6 +193,7 @@ App.init = () => {
   App.setup_rooms()
   App.setup_theme()
   App.setup_linksbar()
+  App.setup_automedia()
   App.get_autocomplete()
   App.insert_custom_css()
   App.get_first_time()
