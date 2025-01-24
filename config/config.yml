@@ -165,6 +165,7 @@ settings_default_text_effects: true
 settings_default_auto_blur: false
 settings_default_background_opacity: 0
 settings_default_custom_css: ""
+settings_default_automedia: true
 
 # Default room state values
 room_state_default_image_enabled: true

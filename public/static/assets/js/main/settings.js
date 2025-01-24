@@ -253,6 +253,13 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    automedia: {
+      title: `Automedia`,
+      type: `checkbox`,
+      description: `Ask if media URLs pasted in the chat input should be used`,
+      actions: () => {},
+      version: 1,
+    },
     embed_images: {
       title: `Embed Images`,
       type: `checkbox`,

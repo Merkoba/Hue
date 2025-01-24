@@ -139,7 +139,7 @@ App.commands = {
     aliases: [`change`],
     action: (arg, ans) => {
       if (arg) {
-        App.resolve_media_source(arg)
+        App.media_command(arg)
       }
     },
     description: `Generic function to use image or tv urls`,

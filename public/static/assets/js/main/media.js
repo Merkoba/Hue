@@ -1261,10 +1261,50 @@ App.resolve_media_source = (arg) => {
   let obj = {src, check: true, allow_query: false}
 
   if (App.change_media_source({what: `image`, ...obj})) {
-    App.change_image_source(arg)
+    return `image`
   }
 
   if (App.change_media_source({what: `tv`, ...obj})) {
+    return `tv`
+  }
+
+  return `none`
+}
+
+// Resolve media URL and use it
+App.media_command = (arg) => {
+  let what = App.resolve_media_source(arg)
+
+  if (what === `image`) {
+    App.change_image_source(arg)
+  }
+
+  if (what === `tv`) {
     App.change_tv_source(arg)
+  }
+}
+
+// Check if the message is a media change
+// Then ask if the user wants to use it
+// Else the message is sent to the chat
+App.automedia = (message, fallback) => {
+  let what = App.resolve_media_source(message)
+
+  function msg(name) {
+    return `Change the ${name} using this URL?`
+  }
+
+  if (what === `image`) {
+    App.show_confirm(msg(`Image`), () => {
+      App.change_image_source(message)
+    }, fallback)
+  }
+  else if (what === `tv`) {
+    App.show_confirm(msg(`TV`), () => {
+      App.change_tv_source(message)
+    }, fallback)
+  }
+  else {
+    fallback()
   }
 }

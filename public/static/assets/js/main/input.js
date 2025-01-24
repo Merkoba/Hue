@@ -189,16 +189,25 @@ App.process_input = (args = {}) => {
       args.message = args.message.substring(0, App.config.max_input_length)
     }
 
-    App.push_to_autocomplete(args.message)
+    function action() {
+      App.push_to_autocomplete(args.message)
 
-    App.socket_emit(`sendchat`, {
-      message: args.message,
-      edit_id: args.edit_id,
-      quote: args.quote,
-      quote_username: args.quote_username,
-      quote_user_id: args.quote_user_id,
-      quote_id: args.quote_id,
-    })
+      App.socket_emit(`sendchat`, {
+        message: args.message,
+        edit_id: args.edit_id,
+        quote: args.quote,
+        quote_username: args.quote_username,
+        quote_user_id: args.quote_user_id,
+        quote_id: args.quote_id,
+      })
+    }
+
+    if (App.get_setting(`automedia`)) {
+      App.automedia(args.message, action)
+      return
+    }
+
+    action()
   }
 
   App.push_to_input_history(args.message)
