@@ -1,5 +1,5 @@
 // Get urlize html
-App.urlize_html = (html, limit_width = true) => {
+App.urlize_html = (html, limit_width = true, force_full = false) => {
   try {
     if (!html) {
       return ``
@@ -37,7 +37,7 @@ App.urlize_html = (html, limit_width = true) => {
 
         let u = matches[i]
 
-        if (App.get_setting(`short_urls`)) {
+        if (!force_full && App.get_setting(`short_urls`)) {
           u = App.utilz.remove_protocol(u)
         }
 
@@ -69,7 +69,7 @@ App.urlize_html = (html, limit_width = true) => {
 }
 
 // Function to turn url text into actual links
-App.urlize = (el, limit_width = true) => {
+App.urlize = (el, limit_width, force_full) => {
   if (!el) {
     return
   }
@@ -80,7 +80,7 @@ App.urlize = (el, limit_width = true) => {
     return
   }
 
-  el.innerHTML = App.urlize_html(html, limit_width)
+  el.innerHTML = App.urlize_html(html, limit_width, force_full)
 }
 
 // Goes to a url
@@ -211,9 +211,7 @@ App.open_url_menu = (data) => {
   }
 
   App.horizontal_separator(DOM.el(`#open_url_titlebar`))
-
   let el = DOM.el(`#open_url_info`)
-
   let size
 
   if (data.size) {
@@ -229,7 +227,6 @@ App.open_url_menu = (data) => {
 
   App.urlize(el)
   App.open_url_data = data
-
   App.msg_open_url.show()
 
   if (data.size) {
@@ -240,19 +237,19 @@ App.open_url_menu = (data) => {
 
   if (data.title) {
     DOM.ev(DOM.el(`#open_url_info_title_title`), `click`, () => {
-      App.open_view_text(DOM.el(`#open_url_info_text_title`).textContent)
+      App.open_view_text(data.title)
     })
   }
 
   if (data.comment) {
     DOM.ev(DOM.el(`#open_url_info_title_comment`), `click`, () => {
-      App.open_view_text(DOM.el(`#open_url_info_text_comment`).textContent)
+      App.open_view_text(data.comment)
     })
   }
 
   if (data.source) {
     DOM.ev(DOM.el(`#open_url_info_title_url`), `click`, () => {
-      App.open_view_text(DOM.el(`#open_url_info_text_url`).textContent)
+      App.open_view_text(data.source)
     })
   }
 }

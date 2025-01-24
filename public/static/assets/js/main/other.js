@@ -122,7 +122,7 @@ App.open_view_text = (text) => {
   App.msg_view_text.show()
   let text_el = DOM.el(`#view_text_text`)
   text_el.textContent = text
-  App.urlize(text_el, false)
+  App.urlize(text_el, false, true)
 }
 
 // Setup view text window

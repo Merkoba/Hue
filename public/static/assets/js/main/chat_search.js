@@ -85,13 +85,14 @@ App.show_chat_search = (filter = ``) => {
       return match
     }
     else if (filter.startsWith(`$links`)) {
-      let s = it.textContent.toLowerCase()
-      let match = s.includes(`http://`) || s.includes(`https://`)
+      if (!DOM.el(`a`, it)) {
+        return false
+      }
 
-      if (match) {
-        if (args) {
-          match = it.textContent.toLowerCase().includes(args)
-        }
+      let match = true
+
+      if (args) {
+        match = it.textContent.trim().toLowerCase().includes(args)
       }
 
       return match
