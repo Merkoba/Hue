@@ -386,33 +386,33 @@ App.get_settings = () => {
 
   let changed = false
 
-  function set_default(setting) {
-    App.settings[setting].value = App.default_setting_string
-    App.settings[setting].version = App.user_settings[setting].version
+  function set_default(key) {
+    App.settings[key].value = App.default_setting_string
+    App.settings[key].version = App.user_settings[key].version
   }
 
-  for (let setting in App.user_settings) {
+  for (let key in App.user_settings) {
     // Fill defaults
-    if ((App.settings[setting] === undefined) ||
-      (App.settings[setting].value === undefined)) {
-      App.loginfo(`Stor: Adding setting: ${setting}`)
-      App.settings[setting] = {}
-      set_default(setting)
+    if ((App.settings[key] === undefined) ||
+      (App.settings[key].value === undefined)) {
+      App.loginfo(`Stor: Adding setting: ${key}`)
+      App.settings[key] = {}
+      set_default(key)
       changed = true
     }
   }
 
-  for (let setting in App.settings) {
+  for (let key in App.settings) {
     // Remove unused settings
-    if (App.user_settings[setting] === undefined) {
-      App.loginfo(`Stor: Deleting setting: ${setting}`)
-      delete App.settings[setting]
+    if (App.user_settings[key] === undefined) {
+      App.loginfo(`Stor: Deleting setting: ${key}`)
+      delete App.settings[key]
       changed = true
     }
     // Check new version
-    else if (App.settings[setting].version !== App.user_settings[setting].version) {
-      App.loginfo(`Stor: Upgrading setting: ${setting}`)
-      set_default(setting)
+    else if (App.settings[key].version !== App.user_settings[key].version) {
+      App.loginfo(`Stor: Upgrading setting: ${key}`)
+      set_default(key)
       changed = true
     }
   }
@@ -436,24 +436,24 @@ App.save_settings = (force = false) => {
 
 // Starts the settings windows widgets with current state
 App.start_settings_widgets = () => {
-  for (let setting in App.user_settings) {
-    App.modify_setting_widget(setting)
+  for (let key in App.user_settings) {
+    App.modify_setting_widget(key)
   }
 }
 
 // Updates a setting widget based on the setting state
-App.modify_setting_widget = (setting) => {
-  let type = App.user_settings[setting].type
-  let item = DOM.el(`#settings_${setting}`)
+App.modify_setting_widget = (key) => {
+  let type = App.user_settings[key].type
+  let item = DOM.el(`#settings_${key}`)
 
   if (type === `checkbox`) {
-    item.checked = App.get_setting(setting)
+    item.checked = App.get_setting(key)
   }
   else if (type === `select`) {
-    App.set_select(item, App.get_setting(setting))
+    App.set_select(item, App.get_setting(key))
   }
   else if ([`text`, `textarea`].includes(type)) {
-    item.value = App.get_setting(setting)
+    item.value = App.get_setting(key)
   }
 }
 
@@ -468,62 +468,62 @@ App.set_select = (select, option) => {
 
 // Starts listeners for settings windows widgets's change
 App.start_settings_widgets_listeners = () => {
-  for (let setting in App.user_settings) {
-    let user_setting = App.user_settings[setting]
-    let item = DOM.el(`#settings_${setting}`)
+  for (let key in App.user_settings) {
+    let setting = App.user_settings[key]
+    let item = DOM.el(`#settings_${key}`)
 
-    if ([`checkbox`, `select`].includes(user_setting.type)) {
+    if ([`checkbox`, `select`].includes(setting.type)) {
       DOM.ev(item, `change`, () => {
-        App.on_setting_change(setting)
+        App.on_setting_change(key)
       })
     }
-    else if ([`text`, `textarea`].includes(user_setting.type)) {
+    else if ([`text`, `textarea`].includes(setting.type)) {
       DOM.ev(item, `blur`, () => {
-        App.on_setting_change(setting)
+        App.on_setting_change(key)
       })
     }
-    else if ([`number`, `color`].includes(user_setting.type)) {
+    else if ([`number`, `color`].includes(setting.type)) {
       DOM.ev(item, `change`, () => {
-        App.on_setting_change(setting)
+        App.on_setting_change(key)
       })
     }
-    else if (user_setting.type === `range`) {
+    else if (setting.type === `range`) {
       DOM.ev(item, `input change`, () => {
-        App.on_setting_change(setting)
+        App.on_setting_change(key)
       })
     }
   }
 }
 
-App.on_setting_change = (setting) => {
-  let user_setting = App.user_settings[setting]
-  let el = DOM.el(`#settings_${setting}`)
+App.on_setting_change = (key) => {
+  let setting = App.user_settings[key]
+  let el = DOM.el(`#settings_${key}`)
   let value
 
-  if (user_setting.type === `checkbox`) {
+  if (setting.type === `checkbox`) {
     value = el.checked
   }
-  else if (user_setting.type === `select`) {
+  else if (setting.type === `select`) {
     value = el.value
   }
-  else if ([`text`, `textarea`].includes(user_setting.type)) {
+  else if ([`text`, `textarea`].includes(setting.type)) {
     value = el.value.trim()
   }
 
-  if (user_setting.force_int) {
+  if (setting.force_int) {
     value = parseInt(value)
   }
 
-  App.set_setting(setting, value)
+  App.set_setting(key, value)
   App.save_settings()
-  user_setting.actions()
+  setting.actions()
 }
 
 // Restore one setting
 App.reset_setting = (key) => {
   App.show_confirm(`Reset setting`, () => {
     let setting = App.user_settings[key]
-    App.set_default_setting(key)
+    App.set_setting(key, App.default_setting_string)
     App.modify_setting_widget(key)
 
     if (setting.actions) {
@@ -579,47 +579,25 @@ App.setup_settings_windows = () => {
   })
 }
 
-App.reset_single_setting = (item) => {
-  let setting = item.dataset.setting
-  let user_setting = App.user_settings[setting]
-  let control = DOM.el(`.settings_item_control`, item)
-
-  if (user_setting.type === `select`) {
-    App.set_select(control, App.get_default_setting(setting))
-  }
-  else if (user_setting.type === `checkbox`) {
-    control.checked = App.get_default_setting(setting)
-  }
-
-  App.set_setting(setting, App.default_setting_string)
-  user_setting.actions()
-}
-
 // Get default setting
-App.get_default_setting = (setting) => {
-  return App.config[`settings_default_${setting}`]
+App.get_default_setting = (key) => {
+  return App.config[`settings_default_${key}`]
 }
 
 // Setting getter
-App.get_setting = (setting) => {
-  let value = App.settings[setting].value
+App.get_setting = (key) => {
+  let value = App.settings[key].value
 
   if (value === App.default_setting_string) {
-    value = App.get_default_setting(setting)
+    value = App.get_default_setting(key)
   }
 
   return value
 }
 
 // Set a setting
-App.set_setting = (setting, value) => {
-  App.settings[setting].value = value
-  App.save_settings()
-}
-
-// Set default setting
-App.set_default_setting = (setting) => {
-  App.settings[setting].value = App.config[`settings_default_${setting}`]
+App.set_setting = (key, value) => {
+  App.settings[key].value = value
   App.save_settings()
 }
 
