@@ -323,7 +323,7 @@ App.announce_limited_change = (data) => {
 App.check_limited = () => {
   if (App.limited) {
     if (!App.is_admin_or_op()) {
-      App.msg_info.show(App.limited_message)
+      App.show_info(App.limited_message)
       return false
     }
   }

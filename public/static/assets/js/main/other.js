@@ -3,7 +3,7 @@ App.copy_string = (text, feedback = true) => {
   navigator.clipboard.writeText(text)
 
   if (feedback) {
-    App.msg_info.show(`Copied to clipboard`)
+    App.show_info(`Copied to clipboard`)
   }
 }
 

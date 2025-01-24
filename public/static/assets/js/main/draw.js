@@ -140,6 +140,10 @@ App.setup_draw_image = () => {
     App.draw_image_redo()
   })
 
+  DOM.ev(DOM.el(`#draw_image_suggest`), `click`, () => {
+    App.draw_suggest()
+  })
+
   DOM.ev(DOM.el(`#draw_image_clear`), `click`, () => {
     App.show_confirm(`Clear drawing?`, () => {
       App.clear_draw_image_state()
@@ -289,6 +293,7 @@ App.clear_draw_image_state = () => {
   }
 
   App.draw_image_current_snapshot = App.draw_image_snapshots.level_0
+  App.draw_suggested = ``
 }
 
 // Redraws the draw image
@@ -629,4 +634,11 @@ App.set_draw_color_picker = (what) => {
   else {
     DOM.el(`#draw_image_color_picker`).classList.remove(`buttonbox_active`)
   }
+}
+
+// Suggest a random animal to draw
+App.draw_suggest = () => {
+  let animal = App.words.random_animal()
+  App.show_info(`Try drawing this: ${animal}`)
+  App.draw_suggested = animal
 }

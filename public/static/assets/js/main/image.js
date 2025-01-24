@@ -472,53 +472,16 @@ App.view_image = (src, username, user_id) => {
 
 // Shows the window to add a comment to an image upload
 App.show_image_upload_comment = (file, type) => {
-  DOM.hide(`#image_upload_comment_image_feedback`)
-  DOM.show(`#image_upload_comment_image_preview`)
-
-  App.image_upload_comment_file = file
-  App.image_upload_comment_type = type
-
-  if (type === `drawing`) {
-    DOM.el(`#image_upload_comment_change`).textContent = `Re-Draw`
-  }
-  else if (type === `upload`) {
-    DOM.el(`#image_upload_comment_change`).textContent = `Re-Choose`
-  }
-  else if (type === `screenshot`) {
-    DOM.el(`#image_upload_comment_change`).textContent = `Re-Take`
-  }
-  else if (type === `random_canvas`) {
-    DOM.el(`#image_upload_comment_change`).textContent = `Re-Generate`
-  }
-
-  let name = `${App.utilz.slice_string_end(
-    file.name,
-    20,
-  )} (${App.utilz.size_string(file.size, 2)})`
-
-  DOM.el(`#image_upload_name`).textContent = name
-  DOM.el(`#Msg-titlebar-image_upload_comment`).title = file.name
-  DOM.el(`#image_upload_comment_image_preview`).src = URL.createObjectURL(file)
-
-  App.msg_image_upload_comment.show()
-  let input = DOM.el(`#image_upload_comment_input`)
-  let current_input = App.get_input().trim()
-
-  if (current_input) {
-    input.value = current_input
-    App.clear_input()
-  }
-
-  input.focus()
+  App.show_upload_comment(`image`, file, type)
 }
 
 // Setups the upload image comment window
 App.setup_image_upload_comment = () => {
-  let image = DOM.el(`#image_upload_comment_image_preview`)
+  let image = DOM.el(`#image_upload_comment_preview`)
 
   DOM.ev(image, `error`, () => {
     DOM.hide(image)
-    DOM.show(`#image_upload_comment_image_feedback`)
+    DOM.show(`#image_upload_comment_feedback`)
   })
 
   DOM.ev(DOM.el(`#image_upload_comment_submit`), `click`, () => {

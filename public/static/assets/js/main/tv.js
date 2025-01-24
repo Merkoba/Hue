@@ -430,38 +430,7 @@ App.receive_tv_progress = (data) => {
 
 // Shows the window to add a comment to a video upload
 App.show_tv_upload_comment = (file, type) => {
-  DOM.hide(`#tv_upload_comment_video_feedback`)
-  DOM.show(`#tv_upload_comment_video_preview`)
-
-  App.tv_upload_comment_file = file
-  App.tv_upload_comment_type = type
-
-  if (type === `upload`) {
-    DOM.el(`#tv_upload_comment_change`).textContent = `Re-Choose`
-  }
-  else if (type === `capture`) {
-    DOM.el(`#tv_upload_comment_change`).textContent = `Re-Capture`
-  }
-
-  let name = `${App.utilz.slice_string_end(
-    file.name,
-    20,
-  )} (${App.utilz.size_string(file.size, 2)})`
-
-  DOM.el(`#tv_upload_name`).textContent = name
-  DOM.el(`#Msg-titlebar-tv_upload_comment`).title = file.name
-  DOM.el(`#tv_upload_comment_video_preview`).src = URL.createObjectURL(file)
-
-  App.msg_tv_upload_comment.show()
-  let input = DOM.el(`#tv_upload_comment_input`)
-  let current_input = App.get_input().trim()
-
-  if (current_input) {
-    input.value = current_input
-    App.clear_input()
-  }
-
-  input.focus()
+  App.show_upload_comment(`tv`, file, type)
 }
 
 // Submits the upload tv comment window
@@ -485,7 +454,7 @@ App.process_tv_upload_comment = () => {
 
 // Setups the upload tv comment window
 App.setup_tv_upload_comment = () => {
-  let video = DOM.el(`#tv_upload_comment_video_preview`)
+  let video = DOM.el(`#tv_upload_comment_preview`)
 
   DOM.ev(video, `loadedmetadata`, () => {
     video.currentTime = 0
@@ -495,7 +464,7 @@ App.setup_tv_upload_comment = () => {
 
   DOM.ev(video, `error`, () => {
     DOM.hide(video)
-    DOM.show(`#tv_upload_comment_video_feedback`)
+    DOM.show(`#tv_upload_comment_feedback`)
   })
 
   DOM.ev(DOM.el(`#tv_upload_comment_change`), `click`, () => {

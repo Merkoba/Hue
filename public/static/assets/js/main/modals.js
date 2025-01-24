@@ -288,8 +288,8 @@ App.start_msg = () => {
       after_close: (instance) => {
         msgvars.common.after_close(instance)
         DOM.el(`#tv_upload_comment_input`).value = ``
-        DOM.el(`#tv_upload_comment_video_preview`).pause()
-        DOM.el(`#tv_upload_comment_video_preview`).src = ``
+        DOM.el(`#tv_upload_comment_preview`).pause()
+        DOM.el(`#tv_upload_comment_preview`).src = ``
         App.tv_upload_comment_file = undefined
         App.tv_upload_comment_type = undefined
         App.upload_media = undefined
@@ -593,6 +593,7 @@ App.start_msg = () => {
     items: [
       {id: `draw_image_undo`, text: `Undo`},
       {id: `draw_image_redo`, text: `Redo`},
+      {id: `draw_image_suggest`, text: `Suggest`},
       {id: `draw_image_clear`, text: `Clear`},
       {id: `draw_image_upload`, text: `Upload`},
     ],

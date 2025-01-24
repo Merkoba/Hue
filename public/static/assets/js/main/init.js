@@ -15,6 +15,10 @@ App.debug_socket = true
 // This should be always true unless developing without an internet connection
 App.load_scripts = true
 
+// Load some objects
+App.utilz = Utilz()
+App.words = Words()
+
 // Initial variables declarations
 App.config = {}
 App.ls_settings = `settings_v4`
@@ -33,7 +37,6 @@ App.tab_info = {}
 App.modal_open = false
 App.commands_list_sorted = {}
 App.commands_list_sorted_2 = {}
-App.utilz = Utilz()
 App.files = {}
 App.message_id = 0
 App.chat_content_container_id = 0
@@ -115,6 +118,7 @@ App.loaded_text = `(Loaded)`
 App.clicked_text = `(Clicked)`
 App.media_info_image_data = []
 App.media_info_tv_data = []
+App.draw_suggested = ``
 
 // Initial media-loading variables declarations
 App.youtube_loading = false
