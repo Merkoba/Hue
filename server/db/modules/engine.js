@@ -146,7 +146,6 @@ module.exports = (manager, stuff) => {
       }
     }
     catch (err) {
-      stuff.logger.log_error(err)
       throw err
     }
   }
