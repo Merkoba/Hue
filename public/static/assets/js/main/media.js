@@ -1257,6 +1257,10 @@ App.show_media_loaded = (id) => {
 
 // Check if image or tv change
 App.resolve_media_source = (arg) => {
+  if (arg.includes(`\n`)) {
+    return `none`
+  }
+
   let src = arg.split(` `)[0]
   let obj = {src, check: true, allow_query: false}
 

@@ -901,6 +901,17 @@ const Utilz = () => {
     }
   }
 
+  // Remove protocol from a url
+  utilz.remove_protocol = (url, www = true) => {
+    url = url.replace(/^https?:\/\//, ``)
+
+    if (www) {
+      url = url.replace(/^www\./, ``)
+    }
+
+    return url
+  }
+
   utilz.media_types = [`image`, `tv`]
   utilz.video_extensions = [`mp4`, `webm`]
   utilz.video_types = [`video/mp4`, `video/webm`]
