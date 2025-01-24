@@ -1971,3 +1971,8 @@ textarea.settings_item_control {
 .a-color-picker-dot {
 	z-index: 10 !important;
 }
+
+.draw_icon {
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+}
