@@ -79,15 +79,13 @@ App.check_frame = (text) => {
 
 // Check for arrows at the start of lines
 App.check_arrowtext = (text) => {
-  text = text.trim()
-  let lines = text.split(`\n`).map(x => x.trim())
+  let regex = new RegExp(`^\\s*(&gt;)+`, `gm`)
+  let lines = text.split(`\n`)
   let new_lines = []
 
-  if (text.startsWith(`&gt;&gt;&gt;`)) {
-    let regex = new RegExp(`^(&gt;)+`, `gm`)
-
+  if (regex.test(text)) {
     for (let line of lines) {
-      line = line.replace(regex, ``).trim()
+      line = line.replace(regex, ``)
 
       if (line) {
         line = `<div class="arrowtext">&gt;${line}</div>`
