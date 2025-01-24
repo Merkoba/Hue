@@ -1017,40 +1017,31 @@ App.change_media_layout = () => {
 }
 
 // Shows the window to add a comment to an upload
-App.show_upload_comment = (what, file, type) => {
+App.show_upload_comment = (what, file, type, comment = ``) => {
   DOM.hide(`#${what}_upload_comment_feedback`)
   DOM.show(`#${what}_upload_comment_preview`)
 
   App[`${what}_upload_comment_file`] = file
   App[`${what}_upload_comment_type`] = type
 
-  let comment = ``
+  if (type === `drawing`) {
+    DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Draw`
 
-  if (what === `image`) {
-    if (type === `drawing`) {
-      DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Draw`
-
-      if (App.draw_suggested) {
-        comment = App.draw_suggested
-      }
-    }
-    else if (type === `upload`) {
-      DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Choose`
-    }
-    else if (type === `screenshot`) {
-      DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Take`
-    }
-    else if (type === `random_canvas`) {
-      DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Generate`
+    if (App.draw_suggested) {
+      comment = App.draw_suggested
     }
   }
-  else if (what === `tv`) {
-    if (type === `upload`) {
-      DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Choose`
-    }
-    else if (type === `capture`) {
-      DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Capture`
-    }
+  else if (type === `upload`) {
+    DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Choose`
+  }
+  else if (type === `screenshot`) {
+    DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Take`
+  }
+  else if (type === `random_canvas`) {
+    DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Generate`
+  }
+  else if (type === `capture`) {
+    DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Capture`
   }
 
   if (!comment) {
