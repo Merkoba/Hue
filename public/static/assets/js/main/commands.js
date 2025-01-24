@@ -142,7 +142,7 @@ App.commands = {
         App.resolve_media_source(arg)
       }
     },
-    description: `Show the upload image window`,
+    description: `Generic function to use image or tv urls`,
   },
   topic: {
     action: (arg, ans) => {
@@ -686,7 +686,7 @@ App.commands = {
     action: (arg, ans) => {
       App.send_notification(arg)
     },
-    description: `Toggle limited`,
+    description: `Send a notification to the room`,
   },
 }
 
@@ -717,12 +717,14 @@ App.check_commands = () => {
   let style = `color:red; font-size:1.4rem`
 
   for (let key in App.commands) {
+    let cmd1 = App.commands[key]
     let aliases = App.commands[key].aliases
 
     if (aliases) {
       for (let a of aliases) {
         if (App.commands[a]) {
-          App.utilz.loginfo(`%cCommand alias collision detected. ${key} and ${a}`, style)
+          let msg = `%cCommand alias collision detected. ${key} and ${a}`
+          App.utilz.loginfo(msg, style)
         }
 
         for (let key2 in App.commands) {
@@ -730,8 +732,16 @@ App.check_commands = () => {
             continue
           }
 
-          if (App.commands[key2].aliases && App.commands[key2].aliases.includes(a)) {
-            App.utilz.loginfo(`%cAlias collision detected between commands ${key} and ${key2} for alias ${a}`, style)
+          let cmd2 = App.commands[key2]
+
+          if (cmd2.aliases && cmd2.aliases.includes(a)) {
+            let msg = `%cAlias collision detected between commands ${key} and ${key2} for alias ${a}`
+            App.utilz.loginfo(msg, style)
+          }
+
+          if (cmd1.description === cmd2.description) {
+            let msg = `%cCommand description collision detected. ${key} and ${key2}`
+            App.utilz.loginfo(msg, style)
           }
         }
       }
