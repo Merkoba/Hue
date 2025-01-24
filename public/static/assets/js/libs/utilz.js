@@ -801,6 +801,11 @@ const Utilz = () => {
     return Boolean(extension) && utilz.audio_extensions.includes(extension)
   }
 
+  // Check if it's a youtube url
+  utilz.is_youtube = (src) => {
+    return src.includes(`youtube.com`) || src.includes(`youtu.be`)
+  }
+
   // Check if all items in an array are equal
   utilz.bingo = (s) => {
     let split = s.split(``).filter(x => x !== ``)

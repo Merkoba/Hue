@@ -1067,20 +1067,27 @@ App.show_upload_comment = (what, file, type, comment = ``) => {
 // It considers room state and permissions
 // It considers text or url to determine if it's valid
 // It includes a 'just check' flag to only return true or false
-App.change_media_source = (what, src, just_check = false, comment = ``) => {
+App.change_media_source = (args = {}) => {
+  let def_args = {
+    check: false,
+    allow_query: true,
+    comment: ``,
+  }
+
+  App.utilz.def_args(def_args, args)
   let feedback = true
 
-  if (just_check) {
+  if (args.check) {
     feedback = false
   }
 
-  if (!comment) {
-    let r = App.get_media_change_inline_comment(what, src)
-    src = r.source
-    comment = r.comment
+  if (!args.comment) {
+    let r = App.get_media_change_inline_comment(args.what, args.src)
+    args.src = r.source
+    args.comment = r.comment
   }
 
-  if (comment.length > App.config.max_media_comment_length) {
+  if (args.comment.length > App.config.max_media_comment_length) {
     if (feedback) {
       App.checkmsg(`Comment is too long`)
     }
@@ -1088,21 +1095,23 @@ App.change_media_source = (what, src, just_check = false, comment = ``) => {
     return false
   }
 
-  if (src.length === 0) {
+  if (args.src.length === 0) {
     return false
   }
 
-  src = App.utilz.single_space(src)
+  args.src = App.utilz.single_space(args.src)
 
-  if (src.length > App.config.max_media_source_length) {
+  if (args.src.length > App.config.max_media_source_length) {
     return false
   }
 
-  if (src.startsWith(`/`)) {
+  if (args.src.startsWith(`/`)) {
     return false
   }
 
-  if ((src === App[`current_${what}`]().source) || (src === App[`current_${what}`]().query)) {
+  let current = App[`current_${args.what}`]()
+
+  if ((args.src === current.source) || (args.src === current.query)) {
     if (feedback) {
       App.checkmsg(`Already set to that`)
     }
@@ -1110,11 +1119,11 @@ App.change_media_source = (what, src, just_check = false, comment = ``) => {
     return false
   }
 
-  if (App.utilz.is_url(src)) {
-    if (what === `image`) {
-      src = src.replace(/\.gifv/g, `.gif`)
+  if (App.utilz.is_url(args.src)) {
+    if (args.what === `image`) {
+      args.src = args.src.replace(/\.gifv/g, `.gif`)
 
-      if (!App.utilz.is_image(src)) {
+      if (!App.utilz.is_image(args.src)) {
         if (feedback) {
           App.checkmsg(`Invalid extension`)
         }
@@ -1122,9 +1131,9 @@ App.change_media_source = (what, src, just_check = false, comment = ``) => {
         return false
       }
     }
-    else if (what === `tv`) {
-      if (src.includes(`youtube.com`) || src.includes(`youtu.be`)) {
-        if (App.utilz.get_youtube_id(src) && !App.config.youtube_enabled) {
+    else if (args.what === `tv`) {
+      if (App.utilz.is_youtube(args.src)) {
+        if (App.utilz.get_youtube_id(args.src) && !App.config.youtube_enabled) {
           if (feedback) {
             App.checkmsg(`YouTube support is not enabled`)
           }
@@ -1133,9 +1142,9 @@ App.change_media_source = (what, src, just_check = false, comment = ``) => {
         }
       }
       else {
-        let extension = App.utilz.get_extension(src).toLowerCase()
+        let extension = App.utilz.get_extension(args.src).toLowerCase()
 
-        if (extension && (App.utilz.is_video(src) || App.utilz.is_audio(src))) {
+        if (extension && (App.utilz.is_video(args.src) || App.utilz.is_audio(args.src))) {
           // Is a video
         }
         else {
@@ -1145,7 +1154,15 @@ App.change_media_source = (what, src, just_check = false, comment = ``) => {
     }
   }
   else {
-    if (src.length > App.config.safe_limit_1) {
+    if (!args.allow_query) {
+      if (feedback) {
+        App.checkmsg(`Query is not allowed`)
+      }
+
+      return false
+    }
+
+    if (args.src.length > App.config.safe_limit_1) {
       if (feedback) {
         App.checkmsg(`Query is too long`)
       }
@@ -1153,7 +1170,7 @@ App.change_media_source = (what, src, just_check = false, comment = ``) => {
       return false
     }
 
-    if (what === `image`) {
+    if (args.what === `image`) {
       if (!App.config.imgur_enabled) {
         if (feedback) {
           App.checkmsg(`Imgur support is not enabled`)
@@ -1162,7 +1179,7 @@ App.change_media_source = (what, src, just_check = false, comment = ``) => {
         return false
       }
     }
-    else if (what === `tv`) {
+    else if (args.what === `tv`) {
       if (!App.config.youtube_enabled) {
         if (feedback) {
           App.checkmsg(`YouTube support is not enabled`)
@@ -1173,11 +1190,11 @@ App.change_media_source = (what, src, just_check = false, comment = ``) => {
     }
   }
 
-  if (just_check) {
+  if (args.check) {
     return true
   }
 
-  App.socket_emit(`change_${what}_source`, {src, comment})
+  App.socket_emit(`change_${args.what}_source`, {src: args.src, comment: args.comment})
 }
 
 // Returns the current room media
@@ -1235,5 +1252,19 @@ App.show_media_loaded = (id) => {
     if (info) {
       info.textContent = App.loaded_text
     }
+  }
+}
+
+// Check if image or tv change
+App.resolve_media_source = (arg) => {
+  let src = arg.split(` `)[0]
+  let obj = {src, check: true, allow_query: false}
+
+  if (App.change_media_source({what: `image`, ...obj})) {
+    App.change_image_source(arg)
+  }
+
+  if (App.change_media_source({what: `tv`, ...obj})) {
+    App.change_tv_source(arg)
   }
 }

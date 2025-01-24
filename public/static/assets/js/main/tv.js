@@ -181,8 +181,8 @@ App.after_show_tv = () => {
 }
 
 // Changes the tv source
-App.change_tv_source = (src, just_check = false, comment = ``) => {
-  App.change_media_source(`tv`, src, just_check, comment)
+App.change_tv_source = (src, check, comment) => {
+  App.change_media_source({what: `tv`, src, check, comment})
 }
 
 // Do tv change socket emit

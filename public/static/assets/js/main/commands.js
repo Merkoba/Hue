@@ -135,6 +135,15 @@ App.commands = {
     },
     description: `Show the upload image window`,
   },
+  media: {
+    aliases: [`change`],
+    action: (arg, ans) => {
+      if (arg) {
+        App.resolve_media_source(arg)
+      }
+    },
+    description: `Show the upload image window`,
+  },
   topic: {
     action: (arg, ans) => {
       if (arg) {
