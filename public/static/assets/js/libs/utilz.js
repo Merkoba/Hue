@@ -662,60 +662,83 @@ const Utilz = () => {
   }
 
   utilz.MINUTE = 60000
-  utilz.HOUR = 3600000
-  utilz.DAY = 86400000
-  utilz.YEAR = 31536000000
+  utilz.HOUR = utilz.MINUTE * 60
+  utilz.DAY = utilz.HOUR * 24
+  utilz.MONTH = utilz.DAY * 30
+  utilz.YEAR = utilz.DAY * 365
 
   // Return a timeago string
   utilz.timeago = (date) => {
+    let level = 0
     let diff = Date.now() - date
-    let s
+    let result
 
     if (diff < utilz.MINUTE) {
-      s = `just now`
+      result = `just now`
+      level = 1
     }
     else if (diff < utilz.HOUR) {
-      let n = Math.floor(diff / 60 / 1000)
+      let n = parseInt(diff / utilz.MINUTE)
 
       if (n === 1) {
-        s = `${n} min ago`
+        result = `${n} minute ago`
       }
       else {
-        s = `${n} mins ago`
+        result = `${n} minutes ago`
       }
+
+      level = 2
     }
-    else if (diff >= utilz.HOUR && diff < utilz.DAY) {
-      let n = Math.floor(diff / 60 / 60 / 1000)
+    else if ((diff >= utilz.HOUR) && (diff < utilz.DAY)) {
+      let n = parseInt(diff / utilz.HOUR)
 
       if (n === 1) {
-        s = `${n} hr ago`
+        result = `${n} hour ago`
       }
       else {
-        s = `${n} hrs ago`
+        result = `${n} hours ago`
       }
+
+      level = 3
     }
-    else if (diff >= utilz.DAY && diff < utilz.YEAR) {
-      let n = Math.floor(diff / 24 / 60 / 60 / 1000)
+    else if ((diff >= utilz.DAY) && (diff < utilz.MONTH)) {
+      let n = parseInt(diff / utilz.DAY)
 
       if (n === 1) {
-        s = `${n} day ago`
+        result = `${n} day ago`
       }
       else {
-        s = `${n} days ago`
+        result = `${n} days ago`
       }
+
+      level = 4
+    }
+    else if ((diff >= utilz.MONTH) && (diff < utilz.YEAR)) {
+      let n = parseInt(diff / utilz.MONTH)
+
+      if (n === 1) {
+        result = `${n} month ago`
+      }
+      else {
+        result = `${n} months ago`
+      }
+
+      level = 5
     }
     else if (diff >= utilz.YEAR) {
-      let n = Math.floor(diff / 365 / 24 / 60 / 60 / 1000)
+      let n = parseInt(diff / utilz.YEAR)
 
       if (n === 1) {
-        s = `${n} year ago`
+        result = `${n} year ago`
       }
       else {
-        s = `${n} years ago`
+        result = `${n} years ago`
       }
+
+      level = 6
     }
 
-    return s
+    return result
   }
 
   // Fill from the left with c character to get to n ammount
