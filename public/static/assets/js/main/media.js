@@ -1062,3 +1062,120 @@ App.show_upload_comment = (what, file, type, comment = ``) => {
   App[`msg_${what}_upload_comment`].show()
   comment_input.focus()
 }
+
+// Attempts to change a media source
+// It considers room state and permissions
+// It considers text or url to determine if it's valid
+// It includes a 'just check' flag to only return true or false
+App.change_media_source = (what, src, just_check = false, comment = ``) => {
+  let feedback = true
+
+  if (just_check) {
+    feedback = false
+  }
+
+  if (!comment) {
+    let r = App.get_media_change_inline_comment(what, src)
+    src = r.source
+    comment = r.comment
+  }
+
+  if (comment.length > App.config.max_media_comment_length) {
+    if (feedback) {
+      App.checkmsg(`Comment is too long`)
+    }
+
+    return false
+  }
+
+  if (src.length === 0) {
+    return false
+  }
+
+  src = App.utilz.single_space(src)
+
+  if (src.length > App.config.max_media_source_length) {
+    return false
+  }
+
+  if (src.startsWith(`/`)) {
+    return false
+  }
+
+  if ((src === App[`current_${what}`]().source) || (src === App[`current_${what}`]().query)) {
+    if (feedback) {
+      App.checkmsg(`Already set to that`)
+    }
+
+    return false
+  }
+
+  if (App.utilz.is_url(src)) {
+    if (what === `image`) {
+      src = src.replace(/\.gifv/g, `.gif`)
+
+      if (!App.utilz.is_image(src)) {
+        if (feedback) {
+          App.checkmsg(`Invalid extension`)
+        }
+
+        return false
+      }
+    }
+    else if (what === `tv`) {
+      if (src.includes(`youtube.com`) || src.includes(`youtu.be`)) {
+        if (App.utilz.get_youtube_id(src) && !App.config.youtube_enabled) {
+          if (feedback) {
+            App.checkmsg(`YouTube support is not enabled`)
+          }
+
+          return false
+        }
+      }
+      else {
+        let extension = App.utilz.get_extension(src).toLowerCase()
+
+        if (extension && (App.utilz.is_video(src) || App.utilz.is_audio(src))) {
+          // Is a video
+        }
+        else {
+          return false
+        }
+      }
+    }
+  }
+  else {
+    if (src.length > App.config.safe_limit_1) {
+      if (feedback) {
+        App.checkmsg(`Query is too long`)
+      }
+
+      return false
+    }
+
+    if (what === `image`) {
+      if (!App.config.imgur_enabled) {
+        if (feedback) {
+          App.checkmsg(`Imgur support is not enabled`)
+        }
+
+        return false
+      }
+    }
+    else if (what === `tv`) {
+      if (!App.config.youtube_enabled) {
+        if (feedback) {
+          App.checkmsg(`YouTube support is not enabled`)
+        }
+
+        return false
+      }
+    }
+  }
+
+  if (just_check) {
+    return true
+  }
+
+  App.socket_emit(`change_${what}_source`, {src, comment})
+}

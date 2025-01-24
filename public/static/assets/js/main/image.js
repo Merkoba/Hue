@@ -34,91 +34,9 @@ App.show_image = (force = false) => {
   }
 }
 
-// Attempts to change the image source
-// It considers room state and permissions
-// It considers text or url to determine if it's valid
-// It includes a 'just check' flag to only return true or false
+// Change the image source
 App.change_image_source = (src, just_check = false, comment = ``) => {
-  let feedback = true
-
-  if (just_check) {
-    feedback = false
-  }
-
-  if (!comment) {
-    let r = App.get_media_change_inline_comment(`image`, src)
-    src = r.source
-    comment = r.comment
-  }
-
-  if (comment.length > App.config.max_media_comment_length) {
-    if (feedback) {
-      App.checkmsg(`Comment is too long`)
-    }
-
-    return false
-  }
-
-  if (src.length === 0) {
-    return false
-  }
-
-  src = App.utilz.single_space(src)
-
-  if (src.length > App.config.max_media_source_length) {
-    return false
-  }
-
-  if (src.startsWith(`/`)) {
-    return false
-  }
-
-  if ((src === App.current_image().source) || (src === App.current_image().query)) {
-    if (feedback) {
-      App.checkmsg(`Image is already set to that`)
-    }
-
-    return false
-  }
-  else if (App.utilz.is_url(src)) {
-    src = src.replace(/\.gifv/g, `.gif`)
-
-    if (!App.utilz.is_image(src)) {
-      if (feedback) {
-        App.checkmsg(`That doesn't seem to be an image`)
-      }
-
-      return false
-    }
-  }
-  else {
-    if (src.length > App.config.safe_limit_1) {
-      if (feedback) {
-        App.checkmsg(`Query is too long`)
-      }
-
-      return false
-    }
-
-    if (!App.config.imgur_enabled) {
-      if (feedback) {
-        App.checkmsg(`Imgur support is not enabled`)
-      }
-
-      return false
-    }
-  }
-
-  if (just_check) {
-    return true
-  }
-
-  App.emit_change_image_source(src, comment)
-}
-
-// Sends an emit to change the image source
-App.emit_change_image_source = (url, comment = ``) => {
-  App.socket_emit(`change_image_source`, {src: url, comment})
+  App.change_media_source(`image`, src, just_check, comment)
 }
 
 // Updates dimensions of the image

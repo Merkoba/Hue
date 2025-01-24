@@ -186,97 +186,9 @@ App.after_show_tv = () => {
   App.show_tv_loaded()
 }
 
-// Attempts to change the tv source
-// It considers room state and permissions
-// It considers text or url to determine if it's valid
-// It includes a 'just check' flag to only return true or false
+// Changes the tv source
 App.change_tv_source = (src, just_check = false, comment = ``) => {
-  let feedback = true
-
-  if (just_check) {
-    feedback = false
-  }
-
-  if (!comment) {
-    let r = App.get_media_change_inline_comment(`tv`, src)
-    src = r.source
-    comment = r.comment
-  }
-
-  if (comment.length > App.config.max_media_comment_length) {
-    if (feedback) {
-      App.checkmsg(`Comment is too long`)
-    }
-
-    return false
-  }
-
-  if (src.length === 0) {
-    return false
-  }
-
-  src = App.utilz.single_space(src)
-
-  if (src.length > App.config.max_media_source_length) {
-    return false
-  }
-
-  if (src.startsWith(`/`)) {
-    return false
-  }
-
-  if ((src === App.current_tv().source) || (src === App.current_tv().query)) {
-    if (feedback) {
-      App.checkmsg(`TV is already set to that`)
-    }
-
-    return false
-  }
-
-  if (App.utilz.is_url(src)) {
-    if (src.includes(`youtube.com`) || src.includes(`youtu.be`)) {
-      if (App.utilz.get_youtube_id(src) && !App.config.youtube_enabled) {
-        if (feedback) {
-          App.checkmsg(`YouTube support is not enabled`)
-        }
-
-        return false
-      }
-    }
-    else {
-      let extension = App.utilz.get_extension(src).toLowerCase()
-
-      if (extension && (App.utilz.is_video(src) || App.utilz.is_audio(src))) {
-        // Is a video
-      }
-      else {
-        return false
-      }
-    }
-  }
-  else {
-    if (src.length > App.config.safe_limit_1) {
-      if (feedback) {
-        App.checkmsg(`Query is too long`)
-      }
-
-      return false
-    }
-
-    if (!App.config.youtube_enabled) {
-      if (feedback) {
-        App.checkmsg(`YouTube support is not enabled`)
-      }
-
-      return false
-    }
-  }
-
-  if (just_check) {
-    return true
-  }
-
-  App.do_tv_change(src, comment)
+  App.change_media_source(`tv`, src, just_check, comment)
 }
 
 // Do tv change socket emit
