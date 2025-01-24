@@ -1151,11 +1151,27 @@ App.setup_change_role = () => {
   })
 }
 
+// Update the userlist
 App.update_userlist = (prop) => {
   App.update_userlist_debouncer.call(prop)
 }
 
+// Mention a user
 App.mention_user = (username) => {
   let new_input = App.get_input().trim() + ` ${username}`
   App.change_input(new_input.trim())
+}
+
+// Show how long a user has been online
+App.show_uptime = (username = ``) => {
+  username = username || App.username
+  let user = App.get_user_by_username(username)
+
+  if (!user) {
+    App.checkmsg(`User is not in the room`)
+    return
+  }
+
+  let timeago = App.utilz.timeago(user.date_joined)
+  App.checkmsg(`${user.username} got online ${timeago}`)
 }

@@ -688,6 +688,13 @@ App.commands = {
     },
     description: `Send a notification to the room`,
   },
+  time: {
+    aliases: [`uptime`, `join`, `joined`, `when`, `duration`, `online`],
+    action: (arg, ans) => {
+      App.show_uptime(arg)
+    },
+    description: `Show how long ago a user joined the room`,
+  },
 }
 
 // Commands reserved to superusers
