@@ -65,18 +65,29 @@ App.apply_theme = (background_color = ``, text_color = ``) => {
   App.set_style_prop(`--chat_font_size`, App.get_setting(`chat_font_size`) + `em`)
   App.set_style_prop(`--chat_size`, App.get_setting(`chat_font_size`) + `em`)
 
+  let doc = document.documentElement
+
   if (App.get_setting(`hide_scrollbars`)) {
-    document.documentElement.classList.add(`no_scrollbars`)
+    doc.classList.add(`no_scrollbars`)
   }
   else {
-    document.documentElement.classList.remove(`no_scrollbars`)
+    doc.classList.remove(`no_scrollbars`)
   }
 
-  if (App.get_setting(`text_glow`)) {
-    document.body.classList.add(`text_glow`)
+  if (App.get_setting(`grey_background`)) {
+    doc.classList.add(`grey_background`)
   }
   else {
-    document.body.classList.remove(`text_glow`)
+    doc.classList.remove(`grey_background`)
+  }
+
+  let body = document.body
+
+  if (App.get_setting(`text_glow`)) {
+    body.classList.add(`text_glow`)
+  }
+  else {
+    body.classList.remove(`text_glow`)
   }
 }
 

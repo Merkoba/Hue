@@ -54,6 +54,9 @@ html {
 	height: 100%;
 	object-fit: cover;
 	object-position: center center;
+}
+
+.grey_background .background {
 	filter: grayscale(100%);
 }
 

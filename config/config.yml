@@ -167,6 +167,7 @@ settings_default_background_opacity: 0
 settings_default_custom_css: ""
 settings_default_automedia: true
 settings_default_short_urls: true
+settings_default_grey_background: false
 
 # Default room state values
 room_state_default_image_enabled: true

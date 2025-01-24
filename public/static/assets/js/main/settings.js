@@ -357,6 +357,15 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    grey_background: {
+      title: `Grey Background`,
+      type: `checkbox`,
+      description: `Apply a greyscale filter to the background image`,
+      actions: () => {
+        App.apply_theme()
+      },
+      version: 1,
+    },
     custom_css: {
       title: `Custom CSS`,
       type: `textarea`,
