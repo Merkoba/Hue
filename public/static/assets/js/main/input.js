@@ -173,12 +173,21 @@ App.process_input = (args = {}) => {
   let message_split = args.message.split(`\n`)
   let num_lines = message_split.length
 
+  function finish() {
+    App.push_to_input_history(args.message)
+
+    if (args.clr_input) {
+      App.clear_input()
+    }
+  }
+
   if ((num_lines === 1) && App.is_command(args.message) && !args.edit_id) {
     let ans = App.execute_command(args.message, {
       clr_input: args.clr_input,
     })
 
     args.clr_input = ans.clr_input
+    finish()
   }
   else {
     if (!App.check_limited()) {
@@ -200,20 +209,17 @@ App.process_input = (args = {}) => {
         quote_user_id: args.quote_user_id,
         quote_id: args.quote_id,
       })
+
+      finish()
     }
 
     if (App.get_setting(`automedia`)) {
       App.automedia(args.message, action)
+      finish()
       return
     }
 
     action()
-  }
-
-  App.push_to_input_history(args.message)
-
-  if (args.clr_input) {
-    App.clear_input()
   }
 }
 
