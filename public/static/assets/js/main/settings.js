@@ -327,6 +327,13 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    short_urls: {
+      title: `Short URLs`,
+      type: `checkbox`,
+      description: `Remove the protocol like https:// from displayed URLs`,
+      actions: () => {},
+      version: 1,
+    },
     text_glow: {
       title: `Text Glow`,
       type: `checkbox`,

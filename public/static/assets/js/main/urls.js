@@ -36,7 +36,10 @@ App.urlize_html = (html, limit_width = true) => {
         )
 
         let u = matches[i]
-        u = App.utilz.remove_protocol(u)
+
+        if (App.get_setting(`short_urls`)) {
+          u = App.utilz.remove_protocol(u)
+        }
 
         if (limit_width) {
           let max = App.config.max_displayed_url
