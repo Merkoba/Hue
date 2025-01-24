@@ -102,12 +102,13 @@ App.check_footer_expand = () => {
 // Update footer toggle
 App.update_footer_toggle = (type) => {
   let val = App.room_state[`${type}_enabled`]
+  let icon = DOM.el(`#footer_${type}_toggle use`)
 
   if (val) {
-    DOM.el(`#footer_${type}_toggle use`).href.baseVal = `#icon_toggle-on`
+    icon.href.baseVal = `#icon_toggle-on`
   }
   else {
-    DOM.el(`#footer_${type}_toggle use`).href.baseVal = `#icon_toggle-off`
+    icon.href.baseVal = `#icon_toggle-off`
   }
 }
 

@@ -322,8 +322,8 @@ html {
 }
 
 .media_picker_icon {
-	background-color: transparent;
 	color: inherit;
+	background-color: transparent;
 	width: calc(var(--icon_size) * 1.8);
 	height: calc(var(--icon_size) * 1.8);
 }
@@ -1975,4 +1975,11 @@ textarea.settings_item_control {
 .draw_icon {
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
+}
+
+#automedia_icon {
+	color: inherit;
+	background-color: transparent;
+	width: calc(var(--icon_size) * 1.8);
+	height: calc(var(--icon_size) * 1.8);
 }

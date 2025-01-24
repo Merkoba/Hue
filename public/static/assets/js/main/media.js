@@ -1313,19 +1313,22 @@ App.automedia = (args) => {
   }
 
   function msg(name) {
-    return `Change the ${name} using this URL`
+    return `Change the <b>${name}</b> or send to chat`
   }
 
+  let icon_el = DOM.el(`#automedia_icon use`)
   let msg_el = DOM.el(`#automedia_message`)
   App.automedia_args = args
   App.automedia_what = what
 
   if (what === `image`) {
-    msg_el.textContent = msg(`Image`)
+    icon_el.href.baseVal = `#icon_image`
+    msg_el.innerHTML = msg(`Image`)
     App.msg_automedia.show()
   }
   else if (what === `tv`) {
-    msg_el.textContent = msg(`TV`)
+    icon_el.href.baseVal = `#icon_tv`
+    msg_el.innerHTML = msg(`TV`)
     App.msg_automedia.show()
   }
 
