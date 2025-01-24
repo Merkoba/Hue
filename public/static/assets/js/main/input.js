@@ -190,11 +190,9 @@ App.process_input = (args = {}) => {
       args.message = args.message.substring(0, App.config.max_input_length)
     }
 
-    if (args.automedia) {
-      if (App.get_setting(`automedia`)) {
-        if (App.automedia(args)) {
-          return
-        }
+    if (args.automedia && App.get_setting(`automedia`)) {
+      if (App.automedia(args)) {
+        return
       }
     }
 
