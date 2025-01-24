@@ -21,7 +21,7 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
 
     if (info.topic === data.topic) {
       return
@@ -31,8 +31,8 @@ module.exports = (App) => {
 
     App.handler.room_emit(socket, `topic_changed`, {
       topic: data.topic,
-      user_id: socket.hue_user_id,
-      username: socket.hue_username,
+      user_id: socket.hue.user_id,
+      username: socket.hue.username,
     })
 
     App.handler.push_admin_log_message(socket, `changed the topic to "${data.topic}"`)
@@ -55,15 +55,15 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
 
     if (info.name !== data.name) {
       info.name = data.name
 
       App.handler.room_emit(socket, `room_name_changed`, {
         name: info.name,
-        user_id: socket.hue_user_id,
-        username: socket.hue_username,
+        user_id: socket.hue.user_id,
+        username: socket.hue.username,
       })
 
       App.handler.push_admin_log_message(socket, `changed the room name to "${info.name}"`)
@@ -99,13 +99,13 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
     info.background_color = data.color
 
     App.handler.room_emit(socket, `background_color_changed`, {
       color: data.color,
-      user_id: socket.hue_user_id,
-      username: socket.hue_username,
+      user_id: socket.hue.user_id,
+      username: socket.hue.username,
     })
   }
 
@@ -127,13 +127,13 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
     info.text_color = data.color
 
     App.handler.room_emit(socket, `text_color_changed`, {
       color: data.color,
-      user_id: socket.hue_user_id,
-      username: socket.hue_username,
+      user_id: socket.hue.user_id,
+      username: socket.hue.username,
     })
   }
 
@@ -155,7 +155,7 @@ module.exports = (App) => {
     }
 
     let file_name = `background.${data.extension}`
-    let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id)
+    let container = App.i.path.join(App.vars.media_root, `room`, socket.hue.room_id)
 
     if (!App.i.fs.existsSync(container)) {
       App.i.fs.mkdirSync(container, {recursive: true})
@@ -234,19 +234,19 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
 
     if (info.limited === data.limited) {
       return
     }
 
     info.limited = data.limited
-    App.vars.rooms[socket.hue_room_id].limited = info.limited
+    App.vars.rooms[socket.hue.room_id].limited = info.limited
 
     App.handler.room_emit(socket, `limited_changed`, {
       limited: data.limited,
-      user_id: socket.hue_user_id,
-      username: socket.hue_username,
+      user_id: socket.hue.user_id,
+      username: socket.hue.username,
     })
 
     App.handler.push_admin_log_message(socket, `changed limited to "${data.limited}"`)
@@ -254,14 +254,14 @@ module.exports = (App) => {
 
   // Completes background image changes
   App.handler.do_change_background = async (socket, file_name, type) => {
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
     info.background = file_name
     info.background_type = type
 
     let new_ver = 0
 
     if (type === `hosted`) {
-      let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+      let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
       new_ver = (info.background_version || 0) + 1
       info.background_version = new_ver
     }
@@ -270,20 +270,20 @@ module.exports = (App) => {
       background: file_name,
       background_type: type,
       background_version: new_ver,
-      user_id: socket.hue_user_id,
-      username: socket.hue_username,
+      user_id: socket.hue.user_id,
+      username: socket.hue.username,
     })
 
     // Remove left over files
     if (type === `hosted`) {
-      let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id)
+      let container = App.i.path.join(App.vars.media_root, `room`, socket.hue.room_id)
 
       try {
         let files = await App.i.fsp.readdir(container)
 
         for (let file of files) {
           if (file.startsWith(`background`) && (file !== file_name)) {
-            let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id)
+            let container = App.i.path.join(App.vars.media_root, `room`, socket.hue.room_id)
             let path = App.i.path.join(container, file)
 
             App.i.fs.unlink(path, (err) => {
@@ -301,7 +301,7 @@ module.exports = (App) => {
   }
 
   App.handler.check_limited = (socket) => {
-    let room = App.vars.rooms[socket.hue_room_id]
+    let room = App.vars.rooms[socket.hue.room_id]
 
     if (room.limited) {
       if (!App.handler.is_admin_or_op(socket)) {

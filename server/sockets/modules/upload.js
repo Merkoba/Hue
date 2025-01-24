@@ -17,7 +17,7 @@ module.exports = (App) => {
       return
     }
 
-    let key = `${socket.hue_user_id}_${data.date}`
+    let key = `${socket.hue.user_id}_${data.date}`
     let file = App.vars.files[key]
 
     if (!file) {
@@ -171,7 +171,7 @@ module.exports = (App) => {
 
   // Flags a file as cancelled
   App.handler.public.cancel_upload = (socket, data) => {
-    let key = `${socket.hue_user_id}_${data.date}`
+    let key = `${socket.hue.user_id}_${data.date}`
     let file = App.vars.files[key]
 
     if (file) {

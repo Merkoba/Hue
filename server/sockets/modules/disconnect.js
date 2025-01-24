@@ -6,7 +6,7 @@ module.exports = (App) => {
 
   // On disconnect
   App.handler.disconnect = async (socket) => {
-    if (socket.hue_user_id === undefined) {
+    if (socket.hue.user_id === undefined) {
       return
     }
 
@@ -14,39 +14,39 @@ module.exports = (App) => {
       return
     }
 
-    if (socket.hue_room_id !== undefined) {
-      if (App.vars.rooms[socket.hue_room_id] === undefined) {
+    if (socket.hue.room_id !== undefined) {
+      if (App.vars.rooms[socket.hue.room_id] === undefined) {
         return
       }
 
-      delete App.vars.rooms[socket.hue_room_id].userlist[socket.hue_user_id]
+      delete App.vars.rooms[socket.hue.room_id].userlist[socket.hue.user_id]
 
-      if (App.vars.user_rooms[socket.hue_user_id] !== undefined) {
-        for (let i = 0; i < App.vars.user_rooms[socket.hue_user_id].length; i++) {
-          let room_id = App.vars.user_rooms[socket.hue_user_id][i]
+      if (App.vars.user_rooms[socket.hue.user_id] !== undefined) {
+        for (let i = 0; i < App.vars.user_rooms[socket.hue.user_id].length; i++) {
+          let room_id = App.vars.user_rooms[socket.hue.user_id][i]
 
-          if (socket.hue_room_id === room_id) {
-            App.vars.user_rooms[socket.hue_user_id].splice(i, 1)
+          if (socket.hue.room_id === room_id) {
+            App.vars.user_rooms[socket.hue.user_id].splice(i, 1)
             break
           }
         }
 
-        if (App.vars.user_rooms[socket.hue_user_id].length === 0) {
-          delete App.vars.user_rooms[socket.hue_user_id]
+        if (App.vars.user_rooms[socket.hue.user_id].length === 0) {
+          delete App.vars.user_rooms[socket.hue.user_id]
         }
       }
     }
 
-    if (socket.hue_joined) {
+    if (socket.hue.joined) {
       let type
 
-      if (socket.hue_pinged) {
+      if (socket.hue.pinged) {
         type = `pinged`
       }
-      else if (socket.hue_kicked) {
+      else if (socket.hue.kicked) {
         type = `kicked`
       }
-      else if (socket.hue_banned) {
+      else if (socket.hue.banned) {
         type = `banned`
       }
       else {
@@ -54,10 +54,10 @@ module.exports = (App) => {
       }
 
       App.handler.room_emit(socket, `user_disconnected`, {
-        user_id: socket.hue_user_id,
-        username: socket.hue_username,
-        info1: socket.hue_info1,
-        role: socket.hue_role,
+        user_id: socket.hue.user_id,
+        username: socket.hue.username,
+        info1: socket.hue.info1,
+        role: socket.hue.role,
         disconnection_type: type,
       })
     }
@@ -67,10 +67,10 @@ module.exports = (App) => {
   App.handler.public.disconnect_others = async (socket, data) => {
     let amount = 0
 
-    for (let room_id of App.vars.user_rooms[socket.hue_user_id]) {
+    for (let room_id of App.vars.user_rooms[socket.hue.user_id]) {
       for (let socc of await App.handler.get_user_sockets_per_room(
         room_id,
-        socket.hue_user_id,
+        socket.hue.user_id,
       )) {
         if (socc.id !== socket.id) {
           socc.disconnect()

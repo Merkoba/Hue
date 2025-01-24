@@ -11,19 +11,19 @@ module.exports = (App) => {
 
   // Check if user is banned
   App.handler.user_is_banned = (socket) => {
-    if (socket.hue_username) {
-      let username = socket.hue_username.toLowerCase()
+    if (socket.hue.username) {
+      let username = socket.hue.username.toLowerCase()
 
       if (App.banlist.usernames.some(x => x.toLowerCase() === username)) {
         return true
       }
     }
 
-    if (socket.hue_user_id && App.banlist.user_ids.includes(socket.hue_user_id)) {
+    if (socket.hue.user_id && App.banlist.user_ids.includes(socket.hue.user_id)) {
       return true
     }
 
-    if (socket.hue_ip_address && App.banlist.ip_addresses.includes(socket.hue_ip_address)) {
+    if (socket.hue.ip_address && App.banlist.ip_addresses.includes(socket.hue.ip_address)) {
       return true
     }
 
@@ -32,7 +32,7 @@ module.exports = (App) => {
 
   // Bans a username globally
   App.handler.public.ban_username = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -59,7 +59,7 @@ module.exports = (App) => {
 
   // Unbans a username globally
   App.handler.public.unban_username = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -92,7 +92,7 @@ module.exports = (App) => {
 
   // Bans a user_id globally
   App.handler.public.ban_user_id = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -117,7 +117,7 @@ module.exports = (App) => {
 
   // Unbans a user_id globally
   App.handler.public.unban_user_id = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -148,7 +148,7 @@ module.exports = (App) => {
 
   // Bans an ip address globally
   App.handler.public.ban_ip_address = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -173,7 +173,7 @@ module.exports = (App) => {
 
   // Unbans an ip address globally
   App.handler.public.unban_ip_address = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -204,7 +204,7 @@ module.exports = (App) => {
 
   // Send the user_id of a username
   App.handler.public.get_user_id_by_username = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -232,7 +232,7 @@ module.exports = (App) => {
 
   // Send the username of a user_id
   App.handler.public.get_username_by_user_id = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -260,7 +260,7 @@ module.exports = (App) => {
 
   // Send the ip address of a connected user
   App.handler.public.get_ip_address_by_username = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -277,8 +277,8 @@ module.exports = (App) => {
     let sockets = await App.handler.get_all_sockets()
 
     for (let socc of sockets) {
-      if (socc.hue_username === data.username) {
-        ip_address = socc.hue_ip_address
+      if (socc.hue.username === data.username) {
+        ip_address = socc.hue.ip_address
         break
       }
     }
@@ -296,7 +296,7 @@ module.exports = (App) => {
 
   // Disconnect all sockets of a user
   App.handler.public.disconnect_user = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -304,7 +304,7 @@ module.exports = (App) => {
     let sockets = await App.handler.get_all_sockets()
 
     for (let socc of sockets) {
-      if (socc.hue_username === data.username) {
+      if (socc.hue.username === data.username) {
         socc.disconnect()
       }
     }
@@ -313,7 +313,7 @@ module.exports = (App) => {
   // Store user data incase abuse/attacks happen
   App.handler.log_user_data = (socket) => {
     let date = new Date().toISOString()
-    let info = `date: ${date} | username: ${socket.hue_username} | user_id: ${socket.hue_user_id} | ip: ${socket.hue_ip_address}`
+    let info = `date: ${date} | username: ${socket.hue.username} | user_id: ${socket.hue.user_id} | ip: ${socket.hue.ip_address}`
     App.logger.info(info)
   }
 }

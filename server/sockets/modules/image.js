@@ -29,7 +29,7 @@ module.exports = (App) => {
       return
     }
 
-    let media_info = await App.handler.get_last_media(socket.hue_room_id, `image`)
+    let media_info = await App.handler.get_last_media(socket.hue.room_id, `image`)
 
     if (media_info) {
       if ((media_info.source === data.src) || (media_info.query === data.src)) {
@@ -75,7 +75,7 @@ module.exports = (App) => {
                   let obj = {}
                   obj.query = data.src
                   obj.src = item.link
-                  obj.username = socket.hue_username
+                  obj.username = socket.hue.username
                   obj.size = 0
                   obj.type = `link`
                   obj.comment = data.comment
@@ -91,7 +91,7 @@ module.exports = (App) => {
                     let obj = {}
                     obj.query = data.src
                     obj.src = img.link
-                    obj.username = socket.hue_username
+                    obj.username = socket.hue.username
                     obj.size = 0
                     obj.type = `link`
                     obj.comment = data.comment

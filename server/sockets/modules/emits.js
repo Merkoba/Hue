@@ -14,7 +14,7 @@ module.exports = (App) => {
     let room_id
 
     if (typeof socket === `object`) {
-      room_id = socket.hue_room_id
+      room_id = socket.hue.room_id
     }
     else {
       room_id = socket
@@ -33,7 +33,7 @@ module.exports = (App) => {
     let room_id
 
     if (typeof socket === `object`) {
-      room_id = socket.hue_room_id
+      room_id = socket.hue.room_id
     }
     else {
       room_id = socket
@@ -59,7 +59,7 @@ module.exports = (App) => {
 
   // Sends system restart signals
   App.handler.public.system_restart_signal = (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }

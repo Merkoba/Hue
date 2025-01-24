@@ -2,10 +2,10 @@ module.exports = (App) => {
   // Checks if the user is already connected through another socket
   App.handler.user_already_connected = async (socket) => {
     try {
-      let sockets = await App.handler.get_room_sockets(socket.hue_room_id)
+      let sockets = await App.handler.get_room_sockets(socket.hue.room_id)
 
       for (let socc of sockets) {
-        if ((socc.id !== socket.id) && (socc.hue_user_id === socket.hue_user_id)) {
+        if ((socc.id !== socket.id) && (socc.hue.user_id === socket.hue.user_id)) {
           return true
         }
       }
@@ -25,7 +25,7 @@ module.exports = (App) => {
       let sockets = await App.handler.get_room_sockets(room_id)
 
       for (let socc of sockets) {
-        if (socc.hue_user_id === user_id) {
+        if (socc.hue.user_id === user_id) {
           clients.push(socc)
         }
       }
@@ -44,7 +44,7 @@ module.exports = (App) => {
       let sockets = await App.handler.get_room_sockets(room_id)
 
       for (let socc of sockets) {
-        if (socc.hue_username.toLowerCase() === username.toLowerCase()) {
+        if (socc.hue.username.toLowerCase() === username.toLowerCase()) {
           clients.push(socc)
         }
       }
@@ -81,14 +81,14 @@ module.exports = (App) => {
   App.handler.check_socket_limit = async (socket) => {
     try {
       let num = 0
-      let rooms = App.vars.user_rooms[socket.hue_user_id]
+      let rooms = App.vars.user_rooms[socket.hue.user_id]
 
       if (!rooms) {
         return false
       }
 
       for (let room_id of rooms) {
-        num += await App.handler.get_user_sockets_per_room(room_id, socket.hue_user_id)
+        num += await App.handler.get_user_sockets_per_room(room_id, socket.hue.user_id)
           .length
       }
 
@@ -107,15 +107,15 @@ module.exports = (App) => {
   // Checks if a user has multiple simultaneous join attempts
   App.handler.check_multipe_joins = async (socket) => {
     try {
-      let sockets = await App.handler.get_room_sockets(socket.hue_room_id)
+      let sockets = await App.handler.get_room_sockets(socket.hue.room_id)
 
       for (let socc of sockets) {
-        if (socc.hue_user_id !== undefined) {
+        if (socc.hue.user_id !== undefined) {
           if (
             (socc.id !== socket.id) &&
-            (socc.hue_user_id === socket.hue_user_id)
+            (socc.hue.user_id === socket.hue.user_id)
           ) {
-            if (socc.hue_joining === true) {
+            if (socc.hue.joining === true) {
               return true
             }
           }
@@ -153,7 +153,7 @@ module.exports = (App) => {
         user_id,
       )) {
         for (let key in properties) {
-          socc[key] = properties[key]
+          socc.hue[key] = properties[key]
         }
 
         if (!first_socc) {
@@ -173,7 +173,7 @@ module.exports = (App) => {
 
   // Disconnect room sockets
   App.handler.disconnect_room_sockets = (socket) => {
-    App.io.in(socket.hue_room_id).disconnectSockets()
+    App.io.in(socket.hue.room_id).disconnectSockets()
   }
 
   // Get all socket ids

@@ -1,7 +1,7 @@
 module.exports = (App) => {
   // Superuser change role
   App.handler.public.annex = (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -11,7 +11,7 @@ module.exports = (App) => {
 
   // Handles role changes
   App.handler.public.change_role = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       if (!App.handler.is_admin_or_op(socket)) {
         return
       }
@@ -33,11 +33,11 @@ module.exports = (App) => {
       return
     }
 
-    if (!socket.hue_superuser && (socket.hue_username === data.username)) {
+    if (!socket.hue.superuser && (socket.hue.username === data.username)) {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
 
     let userinfo = await App.db_manager.get_user([`username`, data.username])
 
@@ -49,10 +49,10 @@ module.exports = (App) => {
     let id = userinfo.id
     let current_role = info.keys[id] || App.vars.default_role
 
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       if (
         ((current_role === `admin`) || (current_role === `op`)) &&
-        (socket.hue_role !== `admin`)
+        (socket.hue.role !== `admin`)
       ) {
         App.handler.user_emit(socket, `forbidden_user`, {})
         return
@@ -70,21 +70,21 @@ module.exports = (App) => {
       return
     }
 
-    let sockets = await App.handler.get_user_sockets_per_room(socket.hue_room_id, id)
+    let sockets = await App.handler.get_user_sockets_per_room(socket.hue.room_id, id)
     let last_socc = false
 
     for (let socc of sockets) {
-      if (socc.hue_superuser) {
+      if (socc.hue.superuser) {
         if (
-          (socket.hue_username !== socc.hue_username) &&
-          (socc.hue_role === `admin`)
+          (socket.hue.username !== socc.hue.username) &&
+          (socc.hue.role === `admin`)
         ) {
           App.handler.user_emit(socket, `forbidden_user`, {})
           return
         }
       }
 
-      socc.hue_role = data.role
+      socc.hue.role = data.role
       last_socc = socc
     }
 
@@ -95,7 +95,7 @@ module.exports = (App) => {
     info.keys[id] = data.role
 
     App.handler.room_emit(socket, `user_role_changed`, {
-      username1: socket.hue_username,
+      username1: socket.hue.username,
       username2: userinfo.username,
       role: data.role,
     })
@@ -122,16 +122,16 @@ module.exports = (App) => {
     }
 
     let sockets = await App.handler.get_user_sockets_per_room_by_username(
-      socket.hue_room_id,
+      socket.hue.room_id,
       data.username,
     )
 
     if (sockets.length > 0) {
       if (
-        (((sockets[0].hue_role === `admin`) ||
-          (sockets[0].hue_role === `op`)) &&
-          (socket.hue_role !== `admin`)) ||
-        sockets[0].hue_superuser
+        (((sockets[0].hue.role === `admin`) ||
+          (sockets[0].hue.role === `op`)) &&
+          (socket.hue.role !== `admin`)) ||
+        sockets[0].hue.superuser
       ) {
         App.handler.user_emit(socket, `forbidden_user`, {})
         return
@@ -144,9 +144,9 @@ module.exports = (App) => {
       }
 
       for (let socc of sockets) {
-        socc.hue_role = ``
-        socc.hue_kicked = true
-        socc.hue_info1 = socket.hue_username
+        socc.hue.role = ``
+        socc.hue.kicked = true
+        socc.hue.info1 = socket.hue.username
         App.handler.get_out(socc)
       }
 
@@ -176,7 +176,7 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
     let userinfo = await App.db_manager.get_user([`username`, data.username])
 
     if (!userinfo) {
@@ -189,7 +189,7 @@ module.exports = (App) => {
 
     if (
       ((current_role === `admin`) || (current_role === `op`)) &&
-      (socket.hue_role !== `admin`)
+      (socket.hue.role !== `admin`)
     ) {
       App.handler.user_emit(socket, `forbidden_user`, {})
       return
@@ -200,18 +200,18 @@ module.exports = (App) => {
       return
     }
 
-    let sockets = await App.handler.get_user_sockets_per_room(socket.hue_room_id, id)
+    let sockets = await App.handler.get_user_sockets_per_room(socket.hue.room_id, id)
 
     if (sockets.length > 0) {
       for (let socc of sockets) {
-        if (socc.hue_superuser) {
+        if (socc.hue.superuser) {
           App.handler.user_emit(socket, `forbidden_user`, {})
           return
         }
 
-        socc.hue_role = ``
-        socc.hue_banned = true
-        socc.hue_info1 = socket.hue_username
+        socc.hue.role = ``
+        socc.hue.banned = true
+        socc.hue.info1 = socket.hue.username
         App.handler.get_out(socc)
       }
 
@@ -219,7 +219,7 @@ module.exports = (App) => {
     }
 
     App.handler.room_emit(socket, `user_banned`, {
-      username1: socket.hue_username,
+      username1: socket.hue.username,
       username2: userinfo.username,
     })
 
@@ -245,7 +245,7 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
     let userinfo = await App.db_manager.get_user([`username`, data.username])
 
     if (!userinfo) {
@@ -269,7 +269,7 @@ module.exports = (App) => {
     }
 
     App.handler.room_emit(socket, `user_unbanned`, {
-      username1: socket.hue_username,
+      username1: socket.hue.username,
       username2: userinfo.username,
     })
 
@@ -278,12 +278,12 @@ module.exports = (App) => {
 
   // Checks if socket is admin or op
   App.handler.is_admin_or_op = (socket) => {
-    return (socket.hue_role === `admin`) || (socket.hue_role === `op`)
+    return (socket.hue.role === `admin`) || (socket.hue.role === `op`)
   }
 
   // Checks if socket is admin
   App.handler.is_admin = (socket) => {
-    return socket.hue_role === `admin`
+    return socket.hue.role === `admin`
   }
 
   // Prepares the user list to be sent on room joins
@@ -337,7 +337,7 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
     App.handler.user_emit(socket, `receive_admin_activity`, {messages: info.admin_log_messages})
   }
 
@@ -347,7 +347,7 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
 
     let roles = {}
     let ids = []
@@ -386,7 +386,7 @@ module.exports = (App) => {
 
   // Clear admin activity
   App.handler.public.clear_admin_activity = async (socket, data) => {
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
     info.admin_log_messages = []
     App.handler.room_emit(socket, `admin_activity_cleared`, {})
   }
@@ -397,7 +397,7 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
 
     let ids = []
 
@@ -431,14 +431,14 @@ module.exports = (App) => {
   // Updates a user's data in the user list
   App.handler.update_user_in_userlist = (socket, first = false) => {
     try {
-      let user = App.vars.rooms[socket.hue_room_id].userlist[socket.hue_user_id]
+      let user = App.vars.rooms[socket.hue.room_id].userlist[socket.hue.user_id]
 
-      user.user_id = socket.hue_user_id
-      user.username = socket.hue_username
-      user.role = socket.hue_role
-      user.profilepic_version = socket.hue_profilepic_version
-      user.bio = socket.hue_bio
-      user.audioclip_version = socket.hue_audioclip_version
+      user.user_id = socket.hue.user_id
+      user.username = socket.hue.username
+      user.role = socket.hue.role
+      user.profilepic_version = socket.hue.profilepic_version
+      user.bio = socket.hue.bio
+      user.audioclip_version = socket.hue.audioclip_version
 
       if (first) {
         user.date_joined = Date.now()
@@ -451,7 +451,7 @@ module.exports = (App) => {
 
   // Superuser function to change a user's username
   App.handler.public.modusername = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }
@@ -491,7 +491,7 @@ module.exports = (App) => {
 
     await App.handler.modify_socket_properties(
       userinfo.id,
-      {hue_username: data.new},
+      {username: data.new},
       {
         method: `new_username`,
         data: {
@@ -507,7 +507,7 @@ module.exports = (App) => {
 
   // Superuser function to change a user's password
   App.handler.public.modpassword = async (socket, data) => {
-    if (!socket.hue_superuser) {
+    if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
     }

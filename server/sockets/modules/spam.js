@@ -32,15 +32,15 @@ module.exports = (App) => {
 
   // Add spam points and check if user is banned
   App.handler.add_spam = (socket, amount = 1) => {
-    if (!App.handler.anti_spam_users[socket.hue_ip_address]) {
-      App.handler.anti_spam_users[socket.hue_ip_address] = {
+    if (!App.handler.anti_spam_users[socket.hue.ip_address]) {
+      App.handler.anti_spam_users[socket.hue.ip_address] = {
         level: 0,
         banned: false,
         banned_until: 0,
       }
     }
 
-    let user = App.handler.anti_spam_users[socket.hue_ip_address]
+    let user = App.handler.anti_spam_users[socket.hue.ip_address]
 
     if (user.banned) {
       App.handler.anti_spam_kick(socket)
@@ -58,14 +58,14 @@ module.exports = (App) => {
 
   // Kick a user
   App.handler.anti_spam_kick = (socket) => {
-    socket.hue_kicked = true
-    socket.hue_info1 = `the anti-spam system`
+    socket.hue.kicked = true
+    socket.hue.info1 = `the anti-spam system`
     App.handler.get_out(socket)
   }
 
   // Ban a user from connecting
   App.handler.anti_spam_ban = (socket, minutes = App.sconfig.anti_spam_ban_duration) => {
-    let user = App.handler.anti_spam_users[socket.hue_ip_address]
+    let user = App.handler.anti_spam_users[socket.hue.ip_address]
 
     if (!user) {
       return
@@ -73,13 +73,13 @@ module.exports = (App) => {
 
     user.banned = true
     user.banned_until = Date.now() + (minutes * 1000 * 60)
-    App.logger.log_error(`IP banned: ${socket.hue_ip_address}`)
+    App.logger.log_error(`IP banned: ${socket.hue.ip_address}`)
     App.handler.anti_spam_kick(socket)
   }
 
   // Get anti spam level
   App.handler.get_spam_level = (socket) => {
-    let user = App.handler.anti_spam_users[socket.hue_ip_address]
+    let user = App.handler.anti_spam_users[socket.hue.ip_address]
 
     if (user) {
       return user.level

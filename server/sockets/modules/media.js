@@ -21,7 +21,7 @@ module.exports = (App) => {
     }
 
     let file_name = App.handler.generate_media_file_name(data.extension)
-    let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id, type)
+    let container = App.i.path.join(App.vars.media_root, `room`, socket.hue.room_id, type)
 
     if (!App.i.fs.existsSync(container)) {
       App.i.fs.mkdirSync(container, {recursive: true})
@@ -36,7 +36,7 @@ module.exports = (App) => {
       let obj = {}
 
       obj.src = file_name
-      obj.username = socket.hue_username
+      obj.username = socket.hue.username
       obj.size = size
       obj.type = `upload`
       obj.comment = data.comment
@@ -55,8 +55,8 @@ module.exports = (App) => {
     let room_id, user_id
 
     if (typeof socket === `object`) {
-      room_id = socket.hue_room_id
-      user_id = socket.hue_user_id
+      room_id = socket.hue.room_id
+      user_id = socket.hue.user_id
     }
     else {
       room_id = socket
@@ -113,11 +113,11 @@ module.exports = (App) => {
       },
     }
 
-    App.db_manager.push_item(`rooms`, socket.hue_room_id, `log_messages`, message)
+    App.db_manager.push_item(`rooms`, socket.hue.room_id, `log_messages`, message)
 
     // Remove left over files
     if (data.type === `upload`) {
-      let container = App.i.path.join(App.vars.media_root, `room`, socket.hue_room_id, type)
+      let container = App.i.path.join(App.vars.media_root, `room`, socket.hue.room_id, type)
 
       if (!App.i.fs.existsSync(container)) {
         return
@@ -147,7 +147,7 @@ module.exports = (App) => {
   // Edit the comment of a media change
   App.handler.public.edit_media_comment = async (socket, data) => {
     let edited = false
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
 
     for (let i = 0; i < info.log_messages.length; i++) {
       let message = info.log_messages[i]
@@ -157,7 +157,7 @@ module.exports = (App) => {
       }
 
       if (message.data.id === data.id) {
-        if (message.data.user_id === socket.hue_user_id) {
+        if (message.data.user_id === socket.hue.user_id) {
           message.data.comment = data.comment
           edited = true
           break

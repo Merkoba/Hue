@@ -3,10 +3,10 @@ module.exports = (App) => {
   App.handler.push_admin_log_message = (socket, content) => {
     let message = {
       date: Date.now(),
-      username: socket.hue_username,
+      username: socket.hue.username,
       content,
     }
 
-    App.db_manager.push_item(`rooms`, socket.hue_room_id, `admin_log_messages`, message)
+    App.db_manager.push_item(`rooms`, socket.hue.room_id, `admin_log_messages`, message)
   }
 }

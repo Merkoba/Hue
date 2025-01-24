@@ -1,20 +1,19 @@
 module.exports = (App) => {
-  // Set initial hue_* variables on connection
+  // Set initial hue variables on connection
   App.handler.connection = (socket) => {
-    socket.hue = {}
-    socket.hue_pinged = false
-    socket.hue_kicked = false
-    socket.hue_banned = false
-    socket.hue_joining = false
-    socket.hue_joined = false
-    socket.hue_superuser = false
-    socket.hue_locked = false
-    socket.hue_info1 = ``
+    socket.hue.pinged = false
+    socket.hue.kicked = false
+    socket.hue.banned = false
+    socket.hue.joining = false
+    socket.hue.joined = false
+    socket.hue.superuser = false
+    socket.hue.locked = false
+    socket.hue.info1 = ``
   }
 
   // Attempt to join a room
   App.handler.public.join_room = async (socket, data) => {
-    if (socket.hue_joining || socket.hue_joined) {
+    if (socket.hue.joining || socket.hue.joined) {
       return
     }
 
@@ -27,7 +26,7 @@ module.exports = (App) => {
     }
 
     if (data.alternative) {
-      socket.hue_login_method = `alternative`
+      socket.hue.login_method = `alternative`
 
       if (!data.username || !data.password) {
         return App.handler.get_out(socket)
@@ -49,7 +48,7 @@ module.exports = (App) => {
       }
     }
     else {
-      socket.hue_login_method = `normal`
+      socket.hue.login_method = `normal`
       data.user_id = data.user_id.trim()
 
       if ((data.user_id === undefined) || (data.token === undefined)) {
@@ -78,7 +77,7 @@ module.exports = (App) => {
 
       let userinfo = ans.user
 
-      socket.hue_user_id = userinfo.id
+      socket.hue.user_id = userinfo.id
 
       let info = await App.db_manager.get_room([`id`, data.room_id])
 
@@ -107,7 +106,7 @@ module.exports = (App) => {
           return App.handler.get_out(socket)
         }
 
-        socket.hue_user_id = data.user_id
+        socket.hue.user_id = data.user_id
 
         let info = await App.db_manager.get_room([`id`, data.room_id])
 
@@ -115,7 +114,7 @@ module.exports = (App) => {
           return App.handler.get_out(socket)
         }
 
-        let userinfo = await App.db_manager.get_user([`id`, socket.hue_user_id])
+        let userinfo = await App.db_manager.get_user([`id`, socket.hue.user_id])
 
         if (!userinfo) {
           return App.handler.get_out(socket)
@@ -128,7 +127,7 @@ module.exports = (App) => {
 
   // Does a room join after successful authentication
   App.handler.do_join = async (socket, info, userinfo, data) => {
-    socket.hue_username = userinfo.username
+    socket.hue.username = userinfo.username
 
     // If the user was kicked recently disallow join
     let kd = parseInt((Date.now() - userinfo.kicked) / 1000)
@@ -141,11 +140,11 @@ module.exports = (App) => {
       return App.handler.get_out(socket)
     }
 
-    socket.hue_room_id = info.id
-    socket.hue_bio = userinfo.bio
-    socket.hue_joining = true
-    socket.hue_last_chat_message = Date.now()
-    socket.join(socket.hue_room_id)
+    socket.hue.room_id = info.id
+    socket.hue.bio = userinfo.bio
+    socket.hue.joining = true
+    socket.hue.last_chat_message = Date.now()
+    socket.join(socket.hue.room_id)
 
     if (await App.handler.check_multipe_joins(socket)) {
       return App.handler.get_out(socket)
@@ -156,12 +155,12 @@ module.exports = (App) => {
     }
 
     if (App.sconfig.superuser_usernames.includes(userinfo.username)) {
-      socket.hue_superuser = true
+      socket.hue.superuser = true
     }
 
-    if (!socket.hue_superuser && info.bans.includes(socket.hue_user_id)) {
-      socket.leave(socket.hue_room_id)
-      socket.hue_locked = true
+    if (!socket.hue.superuser && info.bans.includes(socket.hue.user_id)) {
+      socket.leave(socket.hue.room_id)
+      socket.hue.locked = true
 
       App.handler.user_emit(socket, `joined`, {
         room_locked: true,
@@ -172,43 +171,43 @@ module.exports = (App) => {
 
     App.handler.log_user_data(socket)
 
-    socket.hue_profilepic_version = userinfo.profilepic_version
-    socket.hue_audioclip_version = userinfo.audioclip_version
+    socket.hue.profilepic_version = userinfo.profilepic_version
+    socket.hue.audioclip_version = userinfo.audioclip_version
 
-    if (App.vars.rooms[socket.hue_room_id] === undefined) {
-      App.vars.rooms[socket.hue_room_id] = App.handler.create_room_object(info)
+    if (App.vars.rooms[socket.hue.room_id] === undefined) {
+      App.vars.rooms[socket.hue.room_id] = App.handler.create_room_object(info)
     }
 
-    socket.hue_role = info.keys[socket.hue_user_id] || App.vars.default_role
+    socket.hue.role = info.keys[socket.hue.user_id] || App.vars.default_role
 
-    if (!App.vars.roles.includes(socket.hue_role)) {
-      socket.hue_role = `voice`
+    if (!App.vars.roles.includes(socket.hue.role)) {
+      socket.hue.role = `voice`
     }
 
-    if (App.vars.user_rooms[socket.hue_user_id] === undefined) {
-      App.vars.user_rooms[socket.hue_user_id] = []
+    if (App.vars.user_rooms[socket.hue.user_id] === undefined) {
+      App.vars.user_rooms[socket.hue.user_id] = []
     }
 
-    if (!App.vars.user_rooms[socket.hue_user_id].includes(socket.hue_room_id)) {
-      App.vars.user_rooms[socket.hue_user_id].push(socket.hue_room_id)
+    if (!App.vars.user_rooms[socket.hue.user_id].includes(socket.hue.room_id)) {
+      App.vars.user_rooms[socket.hue.user_id].push(socket.hue.room_id)
     }
 
     let already_connected = await App.handler.user_already_connected(socket)
 
     if (!already_connected) {
-      App.vars.rooms[socket.hue_room_id].userlist[socket.hue_user_id] = {}
+      App.vars.rooms[socket.hue.room_id].userlist[socket.hue.user_id] = {}
       App.handler.update_user_in_userlist(socket, true)
     }
 
-    socket.hue_joining = false
-    socket.hue_joined = true
+    socket.hue.joining = false
+    socket.hue.joined = true
 
     let user_data = {
       room_locked: false,
       room_name: info.name,
-      username: socket.hue_username,
+      username: socket.hue.username,
       topic: info.topic,
-      role: socket.hue_role,
+      role: socket.hue.role,
       profilepic_version: userinfo.profilepic_version,
       background_color: info.background_color,
       background: info.background,
@@ -216,8 +215,8 @@ module.exports = (App) => {
       background_version: info.background_version,
       text_color: info.text_color,
       limited: info.limited,
-      bio: socket.hue_bio,
-      superuser: socket.hue_superuser,
+      bio: socket.hue.bio,
+      superuser: socket.hue.superuser,
       reg_date: userinfo.registration_date,
     }
 
@@ -239,19 +238,19 @@ module.exports = (App) => {
       user_data.userlist = []
     }
     else {
-      user_data.userlist = App.handler.prepare_userlist(App.handler.get_userlist(socket.hue_room_id))
+      user_data.userlist = App.handler.prepare_userlist(App.handler.get_userlist(socket.hue.room_id))
     }
 
     App.handler.user_emit(socket, `joined`, user_data)
 
     if (!already_connected) {
       App.handler.broadcast_emit(socket, `user_joined`, {
-        user_id: socket.hue_user_id,
-        username: socket.hue_username,
-        role: socket.hue_role,
-        profilepic_version: socket.hue_profilepic_version,
-        bio: socket.hue_bio,
-        audioclip_version: socket.hue_audioclip_version,
+        user_id: socket.hue.user_id,
+        username: socket.hue.username,
+        role: socket.hue.role,
+        profilepic_version: socket.hue.profilepic_version,
+        bio: socket.hue.bio,
+        audioclip_version: socket.hue.audioclip_version,
         date_joined: Date.now(),
       })
     }

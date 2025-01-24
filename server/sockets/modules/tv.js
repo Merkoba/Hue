@@ -34,9 +34,9 @@ module.exports = (App) => {
       `www.youtube.com/watch?v=$1`,
     )
 
-    data.username = socket.hue_username
+    data.username = socket.hue.username
 
-    let media_info = await App.handler.get_last_media(socket.hue_room_id, `tv`)
+    let media_info = await App.handler.get_last_media(socket.hue.room_id, `tv`)
 
     if (media_info) {
       if ((media_info.source === data.src) || (media_info.query === data.src)) {
@@ -206,7 +206,7 @@ module.exports = (App) => {
     }
 
     let sockets = await App.handler.get_user_sockets_per_room_by_username(
-      socket.hue_room_id,
+      socket.hue.room_id,
       data.username,
     )
 
@@ -217,7 +217,7 @@ module.exports = (App) => {
         continue
       }
 
-      if (socc.hue_login_method === `normal`) {
+      if (socc.hue.login_method === `normal`) {
         first_socket = socc
         break
       }
@@ -229,7 +229,7 @@ module.exports = (App) => {
 
     App.handler.user_emit(first_socket, `report_tv_progress`, {
       requester: socket.id,
-      requester_username: socket.hue_username,
+      requester_username: socket.hue.username,
       tv_source: data.tv_source,
     })
   }
@@ -241,7 +241,7 @@ module.exports = (App) => {
     }
 
     let requester_socket = await App.handler.get_room_socket_by_id(
-      socket.hue_room_id,
+      socket.hue.room_id,
       data.requester,
     )
 

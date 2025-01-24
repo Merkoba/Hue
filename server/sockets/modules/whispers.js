@@ -2,7 +2,7 @@ module.exports = (App) => {
   // Handles whispers
   App.handler.public.whisper = async (socket, data) => {
     if (data.type === `system_broadcast`) {
-      if (!socket.hue_superuser) {
+      if (!socket.hue.superuser) {
         App.handler.anti_spam_ban(socket)
         return
       }
@@ -49,21 +49,21 @@ module.exports = (App) => {
     if (data.type === `user`) {
       for (let username of usernames) {
         let sockets = await App.handler.get_user_sockets_per_room_by_username(
-          socket.hue_room_id,
+          socket.hue.room_id,
           username,
         )
 
         if (sockets.length > 0) {
           users.push({
-            user_id: sockets[0].hue_user_id,
-            username: sockets[0].hue_username,
+            user_id: sockets[0].hue.user_id,
+            username: sockets[0].hue.username,
           })
 
           for (let socc of sockets) {
             App.handler.user_emit(socc, `whisper`, {
-              room: socket.hue_room_id,
-              user_id: socket.hue_user_id,
-              username: socket.hue_username,
+              room: socket.hue.room_id,
+              user_id: socket.hue.user_id,
+              username: socket.hue.username,
               message: data.message,
               type: data.type,
             })

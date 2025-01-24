@@ -15,8 +15,8 @@ module.exports = (App) => {
 
     App.handler.room_emit(socket, `notification`, {
       message: data.message,
-      user_id: socket.hue_user_id,
-      username: socket.hue_username,
+      user_id: socket.hue.user_id,
+      username: socket.hue.username,
     })
   }
 }

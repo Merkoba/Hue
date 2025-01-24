@@ -34,8 +34,10 @@ module.exports = (App) => {
       return
     }
 
+    socket.hue = {}
+
     try {
-      socket.hue_ip_address = App.handler.get_ip_address(socket)
+      socket.hue.ip_address = App.handler.get_ip_address(socket)
       let spam_ans = App.handler.add_spam(socket)
 
       if (!spam_ans) {
@@ -87,7 +89,7 @@ module.exports = (App) => {
         }
 
         if (!App.vars.dont_check_joined.includes(m)) {
-          if (!socket.hue_joined) {
+          if (!socket.hue.joined) {
             return
           }
         }
@@ -109,7 +111,7 @@ module.exports = (App) => {
         reason = reason.toLowerCase()
 
         if (reason.includes(`timeout`)) {
-          socket.hue_pinged = true
+          socket.hue.pinged = true
         }
 
         await App.handler.disconnect(socket)

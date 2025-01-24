@@ -17,11 +17,11 @@ module.exports = (App) => {
 
     // If it's an edit
     if (data.id) {
-      let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+      let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
 
       for (let post of info.message_board_posts) {
         if (post.id === data.id) {
-          if (post.user_id !== socket.hue_user_id) {
+          if (post.user_id !== socket.hue.user_id) {
             return
           }
 
@@ -42,7 +42,7 @@ module.exports = (App) => {
     }
 
     if (!App.handler.is_admin_or_op(socket)) {
-      let userinfo = await App.db_manager.get_user([`id`, socket.hue_user_id])
+      let userinfo = await App.db_manager.get_user([`id`, socket.hue.user_id])
 
       let diff = Date.now() - userinfo.last_message_board_post_date
       let wait = App.sconfig.message_board_wait_delay * 60 * 1000
@@ -66,15 +66,15 @@ module.exports = (App) => {
     let item = App.handler.push_message_board_post(socket, data)
     App.handler.room_emit(socket, `new_message_board_post`, item)
 
-    let userinfo = await App.db_manager.get_user([`id`, socket.hue_user_id])
+    let userinfo = await App.db_manager.get_user([`id`, socket.hue.user_id])
     userinfo.last_message_board_post_date = Date.now()
   }
 
   // Pushes pushing room message board posts
   App.handler.push_message_board_post = (socket, data) => {
     let item = {
-      user_id: socket.hue_user_id,
-      username: socket.hue_username,
+      user_id: socket.hue.user_id,
+      username: socket.hue.username,
       message: data.message,
       link_title: data.link_title,
       link_description: data.link_description,
@@ -84,7 +84,7 @@ module.exports = (App) => {
       id: App.handler.generate_message_board_post_id(),
     }
 
-    App.db_manager.push_item(`rooms`, socket.hue_room_id, `message_board_posts`, item)
+    App.db_manager.push_item(`rooms`, socket.hue.room_id, `message_board_posts`, item)
     return item
   }
 
@@ -97,13 +97,13 @@ module.exports = (App) => {
   App.handler.check_message_board_modify = (socket, item, info) => {
     let current_role = info.keys[item.user_id] || App.vars.default_role
 
-    if (item.user_id !== socket.hue_user_id) {
-      if (!socket.hue_superuser) {
+    if (item.user_id !== socket.hue.user_id) {
+      if (!socket.hue.superuser) {
         if (current_role === `admin`) {
           return false
         }
         else if (current_role === `op`) {
-          if (socket.hue_role !== `admin`) {
+          if (socket.hue.role !== `admin`) {
             return false
           }
         }
@@ -122,7 +122,7 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
 
     for (let i = 0; i < info.message_board_posts.length; i++) {
       let item = info.message_board_posts[i]
@@ -140,7 +140,7 @@ module.exports = (App) => {
           id: data.id,
         })
 
-        if (item.user_id !== socket.hue_user_id) {
+        if (item.user_id !== socket.hue.user_id) {
           App.handler.push_admin_log_message(socket, `deleted a message from the message board`)
         }
 
@@ -155,7 +155,7 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
 
     for (let i = 0; i < info.message_board_posts.length; i++) {
       let item = info.message_board_posts[i]
@@ -176,7 +176,7 @@ module.exports = (App) => {
           id: data.id,
         })
 
-        if (item.user_id !== socket.hue_user_id) {
+        if (item.user_id !== socket.hue.user_id) {
           App.handler.push_admin_log_message(socket, `bumped a message from the message board`)
         }
 
@@ -192,11 +192,11 @@ module.exports = (App) => {
       return
     }
 
-    let info = await App.db_manager.get_room([`id`, socket.hue_room_id])
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
     info.message_board_posts = []
 
     App.handler.room_emit(socket, `message_board_cleared`, {
-      username: socket.hue_username, user_id: socket.hue_user_id,
+      username: socket.hue.username, user_id: socket.hue.user_id,
     })
 
     App.handler.push_admin_log_message(socket, `cleared the message board`)
