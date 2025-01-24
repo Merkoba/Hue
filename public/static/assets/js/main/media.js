@@ -1028,7 +1028,7 @@ App.show_upload_comment = (what, file, type, comment = ``) => {
     DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Draw`
 
     if (App.draw_suggested) {
-      comment = App.draw_suggested
+      comment = `${App.draw_suggested} Drawing`
     }
   }
   else if (type === `upload`) {
