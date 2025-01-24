@@ -533,10 +533,10 @@ App.start_screen_capture = async (seconds) => {
     }
 
     let blob = new Blob(recorded_chunks, {
-      type: `video/webm`,
+      type: `video/mp4`,
     })
 
-    blob.name = `capture.webm`
+    blob.name = `capture.mp4`
     App.show_tv_upload_comment(blob, `capture`)
     recorded_chunks = []
   }
