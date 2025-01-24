@@ -519,6 +519,19 @@ App.on_setting_change = (setting) => {
   user_setting.actions()
 }
 
+// Restore one setting
+App.reset_setting = (key) => {
+  App.show_confirm(`Reset setting`, () => {
+    let setting = App.user_settings[key]
+    App.set_default_setting(key)
+    App.modify_setting_widget(key)
+
+    if (setting.actions) {
+      setting.actions()
+    }
+  })
+}
+
 // Reset the settings of a certain type
 App.reset_settings = (empty = true) => {
   if (empty) {
@@ -563,16 +576,6 @@ App.setup_settings_windows = () => {
     App.show_confirm(`Restore default settings`, () => {
       App.reset_settings()
     })
-  })
-
-  DOM.ev(DOM.el(`#settings_container`), `contextmenu`, (e) => {
-    let item = e.target.closest(`.settings_item`)
-
-    if (item) {
-      App.reset_single_setting(item)
-    }
-
-    e.preventDefault()
   })
 }
 
@@ -655,14 +658,27 @@ App.fill_settings = () => {
     title.textContent = setting.title
 
     DOM.ev(title, `click`, (e) => {
-      App.show_confirm(`Restore default setting`, () => {
-        App.set_default_setting(key)
-        App.modify_setting_widget(key)
+      App.reset_setting(key)
+    })
 
-        if (setting.actions) {
-          setting.actions()
-        }
-      })
+    let ctx
+
+    if (App.is_text_setting(key)) {
+      ctx = title
+    }
+    else {
+      ctx = c
+    }
+
+    DOM.ev(ctx, `contextmenu`, (e) => {
+      e.preventDefault()
+      App.reset_setting(key)
+    })
+
+    DOM.ev(ctx, `auxclick`, (e) => {
+      if (e.button === 1) {
+        App.reset_setting(key)
+      }
     })
 
     c.append(title)
@@ -696,6 +712,12 @@ App.fill_settings = () => {
     c.append(el)
     container.append(c)
   }
+}
+
+// Check if it's a text setting
+App.is_text_setting = (key) => {
+  let type = App.user_settings[key].type
+  return [`text`, `textarea`].includes(type)
 }
 
 // Make background opacity options

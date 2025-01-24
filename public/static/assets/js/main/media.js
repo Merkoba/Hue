@@ -1295,7 +1295,7 @@ App.automedia = (message, fallback) => {
   let what = App.resolve_media_source(message)
 
   function msg(name) {
-    return `Change the ${name} using this URL?`
+    return `Change the ${name} using this URL`
   }
 
   if (what === `image`) {
