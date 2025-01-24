@@ -253,6 +253,23 @@ App.activate_key_detection = () => {
         }
       }
 
+      if (App.msg_automedia.is_open()) {
+        if (App.msg_automedia.is_highest()) {
+          if (e.key === `Enter`) {
+            if (e.shiftKey) {
+              App.automedia_change()
+            }
+            else {
+              App.automedia_chat()
+            }
+
+            e.preventDefault()
+          }
+
+          return
+        }
+      }
+
       return
     }
 
