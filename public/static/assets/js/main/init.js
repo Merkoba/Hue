@@ -119,6 +119,7 @@ App.clicked_text = `(Clicked)`
 App.media_info_image_data = []
 App.media_info_tv_data = []
 App.draw_suggested = ``
+App.first_image_load = false
 
 // Initial media-loading variables declarations
 App.youtube_loading = false
