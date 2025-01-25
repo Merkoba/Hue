@@ -270,6 +270,25 @@ App.activate_key_detection = () => {
         }
       }
 
+      if (App.msg_draw_image.is_open()) {
+        if (App.msg_draw_image.is_highest()) {
+          if (e.code === `KeyZ`) {
+            if (e.ctrlKey) {
+              if (e.shiftKey) {
+                App.draw_image_redo()
+              }
+              else {
+                App.draw_image_undo()
+              }
+
+              e.preventDefault()
+            }
+          }
+
+          return
+        }
+      }
+
       return
     }
 
