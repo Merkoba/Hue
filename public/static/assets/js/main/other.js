@@ -225,3 +225,30 @@ App.auto_blur_on = () => {
 App.auto_blur_off = () => {
   DOM.el(`#main_container`).classList.remove(`auto_blur`)
 }
+
+// Add some polyfill patches for people who refuse to update their browser
+App.add_polyfills = () => {
+  if (!Array.prototype.at) {
+    Array.prototype.at = function(index) {
+      let int_index = parseInt(index, 10)
+
+      if (int_index < 0) {
+        return this[this.length + int_index]
+      }
+
+      return this[int_index]
+    }
+  }
+
+  if (!String.prototype.at) {
+    String.prototype.at = function(index) {
+      let int_index = parseInt(index, 10)
+
+      if (int_index < 0) {
+        return this[this.length + int_index]
+      }
+
+      return this[int_index]
+    }
+  }
+}

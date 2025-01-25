@@ -111,42 +111,37 @@ module.exports = (manager, stuff) => {
 
   // Find one result
   manager.find_one = async (type, query) => {
-    try {
-      if (query[0] === `id`) {
-        let path = manager.get_file_path(type, query[1])
-        let obj = await check_file(type, path, query)
+    if (query[0] === `id`) {
+      let path = manager.get_file_path(type, query[1])
+      let obj = await check_file(type, path, query)
 
-        if (obj) {
-          return obj
-        }
-
-        throw new Error(`Nothing found`)
+      if (obj) {
+        return obj
       }
-      else {
-        let files = await stuff.i.fsp.readdir(manager.get_dir_path(type))
 
-        for (let file of files) {
-          if (file.startsWith(`.`)) {
-            continue
-          }
-
-          let path = manager.get_file_path(type, file)
-
-          try {
-            let obj = await check_file(type, path, query)
-
-            if (obj) {
-              return obj
-            }
-          }
-          catch (err) {
-            // Don't do anything
-          }
-        }
-      }
+      throw new Error(`Nothing found`)
     }
-    catch (err) {
-      throw err
+    else {
+      let files = await stuff.i.fsp.readdir(manager.get_dir_path(type))
+
+      for (let file of files) {
+        if (file.startsWith(`.`)) {
+          continue
+        }
+
+        let path = manager.get_file_path(type, file)
+
+        try {
+          let obj = await check_file(type, path, query)
+
+          if (obj) {
+            return obj
+          }
+        }
+        catch (err) {
+          // Don't do anything
+        }
+      }
     }
   }
 

@@ -134,6 +134,7 @@ App.twitch_tv_player_request = false
 // This is the first function that gets executed
 App.init = () => {
   App.load_date_1 = Date.now()
+  App.add_polyfills()
   App.build_user_settings()
   App.create_debouncers()
   App.setup_textparser_regexes()
