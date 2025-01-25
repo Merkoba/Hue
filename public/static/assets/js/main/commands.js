@@ -401,6 +401,7 @@ App.commands = {
     description: `Opens the image modal`,
   },
   date: {
+    aliases: [`time`],
     action: (arg, ans) => {
       App.show_current_date()
     },
@@ -688,8 +689,8 @@ App.commands = {
     },
     description: `Send a notification to the room`,
   },
-  time: {
-    aliases: [`uptime`, `join`, `joined`, `when`, `duration`, `online`],
+  uptime: {
+    aliases: [`join`, `joined`, `when`, `duration`, `online`],
     action: (arg, ans) => {
       App.show_uptime(arg)
     },
