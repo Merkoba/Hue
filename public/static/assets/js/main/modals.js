@@ -860,7 +860,8 @@ App.close_all_modals = () => {
 }
 
 // Scrolls a modal window to the top
-App.scroll_modal_to_top = (id) => {
+App.scroll_modal_to_top = (id = false) => {
+  id = App.fill_modal_id(id)
   DOM.el(`#Msg-content-container-${id}`).scrollTop = 0
 }
 

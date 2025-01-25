@@ -260,6 +260,11 @@ App.start_mouse_events = () => {
           App.start_reply(el)
         }
       }
+      else if (e.target.closest(`.window_controls`)) {
+        if (e.target.closest(`.window_filter_bottom`)) {
+          App.scroll_modal_to_top()
+        }
+      }
     }
   })
 }
