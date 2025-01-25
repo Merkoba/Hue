@@ -145,7 +145,7 @@ App.setup_draw_image = () => {
   })
 
   DOM.ev(DOM.el(`#draw_image_clear`), `click`, () => {
-    App.show_confirm(`Clear drawing?`, () => {
+    App.show_confirm(`Clear drawing`, () => {
       App.clear_draw_image_state()
     })
   })

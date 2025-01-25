@@ -73,7 +73,7 @@ App.setup_message_board = () => {
     el = e.target.closest(`.message_board_bump`)
 
     if (el) {
-      App.show_confirm(`Bump post to the top?`, () => {
+      App.show_confirm(`Bump post to the top`, () => {
         App.bump_message_board_post(post)
       })
     }
