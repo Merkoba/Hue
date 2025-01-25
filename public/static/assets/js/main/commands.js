@@ -562,6 +562,7 @@ App.commands = {
     description: `Opens the message board. Accepts a filter as an argument`,
   },
   profile: {
+    aliases: [`who`, `whoami`],
     action: (arg, ans) => {
       if (arg) {
         App.show_profile(arg)
