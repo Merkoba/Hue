@@ -1358,42 +1358,50 @@ App.automedia_chat = () => {
   App.clear_input()
 }
 
-// Load the previous media
-App.load_prev_media = (what) => {
+// Load prev or next media
+App.load_prev_or_next_media = (dir, what) => {
+  let current = App[`loaded_${what}`]
+
+  if (!current.id) {
+    App.load_last_media(what)
+    return
+  }
+
   let items = App[`${what}_changed`]
 
   if (!items.length) {
     return
   }
 
-  let current = App[`loaded_${what}`]
   let index = items.indexOf(current)
+  let item
 
-  if (index <= 0) {
-    return
+  if (dir === `prev`) {
+    if (index <= 0) {
+      return
+    }
+
+    item = items[index - 1]
+  }
+  else if (dir === `next`) {
+    if (index === items.length - 1) {
+      return
+    }
+
+    item = items[index + 1]
   }
 
-  let item = items[index - 1]
   App.load_media(item)
+}
+
+// Load the previous media
+App.load_prev_media = (what) => {
+  App.load_prev_or_next_media(`prev`, what)
 }
 
 // Load the next media
 App.load_next_media = (what) => {
-  let items = App[`${what}_changed`]
-
-  if (!items.length) {
-    return
-  }
-
-  let current = App[`loaded_${what}`]
-  let index = items.indexOf(current)
-
-  if (index === items.length - 1) {
-    return
-  }
-
-  let item = items[index + 1]
-  App.load_media(item)
+  App.load_prev_or_next_media(`next`, what)
 }
 
 // Load the last media

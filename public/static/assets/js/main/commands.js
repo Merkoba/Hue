@@ -697,6 +697,34 @@ App.commands = {
     },
     description: `Show how long ago a user joined the room`,
   },
+  previmage: {
+    aliases: [`loadprevimage`, `previmg`, `previ`],
+    action: (arg, ans) => {
+      App.load_prev_media(`image`)
+    },
+    description: `Load the previous image`,
+  },
+  nextimage: {
+    aliases: [`loadnextimage`, `nextimg`, `nexti`],
+    action: (arg, ans) => {
+      App.load_next_media(`image`)
+    },
+    description: `Load the next image`,
+  },
+  prevtv: {
+    aliases: [`loadprevtv`],
+    action: (arg, ans) => {
+      App.load_prev_media(`tv`)
+    },
+    description: `Load the previous tv`,
+  },
+  nexttv: {
+    aliases: [`loadnexttv`, `nextv`],
+    action: (arg, ans) => {
+      App.load_next_media(`tv`)
+    },
+    description: `Load the next tv`,
+  },
 }
 
 // Commands reserved to superusers
