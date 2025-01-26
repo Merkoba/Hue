@@ -439,12 +439,10 @@ App.change_media = (args = {}) => {
       args.play = false
     }
 
-    if (item.type !== `video`) {
-      if (!App[`${item.type}_tv_player`]) {
-        App.before_show_tv(item)
-        App.request_media(`${item.type}_tv_player`, args)
-        return
-      }
+    if (!App[`${item.type}_tv_player`]) {
+      App.before_show_tv(item)
+      App.request_media(`${item.type}_tv_player`, args)
+      return
     }
 
     App.loaded_tv = item

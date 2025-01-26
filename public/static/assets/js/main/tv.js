@@ -16,16 +16,16 @@ App.push_tv_changed = (data) => {
 
 // Stops all defined tv players
 App.stop_tv = () => {
+  if (App.video_tv_player) {
+    DOM.el(`#media_video_tv`).pause()
+  }
+
   if (App.youtube_tv_player) {
     App.youtube_tv_player.pauseVideo()
   }
 
   if (App.twitch_tv_player) {
     App.twitch_tv_player.pause()
-  }
-
-  if (DOM.el(`#media_video_tv`)) {
-    DOM.el(`#media_video_tv`).pause()
   }
 }
 
@@ -140,16 +140,6 @@ App.show_twitch_tv = (play = true) => {
 // Loads a <video> video
 App.show_video_tv = (play = true) => {
   let item = App.loaded_tv
-
-  if (!DOM.el(`#media_video_tv`)) {
-    let s = App.template_media_video_tv({
-      info: App.get_media_info_html(`tv`),
-      poster: App.config.video_poster,
-    })
-
-    DOM.el(`#media_video_tv_container`).innerHTML = s
-  }
-
   App.before_show_tv(item)
   DOM.el(`#media_video_tv`).src = item.source
 
