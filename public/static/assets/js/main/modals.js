@@ -686,10 +686,9 @@ App.start_msg = () => {
 
   App.msg_open_url.set_title(App.template_titlebar({
     items: [
-      {id: `open_url_menu_copy`, text: `Copy URL`},
       {id: `open_url_menu_load`, text: `Load`},
       {id: `open_url_menu_link`, text: `Link`},
-      {id: `open_url_menu_context`, text: `Context`},
+      {id: `open_url_menu_menu`, text: `Menu`},
       {id: `open_url_menu_reply`, text: `Reply`},
     ],
     container_id: `open_url_titlebar`,

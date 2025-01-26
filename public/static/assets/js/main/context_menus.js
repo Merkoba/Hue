@@ -9,41 +9,44 @@ App.show_chat_context_menu = (button, x, y) => {
 
   let items = []
   let message = button.closest(`.message`)
-  let text = DOM.el(`.unit_text`, unit)
+  let text_el = DOM.el(`.unit_text`, unit)
   let mode = DOM.dataset(message, `mode`)
   let type = DOM.dataset(message, `type`)
   let user_id = DOM.dataset(message, `user_id`)
   let id = DOM.dataset(unit, `id`)
   let likes = DOM.dataset(unit, `likes`)
   let message_id = DOM.dataset(message, `message_id`)
+  let is_chat = mode === `chat`
+  let is_media = (type === `image_change`) || (type === `tv_change`)
   let url = ``
 
-  if (mode === `chat`) {
+  if (is_chat) {
     let container = button.closest(`.chat_content_container`)
     url = DOM.dataset(container, `first_url`)
+  }
+  else if (is_media) {
+    url = DOM.dataset(message, `media_source`)
   }
 
   let has_reply = false
   let has_edit = false
 
-  if ((mode === `chat`) || (type === `image_change`) || (type === `tv_change`)) {
+  if (is_chat || is_media) {
     items.push({
       text: `Reply`,
       action: () => {
-        let el = DOM.el(`.unit_text`, button.closest(`.message_unit`))
-        App.start_reply(el)
+        App.start_reply(text_el)
       },
     })
 
     has_reply = true
   }
 
-  if ((user_id === App.user_id) && ((mode === `chat`) || (type === `image_change`) || (type === `tv_change`))) {
+  if ((user_id === App.user_id) && (is_chat || is_media)) {
     items.push({
       text: `Edit`,
       action: () => {
-        let el = DOM.el(`.unit_text`, button.closest(`.message_unit`))
-        App.start_edit(el)
+        App.start_edit(text_el)
       },
     })
 
@@ -56,11 +59,11 @@ App.show_chat_context_menu = (button, x, y) => {
     }
   }
 
-  if ((mode === `chat`) || (type === `image_change`) || (type === `tv_change`)) {
+  if (is_chat || is_media) {
     let text = `Like`
     let type = `like`
 
-    // Check if the user already like the post
+    // Check if the user already liked the post
     if (App.message_is_liked(unit)) {
       text = `Unlike`
       type = `unlike`
@@ -70,20 +73,41 @@ App.show_chat_context_menu = (button, x, y) => {
       items.push({
         text,
         action: () => {
-          let el = DOM.el(`.unit_text`, button.closest(`.message_unit`))
-          App.like_message(el, type)
+          App.like_message(text_el, type)
         },
       })
     }
   }
 
-  items.push({
-    text: `Copy`,
-    action: () => {
-      let str = App.utilz.single_space(text.textContent)
-      App.copy_string(str, false)
-    },
-  })
+  if (is_chat) {
+    items.push({
+      text: `Copy`,
+      action: () => {
+        let str = App.utilz.single_space(text_el.textContent)
+        App.copy_string(str, false)
+      },
+    })
+  }
+  else if (is_media) {
+    items.push({
+      text: `Copy`,
+      items: [
+        {
+          text: `Copy URL`,
+          action: () => {
+            App.copy_string(url, false)
+          },
+        },
+        {
+          text: `Copy Text`,
+          action: () => {
+            let str = App.utilz.single_space(text_el.textContent)
+            App.copy_string(str, false)
+          },
+        },
+      ],
+    })
+  }
 
   items.push({
     text: `Hide`,
@@ -94,8 +118,7 @@ App.show_chat_context_menu = (button, x, y) => {
     },
   })
 
-  if (((user_id === App.user_id) || App.is_admin_or_op()) &&
-    ((mode === `chat`) || (type === `image_change`) || (type === `tv_change`))) {
+  if (((user_id === App.user_id) || App.is_admin_or_op()) && (is_chat || is_media)) {
     items.push({
       text: `Delete`,
       action: () => {

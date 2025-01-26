@@ -165,10 +165,6 @@ App.check_handle_url_options = (text) => {
 
 // Setups the Open URL picker window
 App.setup_open_url = () => {
-  DOM.ev(DOM.el(`#open_url_menu_copy`), `click`, () => {
-    App.copy_string(App.open_url_data.source)
-  })
-
   DOM.ev(DOM.el(`#open_url_menu_load`), `click`, () => {
     App.load_media(App.open_url_data)
   })
@@ -178,9 +174,12 @@ App.setup_open_url = () => {
     App.msg_open_url.close()
   })
 
-  DOM.ev(DOM.el(`#open_url_menu_context`), `click`, () => {
-    App.chat_search_by_id(App.open_url_data.id)
-    App.msg_open_url.close()
+  DOM.ev(DOM.el(`#open_url_menu_menu`), `click`, (e) => {
+    let button = App.get_message_container_by_id(App.open_url_data.id)
+
+    if (button) {
+      App.show_chat_context_menu(button, e.clientX, e.clientY)
+    }
   })
 
   DOM.ev(DOM.el(`#open_url_menu_reply`), `click`, () => {
