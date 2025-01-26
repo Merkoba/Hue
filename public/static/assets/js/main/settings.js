@@ -582,11 +582,8 @@ App.reset_settings = (empty = true) => {
 // Show the settings window
 App.show_settings = (filter = ``) => {
   App.msg_settings.show()
-
-  if (filter.trim()) {
-    DOM.el(`#settings_filter`).value = filter
-    App.do_modal_filter()
-  }
+  DOM.el(`#settings_filter`).value = filter
+  App.do_modal_filter()
 }
 
 // Setup the settings windows

@@ -107,7 +107,6 @@ App.start_twitch = async () => {
 // Creates the tv Twitch player
 App.create_twitch_tv_player = () => {
   App.twitch_tv_player_requested = false
-
   let c = App.current_tv()
   let channel = `dummy`
 

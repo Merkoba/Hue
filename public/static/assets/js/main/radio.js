@@ -323,14 +323,8 @@ App.show_radio = (filter = ``) => {
   App.msg_radio.show()
   App.selected_modal_item = undefined
   App.selected_next()
-
-  if (filter.trim()) {
-    DOM.el(`#radio_filter`).value = filter
-    App.do_modal_filter()
-  }
-  else {
-    App.scroll_to_radio_station()
-  }
+  DOM.el(`#radio_filter`).value = filter
+  App.do_modal_filter()
 }
 
 // Hide the radio

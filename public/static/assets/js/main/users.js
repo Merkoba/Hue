@@ -382,11 +382,8 @@ App.show_userlist_window = (mode = `normal`, filter = ``) => {
   }
 
   App.msg_userlist.show()
-
-  if (filter.trim()) {
-    DOM.el(`#userlist_filter`).value = filter
-    App.do_modal_filter()
-  }
+  DOM.el(`#userlist_filter`).value = filter
+  App.do_modal_filter()
 }
 
 // Sorts a user list by activity date

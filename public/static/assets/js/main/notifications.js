@@ -144,12 +144,8 @@ App.push_notification = (args) => {
 App.show_notifications = (filter = ``) => {
   App.msg_notifications.show()
   App.update_date_notifications()
-
-  if (filter.trim()) {
-    DOM.el(`#notifications_filter`).value = filter
-    App.do_modal_filter()
-  }
-
+  DOM.el(`#notifications_filter`).value = filter
+  App.do_modal_filter()
   App.notifications_count = 0
   DOM.el(`#header_notifications_count`).textContent = `(0)`
 }

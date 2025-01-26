@@ -100,11 +100,8 @@ App.show_room_config = (filter = ``) => {
   }
 
   App.msg_room_config.show()
-
-  if (filter.trim()) {
-    DOM.el(`#room_config_filter`).value = filter
-    App.do_modal_filter()
-  }
+  DOM.el(`#room_config_filter`).value = filter
+  App.do_modal_filter()
 }
 
 // Configures the room config

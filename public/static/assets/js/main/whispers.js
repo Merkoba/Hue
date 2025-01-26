@@ -421,11 +421,8 @@ App.push_whisper = (message, on_click, read, data) => {
 App.show_whispers = (filter = ``) => {
   App.msg_whispers.show()
   App.update_date_whispers()
-
-  if (filter.trim()) {
-    DOM.el(`#whispers_filter`).value = filter
-    App.do_modal_filter()
-  }
+  DOM.el(`#whispers_filter`).value = filter
+  App.do_modal_filter()
 }
 
 // Updates the whispers unread count

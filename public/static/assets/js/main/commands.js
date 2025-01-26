@@ -995,11 +995,8 @@ App.show_command_book = (filter = ``) => {
   }
 
   App.msg_command_book.show()
-
-  if (filter.trim()) {
-    DOM.el(`#command_book_filter`).value = filter
-    App.do_modal_filter()
-  }
+  DOM.el(`#command_book_filter`).value = filter
+  App.do_modal_filter()
 }
 
 // Gets the most similar command from a string

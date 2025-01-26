@@ -285,14 +285,8 @@ App.show_message_board = (filter = ``) => {
   App.check_last_message_board_post()
   App.update_date_message_board()
   App.message_board_separate()
-
-  if (filter.trim()) {
-    DOM.el(`#message_board_filter`).value = filter
-    App.do_modal_filter()
-  }
-  else {
-    DOM.el(`#message_board_textarea`).focus()
-  }
+  DOM.el(`#message_board_filter`).value = filter
+  App.do_modal_filter()
 }
 
 // Hide message board

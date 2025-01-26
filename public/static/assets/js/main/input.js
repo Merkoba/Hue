@@ -275,14 +275,8 @@ App.show_input_history = (filter = ``) => {
   }
 
   App.msg_input_history.show()
-
-  if (filter.trim()) {
-    DOM.el(`#input_history_filter`).value = filter
-    App.do_modal_filter()
-  }
-  else {
-    App.selected_next()
-  }
+  DOM.el(`#input_history_filter`).value = filter
+  App.do_modal_filter()
 }
 
 // Input history enter action
