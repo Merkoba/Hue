@@ -173,10 +173,10 @@ App.server_update_events = {
     App.remove_message_from_chat(data)
   },
   deleted_messages_above: (data) => {
-    App.after_deleted_messages_above(data)
+    App.remove_messages_above(data)
   },
   deleted_messages_below: (data) => {
-    App.after_deleted_messages_below(data)
+    App.remove_messages_below(data)
   },
   bio_changed: (data) => {
     App.bio_changed(data)

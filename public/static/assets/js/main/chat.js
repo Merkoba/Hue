@@ -1663,7 +1663,7 @@ App.handle_delete_messages = (id, user_id) => {
 }
 
 // When messages above were deleted
-App.after_deleted_messages_above = (data) => {
+App.remove_messages_above = (data) => {
   let ans = App.get_message_by_id(data.id)
 
   if (!ans) {
@@ -1686,7 +1686,7 @@ App.after_deleted_messages_above = (data) => {
 }
 
 // When messages below were deleted
-App.after_deleted_messages_below = (data) => {
+App.remove_messages_below = (data) => {
   let ans = App.get_message_by_id(data.id)
 
   if (!ans) {
