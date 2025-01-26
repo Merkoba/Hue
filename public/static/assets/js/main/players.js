@@ -20,7 +20,6 @@ App.load_youtube = async (what = ``) => {
 // Create tv YouTube player
 App.create_youtube_tv_player = () => {
   App.youtube_tv_player_requested = false
-
   let html = `<div id='media_youtube_tv' class='video_frame'></div>`
   DOM.el(`#media_youtube_tv_container`).innerHTML = html
   App.add_media_info(`media_youtube_tv_container`)
