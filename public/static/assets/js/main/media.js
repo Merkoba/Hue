@@ -1147,13 +1147,25 @@ App.change_media_source = (args = {}) => {
           return false
         }
       }
+      else if (App.utilz.is_twitch(args.src)) {
+        if (App.utilz.get_twitch_id(args.src) && !App.config.twitch_enabled) {
+          if (feedback) {
+            App.checkmsg(`Twitch support is not enabled`)
+          }
+
+          return false
+        }
+      }
       else {
         let extension = App.utilz.get_extension(args.src).toLowerCase()
 
-        if (extension && (App.utilz.is_video(args.src) || App.utilz.is_audio(args.src))) {
-          // Is a video
+        if (!extension) {
+          return false
         }
-        else {
+
+        let is_media = App.utilz.is_video(args.src) || App.utilz.is_audio(args.src)
+
+        if (!is_media) {
           return false
         }
       }

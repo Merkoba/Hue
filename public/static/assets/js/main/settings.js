@@ -386,6 +386,11 @@ App.build_user_settings = () => {
       version: 1,
     },
   }
+
+  if (!App.config.radio_enabled) {
+    delete App.user_settings.radio_enabled
+    delete App.user_settings.radio_auto_minutes
+  }
 }
 
 // Gets the settings localStorage object

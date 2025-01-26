@@ -130,7 +130,6 @@ const Utilz = () => {
     v_id = id.length === 11 ? id : false
 
     let list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
-
     let index_match = url.match(/(?:\?|&)(index=[0-9]+)/)
 
     if (list_match) {
@@ -801,9 +800,14 @@ const Utilz = () => {
     return Boolean(extension) && utilz.audio_extensions.includes(extension)
   }
 
-  // Check if it's a youtube url
+  // Check if it's a YouTube url
   utilz.is_youtube = (src) => {
     return src.includes(`youtube.com`) || src.includes(`youtu.be`)
+  }
+
+  // Check if it's a Twitch url
+  utilz.is_twitch = (src) => {
+    return src.includes(`twitch.tv`)
   }
 
   // Check if all items in an array are equal

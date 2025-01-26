@@ -119,8 +119,11 @@ max_profilepic_size: 1111
 # Maximum size allowed for user audio clips
 max_audioclip_size: 9999
 
-# Whether Youtube features are enabled
+# Whether YouTube features are enabled
 youtube_enabled: true
+
+# Whether Twitch features are enabled
+twitch_enabled: true
 
 # Whether Imgur features are enabled
 imgur_enabled: true

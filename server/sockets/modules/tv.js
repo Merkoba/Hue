@@ -35,8 +35,11 @@ module.exports = (App) => {
     )
 
     data.username = socket.hue.username
-
     let media_info = await App.handler.get_last_media(socket.hue.room_id, `tv`)
+
+    function not_found() {
+      App.handler.user_emit(socket, `video_not_found`, {})
+    }
 
     if (media_info) {
       if ((media_info.source === data.src) || (media_info.query === data.src)) {
@@ -51,7 +54,7 @@ module.exports = (App) => {
     }
 
     if (App.utilz.is_url(data.src)) {
-      if (data.src.includes(`youtube.com`) || data.src.includes(`youtu.be`)) {
+      if (App.utilz.is_youtube(data.src)) {
         if (!App.config.youtube_enabled) {
           return
         }
@@ -71,63 +74,68 @@ module.exports = (App) => {
             pid = id[1][0]
           }
           else {
-            App.handler.user_emit(socket, `video_not_found`, {})
+            not_found()
             return
           }
 
-          App.vars.fetch(
-            `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${App.sconfig.youtube_api_key}`,
-          )
-            .then((res) => {
-              return res.json()
-            })
-            .then(async (response) => {
-              if ((response.items !== undefined) && (response.items.length > 0)) {
-                data.type = `youtube`
-                data.title = response.items[0].snippet.title
-                await App.handler.do_change_media(socket, data, `tv`)
-              }
-              else {
-                App.handler.user_emit(socket, `video_not_found`, {})
-                return
-              }
-            })
-            .catch((err) => {
-              App.handler.user_emit(socket, `video_not_found`, {})
-              App.logger.log_error(err)
-            })
+          try {
+            let res = await App.vars.fetch(
+              `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${App.sconfig.youtube_api_key}`,
+            )
+
+            let json = await res.json()
+
+            if ((json.items !== undefined) && (json.items.length > 0)) {
+              data.type = `youtube`
+              data.title = json.items[0].snippet.title
+              await App.handler.do_change_media(socket, data, `tv`)
+              return
+            }
+
+            not_found()
+            return
+          }
+          catch (err) {
+            not_found()
+            App.logger.log_error(err)
+            return
+          }
         }
-        else {
-          App.handler.user_emit(socket, `video_not_found`, {})
-        }
+
+        not_found()
+        return
       }
-      else if (data.src.includes(`twitch.tv`)) {
+      else if (App.utilz.is_twitch(data.src)) {
+        if (!App.config.twitch_enabled) {
+          return
+        }
+
         let info = App.utilz.get_twitch_id(data.src)
 
         if (info && (info[0] === `channel`)) {
           data.type = `twitch`
           data.title = info[1]
           await App.handler.do_change_media(socket, data, `tv`)
-        }
-        else {
-          App.handler.user_emit(socket, `video_not_found`, {})
           return
         }
+
+        not_found()
+        return
       }
       else {
         let extension = App.utilz.get_extension(data.src).toLowerCase()
 
-        if (extension) {
-          if (App.utilz.is_video(data.src) || App.utilz.is_audo(data.src)) {
-            data.type = `video`
-          }
-          else {
-            return
-          }
-        }
-        else {
+        if (!extension) {
           return
         }
+
+        let is_media = App.utilz.is_video(data.src) || App.utilz.is_audo(data.src)
+
+        if (!is_media) {
+          return
+        }
+
+        data.type = `video`
 
         try {
           let full_file = await App.handler.download_media(socket, {
@@ -158,44 +166,44 @@ module.exports = (App) => {
         return
       }
 
-      App.vars.fetch(
-        `https://www.googleapis.com/youtube/v3/search?q=${encodeURIComponent(
-          data.src,
-        )}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&videoEmbeddable=true&key=${
-          App.sconfig.youtube_api_key
-        }`,
-      )
-        .then((res) => {
-          return res.json()
-        })
-        .then(async (response) => {
-          if ((response.items !== undefined) && (response.items.length > 0)) {
-            for (let item of response.items) {
-              if (
-                (item === undefined) ||
-                (item.id === undefined) ||
-                (item.id.videoId === undefined)
-              ) {
-                continue
-              }
+      try {
+        let res = await App.vars.fetch(
+          `https://www.googleapis.com/youtube/v3/search?q=${encodeURIComponent(
+            data.src,
+          )}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&videoEmbeddable=true&key=${
+            App.sconfig.youtube_api_key
+          }`,
+        )
 
-              data.type = `youtube`
-              data.query = data.src
-              data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
-              data.title = response.items[0].snippet.title
-              await App.handler.do_change_media(socket, data, `tv`)
-              return
+        let json = await res.json()
+
+        if ((json.items !== undefined) && (json.items.length > 0)) {
+          for (let item of json.items) {
+            if (
+              (item === undefined) ||
+              (item.id === undefined) ||
+              (item.id.videoId === undefined)
+            ) {
+              continue
             }
 
-            App.handler.user_emit(socket, `video_not_found`, {})
+            data.type = `youtube`
+            data.query = data.src
+            data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
+            data.title = json.items[0].snippet.title
+            await App.handler.do_change_media(socket, data, `tv`)
             return
           }
 
-          App.handler.user_emit(socket, `video_not_found`, {})
-        })
-        .catch((err) => {
-          App.logger.log_error(err)
-        })
+          not_found()
+          return
+        }
+      }
+      catch (err) {
+        App.logger.log_error(err)
+      }
+
+      not_found()
     }
   }
 
