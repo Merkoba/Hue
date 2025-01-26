@@ -1664,11 +1664,6 @@ App.handle_delete_messages = (id, user_id) => {
 
 // When messages above were deleted
 App.deleted_messages_above = (data) => {
-  if (!App.is_admin()) {
-    App.not_allowed()
-    return
-  }
-
   let ans = App.get_message_by_id(data.id)
 
   if (!ans) {
@@ -1692,11 +1687,6 @@ App.deleted_messages_above = (data) => {
 
 // When messages below were deleted
 App.deleted_messages_below = (data) => {
-  if (!App.is_admin()) {
-    App.not_allowed()
-    return
-  }
-
   let ans = App.get_message_by_id(data.id)
 
   if (!ans) {
