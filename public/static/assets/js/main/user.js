@@ -228,8 +228,8 @@ App.show_user_profile = () => {
 
 // Setups the profile image circular cropper
 App.setup_profilepic_cropper = () => {
-  DOM.ev(DOM.el(`#profilepic_cropper_crop`), `click`, () => {
-    App.profilepic_cropper.result({
+  async function crop() {
+    let blob = await App.profilepic_cropper.result({
       type: `blob`,
       size: {
         width: App.config.profilepic_diameter,
@@ -239,11 +239,14 @@ App.setup_profilepic_cropper = () => {
       circle: true,
       quality: App.config.image_blob_quality,
     })
-      .then((blob) => {
-        App.profilepic_preview_blob = blob
-        DOM.el(`#profilepic_preview_image`).src = URL.createObjectURL(blob)
-        App.msg_profilepic_preview.show()
-      })
+
+    App.profilepic_preview_blob = blob
+    DOM.el(`#profilepic_preview_image`).src = URL.createObjectURL(blob)
+    App.msg_profilepic_preview.show()
+  }
+
+  DOM.ev(DOM.el(`#profilepic_cropper_crop`), `click`, () => {
+    crop()
   })
 
   DOM.ev(DOM.el(`#profilepic_cropper_change`), `click`, () => {
@@ -324,15 +327,17 @@ App.profilepic_selected = (file, type) => {
 
   let reader = new FileReader()
 
-  reader.onload = (e) => {
+  reader.onload = async (e) => {
+    let change = DOM.el(`#profilepic_cropper_change`)
+
     if (type === `drawing`) {
-      DOM.el(`#profilepic_cropper_change`).textContent = `Re-Draw`
+      change.textContent = `Re-Draw`
     }
     else if (type === `upload`) {
-      DOM.el(`#profilepic_cropper_change`).textContent = `Re-Choose`
+      change.textContent = `Re-Choose`
     }
     else if (type === `random_canvas`) {
-      DOM.el(`#profilepic_cropper_change`).textContent = `Re-Generate`
+      change.textContent = `Re-Generate`
     }
 
     App.profilepic_cropper_type = type
@@ -349,13 +354,12 @@ App.profilepic_selected = (file, type) => {
       })
     }
 
-    App.profilepic_cropper.bind({
+    await App.profilepic_cropper.bind({
       url: e.target.result,
       points: [],
     })
-      .then(() => {
-        App.profilepic_cropper.setZoom(0)
-      })
+
+    App.profilepic_cropper.setZoom(0)
   }
 
   reader.readAsDataURL(file)
