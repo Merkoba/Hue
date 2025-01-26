@@ -115,7 +115,7 @@ App.handle_url = (url) => {
 // Handle url chat action
 App.handle_url_chat = () => {
   App.change_input(App.handled_url)
-  App.msg_handle_url.close()
+  App.close_all_modals()
 }
 
 // Setups drop listeners
