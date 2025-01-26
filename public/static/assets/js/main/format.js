@@ -107,25 +107,38 @@ App.check_arrowtext = (text) => {
   return new_lines.join(`\n`)
 }
 
+App.regex_u = (c, n) => {
+  return `${c}{${n}}`
+}
+
+App.regex_t = (c, n) => {
+  return `[^\\s${c}]`
+}
+
+App.regex_t2 = (c, n) => {
+  return `[^${c}]`
+}
+
 App.char_regex_1 = (char, n = 1) => {
   let c = App.utilz.escape_regex(char)
-  let u = `${c}{${n}}`
-  let t = `[^\\s${u}]`
-  let regex = `${u}(${t}[^${u}]*${t}|${t})${u}`
+  let u = App.regex_u(c, n)
+  let t = App.regex_t(c, n)
+  let t2 = App.regex_t2(c, n)
+  let regex = `${u}(${t}${t2}*${t}|${t})${u}`
   return new RegExp(regex, `g`)
 }
 
 App.char_regex_2 = (char, n = 1) => {
   let c = App.utilz.escape_regex(char)
-  let u = `${c}{${n}}`
-  let t = `[^\\s${u}]`
-  let regex = `(?:^|\\s)${u}(${t}[^${u}]*${t}|${t})${u}(?:$|\\s)`
+  let u = App.regex_u(c, n)
+  let t = App.regex_t(c, n)
+  let regex = `^(?:^|\\s)${u}(${t}.*?${t})${u}(?:$|\\s)`
   return new RegExp(regex, `g`)
 }
 
 App.char_regex_3 = (char, n = 1) => {
   let c = App.utilz.escape_regex(char)
-  let u = `${c}{${n}}`
+  let u = App.regex_u(c, n)
   let t = `[^${u}]`
   let regex = `${u}(${t}+)${u}`
   return new RegExp(regex, `g`)
