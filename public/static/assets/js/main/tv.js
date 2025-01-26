@@ -68,7 +68,9 @@ App.hide_tv = (item = false) => {
       App[`${type}_tv_player_request`] = false
     }
     else {
-      DOM.show(el)
+      if (App[`${item.type}_tv_player`]) {
+        DOM.show(el)
+      }
     }
   }
 }
@@ -189,10 +191,7 @@ App.change_tv_source = (src, check, comment) => {
 
 // Do tv change socket emit
 App.do_tv_change = (src, comment) => {
-  App.socket_emit(`change_tv_source`, {
-    src,
-    comment,
-  })
+  App.socket_emit(`change_tv_source`, {src, comment})
 }
 
 // Gets the id of the visible tv frame

@@ -41,9 +41,20 @@ App.setup_footer = () => {
     let list = DOM.el(`#footer_${type}_list`)
     list.title = `List of recent ${mstring} changes`
 
-    DOM.ev(list, `click`, () => {
+    DOM.ev(list, `click`, (e) => {
+      if (e.shiftKey || e.ctrlKey) {
+        App.load_next_media(type)
+        return
+      }
+
       App[`msg_${type}_picker`].close()
       App[`show_${type}_list`]()
+    })
+
+    DOM.ev(list, `auxclick`, (e) => {
+      if (e.button === 1) {
+        App.load_prev_media(type)
+      }
     })
 
     App.update_footer_toggle(type)

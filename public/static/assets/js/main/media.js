@@ -441,6 +441,7 @@ App.change_media = (args = {}) => {
 
     if (item.type !== `video`) {
       if (App[`${item.type}_tv_player`] === undefined) {
+        App.before_show_tv(item)
         App.request_media(`${item.type}_tv_player`, args)
         return
       }
