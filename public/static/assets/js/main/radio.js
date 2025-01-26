@@ -1,9 +1,6 @@
 // Setup radios
 App.setup_radio = () => {
-  if (App.config.radios.length === 0) {
-    App.radio_disabled = true
-    DOM.hide(`#footer_radio_container`)
-    App.horizontal_separator(DOM.el(`#footer_media_items`))
+  if (!App.radio_enabled()) {
     return
   }
 
@@ -69,6 +66,10 @@ App.check_radio_play = (radio) => {
 
 // Play the audio player with a cache-busted url
 App.play_radio = (radio) => {
+  if (!App.radio_enabled()) {
+    return
+  }
+
   App.push_radio_queue(radio)
   App.playing_radio = radio
   App.radio_player.src = App.utilz.cache_bust_url(radio.url)
@@ -269,7 +270,7 @@ App.apply_radio_volume = (volume = App.room_state.radio_volume) => {
 
 // Play a random radio station
 App.play_random_radio = () => {
-  if (App.radio_disabled) {
+  if (!App.radio_enabled()) {
     return
   }
 
@@ -300,7 +301,7 @@ App.fill_radio_queue = () => {
 // Play or stop the radio
 // Select random station if none is playing
 App.radio_playstop = () => {
-  if (!App.playing_radio || App.radio_disabled) {
+  if (!App.playing_radio || !App.radio_enabled()) {
     return
   }
 
@@ -318,6 +319,10 @@ App.radio_now_playing_string = () => {
 
 // Show the radio
 App.show_radio = (filter = ``) => {
+  if (!App.radio_enabled()) {
+    return
+  }
+
   App.msg_radio.show()
   App.selected_modal_item = undefined
   App.selected_next()
@@ -431,4 +436,23 @@ App.radio_enter_action = () => {
   let el = App.selected_modal_item
   let radio = App.get_radio_station_2(el)
   App.check_radio_play(radio)
+}
+
+// Check if the radio is enabled
+App.radio_enabled = () => {
+  return App.config.radio_enabled &&
+  App.get_setting(`radio_enabled`) &&
+  (App.config.radios.length > 0)
+}
+
+// Check radio enabled
+App.check_radio_enabled = () => {
+  if (App.radio_enabled()) {
+    DOM.show(`#footer_radio_container`)
+  }
+  else {
+    DOM.hide(`#footer_radio_container`)
+  }
+
+  App.horizontal_separator(DOM.el(`#footer_media_items`))
 }

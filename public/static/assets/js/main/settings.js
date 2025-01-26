@@ -304,6 +304,15 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    radio_enabled: {
+      title: `Radio Enabled`,
+      type: `checkbox`,
+      description: `Enable radio controls`,
+      actions: () => {
+        App.check_radio_enabled()
+      },
+      version: 1,
+    },
     text_effects: {
       title: `Text Effects`,
       type: `checkbox`,

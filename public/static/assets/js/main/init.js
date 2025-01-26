@@ -107,7 +107,6 @@ App.update_userlist_delay = 2000
 App.flipped = false
 App.flopped = false
 App.command_book_created = false
-App.radio_disabled = false
 App.hide_radio_delay = 1000
 App.reply_active = false
 App.edit_active = false

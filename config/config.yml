@@ -168,6 +168,7 @@ settings_default_custom_css: ""
 settings_default_automedia: true
 settings_default_short_urls: true
 settings_default_grey_background: false
+settings_default_radio_enabled: true
 
 # Default room state values
 room_state_default_image_enabled: true
@@ -256,6 +257,9 @@ loginfo: false
 
 # Opacity for the background image
 background_opacity: 0.88
+
+# Enable radio on the client
+radio_enabled: true
 
 # Radio stations available
 radios:
