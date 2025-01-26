@@ -725,6 +725,34 @@ App.commands = {
     },
     description: `Load the next tv`,
   },
+  firstimage: {
+    aliases: [`loadfirstimage`, `firstimg`, `firsti`],
+    action: (arg, ans) => {
+      App.load_first_media(`image`)
+    },
+    description: `Load the first image`,
+  },
+  lastimage: {
+    aliases: [`loadlastimage`, `lastimg`, `lasti`],
+    action: (arg, ans) => {
+      App.load_last_media(`image`)
+    },
+    description: `Load the last image`,
+  },
+  firsttv: {
+    aliases: [`loadfirsttv`, `firstv`],
+    action: (arg, ans) => {
+      App.load_first_media(`tv`)
+    },
+    description: `Load the first tv`,
+  },
+  lasttv: {
+    aliases: [`loadlasttv`, `lastv`],
+    action: (arg, ans) => {
+      App.load_last_media(`tv`)
+    },
+    description: `Load the last tv`,
+  },
 }
 
 // Commands reserved to superusers

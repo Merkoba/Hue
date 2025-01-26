@@ -1404,6 +1404,18 @@ App.load_next_media = (what) => {
   App.load_prev_or_next_media(`next`, what)
 }
 
+// Load the first media
+App.load_first_media = (what) => {
+  let items = App[`${what}_changed`]
+
+  if (!items.length) {
+    return
+  }
+
+  let item = items[0]
+  App.load_media(item)
+}
+
 // Load the last media
 App.load_last_media = (what) => {
   let items = App[`${what}_changed`]
