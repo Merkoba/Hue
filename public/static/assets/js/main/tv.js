@@ -52,7 +52,7 @@ App.play_tv = () => {
   }
 }
 
-// Destroys all tv players that don't match the item's type
+// Hide all tv players that don't match the item's type
 // Makes the item's type visible
 App.hide_tv = (item = false) => {
   for (let el of DOM.els(`#media_tv .media_container`)) {
