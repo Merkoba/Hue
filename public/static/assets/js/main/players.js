@@ -67,15 +67,7 @@ App.request_media = (player, args) => {
   App[`${player}_request`] = args
 
   if (player === `video_tv_player`) {
-    let s = App.template_media_video_tv({
-      info: App.get_media_info_html(`tv`),
-      poster: App.config.video_poster,
-    })
-
-    DOM.el(`#media_video_tv_container`).innerHTML = s
-    App.video_tv_player = true
-    App.change_media(App.video_tv_player_request)
-    App.video_tv_player_request = false
+    App.start_video_player()
   }
   else if (player === `youtube_tv_player`) {
     App.load_youtube()
@@ -151,4 +143,17 @@ App.create_twitch_tv_player = () => {
   catch (err) {
     App.utilz.loginfo(`Twitch failed to load`)
   }
+}
+
+// Start the media video player
+App.start_video_player = () => {
+  let s = App.template_media_video_tv({
+    info: App.get_media_info_html(`tv`),
+    poster: App.config.video_poster,
+  })
+
+  DOM.el(`#media_video_tv_container`).innerHTML = s
+  App.video_tv_player = true
+  App.change_media(App.video_tv_player_request)
+  App.video_tv_player_request = false
 }
