@@ -444,11 +444,13 @@ App.radio_enabled = () => {
 
 // Check radio enabled
 App.check_radio_enabled = () => {
+  let c = `#footer_radio_container`
+
   if (App.radio_enabled()) {
-    DOM.show(`#footer_radio_container`)
+    DOM.show(c)
   }
   else {
-    DOM.hide(`#footer_radio_container`)
+    DOM.hide(c)
   }
 
   App.horizontal_separator(DOM.el(`#footer_media_items`))
