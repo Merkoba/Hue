@@ -132,7 +132,7 @@ App.char_regex_2 = (char, n = 1) => {
   let c = App.utilz.escape_regex(char)
   let u = App.regex_u(c, n)
   let t = App.regex_t(c, n)
-  let regex = `^(?:^|\\s)${u}(${t}.*?${t})${u}(?:$|\\s)`
+  let regex = `^(?:^|\\s)${u}(${t}.*?${t}|${t})${u}(?:$|\\s)`
   return new RegExp(regex, `g`)
 }
 
