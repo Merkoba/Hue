@@ -49,20 +49,15 @@ App.setup_footer = () => {
     App.update_footer_toggle(type)
   }
 
-  if (App.radio_enabled()) {
-    DOM.ev(DOM.el(`#footer_radio_container`), `click`, () => {
-      App.show_radio()
-    })
+  DOM.ev(DOM.el(`#footer_radio_container`), `click`, () => {
+    App.show_radio()
+  })
 
-    DOM.ev(DOM.el(`#footer_radio_container`), `auxclick`, (e) => {
-      if (e.button === 1) {
-        App.radio_playstop()
-      }
-    })
-  }
-  else {
-    DOM.hide(`#footer_radio_container`)
-  }
+  DOM.ev(DOM.el(`#footer_radio_container`), `auxclick`, (e) => {
+    if (e.button === 1) {
+      App.radio_playstop()
+    }
+  })
 
   DOM.ev(DOM.el(`#footer_input_menu`), `auxclick`, (e) => {
     if (e.which === 2) {

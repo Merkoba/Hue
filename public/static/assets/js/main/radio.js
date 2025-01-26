@@ -1,9 +1,5 @@
 // Setup radios
 App.setup_radio = () => {
-  if (!App.radio_enabled()) {
-    return
-  }
-
   App.playing_radio = App.config.radios.find(
     x => x.name === App.room_state.last_radio_name,
   ) || App.config.radios[0]
@@ -47,6 +43,7 @@ App.setup_radio = () => {
   })
 
   App.set_radio_auto_text()
+  App.check_radio_enabled()
 }
 
 // Round radio volume
