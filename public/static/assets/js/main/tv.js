@@ -67,10 +67,8 @@ App.hide_tv = (item = false) => {
       App[`${type}_tv_player_requested`] = false
       App[`${type}_tv_player_request`] = false
     }
-    else {
-      if (App[`${item.type}_tv_player`]) {
-        DOM.show(el)
-      }
+    else if (App[`${item.type}_tv_player`]) {
+      DOM.show(el)
     }
   }
 }
