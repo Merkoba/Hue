@@ -120,43 +120,42 @@ module.exports = (App) => {
         not_found()
         return
       }
-      else {
-        let extension = App.utilz.get_extension(data.src).toLowerCase()
 
-        if (!extension) {
+      let extension = App.utilz.get_extension(data.src).toLowerCase()
+
+      if (!extension) {
+        return
+      }
+
+      let is_media = App.utilz.is_video(data.src) || App.utilz.is_audo(data.src)
+
+      if (!is_media) {
+        return
+      }
+
+      data.type = `video`
+
+      try {
+        let full_file = await App.handler.download_media(socket, {
+          src: data.src,
+          max_size: App.sconfig.max_linked_tv_size,
+        })
+
+        if (!full_file) {
           return
         }
 
-        let is_media = App.utilz.is_video(data.src) || App.utilz.is_audo(data.src)
+        let url = new URL(data.src)
 
-        if (!is_media) {
-          return
-        }
-
-        data.type = `video`
-
-        try {
-          let full_file = await App.handler.download_media(socket, {
-            src: data.src,
-            max_size: App.sconfig.max_linked_tv_size,
-          })
-
-          if (!full_file) {
-            return
-          }
-
-          let url = new URL(data.src)
-
-          await App.handler.upload_media(socket, {
-            file: full_file,
-            file_name: `${url.hostname}.${extension}`,
-            comment: data.comment,
-            extension,
-          }, `tv`)
-        }
-        catch (err) {
-          App.logger.log_error(err)
-        }
+        await App.handler.upload_media(socket, {
+          file: full_file,
+          file_name: `${url.hostname}.${extension}`,
+          comment: data.comment,
+          extension,
+        }, `tv`)
+      }
+      catch (err) {
+        App.logger.log_error(err)
       }
     }
     else {
