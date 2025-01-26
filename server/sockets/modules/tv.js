@@ -79,10 +79,8 @@ module.exports = (App) => {
           }
 
           try {
-            let res = await App.vars.fetch(
-              `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${App.sconfig.youtube_api_key}`,
-            )
-
+            let s = `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${App.sconfig.youtube_api_key}`
+            let res = await App.vars.fetch(s)
             let json = await res.json()
 
             if ((json.items !== undefined) && (json.items.length > 0)) {
@@ -167,14 +165,10 @@ module.exports = (App) => {
       }
 
       try {
-        let res = await App.vars.fetch(
-          `https://www.googleapis.com/youtube/v3/search?q=${encodeURIComponent(
-            data.src,
-          )}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&videoEmbeddable=true&key=${
-            App.sconfig.youtube_api_key
-          }`,
-        )
-
+        let u = encodeURIComponent(data.src)
+        let k = App.sconfig.youtube_api_key
+        let s = `https://www.googleapis.com/youtube/v3/search?q=${u}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&videoEmbeddable=true&key=${k}`
+        let res = await App.vars.fetch(s)
         let json = await res.json()
 
         if ((json.items !== undefined) && (json.items.length > 0)) {
