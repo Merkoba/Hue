@@ -79,7 +79,8 @@ module.exports = (App) => {
           }
 
           try {
-            let s = `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${App.sconfig.youtube_api_key}`
+            let k = App.sconfig.youtube_api_key
+            let s = `https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${k}`
             let res = await App.vars.fetch(s)
             let json = await res.json()
 

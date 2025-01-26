@@ -48,7 +48,7 @@ module.exports = (App) => {
   }
 
   // Changes passwords
-  App.handler.public.change_password = (socket, data) => {
+  App.handler.public.change_password = async (socket, data) => {
     if (data.password === undefined) {
       return
     }
@@ -64,13 +64,13 @@ module.exports = (App) => {
       return
     }
 
-    App.db_manager.change_user_password(socket.hue.user_id, data.password)
-      .then(ans => {
-        App.handler.user_emit(socket, `password_changed`, {})
-      })
-      .catch(err => {
-        App.logger.log_error(err)
-      })
+    try {
+      await App.db_manager.change_user_password(socket.hue.user_id, data.password)
+      App.handler.user_emit(socket, `password_changed`, {})
+    }
+    catch (err) {
+      App.logger.log_error(err)
+    }
   }
 
   // Handles bio changes

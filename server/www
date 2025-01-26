@@ -129,21 +129,17 @@ function start_config_check() {
 	}, config_check_delay)
 }
 
-function create_db_backup() {
+async function create_db_backup() {
 	let store_path = path.join(__dirname, `../${sconfig.db_store_path}`)
 
-	tar.c({
-			gzip: true,
-			file: `${store_path}/backups/${parseInt(Date.now() / 1000)}.tar.gz`
-		},
-		[`${store_path}/users`, `${store_path}/rooms`]
-	)
-	.then(res => {
+	try {
+		let file = `${store_path}/backups/${parseInt(Date.now() / 1000)}.tar.gz`
+		await tar.c({file, gzip: true}, [`${store_path}/users`, `${store_path}/rooms`])
 		utilz.loginfo(`DB backup created`)
-	})
-	.catch(err => {
+	}
+	catch (err) {
 		console.error(err)
-	})
+	}
 }
 
 let port = normalizePort(process.env.PORT || `3210`)
