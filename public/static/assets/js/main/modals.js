@@ -689,7 +689,6 @@ App.start_msg = () => {
       {id: `open_url_menu_load`, text: `Load`},
       {id: `open_url_menu_link`, text: `Link`},
       {id: `open_url_menu_menu`, text: `Menu`},
-      {id: `open_url_menu_reply`, text: `Reply`},
     ],
     container_id: `open_url_titlebar`,
   }))
