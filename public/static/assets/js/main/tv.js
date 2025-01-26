@@ -170,6 +170,7 @@ App.show_video_tv = (play = true) => {
 App.before_show_tv = (item) => {
   App.stop_tv()
   App.hide_tv(item)
+  DOM.show(`#media_tv_loading`)
 }
 
 // This gets called after any tv video is loaded
@@ -178,6 +179,7 @@ App.after_show_tv = () => {
   App.fix_tv_frame()
   App.focus_input()
   App.show_tv_loaded()
+  DOM.hide(`#media_tv_loading`)
 }
 
 // Changes the tv source
