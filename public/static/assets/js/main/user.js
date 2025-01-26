@@ -305,7 +305,7 @@ App.setup_profilepic_select = () => {
 // If upload is chosen as the method to change the profilepic
 App.open_profilepic_picker = () => {
   App.upload_media = `profilepic`
-  App.trigger_dropzone()
+  App.trigger_filepicker(`image`)
 }
 
 // This is executed after a profile image has been selected in the file dialog
@@ -419,7 +419,7 @@ App.setup_audioclip_select = () => {
 // Opens the file picker to choose an audio clip
 App.select_audioclip = () => {
   App.upload_media = `audioclip`
-  App.trigger_dropzone()
+  App.trigger_filepicker(`audioclip`)
 }
 
 // When an audio clip gets selected from the file picker

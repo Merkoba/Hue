@@ -26,7 +26,8 @@ App.setup_input = () => {
       let item = items[index]
 
       if (item.kind === `file`) {
-        App.dropzone.addFile(item.getAsFile())
+        let file = item.getAsFile()
+        App.process_file_added_debouncer.call(file)
         e.preventDefault()
         return
       }

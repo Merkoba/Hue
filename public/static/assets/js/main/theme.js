@@ -168,7 +168,7 @@ App.announce_background_color_change = (data) => {
 // If upload is chosen as the method to change the background image
 App.open_background_picker = () => {
   App.upload_media = `background`
-  App.trigger_dropzone()
+  App.trigger_filepicker(`image`)
 }
 
 // On background image source input change

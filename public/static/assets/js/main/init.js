@@ -147,7 +147,7 @@ App.init = () => {
   App.start_msg()
   App.setup_settings()
   App.start_image_events()
-  App.start_dropzone()
+  App.setup_upload()
   App.activate_visibility_listener()
   App.scroll_events()
   App.resize_events()

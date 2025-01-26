@@ -373,7 +373,7 @@ App.setup_tv_upload_comment = () => {
 // Trigger upload tv picker
 App.show_upload_tv = () => {
   App.upload_media = `tv`
-  App.trigger_dropzone()
+  App.trigger_filepicker(`tv`)
 }
 
 // Setup screen capture

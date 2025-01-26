@@ -442,7 +442,7 @@ App.link_image_submit = () => {
 // Trigger upload image picker
 App.show_upload_image = () => {
   App.upload_media = `image`
-  App.trigger_dropzone()
+  App.trigger_filepicker(`image`)
 }
 
 // Apply modal image resolution to modal image

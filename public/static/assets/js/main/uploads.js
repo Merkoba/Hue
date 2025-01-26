@@ -1,30 +1,57 @@
 // Starts Dropzone events for file drag and drop events
 // This also handles normal uploads by clicking the Upload button
-App.start_dropzone = () => {
-  let types = []
-  types = types.concat(App.utilz.image_types)
-  types = types.concat(App.utilz.video_types)
-  types = types.concat(App.utilz.audio_types)
-
-  App.dropzone = new Dropzone(`body`, {
-    url: `/`,
-    maxFiles: 1,
-    autoProcessQueue: false,
-    acceptedFiles: types.join(`,`),
-    clickable: `#dropzone_element`,
-  })
-
-  App.dropzone.on(`addedfile`, (file) => {
-    App.process_file_added_debouncer.call(file)
-  })
-
-  App.dropzone.on(`dragenter`, () => {
+App.setup_upload = () => {
+  DOM.ev(document.body, `dragenter`, (e) => {
     App.upload_media = undefined
   })
 
-  App.dropzone.on(`maxfilesexceeded`, (file) => {
-    App.dropzone.removeFile(file)
+  DOM.ev(document.body, `dragover`, (e) => {
+    e.preventDefault()
+    e.stopPropagation()
   })
+
+  DOM.ev(document.body, `drop`, (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    let files = e.dataTransfer.files
+
+    if (files && (files.length > 0)) {
+      App.process_file_added_debouncer.call(files[0])
+    }
+  })
+
+  let filepicker = DOM.el(`#filepicker`)
+
+  DOM.ev(filepicker, `change`, (e) => {
+    let files = e.target.files
+
+    if (files && (files.length > 0)) {
+      App.process_file_added_debouncer.call(files[0])
+    }
+  })
+}
+
+// Show the file picker to pick media
+App.trigger_filepicker = (type = ``) => {
+  let input = DOM.el(`#filepicker`)
+  let types
+
+  if (type === `image`) {
+    types = App.utilz.image_types
+  }
+  else if (type === `tv`) {
+    types = [...App.utilz.video_types, ...App.utilz.audio_types]
+  }
+  else if (type === `audioclip`) {
+    types = [`audio/mpeg`]
+  }
+  else {
+    types = [`*`]
+  }
+
+  input.accept = types.join(`,`)
+  input.click()
 }
 
 // Process file upload
@@ -76,13 +103,6 @@ App.do_process_file_added = (file) => {
   else if (is_video || is_audio) {
     App.upload_video(file)
   }
-
-  App.dropzone.files = []
-}
-
-// Trigger dropzone click
-App.trigger_dropzone = () => {
-  DOM.el(`#dropzone_element`).click()
 }
 
 // Handle generic image upload
