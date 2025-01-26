@@ -97,9 +97,7 @@ App.start_twitch = async () => {
   }
 
   App.twitch_loading = true
-
   await App.load_script(`https://player.twitch.tv/js/embed/v1.js`)
-
   App.twitch_loaded = true
 
   if (App.twitch_tv_player_requested) {
