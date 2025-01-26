@@ -59,13 +59,7 @@ App.hide_tv = (item = false) => {
     let type = el.id.replace(`media_`, ``).replace(`_tv_container`, ``)
 
     if (!item || (item.type !== type)) {
-      let new_el = DOM.create(`div`, `media_container`)
-      new_el.id = el.id
-      DOM.hide(new_el)
-      el.replaceWith(new_el)
-      App[`${type}_tv_player`] = undefined
-      App[`${type}_tv_player_requested`] = false
-      App[`${type}_tv_player_request`] = false
+      DOM.hide(el)
     }
     else if (App[`${item.type}_tv_player`]) {
       DOM.show(el)
