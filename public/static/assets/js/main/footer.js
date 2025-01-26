@@ -5,7 +5,7 @@ App.setup_footer = () => {
   for (let type of media) {
     let mstring = App.media_string(type)
     let icon = DOM.el(`#footer_${type}_icon`)
-    icon.title = `Change ${mstring}. Shift+Click to show dialog directly`
+    icon.title = `Change ${mstring}\nShift+Click to show dialog directly`
 
     DOM.ev(icon, `click`, (e) => {
       if (e.shiftKey | e.ctrlKey) {
@@ -39,7 +39,7 @@ App.setup_footer = () => {
     })
 
     let list = DOM.el(`#footer_${type}_list`)
-    list.title = `List of recent ${mstring} changes`
+    list.title = `List of recent ${mstring} changes\nShift+Click to load next\nMiddle Click to load previous`
 
     DOM.ev(list, `click`, (e) => {
       if (e.shiftKey || e.ctrlKey) {
