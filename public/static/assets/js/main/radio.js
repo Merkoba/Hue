@@ -453,5 +453,6 @@ App.check_radio_enabled = () => {
     DOM.hide(c)
   }
 
-  App.horizontal_separator(DOM.el(`#footer_media_items`))
+  let items = DOM.el(`#footer_media_items`)
+  App.horizontal_separator(items)
 }
