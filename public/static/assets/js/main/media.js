@@ -500,7 +500,7 @@ App.set_media_enabled = (args) => {
 
   App.room_state[`${args.type}_enabled`] = args.what
 
-  if (App[`${args.type}_visible`] !== args.what) {
+  if (App.media_visible(args.type) !== args.what) {
     App.change_media_visibility(args.type)
   }
 
@@ -1356,4 +1356,64 @@ App.automedia_chat = () => {
   App.process_input(args)
   App.msg_automedia.close()
   App.clear_input()
+}
+
+// Load the previous media
+App.load_prev_media = (what) => {
+  let items = App[`${what}_changed`]
+
+  if (!items.length) {
+    return
+  }
+
+  let current = App[`loaded_${what}`]
+  let index = items.indexOf(current)
+
+  if (index <= 0) {
+    return
+  }
+
+  let item = items[index - 1]
+  App.load_media(item)
+}
+
+// Load the next media
+App.load_next_media = (what) => {
+  let items = App[`${what}_changed`]
+
+  if (!items.length) {
+    return
+  }
+
+  let current = App[`loaded_${what}`]
+  let index = items.indexOf(current)
+
+  if (index === items.length - 1) {
+    return
+  }
+
+  let item = items[index + 1]
+  App.load_media(item)
+}
+
+// Load the last media
+App.load_last_media = (what) => {
+  let items = App[`${what}_changed`]
+
+  if (!items.length) {
+    return
+  }
+
+  let item = items.at(-1)
+  App.load_media(item)
+}
+
+// Check if media is visible
+App.media_visible = (what) => {
+  return App[`${what}_visible`]
+}
+
+// Get media type from change type
+App.media_change_type = (type) => {
+  return type.replace(`_change`, ``)
 }

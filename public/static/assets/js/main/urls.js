@@ -177,9 +177,12 @@ App.setup_open_url = () => {
   DOM.ev(DOM.el(`#open_url_menu_menu`), `click`, (e) => {
     let button = App.get_message_container_by_id(App.open_url_data.id)
 
-    if (button) {
-      App.show_chat_context_menu(button, e.clientX, e.clientY)
+    if (!button) {
+      App.show_info(`Message not found`)
+      return
     }
+
+    App.show_chat_context_menu(button, e.clientX, e.clientY)
   })
 
   DOM.ev(DOM.el(`#open_url_menu_reply`), `click`, () => {

@@ -924,12 +924,17 @@ App.process_remove_announcement = (message) => {
   let type = DOM.dataset(message, `type`)
   let message_id = DOM.dataset(message, `message_id`)
 
-  if (
-    (type === `image_change`) ||
-    (type === `tv_change`)
-  ) {
+  if ((type === `image_change`) || (type === `tv_change`)) {
     let id = DOM.dataset(message, `id`)
-    App.remove_item_from_media_changed(type.replace(`_change`, ``), id)
+    let what = App.media_change_type(type)
+    App.remove_item_from_media_changed(what, id)
+    let loaded = App[`loaded_${what}`]
+
+    if (loaded.id === id) {
+      if (App.media_visible(what)) {
+        App.load_last_media(what)
+      }
+    }
   }
 
   for (let el of DOM.els(`.message_id_${message_id}`)) {

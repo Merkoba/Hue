@@ -39,12 +39,6 @@ App.server_update_events = {
   log_cleared: (data) => {
     App.announce_log_cleared(data)
   },
-  deleted_messages_above: (data) => {
-    App.deleted_messages_above(data)
-  },
-  deleted_messages_below: (data) => {
-    App.deleted_messages_below(data)
-  },
   user_role_changed: (data) => {
     App.announce_role_change(data)
   },
@@ -177,6 +171,12 @@ App.server_update_events = {
   },
   message_deleted: (data) => {
     App.remove_message_from_chat(data)
+  },
+  deleted_messages_above: (data) => {
+    App.deleted_messages_above(data)
+  },
+  deleted_messages_below: (data) => {
+    App.deleted_messages_below(data)
   },
   bio_changed: (data) => {
     App.bio_changed(data)
