@@ -144,9 +144,11 @@ App.make_chat_message = (args = {}) => {
   let quote = DOM.el(`.chat_quote`, fmessage)
 
   if (args.quote) {
+    let q = App.utilz.make_html_safe(args.quote)
+
     quote.innerHTML = App.template_chat_quote({
       username: args.quote_username,
-      quote: args.quote,
+      quote: App.format_chars(q),
       profilepic: App.get_profilepic(args.quote_user_id),
     })
 
