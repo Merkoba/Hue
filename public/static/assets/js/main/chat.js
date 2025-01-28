@@ -3,6 +3,7 @@ App.make_chat_message = (args = {}) => {
   let def_args = {
     edited: false,
     just_edited: false,
+    quote: ``,
   }
 
   App.utilz.def_args(def_args, args)
@@ -209,6 +210,7 @@ App.make_chat_message = (args = {}) => {
   DOM.dataset(content_container, `original_message`, args.message)
   DOM.dataset(content_container, `username`, args.username)
   DOM.dataset(content_container, `user_id`, args.user_id)
+  DOM.dataset(content_container, `quote`, args.quote)
 
   args.likes = args.likes || []
   DOM.dataset(content_container, `likes`, args.likes)
@@ -606,7 +608,8 @@ App.start_reply = (target) => {
 // Show the reply info
 App.show_reply = () => {
   App.hide_edit()
-  DOM.el(`#input_reply_profilepic`).src = App.get_profilepic(App.reply_user_id)
+  let pic = App.get_profilepic(App.reply_user_id)
+  DOM.el(`#input_reply_profilepic`).src = pic
   DOM.show(`#input_reply_container`)
   App.reply_active = true
   App.focus_input()
@@ -693,8 +696,19 @@ App.start_edit = (unit) => {
 
   App.edit_container = unit.closest(`.message`)
   App.edit_unit = unit
-  App.edit_original_message = DOM.dataset(unit.closest(`.unit_data_container`), `original_message`)
-  App.change_input(App.edit_original_message)
+  let uc = unit.closest(`.unit_data_container`)
+  let omessage = DOM.dataset(uc, `original_message`)
+  let quote = DOM.dataset(uc, `quote`)
+  App.edit_original_message = omessage
+  let text = App.edit_original_message
+
+  if (text.trim() === App.empty_message) {
+    if (quote) {
+      text = ``
+    }
+  }
+
+  App.change_input(text)
   App.hide_reply()
   App.show_edit()
   App.highlight_footer()
@@ -716,11 +730,12 @@ App.hide_edit = () => {
 
 // Submit edit
 App.submit_edit = () => {
+  let ccc = App.edit_unit.closest(`.chat_content_container`)
   let mode = DOM.dataset(App.edit_container, `mode`)
   let edit_id
 
   if (mode === `chat`) {
-    edit_id = DOM.dataset(App.edit_unit.closest(`.chat_content_container`), `id`)
+    edit_id = DOM.dataset(ccc, `id`)
   }
   else {
     edit_id = DOM.dataset(App.edit_container, `id`)
@@ -730,8 +745,15 @@ App.submit_edit = () => {
     return
   }
 
+  let quote = DOM.dataset(ccc, `quote`)
   let type = DOM.dataset(App.edit_container, `type`)
   let new_message = App.get_input()
+
+  if (new_message.trim() === ``) {
+    if (quote) {
+      new_message = App.empty_message
+    }
+  }
 
   App.hide_edit()
 
