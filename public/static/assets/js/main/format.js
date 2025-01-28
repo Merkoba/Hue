@@ -112,11 +112,13 @@ App.regex_u = (c, n) => {
 }
 
 App.regex_t = (c, n) => {
-  return `[^\\s${c}]`
+  let u = App.regex_u(c, n)
+  return `(?:(?!${u}|\\s).)`
 }
 
 App.regex_t2 = (c, n) => {
-  return `[^${c}]`
+  let u = App.regex_u(c, n)
+  return `(?:(?!${u}).)`
 }
 
 App.char_regex_1 = (char, n = 1) => {
@@ -132,7 +134,7 @@ App.char_regex_2 = (char, n = 1) => {
   let c = App.utilz.escape_regex(char)
   let u = App.regex_u(c, n)
   let t = App.regex_t(c, n)
-  let regex = `^(?:^|\\s)${u}(${t}.*?${t}|${t})${u}(?:$|\\s)`
+  let regex = `(?:^|\\s)${u}(${t}.*?${t}|${t})${u}(?:$|\\s)`
   return new RegExp(regex, `g`)
 }
 
