@@ -6,52 +6,6 @@
 
 		<%- include('pages_imports.ejs'); %>
 		<script src='https://www.google.com/recaptcha/api.js'></script>
-
-		<script>
-			let recaptcha_checked = false
-
-			function recaptcha_callback () {
-				recaptcha_checked = true
-			}
-
-			function validate_form () {
-				if (msg_info.is_open()) {
-					return false
-				}
-
-				if (recaptcha_enabled && !recaptcha_checked) {
-					return false
-				}
-
-				DOM.el(`#login_username`).value = DOM.el(`#login_username`).value.trim()
-
-				let username = DOM.el(`#login_username`).value
-				let password = DOM.el(`#login_password`).value
-
-				if (username.length === 0) {
-					show_info(`Username can't be empty`)
-					return false
-				}
-
-				if (password.length === 0) {
-					show_info(`Password can't be empty`)
-					return false
-				}
-
-				if (username.length > max_max_username_length) {
-					show_info(`Username is too long`)
-					return false
-				}
-
-				if (password.length > max_max_password_length) {
-					show_info(`Password is too long`)
-					return false
-				}
-
-				DOM.el(`#btn_login`).disabled = true
-				return true
-			}
-		</script>
 	</head>
 
 	<body>
@@ -84,10 +38,69 @@
 		</div>
 
 		<script>
-			DOM.el(`#login_username`).focus()
+			let user_el = DOM.el(`#login_username`)
+			let pass_el = DOM.el(`#login_password`)
+			let btn_submit = DOM.el(`#btn_login`)
 
 			if(form_username && (form_username !== `undefined`)) {
-				DOM.el(`#login_username`).value = form_username
+				user_el.value = form_username
+			}
+
+			let recaptcha_checked = false
+
+			function recaptcha_callback() {
+				recaptcha_checked = true
+			}
+
+			DOM.ev(user_el, `input`, on_username_input)
+
+			function on_username_input() {
+				let username = user_el.value.trim()
+				username = username.replace(/[^a-zA-Z0-9]/g, ``)
+				user_el.value = username
+
+				if (username.length > max_max_username_length) {
+					username = username.substring(0, max_max_username_length)
+					user_el.value = username
+				}
+			}
+
+			function validate_form() {
+				if (msg_info.is_open()) {
+					return false
+				}
+
+				if (recaptcha_enabled && !recaptcha_checked) {
+					return false
+				}
+
+				user_el.value = user_el.value.trim()
+
+				let username = user_el.value
+				let password = pass_el.value
+
+				if (username.length === 0) {
+					show_info(`Username can't be empty`)
+					return false
+				}
+
+				if (password.length === 0) {
+					show_info(`Password can't be empty`)
+					return false
+				}
+
+				if (username.length > max_max_username_length) {
+					show_info(`Username is too long`)
+					return false
+				}
+
+				if (password.length > max_max_password_length) {
+					show_info(`Password is too long`)
+					return false
+				}
+
+				btn_submit.disabled = true
+				return true
 			}
 		</script>
 	</body>

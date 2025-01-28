@@ -50,9 +50,15 @@
 		</div>
 
 		<script>
-			DOM.el(`#register_username`).focus()
+			let user_el = DOM.el(`#register_username`)
+			let pass_el = DOM.el(`#register_password`)
+			let pass2_el = DOM.el(`#register_password2`)
+			let code_el = DOM.el(`#register_code`)
+			let btn_submit = DOM.el(`#btn_register`)
 
-			function validate_form () {
+			user_el.focus()
+
+			function validate_form() {
 				if (msg_info.is_open()) {
 					return false
 				}
@@ -61,16 +67,16 @@
 					return false
 				}
 
-				DOM.el(`#register_username`).value = DOM.el(`#register_username`).value.trim()
+				user_el.value = user_el.value.trim()
 
-				let username = DOM.el(`#register_username`).value
-				let password = DOM.el(`#register_password`).value
-				let password2 = DOM.el(`#register_password2`).value
-				let code_el = DOM.el(`#register_code`)
+				let username = user_el.value
+				let password = pass_el.value
+				let password2 = pass2_el.value
+				let code_el = code_el
 				let code
 
 				if (code_el) {
-					code = DOM.el(`#register_code`).value
+					code = code_el.value
 				}
 				else {
 					code = ``
@@ -121,15 +127,17 @@
 					return false
 				}
 
-				DOM.el(`#btn_register`).disabled = true
+				btn_submit.disabled = true
 				return true
 			}
 
 			let current_username = ``
-			DOM.el(`#register_username`).addEventListener(`input`, on_username_input)
+			DOM.ev(user_el, `input`, on_username_input)
 
-			function on_username_input () {
-				let username = DOM.el(`#register_username`).value.trim()
+			function on_username_input() {
+				let username = user_el.value.trim()
+				username = username.replace(/[^a-zA-Z0-9]/g, ``)
+				user_el.value = username
 
 				if (username === current_username) {
 					return
@@ -137,18 +145,18 @@
 
 				if (username.length > max_username_length) {
 					username = username.substring(0, max_username_length)
-					DOM.el(`#register_username`).value = username
+					user_el.value = username
 				}
 
 				current_username = username
 			}
 
-			function recaptcha_callback () {
+			function recaptcha_callback() {
 				recaptcha_checked = true
 			}
 
 			if (form_username && form_username !== `undefined`) {
-				DOM.el(`#register_username`).value = form_username
+				user_el.value = form_username
 				on_username_input()
 			}
 		</script>
