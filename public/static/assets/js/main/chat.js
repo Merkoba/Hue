@@ -158,6 +158,10 @@ App.make_chat_message = (args = {}) => {
     DOM.ev(quote_profilepic, `error`, () => {
       App.fallback_profilepic(quote_profilepic)
     })
+
+    if (args.message === App.empty_message) {
+      DOM.hide(content)
+    }
   }
   else {
     DOM.hide(quote)
@@ -625,11 +629,10 @@ App.hide_reply = () => {
 // Submit the reply window
 App.submit_reply = () => {
   App.hide_reply()
+  let message = App.get_input()
 
-  let reply = App.get_input()
-
-  if (!reply) {
-    return
+  if (!message.trim()) {
+    message = App.empty_message
   }
 
   let quote = App.get_quote_text()
@@ -639,8 +642,8 @@ App.submit_reply = () => {
   }
 
   App.process_input({
-    message: reply,
     quote,
+    message,
     quote_username: App.reply_username,
     quote_user_id: App.reply_user_id,
     quote_id: App.reply_id,

@@ -120,6 +120,7 @@ App.media_info_tv_data = []
 App.draw_suggested = ``
 App.first_image_load = false
 App.first_tv_load = false
+App.empty_message = `%[empty]%`
 
 // Initial media-loading variables declarations
 App.youtube_loading = false

@@ -162,7 +162,7 @@ App.hide_context_menu = () => {
 App.show_input_menu = () => {
   let items = []
 
-  if (App.get_input(true)) {
+  if (App.get_input(true) || App.reply_active) {
     items.push({
       text: `Send`,
       action: () => {
