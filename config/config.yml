@@ -99,7 +99,7 @@ upload_slice_size: 500000
 max_media_source_length: 800
 
 # Maximum length of comments on media change
-max_media_comment_length: 200
+max_media_comment_length: 280
 
 # Maximum length for the tab's title. Title is the room_name
 # and is set automatically. If title is bigger it gets cropped
