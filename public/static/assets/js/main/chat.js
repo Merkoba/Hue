@@ -210,7 +210,7 @@ App.make_chat_message = (args = {}) => {
   DOM.dataset(content_container, `original_message`, args.message)
   DOM.dataset(content_container, `username`, args.username)
   DOM.dataset(content_container, `user_id`, args.user_id)
-  DOM.dataset(content_container, `quote`, args.quote)
+  DOM.dataset(content_container, `quote_id`, args.quote_id)
 
   args.likes = args.likes || []
   DOM.dataset(content_container, `likes`, args.likes)
@@ -590,7 +590,20 @@ App.start_reply = (target) => {
   let unit = target.closest(`.message_unit`)
   let username = DOM.dataset(message, `username`)
   let user_id = DOM.dataset(message, `user_id`)
+  let quote_id = DOM.dataset(unit, `quote_id`)
+  let omessage = DOM.dataset(unit, `original_message`)
   let id = DOM.dataset(unit, `id`)
+
+  if (omessage.trim() === App.empty_message) {
+    if (quote_id) {
+      let msg = App.get_message_by_id(quote_id)
+
+      if (msg) {
+        App.start_reply(msg[0])
+        return
+      }
+    }
+  }
 
   if (!username) {
     return
@@ -698,12 +711,12 @@ App.start_edit = (unit) => {
   App.edit_unit = unit
   let uc = unit.closest(`.unit_data_container`)
   let omessage = DOM.dataset(uc, `original_message`)
-  let quote = DOM.dataset(uc, `quote`)
+  let quote_id = DOM.dataset(uc, `quote_id`)
   App.edit_original_message = omessage
   let text = App.edit_original_message
 
   if (text.trim() === App.empty_message) {
-    if (quote) {
+    if (quote_id) {
       text = ``
     }
   }
@@ -745,12 +758,12 @@ App.submit_edit = () => {
     return
   }
 
-  let quote = DOM.dataset(ccc, `quote`)
+  let quote_id = DOM.dataset(ccc, `quote_id`)
   let type = DOM.dataset(App.edit_container, `type`)
   let new_message = App.get_input()
 
   if (new_message.trim() === ``) {
-    if (quote) {
+    if (quote_id) {
       new_message = App.empty_message
     }
   }
