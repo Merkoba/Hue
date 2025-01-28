@@ -803,6 +803,7 @@ input[type="checkbox"] {
 }
 
 #media_image_loading,
+#media_tv_loading,
 #modal_image_loading,
 #view_image_loading {
 	font-size: 1.1rem;

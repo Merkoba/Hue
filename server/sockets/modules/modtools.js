@@ -310,6 +310,23 @@ module.exports = (App) => {
     }
   }
 
+  // Handles room deletion
+  App.handler.public.delete_room = (socket, data) => {
+    if (!socket.hue.superuser) {
+      App.handler.anti_spam_ban(socket)
+      return
+    }
+
+    if (socket.hue.room_id === App.config.main_room_id) {
+      return
+    }
+
+    App.db_manager.delete_room(socket.hue.room_id)
+    let room_files = App.i.path.join(App.vars.media_root, `room`, socket.hue.room_id)
+    App.i.fs.rmSync(room_files, {recursive: true, force: true})
+    App.handler.disconnect_room_sockets(socket)
+  }
+
   // Store user data incase abuse/attacks happen
   App.handler.log_user_data = (socket) => {
     let date = new Date().toISOString()

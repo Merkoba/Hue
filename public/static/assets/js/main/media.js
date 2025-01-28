@@ -855,7 +855,6 @@ App.change_media_visibility = (type, play = false) => {
   if (App.room_state[`${type}_enabled`]) {
     DOM.show(DOM.el(`#media`))
     DOM.show(DOM.el(`#media_${type}`))
-    DOM.show(`#media_${type}_loading`)
 
     if (App.first_media_change && App.started) {
       App.change_media({type, force: true, current_source: App[`${type}_locked`], play})
