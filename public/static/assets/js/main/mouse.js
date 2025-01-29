@@ -1,5 +1,9 @@
 // Handle mouse events
 App.start_mouse_events = () => {
+  DOM.ev(document, `mousedown`, (e) => {
+    App.text_was_selected = App.text_selected()
+  })
+
   DOM.ev(document, `click`, (e) => {
     if (!e.target) {
       return
@@ -70,7 +74,9 @@ App.start_mouse_events = () => {
         }
         else if (e.target.classList.contains(`announcement_content`) || e.target.closest(`.brk`)) {
           if (e.ctrlKey) {
-            App.like_message(e.target, `like`)
+            if (!App.text_was_selected) {
+              App.like_message(e.target, `like`)
+            }
           }
           else if (type === `image_change`) {
             App.show_modal_image(id)
@@ -93,7 +99,9 @@ App.start_mouse_events = () => {
         }
         else if (e.target.closest(`.chat_content_container`)) {
           if (e.ctrlKey) {
-            App.like_message(e.target, `like`)
+            if (!App.text_was_selected) {
+              App.like_message(e.target, `like`)
+            }
           }
         }
       }
