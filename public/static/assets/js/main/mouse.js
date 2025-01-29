@@ -292,19 +292,18 @@ App.media_info_mouse = () => {
     el = e.target.closest(`.media_info_menu`)
 
     if (el) {
-      let media_info = el.closest(`.media_info_container`)
-      let type = DOM.dataset(media_info, `type`)
-      let id = DOM.dataset(media_info, `id`)
+      let c = el.closest(`.media_info_container`)
+      let type = DOM.dataset(c, `type`)
+      let id = DOM.dataset(c, `id`)
       App.open_url_menu_by_media_id(type, id)
     }
   })
 
   DOM.ev(media, `contextmenu`, (e) => {
-    let el = e.target.closest(`.media_info_menu`)
+    let c = e.target.closest(`.media_info_container`)
 
-    if (el) {
-      let media_info = el.closest(`.media_info_container`)
-      let id = DOM.dataset(media_info, `id`)
+    if (c) {
+      let id = DOM.dataset(c, `id`)
       let button = App.get_message_container_by_id(id)
       App.show_chat_context_menu(button, e.clientX, e.clientY)
       e.preventDefault()
