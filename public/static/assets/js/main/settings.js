@@ -281,6 +281,15 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    case_insensitive_highlights: {
+      title: `Case Insensitive Highlights`,
+      type: `checkbox`,
+      description: `Whether highlight checks are case insensitive or not`,
+      actions: () => {
+        App.setup_highlights()
+      },
+      version: 1,
+    },
     case_insensitive_username_highlights: {
       title: `Case Insensitive Username Highlights`,
       type: `checkbox`,
@@ -382,6 +391,16 @@ App.build_user_settings = () => {
       placeholder: `Paste code here`,
       actions: () => {
         App.insert_custom_css()
+      },
+      version: 1,
+    },
+    highlights: {
+      title: `Highlights`,
+      type: `textarea`,
+      description: `Words or phrases to highlight in chat messages`,
+      placeholder: `One per line`,
+      actions: () => {
+        App.setup_highlights()
       },
       version: 1,
     },

@@ -172,6 +172,8 @@ settings_default_automedia: true
 settings_default_short_urls: true
 settings_default_grey_background: false
 settings_default_radio_enabled: true
+settings_default_highlights: ""
+settings_default_case_insensitive_highlights: true
 
 # Default room state values
 room_state_default_image_enabled: true

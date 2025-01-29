@@ -122,6 +122,7 @@ App.first_image_load = false
 App.first_tv_load = false
 App.empty_message = `%[empty]%`
 App.text_was_selected = false
+App.highlight_regexes = []
 
 // Initial media-loading variables declarations
 App.youtube_loading = false
@@ -194,6 +195,7 @@ App.init = () => {
   App.setup_item_picker()
   App.setup_edit()
   App.setup_user_profile()
+  App.setup_highlights()
   App.setup_rooms()
   App.setup_theme()
   App.setup_linksbar()

@@ -1124,20 +1124,6 @@ App.scroll_down_2 = () => {
   DOM.el(`#chat_area_parent`).scrollTop += App.chat_scroll_amount_2
 }
 
-// Generates the username mention regex using the highlights regex
-App.generate_mentions_regex = () => {
-  if (App.get_setting(`case_insensitive_username_highlights`)) {
-    App.mentions_regex = App.generate_highlights_regex(App.username, true, true)
-  }
-  else {
-    App.mentions_regex = App.generate_highlights_regex(
-      App.username,
-      false,
-      true,
-    )
-  }
-}
-
 // What to do after general activity
 App.on_activity = (type) => {
   if (!App.started) {

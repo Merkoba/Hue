@@ -15,12 +15,28 @@ App.generate_highlights_regex = (
     word = App.utilz.escape_regex(word)
   }
 
-  let regex = new RegExp(
-    `(?:^|\\s|"|\\\`|>|\\()?@?(?:${word})(?:'s)?(?:$|\\s|"|\\!|\\?|\\,|\\.|\\:|\\)|\\\`)`,
-    flags,
-  )
-
+  let str = `(?:^|\\s|"|\\\`|>|\\()?@?(?:${word})(?:'s)?(?:$|\\s|"|\\!|\\?|\\,|\\.|\\:|\\)|\\\`)`
+  let regex = new RegExp(str, flags)
   return regex
+}
+
+// Generates the username mention regex using the highlights regex
+App.generate_mentions_regex = () => {
+  let ci = App.get_setting(`case_insensitive_username_highlights`)
+  App.mentions_regex = App.generate_highlights_regex(App.username, ci)
+}
+
+// Setup custom highlights
+App.setup_highlights = () => {
+  let highlights = App.get_setting(`highlights`)
+  let items = highlights.split(`\n`).filter((line) => line.trim() !== ``)
+  let ci = App.get_setting(`case_insensitive_highlights`)
+  App.highlight_regexes = []
+
+  for (let item of items) {
+    let regex = App.generate_highlights_regex(item, ci)
+    App.highlight_regexes.push(regex)
+  }
 }
 
 // Checks for highlights using the mentions regex and the highlight words regex
@@ -29,9 +45,15 @@ App.check_highlights = (message) => {
     if (message.search(App.mentions_regex) !== -1) {
       return true
     }
-
-    return false
   }
+
+  for (let regex of App.highlight_regexes) {
+    if (message.search(regex) !== -1) {
+      return true
+    }
+  }
+
+  return false
 }
 
 // Checks if there are new highlights since the last load
