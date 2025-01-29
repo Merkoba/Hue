@@ -276,3 +276,49 @@ App.start_mouse_events = () => {
     }
   })
 }
+
+App.media_info_mouse = () => {
+  let media = DOM.el(`#media`)
+
+  DOM.ev(media, `click`, (e) => {
+    let el = e.target.closest(`.media_info_profile`)
+
+    if (el) {
+      let user_id = DOM.dataset(el.closest(`.media_info_container`), `user_id`)
+      App.show_profile(undefined, user_id)
+      return
+    }
+
+    el = e.target.closest(`.media_info_menu`)
+
+    if (el) {
+      let media_info = el.closest(`.media_info_container`)
+      let type = DOM.dataset(media_info, `type`)
+      let id = DOM.dataset(media_info, `id`)
+      App.open_url_menu_by_media_id(type, id)
+    }
+  })
+
+  DOM.ev(media, `contextmenu`, (e) => {
+    let el = e.target.closest(`.media_info_menu`)
+
+    if (el) {
+      let media_info = el.closest(`.media_info_container`)
+      let id = DOM.dataset(media_info, `id`)
+      let button = App.get_message_container_by_id(id)
+      App.show_chat_context_menu(button, e.clientX, e.clientY)
+      e.preventDefault()
+    }
+  })
+
+  DOM.ev(media, `auxclick`, (e) => {
+    let el = e.target.closest(`.media_info_profile`)
+
+    if (el) {
+      if (e.button === 1) {
+        let username = DOM.dataset(el.closest(`.media_info_container`), `username`)
+        App.mention_user(username)
+      }
+    }
+  })
+}
