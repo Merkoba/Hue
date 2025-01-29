@@ -399,6 +399,7 @@ App.build_user_settings = () => {
       type: `textarea`,
       description: `Words or phrases to highlight in chat messages`,
       placeholder: `One per line`,
+      no_empty_lines: true,
       actions: () => {
         App.setup_highlights()
       },
@@ -550,6 +551,11 @@ App.on_setting_change = (key) => {
   }
   else if ([`text`, `textarea`].includes(setting.type)) {
     value = el.value.trim()
+
+    if (setting.no_empty_lines) {
+      value = value.split(`\n`).filter((x) => x.trim()).join(`\n`)
+      el.value = value
+    }
   }
 
   if (setting.force_int) {
