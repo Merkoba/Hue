@@ -901,6 +901,14 @@ input[type="checkbox"] {
 	text-decoration: underline;
 }
 
+.underaction:hover {
+	text-decoration: underline;
+}
+
+.outlander:hover img {
+	filter: hue-rotate(45deg);
+}
+
 .italic {
 	font-style: italic;
 }
@@ -1615,6 +1623,10 @@ pre {
 
 .media_info_profile {
 	gap: 0.5rem;
+}
+
+.media_info_profilepick {
+
 }
 
 .media_info_username {
