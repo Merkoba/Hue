@@ -29,17 +29,13 @@
 				<div class="spacer4"></div>
 
 				<% if(vars.use_register_code) {%>
-
 				<input type="text" placeholder="Code" name="code" id="register_code">
 				<div class="spacer4"></div>
-
 				<%}%>
 
 				<% if(vars.recaptcha_enabled) {%>
-
 				<div class="g-recaptcha" data-sitekey="<%-vars.recaptcha_key%>" data-callback="recaptcha_callback"></div>
 				<div class="spacer4"></div>
-
 				<%}%>
 
 				<input id="btn_register" type="submit" value="Register">
@@ -72,7 +68,6 @@
 				let username = user_el.value
 				let password = pass_el.value
 				let password2 = pass2_el.value
-				let code_el = code_el
 				let code
 
 				if (code_el) {

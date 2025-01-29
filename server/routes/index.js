@@ -359,29 +359,28 @@ module.exports = (db_manager, config, sconfig, utilz) => {
 
   // Check captcha and run a callback
   async function check_captcha(req, res, callback) {
-    let recaptcha_response = req.body[`g-recaptcha-response`]
+    let captcha_res = req.body[`g-recaptcha-response`]
     let remote_ip = req.headers[`x-forwarded-for`] || req.connection.remoteAddress
 
-    if (
-      (recaptcha_response === undefined) ||
-      (recaptcha_response === ``) ||
-      (recaptcha_response === null)
-    ) {
+    if ([undefined, null, ``].includes(captcha_res)) {
       return
     }
 
     console.info(`Fetching Recaptcha...`)
 
     try {
-      let res = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+      let k = sconfig.recaptcha_secret_key
+      let body = `secret=${k}&response=${captcha_res}&remoteip=${remote_ip}`
+
+      let ans = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
         method: `POST`,
-        body: `secret=${sconfig.recaptcha_secret_key}&response=${recaptcha_response}&remoteip=${remote_ip}`,
+        body,
         headers: {
           "Content-Type": `application/x-www-form-urlencoded; charset=utf-8`,
         },
       })
 
-      let json = await res.json()
+      let json = await ans.json()
 
       if (json.success) {
         callback()
