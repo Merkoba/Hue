@@ -121,6 +121,7 @@ App.draw_suggested = ``
 App.first_image_load = false
 App.first_tv_load = false
 App.empty_message = `%[empty]%`
+App.text_was_selected = false
 
 // Initial media-loading variables declarations
 App.youtube_loading = false
