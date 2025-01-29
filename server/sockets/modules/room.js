@@ -204,9 +204,14 @@ module.exports = (App) => {
       }
 
       try {
+        if (!App.sconfig.download_background) {
+          await App.handler.do_change_background(socket, data.src, `external`)
+          return
+        }
+
         let full_file = await App.handler.download_media(socket, {
           src: data.src,
-          max_size: App.sconfig.max_linked_background_size,
+          max_size: App.sconfig.max_background_download,
         })
 
         if (!full_file) {

@@ -134,7 +134,7 @@ module.exports = (App) => {
 
         let full_file = await App.handler.download_media(socket, {
           src: data.src,
-          max_size: App.sconfig.max_linked_image_size,
+          max_size: App.sconfig.max_image_download,
         })
 
         if (!full_file) {
