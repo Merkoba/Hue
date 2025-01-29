@@ -119,6 +119,19 @@ module.exports = (App) => {
       }
 
       try {
+        if (!App.sconfig.download_image) {
+          let obj = {}
+
+          obj.src = data.src
+          obj.username = socket.hue_username
+          obj.size = 0
+          obj.type = `link`
+          obj.comment = data.comment
+
+          await App.handler.do_change_media(socket, obj, `image`)
+          return
+        }
+
         let full_file = await App.handler.download_media(socket, {
           src: data.src,
           max_size: App.sconfig.max_linked_image_size,

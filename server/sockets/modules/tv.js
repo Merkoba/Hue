@@ -134,9 +134,21 @@ module.exports = (App) => {
         return
       }
 
-      data.type = `video`
-
       try {
+        if (!App.sconfig.download_tv) {
+          let obj = {}
+
+          obj.src = data.src
+          obj.username = socket.hue_username
+          obj.size = 0
+          obj.type = `video`
+          obj.title = ``
+          obj.comment = data.comment
+
+          await App.handler.do_change_media(socket, obj, `tv`)
+          return
+        }
+
         let full_file = await App.handler.download_media(socket, {
           src: data.src,
           max_size: App.sconfig.max_linked_tv_size,
