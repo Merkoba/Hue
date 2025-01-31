@@ -141,8 +141,8 @@ App.char_regex_2 = (char, n = 1) => {
 App.char_regex_3 = (char, n = 1) => {
   let c = App.utilz.escape_regex(char)
   let u = App.regex_u(c, n)
-  let t = `[^${u}]`
-  let regex = `${u}(${t}+)${u}`
+  let t2 = App.regex_t2(c, n)
+  let regex = `${u}(${t2}+)${u}`
   return new RegExp(regex, `g`)
 }
 
