@@ -354,3 +354,48 @@ App.show_upload_error = () => {
 App.get_upload_slice = (obj, start, end) => {
   return obj.file.slice(start, end)
 }
+
+// Shows the window to add a comment to an upload
+App.show_upload_comment = (what, file, type, comment = ``) => {
+  DOM.hide(`#${what}_upload_comment_feedback`)
+  DOM.show(`#${what}_upload_comment_preview`)
+
+  App[`${what}_upload_comment_file`] = file
+  App[`${what}_upload_comment_type`] = type
+
+  if (type === `drawing`) {
+    DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Draw`
+
+    if (App.draw_suggested) {
+      comment = `${App.draw_suggested} Drawing`
+    }
+  }
+  else if (type === `upload`) {
+    DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Choose`
+  }
+  else if (type === `screenshot`) {
+    DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Take`
+  }
+  else if (type === `random_canvas`) {
+    DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Generate`
+  }
+  else if (type === `capture`) {
+    DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Capture`
+  }
+
+  if (!comment) {
+    comment = App.get_input().trim()
+    App.clear_input()
+  }
+
+  let fname = App.utilz.slice_string_end(file.name, 20)
+  let fsize = App.utilz.size_string(file.size, 2)
+  let name = `${fname} (${fsize})`
+
+  DOM.el(`#${what}_upload_name`).textContent = name
+  DOM.el(`#${what}_upload_comment_preview`).src = URL.createObjectURL(file)
+  let comment_input = DOM.el(`#${what}_upload_comment_input`)
+  comment_input.value = comment
+  App[`msg_${what}_upload_comment`].show()
+  comment_input.focus()
+}
