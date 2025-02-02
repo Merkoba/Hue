@@ -144,6 +144,11 @@ App.create_twitch_tv_player = () => {
 
 // Start the media video player
 App.start_video_player = () => {
+  let s = App.template_media_video_tv({
+    info: App.get_media_info_html(`tv`, `video`),
+    poster: App.config.video_poster,
+  })
+
   DOM.el(`#media_video_tv_container`).innerHTML = s
   App.add_tv_media_info(`video`)
   App.video_tv_player = true
