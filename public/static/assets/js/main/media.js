@@ -474,8 +474,8 @@ App.apply_media_info = (type) => {
   let container = DOM.el(`#media_${mtype}_info_container`)
 
   DOM.el(`.media_info`, container).innerHTML = App.template_media_info_inner({
-    username: item.username,
     message,
+    username: item.username,
     profilepic: App.get_profilepic(item.user_id),
   })
 
