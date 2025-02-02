@@ -5,7 +5,7 @@ App.setup_footer = () => {
   for (let type of media) {
     let mstring = App.media_string(type)
     let icon = DOM.el(`#footer_${type}_icon`)
-    icon.title = `Change ${mstring}\nShift+Click to show dialog directly`
+    icon.title = `Change ${mstring}\nShift+Click to show upload dialog\nCtrl+Click to show upload dialog`
 
     if (type === `image`) {
       icon.title += `\nMiddle Click to view last image`

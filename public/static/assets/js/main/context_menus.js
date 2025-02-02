@@ -181,7 +181,7 @@ App.show_input_menu = () => {
   if (App.config.reactions) {
     items.push({
       text: `React`,
-      info: `Middle Click to pick the first item`,
+      info: `Send a reaction to the chat\nMiddle Click to pick the first item\nShift+Click to pick a random item\nCtrl+Click to pick the first item`,
       action: () => {
         App.show_reactions()
       },
@@ -189,7 +189,7 @@ App.show_input_menu = () => {
         App.first_reaction()
       },
       shift_action: () => {
-        App.first_reaction()
+        App.random_reaction()
       },
       ctrl_action: () => {
         App.first_reaction()
@@ -200,7 +200,7 @@ App.show_input_menu = () => {
   if (App.room_state.last_input && !App.get_input(true)) {
     items.push({
       text: `Repeat`,
-      info: `Middle Click to pick the first item`,
+      info: `Use an input that was sent recently\nMiddle Click | Shift | Ctrl | to pick the first item`,
       action: () => {
         App.show_input_history()
       },
