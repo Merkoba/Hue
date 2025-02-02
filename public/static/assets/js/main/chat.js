@@ -25,15 +25,12 @@ App.make_chat_message = (args = {}) => {
   let image_preview = false
   let image_preview_src_original = false
   let image_preview_text = false
+  let img_ans = App.make_image_preview(args.message)
 
-  if (App.get_setting(`embed_images`)) {
-    let ans = App.make_image_preview(args.message)
-
-    if (ans.image_preview) {
-      image_preview = ans.image_preview
-      image_preview_src_original = ans.image_preview_src_original
-      image_preview_text = ans.image_preview_text
-    }
+  if (img_ans.image_preview_src) {
+    image_preview = img_ans.image_preview
+    image_preview_src_original = img_ans.image_preview_src_original
+    image_preview_text = img_ans.image_preview_text
   }
 
   let link_preview = false
