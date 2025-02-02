@@ -174,7 +174,7 @@ App.setup_autocomplete = () => {
   })
 }
 
-// Gets the autocomplete localStorage object
+// Gets the autocomplete localStorage array
 App.get_autocomplete = () => {
   let words = App.get_local_storage(App.ls_autocomplete)
 

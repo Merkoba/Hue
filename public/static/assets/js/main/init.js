@@ -26,6 +26,7 @@ App.ls_room_state = `room_state_v2`
 App.ls_input_history = `input_history_v3`
 App.ls_first_time = `first_time_v1`
 App.ls_autocomplete = `autocomplete_v1`
+App.ls_reactions = `reactions_v1`
 App.roles = [`admin`, `op`, `voice`]
 App.default_setting_string = `__default__`
 App.topic = ``
@@ -123,6 +124,7 @@ App.first_tv_load = false
 App.empty_message = `%[empty]%`
 App.text_was_selected = false
 App.highlight_regexes = []
+App.max_reactions = 200
 
 // Initial media-loading variables declarations
 App.youtube_loading = false
@@ -201,6 +203,7 @@ App.init = () => {
   App.setup_linksbar()
   App.setup_automedia()
   App.get_autocomplete()
+  App.get_reactions()
   App.insert_custom_css()
   App.get_first_time()
 

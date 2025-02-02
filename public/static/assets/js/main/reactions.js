@@ -2,14 +2,26 @@
 App.show_reactions = () => {
   let c = DOM.el(`#reactions_container`)
   let reactions = App.config.reactions.slice(0)
+
+  if (App.reactions.length) {
+    reactions.sort((a, b) => {
+      let name_1 = App.get_reaction_name(a)
+      let name_2 = App.get_reaction_name(b)
+      let index_1 = App.reactions.indexOf(name_1)
+      let index_2 = App.reactions.indexOf(name_2)
+      return index_2 - index_1
+    })
+  }
+  else {
+    App.utilz.shuffle_array(reactions)
+  }
+
   c.innerHTML = ``
 
   if (!reactions.length) {
     App.show_info(`No reactions available`)
     return
   }
-
-  App.utilz.shuffle_array(reactions)
 
   for (let reaction of reactions) {
     let el = DOM.create(`div`)
@@ -37,6 +49,8 @@ App.send_reaction = (name) => {
   App.process_input({
     message: `:${name}:`,
   })
+
+  App.push_to_reactions(name)
 }
 
 // Get reaction url
@@ -64,4 +78,23 @@ App.random_reaction = () => {
 // Check if text is a reaction
 App.is_reaction = (text) => {
   return text.startsWith(`:`) && text.endsWith(`:`)
+}
+
+// Gets the reactions localStorage array
+App.get_reactions = () => {
+  let reactions = App.get_local_storage(App.ls_reactions)
+
+  if (reactions === null) {
+    reactions = []
+  }
+
+  App.reactions = reactions
+}
+
+// Push to reaction history
+App.push_to_reactions = (name) => {
+  App.reactiosn = App.reactions.filter(x => x !== name)
+  App.reactions.push(name)
+  App.reactions = App.reactions.slice(0 - App.max_reactions)
+  App.save_local_storage(App.ls_reactions, App.reactions)
 }
