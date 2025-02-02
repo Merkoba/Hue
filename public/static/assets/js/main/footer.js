@@ -7,6 +7,10 @@ App.setup_footer = () => {
     let icon = DOM.el(`#footer_${type}_icon`)
     icon.title = `Change ${mstring}\nShift+Click to show dialog directly`
 
+    if (type === `image`) {
+      icon.title += `\nMiddle Click to view last image`
+    }
+
     DOM.ev(icon, `click`, (e) => {
       if (e.shiftKey | e.ctrlKey) {
         App[`show_upload_${type}`]()
