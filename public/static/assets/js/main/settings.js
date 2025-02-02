@@ -209,13 +209,6 @@ App.build_user_settings = () => {
       },
       version: 1,
     },
-    embed_images: {
-      title: `Embed Images`,
-      type: `checkbox`,
-      description: `Embed image changes in the chat`,
-      actions: () => {},
-      version: 1,
-    },
     show_highlight_notifications: {
       title: `Show Highlight Notifications`,
       type: `checkbox`,
@@ -372,6 +365,13 @@ App.build_user_settings = () => {
       title: `Auto Blur`,
       type: `checkbox`,
       description: `Auto-blur the chat when not focused`,
+      actions: () => {},
+      version: 1,
+    },
+    embed_images: {
+      title: `Embed Images`,
+      type: `checkbox`,
+      description: `Embed image changes in the chat`,
       actions: () => {},
       version: 1,
     },
