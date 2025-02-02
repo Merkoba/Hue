@@ -373,7 +373,7 @@ App.build_user_settings = () => {
       type: `checkbox`,
       description: `Embed image changes in the chat`,
       actions: () => {},
-      version: 1,
+      version: 2,
     },
     grey_background: {
       title: `Grey Background`,
