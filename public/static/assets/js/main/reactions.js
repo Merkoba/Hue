@@ -93,8 +93,23 @@ App.get_reactions = () => {
 
 // Push to reaction history
 App.push_to_reactions = (name) => {
-  App.reactiosn = App.reactions.filter(x => x !== name)
+  App.reactions = App.reactions.filter(x => x !== name)
   App.reactions.push(name)
   App.reactions = App.reactions.slice(0 - App.max_reactions)
   App.save_local_storage(App.ls_reactions, App.reactions)
+}
+
+// Pick the first reaction item
+App.first_reaction = () => {
+  let name
+
+  if (App.reactions.length) {
+    name = App.reactions.at(-1)
+  }
+  else {
+    let r = App.config.reactions.at(-1)
+    name = App.get_reaction_name(r)
+  }
+
+  App.send_reaction(name)
 }

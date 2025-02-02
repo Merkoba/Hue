@@ -178,22 +178,28 @@ App.show_input_menu = () => {
     })
   }
 
-  items.push({
-    text: `React`,
-    info: `Middle Click to pick a random reaction`,
-    action: () => {
-      App.show_reactions()
-    },
-    alt_action: () => {
-      App.random_reaction()
-    },
-  })
+  if (App.config.reactions) {
+    items.push({
+      text: `React`,
+      info: `Middle Click to pick the first item`,
+      action: () => {
+        App.show_reactions()
+      },
+      alt_action: () => {
+        App.first_reaction()
+      },
+    })
+  }
 
   if (App.room_state.last_input && !App.get_input(true)) {
     items.push({
       text: `Repeat`,
+      info: `Middle Click to pick the first item`,
       action: () => {
         App.show_input_history()
+      },
+      alt_action: () => {
+        App.first_input_history()
       },
     })
   }

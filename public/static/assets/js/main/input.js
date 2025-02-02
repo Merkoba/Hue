@@ -279,6 +279,15 @@ App.show_input_history = (filter = ``) => {
   App.do_modal_filter()
 }
 
+// Pick the first input history item
+App.first_input_history = () => {
+  if (!App.input_history.length) {
+    return
+  }
+
+  App.change_input(App.input_history[0].message)
+}
+
 // Input history enter action
 App.input_history_enter_action = (el) => {
   if (!el) {
