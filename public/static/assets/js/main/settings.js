@@ -352,6 +352,13 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    show_reactions: {
+      title: `Show Reactions`,
+      type: `checkbox`,
+      description: `Enable or disable reactions in the chat`,
+      actions: () => {},
+      version: 1,
+    },
     text_glow: {
       title: `Text Glow`,
       type: `checkbox`,

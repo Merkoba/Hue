@@ -47,7 +47,7 @@ module.exports = (manager, stuff) => {
 
     id = id.replace(`[ms]`, ms)
     id = id.replace(`[sec]`, sec)
-    id = id.replace(/\[n\]/g, () => stuff.utilz.get_random_int(0, 9))
+    id = id.replace(/\[n\]/g, () => stuff.utilz.random_int(0, 9))
     return id.replace(/\[c\]/g, () => stuff.utilz.get_random_string(1, false, true))
   }
 

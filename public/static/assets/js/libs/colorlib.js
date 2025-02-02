@@ -1,5 +1,5 @@
 const ColorLib = (function () {
-  function get_random_int (min, max, exclude = undefined, random_function) {
+  function random_int (min, max, exclude = undefined, random_function) {
     let num
 
     if (random_function) {
@@ -563,32 +563,32 @@ const ColorLib = (function () {
     }
 
 		instance.get_random_hex = function () {
-			let r = get_random_int(0, 255)
-			let g = get_random_int(0, 255)
-			let b = get_random_int(0, 255)
+			let r = random_int(0, 255)
+			let g = random_int(0, 255)
+			let b = random_int(0, 255)
 			return instance.rgb_to_hex([r, g, b])
 		}
 
     instance.get_rgb_distance = function (a, b) {
       return Math.sqrt(( (a[0] - b[0]) * (a[0] - b[0]) +
                          (a[1] - b[1]) * (a[1] - b[1]) +
-                         (a[2] - b[2]) * (a[2] - b[2]) ) / ( 256 * Math.sqrt(3) ))
+                         (a[2] - b[2]) * (a[2] - b[2]) ) / (256 * Math.sqrt(3)))
     }
 
     instance.get_rgba_distance = function (a, b) {
       return Math.sqrt(( (a[0] - b[0]) * (a[0] - b[0]) +
                          (a[1] - b[1]) * (a[1] - b[1]) +
                          (a[2] - b[2]) * (a[2] - b[2]) +
-                         (a[3] - b[3]) * (a[3] - b[3]) ) / ( 256 * Math.sqrt(4) ))
+                         (a[3] - b[3]) * (a[3] - b[3]) ) / (256 * Math.sqrt(4)))
     }
 
     instance.get_dark_color = function (rand) {
       let n = 55
 
       return instance.rgb_to_hex([
-        get_random_int(0, n, undefined, rand),
-        get_random_int(0, n, undefined, rand),
-        get_random_int(0, n, undefined, rand),
+        random_int(0, n, undefined, rand),
+        random_int(0, n, undefined, rand),
+        random_int(0, n, undefined, rand),
       ])
     }
 
@@ -596,9 +596,9 @@ const ColorLib = (function () {
       let n = 55
 
       return instance.rgb_to_hex([
-        255 - get_random_int(0, n, undefined, rand),
-        255 - get_random_int(0, n, undefined, rand),
-        255 - get_random_int(0, n, undefined, rand),
+        255 - random_int(0, n, undefined, rand),
+        255 - random_int(0, n, undefined, rand),
+        255 - random_int(0, n, undefined, rand),
       ])
     }
 

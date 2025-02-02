@@ -28,9 +28,12 @@ App.make_chat_message = (args = {}) => {
 
   if (App.get_setting(`embed_images`)) {
     let ans = App.make_image_preview(args.message)
-    image_preview = ans.image_preview
-    image_preview_src_original = ans.image_preview_src_original
-    image_preview_text = ans.image_preview_text
+
+    if (ans.image_preview) {
+      image_preview = ans.image_preview
+      image_preview_src_original = ans.image_preview_src_original
+      image_preview_text = ans.image_preview_text
+    }
   }
 
   let link_preview = false
@@ -1236,7 +1239,11 @@ App.make_image_preview = (message) => {
   ans.image_preview_text = false
   let link = App.utilz.get_first_url(message)
 
-  if (message.startsWith(`:`) && message.endsWith(`:`)) {
+  if (App.is_reaction(message)) {
+    if (!App.get_setting(`show_reactions`)) {
+      return ans
+    }
+
     if (message.split(` `).length > 1) {
       return ans
     }
@@ -1254,6 +1261,10 @@ App.make_image_preview = (message) => {
     })
   }
   else if (link && link.includes(`imgur.com`)) {
+    if (!App.get_setting(`embed_images`)) {
+      return ans
+    }
+
     let code = App.utilz.get_imgur_image_code(link)
 
     if (code) {

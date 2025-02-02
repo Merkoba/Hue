@@ -183,6 +183,9 @@ App.show_input_menu = () => {
     action: () => {
       App.show_reactions()
     },
+    alt_action: () => {
+      App.random_reaction()
+    },
   })
 
   if (App.room_state.last_input && !App.get_input(true)) {

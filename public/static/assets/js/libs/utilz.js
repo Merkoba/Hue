@@ -61,7 +61,7 @@ const Utilz = () => {
   }
 
   // Get a random int from min to max. Optional exclude a number
-  utilz.get_random_int = (min, max, exclude = undefined) => {
+  utilz.random_int = (min, max, exclude = undefined) => {
     let num = Math.floor(Math.random() * (max - min + 1) + min)
 
     if (exclude !== undefined) {
@@ -98,7 +98,7 @@ const Utilz = () => {
     }
 
     for (let i = 0; i < n; i++) {
-      text += possible[utilz.get_random_int(0, possible.length - 1)]
+      text += possible[utilz.random_int(0, possible.length - 1)]
     }
 
     if (lower) {
@@ -113,7 +113,7 @@ const Utilz = () => {
     let s = ``
 
     for (let i = 0; i < n; i++) {
-      s += utilz.get_random_int(0, 9)
+      s += utilz.random_int(0, 9)
     }
 
     return s

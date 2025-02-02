@@ -1,8 +1,8 @@
 // Show reactions
 App.show_reactions = () => {
   let c = DOM.el(`#reactions_container`)
-  c.innerHTML = ``
   let reactions = App.config.reactions.slice(0)
+  c.innerHTML = ``
 
   if (!reactions.length) {
     App.show_info(`No reactions available`)
@@ -51,4 +51,17 @@ App.get_reaction_url = (name) => {
 // Get reaction name
 App.get_reaction_name = (reaction) => {
   return reaction.split(`.`)[0]
+}
+
+// Show a random reaction
+App.random_reaction = () => {
+  let reactions = App.config.reactions
+  let num = App.utilz.random_int(0, reactions.length - 1)
+  let name = App.get_reaction_name(reactions[num])
+  App.send_reaction(name)
+}
+
+// Check if text is a reaction
+App.is_reaction = (text) => {
+  return text.startsWith(`:`) && text.endsWith(`:`)
 }
