@@ -462,7 +462,16 @@ App.apply_media_info = (type) => {
   }
 
   let message = item.message.substring(0, App.config.max_media_info_length).trim()
-  let container = DOM.el(`#media_${type}_info_container`)
+  let media_cont
+
+  if (type === `tv`) {
+    media_cont = DOM.el(`#media_${item.type}_tv_container`)
+  }
+  else {
+    media_cont = DOM.el(`#media_${type}_container`)
+  }
+
+  let container = DOM.el(`#media_${type}_info_container`, media_cont)
 
   DOM.el(`.media_info`, container).innerHTML = App.template_media_info_inner({
     username: item.username,
