@@ -22,7 +22,7 @@ App.create_youtube_tv_player = () => {
   App.youtube_tv_player_requested = false
   let html = `<div id='media_youtube_tv' class='video_frame'></div>`
   DOM.el(`#media_youtube_tv_container`).innerHTML = html
-  App.add_media_info(`media_youtube_tv_container`)
+  App.add_tv_media_info(`youtube`)
 
   App.yt_tv_player = new YT.Player(`media_youtube_tv`, {
     events: {
@@ -77,8 +77,9 @@ App.request_media = (player, args) => {
 }
 
 // Function to add a frame info after creating a player
-App.add_media_info = (container_id) => {
-  App.append_media_info(`#${container_id}`, `tv`)
+App.add_tv_media_info = (type) => {
+  let id = `media_${type}_tv_container`
+  App.append_media_info(`#${id}`, `tv`, type)
 }
 
 // Loads Twitch script and creates player
@@ -128,7 +129,7 @@ App.create_twitch_tv_player = () => {
       let iframe = DOM.el(`#media_twitch_tv_container iframe`)
       iframe.id = `media_twitch_tv`
       iframe.classList.add(`video_frame`)
-      App.add_media_info(`media_twitch_tv_container`)
+      App.add_tv_media_info(`twitch`)
 
       if (App.twitch_tv_player_request) {
         App.change_media(App.twitch_tv_player_request)
@@ -143,12 +144,8 @@ App.create_twitch_tv_player = () => {
 
 // Start the media video player
 App.start_video_player = () => {
-  let s = App.template_media_video_tv({
-    info: App.get_media_info_html(`tv`),
-    poster: App.config.video_poster,
-  })
-
   DOM.el(`#media_video_tv_container`).innerHTML = s
+  App.add_tv_media_info(`video`)
   App.video_tv_player = true
   App.change_media(App.video_tv_player_request)
   App.video_tv_player_request = false

@@ -461,17 +461,17 @@ App.apply_media_info = (type) => {
     return
   }
 
-  let message = item.message.substring(0, App.config.max_media_info_length).trim()
-  let media_cont
+  let mtype
 
   if (type === `tv`) {
-    media_cont = DOM.el(`#media_${item.type}_tv_container`)
+    mtype = `${type}_${item.type}`
   }
   else {
-    media_cont = DOM.el(`#media_${type}_container`)
+    mtype = type
   }
 
-  let container = DOM.el(`#media_${type}_info_container`, media_cont)
+  let message = item.message.substring(0, App.config.max_media_info_length).trim()
+  let container = DOM.el(`#media_${mtype}_info_container`)
 
   DOM.el(`.media_info`, container).innerHTML = App.template_media_info_inner({
     username: item.username,
@@ -550,14 +550,18 @@ App.change_media_lock_text = (type) => {
 }
 
 // Get html for media info items
-App.get_media_info_html = (type) => {
+App.get_media_info_html = (type, subtype = ``) => {
+  if (subtype) {
+    type = `${type}_${subtype}`
+  }
+
   return App.template_media_info({type})
 }
 
-// Append media inf
-App.append_media_info = (container, type) => {
+// Append media info
+App.append_media_info = (container, type, subtype) => {
   let el = DOM.create(`div`)
-  el.innerHTML = App.get_media_info_html(type)
+  el.innerHTML = App.get_media_info_html(type, subtype)
   DOM.el(container).append(el)
 }
 
