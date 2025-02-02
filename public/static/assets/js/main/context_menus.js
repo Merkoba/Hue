@@ -185,7 +185,13 @@ App.show_input_menu = () => {
       action: () => {
         App.show_reactions()
       },
-      alt_action: () => {
+      middle_action: () => {
+        App.first_reaction()
+      },
+      shift_action: () => {
+        App.first_reaction()
+      },
+      ctrl_action: () => {
         App.first_reaction()
       },
     })
@@ -198,7 +204,13 @@ App.show_input_menu = () => {
       action: () => {
         App.show_input_history()
       },
-      alt_action: () => {
+      middle_action: () => {
+        App.first_input_history()
+      },
+      shift_action: () => {
+        App.first_input_history()
+      },
+      ctrl_action: () => {
         App.first_input_history()
       },
     })

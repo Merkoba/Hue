@@ -1,4 +1,4 @@
-// NeedContext v4.0
+// NeedContext v9.7
 
 // Main object
 const NeedContext = {}
@@ -19,9 +19,14 @@ NeedContext.clear_text = `Clear`
 NeedContext.item_sep = `4px`
 NeedContext.layers = {}
 NeedContext.level = 0
-NeedContext.gap = `0.45rem`
+NeedContext.gap = `0.5rem`
+NeedContext.side_padding = `0.5rem`
+NeedContext.compact_padding = `0.3rem`
 NeedContext.center_top = 20
-NeedContext.side_padding = `10px`
+NeedContext.dragging = false
+NeedContext.autohide_delay = 500
+NeedContext.autoclick_delay = 500
+NeedContext.autohide_threshold = 5
 
 // Set defaults
 NeedContext.set_defaults = () => {
@@ -33,6 +38,9 @@ NeedContext.set_defaults = () => {
   NeedContext.last_x = 0
   NeedContext.last_y = 0
   NeedContext.layers = {}
+  NeedContext.mouse_activity = {}
+  NeedContext.autohide_enabled = false
+  NeedContext.reset_debouncers()
 }
 
 // Clear the filter
@@ -45,7 +53,8 @@ NeedContext.clear_filter = () => {
 // Filter from keyboard input
 NeedContext.do_filter = () => {
   let value = NeedContext.filter.value
-  let cleaned = NeedContext.remove_spaces(value).toLowerCase()
+  let cleaned = NeedContext.remove_spaces_2(value).toLowerCase()
+  let colons = cleaned.includes(`:`)
   let selected = false
 
   for (let el of document.querySelectorAll(`.needcontext-separator`)) {
@@ -61,6 +70,10 @@ NeedContext.do_filter = () => {
     let el = text_el.closest(`.needcontext-item`)
     let text = text_el.textContent.toLowerCase()
     text = NeedContext.remove_spaces(text)
+
+    if (!colons) {
+      text = text.replace(/:/g, ``)
+    }
 
     if (text.includes(cleaned)) {
       el.classList.remove(`needcontext-hidden`)
@@ -95,6 +108,8 @@ NeedContext.do_filter = () => {
       back.classList.remove(`needcontext-hidden`)
     }
   }
+
+  NeedContext.scroll_to_selected()
 }
 
 // Fill arg objects
@@ -113,15 +128,24 @@ NeedContext.show = (args = {}) => {
     expand: false,
     picker_mode: false,
     margin: 0,
+    compact: false,
+    autohide: false,
+    autoclick: false,
   }
 
   NeedContext.def_args(def_args, args)
+
+  if (!args.items.length) {
+    return
+  }
+
+  NeedContext.reset_debouncers()
 
   if (!NeedContext.created) {
     NeedContext.create()
   }
 
-  if (args.e && args.e.clientX !== undefined && args.e.clientY !== undefined) {
+  if (args.e && (args.e.clientX !== undefined) && (args.e.clientY !== undefined)) {
     args.x = args.e.clientX
     args.y = args.e.clientY
   }
@@ -135,7 +159,7 @@ NeedContext.show = (args = {}) => {
     NeedContext.level = 0
   }
 
-  let center = args.x === undefined || args.y === undefined
+  let center = (args.x === undefined) || (args.y === undefined)
   args.items = args.items.slice(0)
 
   if (args.index === undefined) {
@@ -151,6 +175,10 @@ NeedContext.show = (args = {}) => {
 
   if (args.index === undefined) {
     args.index = 0
+  }
+
+  if (args.index >= args.items.length) {
+    args.index = args.items.length - 1
   }
 
   let selected_index
@@ -174,15 +202,37 @@ NeedContext.show = (args = {}) => {
     }
   }
 
-  let c = NeedContext.container
-  c.innerHTML = ``
   let index = 0
+  let c = NeedContext.container
 
-  if (args.title) {
+  c.innerHTML = ``
+  c.style.left = `unset`
+  c.style.top = `unset`
+  c.style.transform = `unset`
+  c.style.minWidth = `unset`
+  c.style.minHeight = `unset`
+
+  if (args.title && !args.compact) {
     let title = document.createElement(`div`)
     title.id = `needcontext-title`
-    title.textContent = args.title.trim()
+
+    if (args.title_icon) {
+      let icon = document.createElement(`div`)
+      icon.classList.add(`needcontext-title-icon`)
+      title.append(args.title_icon)
+    }
+
+    let text = document.createElement(`div`)
+    text.textContent = args.title.trim()
+    title.append(text)
     c.append(title)
+
+    if (args.title_number) {
+      let number = document.createElement(`div`)
+      number.classList.add(`needcontext-title-number`)
+      title.append(number)
+    }
+
     c.classList.add(`with_title`)
     c.classList.remove(`without_title`)
   }
@@ -198,7 +248,18 @@ NeedContext.show = (args = {}) => {
   c.append(NeedContext.clear_button())
   let normal_items = []
 
+  if (args.compact) {
+    c.classList.add(`needcontext-compact`)
+  }
+  else {
+    c.classList.remove(`needcontext-compact`)
+  }
+
   for (let item of args.items) {
+    if (args.compact && !item.icon) {
+      continue
+    }
+
     let el = document.createElement(`div`)
     el.classList.add(`needcontext-item`)
 
@@ -224,6 +285,13 @@ NeedContext.show = (args = {}) => {
       if (item.icon) {
         let icon = document.createElement(`div`)
         icon.classList.add(`needcontext-icon`)
+
+        if (item.icon_action) {
+          icon.addEventListener(`click`, (e) => {
+            item.icon_action(e, icon)
+          })
+        }
+
         icon.append(item.icon)
         el.append(icon)
       }
@@ -235,7 +303,13 @@ NeedContext.show = (args = {}) => {
         el.append(text)
       }
 
-      if (item.info) {
+      if (args.compact) {
+        if (args.compact) {
+          let titles = [item.text, item.info].filter(Boolean)
+          el.title = titles.join(` - `)
+        }
+      }
+      else if (item.info) {
         el.title = item.info.trim()
       }
 
@@ -270,13 +344,14 @@ NeedContext.show = (args = {}) => {
   NeedContext.layers[NeedContext.level] = {
     root: args.root,
     items: args.items,
-    normal_items: normal_items,
+    normal_items,
     last_index: selected_index,
     x: args.x,
     y: args.y,
   }
 
   NeedContext.main.classList.remove(`needcontext-hidden`)
+  NeedContext.update_title()
 
   if (center) {
     c.style.left = `50%`
@@ -292,12 +367,16 @@ NeedContext.show = (args = {}) => {
     args.x = 5
   }
 
-  if ((args.y + c.offsetHeight) + 5 > window.innerHeight) {
-    args.y = window.innerHeight - c.offsetHeight - 5
+  let pad = 5
+
+  if (((args.y + c.offsetHeight) + 5) > window.innerHeight) {
+    let diff = Math.abs((args.y + c.offsetHeight) - window.innerHeight)
+    args.y -= diff + pad
   }
 
-  if ((args.x + c.offsetWidth) + 5 > window.innerWidth) {
-    args.x = window.innerWidth - c.offsetWidth - 5
+  if (((args.x + c.offsetWidth) + 5) > window.innerWidth) {
+    let diff = Math.abs((args.x + c.offsetWidth) - window.innerWidth)
+    args.x -= diff + pad
   }
 
   NeedContext.last_x = args.x
@@ -313,17 +392,20 @@ NeedContext.show = (args = {}) => {
 
   NeedContext.filter.value = ``
   NeedContext.filter.focus()
-  let container = document.querySelector(`#needcontext-container`)
 
   if (args.expand && args.element) {
-    container.style.minWidth = `${args.element.clientWidth}px`
+    c.style.minWidth = `${args.element.clientWidth}px`
   }
   else {
-    container.style.minWidth = NeedContext.min_width
+    c.style.minWidth = NeedContext.min_width
   }
 
-  container.style.minHeight = NeedContext.min_height
+  c.style.minHeight = NeedContext.min_height
+
+  NeedContext.filter.value = ``
+  NeedContext.filtered = false
   NeedContext.select_item(selected_index)
+  NeedContext.scroll_to_selected()
   NeedContext.open = true
   NeedContext.after_show()
 
@@ -349,7 +431,9 @@ NeedContext.hide = (e) => {
 NeedContext.select_item = (index) => {
   let els = Array.from(document.querySelectorAll(`.needcontext-normal`))
 
-  for (let [i, el] of els.entries()) {
+  for (let el of els) {
+    let i = parseInt(el.dataset.index)
+
     if (i === index) {
       el.classList.add(`needcontext-item-selected`)
     }
@@ -361,39 +445,24 @@ NeedContext.select_item = (index) => {
   NeedContext.index = index
 }
 
-// Select an item above
-NeedContext.select_up = () => {
-  let waypoint = false
-  let first_visible
-  let items = NeedContext.get_layer().normal_items.slice(0).reverse()
+NeedContext.scroll_to_selected = (block = `center`) => {
+  let el = document.querySelector(`.needcontext-item-selected`)
 
-  for (let item of items) {
-    if (!NeedContext.is_visible(item.element)) {
-      continue
-    }
-
-    if (first_visible === undefined) {
-      first_visible = item.index
-    }
-
-    if (waypoint) {
-      NeedContext.select_item(item.index)
-      return
-    }
-
-    if (item.index === NeedContext.index) {
-      waypoint = true
-    }
+  if (el) {
+    el.scrollIntoView({block})
   }
-
-  NeedContext.select_item(first_visible)
 }
 
-// Select an item below
-NeedContext.select_down = () => {
+// Select an item above or below
+NeedContext.select_next = (direction = `down`, bounce = false) => {
   let waypoint = false
   let first_visible
-  let items = NeedContext.get_layer().normal_items
+  let items = NeedContext.get_layer().normal_items.slice(0)
+  items = items.filter(x => !x.removed)
+
+  if (direction === `up`) {
+    items.reverse()
+  }
 
   for (let item of items) {
     if (!NeedContext.is_visible(item.element)) {
@@ -406,6 +475,7 @@ NeedContext.select_down = () => {
 
     if (waypoint) {
       NeedContext.select_item(item.index)
+      NeedContext.scroll_to_selected(`nearest`)
       return
     }
 
@@ -414,7 +484,13 @@ NeedContext.select_down = () => {
     }
   }
 
-  NeedContext.select_item(first_visible)
+  if (!bounce) {
+    NeedContext.select_item(first_visible)
+    NeedContext.scroll_to_selected(`nearest`)
+    return true
+  }
+
+  NeedContext.select_next(`up`)
 }
 
 // Do the selected action
@@ -429,7 +505,7 @@ NeedContext.select_action = async (e, index = NeedContext.index, mode = `mouse`)
   let y = NeedContext.last_y
   let item = NeedContext.get_layer().normal_items[index]
 
-  function show_below (items) {
+  function show_below(items) {
     NeedContext.get_layer().last_index = index
     NeedContext.level += 1
 
@@ -437,11 +513,11 @@ NeedContext.select_action = async (e, index = NeedContext.index, mode = `mouse`)
       y = e.clientY
     }
 
-    NeedContext.show({x: x, y: y, items: items, root: false})
+    NeedContext.show({x, y, items, root: false})
   }
 
-  function do_items (items) {
-    if (items.length === 1 && items[0].direct) {
+  function do_items(items) {
+    if ((items.length === 1) && items[0].direct) {
       NeedContext.action(items[0], e)
     }
     else {
@@ -451,9 +527,27 @@ NeedContext.select_action = async (e, index = NeedContext.index, mode = `mouse`)
     return
   }
 
-  async function check_item () {
+  async function check_item() {
     if (item.action) {
-      NeedContext.action(item, e)
+      if (e.shiftKey) {
+        if (item.shift_action) {
+          NeedContext.shift_action(item, e)
+        }
+      }
+      else if (e.ctrlKey) {
+        if (item.ctrl_action) {
+          NeedContext.ctrl_action(item, e)
+        }
+      }
+      else if (e.altKey) {
+        if (item.alt_action) {
+          NeedContext.alt_action(item, e)
+        }
+      }
+      else {
+        NeedContext.action(item, e)
+      }
+
       return
     }
     else if (item.items) {
@@ -471,11 +565,28 @@ NeedContext.select_action = async (e, index = NeedContext.index, mode = `mouse`)
   }
 
   if (e.button === 0) {
-    check_item()
+    if (e.shiftKey) {
+      if (item.shift_action) {
+        NeedContext.shift_action(item, e)
+      }
+    }
+    else if (e.ctrlKey) {
+      if (item.ctrl_action) {
+        NeedContext.ctrl_action(item, e)
+      }
+    }
+    else if (e.altKey) {
+      if (item.alt_action) {
+        NeedContext.alt_action(item, e)
+      }
+    }
+    else {
+      check_item()
+    }
   }
   else if (e.button === 1) {
-    if (item.alt_action) {
-      NeedContext.alt_action(item, e)
+    if (item.middle_action) {
+      NeedContext.middle_action(item, e)
     }
   }
   else if (e.button === 2) {
@@ -493,6 +604,11 @@ NeedContext.is_visible = (el) => {
 // Remove all spaces from text
 NeedContext.remove_spaces = (text) => {
   return text.replace(/[\s-]+/g, ``)
+}
+
+// Remove all spaces from text (without -)
+NeedContext.remove_spaces_2 = (text) => {
+  return text.replace(/\s+/g, ``)
 }
 
 // Prepare css and events
@@ -527,9 +643,25 @@ NeedContext.init = () => {
       border-radius: 5px;
       padding-bottom: 5px;
       max-height: 80vh;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
       text-align: left;
       max-width: 98%;
+    }
+
+    #needcontext-container.needcontext-compact {
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding-left: ${NeedContext.compact_padding};
+      padding-right: ${NeedContext.compact_padding};
+    }
+
+    .needcontext-compact .needcontext-text {
+      display: none;
+    }
+
+    .needcontext-compact .needcontext-separator {
+      display: none;
     }
 
     #needcontext-container.without_title {
@@ -544,6 +676,11 @@ NeedContext.init = () => {
       padding-top: 4px;
       padding-bottom: 4px;
       margin-bottom: 2px;
+      display: flex;
+      flex-direction: row;
+      gap: ${NeedContext.gap};
+      align-items: center;
+      justify-content: flex-start;
     }
 
     #needcontext-filter {
@@ -660,23 +797,47 @@ NeedContext.init = () => {
     NeedContext.mousedown = false
   })
 
+  document.addEventListener(`mousemove`, (e) => {
+    if (!NeedContext.open || !e.target) {
+      return
+    }
+
+    NeedContext.check_mouse_range(e)
+    NeedContext.check_auto_funcs(e)
+  })
+
+  document.addEventListener(`mouseover`, (e) => {
+    if (!NeedContext.open || !e.target) {
+      return
+    }
+
+    NeedContext.check_mouse_range(e)
+    NeedContext.check_auto_funcs(e)
+  })
+
+  document.documentElement.addEventListener(`mouseleave`, (e) => {
+    if (!NeedContext.open) {
+      return
+    }
+
+    if (NeedContext.args.autohide) {
+      NeedContext.autohide_debouncer.call_2(e)
+    }
+  })
+
   document.addEventListener(`keydown`, (e) => {
     if (!NeedContext.open) {
       return
     }
 
-    if (NeedContext.modkey(e)) {
-      return
-    }
-
     NeedContext.keydown = true
 
-    if (e.key === `ArrowUp`) {
-      NeedContext.select_up()
+    if ([`ArrowUp`, `ArrowLeft`].includes(e.key)) {
+      NeedContext.select_next(`up`)
       e.preventDefault()
     }
-    else if (e.key === `ArrowDown`) {
-      NeedContext.select_down()
+    else if ([`ArrowDown`, `ArrowRight`].includes(e.key)) {
+      NeedContext.select_next()
       e.preventDefault()
     }
     else if (e.key === `Backspace`) {
@@ -696,10 +857,6 @@ NeedContext.init = () => {
       return
     }
 
-    if (NeedContext.modkey(e)) {
-      return
-    }
-
     NeedContext.keydown = false
 
     if (e.key === `Escape`) {
@@ -712,6 +869,8 @@ NeedContext.init = () => {
     }
   })
 
+  NeedContext.start_autohide()
+  NeedContext.start_autoclick()
   NeedContext.set_defaults()
 }
 
@@ -738,6 +897,7 @@ NeedContext.create = () => {
   })
 
   NeedContext.container.addEventListener(`dragstart`, (e) => {
+    NeedContext.dragging = true
     NeedContext.dragstart_action(e)
   })
 
@@ -746,6 +906,7 @@ NeedContext.create = () => {
   })
 
   NeedContext.container.addEventListener(`dragend`, (e) => {
+    NeedContext.dragging = false
     NeedContext.dragend_action(e)
   })
 
@@ -757,7 +918,6 @@ NeedContext.create = () => {
 
 // Drag start
 NeedContext.dragstart_action = (e) => {
-  if (NeedContext)
   NeedContext.dragged_item = e.target
   let list = NeedContext.container
   let items = Array.from(list.querySelectorAll(`.needcontext-item`))
@@ -788,7 +948,12 @@ NeedContext.dragenter_action = (e) => {
     list.insertBefore(dragged, e.target)
   }
 
-  NeedContext.select_item(index_target)
+  items = Array.from(list.querySelectorAll(`.needcontext-item`))
+  let new_index_dragged = items.indexOf(dragged)
+  let new_index_target = items.indexOf(e.target)
+  dragged.dataset.index = new_index_dragged
+  e.target.dataset.index = new_index_target
+  NeedContext.select_item(new_index_dragged)
 }
 
 // Drag end
@@ -819,7 +984,12 @@ NeedContext.go_back = () => {
 
   let layer = NeedContext.prev_layer()
   NeedContext.level -= 1
-  NeedContext.show({x: layer.x, y: layer.y, items: layer.items, root: layer.root})
+
+  let args = {x: layer.x, y: layer.y, items: layer.items, root: layer.root}
+  args.compact = NeedContext.args.compact
+  args.autohide = NeedContext.args.autohide
+  args.autoclick = NeedContext.args.autoclick
+  NeedContext.show(args)
 }
 
 // Create back button
@@ -856,16 +1026,17 @@ NeedContext.clear_button = () => {
   return el
 }
 
-// Return true if a mod key is pressed
-NeedContext.modkey = (e) => {
-  return e.ctrlKey || e.altKey || e.shiftKey || e.metaKey
-}
-
 // Do an action
 NeedContext.action = (item, e) => {
   if (item.element) {
     if (!NeedContext.is_visible(item.element)) {
       return
+    }
+
+    if (e.target.closest(`.needcontext-icon`)) {
+      if (item.icon_action) {
+        return
+      }
     }
   }
 
@@ -909,7 +1080,39 @@ NeedContext.dismiss = (e) => {
   NeedContext.hide(e)
 }
 
-// Alternative action
+// Shift Click action
+NeedContext.shift_action = (item, e) => {
+  if (item.element) {
+    if (!NeedContext.is_visible(item.element)) {
+      return
+    }
+  }
+
+  if (NeedContext.args.after_shift_action) {
+    NeedContext.args.after_shift_action(e)
+  }
+
+  NeedContext.hide(e)
+  item.shift_action(e)
+}
+
+// Ctrl Click action
+NeedContext.ctrl_action = (item, e) => {
+  if (item.element) {
+    if (!NeedContext.is_visible(item.element)) {
+      return
+    }
+  }
+
+  if (NeedContext.args.after_ctrl_action) {
+    NeedContext.args.after_ctrl_action(e)
+  }
+
+  NeedContext.hide(e)
+  item.ctrl_action(e)
+}
+
+// Alt Click action
 NeedContext.alt_action = (item, e) => {
   if (item.element) {
     if (!NeedContext.is_visible(item.element)) {
@@ -923,6 +1126,28 @@ NeedContext.alt_action = (item, e) => {
 
   NeedContext.hide(e)
   item.alt_action(e)
+}
+
+// Middle Click action
+NeedContext.middle_action = (item, e) => {
+  if (item.element) {
+    if (!NeedContext.is_visible(item.element)) {
+      return
+    }
+  }
+
+  if (NeedContext.args.after_middle_action) {
+    NeedContext.args.after_middle_action(e)
+  }
+
+  if (NeedContext.args.middle_action_remove) {
+    NeedContext.remove_item(item)
+  }
+  else {
+    NeedContext.hide(e)
+  }
+
+  item.middle_action(e)
 }
 
 // Context (right click) action
@@ -941,5 +1166,206 @@ NeedContext.context_action = (item, e) => {
   item.context_action(e)
 }
 
-// Start
-NeedContext.init()
+// Remove an item
+NeedContext.remove_item = (item) => {
+  NeedContext.select_next(`down`, true)
+  item.removed = true
+  item.element.remove()
+  NeedContext.update_title()
+}
+
+// Update the title
+NeedContext.update_title = () => {
+  let title = document.querySelector(`#needcontext-title`)
+
+  if (!title) {
+    return
+  }
+
+  let number = title.querySelector(`.needcontext-title-number`)
+
+  if (!number) {
+    return
+  }
+
+  let num_items = NeedContext.count_items()
+  number.textContent = `(${num_items})`
+}
+
+// Count the number of items
+NeedContext.count_items = () => {
+  let items = NeedContext.get_layer().normal_items
+  items = items.filter(x => !x.removed)
+  items = items.filter(x => !x.fake)
+  return items.length
+}
+
+// Util to create a debouncer
+NeedContext.create_debouncer = (func, delay) => {
+  let timer
+  let obj = {}
+
+  function clear() {
+    clearTimeout(timer)
+    timer = undefined
+  }
+
+  function run(...args) {
+    func(...args)
+  }
+
+  obj.call = (...args) => {
+    clear()
+
+    timer = setTimeout(() => {
+      run(...args)
+    }, delay)
+  }
+
+  obj.call_2 = (...args) => {
+    if (timer) {
+      return
+    }
+
+    obj.call(args)
+  }
+
+  obj.now = (...args) => {
+    clear()
+    run(...args)
+  }
+
+  obj.cancel = () => {
+    clear()
+  }
+
+  return obj
+}
+
+// Reset debouncers
+NeedContext.reset_debouncers = () => {
+  NeedContext.autohide_debouncer.cancel()
+  NeedContext.autoclick_debouncer.cancel()
+}
+
+// Check auto functions
+NeedContext.check_auto_funcs = (e) => {
+  if (!NeedContext.open || !e.target) {
+    return
+  }
+
+  let is_main = e.target.id === `needcontext-main`
+
+  if (!is_main) {
+    NeedContext.reset_debouncers()
+  }
+
+  if (NeedContext.args.autohide) {
+    if (is_main && NeedContext.autohide_enabled) {
+      NeedContext.autohide_debouncer.call_2(e)
+    }
+  }
+
+  if (NeedContext.args.autoclick) {
+    let item = e.target.closest(`.needcontext-item`)
+
+    if (!item) {
+      item = e.target.closest(`.needcontext-back`)
+    }
+
+    if (item) {
+      NeedContext.autoclick_debouncer.call(item, e)
+    }
+  }
+}
+
+// Check mouse range
+NeedContext.check_mouse_range = (e) => {
+  if (NeedContext.autohide_enabled) {
+    return
+  }
+
+  if (e.target.id !== `needcontext-main`) {
+    return
+  }
+
+  let x = e.clientX
+  let y = e.clientY
+
+  if (NeedContext.mouse_activity.initial_x === undefined) {
+    NeedContext.mouse_activity.initial_x = x
+    NeedContext.mouse_activity.initial_y = y
+    return
+  }
+
+  let rect = NeedContext.container.getBoundingClientRect()
+
+  function check(diff) {
+    let done = diff > NeedContext.autohide_threshold
+
+    if (done) {
+      NeedContext.autohide_enabled = true
+    }
+
+    return done
+  }
+
+  if (y < rect.top) {
+    if ((y < NeedContext.mouse_activity.initial_y) && (y < rect.top)) {
+      let diff = rect.top - y
+
+      if (check(diff)) {
+        return
+      }
+    }
+  }
+
+  if (y > rect.bottom) {
+    if ((y > NeedContext.mouse_activity.initial_y) && (y > rect.bottom)) {
+      let diff = y - rect.bottom
+
+      if (check(diff)) {
+        return
+      }
+    }
+  }
+
+  if (x < rect.left) {
+    if ((x < NeedContext.mouse_activity.initial_x) && (x < rect.left)) {
+      let diff = rect.left - x
+
+      if (check(diff)) {
+        return
+      }
+    }
+  }
+
+  if (x > rect.right) {
+    if ((x > NeedContext.mouse_activity.initial_x) && (x > rect.right)) {
+      let diff = x - rect.right
+
+      if (check(diff)) {
+        return
+      }
+    }
+  }
+}
+
+// Start autohide
+NeedContext.start_autohide = (delay) => {
+  NeedContext.autohide_debouncer = NeedContext.create_debouncer((e) => {
+    NeedContext.hide(e)
+  }, delay || NeedContext.autohide_delay)
+}
+
+// Start autoclick
+NeedContext.start_autoclick = (delay) => {
+  NeedContext.autoclick_debouncer = NeedContext.create_debouncer((el, e) => {
+    if (el.closest(`.needcontext-item`)) {
+      NeedContext.select_action(e)
+    }
+    else if (el.closest(`.needcontext-back`)) {
+      NeedContext.go_back()
+    }
+  }, delay || NeedContext.autoclick_delay)
+}
