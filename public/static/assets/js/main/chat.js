@@ -640,6 +640,11 @@ App.show_reply = () => {
 
 // Cancel reply
 App.cancel_reply = () => {
+  if (App.get_input()) {
+    App.clear_input()
+    return
+  }
+
   App.hide_reply()
   App.clear_input()
 }
