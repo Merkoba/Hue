@@ -263,7 +263,9 @@ App.make_announcement_message = (args = {}) => {
   }
 
   App.utilz.def_args(def_args, args)
-  let is_media = (args.type === `image_change`) || (args.type === `tv_change`)
+  let is_image = args.type === `image_change`
+  let is_tv = args.type === `tv_change`
+  let is_media = is_image || is_tv
   let content_classes = `announcement_content unit_text`
   let brk_classes = `brk announcement_brk`
   let highlighted = false
@@ -300,7 +302,7 @@ App.make_announcement_message = (args = {}) => {
     brk: args.brk,
   })
 
-  if (App.get_setting(`embed_images`) && args.media_source) {
+  if (is_image && App.get_setting(`embed_images`) && args.media_source) {
     let img = DOM.el(`.image_embed`, fmessage)
     img.src = args.media_source
     DOM.show(img)
