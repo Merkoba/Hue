@@ -180,7 +180,7 @@ App.show_input_menu = () => {
 
   items.push({
     text: `React`,
-    info: `Middle Click to pick a random one`,
+    info: `Middle Click to pick a random reaction`,
     action: () => {
       App.show_reactions()
     },
