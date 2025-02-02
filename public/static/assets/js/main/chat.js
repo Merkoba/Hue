@@ -646,7 +646,6 @@ App.cancel_reply = () => {
   }
 
   App.hide_reply()
-  App.clear_input()
 }
 
 // Hide the reply info
