@@ -209,6 +209,13 @@ App.build_user_settings = () => {
       },
       version: 1,
     },
+    embed_images: {
+      title: `Embed Images`,
+      type: `checkbox`,
+      description: `Embed image changes in the chat`,
+      actions: () => {},
+      version: 1,
+    },
     show_highlight_notifications: {
       title: `Show Highlight Notifications`,
       type: `checkbox`,
@@ -257,13 +264,6 @@ App.build_user_settings = () => {
       title: `Automedia`,
       type: `checkbox`,
       description: `Ask if media URLs pasted in the chat input should be used`,
-      actions: () => {},
-      version: 1,
-    },
-    embed_images: {
-      title: `Embed Images`,
-      type: `checkbox`,
-      description: `Whether to embed other images automatically`,
       actions: () => {},
       version: 1,
     },

@@ -1999,3 +1999,9 @@ textarea.settings_item_control {
 	width: calc(var(--icon_size) * 1.8);
 	height: calc(var(--icon_size) * 1.8);
 }
+
+.image_embed {
+	position: relative;
+	max-width: 100%;
+	height: auto;
+}

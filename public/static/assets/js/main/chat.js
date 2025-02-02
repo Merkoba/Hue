@@ -285,10 +285,10 @@ App.make_announcement_message = (args = {}) => {
     brk_classes += ` pos_absolute`
   }
 
-  let top_clasees = `chat_message_top announcement_top`
+  let top_cls = `chat_message_top announcement_top`
 
   if (!is_media) {
-    top_clasees += ` hidden`
+    top_cls += ` hidden`
   }
 
   let fmessage = DOM.create(`div`, `message announcement message_unit unit_data_container`)
@@ -296,9 +296,15 @@ App.make_announcement_message = (args = {}) => {
   fmessage.innerHTML = App.template_announcement_message({
     content_classes,
     brk_classes,
-    top_classes: top_clasees,
+    top_classes: top_cls,
     brk: args.brk,
   })
+
+  if (App.get_setting(`embed_images`) && args.media_source) {
+    let img = DOM.el(`.image_embed`, fmessage)
+    img.src = args.media_source
+    DOM.show(img)
+  }
 
   if (args.container_id) {
     fmessage.id = args.container_id
