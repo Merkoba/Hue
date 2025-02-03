@@ -2,29 +2,56 @@
 
 import yaml
 import sys
-import os
 
-# Get the value from command line argument (True or False)
-value = False  # Default value if no argument is provided
-if len(sys.argv) > 1:
-    value = bool(sys.argv[1])  # Convert to boolean
+def update_register_code(file_path, register_code_value):
+    """
+    Updates the 'register_code' property in a YAML file.
 
-# Construct file path
-file_path = os.path.join('config', 'user_config.secret.yml')
+    Args:
+        file_path (str): The path to the YAML file.
+        register_code_value (bool): The value to set for 'register_code' (True or False).
+    """
+    try:
+        with open(file_path, 'r') as f:
+            config = yaml.safe_load(f)
+    except FileNotFoundError:
+        print(f"Error: File not found: {file_path}")
+        return
+    except yaml.YAMLError as e:
+         print(f"Error: Could not parse YAML file: {e}")
+         return
 
-# Read the YAML file
-try:
-    with open(file_path, 'r') as file:
-        current_config = yaml.safe_load(file)
-except FileNotFoundError:
-    # If file doesn't exist, create it
-    with open(file_path, 'w') as file:
-        yaml.dump({'system': {'register_code': value}}, file)
-else:
-    # Modify or add the register_code
-    if 'system' not in current_config:
-        current_config['system'] = {}
-    current_config['system']['register_code'] = value
-    # Write back to file
-    with open(file_path, 'w') as file:
-        yaml.dump(current_config, file)
+    if config is None:
+        print("Error: YAML file is empty or invalid.")
+        return
+
+    if 'register_code' in config:
+        config['register_code'] = register_code_value
+    else:
+         print("Error: 'register_code' property not found in the YAML file.")
+         return
+
+    try:
+        with open(file_path, 'w') as f:
+            yaml.dump(config, f, sort_keys=False)
+        print(f"Successfully updated 'register_code' to {register_code_value} in {file_path}")
+    except IOError as e:
+        print(f"Error: Could not write to file: {e}")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python script.py <true|false>")
+        sys.exit(1)
+
+    register_code_arg = sys.argv[1].lower()
+
+    if register_code_arg == "true":
+         register_code_value = True
+    elif register_code_arg == "false":
+        register_code_value = False
+    else:
+        print("Invalid argument. Please use 'true' or 'false'.")
+        sys.exit(1)
+
+    file_path = "config/user_config.secret.yml"
+    update_register_code(file_path, register_code_value)
