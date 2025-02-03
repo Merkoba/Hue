@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import yaml
+import sys
 import os
 
 # Get the value from command line argument (True or False)
