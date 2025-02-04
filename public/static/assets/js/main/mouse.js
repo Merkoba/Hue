@@ -311,13 +311,26 @@ App.media_info_mouse = () => {
   })
 
   DOM.ev(media, `auxclick`, (e) => {
+    if (e.button !== 1) {
+      return
+    }
+
     let el = e.target.closest(`.media_info_profile`)
 
     if (el) {
       if (e.button === 1) {
         let username = DOM.dataset(el.closest(`.media_info_container`), `username`)
         App.mention_user(username)
+        return
       }
+    }
+
+    let c = e.target.closest(`.media_info_container`)
+    let media_source = DOM.dataset(c, `media_source`)
+
+    if (media_source) {
+      App.goto_url(media_source, `tab`)
+      return
     }
   })
 }

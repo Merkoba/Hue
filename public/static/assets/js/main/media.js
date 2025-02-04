@@ -492,6 +492,7 @@ App.apply_media_info = (type) => {
   DOM.dataset(container, `id`, item.id)
   DOM.dataset(container, `username`, item.username)
   DOM.dataset(container, `user_id`, item.user_id)
+  DOM.dataset(container, `media_source`, item.source)
 }
 
 // Some fixes on reconneciton
