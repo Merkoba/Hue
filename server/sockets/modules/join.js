@@ -185,7 +185,7 @@ module.exports = (App) => {
     socket.hue.role = info.keys[socket.hue.user_id] || App.vars.default_role
 
     if (!App.vars.roles.includes(socket.hue.role)) {
-      socket.hue.role = `voice`
+      socket.hue.role = App.vars.default_role
     }
 
     if (App.vars.user_rooms[socket.hue.user_id] === undefined) {
