@@ -140,7 +140,7 @@ module.exports = (App) => {
       return App.handler.get_out(socket)
     }
 
-    if (!App.handler.user_is_invited(socket, info, userinfo)) {
+    if (!App.handler.user_is_invited(info, userinfo)) {
       return App.handler.get_out(socket)
     }
 
