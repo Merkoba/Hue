@@ -47,7 +47,7 @@ module.exports = (App) => {
     }
 
     let id = userinfo.id
-    let current_role = info.keys[id] || App.vars.default_role
+    let current_role = info.keys[id]
 
     if (!socket.hue.superuser) {
       if (
@@ -59,14 +59,12 @@ module.exports = (App) => {
       }
     }
 
-    if (
-      (current_role === data.role) ||
-      ((current_role === undefined) && (data.role === `voice`))
-    ) {
+    if (current_role && (current_role === data.role)) {
       App.handler.user_emit(socket, `is_already`, {
         what: data.role,
         who: userinfo.username,
       })
+
       return
     }
 
