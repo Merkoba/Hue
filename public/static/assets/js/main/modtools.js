@@ -130,17 +130,31 @@ App.disconnect_user = (username) => {
 
 // Enable the registration code
 // So new users will need the code to register
-App.enable_registration_code = (username) => {
+App.enable_register_code = () => {
   App.sudo(() => {
-    App.socket_emit(`enable_registration_code`, {})
+    App.socket_emit(`enable_register_code`, {})
   })
 }
 
 // Disable the registration code
 // So new users won't need the code to register
-App.disable_registration_code = (username) => {
+App.disable_register_code = () => {
   App.sudo(() => {
-    App.socket_emit(`disable_registration_code`, {})
+    App.socket_emit(`disable_register_code`, {})
+  })
+}
+
+// Disable the registration code
+// So new users won't need the code to register
+App.change_register_code = (code = ``) => {
+  code = code.trim()
+
+  if (!code) {
+    return
+  }
+
+  App.sudo(() => {
+    App.socket_emit(`change_register_code`, {code})
   })
 }
 
@@ -152,4 +166,9 @@ App.register_code_enabled = () => {
 // When the registration code is disabled
 App.register_code_disabled = () => {
   App.checkmsg(`Registration code disabled`)
+}
+
+// When the registration code changed
+App.register_code_changed = () => {
+  App.checkmsg(`Registration code changed`)
 }

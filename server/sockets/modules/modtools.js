@@ -328,7 +328,7 @@ module.exports = (App) => {
   }
 
   // Enable the registration code
-  App.handler.public.enable_registration_code = (socket, data) => {
+  App.handler.public.enable_register_code = (socket, data) => {
     if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
@@ -339,7 +339,7 @@ module.exports = (App) => {
   }
 
   // Disable the registration code
-  App.handler.public.disable_registration_code = (socket, data) => {
+  App.handler.public.disable_register_code = (socket, data) => {
     if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
       return
@@ -347,6 +347,21 @@ module.exports = (App) => {
 
     App.handler.update_sconfig(`use_register_code`, false)
     App.handler.user_emit(socket, `register_code_disabled`, {})
+  }
+
+  // Disable the registration code
+  App.handler.public.change_register_code = (socket, data) => {
+    if (!socket.hue.superuser) {
+      App.handler.anti_spam_ban(socket)
+      return
+    }
+
+    if (!data.code) {
+      return
+    }
+
+    App.handler.update_sconfig(`register_code`, data.code)
+    App.handler.user_emit(socket, `register_code_changed`, {})
   }
 
   // Store user data incase abuse/attacks happen
