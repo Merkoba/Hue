@@ -140,6 +140,10 @@ module.exports = (App) => {
       return App.handler.get_out(socket)
     }
 
+    if (!App.handler.user_is_invited(socket, info, userinfo)) {
+      return App.handler.get_out(socket)
+    }
+
     socket.hue.room_id = info.id
     socket.hue.bio = userinfo.bio
     socket.hue.joining = true

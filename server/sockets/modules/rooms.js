@@ -28,4 +28,25 @@ module.exports = (App) => {
       roomlist: App.roomlist,
     })
   }
+
+  // Check if a user is at least voice in the room
+  App.handler.user_is_invited = (socket, room, user) => {
+    if (room.public) {
+      return true
+    }
+
+    for (let user_id in room.keys) {
+      if (user_id === user.id) {
+        let role = room.keys[user_id]
+
+        if ([`admin`, `op`, `voice`].includes(role)) {
+          return true
+        }
+
+        break
+      }
+    }
+
+    return false
+  }
 }
