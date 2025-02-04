@@ -225,6 +225,18 @@ App.commands = {
     },
     description: `(Only for superusers) Used to change a user's password`,
   },
+  modenableregcode: {
+    action: (arg, ans) => {
+      App.enable_registration_code(arg)
+    },
+    description: `(Only for superusers) Used to enable registration code`,
+  },
+  moddisableregcode: {
+    action: (arg, ans) => {
+      App.disable_registration_code(arg)
+    },
+    description: `(Only for superusers) Used to disable registration code`,
+  },
   createroom: {
     action: (arg, ans) => {
       if (arg) {

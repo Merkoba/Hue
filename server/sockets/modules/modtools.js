@@ -327,10 +327,51 @@ module.exports = (App) => {
     App.handler.disconnect_room_sockets(socket)
   }
 
+  // Enable the registration code
+  App.handler.public.enable_registration_code = (socket, data) => {
+    if (!socket.hue.superuser) {
+      App.handler.anti_spam_ban(socket)
+      return
+    }
+
+    App.handler.update_sconfig(`use_register_code`, true)
+  }
+
+  // Disable the registration code
+  App.handler.public.disable_registration_code = (socket, data) => {
+    if (!socket.hue.superuser) {
+      App.handler.anti_spam_ban(socket)
+      return
+    }
+
+    App.handler.update_sconfig(`use_register_code`, false)
+  }
+
   // Store user data incase abuse/attacks happen
   App.handler.log_user_data = (socket) => {
     let date = new Date().toISOString()
     let info = `date: ${date} | username: ${socket.hue.username} | user_id: ${socket.hue.user_id} | ip: ${socket.hue.ip_address}`
     App.logger.info(info)
+  }
+
+  // Change a poperty in user secret config file
+  App.handler.update_sconfig = async (prop, value) => {
+    try {
+      let fname = `user_config.secret.yml`
+      let fpath = App.i.path.join(App.vars.config_root, fname)
+
+      if (!App.i.fs.existsSync(fpath)) {
+        App.i.fs.writeFileSync(fpath, ``)
+      }
+
+      let content = await App.i.fsp.readFile(fpath, `utf8`)
+      let config = App.i.yaml.parse(content) || {}
+      config[prop] = value
+
+      await App.i.fsp.writeFile(fpath, App.i.yaml.stringify(config))
+    }
+    catch (e) {
+      App.logger.error(e)
+    }
   }
 }

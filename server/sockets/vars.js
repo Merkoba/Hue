@@ -2,10 +2,12 @@ module.exports = (App) => {
   App.vars = {}
   App.vars.root_path = App.i.path.join(__dirname, `../../`)
   App.vars.media_root = App.i.path.join(App.vars.root_path, App.sconfig.media_directory)
+  App.vars.config_root = App.i.path.join(App.vars.root_path, `config`)
   App.vars.roles = [`admin`, `op`, `voice`]
   App.vars.media_types = [`image`, `tv`]
   App.i.redis_client_ready = false
   App.i.redis_client = App.i.redis.createClient()
+  App.i.yaml = require(`yaml`)
 
   App.i.redis_client.on(`connect`, e => {
     App.i.redis_client_ready = true
