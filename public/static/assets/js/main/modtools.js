@@ -143,3 +143,13 @@ App.disable_registration_code = (username) => {
     App.socket_emit(`disable_registration_code`, {})
   })
 }
+
+// When the registration code is enabled
+App.register_code_enabled = () => {
+  App.checkmsg(`Registration code enabled`)
+}
+
+// When the registration code is disabled
+App.register_code_disabled = () => {
+  App.checkmsg(`Registration code disabled`)
+}

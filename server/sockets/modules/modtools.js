@@ -335,6 +335,7 @@ module.exports = (App) => {
     }
 
     App.handler.update_sconfig(`use_register_code`, true)
+    App.handler.user_emit(socket, `register_code_enabled`, {})
   }
 
   // Disable the registration code
@@ -345,6 +346,7 @@ module.exports = (App) => {
     }
 
     App.handler.update_sconfig(`use_register_code`, false)
+    App.handler.user_emit(socket, `register_code_disabled`, {})
   }
 
   // Store user data incase abuse/attacks happen

@@ -250,6 +250,12 @@ App.server_update_events = {
   notification: (data) => {
     App.notification_received(data)
   },
+  register_code_enabled: (data) => {
+    App.register_code_enabled()
+  },
+  register_code_disabled: (data) => {
+    App.register_code_disabled()
+  },
 }
 
 // Centralized function to initiate a socket emit to the server
