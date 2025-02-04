@@ -245,6 +245,14 @@ App.commands = {
     },
     description: `(Only for superusers) Used to change registration code`,
   },
+  newcode: {
+    action: (arg, ans) => {
+      if (arg) {
+        App.add_register_code(arg)
+      }
+    },
+    description: `(Only for superusers) Used to make a private registration code`,
+  },
   createroom: {
     action: (arg, ans) => {
       if (arg) {

@@ -259,6 +259,9 @@ App.server_update_events = {
   register_code_changed: (data) => {
     App.register_code_changed()
   },
+  register_code_added: (data) => {
+    App.register_code_added(data)
+  },
 }
 
 // Centralized function to initiate a socket emit to the server

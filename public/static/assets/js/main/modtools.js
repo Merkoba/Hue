@@ -144,8 +144,7 @@ App.disable_register_code = () => {
   })
 }
 
-// Disable the registration code
-// So new users won't need the code to register
+// Change the registration code
 App.change_register_code = (code = ``) => {
   code = code.trim()
 
@@ -155,6 +154,19 @@ App.change_register_code = (code = ``) => {
 
   App.sudo(() => {
     App.socket_emit(`change_register_code`, {code})
+  })
+}
+
+// Add a private registration code
+App.add_register_code = (code = ``) => {
+  code = code.trim()
+
+  if (!code) {
+    return
+  }
+
+  App.sudo(() => {
+    App.socket_emit(`add_register_code`, {code})
   })
 }
 
@@ -171,4 +183,9 @@ App.register_code_disabled = () => {
 // When the registration code changed
 App.register_code_changed = () => {
   App.checkmsg(`Registration code changed`)
+}
+
+// When the registration code added
+App.register_code_added = (data) => {
+  App.checkmsg(`Code added: ${data.code}`)
 }

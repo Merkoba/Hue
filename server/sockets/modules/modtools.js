@@ -356,19 +356,49 @@ module.exports = (App) => {
       return
     }
 
-    if (!data.code) {
+    let code = data.code.trim()
+
+    if (!code) {
       return
     }
 
-    App.handler.update_sconfig(`register_code`, data.code)
+    App.handler.update_sconfig(`register_code`, code)
     App.handler.user_emit(socket, `register_code_changed`, {})
   }
 
-  // Store user data incase abuse/attacks happen
-  App.handler.log_user_data = (socket) => {
-    let date = new Date().toISOString()
-    let info = `date: ${date} | username: ${socket.hue.username} | user_id: ${socket.hue.user_id} | ip: ${socket.hue.ip_address}`
-    App.logger.info(info)
+  // Add a registration code meant to be shared to a single person
+  App.handler.public.add_register_code = async (socket, data) => {
+    if (!socket.hue.superuser) {
+      App.handler.anti_spam_ban(socket)
+      return
+    }
+
+    let code = data.code.trim()
+
+    if (!code) {
+      return
+    }
+
+    try {
+      let fname = `codes.json`
+      let fpath = App.i.path.join(App.vars.config_root, fname)
+
+      if (!App.i.fs.existsSync(fpath)) {
+        App.i.fs.writeFileSync(fpath, ``)
+      }
+
+      let content = await App.i.fsp.readFile(fpath, `utf8`) || `[]`
+      let codes = JSON.parse(content) || []
+      codes = codes.filter(x => x !== code)
+      codes.push(code)
+
+      let str = JSON.stringify(codes)
+      await App.i.fsp.writeFile(fpath, str)
+      App.handler.user_emit(socket, `register_code_added`, {code})
+    }
+    catch (e) {
+      App.logger.error(e)
+    }
   }
 
   // Change a poperty in user secret config file
@@ -378,7 +408,7 @@ module.exports = (App) => {
       let fpath = App.i.path.join(App.vars.config_root, fname)
 
       if (!App.i.fs.existsSync(fpath)) {
-        App.i.fs.writeFileSync(fpath, ``)
+        await App.i.fsp.writeFile(fpath, ``)
       }
 
       let content = await App.i.fsp.readFile(fpath, `utf8`)
@@ -390,5 +420,12 @@ module.exports = (App) => {
     catch (e) {
       App.logger.error(e)
     }
+  }
+
+  // Store user data incase abuse/attacks happen
+  App.handler.log_user_data = (socket) => {
+    let date = new Date().toISOString()
+    let info = `date: ${date} | username: ${socket.hue.username} | user_id: ${socket.hue.user_id} | ip: ${socket.hue.ip_address}`
+    App.logger.info(info)
   }
 }
