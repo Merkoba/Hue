@@ -197,8 +197,6 @@ App.process_input = (args = {}) => {
       }
     }
 
-    console.log(args.message)
-
     App.push_to_autocomplete(args.message)
 
     App.socket_emit(`sendchat`, {

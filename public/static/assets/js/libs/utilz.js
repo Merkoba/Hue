@@ -336,6 +336,10 @@ const Utilz = () => {
   // Check if string is a url
   utilz.is_url = (s) => {
     if (s.startsWith(`http://`) || s.startsWith(`https://`)) {
+      if (s.length <= (s.indexOf('://') + 3)) {
+        return false
+      }
+
       if (s.endsWith(`]`)) {
         return false
       }
