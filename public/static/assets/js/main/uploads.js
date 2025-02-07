@@ -187,7 +187,7 @@ App.upload_file = (args = {}) => {
   obj.args.date = now
 
   if (obj.args.name !== undefined) {
-    obj.args.name = App.utilz.no_space(obj.args.name).replace(/.gifv/g, `.gif`)
+    obj.args.name = obj.args.name.replace(/.gifv/g, `.gif`)
   }
   else {
     obj.args.name = `no_name`
@@ -215,11 +215,14 @@ App.upload_file = (args = {}) => {
     icon = `tv`
   }
 
+  let action = App.get_file_action_name(obj.args.action)
+  let size = App.utilz.size_string(obj.args.size / 1024)
+
   let notif = {
-    message: `Uploading ${App.get_file_action_name(obj.args.action)}: 0%`,
     icon,
+    message: `Uploading ${action}: 0%`,
     id: `uploading_${now}`,
-    title: `Size: ${App.utilz.size_string(obj.args.size / 1024)}`,
+    title: `Size: ${size}`,
     on_x_button_click: () => {
       App.cancel_file_upload(now)
     },
