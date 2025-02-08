@@ -48,7 +48,7 @@ App.update_activity_bar = (check = false) => {
     let pi = App.get_profilepic(user.user_id)
 
     let s = `
-      <img class='activity_bar_profilepic profilepic icon_size actionbox' src='${pi}' loading='lazy'>
+      <img class='activity_bar_profilepic profilepic profilepic_size_small actionbox' src='${pi}' loading='lazy'>
       <div class='activity_bar_text action'></div>`
 
     let el = DOM.create(`div`, `activity_bar_item flex_row_center`)
