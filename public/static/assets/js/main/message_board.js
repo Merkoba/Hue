@@ -175,7 +175,7 @@ App.add_post_to_message_board = (data, edited) => {
 
   let first_url = App.utilz.get_first_url(data.message)
 
-  if (App.get_setting(`embed_images`)) {
+  if (App.get_setting(`show_link_images`)) {
     if (first_url && App.utilz.is_image(first_url)) {
       let image = DOM.el(`.message_board_image`, post)
       image.src = first_url

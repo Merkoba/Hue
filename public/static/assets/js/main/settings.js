@@ -267,6 +267,13 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    show_link_images: {
+      title: `Link Images`,
+      type: `checkbox`,
+      description: `Show images in link previews`,
+      actions: () => {},
+      version: 1,
+    },
     highlight_current_username: {
       title: `Username Highlights`,
       type: `checkbox`,

@@ -137,8 +137,9 @@ max_url_length: 1000
 settings_default_highlight_current_username: true
 settings_default_case_insensitive_username_highlights: true
 settings_default_open_whispers_automatically: true
-settings_default_embed_images: true
+settings_default_embed_images: false
 settings_default_show_link_previews: true
+settings_default_show_link_images: true
 settings_default_show_highlight_notifications: true
 settings_default_show_activity_notifications: true
 settings_default_show_user_join_notifications: true

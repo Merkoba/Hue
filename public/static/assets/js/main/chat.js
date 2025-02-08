@@ -1156,7 +1156,7 @@ App.on_activity = (type) => {
 
 // Make link preview elements
 App.make_link_preview = (args = {}) => {
-  if (!App.get_setting(`embed_images`)) {
+  if (!App.get_setting(`show_link_images`)) {
     args.image = ``
   }
 
@@ -1258,7 +1258,7 @@ App.make_image_preview = (message) => {
     })
   }
   else if (link && link.includes(`imgur.com`)) {
-    if (!App.get_setting(`embed_images`)) {
+    if (!App.get_setting(`show_link_images`)) {
       return ans
     }
 
