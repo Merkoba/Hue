@@ -4,6 +4,7 @@
 	--icon_size: 1.15em;
 	--chat_side_spacing: 0.8em;
 	--profilepic_size: 1.8em;
+	--profilepic_size_small: 1.4em;
 	--big_profilepic_size: 16rem;
 	--msg_display: block;
 	--placeholder_opacity: 0.6;
@@ -1625,10 +1626,6 @@ pre {
 	gap: 0.5rem;
 }
 
-.media_info_profilepick {
-
-}
-
 .media_info_username {
 	font-weight: bold;
 }
@@ -1852,8 +1849,8 @@ pre {
 }
 
 .like_profilepic {
-	width: var(--icon_size);
-	height: var(--icon_size);
+	width: var(--profilepic_size_small);
+	height: var(--profilepic_size_small);
 }
 
 .open_url_info_item {
