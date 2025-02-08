@@ -96,7 +96,7 @@ App.write_whisper = (usernames = [], type = `user`) => {
   }
 
   if (type === `user`) {
-    DOM.hide(`#write_whisper_add_user`)
+    DOM.show(`#write_whisper_add_user`)
   }
   else {
     DOM.hide(`#write_whisper_add_user`)
