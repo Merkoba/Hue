@@ -1825,6 +1825,11 @@ pre {
 	height: var(--profilepic_size);
 }
 
+.profilepic_size_small {
+	width: var(--profilepic_size_small);
+	height: var(--profilepic_size_small);
+}
+
 .likes_container {
 	display: flex;
 	flex-direction: row;
