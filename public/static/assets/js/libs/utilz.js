@@ -935,7 +935,7 @@ const Utilz = () => {
   // Check if url is from same domain
   utilz.same_domain = (url) => {
     try {
-      return utilz.get_domain(url) === utilz.get_domain(window.location.hostname)
+      return utilz.get_domain(url) === utilz.get_domain(window.location)
     }
     catch (err) {
       return false

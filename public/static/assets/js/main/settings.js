@@ -382,12 +382,26 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
-    embed_images: {
-      title: `Embed Images`,
+    embed_media_images: {
+      title: `Embed Media Images`,
       type: `checkbox`,
-      description: `Embed image changes in the chat`,
+      description: `Embed image media changes in the chat`,
       actions: () => {},
-      version: 2,
+      version: 1,
+    },
+    embed_internal_images: {
+      title: `Embed Internal Images`,
+      type: `checkbox`,
+      description: `Embed images from the same domain in the chat`,
+      actions: () => {},
+      version: 1,
+    },
+    embed_external_images: {
+      title: `Embed External Images`,
+      type: `checkbox`,
+      description: `Embed external images in the chat`,
+      actions: () => {},
+      version: 1,
     },
     grey_background: {
       title: `Grey Background`,

@@ -302,7 +302,7 @@ App.make_announcement_message = (args = {}) => {
     brk: args.brk,
   })
 
-  if (is_image && App.get_setting(`embed_images`) && args.media_source) {
+  if (is_image && App.get_setting(`embed_media_images`) && args.media_source) {
     let img = DOM.el(`.image_embed`, fmessage)
     img.src = args.media_source
     DOM.show(img)
@@ -1257,34 +1257,45 @@ App.make_image_preview = (message) => {
       title: message,
     })
   }
-  else if (link && link.includes(`imgur.com`)) {
-    if (!App.get_setting(`show_link_images`)) {
-      return ans
+
+  if (link) {
+    let src = ``
+    let original = ``
+
+    if (App.utilz.same_domain(link)) {
+      if (App.get_setting(`embed_internal_images`)) {
+        original = link
+        src = link
+      }
+    }
+    else {
+      if (App.get_setting(`embed_external_images`)) {
+        if (link.includes(`imgur.com`)) {
+          let code = App.utilz.get_imgur_image_code(link)
+
+          if (code) {
+            let extension = App.utilz.get_extension(link)
+            original = `https://i.imgur.com/${code}.${extension}`
+            src = `https://i.imgur.com/${code}l.jpg`
+          }
+        }
+        else {
+          original = link
+          src = link
+        }
+      }
     }
 
-    let code = App.utilz.get_imgur_image_code(link)
-
-    if (code) {
-      let extension = App.utilz.get_extension(link)
+    if (original && src) {
       ans.image_preview_text = message
-      ans.image_preview_src_original = `https://i.imgur.com/${code}.${extension}`
-      ans.image_preview_src = `https://i.imgur.com/${code}l.jpg`
+      ans.image_preview_src_original = original
+      ans.image_preview_src = src
 
       ans.image_preview = App.template_image_preview({
         text: message,
         source: ans.image_preview_src,
       })
     }
-  }
-  else if (link && App.utilz.same_domain(link)) {
-    ans.image_preview_text = message
-    ans.image_preview_src_original = link
-    ans.image_preview_src = link
-
-    ans.image_preview = App.template_image_preview({
-      text: message,
-      source: ans.image_preview_src,
-    })
   }
 
   return ans
