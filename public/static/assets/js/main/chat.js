@@ -1276,6 +1276,16 @@ App.make_image_preview = (message) => {
       })
     }
   }
+  else if (link && App.utilz.same_domain(link)) {
+    ans.image_preview_text = message
+    ans.image_preview_src_original = link
+    ans.image_preview_src = link
+
+    ans.image_preview = App.template_image_preview({
+      text: message,
+      source: ans.image_preview_src,
+    })
+  }
 
   return ans
 }

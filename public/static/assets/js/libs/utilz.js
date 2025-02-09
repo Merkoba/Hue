@@ -920,6 +920,16 @@ const Utilz = () => {
     return url
   }
 
+  // Check if url is from same domain
+  utilz.same_domain = (url) => {
+    try {
+      return new URL(url).hostname === window.location.hostname
+    }
+    catch (err) {
+      return false
+    }
+  }
+
   utilz.media_types = [`image`, `tv`]
   utilz.video_extensions = [`mp4`, `webm`]
   utilz.video_types = [`video/mp4`, `video/webm`]
