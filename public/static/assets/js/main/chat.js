@@ -1268,21 +1268,19 @@ App.make_image_preview = (message) => {
         src = link
       }
     }
-    else {
-      if (App.get_setting(`embed_external_images`)) {
-        if (link.includes(`imgur.com`)) {
-          let code = App.utilz.get_imgur_image_code(link)
+    else if (App.get_setting(`embed_external_images`)) {
+      if (link.includes(`imgur.com`)) {
+        let code = App.utilz.get_imgur_image_code(link)
 
-          if (code) {
-            let extension = App.utilz.get_extension(link)
-            original = `https://i.imgur.com/${code}.${extension}`
-            src = `https://i.imgur.com/${code}l.jpg`
-          }
+        if (code) {
+          let extension = App.utilz.get_extension(link)
+          original = `https://i.imgur.com/${code}.${extension}`
+          src = `https://i.imgur.com/${code}l.jpg`
         }
-        else {
-          original = link
-          src = link
-        }
+      }
+      else {
+        original = link
+        src = link
       }
     }
 
