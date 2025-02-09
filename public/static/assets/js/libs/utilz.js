@@ -920,10 +920,22 @@ const Utilz = () => {
     return url
   }
 
+  // Get domain from url
+  utilz.get_domain = (url) => {
+    let u = new URL(url)
+    let domain = u.hostname.split(`.`)
+
+    if (domain.length > 2) {
+      return domain.slice(1).join(`.`)
+    }
+
+    return u.hostname
+  }
+
   // Check if url is from same domain
   utilz.same_domain = (url) => {
     try {
-      return new URL(url).hostname === window.location.hostname
+      return utilz.get_domain(url) === utilz.get_domain(window.location.hostname)
     }
     catch (err) {
       return false
