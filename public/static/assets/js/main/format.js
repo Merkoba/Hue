@@ -79,7 +79,7 @@ App.check_frame = (text) => {
 
 // Check for arrows at the start of lines
 App.check_arrowtext = (text) => {
-  let regex = new RegExp(`^\\s*(&gt;)+`, `gm`)
+  let regex = new RegExp(`^\\s*(&gt;){3,}`, `gm`)
   let lines = text.split(`\n`)
   let new_lines = []
 
