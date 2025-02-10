@@ -436,7 +436,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     }
 
     // Avoid cases like admin:admin
-    if (username === password) {
+    if (username.toLowerCase() === password.toLowerCase()) {
       return
     }
 
