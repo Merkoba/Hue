@@ -90,6 +90,7 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     // Reserved usernames
     // These can't be used on registration
     view.reserved_usernames = [
+      `admin`,
       sconfig.system_username,
     ].map((x) => x.toLowerCase())
 
