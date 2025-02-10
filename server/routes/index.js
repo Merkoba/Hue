@@ -414,7 +414,9 @@ module.exports = (db_manager, config, sconfig, utilz) => {
     let code = req.body.code
     let ok = false
 
-    if (view.reserved_usernames.includes(username.toLowerCase())) {
+    let uname = username.toLowerCase()
+
+    if (view.reserved_usernames.includes(uname)) {
       already_exists(res, username)
       return
     }
@@ -435,12 +437,14 @@ module.exports = (db_manager, config, sconfig, utilz) => {
       return
     }
 
+    let passw = password.toLowerCase()
+
     // Avoid cases like admin:admin
-    if (username.toLowerCase() === password.toLowerCase()) {
+    if (uname === passw) {
       return
     }
 
-    if (view.banned_passwords.includes(password)) {
+    if (view.banned_passwords.includes(passw)) {
       return
     }
 
