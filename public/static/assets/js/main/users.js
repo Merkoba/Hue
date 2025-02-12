@@ -583,6 +583,11 @@ App.setup_show_profile = () => {
     App.msg_profile.close()
   })
 
+  DOM.ev(DOM.el(`#show_profile_mod_profpic`), `click`, () => {
+    App.profilepic_select(App.open_profile_user_id)
+    App.msg_profile.close()
+  })
+
   DOM.ev(DOM.el(`#show_profile_edit`), `click`, () => {
     App.show_user_profile()
     App.msg_profile.close()
@@ -707,6 +712,13 @@ App.show_profile = (username, user_id = false) => {
 
   DOM.el(`#show_profile_info`).innerHTML = ``
   DOM.hide(`#show_profile_edit`)
+
+  if (App.superuser && !same_user) {
+    DOM.show(`#show_profile_mod_profpic`)
+  }
+  else {
+    DOM.hide(`#show_profile_mod_profpic`)
+  }
 
   if (user) {
     let item = DOM.create(`div`)

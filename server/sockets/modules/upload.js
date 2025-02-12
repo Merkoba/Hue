@@ -138,6 +138,7 @@ module.exports = (App) => {
         else if (data.action === `profilepic_upload`) {
           await App.handler.upload_profilepic(socket, {
             image_file: full_file,
+            user_id: data.user_id,
           })
         }
         else if (data.action === `background_upload`) {

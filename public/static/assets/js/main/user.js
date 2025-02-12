@@ -175,7 +175,7 @@ App.setup_user_profile = () => {
   })
 
   DOM.ev(DOM.el(`#user_profile_profilepic`), `click`, () => {
-    App.msg_profilepic_select.show()
+    App.profilepic_select()
   })
 
   DOM.ev(DOM.el(`#user_profile_audioclip`), `click`, () => {
@@ -272,6 +272,7 @@ App.upload_profilepic = () => {
     file: App.profilepic_preview_blob,
     action: `profilepic_upload`,
     name: `profile.png`,
+    user_id: App.profilepic_id,
   })
 
   App.msg_profilepic_cropper.close()
@@ -285,7 +286,7 @@ App.setup_profilepic_select = () => {
   })
 
   DOM.ev(DOM.el(`#profilepic_select_random`), `click`, () => {
-    App.msg_profilepic_select.close()
+    App.msg_profilepmic_select.close()
     App.make_random_image(`profilepic`)
   })
 
@@ -296,7 +297,7 @@ App.setup_profilepic_select = () => {
 
   DOM.ev(DOM.el(`#profilepic_preview_choose`), `click`, () => {
     App.msg_profilepic_preview.close()
-    App.msg_profilepic_select.show()
+    App.profilepic_select()
   })
 
   DOM.ev(DOM.el(`#profilepic_preview_confirm`), `click`, () => {
@@ -452,4 +453,10 @@ App.audioclip_selected = (file) => {
 // Get the user profile
 App.get_self_user = () => {
   return App.get_user_by_username(App.username)
+}
+
+// Shows the profile pic select
+App.profilepic_select = (user_id = undefined) => {
+  App.profilepic_id = user_id
+  App.msg_profilepic_select.show()
 }

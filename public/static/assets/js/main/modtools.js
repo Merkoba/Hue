@@ -1,5 +1,9 @@
 // App show superuser confirm
 App.sudo = (func) => {
+  if (!App.superuser) {
+    return
+  }
+
   App.show_confirm(`Run superuser command`, func)
 }
 

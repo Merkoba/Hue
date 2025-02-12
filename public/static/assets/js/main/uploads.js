@@ -184,6 +184,7 @@ App.upload_file = (args = {}) => {
 
   obj.args.size = obj.file.size
   obj.args.type = args.file.type
+  obj.args.user_id = args.user_id
   obj.args.date = now
 
   if (obj.args.name !== undefined) {

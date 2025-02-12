@@ -126,7 +126,8 @@ module.exports = (App) => {
     }
 
     let file_name = `profilepic.png`
-    let container = App.i.path.join(App.vars.media_root, `user`, socket.hue.user_id)
+    let user_id = data.user_id || socket.hue.user_id
+    let container = App.i.path.join(App.vars.media_root, `user`, user_id)
 
     if (!App.i.fs.existsSync(container)) {
       App.i.fs.mkdirSync(container, {recursive: true})
@@ -137,7 +138,7 @@ module.exports = (App) => {
     try {
       await App.i.fsp.writeFile(path, data.image_file)
       await App.strip_metadata(path)
-      await App.handler.do_change_profilepic(socket, file_name)
+      await App.handler.do_change_profilepic(socket, user_id)
     }
     catch (err) {
       App.logger.log_error(err)
@@ -146,20 +147,20 @@ module.exports = (App) => {
   }
 
   // Completes profile image changes
-  App.handler.do_change_profilepic = async (socket, file_name) => {
+  App.handler.do_change_profilepic = async (socket, user_id) => {
     let new_ver = (socket.hue.profilepic_version || 0) + 1
-    let userinfo = await App.db_manager.get_user([`id`, socket.hue.user_id])
+    let userinfo = await App.db_manager.get_user([`id`, user_id])
     userinfo.profilepic_version = new_ver
 
     await App.handler.modify_socket_properties(
-      socket.hue.user_id,
+      user_id,
       {profilepic_version: new_ver},
       {
         method: `profilepic_changed`,
         data: {
-          user_id: socket.hue.user_id,
-          username: socket.hue.username,
+          user_id,
           profilepic_version: new_ver,
+          username: ``,
         },
       },
     )
