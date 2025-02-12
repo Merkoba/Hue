@@ -220,6 +220,7 @@ App.show_modal_image = (id = 0) => {
     data = App.image_changed[App.image_changed.length - 1]
   }
 
+  App.modal_image_resolution_applied = false
   App.loaded_modal_image = data
   let img = DOM.el(`#modal_image`)
   DOM.hide(img)
@@ -451,6 +452,11 @@ App.apply_modal_image_resolution = (image, src) => {
     return
   }
 
+  if (App.modal_image_resolution_applied) {
+    return
+  }
+
+  App.modal_image_resolution_applied = true
   let subheader = DOM.el(`#modal_image_subheader`)
   let text = subheader.textContent
   subheader.textContent = `${text} (${image.width} x ${image.height})`

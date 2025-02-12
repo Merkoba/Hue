@@ -125,6 +125,7 @@ App.empty_message = `%[empty]%`
 App.text_was_selected = false
 App.highlight_regexes = []
 App.max_reactions = 200
+App.modal_image_resolution_applied = false
 
 // Initial media-loading variables declarations
 App.youtube_loading = false
