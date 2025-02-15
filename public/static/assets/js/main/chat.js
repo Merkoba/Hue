@@ -1524,8 +1524,10 @@ App.public_feedback = (message, data = false) => {
     obj.brk = `<div class='inline'>${obj.brk}</div>`
   }
 
-  if (App.check_highlights(message)) {
-    obj.highlight = true
+  if (data.username !== App.username) {
+    if (App.check_highlights(message)) {
+      obj.highlight = true
+    }
   }
 
   return App.make_announcement_message(obj)
