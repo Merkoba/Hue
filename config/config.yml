@@ -171,7 +171,7 @@ settings_default_text_effects: true
 settings_default_auto_blur: false
 settings_default_background_opacity: 0
 settings_default_custom_css: ""
-settings_default_automedia: true
+settings_default_automedia: false
 settings_default_short_urls: true
 settings_default_grey_background: false
 settings_default_radio_enabled: true

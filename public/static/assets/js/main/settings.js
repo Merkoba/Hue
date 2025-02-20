@@ -253,13 +253,6 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
-    automedia: {
-      title: `Automedia`,
-      type: `checkbox`,
-      description: `Ask if media URLs pasted in the chat input should be used`,
-      actions: () => {},
-      version: 1,
-    },
     show_link_previews: {
       title: `Link Previews`,
       type: `checkbox`,
@@ -363,6 +356,13 @@ App.build_user_settings = () => {
       title: `Show Reactions`,
       type: `checkbox`,
       description: `Enable or disable reactions in the chat`,
+      actions: () => {},
+      version: 1,
+    },
+    automedia: {
+      title: `Automedia`,
+      type: `checkbox`,
+      description: `Ask if media URLs pasted in the chat input should be used`,
       actions: () => {},
       version: 1,
     },
