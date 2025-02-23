@@ -127,3 +127,8 @@ form {
 .underline {
 	text-decoration: underline !important;
 }
+
+#hue_image {
+	height: 20rem;
+	padding-bottom: 1.2rem;
+}
