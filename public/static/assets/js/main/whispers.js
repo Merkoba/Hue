@@ -48,7 +48,7 @@ App.send_inline_whisper = (arg) => {
 
   let username = split[0].trim()
   let usplit = username.split(`&&`).map(x => x.trim())
-  let message = App.utilz.single_space(split.at(-1).join(`>`))
+  let message = App.utilz.single_space(split.slice(1).join(`>`))
 
   if (!message) {
     return
