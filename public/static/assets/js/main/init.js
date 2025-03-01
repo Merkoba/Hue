@@ -5,8 +5,6 @@
 // But apart from that, all the code is structured manually
 // ########################################################
 
-// T1
-
 // All client variables and functions go here
 const App = {}
 
