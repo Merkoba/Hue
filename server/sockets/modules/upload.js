@@ -50,12 +50,12 @@ module.exports = (App) => {
         }
       }
 
-      if (data.name.length > App.config.safe_limit_1) {
+      if (data.name.length > App.config.safe_limit_4) {
         return
       }
 
       if (data.comment) {
-        if (data.comment.length > App.config.safe_limit_4) {
+        if (data.comment.length > App.config.max_media_comment_length) {
           return
         }
       }
