@@ -24,6 +24,7 @@ App.build_user_settings = () => {
         {value: `sans-serif`, text: `Sans`},
         {value: `serif`, text: `Serif`},
         {value: `monospace`, text: `Mono`},
+        {value: `cursive`, text: `Cursive`},
       ],
       version: 1,
     },
