@@ -42,6 +42,8 @@
 			let pass_el = DOM.el(`#login_password`)
 			let btn_submit = DOM.el(`#btn_login`)
 
+			user_el.focus()
+
 			if(form_username && (form_username !== `undefined`)) {
 				user_el.value = form_username
 			}
