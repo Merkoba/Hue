@@ -622,7 +622,7 @@ App.play_audioclip = (user_id = App.open_profile_user_id) => {
 
   DOM.ev(App.audioclip, `error`, (e) => {
     if (App.audioclip) {
-      App.show_info(`User has no audioclip`)
+      App.show_info(`User has no audio clip`)
       App.stop_audioclip()
     }
   })
