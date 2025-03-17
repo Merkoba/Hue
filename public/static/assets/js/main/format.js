@@ -155,12 +155,14 @@ App.format_chars = (text) => {
     let matches = [...text.matchAll(regex)]
 
     for (let match of matches) {
-      if (full) {
-        text = text.replace(match[0], func(match[0]))
-      }
-      else {
-        text = text.replace(match[0], func(match[1]))
-      }
+      let m = full ? match[0] : match[1]
+      let index = match.index
+      let length = match[0].length
+
+      // Replace exactly at the match position using substring
+      text = text.substring(0, index) +
+             func(m) +
+             text.substring(index + length)
     }
   }
 
