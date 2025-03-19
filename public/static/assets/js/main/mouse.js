@@ -22,6 +22,7 @@ App.start_mouse_events = () => {
         let username = DOM.dataset(message, `username`)
         let user_id = DOM.dataset(message, `user_id`)
         let type = DOM.dataset(message, `type`)
+        let first = DOM.el(`.chat_content_container`, message)
 
         if (e.target.tagName === `A`) {
           App.show_link_clicked(message_id)
@@ -30,7 +31,13 @@ App.start_mouse_events = () => {
           App.show_profile(username, user_id)
         }
         else if (e.target.classList.contains(`chat_profilepic`)) {
-          App.show_profile(username, user_id)
+          if (e.altKey) {
+            App.like_message(first, `like`)
+            e.preventDefault()
+          }
+          else {
+            App.show_profile(username, user_id)
+          }
         }
         else if (e.target.classList.contains(`chat_quote_text`)) {
           let quote = e.target.closest(`.chat_quote`)
@@ -76,6 +83,7 @@ App.start_mouse_events = () => {
           if (e.altKey) {
             if (!App.text_was_selected) {
               App.like_message(e.target, `like`)
+              e.preventDefault()
             }
           }
           else if (type === `image_change`) {
@@ -86,12 +94,7 @@ App.start_mouse_events = () => {
           }
         }
         else if (e.target.closest(`.brk_profilepic`)) {
-          if (e.altKey) {
-            App.like_message(e.target, `like`)
-          }
-          else {
-            App.show_profile(username, user_id)
-          }
+          App.show_profile(username, user_id)
         }
         else if (e.target.closest(`.like_container`)) {
           let el = e.target.closest(`.like_container`)
@@ -106,6 +109,7 @@ App.start_mouse_events = () => {
           if (e.altKey) {
             if (!App.text_was_selected) {
               App.like_message(e.target, `like`)
+              e.preventDefault()
             }
           }
         }
