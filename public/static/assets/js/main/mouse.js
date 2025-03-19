@@ -73,7 +73,7 @@ App.start_mouse_events = () => {
           App.view_image(src, username, user_id)
         }
         else if (e.target.classList.contains(`announcement_content`) || e.target.closest(`.brk`)) {
-          if (e.ctrlKey) {
+          if (e.ctrlKey && e.shiftKey) {
             if (!App.text_was_selected) {
               App.like_message(e.target, `like`)
             }
@@ -98,7 +98,7 @@ App.start_mouse_events = () => {
           App.show_chat_context_menu(e.target.closest(`.chat_menu_button_container`))
         }
         else if (e.target.closest(`.chat_content_container`)) {
-          if (e.ctrlKey) {
+          if (e.ctrlKey && e.shiftKey) {
             if (!App.text_was_selected) {
               App.like_message(e.target, `like`)
             }
