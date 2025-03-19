@@ -73,7 +73,7 @@ App.start_mouse_events = () => {
           App.view_image(src, username, user_id)
         }
         else if (e.target.classList.contains(`announcement_content`) || e.target.closest(`.brk`)) {
-          if (e.ctrlKey) {
+          if (e.altKey) {
             if (!App.text_was_selected) {
               App.like_message(e.target, `like`)
             }
@@ -86,7 +86,12 @@ App.start_mouse_events = () => {
           }
         }
         else if (e.target.closest(`.brk_profilepic`)) {
-          App.show_profile(username, user_id)
+          if (e.altKey) {
+            App.like_message(e.target, `like`)
+          }
+          else {
+            App.show_profile(username, user_id)
+          }
         }
         else if (e.target.closest(`.like_container`)) {
           let el = e.target.closest(`.like_container`)
