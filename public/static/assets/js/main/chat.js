@@ -101,7 +101,7 @@ App.make_chat_message = (args = {}) => {
   title = title + nd
   let gets = App.getcode(args.id)
 
-  if (App.utilz.bingo(gets)) {
+  if (!args.edited && App.utilz.bingo(gets)) {
     content_classes += ` colortext goldtext`
   }
 
