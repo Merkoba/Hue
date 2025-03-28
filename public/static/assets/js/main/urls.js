@@ -7,7 +7,7 @@ App.urlize_html = (html, limit_width = true, force_full = false) => {
 
     let split = html.split(/\s+/)
     let matches = []
-    let reg = /(?:^|\s|<|>|gt;)"?(https?:\/\/(?:[^"|\s|<|>]*)+)/
+    let reg = /(?:^|\s|<|>|gt;)"?(https?:\/\/([^"|\s|<|>]{3,}))/
 
     for (let s of split) {
       let result = reg.exec(s)
