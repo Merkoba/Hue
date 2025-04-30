@@ -34,7 +34,7 @@ App.show_image = (force = false) => {
 
 // Change the image source
 App.change_image_source = (src, check, comment) => {
-  App.change_media_source({what: `image`, src, check, comment})
+  return App.change_media_source({what: `image`, src, check, comment})
 }
 
 // Updates dimensions of the image
