@@ -783,7 +783,7 @@ App.opacity_options = () => {
   let steps = 5
 
   for (let p = max; p >= min; p -= steps) {
-    let o = App.utilz.round(p / 100, 1)
+    let o = App.utilz.round(p / 100, 2)
     opts.push({value: o, text: `${p}%`})
   }
 
