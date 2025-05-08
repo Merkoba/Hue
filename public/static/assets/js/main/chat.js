@@ -341,6 +341,11 @@ App.make_announcement_message = (args = {}) => {
     DOM.hide(brk_profilepic)
   }
 
+  let code = App.getcode(args.id)
+  let colors = [`white`, `gold`, `blue`, `green`, `red`, `purple`, `pink`, `orange`, `yellow`]
+  let color = colors[code % colors.length]
+  brk_profilepic.style.borderColor = color
+
   let pic = DOM.el(`.profilepic`, fmessage)
 
   DOM.ev(pic, `error`, () => {
