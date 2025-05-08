@@ -163,6 +163,11 @@ App.flop = () => {
   App.flopped = !App.flopped
 }
 
+// Get the first digits of the message id
+App.get_precode = (s = ``) => {
+  return s.split(`_`).at(0)
+}
+
 // Get the last 3 digits of a message id
 // Mainly used to turn things goldtext
 App.getcode = (s = ``) => {
