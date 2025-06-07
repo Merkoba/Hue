@@ -3,7 +3,7 @@
 // There's an eslint config that should clean up things
 // It should be ran periodically to find and fix flaws
 // But apart from that, all the code is structured manually
-// ######################################################## 1
+// ########################################################
 
 // All client variables and functions go here
 const App = {}
