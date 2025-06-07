@@ -785,12 +785,12 @@ App.start_msg = () => {
     items: [
       {id: `radio_playstop`, text: `Play`},
       {id: `radio_random`, text: `Random`},
-      {id: `radio_capture`, text: `Capture`},
       {id: `radio_volume`, text: `Volume: 100%`},
       {
         id: `radio_auto`, text: `Auto: Off`,
         title: `Automatically change the station after some minutes. This is configurable in Settings`,
       },
+      {id: `radio_capture`, text: `Rec`},
     ],
   }))
 
