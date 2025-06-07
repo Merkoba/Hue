@@ -97,6 +97,12 @@ App.commands = {
     },
     description: `Start a screen capture`,
   },
+  record: {
+    action: (arg, ans) => {
+      App.audio_capture()
+    },
+    description: `Start an audio capture`,
+  },
   uploadtv: {
     action: (arg, ans) => {
       App.show_upload_tv()
