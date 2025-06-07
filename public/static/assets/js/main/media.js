@@ -266,6 +266,11 @@ App.setup_media_pickers = () => {
     App.msg_tv_picker.close()
     App.show_upload_tv()
   })
+
+  DOM.ev(DOM.el(`#radio_capture`), `click`, () => {
+    App.msg_radio.close()
+    App.audio_capture()
+  })
 }
 
 // Setup tv link window

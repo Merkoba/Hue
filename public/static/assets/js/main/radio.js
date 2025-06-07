@@ -29,6 +29,10 @@ App.setup_radio = () => {
     App.play_random_radio()
   })
 
+  DOM.ev(DOM.el(`#radio_capture`), `click`, () => {
+    App.start_audio_capture()
+  })
+
   DOM.ev(DOM.el(`#radio_volume`), `click`, () => {
     App.pick_radio_volume()
   })
@@ -449,4 +453,78 @@ App.check_radio_enabled = () => {
 
   let items = DOM.el(`#footer_media_items`)
   App.horizontal_separator(items)
+}
+
+// Start capturing the audio and upload it as radio
+App.start_audio_capture = async (seconds) => {
+  if (!seconds) {
+    return
+  }
+
+  let stream = await navigator.mediaDevices.getUserMedia({
+    audio: true,
+    video: false,
+  })
+
+  let recorded_chunks = []
+  App.audio_capture_recorder = new MediaRecorder(stream)
+
+  App.audio_capture_recorder.ondataavailable = (e) => {
+    if (e.data.size > 0) {
+      recorded_chunks.push(e.data)
+    }
+  }
+
+  App.audio_capture_recorder.onstop = () => {
+    for (let track of stream.getTracks()) {
+      track.stop()
+    }
+
+    let blob = new Blob(recorded_chunks, {
+      type: `audio/mp3`,
+    })
+
+    blob.name = `capture.mp3`
+    App.show_tv_upload_comment(blob, `capture`)
+    recorded_chunks = []
+  }
+
+  App.audio_capture_popup = App.show_action_popup({
+    message: `Close this to stop capture`,
+    title: `Screen Capture`,
+    on_x_button_click: () => {
+      App.stop_audio_capture()
+    },
+  })
+
+  App.audio_capture_recorder.start(200)
+
+  App.audio_capture_timeout = setTimeout(() => {
+    App.stop_audio_capture()
+  }, seconds * 1000)
+}
+
+// Stop audio capture
+App.stop_audio_capture = () => {
+  clearTimeout(App.audio_capture_timeout)
+  App.audio_capture_popup.close()
+  App.audio_capture_recorder.stop()
+}
+
+// Show audio capture options
+App.audio_capture = () => {
+  App.msg_audio_capture_options.show()
+}
+
+// Setup audio capture
+App.setup_audio_capture = () => {
+  DOM.ev(DOM.el(`#audio_capture_options_container`), `click`, (e) => {
+    let el = e.target.closest(`.audio_capture_duration`)
+
+    if (el) {
+      let seconds = parseInt(el.dataset.seconds)
+      App.msg_audio_capture_options.close()
+      App.start_audio_capture(seconds)
+    }
+  })
 }

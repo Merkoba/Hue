@@ -203,6 +203,10 @@ App.start_msg = () => {
     {...msgvars.common, ...msgvars.titlebar, id: `screen_capture_options`},
   )
 
+  App.msg_audio_capture_options = Msg.factory(
+    {...msgvars.common, ...msgvars.titlebar, id: `audio_capture_options`},
+  )
+
   App.msg_command_book = Msg.factory(
     {...msgvars.common, ...msgvars.titlebar, id: `command_book`,
       window_width: `36rem`},
@@ -493,6 +497,12 @@ App.start_msg = () => {
     }),
   )
 
+  App.msg_audio_capture_options.set(
+    App.template_audio_capture_options({
+      durations: App.config.audio_capture_durations,
+    }),
+  )
+
   App.msg_input_history.set(
     App.template_input_history({
       window_controls: App.template_window_controls({
@@ -775,6 +785,7 @@ App.start_msg = () => {
     items: [
       {id: `radio_playstop`, text: `Play`},
       {id: `radio_random`, text: `Random`},
+      {id: `radio_capture`, text: `Capture`},
       {id: `radio_volume`, text: `Volume: 100%`},
       {
         id: `radio_auto`, text: `Auto: Off`,
@@ -790,6 +801,7 @@ App.start_msg = () => {
   App.msg_roomlist.set_title(`Room List`)
   App.msg_reactions.set_title(`Reactions`)
   App.msg_screen_capture_options.set_title(`Screen Capture`)
+  App.msg_audio_capture_options.set_title(`Audio Capture`)
   App.msg_notifications.set_title(`Notifications`)
   App.msg_command_book.set_title(`Command Book`)
   App.msg_user_profile.set_title(`User Profile`)

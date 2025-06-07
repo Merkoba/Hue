@@ -1,0 +1,7 @@
+<script id="template_audio_capture_options" type="text/x-handlebars-template" class="template">
+  <div id="audio_capture_options_container" class="flex_column_center rem1_gap">
+    {{#each durations}}
+    <div data-seconds="{{this}}" class="audio_capture_duration action menu_item">{{this}} seconds</div>
+    {{/each}}
+  </div>
+</script>

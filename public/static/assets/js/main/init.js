@@ -195,6 +195,7 @@ App.init = () => {
   App.setup_chat_search()
   App.setup_change_role()
   App.setup_screen_capture()
+  App.setup_audio_capture()
   App.setup_admin_activity()
   App.setup_item_picker()
   App.setup_edit()
