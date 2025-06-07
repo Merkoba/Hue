@@ -344,7 +344,13 @@ App.setup_tv_upload_comment = () => {
     }
     else if (App.tv_upload_comment_type === `capture`) {
       App.msg_tv_upload_comment.close()
-      App.screen_capture()
+
+      if (App.upload_mode === `video`) {
+        App.screen_capture()
+      }
+      else if (App.upload_mode === `audio`) {
+        App.audio_capture()
+      }
     }
   })
 
@@ -407,6 +413,7 @@ App.start_screen_capture = async (seconds) => {
     })
 
     blob.name = `capture.mp4`
+    App.upload_mode = `video`
     App.show_tv_upload_comment(blob, `capture`)
     recorded_chunks = []
   }

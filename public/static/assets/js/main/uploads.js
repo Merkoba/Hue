@@ -386,6 +386,9 @@ App.show_upload_comment = (what, file, type, comment = ``) => {
   else if (type === `capture`) {
     DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Capture`
   }
+  else if (type === `audio`) {
+    DOM.el(`#${what}_upload_comment_change`).textContent = `Re-Capture`
+  }
 
   if (!comment) {
     comment = App.get_input().trim()

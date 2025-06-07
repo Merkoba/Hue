@@ -485,6 +485,7 @@ App.start_audio_capture = async (seconds) => {
     })
 
     blob.name = `capture.mp3`
+    App.upload_mode = `audio`
     App.show_tv_upload_comment(blob, `capture`)
     recorded_chunks = []
   }
