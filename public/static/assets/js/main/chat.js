@@ -219,7 +219,8 @@ App.make_chat_message = (args = {}) => {
   App.update_likes(content_container, args.likes)
 
   if (!image_preview && !link_preview) {
-    App.urlize(content)
+    let full = args.message.includes(`\n`)
+    App.urlize(content, true, full)
   }
 
   if (image_preview) {
