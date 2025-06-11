@@ -287,6 +287,7 @@ App.show_message_board = (filter = ``) => {
   App.message_board_separate()
   DOM.el(`#message_board_filter`).value = filter
   App.do_modal_filter()
+  App.focus_message_board()
 }
 
 // Hide message board
@@ -529,5 +530,18 @@ App.setup_message_board_permissions = () => {
   }
   else {
     container.classList.remove(`message_board_admin`)
+  }
+}
+
+// Focus the message board textarea
+App.focus_message_board = () => {
+  let textarea = DOM.el(`#message_board_textarea`)
+
+  if (textarea) {
+    textarea.focus()
+
+    textarea.scrollIntoView({
+      block: `center`,
+    })
   }
 }
