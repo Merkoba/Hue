@@ -125,6 +125,9 @@ youtube_enabled: true
 # Whether Twitch features are enabled
 twitch_enabled: true
 
+# Whether Harambe features are enabled
+harambe_enabled: true
+
 # Whether Imgur features are enabled
 imgur_enabled: true
 

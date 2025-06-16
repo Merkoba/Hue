@@ -1095,6 +1095,15 @@ App.change_media_source = (args = {}) => {
           return false
         }
       }
+      else if (App.utilz.is_harambe(args.src)) {
+        if (App.utilz.get_harambe_url(args.src) && !App.config.harambe_enabled) {
+          if (feedback) {
+            App.checkmsg(`Harambe support is not enabled`)
+          }
+
+          return false
+        }
+      }
       else {
         let extension = App.utilz.get_extension(args.src).toLowerCase()
 

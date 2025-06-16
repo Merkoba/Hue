@@ -814,6 +814,24 @@ const Utilz = () => {
     return src.includes(`twitch.tv`)
   }
 
+  // Check if it's a Harambe url
+  utilz.is_harambe = (src) => {
+    return src.includes(`harambe.merkoba.com`)
+  }
+
+  // Get clean Harambe url
+  utilz.get_harambe_url = (url) => {
+    let clean = url.replace(/^(harambe\.merkoba\.com\/(?:file|post)\/[a-zA-Z0-9]+)\/.*$/, `$1`)
+    let matches = clean.match(/\/([a-zA-Z0-9]+)$/)
+    let name = ``
+
+    if (matches) {
+      name = matches[1].trim()
+    }
+
+    return [clean, name]
+  }
+
   // Check if all items in an array are equal
   utilz.bingo = (s) => {
     let split = s.split(``).filter(x => x !== ``)

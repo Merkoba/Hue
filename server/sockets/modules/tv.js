@@ -121,6 +121,35 @@ module.exports = (App) => {
         not_found()
         return
       }
+      else if (App.utilz.is_harambe(data.src)) {
+        if (!App.config.harambe_enabled) {
+          return
+        }
+
+        let [url, name] = App.utilz.get_harambe_url(data.src)
+
+        if (!url || !name) {
+          not_found()
+          return
+        }
+
+        try {
+          let data_url = `https://harambe.merkoba.com/data/${name}`
+          let res = await App.vars.fetch(data_url)
+          let json = await res.json()
+
+          if (json && json.title) {
+            data.type = `video`
+            data.title = json.title
+            data.src = `https://harambe.merkoba.com/file/${name}`
+            await App.handler.do_change_media(socket, data, `tv`)
+            return
+          }
+        }
+        catch (err) {
+          App.logger.log_error(err)
+        }
+      }
 
       let extension = App.utilz.get_extension(data.src).toLowerCase()
 
