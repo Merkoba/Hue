@@ -49,6 +49,39 @@ module.exports = (App) => {
 
     data.src = data.src.replace(/\.gifv/g, `.gif`)
 
+    if (App.utilz.is_harambe(data.src)) {
+      if (!App.config.harambe_enabled) {
+        return
+      }
+
+      let [url, name] = App.utilz.get_harambe_url(data.src)
+
+      if (!url || !name) {
+        not_found()
+        return
+      }
+
+      try {
+        let data_url = `https://harambe.merkoba.com/data/${name}`
+        let res = await App.vars.fetch(data_url)
+        let json = await res.json()
+
+        if (json) {
+          data.type = `link`
+          data.title = json.title || json.filename
+          data.src = `https://harambe.merkoba.com/file/${name}`
+          data.comment = data.comment || ``
+          data.username = socket.hue.username
+          data.size = 0
+          await App.handler.do_change_media(socket, data, `image`)
+          return
+        }
+      }
+      catch (err) {
+        App.logger.log_error(err)
+      }
+    }
+
     if (!App.utilz.is_url(data.src) && !data.src.startsWith(`/`)) {
       if (!App.config.imgur_enabled) {
         return

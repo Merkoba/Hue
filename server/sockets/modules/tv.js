@@ -138,10 +138,11 @@ module.exports = (App) => {
           let res = await App.vars.fetch(data_url)
           let json = await res.json()
 
-          if (json && json.title) {
+          if (json) {
             data.type = `video`
-            data.title = json.title
+            data.title = json.title || json.filename
             data.src = `https://harambe.merkoba.com/file/${name}`
+            data.comment = data.comment || ``
             await App.handler.do_change_media(socket, data, `tv`)
             return
           }

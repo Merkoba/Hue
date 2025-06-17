@@ -1068,7 +1068,16 @@ App.change_media_source = (args = {}) => {
     if (args.what === `image`) {
       args.src = args.src.replace(/\.gifv/g, `.gif`)
 
-      if (!App.utilz.is_image(args.src)) {
+      if (App.utilz.is_harambe(args.src)) {
+        if (App.utilz.get_harambe_url(args.src) && !App.config.harambe_enabled) {
+          if (feedback) {
+            App.checkmsg(`Harambe support is not enabled`)
+          }
+
+          return false
+        }
+      }
+      else if (!App.utilz.is_image(args.src)) {
         if (feedback) {
           App.checkmsg(`Invalid extension`)
         }
