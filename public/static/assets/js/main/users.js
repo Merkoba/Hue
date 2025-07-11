@@ -1178,10 +1178,26 @@ App.update_userlist = (prop) => {
   App.update_userlist_debouncer.call(prop)
 }
 
-// Mention a user
+// Mention a user with smart spacing
 App.mention_user = (username) => {
-  let new_input = App.get_input().trim() + ` ${username}`
-  App.change_input(new_input.trim())
+  let current = App.get_input()
+  let new_input
+
+  // Handle empty input case
+  if (current.trim() === ``) {
+    new_input = `${username} `
+  }
+
+  // Handle input that already ends with space
+  else if (current.endsWith(` `)) {
+    new_input = `${current}${username} `
+  }
+  // Regular case - need to add a space before username
+  else {
+    new_input = `${current} ${username} `
+  }
+
+  App.change_input(new_input);
 }
 
 // Show how long a user has been online
