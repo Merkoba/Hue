@@ -1181,7 +1181,7 @@ App.update_userlist = (prop) => {
 // Mention a user at the cursor position with smart spacing
 App.mention_user = (username) => {
   let current = App.get_input()
-  let input_el = document.querySelector('#chat_input') // Get the actual input element
+  let input_el = document.querySelector(`#input`)
   let cursor_pos = input_el.selectionStart
   let new_input
 
