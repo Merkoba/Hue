@@ -1178,26 +1178,43 @@ App.update_userlist = (prop) => {
   App.update_userlist_debouncer.call(prop)
 }
 
-// Mention a user with smart spacing
+// Mention a user at the cursor position with smart spacing
 App.mention_user = (username) => {
   let current = App.get_input()
+  let input_el = document.querySelector('#chat_input') // Get the actual input element
+  let cursor_pos = input_el.selectionStart
   let new_input
 
+  // Split text at cursor position
+  let before_cur = current.substring(0, cursor_pos)
+  let after_cur = current.substring(cursor_pos)
+
   // Handle empty input case
-  if (current.trim() === ``) {
+  if (before_cur.trim() === `` && after_cur.trim() === ``) {
     new_input = `${username} `
   }
-
-  // Handle input that already ends with space
-  else if (current.endsWith(` `)) {
-    new_input = `${current}${username} `
+  // Handle case where cursor is after a space
+  else if (before_cur.endsWith(` `)) {
+    new_input = `${before_cur}${username} ${after_cur}`
   }
-  // Regular case - need to add a space before username
+  // Handle case where cursor is before a space
+  else if (after_cur.startsWith(` `)) {
+    new_input = `${before_cur} ${username}${after_cur}`
+  }
+  // Regular case - need to add spaces around username
   else {
-    new_input = `${current} ${username} `
+    new_input = `${before_cur} ${username} ${after_cur}`
   }
 
-  App.change_input(new_input);
+  App.change_input(new_input, false, false)
+
+  // Set cursor position after the inserted username
+  setTimeout(() => {
+    let new_pos = before_cur.length + username.length +
+      (before_cur.endsWith(` `) ? 1 : 2)
+    input_el.setSelectionRange(new_pos, new_pos)
+    input_el.focus()
+  }, 0)
 }
 
 // Show how long a user has been online
