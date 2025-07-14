@@ -1190,7 +1190,7 @@ App.mention_user = (username) => {
   let after_cur = current.substring(cursor_pos)
 
   // Handle empty input case
-  if (before_cur.trim() === `` && after_cur.trim() === ``) {
+  if ((before_cur.trim() === ``) && (after_cur.trim() === ``)) {
     new_input = `${username} `
   }
   // Handle case where cursor is after a space
