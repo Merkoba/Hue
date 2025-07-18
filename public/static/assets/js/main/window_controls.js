@@ -76,13 +76,14 @@ App.do_modal_filter = (id = false) => {
       return match
     }
     else if (filter.startsWith(`$links`)) {
-      let s = it.textContent.toLowerCase()
-      let match = s.includes(`https://`) || s.includes(`http://`)
+      if (!DOM.el(`a`, it)) {
+        return false
+      }
 
-      if (match) {
-        if (args) {
-          match = it.textContent.toLowerCase().includes(args)
-        }
+      let match = true
+
+      if (args) {
+        match = it.textContent.toLowerCase().includes(args)
       }
 
       return match
