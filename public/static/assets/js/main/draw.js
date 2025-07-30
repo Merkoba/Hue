@@ -172,6 +172,24 @@ App.setup_draw_image = () => {
   App.clear_draw_image_state()
 }
 
+// Sets the color for the pencil
+App.set_pencil_color = (color, update = true) => {
+  App.draw_image_pencil_color = color
+
+  if (update) {
+    DOM.el(`#draw_image_pencil_color`).value = color
+  }
+}
+
+// Sets the color for the bucket fill
+App.set_bucket_color = (color, update = true) => {
+  App.draw_image_bucket_color = color
+
+  if (update) {
+    DOM.el(`#draw_image_bucket_color`).value = color
+  }
+}
+
 // Prepares initial settings for the draw image window
 App.draw_image_prepare_settings = () => {
   DOM.ev(DOM.el(`#draw_image_pencil_color`), `click`, () => {
@@ -181,7 +199,7 @@ App.draw_image_prepare_settings = () => {
   let pencil_color = DOM.el(`#draw_image_pencil_color`)
 
   DOM.ev(pencil_color, `change`, () => {
-    App.draw_image_pencil_color = pencil_color.value
+    App.set_pencil_color(pencil_color.value, false)
   })
 
   DOM.ev(DOM.el(`#draw_image_bucket_color`), `click`, () => {
@@ -191,7 +209,7 @@ App.draw_image_prepare_settings = () => {
   let bucket_color = DOM.el(`#draw_image_bucket_color`)
 
   DOM.ev(bucket_color, `change`, () => {
-    App.draw_image_bucket_color = bucket_color.value
+    App.set_bucket_color(bucket_color.value, false)
   })
 
   let pencil_size = DOM.el(`#draw_image_pencil_size`)
@@ -259,16 +277,13 @@ App.increase_draw_image_snapshot = (data) => {
 // Resets the snapshot level to 0
 App.clear_draw_image_state = () => {
   let context = App.draw_image_context
-  let bg_hex = App.colorlib.get_random_hex()
+  App.draw_canvas_bg = App.colorlib.get_random_hex()
 
-  context.fillStyle = bg_hex
+  context.fillStyle = App.draw_canvas_bg
   context.fillRect(0, 0, context.canvas.width, context.canvas.height)
 
-  App.draw_image_pencil_color = App.colorlib.get_lighter_or_darker(bg_hex, 0.6)
-  App.draw_image_bucket_color = App.colorlib.get_random_hex()
-  DOM.el(`#draw_image_pencil_color`).value = App.draw_image_pencil_color
-  DOM.el(`#draw_image_bucket_color`).value = App.draw_image_bucket_color
-
+  App.set_pencil_color(App.colorlib.get_lighter_or_darker(App.draw_canvas_bg, 0.6))
+  App.set_bucket_color(App.random_bucket_color())
   App.set_draw_image_mode_input(`pencil`)
   App.draw_image_pencil_size = App.draw_image_default_pencil_size
 
@@ -610,12 +625,10 @@ App.draw_color_picker = (x, y) => {
   let hex = App.colorlib.rgb_to_hex(array)
 
   if (App.draw_image_mode === `pencil`) {
-    App.draw_image_pencil_color = hex
-    DOM.el(`#draw_image_pencil_color`).value = hex
+    App.set_pencil_color(hex)
   }
   else if (App.draw_image_mode === `bucket`) {
-    App.draw_image_bucket_color = hex
-    DOM.el(`#draw_image_bucket_color`).value = hex
+    App.set_bucket_color(hex)
   }
 }
 
@@ -641,4 +654,21 @@ App.draw_suggest = () => {
   let animal = App.words.random_animal()
   App.show_info(`Try drawing this: ${animal}`)
   App.draw_suggested = animal
+}
+
+// Get a random bucket color
+App.random_bucket_color = () => {
+  let bucket_color
+
+  if (App.draw_canvas_bg) {
+    for (let i = 0; i < 10; i++) {
+      bucket_color = App.colorlib.get_random_hex()
+
+      if (bucket_color === App.draw_canvas_bg) {
+        continue
+      }
+    }
+  }
+
+  return bucket_color
 }
