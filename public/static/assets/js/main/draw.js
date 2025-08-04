@@ -217,6 +217,14 @@ App.draw_image_prepare_settings = () => {
   DOM.ev(pencil_size, `change`, () => {
     App.draw_image_pencil_size = pencil_size.value
   })
+
+  if (App.draw_image_pencil_color) {
+    pencil_color.value = App.draw_image_pencil_color
+  }
+
+  if (App.draw_image_bucket_color) {
+    bucket_color.value = App.draw_image_bucket_color
+  }
 }
 
 // Sets the input mode (pencil or bucket)
