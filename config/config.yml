@@ -287,6 +287,9 @@ radios:
   - name: Le Son Parisien
     url: http://stream.lesonparisien.com/mid
 
+  - name: Anima Trip Hop Lounge
+    url: http://amoris.sknt.ru/triphop.mp3
+
   - name: Anima Dub Techno
     url: http://amoris.sknt.ru/dubtechno.mp3
 
@@ -316,9 +319,6 @@ radios:
 
   - name: Anima New Age
     url: http://amoris.sknt.ru/newage.mp3
-
-  - name: Anima Trip Hop Lounge
-    url: http://amoris.sknt.ru/triphop.mp3
 
   - name: Anima Techno
     url: http://amoris.sknt.ru/techno.mp3
