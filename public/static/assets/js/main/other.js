@@ -257,3 +257,8 @@ App.add_polyfills = () => {
     }
   }
 }
+
+// Already set to this
+App.already_set = (data) => {
+  App.checkmsg(`Already set to that`)
+}

@@ -176,12 +176,12 @@ App.add_register_code = (code = ``) => {
 
 // When the registration code is enabled
 App.register_code_enabled = () => {
-  App.checkmsg(`Registration code enabled`)
+  App.checkmsg(`Registration requires a code now`)
 }
 
 // When the registration code is disabled
 App.register_code_disabled = () => {
-  App.checkmsg(`Registration code disabled`)
+  App.checkmsg(`Registration is open`)
 }
 
 // When the registration code changed

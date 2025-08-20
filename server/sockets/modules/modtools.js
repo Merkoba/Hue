@@ -328,9 +328,16 @@ module.exports = (App) => {
   }
 
   // Enable the registration code
-  App.handler.public.enable_register_code = (socket, data) => {
+  App.handler.public.enable_register_code = async (socket, data) => {
     if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
+      return
+    }
+
+    let enabled = await App.handler.get_sconfig(`use_register_code`)
+
+    if ((enabled !== undefined) && enabled) {
+      App.handler.user_emit(socket, `already_set`, {})
       return
     }
 
@@ -339,9 +346,16 @@ module.exports = (App) => {
   }
 
   // Disable the registration code
-  App.handler.public.disable_register_code = (socket, data) => {
+  App.handler.public.disable_register_code = async (socket, data) => {
     if (!socket.hue.superuser) {
       App.handler.anti_spam_ban(socket)
+      return
+    }
+
+    let enabled = await App.handler.get_sconfig(`use_register_code`)
+
+    if ((enabled !== undefined) && !enabled) {
+      App.handler.user_emit(socket, `already_set`, {})
       return
     }
 
@@ -395,6 +409,25 @@ module.exports = (App) => {
       let str = JSON.stringify(codes)
       await App.i.fsp.writeFile(fpath, str)
       App.handler.user_emit(socket, `register_code_added`, {code})
+    }
+    catch (e) {
+      App.logger.error(e)
+    }
+  }
+
+  // Get a secret config
+  App.handler.get_sconfig = async (prop) => {
+    try {
+      let fname = `user_config.secret.yml`
+      let fpath = App.i.path.join(App.vars.config_root, fname)
+
+      if (!App.i.fs.existsSync(fpath)) {
+        return
+      }
+
+      let content = await App.i.fsp.readFile(fpath, `utf8`)
+      let config = App.i.yaml.parse(content) || {}
+      return config[prop]
     }
     catch (e) {
       App.logger.error(e)
