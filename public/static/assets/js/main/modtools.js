@@ -176,7 +176,7 @@ App.add_register_code = (code = ``) => {
 
 // When the registration code is enabled
 App.register_code_enabled = () => {
-  App.checkmsg(`Registration requires a code now`)
+  App.checkmsg(`Registration requires a code`)
 }
 
 // When the registration code is disabled
