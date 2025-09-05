@@ -198,7 +198,7 @@ App.draw_image_prepare_settings = () => {
 
   let pencil_color = DOM.el(`#draw_image_pencil_color`)
 
-  DOM.ev(pencil_color, `change`, () => {
+  DOM.ev(pencil_color, `input`, () => {
     App.set_pencil_color(pencil_color.value, false)
   })
 
@@ -208,7 +208,7 @@ App.draw_image_prepare_settings = () => {
 
   let bucket_color = DOM.el(`#draw_image_bucket_color`)
 
-  DOM.ev(bucket_color, `change`, () => {
+  DOM.ev(bucket_color, `input`, () => {
     App.set_bucket_color(bucket_color.value, false)
   })
 
@@ -664,7 +664,6 @@ App.draw_suggest = () => {
   App.draw_suggested = animal
 }
 
-// Get a random bucket color
 App.random_bucket_color = () => {
   let bucket_color
 
@@ -672,11 +671,13 @@ App.random_bucket_color = () => {
     for (let i = 0; i < 10; i++) {
       bucket_color = App.colorlib.get_random_hex()
 
-      if (bucket_color === App.draw_canvas_bg) {
-        continue
+      if (bucket_color !== App.draw_canvas_bg) {
+        return bucket_color
       }
     }
+
+    return bucket_color
   }
 
-  return bucket_color
+  return App.colorlib.get_random_hex()
 }

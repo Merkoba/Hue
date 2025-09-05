@@ -286,7 +286,7 @@ App.setup_profilepic_select = () => {
   })
 
   DOM.ev(DOM.el(`#profilepic_select_random`), `click`, () => {
-    App.msg_profilepmic_select.close()
+    App.msg_profilepic_select.close()
     App.make_random_image(`profilepic`)
   })
 
