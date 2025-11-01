@@ -577,16 +577,39 @@ App.start_media_info = () => {
   App.media_info_mouse()
 }
 
-// Show loading message inside the media info area and hide real info
-App.show_media_info_loading = (type) => {
-  let container = DOM.el(`#media_${type}_info_container`)
+// Internal: get or build info container, loader, and info elements
+App.get_media_info_loader_parts = (type) => {
+  let root = DOM.el(`#media_${type}`)
 
-  if (!container) {
-    return
+  if (!root) {
+    return {}
   }
 
-  let loading_el = DOM.el(`.media_info_loading`, container)
+  // Prefer the dedicated info container; fallback to any .media_info_container under root; last resort: root
+  let container = DOM.el(`#media_${type}_info_container`) || DOM.el(`.media_info_container`, root) || root
   let info_el = DOM.el(`.media_info`, container)
+  let loading_el = DOM.el(`.media_info_loading`, container)
+
+  if (!loading_el) {
+    loading_el = DOM.create(`div`)
+    loading_el.className = `media_info_loading`
+    loading_el.textContent = `Loading...`
+    loading_el.style.display = `none`
+
+    if (info_el && info_el.parentElement === container) {
+      container.insertBefore(loading_el, info_el)
+    }
+    else {
+      container.insertBefore(loading_el, container.firstChild)
+    }
+  }
+
+  return {container, info_el, loading_el}
+}
+
+// Show loading message inside the media info area and hide real info
+App.show_media_info_loading = (type) => {
+  let {info_el, loading_el} = App.get_media_info_loader_parts(type)
 
   if (loading_el) {
     DOM.show(loading_el)
@@ -599,14 +622,7 @@ App.show_media_info_loading = (type) => {
 
 // Hide loading message and show the media info area again
 App.hide_media_info_loading = (type) => {
-  let container = DOM.el(`#media_${type}_info_container`)
-
-  if (!container) {
-    return
-  }
-
-  let loading_el = DOM.el(`.media_info_loading`, container)
-  let info_el = DOM.el(`.media_info`, container)
+  let {info_el, loading_el} = App.get_media_info_loader_parts(type)
 
   if (loading_el) {
     DOM.hide(loading_el)
