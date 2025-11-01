@@ -577,6 +577,46 @@ App.start_media_info = () => {
   App.media_info_mouse()
 }
 
+// Show loading message inside the media info area and hide real info
+App.show_media_info_loading = (type) => {
+  let container = DOM.el(`#media_${type}_info_container`)
+
+  if (!container) {
+    return
+  }
+
+  let loading_el = DOM.el(`.media_info_loading`, container)
+  let info_el = DOM.el(`.media_info`, container)
+
+  if (loading_el) {
+    DOM.show(loading_el)
+  }
+
+  if (info_el) {
+    DOM.hide(info_el)
+  }
+}
+
+// Hide loading message and show the media info area again
+App.hide_media_info_loading = (type) => {
+  let container = DOM.el(`#media_${type}_info_container`)
+
+  if (!container) {
+    return
+  }
+
+  let loading_el = DOM.el(`.media_info_loading`, container)
+  let info_el = DOM.el(`.media_info`, container)
+
+  if (loading_el) {
+    DOM.hide(loading_el)
+  }
+
+  if (info_el) {
+    DOM.show(info_el)
+  }
+}
+
 // Get proper media string
 App.media_string = (what) => {
   if (what === `chat`) {

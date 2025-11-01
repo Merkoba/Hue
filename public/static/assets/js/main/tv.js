@@ -71,6 +71,7 @@ App.hide_tv = (item = false) => {
 App.show_youtube_tv = (play = true) => {
   let item = App.loaded_tv
   App.before_show_tv(item)
+  App.show_media_info_loading(`tv`)
   let id = App.utilz.get_youtube_id(item.source)
 
   if (id[0] === `video`) {
@@ -104,16 +105,19 @@ App.show_youtube_tv = (play = true) => {
     }
   }
   else {
+    App.hide_media_info_loading(`tv`)
     return
   }
 
   App.after_show_tv()
+  App.hide_media_info_loading(`tv`)
 }
 
 // Loads a Twitch video
 App.show_twitch_tv = (play = true) => {
   let item = App.loaded_tv
   App.before_show_tv(item)
+  App.show_media_info_loading(`tv`)
   let id = App.utilz.get_twitch_id(item.source)
 
   if (id[0] === `video`) {
@@ -123,6 +127,7 @@ App.show_twitch_tv = (play = true) => {
     App.twitch_tv_player.setChannel(id[1])
   }
   else {
+    App.hide_media_info_loading(`tv`)
     return
   }
 
@@ -135,12 +140,14 @@ App.show_twitch_tv = (play = true) => {
   }
 
   App.after_show_tv(play)
+  App.hide_media_info_loading(`tv`)
 }
 
 // Loads a <video> video
 App.show_video_tv = (play = true) => {
   let item = App.loaded_tv
   App.before_show_tv(item)
+  App.show_media_info_loading(`tv`)
   DOM.el(`#media_video_tv`).src = item.source
 
   if (play) {
@@ -148,6 +155,7 @@ App.show_video_tv = (play = true) => {
   }
 
   App.after_show_tv()
+  App.hide_media_info_loading(`tv`)
 }
 
 // This gets called before any tv video is loaded

@@ -20,6 +20,7 @@ App.show_image = (force = false) => {
 
   if (!App.first_image_load) {
     DOM.show(`#media_image_loading`)
+    App.show_media_info_loading(`image`)
   }
 
   DOM.hide(`#media_image_error`)
@@ -274,6 +275,7 @@ App.start_image_events = () => {
     DOM.hide(`#media_image_loading`)
     DOM.show(`#media_image_error`)
     App.apply_media_info(`image`)
+    App.hide_media_info_loading(`image`)
   })
 
   DOM.el(`#media_image_frame`).style.height = 0
@@ -287,6 +289,7 @@ App.after_image_load = (ok = true) => {
   DOM.hide(`#media_image_loading`)
   App.apply_media_info(`image`)
   App.show_image_loaded()
+  App.hide_media_info_loading(`image`)
 
   if (ok) {
     App.fix_image_frame()
