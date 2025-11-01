@@ -596,7 +596,7 @@ App.get_media_info_loader_parts = (type) => {
     loading_el.textContent = `Loading...`
     loading_el.style.display = `none`
 
-    if (info_el && info_el.parentElement === container) {
+    if (info_el && (info_el.parentElement === container)) {
       container.insertBefore(loading_el, info_el)
     }
     else {
