@@ -397,13 +397,25 @@ App.start_screen_capture = async (seconds) => {
     return
   }
 
-  let stream = await navigator.mediaDevices.getDisplayMedia({
-    audio: true,
+  let display_stream = await navigator.mediaDevices.getDisplayMedia({
     video: {mediaSource: `screen`},
   })
 
+  let audio_stream = await navigator.mediaDevices.getUserMedia({
+    audio: true,
+  })
+
+  let tracks = [
+    ...display_stream.getTracks(),
+    ...audio_stream.getTracks(),
+  ]
+
+  let stream = new MediaStream(tracks)
+
   let recorded_chunks = []
-  App.screen_capture_recorder = new MediaRecorder(stream)
+  App.screen_capture_recorder = new MediaRecorder(stream, {
+    mimeType: `video/webm`,
+  })
 
   App.screen_capture_recorder.ondataavailable = (e) => {
     if (e.data.size > 0) {
@@ -417,10 +429,10 @@ App.start_screen_capture = async (seconds) => {
     }
 
     let blob = new Blob(recorded_chunks, {
-      type: `video/mp4`,
+      type: `video/webm`,
     })
 
-    blob.name = `capture.mp4`
+    blob.name = `capture.webm`
     App.upload_mode = `video`
     App.show_tv_upload_comment(blob, `capture`)
     recorded_chunks = []
