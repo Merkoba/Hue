@@ -402,22 +402,8 @@ App.start_screen_capture = async (seconds) => {
     video: {mediaSource: `screen`},
   })
 
-  let recorder_options = {}
-
-  if (MediaRecorder.isTypeSupported) {
-    if (MediaRecorder.isTypeSupported(`video/webm; codecs=vp9,opus`)) {
-      recorder_options.mimeType = `video/webm; codecs=vp9,opus`
-    }
-    else if (MediaRecorder.isTypeSupported(`video/webm; codecs=vp8,opus`)) {
-      recorder_options.mimeType = `video/webm; codecs=vp8,opus`
-    }
-    else if (MediaRecorder.isTypeSupported(`video/mp4`)) {
-      recorder_options.mimeType = `video/mp4`
-    }
-  }
-
   let recorded_chunks = []
-  App.screen_capture_recorder = new MediaRecorder(stream, recorder_options)
+  App.screen_capture_recorder = new MediaRecorder(stream)
 
   App.screen_capture_recorder.ondataavailable = (e) => {
     if (e.data.size > 0) {
@@ -430,27 +416,11 @@ App.start_screen_capture = async (seconds) => {
       track.stop()
     }
 
-    let mime_type = App.screen_capture_recorder.mimeType
-
-    if (!mime_type && recorded_chunks.length && recorded_chunks[0].type) {
-      mime_type = recorded_chunks[0].type
-    }
-
-    if (!mime_type) {
-      mime_type = `video/webm`
-    }
-
     let blob = new Blob(recorded_chunks, {
-      type: mime_type,
+      type: `video/mp4`,
     })
 
-    let extension = `mp4`
-
-    if (mime_type.includes(`webm`)) {
-      extension = `webm`
-    }
-
-    blob.name = `capture.${extension}`
+    blob.name = `capture.mp4`
     App.upload_mode = `video`
     App.show_tv_upload_comment(blob, `capture`)
     recorded_chunks = []
