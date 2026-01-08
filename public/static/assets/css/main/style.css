@@ -1139,6 +1139,7 @@ a {
 
 #show_profile_op_buttons {
 	margin-top: 1.6rem;
+	user-select: none;
 }
 
 #show_profile_details {
@@ -2010,4 +2011,8 @@ textarea.settings_item_control {
 	position: relative;
 	max-width: 100%;
 	height: auto;
+}
+
+#input_reply_cancel {
+	user-select: none;
 }
