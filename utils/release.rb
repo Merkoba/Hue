@@ -27,7 +27,7 @@ if tag_name.nil?
   end
 
   puts "Creating tag #{input} at current commit..."
-  repo.add_tag(input, "Release #{input}")
+  repo.add_tag(input)
 
   if system("git push origin #{input}")
     puts "Pushed tag #{input} to origin."
