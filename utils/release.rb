@@ -1,24 +1,25 @@
 #!/usr/bin/env ruby
 require "git"
 
-# 1. Get Latest Tag
+# 1. Get Current Tag
 repo = Git.open(".")
 
-tags = repo.tags.map(&:name).sort_by do |t|
-  begin
-    Gem::Version.new(t.sub(/^v/, ""))
-  rescue
-    Gem::Version.new("0.0.0")
+# Get the tag pointing to the current HEAD
+current_commit = repo.log.first.sha
+tag_name = nil
+
+repo.tags.each do |tag|
+  if tag.sha == current_commit
+    tag_name = tag.name
+    break
   end
 end
 
-if tags.empty?
-  abort "Error: No tags found in repository. Create a tag first."
+if tag_name.nil?
+  abort "Error: No tag found at current commit. Create a tag first with: git tag <version>"
 end
 
-tag_name = tags.last
-
-puts "Using latest tag: #{tag_name}"
+puts "Using current tag: #{tag_name}"
 
 # 2. Create GitHub Release
 puts "Creating GitHub Release for #{tag_name}..."
