@@ -1,10 +1,9 @@
 #!/usr/bin/env ruby
 require "git"
 
-# 1. Get Current Tag
+# 1. Get or Create Tag
 repo = Git.open(".")
 
-# Get the tag pointing to the current HEAD
 current_commit = repo.log.first.sha
 tag_name = nil
 
@@ -16,10 +15,30 @@ repo.tags.each do |tag|
 end
 
 if tag_name.nil?
-  abort "Error: No tag found at current commit. Create a tag first with: git tag <version>"
-end
+  print "No tag found at current commit. Enter new tag name (e.g. v1.2.3): "
+  input = STDIN.gets&.strip
 
-puts "Using current tag: #{tag_name}"
+  if input.nil? || input.empty?
+    abort "Error: Tag name cannot be empty."
+  end
+
+  if repo.tags.map(&:name).include?(input)
+    abort "Error: Tag '#{input}' already exists."
+  end
+
+  puts "Creating tag #{input} at current commit..."
+  repo.add_tag(input, "Release #{input}")
+
+  if system("git push origin #{input}")
+    puts "Pushed tag #{input} to origin."
+  else
+    puts "Warning: Failed to push tag '#{input}' to origin. Continuing without pushing."
+  end
+
+  tag_name = input
+else
+  puts "Using current tag: #{tag_name}"
+end
 
 # 2. Create GitHub Release
 puts "Creating GitHub Release for #{tag_name}..."
