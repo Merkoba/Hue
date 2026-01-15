@@ -963,8 +963,8 @@ const Utilz = () => {
   utilz.media_types = [`image`, `tv`]
   utilz.video_extensions = [`mp4`, `webm`]
   utilz.video_types = [`video/mp4`, `video/webm`]
-  utilz.audio_extensions = [`mp3`, `ogg`, `wav`, `flac`]
-  utilz.audio_types = [`audio/mpeg`, `audio/ogg`, `audio/wav`, `audio/flac`]
+  utilz.audio_extensions = [`mp3`, `ogg`, `wav`, `flac`, `m4a`]
+  utilz.audio_types = [`audio/mpeg`, `audio/ogg`, `audio/wav`, `audio/flac`, `audio/m4a`]
   utilz.image_extensions = [`jpg`, `jpeg`, `png`, `gif`, `webp`, `bmp`]
   utilz.image_types = [`image/jpeg`, `image/png`, `image/gif`, `image/webp`, `image/bmp`]
 
