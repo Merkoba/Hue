@@ -2016,3 +2016,7 @@ textarea.settings_item_control {
 #input_reply_cancel {
 	user-select: none;
 }
+
+.message_board_buttons {
+	user-select: none;
+}
