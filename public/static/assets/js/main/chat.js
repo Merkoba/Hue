@@ -343,8 +343,8 @@ App.make_announcement_message = (args = {}) => {
   }
 
   let code = App.get_precode(args.id)
-  let colors = [`white`, `gold`, `blue`, `green`, `red`, `purple`, `pink`, `orange`, `yellow`]
-  let color = colors[code % colors.length]
+  let color = App.rgba_colors[code % App.rgba_colors.length]
+  fmessage.style.backgroundColor = color
   brk_profilepic.style.borderColor = color
 
   let pic = DOM.el(`.profilepic`, fmessage)

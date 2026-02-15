@@ -137,6 +137,30 @@ App.twitch_loaded = false
 App.twitch_tv_player_requested = false
 App.twitch_tv_player_request = false
 
+let rgb_colors = [
+  [255, 255, 255],   // white
+  [255, 215, 0],     // gold
+  [0, 0, 255],       // blue
+  [0, 128, 0],       // green
+  [255, 0, 0],       // red
+  [128, 0, 128],     // purple
+  [255, 192, 203],   // pink
+  [255, 165, 0],     // orange
+  [255, 255, 0]      // yellow
+]
+
+let rgba_colors = [
+  [255, 255, 255, 0.1],
+  [255, 215, 0, 0.1],
+  [0, 0, 255, 0.1],
+  [0, 128, 0, 0.1],
+  [255, 0, 0, 0.1],
+  [128, 0, 128, 0.1],
+  [255, 192, 203, 0.1],
+  [255, 165, 0, 0.1],
+  [255, 255, 0, 0.1]
+]
+
 // This runs after the application's load event
 // This is the first function that gets executed
 App.init = () => {
