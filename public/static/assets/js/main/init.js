@@ -137,7 +137,7 @@ App.twitch_loaded = false
 App.twitch_tv_player_requested = false
 App.twitch_tv_player_request = false
 
-let rgb_colors = [
+App.rgb_colors = [
   [255, 255, 255],   // white
   [255, 215, 0],     // gold
   [0, 0, 255],       // blue
@@ -149,7 +149,7 @@ let rgb_colors = [
   [255, 255, 0]      // yellow
 ]
 
-let rgba_colors = [
+App.rgba_colors = [
   [255, 255, 255, 0.1],
   [255, 215, 0, 0.1],
   [0, 0, 255, 0.1],
