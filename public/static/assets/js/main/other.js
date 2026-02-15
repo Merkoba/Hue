@@ -262,3 +262,7 @@ App.add_polyfills = () => {
 App.already_set = (data) => {
   App.checkmsg(`Already set to that`)
 }
+
+App.array_to_rgba = (a) => {
+  return `rgba(${a[0]}, ${[a[1]]}, ${a[2]}, ${a[3]}, ${a[3]})`
+}
