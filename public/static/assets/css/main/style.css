@@ -1637,7 +1637,7 @@ pre {
 
 .media_info_title {
 	display: var(--media_info_title);
-	max-width: 42rem;
+	max-width: 30vw;
 	overflow: hidden;
 }
 
