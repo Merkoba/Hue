@@ -360,6 +360,13 @@ App.build_user_settings = () => {
       actions: () => {},
       version: 1,
     },
+    media_colors: {
+      title: `Media Colors`,
+      type: `checkbox`,
+      description: `Enable or disable media colors on media announcements`,
+      actions: () => {},
+      version: 1,
+    },
     automedia: {
       title: `Automedia`,
       type: `checkbox`,
