@@ -349,7 +349,6 @@ App.make_announcement_message = (args = {}) => {
     let color = App.array_to_rgba(color_array)
     fmessage.style.borderTop = `4px solid ${color}`
     fmessage.style.borderRight = `4px solid ${color}`
-    fmessage.style.backgroundColor = color
     brk_profilepic.style.borderColor = color
   }
 
