@@ -266,3 +266,7 @@ App.already_set = (data) => {
 App.array_to_rgba = (a) => {
   return `rgba(${a[0]}, ${[a[1]]}, ${a[2]}, ${a[3]})`
 }
+
+App.array_to_rgb = (a) => {
+  return `rgb(${a[0]}, ${[a[1]]}, ${a[2]})`
+}
