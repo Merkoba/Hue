@@ -345,7 +345,8 @@ App.make_announcement_message = (args = {}) => {
   let code = App.get_precode(args.id)
 
   if (App.get_setting(`media_colors`)) {
-    let color_array = App.rgba_colors[code % App.rgba_colors.length]
+    let colors = App.rgb_colors
+    let color_array = colors[code % colors.length]
     let color = App.array_to_rgba(color_array)
     brk_profilepic.style.borderColor = color
     brk_profilepic.style.borderWidth = `8px`
