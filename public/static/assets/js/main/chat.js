@@ -347,9 +347,8 @@ App.make_announcement_message = (args = {}) => {
   if (App.get_setting(`media_colors`)) {
     let color_array = App.rgba_colors[code % App.rgba_colors.length]
     let color = App.array_to_rgba(color_array)
-    fmessage.style.borderTop = `4px solid ${color}`
-    fmessage.style.borderRight = `4px solid ${color}`
     brk_profilepic.style.borderColor = color
+    brk_profilepic.style.borderWidth = `8px`
   }
 
   let pic = DOM.el(`.profilepic`, fmessage)
