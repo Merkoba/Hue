@@ -282,6 +282,9 @@ radios:
   - name: Rekt Network
     url: https://stream.rekt.network/rekt.mp3
 
+  - name: Nightride
+    url: https://stream.nightride.fm/nightride.ogg
+
   - name: Channel 1
     url: http://stream.tilos.hu/karolyi-chill-eclectic
 
