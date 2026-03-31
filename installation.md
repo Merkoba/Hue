@@ -96,11 +96,15 @@ Registration can be configured to require a code if `use_register_code` is set t
 
 To register the code must be the `register_code` setting, or a code inside `config/codes.json` (array).
 
-Registration can be toggled on and off from the client with commands:
+Registration codes can be toggled on and off from the client with commands:
 
 `/openreg`
 
 `/closereg`
+
+When closed, it means a code will be required to register.
+
+When open it means a code is not required to register.
 
 And you can change the code with:
 
