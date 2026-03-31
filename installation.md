@@ -2,19 +2,19 @@
 
 `git clone --depth 1 https://github.com/Merkoba/Hue`
 
-Configuration is done in user_config.json and user_config.secret.json files placed in the config directory.
+Configuration is done in `user_config.json` and `user_config.secret.json` files placed in the config directory.
 
 Editing those files overrides settings in the default configuration files.
 
 The point of having separate files is so the default config files can be changed during an update while the user config files remain intact.
 
-Most of the defaults in user_config.json can be left as is.
+Most of the defaults in `user_config.json` can be left as is.
 
-Most of the necessary configuration is set in user_config.secret.json, like api keys and secret strings.
+Most of the necessary configuration is set in `user_config.secret.json`, like api keys and secret strings.
 
 Not all configurations need to be declared in the user configs, just the ones you want to override.
 
-Example of how to use user_config.json:
+Example of how to use `user_config.json`:
 
 ```javascript
 {
@@ -23,7 +23,7 @@ Example of how to use user_config.json:
 }
 ```
 
-Example of how to use user_config.secret.json:
+Example of how to use `user_config.secret.json`:
 
 ```javascript
 {
@@ -32,33 +32,33 @@ Example of how to use user_config.secret.json:
 }
 ```
 
-The admin's username must go in superuser_usernames in user_config.secret.json
+The admin's username must go in `superuser_usernames` in `user_config.secret.json`
 
-The main room is created at startup if it doesn't exist.
+The main room is created automatically at startup if it doesn't exist.
 
-To get admin rights on the room use !annex after joining it.
+To get admin rights on the room use `!annex` after joining it.
 
-To have a fully working system, as it is intended, getting all the API keys (YouTube, Imgur) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled": false) A Google Recaptcha key is necessary to enable captcha verification on registration, though captcha support can be disabled ("recaptcha_enabled": false). Set API keys in user_config.secret.json
+To have a fully working system, as it is intended, getting all the `API keys` (you probably will only need `YouTube`) is very recommended. If you don't need some of these, disable them in `user_config.json` (for example `"youtube_enabled": false`) A `Google Recaptcha` key is necessary to enable captcha verification on registration, though captcha support can be disabled (`"recaptcha_enabled": false`). Set API keys in `user_config.secret.json`
 
-Run "npm install" to install node dependencies.
+Run `npm install` to install `Node` dependencies.
 
-Install Redis, which is used for sessions and some data cache.
+Install `Redis`, which is used for sessions and some data cache.
 
-Go to utils/ and run `bundle_all` to create the frontend files.
+Go to `utils/` and run `bundle_all` to create the frontend files.
 
 Try running the server with `node server/www`
 
-To run it properly in production you will have to configure Apache or some other webserver to use a reverse proxy. A sample vhost configuration for Apache (apache_vhost.conf) is included. For using https, LetsEncrypt is suggested.
+To run it properly in production you will have to configure `Apache` or some other webserver to use a `reverse proxy`. A sample vhost configuration for Apache (`apache_vhost.conf`) is included. For using https, `LetsEncrypt` is suggested.
 
-Using pm2 is suggested to control the Node process. PM2 will likely use the user's home directory as root.
+Using `PM2` is suggested to control the `Node` process. `PM2` will likely use the user's home directory as root.
 
->su - node -c "pm2 start hue/server/www --env production"
+`su - node -c "pm2 start hue/server/www --env production"`
 
-That's an example of starting it with the user "node" in a production environment.
+That's an example of starting it with the user `node` in a production environment.
 
 ### Updates
 
-After a git pull with new changes it might be necessary to `bundle_all` again if frontend files changed.
+After a `git pull` with new changes it might be necessary to `bundle_all` again if frontend files changed.
 
 If some ejs files or config files were changed it's not necessary to restart the server, since it checks automatically and reloads live. The terminal output will show messages when these get rebuilt.
 
@@ -82,7 +82,7 @@ If other backend files changed then it's necessary to restart the server.
 
 ## Reactions
 
-You can add some reaction images in public/static/assets/img/reactions
+You can add some reaction images in `public/static/assets/img/reactions`
 
 Give each file a simple name like `smile.jpg`.
 
@@ -95,3 +95,13 @@ There are some you can use in `extra/reactions`
 Registration can be configured to require a code if `use_register_code` is set to true.
 
 To register the code must be the `register_code` setting, or a code inside `config/codes.json` (array).
+
+Registration can be toggled on and off from the client with commands:
+
+`/openreg`
+
+`/closereg`
+
+And you can change the code with:
+
+`/regcode somecode`
