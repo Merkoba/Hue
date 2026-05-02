@@ -178,6 +178,9 @@ App.server_update_events = {
   deleted_messages_below: (data) => {
     App.remove_messages_below(data)
   },
+  deleted_messages_user: (data) => {
+    App.remove_messages_from_user(data)
+  },
   bio_changed: (data) => {
     App.bio_changed(data)
   },

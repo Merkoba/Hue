@@ -896,6 +896,27 @@ App.delete_messages_below = (id) => {
   })
 }
 
+// Delete all messages from a specific user
+App.delete_messages_from_user = (user_id) => {
+  if (!user_id) {
+    return
+  }
+
+  let user = App.get_user_by_user_id(user_id)
+
+  if (!user) {
+    return
+  }
+
+  let username = user.username
+
+  App.show_confirm(`Delete all messages from ${username}`, () => {
+    App.socket_emit(`delete_messages_from_user`, {
+      user_id,
+    })
+  })
+}
+
 // Get message by id
 App.get_message_by_id = (id, container = `#chat_area`) => {
   if (!id) {
@@ -946,6 +967,28 @@ App.remove_message_from_chat = (data) => {
   }
   else if (mode === `announcement`) {
     App.process_remove_announcement(message)
+  }
+}
+
+// Remove all messages from a specific user
+App.remove_messages_from_user = (data) => {
+  let units = App.get_all_units()
+
+  for (let unit of units) {
+    let user_id = DOM.dataset(unit.closest(`.message`), `user_id`)
+
+    if (!user_id || (user_id !== data.user_id)) {
+      continue
+    }
+
+    let mode = DOM.dataset(unit.closest(`.message`), `mode`)
+
+    if (mode === `chat`) {
+      App.process_remove_chat_message(unit)
+    }
+    else if (mode === `announcement`) {
+      App.process_remove_announcement(unit)
+    }
   }
 }
 
@@ -1684,6 +1727,11 @@ App.setup_delete_messages = () => {
     App.msg_delete_messages.close()
     App.delete_messages_below(App.delete_messages_id)
   })
+
+  DOM.ev(DOM.el(`#delete_messages_user`), `click`, () => {
+    App.msg_delete_messages.close()
+    App.delete_messages_from_user(App.delete_messages_user_id)
+  })
 }
 
 // Delete message action
@@ -1704,6 +1752,7 @@ App.handle_delete_messages = (id, user_id) => {
   }
 
   App.delete_messages_id = id
+  App.delete_messages_user_id = user_id
 
   let msg = App.get_message_by_id(id)
   let unit = msg[0]
@@ -1715,6 +1764,7 @@ App.handle_delete_messages = (id, user_id) => {
   DOM.hide(`#delete_messages_group`)
   DOM.hide(`#delete_messages_above`)
   DOM.hide(`#delete_messages_below`)
+  DOM.hide(`#delete_messages_user`)
 
   if (num > 1) {
     DOM.show(`#delete_messages_group`)
@@ -1728,6 +1778,11 @@ App.handle_delete_messages = (id, user_id) => {
 
   if (App.is_admin() && (index < (num_messages - 1))) {
     DOM.show(`#delete_messages_below`)
+    shown += 1
+  }
+
+  if (App.is_admin() || (user_id === App.user_id)) {
+    DOM.show(`#delete_messages_user`)
     shown += 1
   }
 

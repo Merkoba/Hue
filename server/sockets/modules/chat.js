@@ -340,6 +340,7 @@ module.exports = (App) => {
 
     for (let i = 0; i < info.log_messages.length; i++) {
       let message = info.log_messages[i]
+
       if (message.data.id === data.id) {
         info.log_messages = info.log_messages.slice(i)
 
@@ -378,6 +379,7 @@ module.exports = (App) => {
 
     for (let i = 0; i < info.log_messages.length; i++) {
       let message = info.log_messages[i]
+
       if (message.data.id === data.id) {
         info.log_messages = info.log_messages.slice(0, i + 1)
 
@@ -391,6 +393,45 @@ module.exports = (App) => {
         return
       }
     }
+  }
+
+  // Delete all messages from a specific user
+  App.handler.public.delete_messages_from_user = async (socket, data) => {
+    if (!App.handler.is_admin_or_op(socket)) {
+      if (data.user_id !== socket.hue.user_id) {
+        App.handler.anti_spam_ban(socket)
+        return
+      }
+    }
+
+    let info = await App.db_manager.get_room([`id`, socket.hue.room_id])
+
+    if (!info) {
+      return
+    }
+
+    let userinfo = await App.db_manager.get_user([`id`, data.user_id])
+
+    if (!userinfo) {
+      return
+    }
+
+    let new_messages = []
+
+    for (let message of info.log_messages) {
+      if (message.data.user_id !== data.user_id) {
+        new_messages.push(message)
+      }
+    }
+
+    info.log_messages = new_messages
+
+    App.handler.room_emit(socket, `deleted_messages_user`, {
+      user_id: userinfo.id,
+      username: userinfo.username,
+    })
+
+    App.handler.push_admin_log_message(socket, `deleted messages from "${userinfo.username}`)
   }
 
   // Like or Unlike a message

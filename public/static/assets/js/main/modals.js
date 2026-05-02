@@ -726,6 +726,7 @@ App.start_msg = () => {
       {id: `delete_messages_group`, text: `Group`},
       {id: `delete_messages_above`, text: `Above`},
       {id: `delete_messages_below`, text: `Below`},
+      {id: `delete_messages_user`, text: `User`},
     ],
     container_id: `delete_messages_titlebar`,
   }))
